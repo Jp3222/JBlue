@@ -24,21 +24,6 @@ public class Apariencia implements SalidaDeErrores {
         this.SO = SO;
     }
 
-    public void gtk() {
-        for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-            if ("GTK+".equals(info.getName())) {
-                try {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-                    System.out.println(ex.getMessage());
-                    ex.printStackTrace(pwError);
-                    closeBufferExeption();
-                }
-            }
-        }
-    }
-
     public void aparienciaPorDefecto() {
         try {
             UIManager.LookAndFeelInfo[] installedLookAndFeels = UIManager.getInstalledLookAndFeels();

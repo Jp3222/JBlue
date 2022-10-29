@@ -1,0 +1,10 @@
+28 - 10 - 2022
+- Abstraccion para el sistema de ficheros que manejara en las distintas plataformas
+- - Falta Implementar
+
+- Apariencia adaptable a distintas plataforomas
+- - Falta Implementar en WIN, MAC
+
+- Interfaces de Login, MenuPrincipal, MenuBD listas
+- - Falta terminar diseño
+- Interface de menutesoreria falta diseño

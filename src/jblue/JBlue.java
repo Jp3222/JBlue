@@ -9,6 +9,7 @@ import com.jblue.sistema.Sistema;
 /**
  *
  * @author jp
+ *
  */
 public class JBlue {
 
@@ -18,7 +19,6 @@ public class JBlue {
     public static void main(String[] args) {
         Sistema s = new Sistema();
         s.run();
-        
     }
-
+    
 }

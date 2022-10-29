@@ -28,7 +28,6 @@ public class CLogin extends SuperControlador {
     }
 
     public void irMenu() {
-        System.out.println("xd2");
         login.dispose();
         menuPrincipal.setVisible(true);
     }

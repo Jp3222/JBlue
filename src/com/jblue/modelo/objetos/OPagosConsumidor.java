@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.jblue.sistema.so;
+package com.jblue.modelo.objetos;
 
 /**
  *
  * @author jp
  */
-public class Windows {
+public class OPagosConsumidor extends Objeto {
     
 }

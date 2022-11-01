@@ -16,11 +16,12 @@ public class ConstructorDeArchivos {
     public static int ARCHIVO = 1;
     public static int DIRECTORIO = 2;
 
-    private String rutaUsuario;
+    private final String RUTA_DE_USUARIO;
     private final ArrayList<File> RUTAS_DIRECTORIOS;
     private final ArrayList<File> RUTAS_ARCHIVOS;
 
     public ConstructorDeArchivos() {
+        this.RUTA_DE_USUARIO = SoInfo.RUTA_DE_USUARIO;
         this.RUTAS_DIRECTORIOS = new ArrayList<>(10);
         this.RUTAS_ARCHIVOS = new ArrayList<>(10);
     }
@@ -52,6 +53,9 @@ public class ConstructorDeArchivos {
         return null;
     }
 
+    /**
+     * metodo encargado de construir unicamente archivos
+     */
     public void construirArchivos() {
         for (File file : RUTAS_ARCHIVOS) {
             if (!file.exists()) {
@@ -60,6 +64,9 @@ public class ConstructorDeArchivos {
         }
     }
 
+    /**
+     * Metodo encargado de construir unicamente directorios
+     */
     public void construirDirectorios() {
         for (File file : RUTAS_DIRECTORIOS) {
             if (!file.exists()) {
@@ -68,6 +75,10 @@ public class ConstructorDeArchivos {
         }
     }
 
+    /**
+     * Metodo que llama primero a la funcion de construir directorios y
+     * consecutivamente a la funcion de construir archivos
+     */
     public void construirTodos() {
         construirDirectorios();
         construirArchivos();

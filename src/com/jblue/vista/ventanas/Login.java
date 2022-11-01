@@ -162,13 +162,13 @@ public class Login extends SuperVentana {
     @Override
     public final void llamable() {
         this.setTitle(NOMBRE + VERSION + " " + SECCION[0]);
-        init();
+        estadoInicial();
         addComponentes();
         addEventos();
     }
 
     @Override
-    public void init() {
+    public void estadoInicial() {
         this.clickJpfPass = false;
         this.clickJtfUsuario = false;
     }
@@ -233,4 +233,5 @@ public class Login extends SuperVentana {
     private javax.swing.JPasswordField jpfPass;
     private javax.swing.JTextField jtfUsuario;
     // End of variables declaration//GEN-END:variables
+
 }

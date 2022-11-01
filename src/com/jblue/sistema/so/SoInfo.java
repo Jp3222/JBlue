@@ -10,10 +10,12 @@ import java.io.File;
  *
  * @author jp
  */
-public interface SoInfo {
+public class SoInfo {
 
-    final String SO_NOMBRE = System.getProperty("so.name");
-    final String RUTA_DE_USUARIO = System.getProperty("user.home");
-    final String LENGUAJE_DEL_SISTEMA = System.getProperty("user.languaje");
-
+    static final String SO_NOMBRE = System.getProperty("so.name");
+    static final String RUTA_DE_USUARIO = System.getProperty("user.home");
+    static final String LENGUAJE_DEL_SISTEMA = System.getProperty("user.languaje");
+    
+    private SoInfo(){}
+    
 }

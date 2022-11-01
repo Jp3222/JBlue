@@ -6,27 +6,35 @@ package com.jblue.vista.ventanas;
 
 import com.jblue.controlador.CMenuPrincipal;
 import com.jblue.vista.conf.SuperVentana;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.SpinnerNumberModel;
 
 /**
  *
  * @author jp
  */
 public class MenuPrincipal extends SuperVentana {
+
+    private int click_jtfBNU;
     //
     private final CMenuPrincipal CONTROLADOR;
     private final Login LOGIN;
     private final MenuBD MENU_BD;
+    private final MenuTesoreria menuTesoreria;
 
     /**
      * Creates new form MenuPrincipal
      *
-     * @param login
+     * @param LOGIN
      */
-    public MenuPrincipal(Login login) {
-        this.LOGIN = login;
+    public MenuPrincipal(Login LOGIN) {
+        this.LOGIN = LOGIN;
         this.MENU_BD = new MenuBD(this);
+        this.menuTesoreria = new MenuTesoreria();
         //
-        CONTROLADOR = new CMenuPrincipal(LOGIN, this, MENU_BD);
+        CONTROLADOR = new CMenuPrincipal(LOGIN, this, MENU_BD, menuTesoreria);
+
         //
         initComponents();
         //
@@ -49,6 +57,7 @@ public class MenuPrincipal extends SuperVentana {
         jbtSalir = new javax.swing.JButton();
         jbtMenuBD = new javax.swing.JButton();
         jbtMenuTesoreria = new javax.swing.JButton();
+        jbtMenuPresidente = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -59,15 +68,23 @@ public class MenuPrincipal extends SuperVentana {
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        jTextField2 = new javax.swing.JTextField();
+        jtfBuscarNombreUsuario = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
-        jButton7 = new javax.swing.JButton();
+        jbtCobrar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jtfNombreUsuario = new javax.swing.JTextField();
+        jtfTipoToma = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jsMesesAPagar = new javax.swing.JSpinner();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(254, 254, 254));
@@ -102,8 +119,17 @@ public class MenuPrincipal extends SuperVentana {
         jbtMenuTesoreria.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jbtMenuTesoreria);
 
+        jbtMenuPresidente.setText("jButton1");
+        jbtMenuPresidente.setFocusable(false);
+        jbtMenuPresidente.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jbtMenuPresidente.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jbtMenuPresidente);
+
         jTabbedPane1.setAutoscrolls(true);
         jTabbedPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        jPanel3.setMinimumSize(new java.awt.Dimension(1200, 700));
+        jPanel3.setPreferredSize(new java.awt.Dimension(1200, 700));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Pagos del Dia");
@@ -125,19 +151,19 @@ public class MenuPrincipal extends SuperVentana {
         jToolBar2.setRollover(true);
         jToolBar2.setPreferredSize(new java.awt.Dimension(100, 45));
 
-        jButton4.setText("jButton4");
+        jButton4.setText("Actualizar");
         jButton4.setFocusable(false);
         jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar2.add(jButton4);
 
-        jButton5.setText("jButton5");
+        jButton5.setText("PDF");
         jButton5.setFocusable(false);
         jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar2.add(jButton5);
 
-        jButton6.setText("jButton6");
+        jButton6.setText("Buscar");
         jButton6.setFocusable(false);
         jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -145,8 +171,8 @@ public class MenuPrincipal extends SuperVentana {
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        jTextField2.setText("jTextField2");
-        jTextField2.setPreferredSize(new java.awt.Dimension(85, 35));
+        jtfBuscarNombreUsuario.setText("jTextField2");
+        jtfBuscarNombreUsuario.setPreferredSize(new java.awt.Dimension(85, 35));
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -155,25 +181,73 @@ public class MenuPrincipal extends SuperVentana {
         });
         jScrollPane4.setViewportView(jList1);
 
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/metodo-de-pago.png"))); // NOI18N
-        jButton7.setText("Cobrar");
-        jButton7.setPreferredSize(new java.awt.Dimension(100, 30));
+        jbtCobrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/metodo-de-pago.png"))); // NOI18N
+        jbtCobrar.setText("Cobrar");
+        jbtCobrar.setPreferredSize(new java.awt.Dimension(100, 30));
 
-        jLabel2.setText("jLabel2");
+        jLabel2.setText("Nombre");
         jLabel2.setPreferredSize(new java.awt.Dimension(100, 30));
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de Usuario"));
         jPanel5.setOpaque(false);
 
+        jLabel3.setText("Nombre");
+        jLabel3.setPreferredSize(new java.awt.Dimension(100, 30));
+
+        jLabel6.setText("Tipo de toma");
+        jLabel6.setPreferredSize(new java.awt.Dimension(100, 30));
+
+        jtfNombreUsuario.setText("xd");
+        jtfNombreUsuario.setEnabled(false);
+        jtfNombreUsuario.setPreferredSize(new java.awt.Dimension(85, 30));
+
+        jtfTipoToma.setText("xd");
+        jtfTipoToma.setEnabled(false);
+        jtfTipoToma.setPreferredSize(new java.awt.Dimension(85, 30));
+
+        jLabel7.setText("Tipo de toma");
+        jLabel7.setPreferredSize(new java.awt.Dimension(100, 30));
+
+        jsMesesAPagar.setModel(new javax.swing.SpinnerNumberModel(1, 1, 12, 1));
+        jsMesesAPagar.setPreferredSize(new java.awt.Dimension(64, 30));
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfNombreUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfTipoToma, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jsMesesAPagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 327, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfTipoToma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jsMesesAPagar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(103, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -191,11 +265,11 @@ public class MenuPrincipal extends SuperVentana {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jbtCobrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE))
+                        .addComponent(jtfBuscarNombreUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE))
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -207,13 +281,13 @@ public class MenuPrincipal extends SuperVentana {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jtfBuscarNombreUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(104, 104, 104)
+                        .addComponent(jbtCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jSeparator1)
                         .addGroup(jPanel3Layout.createSequentialGroup()
@@ -222,7 +296,7 @@ public class MenuPrincipal extends SuperVentana {
                             .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(146, Short.MAX_VALUE))
+                .addContainerGap(162, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Cobros", new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/metodo-de-pago.png")), jPanel3); // NOI18N
@@ -240,19 +314,34 @@ public class MenuPrincipal extends SuperVentana {
         ));
         jScrollPane2.setViewportView(jTable1);
 
+        jLabel4.setText("Mes");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC" }));
+        jComboBox1.setPreferredSize(new java.awt.Dimension(76, 30));
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1182, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1188, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(221, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 201, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36))
         );
@@ -314,28 +403,62 @@ public class MenuPrincipal extends SuperVentana {
 
     @Override
     public final void llamable() {
-        this.setTitle(NOMBRE + VERSION + " - " + SECCION[1]);
-        this.setExtendedState(MAXIMIZED_BOTH);
-        init();
+        estadoFinal();
+        estadoInicial();
         addComponentes();
         addEventos();
     }
 
     @Override
-    public void init() {
+    public void estadoInicial() {
+        click_jtfBNU = 0;
+        jtfBuscarNombreUsuario.setText("Ejem: Maria Rodriguez");
+        jtfNombreUsuario.setText(null);
+        jtfTipoToma.setText(null);
+        //
+        jTabbedPane1.setSelectedIndex(0);
+        jList1.clearSelection();
+        //
+        SpinnerNumberModel model = (SpinnerNumberModel) jsMesesAPagar.getModel();
+        jsMesesAPagar.setValue(model.getMinimum());
+    }
+
+    @Override
+    protected void estadoFinal() {
+        this.setTitle(NOMBRE + VERSION + " - " + SECCION[1]);
+        this.setExtendedState(MAXIMIZED_BOTH);
+        //
+        //
         jToolBar1.setFloatable(false);
         jToolBar2.setFloatable(false);
     }
 
     @Override
-    public void addComponentes() {
-        
-    }
-
-    @Override
     public void addEventos() {
         this.jbtSalir.addActionListener(e -> CONTROLADOR.irLogin());
-        this.jbtMenuBD.addActionListener(e -> MENU_BD.setVisible(true));
+        this.jbtMenuBD.addActionListener(e -> CONTROLADOR.irMenuBD());
+        //
+        this.jbtMenuPresidente.addActionListener(e -> {
+        });
+        this.jtfBuscarNombreUsuario.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("event bnu");
+                if (click_jtfBNU == 0) {
+                    jtfBuscarNombreUsuario.setText(null);
+                }
+                click_jtfBNU++;
+            }
+        });
+        this.jbtCobrar.addActionListener(e -> {
+            estadoInicial();
+        });
+
+    }
+
+    public void cerrarTodo() {
+        MENU_BD.dispose();
+
     }
 
 
@@ -343,9 +466,13 @@ public class MenuPrincipal extends SuperVentana {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -360,11 +487,16 @@ public class MenuPrincipal extends SuperVentana {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JButton jbtCobrar;
     private javax.swing.JButton jbtMenuBD;
+    private javax.swing.JButton jbtMenuPresidente;
     private javax.swing.JButton jbtMenuTesoreria;
     private javax.swing.JButton jbtSalir;
+    private javax.swing.JSpinner jsMesesAPagar;
+    private javax.swing.JTextField jtfBuscarNombreUsuario;
+    private javax.swing.JTextField jtfNombreUsuario;
+    private javax.swing.JTextField jtfTipoToma;
     // End of variables declaration//GEN-END:variables
 }

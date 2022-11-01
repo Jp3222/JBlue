@@ -10,30 +10,32 @@ import com.jbd.conexion.Conexion;
 import com.jblue.util.crypto.EncriptadoAES;
 
 /**
+ * Sistema
+ * <br> Esta clase es encargada de iniciar todos los datos del sistema
  *
  * @author jp
  */
 public class Sistema {
 
+    private final static Sistema instancia = new Sistema();
+
+    public synchronized static Sistema getInstancia() {
+        return instancia;
+    }
+   
+    
     private final String SO;
 
-    public Sistema() {
+    private Sistema() {
         SO = System.getProperty("os.name");
         Apariencia apariencia = new Apariencia(SO);
         apariencia.aparienciaPorDefecto();
-        if (init()) {
-            System.out.println("Conexion OK");
-        }
+        init("");
     }
 
-    private boolean init() {
-        EncriptadoAES o = new EncriptadoAES();
-        
-        String key;
-        String jp;
-        String pass;
-        String url;
+    private boolean init(String key) {
         Conexion cn = Conexion.getInstancia("jp", "12345", "jdbc:mysql://localhost/jblue");
+        System.out.println(cn.toString());
         return true;
     }
 

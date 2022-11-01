@@ -11,10 +11,11 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author jp
  */
-public abstract class SoConfig implements SoInfo {
+public abstract class SoConfig {
 
     private final String APARIENCIA_DEL_SISTEMA;
 
+    
     /**
      *
      * @param APARIENCIA_DEL_SISTEMA

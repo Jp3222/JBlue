@@ -36,7 +36,7 @@ public class Const {
     };
 
     public static final String[] BD_USUARIOS = {
-        ID, "nombre", "apellidos", "cargo", "usuario", "contraseña"
+        ID, NOMBRE, "apellidos", "cargo", "usuario", "contra"
     };
 
 }

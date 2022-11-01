@@ -21,7 +21,7 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * @author jp
  */
-public class EncriptadoAES implements SalidaDeErrores{
+public class EncriptadoAES implements SalidaDeErrores {
 
     /**
      * Crea la clave de encriptacion usada internamente
@@ -95,14 +95,27 @@ public class EncriptadoAES implements SalidaDeErrores{
 
         return datos;
     }
-
+    /**
+     * Metodo que compara 
+     * @param k1
+     * @param v1
+     * @param k2
+     * @param v2
+     * @return 
+     */
     public boolean comparador(String k1, String v1, String k2, String v2) {
         try {
             String aux1 = k2, aux2 = v2;
             k2 = encriptar(aux1, aux2);
             v2 = encriptar(aux2, aux1);
             return k1.equals(k2) && v1.equals(v2);
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
+        } catch (UnsupportedEncodingException
+                | NoSuchAlgorithmException
+                | InvalidKeyException
+                | NoSuchPaddingException
+                | IllegalBlockSizeException
+                | BadPaddingException ex) {
+
             System.out.println(ex.getLocalizedMessage());
             ex.printStackTrace(pwError);
             closeBufferExeption();

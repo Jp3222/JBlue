@@ -398,13 +398,13 @@ public class MenuBD extends SuperVentana {
 
     @Override
     public void llamable() {
-        init();
+        estadoInicial();
         addComponentes();
         addEventos();
     }
 
     @Override
-    public void init() {
+    public void estadoInicial() {
         jToolBar1.setFloatable(false);
     }
 

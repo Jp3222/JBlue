@@ -44,11 +44,9 @@ public class Apariencia implements SalidaDeErrores {
             }
 
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
-            try (pwError) {
-                System.out.println("Error al cargar la apariencia del sistema: " + e.getMessage());
-                e.printStackTrace(pwError);
-                closeBufferExeption();
-            }
+            System.out.println("Error al cargar la apariencia del sistema: " + e.getMessage());
+            e.printStackTrace(pwError);
+            closeBufferExeption();
         }
     }
 

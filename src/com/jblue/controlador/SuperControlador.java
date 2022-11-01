@@ -16,8 +16,8 @@ import java.awt.event.KeyListener;
 public class SuperControlador implements ActionListener, KeyListener {
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        
+    public void actionPerformed(ActionEvent ae) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override

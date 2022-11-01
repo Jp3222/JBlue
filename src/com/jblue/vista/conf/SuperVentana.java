@@ -13,12 +13,43 @@ import javax.swing.JFrame;
  */
 public abstract class SuperVentana extends JFrame implements InfoApp {
 
-    public abstract void llamable();
-    
-    public abstract void init();
+    /**
+     * Metodo recomentado para invocar solo a los metodos definidos siguiendo el
+     * siguiente orden
+     * <br> - estado final
+     * <br> - estado inicial
+     * <br> - estado add componentes
+     * <br> - estado add eventos
+     * <br> una vez sobre escrito el metodo, tambien se recomienda ponerlo en
+     * estado "final" para poder invocarlo en el constructor
+     */
+    protected abstract void llamable();
 
-    public abstract void addComponentes();
+    /**
+     * Metodo recomendado para darle a ciertos componentes un estado inicial al
+     * cual dado un evento en su clase o alguna clase ajena todos los
+     * componentes puedan volver a dicho estado
+     *
+     */
+    public abstract void estadoInicial();
 
-    public abstract void addEventos();
+    /**
+     * Metodo recomentado para darle a ciertos compoentes un estado inicial el
+     * cual no sera cambiado
+     */
+    protected void estadoFinal() {
+    }
+
+    /**
+     * Metodo recomendado para agregar componentes a otros componentes
+     */
+    protected void addComponentes() {
+    }
+
+    /**
+     * Metodo recomendado para añadir eventos a los componentes definidos
+     */
+    protected void addEventos() {
+    }
 
 }

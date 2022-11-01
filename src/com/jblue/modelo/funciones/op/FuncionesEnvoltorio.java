@@ -23,7 +23,7 @@ import java.sql.ResultSet;
  *
  * @author jp
  */
-public class FuncionesEnvoltorio implements ExeptionPrinter {
+public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
 
     protected final Conexion cn;
     protected final String tabla;
@@ -35,6 +35,14 @@ public class FuncionesEnvoltorio implements ExeptionPrinter {
         this.tabla = tabla;
         this.campos = campos;
         this.noCampos = campos.length;
+    }
+
+    public void AGREGAR(String[] valores, String[] campos, String where) {
+        if (valores[0] == "0") {
+            INSERTAR(valores);
+        } else {
+            ACTUALIZAR(campos, valores, where);
+        }
     }
 
     protected boolean INSERTAR(String[] valores) {
@@ -54,7 +62,7 @@ public class FuncionesEnvoltorio implements ExeptionPrinter {
     }
 
     protected boolean ACTUALIZAR(String campos[], String valores[], String where) {
-        return cn.update(tabla, 
+        return cn.update(tabla,
                 cn.getCamposDatos(campos, valores),
                 where
         );
@@ -146,8 +154,8 @@ public class FuncionesEnvoltorio implements ExeptionPrinter {
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getTabla() {
         return tabla;

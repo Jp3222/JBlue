@@ -4,13 +4,10 @@
  */
 package jblue;
 
-import com.jblue.modelo.Const;
 import com.jblue.sistema.Sistema;
-import com.jblue.util.archivos.AEscritor;
-import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.Year;
+import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  *
@@ -22,9 +19,18 @@ public class JBlue {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         Sistema s = Sistema.getInstancia();
-        s.run();
+        if (s.archivosSistema()) {
+            s.conexionBD();
+            s.datosCache();
+            s.run();
+        }
+
+//        Properties p = System.getProperties();
+//        p.forEach((t, u) -> {
+//            System.out.println(t + ": " +u);
+//        });
     }
 
 }

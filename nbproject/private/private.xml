@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/controlador/CMenuPrincipal.java</file>
+            <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/sistema/Sistema.java</file>
             <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/jblue/JBlue.java</file>
-            <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/vista/ventanas/MenuBD.java</file>
-            <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/vista/ventanas/MenuPrincipal.java</file>
+            <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/sistema/so/SoConfig.java</file>
+            <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/sistema/so/Apariencia.java</file>
+            <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/sistema/so/SoInfo.java</file>
+            <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/sistema/so/ConstructorDeArchivos.java</file>
         </group>
     </open-files>
 </project-private>

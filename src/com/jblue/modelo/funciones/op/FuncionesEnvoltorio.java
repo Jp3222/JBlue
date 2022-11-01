@@ -68,12 +68,10 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
         );
     }
 
-    protected ArrayList<Objeto> GET(String where) {
+    protected ArrayList<Objeto> GET(String cam, String where) {
         try {
-            ArrayList<Objeto> lista;
-            try ( ResultSet get = cn.select(tabla, "*", where)) {
-                lista = getLista(get, noCampos, tabla, campos);
-            }
+            ResultSet get = cn.select(tabla, cam, where);
+            ArrayList<Objeto> lista = getLista(get, noCampos, tabla, campos);
             cn.closeRS();
             return lista;
         } catch (SQLException | CloneNotSupportedException ex) {
@@ -88,42 +86,53 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
         if (get == null || tabla == null || campos == null) {
             return null;
         }
-        switch (tabla) {
-            case "calles":
-                OCalles calle = new OCalles();
-                return runWhile(calle, get, size, campos);
-            case "consumidores":
-                OConsumidores consumidores = new OConsumidores();
-                return runWhile(consumidores, get, size, campos);
-            case "pagos_consumidores":
-                OPagosConsumidor pagos = new OPagosConsumidor();
-                return runWhile(pagos, get, size, campos);
-            case "pagos_titulares":
-                OPagosTitular pagostitular = new OPagosTitular();
-                return runWhile(pagostitular, get, size, campos);
-            case "personal":
-                OPersonal personal = new OPersonal();
-                return runWhile(personal, get, size, campos);
-            case "titulares":
-                OTitulares titular = new OTitulares();
-                return runWhile(titular, get, size, campos);
-            case "tomas":
-                OTomas toma = new OTomas();
-                return runWhile(toma, get, size, campos);
-            default:
-                return null;
+        try {
+            switch (tabla) {
+                case "calles":
+                    OCalles calle = new OCalles();
+                    return runWhile(calle, get, size, campos);
+                case "consumidores":
+                    OConsumidores consumidores = new OConsumidores();
+                    return runWhile(consumidores, get, size, campos);
+                case "pagos_consumidores":
+                    OPagosConsumidor pagos = new OPagosConsumidor();
+                    return runWhile(pagos, get, size, campos);
+                case "pagos_titulares":
+                    OPagosTitular pagostitular = new OPagosTitular();
+                    return runWhile(pagostitular, get, size, campos);
+                case "personal":
+                    OPersonal personal = new OPersonal();
+                    return runWhile(personal, get, size, campos);
+                case "titulares":
+                    OTitulares titular = new OTitulares();
+                    return runWhile(titular, get, size, campos);
+                case "tomas":
+                    OTomas toma = new OTomas();
+                    return runWhile(toma, get, size, campos);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace(pwExeption);
+            closeExeptionBuffer();
         }
+        return null;
     }
 
-    private <T extends Objeto> ArrayList<T> runWhile(T o, ResultSet get, int size, String[] campos) throws SQLException, CloneNotSupportedException {
+    private <T extends Objeto> ArrayList<T> runWhile(T o, ResultSet rs, int size, String[] campos) throws SQLException, CloneNotSupportedException {
         ArrayList<T> lista = new ArrayList<>();
-        while (get.next()) {
-            String[] info = getArrayInfo(get, campos, size);
-            o.setInfo(info);
-            lista.add((T) o.clone());
-        }
-        if (lista.isEmpty()) {
-            return null;
+        try {
+            while (rs.next()) {
+                String[] info = runFor(rs, campos, size);
+                o.setInfo(info);
+                lista.add((T) o.clone());
+            }
+            if (lista.isEmpty()) {
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace(pwExeption);
+            closeExeptionBuffer();
         }
         return lista;
     }
@@ -143,12 +152,16 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
      * nullPointerException o del tipo SQLException
      * @throws SQLException
      */
-    public String[] getArrayInfo(ResultSet get, String[] campos, int size) throws SQLException {
+    public String[] runFor(ResultSet get, String[] campos, int size) throws SQLException {
         String[] info = new String[size];
-        int i = 0;
-        for (String campo : campos) {
-            info[i] = get.getString(campo);
-            i++;
+        try {
+            int i = 0;
+            for (String campo : campos) {
+                info[i] = get.getString(campo);
+                i++;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return info;
     }

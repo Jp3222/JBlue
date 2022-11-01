@@ -7,6 +7,7 @@ package com.jblue.modelo.funciones;
 import com.jblue.modelo.Const;
 import com.jblue.modelo.funciones.op.FuncionesAbstractas;
 import com.jblue.modelo.funciones.op.FuncionesEnvoltorio;
+import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.Objeto;
 import java.util.ArrayList;
 
@@ -17,9 +18,9 @@ import java.util.ArrayList;
 public class OpPersonal extends FuncionesEnvoltorio implements FuncionesAbstractas {
 
     public OpPersonal() {
-        super("personal", Const.BD_USUARIOS);
+        super("personal", Const.BD_PERSONAL);
     }
-    
+
     @Override
     public boolean insertar(String[] valores) {
         return INSERTAR(valores);
@@ -27,7 +28,7 @@ public class OpPersonal extends FuncionesEnvoltorio implements FuncionesAbstract
 
     @Override
     public boolean eliminar(String where) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return cn.delete(tabla, where);
     }
 
     @Override
@@ -41,13 +42,28 @@ public class OpPersonal extends FuncionesEnvoltorio implements FuncionesAbstract
     }
 
     @Override
-    public <T extends Objeto> T get(String where) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public OPersonal get(String where) {
+        ArrayList<Objeto> get = GET("*", where);
+        if (get == null) {
+            return null;
+        }
+        OPersonal o = (OPersonal) get.get(0);
+        get.clear();
+        return o;
     }
 
     @Override
-    public <T extends Objeto> ArrayList<T> getLista(String where) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public ArrayList<OPersonal> getLista(String where) {
+        ArrayList<Objeto> get = GET("*", where);
+        if (get == null) {
+            return null;
+        }
+        ArrayList<OPersonal> lista = new ArrayList<>(get.size());
+        for (Objeto objeto : get) {
+            lista.add((OPersonal) objeto);
+        }
+        get.clear();
+        return lista;
     }
 
 }

@@ -10,10 +10,11 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author jp
  */
-public class SoLinux extends  SoConfig {
-    
-    public SoLinux(String tema) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-        super(tema);
+public class SoLinux extends SoConfig {
+
+    public SoLinux() {
+        super();
     }
-    
+
+
 }

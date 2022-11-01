@@ -35,7 +35,7 @@ public class Const {
         ID, "nombre", "numero"
     };
 
-    public static final String[] BD_USUARIOS = {
+    public static final String[] BD_PERSONAL = {
         ID, NOMBRE, "apellidos", "cargo", "usuario", "contra"
     };
 

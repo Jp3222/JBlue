@@ -12,8 +12,5 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class SoMac extends  SoConfig {
     
-    public SoMac(String tema) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-        super(tema);
-    }
-    
+  
 }

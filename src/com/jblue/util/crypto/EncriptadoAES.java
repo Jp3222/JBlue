@@ -103,12 +103,12 @@ public class EncriptadoAES implements SalidaDeErrores {
      * @param v2
      * @return 
      */
-    public boolean comparador(String k1, String v1, String k2, String v2) {
+    public boolean comparador(String kd1, String vd1, String ke2, String ve2) {
         try {
-            String aux1 = k2, aux2 = v2;
-            k2 = encriptar(aux1, aux2);
-            v2 = encriptar(aux2, aux1);
-            return k1.equals(k2) && v1.equals(v2);
+            String aux1 = ke2, aux2 = ve2;
+            ke2 = encriptar(aux1, aux2);
+            ve2 = encriptar(aux2, aux1);
+            return kd1.equals(ke2) && vd1.equals(ve2);
         } catch (UnsupportedEncodingException
                 | NoSuchAlgorithmException
                 | InvalidKeyException

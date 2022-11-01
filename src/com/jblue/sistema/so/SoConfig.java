@@ -4,29 +4,61 @@
  */
 package com.jblue.sistema.so;
 
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import com.jbd.Exeption.ExeptionPrinter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author jp
  */
-public abstract class SoConfig {
+public class SoConfig implements ExeptionPrinter {
 
-    private final String APARIENCIA_DEL_SISTEMA;
+    private final ConstructorDeArchivos CDA;
+    private final Apariencia APARIENCIA;
 
-    
     /**
      *
-     * @param APARIENCIA_DEL_SISTEMA
-     * @throws ClassNotFoundException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws UnsupportedLookAndFeelException
      */
-    public SoConfig(String APARIENCIA_DEL_SISTEMA) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-        this.APARIENCIA_DEL_SISTEMA = APARIENCIA_DEL_SISTEMA;
-        UIManager.setLookAndFeel(APARIENCIA_DEL_SISTEMA);
+    public SoConfig() {
+        APARIENCIA = new Apariencia(SoInfo.SO_NOMBRE);
+        this.CDA = new ConstructorDeArchivos();
+    }
+
+    private void archivos() {
+        CDA.add(CDA.DIRECTORIO, SoInfo.RUTA_DOCUMENTOS + "/.jblue");
+        CDA.add(CDA.DIRECTORIO, SoInfo.RUTA_DOCUMENTOS + "/.jblue/user");
+        CDA.add(CDA.DIRECTORIO, SoInfo.RUTA_DOCUMENTOS + "/.jblue/respaldos");
+        CDA.add(CDA.ARCHIVO, SoInfo.RUTA_DOCUMENTOS + "/.jblue/user/userbd.jff");
+        //
+        CDA.add(CDA.DIRECTORIO, SoInfo.RUTA_ESCRITORIO + "/jblue");
+        CDA.add(CDA.DIRECTORIO, SoInfo.RUTA_ESCRITORIO + "/jblue/Reportes");
+        CDA.add(CDA.DIRECTORIO, SoInfo.RUTA_ESCRITORIO + "/jblue/PDFs");
+        CDA.add(CDA.DIRECTORIO, SoInfo.RUTA_ESCRITORIO + "/jblue/Cobros");
+    }
+
+    public void cargar() {
+        try {
+            APARIENCIA.aparienciaPorDefecto();
+            archivos();
+        } catch (Exception ex) {
+            Logger.getLogger(SoConfig.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void construir() {
+        try {
+            CDA.construirTodos();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace(pwExeption);
+            closeExeptionBuffer();
+        }
+
+    }
+
+    public ConstructorDeArchivos getCDA() {
+        return CDA;
     }
 
 }

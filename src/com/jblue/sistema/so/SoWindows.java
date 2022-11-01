@@ -12,8 +12,4 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class SoWindows extends SoConfig {
 
-    public SoWindows(String tema) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-        super(tema);
-    }
-
 }

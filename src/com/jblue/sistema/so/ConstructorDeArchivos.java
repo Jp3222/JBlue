@@ -5,6 +5,7 @@
 package com.jblue.sistema.so;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -13,15 +14,13 @@ import java.util.ArrayList;
  */
 public class ConstructorDeArchivos {
 
-    public static int ARCHIVO = 1;
-    public static int DIRECTORIO = 2;
+    public final int ARCHIVO = 1;
+    public final int DIRECTORIO = 2;
 
-    private final String RUTA_DE_USUARIO;
     private final ArrayList<File> RUTAS_DIRECTORIOS;
     private final ArrayList<File> RUTAS_ARCHIVOS;
 
     public ConstructorDeArchivos() {
-        this.RUTA_DE_USUARIO = SoInfo.RUTA_DE_USUARIO;
         this.RUTAS_DIRECTORIOS = new ArrayList<>(10);
         this.RUTAS_ARCHIVOS = new ArrayList<>(10);
     }
@@ -44,7 +43,7 @@ public class ConstructorDeArchivos {
         return null;
     }
 
-    public File getRuta(int tipo, int index) {
+    public File get(int tipo, int index) {
         if (tipo == ARCHIVO) {
             return RUTAS_ARCHIVOS.get(index);
         } else if (tipo == DIRECTORIO) {
@@ -57,10 +56,14 @@ public class ConstructorDeArchivos {
      * metodo encargado de construir unicamente archivos
      */
     public void construirArchivos() {
-        for (File file : RUTAS_ARCHIVOS) {
-            if (!file.exists()) {
-                file.mkdirs();
+        try {
+            for (File file : RUTAS_ARCHIVOS) {
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
             }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -82,6 +85,19 @@ public class ConstructorDeArchivos {
     public void construirTodos() {
         construirDirectorios();
         construirArchivos();
+    }
+
+    public int isEmpty() {
+        int x = 0;
+        int y = 0;
+        if (RUTAS_ARCHIVOS.isEmpty()) {
+            x = 1;
+        }
+
+        if (RUTAS_DIRECTORIOS.isEmpty()) {
+            y = 2;
+        }
+        return x + y;
     }
 
 }

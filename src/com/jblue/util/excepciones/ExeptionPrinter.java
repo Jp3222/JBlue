@@ -5,7 +5,6 @@
 package com.jblue.util.excepciones;
 
 import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 

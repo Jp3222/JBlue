@@ -9,7 +9,15 @@ import com.jblue.modelo.funciones.op.FuncionesAbstractas;
 import com.jblue.modelo.funciones.op.FuncionesEnvoltorio;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.Objeto;
+import com.jblue.util.crypto.EncriptadoAES;
+import com.jblue.util.excepciones.ExeptionPrinter;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 /**
  *
@@ -23,12 +31,26 @@ public class OpPersonal extends FuncionesEnvoltorio implements FuncionesAbstract
 
     @Override
     public boolean insertar(String[] valores) {
-        return INSERTAR(valores);
+        try {
+            EncriptadoAES o = new EncriptadoAES();
+            String x = valores[valores.length - 2],
+                    y = valores[valores.length - 1];
+            String usuario = o.encriptar(valores[valores.length - 2], y);
+            String pass = o.encriptar(valores[valores.length - 1], x);
+            valores[valores.length - 2] = usuario;
+            valores[valores.length - 2] = pass;
+            return INSERTAR(valores);
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
+            System.out.println("error: " + ex.getMessage());
+            //ex.printStackTrace(pwExeption);
+            closeExeptionBuffer();
+            return false;
+        }
     }
 
     @Override
     public boolean eliminar(String where) {
-        return cn.delete(tabla, where);
+        return cn.delete(TABLA, where);
     }
 
     @Override
@@ -43,26 +65,21 @@ public class OpPersonal extends FuncionesEnvoltorio implements FuncionesAbstract
 
     @Override
     public OPersonal get(String where) {
-        ArrayList<Objeto> get = GET("*", where);
-        if (get == null) {
-            return null;
+        ArrayList<OPersonal> obj = GET("*", where);
+        if (obj == null) {
+            throw new NullPointerException("La sentencia usada da un resultado null");
         }
-        OPersonal o = (OPersonal) get.get(0);
-        get.clear();
+        OPersonal o = obj.get(0);
+        obj.clear();
         return o;
     }
 
     @Override
     public ArrayList<OPersonal> getLista(String where) {
-        ArrayList<Objeto> get = GET("*", where);
-        if (get == null) {
-            return null;
+        ArrayList<OPersonal> lista = GET("*", where);
+        if (lista == null) {
+            throw new NullPointerException("La sentencia usada da un resultado null");
         }
-        ArrayList<OPersonal> lista = new ArrayList<>(get.size());
-        for (Objeto objeto : get) {
-            lista.add((OPersonal) objeto);
-        }
-        get.clear();
         return lista;
     }
 

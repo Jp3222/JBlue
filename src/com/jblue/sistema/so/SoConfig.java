@@ -49,6 +49,15 @@ public class SoConfig implements ExeptionPrinter {
     public void construir() {
         try {
             CDA.construirTodos();
+            if (SoInfo.SO_NOMBRE.contains("linux")) {
+                SoLinux so = new SoLinux(this);
+            }
+            if (SoInfo.SO_NOMBRE.contains("windows")) {
+                SoWindows so = new SoWindows(this);
+            }
+            if (SoInfo.SO_NOMBRE.contains("mac")) {
+                SoMac so = new SoMac(this);
+            }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace(pwExeption);

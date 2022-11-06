@@ -2,20 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.jblue.sistema.so;
-
-import javax.swing.UnsupportedLookAndFeelException;
+package com.jblue.modelo.funciones;
 
 /**
  *
  * @author jp
  */
-public class SoLinux {
-
-    private SoConfig CONFIG;
-
-    public SoLinux(SoConfig CONFIG) {
-        this.CONFIG = CONFIG;
-    }
-
+public class OpTitulares {
+    
 }

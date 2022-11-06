@@ -87,6 +87,18 @@ public class ConstructorDeArchivos {
         construirArchivos();
     }
 
+    public ArrayList<File> getRUTAS_ARCHIVOS() {
+        return RUTAS_ARCHIVOS;
+    }
+
+    public ArrayList<File> getRUTAS_DIRECTORIOS() {
+        return RUTAS_DIRECTORIOS;
+    }
+
+    /**
+     *
+     * @return
+     */
     public int isEmpty() {
         int x = 0;
         int y = 0;

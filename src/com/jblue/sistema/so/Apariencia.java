@@ -47,7 +47,7 @@ public class Apariencia implements SalidaDeErrores {
                 UIManager.setLookAndFeel(lookWIN);
             default:
                 String lookDEF = getLook(installedLookAndFeels, NIM);
-                UIManager.setLookAndFeel(SO_NAME);
+                UIManager.setLookAndFeel(lookDEF);
         }
     }
 

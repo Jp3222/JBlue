@@ -5,6 +5,7 @@
 package com.jblue.util;
 
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 /**
  *
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 public class FormatoBD {
 
     public static void bdSalida(String[] datos) {
-
         for (int i = 0; i < datos.length; i++) {
             datos[i] = datos[i].toUpperCase().replace('_', ' ');
         }
@@ -48,4 +48,12 @@ public class FormatoBD {
         return false;
     }
 
+    public <T extends Comparable<T>> boolean in(T[] coleccion, T objeto, Predicate<T> predicado) {
+        for (T t : coleccion) {
+            if (predicado.test(t)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

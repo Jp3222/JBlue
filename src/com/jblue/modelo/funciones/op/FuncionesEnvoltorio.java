@@ -26,19 +26,19 @@ import java.sql.ResultSet;
 public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
 
     protected final Conexion cn;
-    protected final String tabla;
-    protected final String[] campos;
-    protected final int noCampos;
+    protected final String TABLA;
+    protected final String[] CAMPOS;
+    protected final int NO_CAMPOS;
 
     public FuncionesEnvoltorio(String tabla, String[] campos) {
         this.cn = Conexion.getInstancia();
-        this.tabla = tabla;
-        this.campos = campos;
-        this.noCampos = campos.length;
+        this.TABLA = tabla;
+        this.CAMPOS = campos;
+        this.NO_CAMPOS = campos.length;
     }
 
     public void AGREGAR(String[] valores, String[] campos, String where) {
-        if (valores[0] == "0") {
+        if (valores[0].equalsIgnoreCase("0")) {
             INSERTAR(valores);
         } else {
             ACTUALIZAR(campos, valores, where);
@@ -46,32 +46,33 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
     }
 
     protected boolean INSERTAR(String[] valores) {
-        return cn.insert(tabla,
-                cn.getCampos(Arrays.copyOfRange(campos, 1, campos.length)),
+        return cn.insert(TABLA,
+                cn.getCampos(Arrays.copyOfRange(CAMPOS, 1, CAMPOS.length)),
                 cn.getDatos(Arrays.copyOfRange(valores, 1, valores.length)
                 )
         );
     }
 
     protected boolean ELIMINAR(String where) {
-        return cn.delete(tabla, where);
+        return cn.delete(TABLA, where);
     }
 
     protected boolean ACTUALIZAR(String campo, String valor, String where) {
-        return cn.update(tabla, campo, valor, where);
+        return cn.update(TABLA, campo, valor, where);
     }
 
     protected boolean ACTUALIZAR(String campos[], String valores[], String where) {
-        return cn.update(tabla,
+        return cn.update(TABLA,
                 cn.getCamposDatos(campos, valores),
                 where
         );
     }
 
-    protected ArrayList<Objeto> GET(String cam, String where) {
+    protected <T extends Objeto> ArrayList<T> GET(String cam, String where) {
         try {
-            ResultSet get = cn.select(tabla, cam, where);
-            ArrayList<Objeto> lista = getLista(get, noCampos, tabla, campos);
+            ResultSet get = cn.select(TABLA, cam, where);
+            ArrayList<T> lista;
+            lista = (ArrayList<T>) getLista(get, TABLA, CAMPOS);
             cn.closeRS();
             return lista;
         } catch (SQLException | CloneNotSupportedException ex) {
@@ -82,33 +83,33 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
         return null;
     }
 
-    private ArrayList<Objeto> getLista(ResultSet get, int size, String tabla, String[] campos) throws SQLException, CloneNotSupportedException {
+    private ArrayList<Objeto> getLista(ResultSet get, String tabla, String[] campos) throws SQLException, CloneNotSupportedException {
         if (get == null || tabla == null || campos == null) {
-            return null;
+            throw new NullPointerException("Alguno de los parametros es null");
         }
         try {
             switch (tabla) {
                 case "calles":
                     OCalles calle = new OCalles();
-                    return runWhile(calle, get, size, campos);
+                    return runWhile(calle, get, campos);
                 case "consumidores":
                     OConsumidores consumidores = new OConsumidores();
-                    return runWhile(consumidores, get, size, campos);
+                    return runWhile(consumidores, get, campos);
                 case "pagos_consumidores":
                     OPagosConsumidor pagos = new OPagosConsumidor();
-                    return runWhile(pagos, get, size, campos);
+                    return runWhile(pagos, get, campos);
                 case "pagos_titulares":
                     OPagosTitular pagostitular = new OPagosTitular();
-                    return runWhile(pagostitular, get, size, campos);
+                    return runWhile(pagostitular, get, campos);
                 case "personal":
                     OPersonal personal = new OPersonal();
-                    return runWhile(personal, get, size, campos);
+                    return runWhile(personal, get, campos);
                 case "titulares":
                     OTitulares titular = new OTitulares();
-                    return runWhile(titular, get, size, campos);
+                    return runWhile(titular, get, campos);
                 case "tomas":
                     OTomas toma = new OTomas();
-                    return runWhile(toma, get, size, campos);
+                    return runWhile(toma, get, campos);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -118,18 +119,19 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
         return null;
     }
 
-    private <T extends Objeto> ArrayList<T> runWhile(T o, ResultSet rs, int size, String[] campos) throws SQLException, CloneNotSupportedException {
+    private <T extends Objeto> ArrayList<T> runWhile(T o, ResultSet rs, String[] campos) {
         ArrayList<T> lista = new ArrayList<>();
         try {
             while (rs.next()) {
-                String[] info = runFor(rs, campos, size);
+                String[] info = runFor(rs, campos);
                 o.setInfo(info);
                 lista.add((T) o.clone());
             }
+
             if (lista.isEmpty()) {
                 return null;
             }
-        } catch (Exception e) {
+        } catch (CloneNotSupportedException | SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace(pwExeption);
             closeExeptionBuffer();
@@ -138,30 +140,27 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
     }
 
     /**
-     * Este metodo que recupera informacion de la base de datos segun los campos
-     * especificados.
-     *
-     * Este metodo no cierra el objeto de tipo ResultSet puesto que se espera
-     * que se utilice en bluces
+     * Este metodo recupera informacion de la base de datos y la almacena en un
+     * arreglo, mencionar que este metodo no cierra el objeto de tipo ResultSet
+     * ya que se espera que este sea iterado dentro de bucles
      *
      * @param get objeto de tipos ResultSet sobre el cual se esta trabajando
-     * @param campos Array de String que contienen los campos sobre los cuales
+     * @param campos Array de Strings que contienen los campos sobre los cuales
      * se va a recuperar informacion
-     * @param size tamaño del array con el cual se esta trabajando
-     * @return un Array con los datos recuperados o una exepcion del tipo
-     * nullPointerException o del tipo SQLException
-     * @throws SQLException
+     * @return un Array con los datos recuperados
      */
-    public String[] runFor(ResultSet get, String[] campos, int size) throws SQLException {
-        String[] info = new String[size];
+    public String[] runFor(ResultSet get, String[] campos) {
+        String[] info = new String[campos.length];
         try {
             int i = 0;
             for (String campo : campos) {
                 info[i] = get.getString(campo);
                 i++;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
+            e.printStackTrace(pwExeption);
+            closeExeptionBuffer();
         }
         return info;
     }
@@ -171,11 +170,11 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
      * @return
      */
     public String getTabla() {
-        return tabla;
+        return TABLA;
     }
 
     public String[] getCampos() {
-        return campos;
+        return CAMPOS;
     }
 
     public Conexion getCn() {

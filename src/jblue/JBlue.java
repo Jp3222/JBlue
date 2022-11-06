@@ -5,9 +5,6 @@
 package jblue;
 
 import com.jblue.sistema.Sistema;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Properties;
 
 /**
  *
@@ -19,18 +16,13 @@ public class JBlue {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException, SQLException {
+    public static void main(String[] args) {
         Sistema s = Sistema.getInstancia();
         if (s.archivosSistema()) {
             s.conexionBD();
             s.datosCache();
             s.run();
         }
-
-//        Properties p = System.getProperties();
-//        p.forEach((t, u) -> {
-//            System.out.println(t + ": " +u);
-//        });
     }
 
 }

@@ -39,4 +39,12 @@ public class Const {
         ID, NOMBRE, "apellidos", "cargo", "usuario", "contra"
     };
 
+    /**
+     * Constante dedicada a las tablas de la base de datos
+     * <br>1 - personal
+     */
+    public static final String[] TABLAS = {
+        "personal", "titulares", "consumidores"
+    };
+
 }

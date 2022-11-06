@@ -62,7 +62,6 @@ public class CMenuPrincipal extends SuperControlador {
      * esten activas
      */
     public void irLogin() {
-        //
         if (MENU_BD.isVisible() || MENU_BD.isActive()) {
             MENU_BD.setVisible(false);
             MENU_BD.estadoInicial();

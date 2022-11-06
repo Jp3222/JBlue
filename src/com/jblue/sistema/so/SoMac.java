@@ -10,7 +10,13 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author jp
  */
-public class SoMac extends  SoConfig {
+public class SoMac {
+
+    private SoConfig CONFIG;
+
+    public SoMac(SoConfig CONFIG) {
+        this.CONFIG = CONFIG;
+    }
     
-  
+
 }

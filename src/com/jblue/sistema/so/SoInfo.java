@@ -21,16 +21,16 @@ public class SoInfo {
     public static final String RUTA_DOCUMENTOS = RUTA_DE_USUARIO + "/" + DICCIONARIO_DE_CARPETAS[1];
 
     public static String[] getRutas() {
-        String doc = null, des = null;
+        String documentos = null, escritorio = null;
         if (SO_NOMBRE.contains("windows") || LENGUAJE_DEL_SISTEMA.equals("en")) {
-            des = "Desktop";
-            doc = "Documents";
+            escritorio = "Desktop";
+            documentos = "Documents";
         } else if (LENGUAJE_DEL_SISTEMA.equals("es")) {
-            des = "Escritorio";
-            doc = "Documentos";
+            escritorio = "Escritorio";
+            documentos = "Documentos";
         }
-        final String dicc[] = {des,doc};
-        return dicc;
+        final String DICCIONARIO[] = {escritorio, documentos};
+        return DICCIONARIO;
 
     }
 

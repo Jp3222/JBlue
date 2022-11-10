@@ -95,27 +95,20 @@ public class EncriptadoAES implements SalidaDeErrores {
 
         return datos;
     }
-    /**
-     * Metodo que compara 
-     * @param k1
-     * @param v1
-     * @param k2
-     * @param v2
-     * @return 
-     */
-    public boolean comparador(String kd1, String vd1, String ke2, String ve2) {
+
+    public boolean comparador(String KE1, String VE1, String ke2, String ve2) {
         try {
-            String aux1 = ke2, aux2 = ve2;
-            ke2 = encriptar(aux1, aux2);
-            ve2 = encriptar(aux2, aux1);
-            return kd1.equals(ke2) && vd1.equals(ve2);
+            String k = ke2;
+            String v = ve2;
+            String a = encriptar(ke2, v);
+            String b = encriptar(ve2, k);
+            return KE1.equals(a) && VE1.equals(b);
         } catch (UnsupportedEncodingException
                 | NoSuchAlgorithmException
                 | InvalidKeyException
                 | NoSuchPaddingException
                 | IllegalBlockSizeException
                 | BadPaddingException ex) {
-
             System.out.println(ex.getLocalizedMessage());
             ex.printStackTrace(pwError);
             closeBufferExeption();

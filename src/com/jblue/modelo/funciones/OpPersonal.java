@@ -67,7 +67,7 @@ public class OpPersonal extends FuncionesEnvoltorio implements FuncionesAbstract
     public OPersonal get(String where) {
         ArrayList<OPersonal> obj = GET("*", where);
         if (obj == null) {
-            throw new NullPointerException("La sentencia usada da un resultado null");
+            return null;
         }
         OPersonal o = obj.get(0);
         obj.clear();

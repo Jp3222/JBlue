@@ -10,8 +10,7 @@ package com.jblue.modelo.objetos;
  */
 public class OCalles extends Objeto {
 
-    private String nombre;
-    private String numero;
+    private String nombre, numero;
 
     public OCalles(String[] info) {
         super(info);

@@ -55,6 +55,14 @@ public class CMenuPrincipal extends SuperControlador {
     }
 
     public void irMenuTesoreria() {
+        if (MENU_BD.isVisible() || MENU_BD.isActive()) {
+            MENU_BD.setVisible(false);
+            MENU_BD.estadoInicial();
+            MENU_BD.dispose();
+        }
+        if (!MENU_TESORERIA.isVisible() || !MENU_TESORERIA.isActive()) {
+            MENU_TESORERIA.setVisible(true);
+        }
     }
 
     /**

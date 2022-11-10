@@ -16,15 +16,17 @@ import javax.swing.JTextField;
 public class Login extends SuperVentana {
 
     private boolean clickJtfUsuario, clickJpfPass;
-    private final MenuPrincipal menuPrincipal;
+    private final MenuPrincipal MENU_PRINCIPAL;
+    private final MenuConfigBD MENU_CONFIG_BD;
     private final CLogin cLogin;
 
     /**
      * Creates new form Login
      */
     public Login() {
-        this.menuPrincipal = new MenuPrincipal(this);
-        cLogin = new CLogin(this, menuPrincipal);
+        this.MENU_PRINCIPAL = new MenuPrincipal(this);
+        this.MENU_CONFIG_BD = new MenuConfigBD();
+        cLogin = new CLogin(this, MENU_PRINCIPAL, MENU_CONFIG_BD);
         //
         initComponents();
         llamable();
@@ -61,7 +63,6 @@ public class Login extends SuperVentana {
         jLabel2.setText("Usuario");
         jLabel2.setPreferredSize(new java.awt.Dimension(120, 30));
 
-        jtfUsuario.setText("ejem: maestro123");
         jtfUsuario.setPreferredSize(new java.awt.Dimension(146, 30));
         jtfUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -74,7 +75,6 @@ public class Login extends SuperVentana {
             }
         });
 
-        jpfPass.setText("jPasswordField1");
         jpfPass.setPreferredSize(new java.awt.Dimension(128, 30));
         jpfPass.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -161,7 +161,6 @@ public class Login extends SuperVentana {
 
     @Override
     public final void llamable() {
-        this.setTitle(NOMBRE + VERSION + " " + SECCION[0]);
         estadoInicial();
         addComponentes();
         addEventos();
@@ -171,17 +170,22 @@ public class Login extends SuperVentana {
     public void estadoInicial() {
         this.clickJpfPass = false;
         this.clickJtfUsuario = false;
+        this.jtfUsuario.setText("ejem: maestro123");
+        this.jpfPass.setText("contraseña");
     }
 
     @Override
-    public void addComponentes() {
+    protected void estadoFinal() {
+        this.setTitle(NOMBRE + VERSION + " " + SECCION[0]);
+        this.clickJpfPass = false;
+        this.clickJtfUsuario = false;
     }
 
     @Override
-    public void addEventos() {
+    protected void addEventos() {
         System.out.println("xd");
-        jbtSesion.addActionListener(cLogin);
-        jbtConfBD.addActionListener(cLogin);
+        jbtSesion.addActionListener(e -> cLogin.irMenu());
+        jbtConfBD.addActionListener(e -> cLogin.irMenuConfigBD());
     }
 
 

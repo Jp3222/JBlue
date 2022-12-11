@@ -6,6 +6,7 @@ package com.jblue.vista.conf;
 
 import com.jblue.util.SalidaDeErrores;
 import java.util.Arrays;
+import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -42,6 +43,10 @@ public class Apariencia implements SalidaDeErrores {
     public void aparienciaPorDefecto() {
         try {
             UIManager.LookAndFeelInfo[] installedLookAndFeels = UIManager.getInstalledLookAndFeels();
+            Arrays.stream(installedLookAndFeels).forEach((t) -> {
+                System.out.println("name:" + t.getName()
+                        + "\nclass name:" + t.getClassName());
+            });
             boolean libInstalada = isLibInstalada(installedLookAndFeels);
             if (!libInstalada) {
                 UIManager.setLookAndFeel(NIM);
@@ -50,8 +55,8 @@ public class Apariencia implements SalidaDeErrores {
                 case "linux":
                     UIManager.setLookAndFeel(GTK);
                     break;
-                case "windows":
-                    UIManager.setLookAndFeel(WIN);
+                case "windows 10":
+                    UIManager.setLookAndFeel(installedLookAndFeels[3].getClassName());
                     break;
                 case "mac":
                     UIManager.setLookAndFeel(NIM);
@@ -74,4 +79,5 @@ public class Apariencia implements SalidaDeErrores {
         });
         return anyMatch;
     }
+    private static final Logger LOG = Logger.getLogger(Apariencia.class.getName());
 }

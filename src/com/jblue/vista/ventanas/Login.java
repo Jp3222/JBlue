@@ -6,6 +6,7 @@ package com.jblue.vista.ventanas;
 
 import com.jblue.controlador.CLogin;
 import com.jblue.vista.conf.SuperVentana;
+import javax.swing.ImageIcon;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -161,6 +162,7 @@ public class Login extends SuperVentana {
 
     @Override
     public final void llamable() {
+        estadoFinal();
         estadoInicial();
         addComponentes();
         addEventos();
@@ -177,6 +179,8 @@ public class Login extends SuperVentana {
     @Override
     protected void estadoFinal() {
         this.setTitle(NOMBRE + VERSION + " " + SECCION[0]);
+        ImageIcon o = new ImageIcon(this.getClass().getResource("/com/jblue/media/img/x128/jblue_icono.png"));
+        this.setIconImage(o.getImage());
         this.clickJpfPass = false;
         this.clickJtfUsuario = false;
     }

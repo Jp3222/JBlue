@@ -13,23 +13,25 @@ import java.util.function.Predicate;
  */
 public class FormatoBD {
 
-    public static void bdSalida(String[] datos) {
+    public static String[] bdSalida(String... datos) {
         for (int i = 0; i < datos.length; i++) {
             datos[i] = datos[i].toUpperCase().replace('_', ' ');
         }
+        return datos;
     }
 
-    public static void bdEntrada(String[] datos) {
+    public static String[] bdEntrada(String... datos) {
         for (int i = 0; i < datos.length; i++) {
             datos[i] = datos[i].strip().toUpperCase().replace(' ', '_').replace(".", "").replace(",", "");
         }
+        return datos;
     }
 
     public static String[] getArray(String... campos) {
         return campos;
     }
-    
-    public <T> T[] exp(T[] array, Integer... exp){
+
+    public <T> T[] exp(T[] array, Integer... exp) {
         ArrayList<T> lista = new ArrayList<>(array.length);
         for (int i = 0; i < array.length; i++) {
             if (!in(exp, i)) {

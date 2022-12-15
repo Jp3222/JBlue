@@ -2,14 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/controlador/CMenuPrincipal.java</file>
-            <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/jblue/JBlue.java</file>
-            <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/vista/ventanas/Login.java</file>
-            <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/vista/ventanas/MenuConfigBD.java</file>
-            <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/vista/ventanas/MenuTesoreria.java</file>
-            <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/controlador/CLogin.java</file>
-            <file>file:/home/jp/Documentos/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/vista/ventanas/MenuPrincipal.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

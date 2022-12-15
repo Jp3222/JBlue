@@ -4,16 +4,15 @@
  */
 package com.jblue.sistema.so;
 
-import com.jblue.util.SalidaDeErrores;
+import com.jbd.Exeption.ExeptionPrinter;
 import java.util.Arrays;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
  * @author jp
  */
-public class Apariencia implements SalidaDeErrores {
+public class Apariencia implements ExeptionPrinter {
 
     private final String MET,
             NIM,
@@ -35,40 +34,54 @@ public class Apariencia implements SalidaDeErrores {
 
     public void aparienciaPorDefecto() throws Exception {
         UIManager.LookAndFeelInfo[] installedLookAndFeels = UIManager.getInstalledLookAndFeels();
-        switch (SO_NAME.toLowerCase()) {
-            case "linux":
-                String lookLIN = getLook(installedLookAndFeels, GTK);
-                UIManager.setLookAndFeel(lookLIN);
-                break;
-            case "windows 7":
-            case "windows 8":
-            case "windows 10":
-                String lookWIN = getLook(installedLookAndFeels, GTK);
-                UIManager.setLookAndFeel(lookWIN);
-            default:
-                String lookDEF = getLook(installedLookAndFeels, NIM);
-                UIManager.setLookAndFeel(lookDEF);
+        String nombre = SO_NAME.toLowerCase();
+        if (nombre.contains("linux")) {
+            String lookGTK = getLook(installedLookAndFeels, GTK);
+            UIManager.setLookAndFeel(lookGTK);
+        } else if (nombre.contains("windows")) {
+            String lookWIN = getLook(installedLookAndFeels, WIN_LOOK);
+            UIManager.setLookAndFeel(lookWIN);
+        } else {
+            String lookDEF = getLook(installedLookAndFeels, CDE);
+            UIManager.setLookAndFeel(lookDEF);
         }
     }
 
     public String getLook(UIManager.LookAndFeelInfo[] info, String nombre) {
         for (UIManager.LookAndFeelInfo lookAndFeelInfo : info) {
-            if (lookAndFeelInfo.getName().contains(nombre)) {
+            if (lookAndFeelInfo.getName().equalsIgnoreCase(nombre)
+                    || lookAndFeelInfo.getName().contains(nombre)) {
                 return lookAndFeelInfo.getClassName();
             }
         }
         return null;
     }
 
+    /**
+     * Metodo que evalua si alguna libreria esta instalada
+     *
+     * @param installedLookAndFeels
+     * @return
+     */
     public boolean isLibInstalada(UIManager.LookAndFeelInfo[] installedLookAndFeels) {
-        return Arrays.stream(installedLookAndFeels).anyMatch((t) -> {
-            return comparador(t, GTK)
-                    || comparador(t, NIM)
-                    || comparador(t, MET)
-                    || comparador(t, CDE);
-        });
+        return Arrays.stream(installedLookAndFeels)
+                .anyMatch((t) -> {
+                    return comparador(t, GTK)
+                            || comparador(t, NIM)
+                            || comparador(t, MET)
+                            || comparador(t, CDE);
+                });
     }
 
+    /**
+     * Metodo para comparar el nombre de un elemento LookAndFeelInfo con el
+     * nombre mandado de parametro
+     *
+     * @param o elemento de tipo LookAndFeelInfo el cual se evaluara su nombre
+     * @param t Caena que contiene el nombre de algunos de los LookAndFeelInfo
+     * que se supone que esta instalado
+     * @return true si el nombre coincide
+     */
     public boolean comparador(UIManager.LookAndFeelInfo o, String t) {
         return o.getName().equalsIgnoreCase(t);
     }

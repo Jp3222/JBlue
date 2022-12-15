@@ -37,7 +37,6 @@ public class Fecha {
         this.year = Year.now();
         this.localDate = LocalDate.now();
         this.month = localDate.getMonth();
-        System.out.println(month.name());
     }
 
     /**

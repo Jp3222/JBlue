@@ -78,7 +78,7 @@ public class OpPersonal extends FuncionesEnvoltorio implements FuncionesAbstract
     public ArrayList<OPersonal> getLista(String where) {
         ArrayList<OPersonal> lista = GET("*", where);
         if (lista == null) {
-            throw new NullPointerException("La sentencia usada da un resultado null");
+            return null;
         }
         return lista;
     }

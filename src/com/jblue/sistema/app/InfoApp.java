@@ -4,6 +4,8 @@
  */
 package com.jblue.sistema.app;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author jp
@@ -14,6 +16,7 @@ public interface InfoApp {
             VERSION = "0.0";
     
     String[] SECCION = {
-        "Inicio de sesion", "Menu Principal", "Base de datos"
+        "Inicio de sesion", "Menu Principal", "Menu sobre Base de datos"
     };
+    ImageIcon ICONO = new ImageIcon(InfoApp.class .getResource("/com/jblue/media/img/x128/jblue_icono.png"));
 }

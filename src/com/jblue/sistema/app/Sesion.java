@@ -23,7 +23,7 @@ public class Sesion {
 
     private OPersonal personal;
 
-    public Sesion() {
+    private Sesion() {
     }
 
     public Sesion(OPersonal personal) {

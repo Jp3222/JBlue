@@ -8,8 +8,8 @@ import com.jbd.Exeption.ExeptionPrinter;
 import com.jblue.vista.ventanas.Login;
 import com.jbd.conexion.Conexion;
 import com.jblue.sistema.so.SoConfig;
-import com.jblue.sistema.so.SoLinux;
 import java.sql.SQLException;
+import javax.swing.SwingUtilities;
 
 /**
  * Sistema
@@ -41,27 +41,26 @@ public class Sistema implements ExeptionPrinter {
         return true;
     }
 
-    public void conexionBD() {
+    public boolean conexionBD() {
         try {
             Conexion cn = Conexion.getInstancia("jp", "12345", "jdbc:mysql://localhost/jblue");
             if (cn.getCn().isClosed()) {
                 System.out.println("¡¡¡Conexion ok!!!");
             }
+            return !cn.getCn().isClosed();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
+        return false;
     }
 
     public void datosCache() {
     }
 
-    public void run() {
-        Runnable runnable = () -> {
-            Login log = new Login();
-            log.setVisible(true);
-        };
-        Thread th = new Thread(runnable, "j-blue");
-        th.start();
+    public boolean run() {
+        Login log = new Login();
+        log.setVisible(true);
+        return log != null && log.isActive() && log.isVisible();
     }
 
 }

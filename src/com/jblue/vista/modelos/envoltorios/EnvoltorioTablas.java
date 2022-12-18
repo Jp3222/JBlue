@@ -38,7 +38,6 @@ public class EnvoltorioTablas<T extends Objeto> implements MetodosBasicosTablas,
             actIndex(data);
             o.setInfo(data);
             LISTA.add((T) o.clone());
-
         } catch (CloneNotSupportedException ex) {
             System.out.println("error al algregar por clonacion" + ex.getMessage());
             ex.printStackTrace(pwError);

@@ -8,7 +8,6 @@ import com.jblue.controlador.CMenuBD;
 import com.jblue.vista.conf.SuperVentana;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.ImageIcon;
 import javax.swing.JTable;
 
 /**

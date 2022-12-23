@@ -25,7 +25,7 @@ public class Hora {
     private LocalTime lt;
     private final DateTimeFormatter PATRON;
 
-    public Hora() {
+    private Hora() {
         PATRON = DateTimeFormatter.ofPattern("ss-mm-hh");
     }
 

@@ -8,9 +8,7 @@ import com.jblue.modelo.Const;
 import com.jblue.modelo.funciones.op.FuncionesAbstractas;
 import com.jblue.modelo.funciones.op.FuncionesEnvoltorio;
 import com.jblue.modelo.objetos.OPersonal;
-import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.crypto.EncriptadoAES;
-import com.jblue.util.excepciones.ExeptionPrinter;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -26,7 +24,7 @@ import javax.crypto.NoSuchPaddingException;
 public class OpPersonal extends FuncionesEnvoltorio implements FuncionesAbstractas {
 
     public OpPersonal() {
-        super("personal", Const.BD_PERSONAL);
+        super(Const.TABLAS[0], Const.BD_PERSONAL);
     }
 
     @Override
@@ -42,7 +40,7 @@ public class OpPersonal extends FuncionesEnvoltorio implements FuncionesAbstract
             return INSERTAR(valores);
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
             System.out.println("error: " + ex.getMessage());
-            //ex.printStackTrace(pwExeption);
+            ex.printStackTrace(pwExeption);
             closeExeptionBuffer();
             return false;
         }
@@ -50,7 +48,7 @@ public class OpPersonal extends FuncionesEnvoltorio implements FuncionesAbstract
 
     @Override
     public boolean eliminar(String where) {
-        return cn.delete(TABLA, where);
+        return CONEXION.delete(TABLA, where);
     }
 
     @Override

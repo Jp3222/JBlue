@@ -15,7 +15,7 @@ import java.nio.file.Paths;
  *
  * @author jp
  */
-public class SoWindows {
+public final class SoWindows {
 
     private SoConfig CONFIG;
 

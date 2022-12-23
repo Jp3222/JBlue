@@ -4,8 +4,6 @@
  */
 package com.jblue.sistema.so;
 
-import javax.swing.UnsupportedLookAndFeelException;
-
 /**
  *
  * @author jp

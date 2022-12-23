@@ -7,6 +7,7 @@ package com.jblue.util.excepciones;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,6 +25,10 @@ public interface ExeptionPrinter {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
+    }
+    
+    default void mensajeExeption(String e) {
+        JOptionPane.showMessageDialog(null, e, "Error Interno", JOptionPane.ERROR_MESSAGE);
     }
 
 }

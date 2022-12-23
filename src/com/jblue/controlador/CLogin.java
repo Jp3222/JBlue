@@ -11,6 +11,12 @@ import com.jblue.vista.ventanas.Login;
 import com.jblue.vista.ventanas.MenuConfigBD;
 import com.jblue.vista.ventanas.MenuPrincipal;
 import java.awt.event.ActionEvent;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.swing.JOptionPane;
 
 /**
@@ -34,15 +40,27 @@ public class CLogin extends SuperControlador {
         irMenu();
     }
 
+    /**
+     * Metodo que encripta los datos entrates y los busca en la base de datos
+     *
+     * @return true existe un objeto al realizar una busqueda con los datos
+     * encriptados
+     */
     public boolean isDatosValidos() {
-        String usuario = LOGIN.getJtfUsuario().getText();
-        String contra = String.valueOf(LOGIN.getJpfPass().getPassword());
-        OpPersonal op = new OpPersonal();
-        OPersonal personal = op.get("usuario = '" + usuario + "' and contra = '" + contra + "'");
-        if (personal != null) {
+        try {
+            String usuario = LOGIN.getJtfUsuario().getText();
+            String contra = String.valueOf(LOGIN.getJpfPass().getPassword());
+            
             EncriptadoAES en = new EncriptadoAES();
-            //return en.comparador(personal.getUsuario(), personal.getContra(), usuario, pass);
-            return personal.getUsuario().equals(usuario) && personal.getContra().equals(contra);
+            
+            OpPersonal op = new OpPersonal();
+            String where = "usuario = '" + en.encriptar(usuario, contra) + "' and contra = '" + en.encriptar(contra, usuario) + "'";
+            OPersonal personal = op.get(where);
+            if (personal != null) {
+                return true;
+            }
+        } catch (UnsupportedEncodingException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
+            System.out.println(e.getMessage());
         }
         return false;
     }

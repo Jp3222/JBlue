@@ -9,7 +9,6 @@ import com.jblue.vista.ventanas.Login;
 import com.jbd.conexion.Conexion;
 import com.jblue.sistema.so.SoConfig;
 import java.sql.SQLException;
-import javax.swing.SwingUtilities;
 
 /**
  * Sistema
@@ -25,10 +24,13 @@ public class Sistema implements ExeptionPrinter {
         return instancia;
     }
 
-    SoConfig so;
+    private SoConfig so;
+    private boolean reinicio;
+    private Conexion cn;
 
     private Sistema() {
-
+        this.so = new SoConfig();
+        this.reinicio = false;
     }
 
     public boolean archivosSistema() {
@@ -43,7 +45,7 @@ public class Sistema implements ExeptionPrinter {
 
     public boolean conexionBD() {
         try {
-            Conexion cn = Conexion.getInstancia("jp", "12345", "jdbc:mysql://localhost/jblue");
+            cn = Conexion.getInstancia("jp", "12345", "jdbc:mysql://localhost/jblue");
             if (cn.getCn().isClosed()) {
                 System.out.println("¡¡¡Conexion ok!!!");
             }
@@ -57,10 +59,23 @@ public class Sistema implements ExeptionPrinter {
     public void datosCache() {
     }
 
-    public boolean run() {
+    public synchronized void run() {
+        this.reinicio = false;
         Login log = new Login();
         log.setVisible(true);
-        return log != null && log.isActive() && log.isVisible();
+
+    }
+
+    public boolean isReinicio() {
+        return reinicio;
+    }
+
+    public void setReinicio(boolean reinicio) {
+        this.reinicio = reinicio;
+    }
+
+    public Conexion getCn() {
+        return cn;
     }
 
 }

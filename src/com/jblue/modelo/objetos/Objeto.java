@@ -14,21 +14,18 @@ import java.util.Objects;
  */
 public abstract class Objeto implements Serializable, Cloneable {
     
-    private String id;
-    private String[] info;
+    protected String[] info;
 
-    public Objeto(String[] info) {
-        this.id = info[0];
+    protected Objeto(String[] info) {
         this.info = info;
     }
 
     public Objeto() {
-        this.id = null;
         this.info = null;
     }
 
     public String getId() {
-        return id;
+        return info[0];
     }
 
     public String[] getInfo() {
@@ -37,13 +34,12 @@ public abstract class Objeto implements Serializable, Cloneable {
 
     public void setInfo(String[] info) {
         this.info = info;
-        id = info[0];
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 13 * hash + Objects.hashCode(this.id);
+        hash = 13 * hash + Objects.hashCode(this.info[0]);
         hash = 13 * hash + Arrays.deepHashCode(this.info);
         return hash;
     }
@@ -60,7 +56,7 @@ public abstract class Objeto implements Serializable, Cloneable {
             return false;
         }
         final Objeto other = (Objeto) obj;
-        if (!Objects.equals(this.id, other.id)) {
+        if (!Objects.equals(this.info[0], other.info[0])) {
             return false;
         }
         String[] A = Arrays.copyOfRange(this.info, 1, this.info.length);

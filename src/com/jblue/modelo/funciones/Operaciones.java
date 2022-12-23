@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author jp
+ * @param <T>
  */
 public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio {
 
@@ -51,7 +52,6 @@ public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio {
             ArrayList<T> lista = GET("*", where);
             o = (Objeto) lista.get(0).clone();
             lista.clear();
-
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -62,5 +62,7 @@ public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio {
         ArrayList<T> lista = GET("*", where);
         return lista;
     }
-
+    
+    
+    
 }

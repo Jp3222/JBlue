@@ -21,6 +21,7 @@ public class Apariencia implements ExeptionPrinter {
 
     private final String WIN_LOOK = "Windows",
             NIM_LOOK = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
+    
     private final String SO_NAME;
 
     public Apariencia(String SO_NAME) {
@@ -34,15 +35,17 @@ public class Apariencia implements ExeptionPrinter {
 
     public void aparienciaPorDefecto() throws Exception {
         UIManager.LookAndFeelInfo[] installedLookAndFeels = UIManager.getInstalledLookAndFeels();
+        //
         String nombre = SO_NAME.toLowerCase();
-        if (nombre.contains("linux")) {
+        //
+        if (nombre.contains("linuxx")) {
             String lookGTK = getLook(installedLookAndFeels, GTK);
             UIManager.setLookAndFeel(lookGTK);
         } else if (nombre.contains("windows")) {
             String lookWIN = getLook(installedLookAndFeels, WIN_LOOK);
             UIManager.setLookAndFeel(lookWIN);
         } else {
-            String lookDEF = getLook(installedLookAndFeels, CDE);
+            String lookDEF = getLook(installedLookAndFeels, NIM);
             UIManager.setLookAndFeel(lookDEF);
         }
     }

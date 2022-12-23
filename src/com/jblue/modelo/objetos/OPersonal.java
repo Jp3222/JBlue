@@ -1,4 +1,4 @@
-    /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -12,12 +12,6 @@ package com.jblue.modelo.objetos;
  */
 public class OPersonal extends Objeto {
 
-    private String nombre,
-            apellidos,
-            cargo,
-            usuario,
-            contra;
-
     /**
      * Construye un objeto OPersonal con la informacion dada en el array
      *
@@ -25,11 +19,6 @@ public class OPersonal extends Objeto {
      */
     public OPersonal(String[] info) {
         super(info);
-        this.nombre = info[1];
-        this.apellidos = info[2];
-        this.cargo = info[3];
-        this.usuario = info[4];
-        this.contra = info[5];
     }
 
     /**
@@ -39,39 +28,34 @@ public class OPersonal extends Objeto {
     public OPersonal() {
         super();
     }
-    
+
     /**
      * Metodo que devuelve el nombre del personal
-     * @return 
+     *
+     * @return
      */
     public String getNombre() {
-        return nombre;
+        return info[1];
     }
 
     public String getApellidos() {
-        return apellidos;
+        return info[2];
     }
 
     public String getCargo() {
-        return cargo;
+        return info[3];
     }
 
     public String getUsuario() {
-        return usuario;
+        return info[4];
     }
 
     public String getContra() {
-        return contra;
+        return info[5];
     }
-
-    @Override
-    public void setInfo(String[] info) {
-        super.setInfo(info);
-        this.nombre = info[1];
-        this.apellidos = info[2];
-        this.cargo = info[3];
-        this.usuario = info[4];
-        this.contra = info[5];
+    
+    public String getFechaRegistro(){
+        return info[6];
     }
-
+    
 }

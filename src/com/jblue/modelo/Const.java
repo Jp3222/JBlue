@@ -16,11 +16,11 @@ public class Const {
     private static final String AM = "am";
 
     public static final String[] BD_CONSUMIDORES = {
-        ID, NOMBRE, AP, AM, "calle", "titular", "fregistro", "estado"
+        ID, NOMBRE, AP, AM, "titular", "fregistro", "estado"
     };
 
     public static final String[] BD_TITULARES = {
-        ID, NOMBRE, AP, AM, "calle", "fregistro", "estado"
+        ID, NOMBRE, AP, AM, "calle", "tipo_toma", "registro", "estado"
     };
 
     public static final String[] BD_TOMAS_REGISTRADAS = {
@@ -28,7 +28,7 @@ public class Const {
     };
 
     public static final String[] BD_TIPOS_DE_TOMAS = {
-        ID, "tipo", "costo"
+        ID, "tipo", "costo", "recargo"
     };
 
     public static final String[] BD_CALLES = {
@@ -36,15 +36,18 @@ public class Const {
     };
 
     public static final String[] BD_PERSONAL = {
-        ID, NOMBRE, "apellidos", "cargo", "usuario", "contra"
+        ID, NOMBRE, "apellidos", "cargo", "usuario", "contra", "registro"
     };
 
     /**
      * Constante dedicada a las tablas de la base de datos
-     * <br>1 - personal
+     * <br>0 - personal
+     * <br>1 - titulares
+     * <br>2 - consumidores
+     * <br>3 - calles
+     * <br>4 - tipo de tomas
      */
     public static final String[] TABLAS = {
-        "personal", "titulares", "consumidores"
+        "personal", "titulares", "consumidores", "calles", "tipo_tomas"
     };
-
 }

@@ -22,7 +22,7 @@ public class FormatoBD {
 
     public static String[] bdEntrada(String... datos) {
         for (int i = 0; i < datos.length; i++) {
-            datos[i] = datos[i].strip().toUpperCase().replace(' ', '_').replace(".", "").replace(",", "");
+            datos[i] = datos[i].trim().toUpperCase().replace(" ", "_");
         }
         return datos;
     }

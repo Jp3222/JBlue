@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class OpCalles extends FuncionesEnvoltorio implements FuncionesAbstractas {
 
     public OpCalles() {
-        super("calles", Const.BD_CALLES);
+        super(Const.TABLAS[3], Const.BD_CALLES);
     }
 
     @Override

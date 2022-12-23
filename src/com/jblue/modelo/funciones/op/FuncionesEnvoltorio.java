@@ -4,16 +4,17 @@
  */
 package com.jblue.modelo.funciones.op;
 
-import com.jbd.Exeption.ExeptionPrinter;
 import com.jblue.modelo.objetos.OPagosTitular;
 import com.jbd.conexion.Conexion;
+import com.jblue.modelo.Const;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OConsumidores;
 import com.jblue.modelo.objetos.OPagosConsumidor;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTitulares;
-import com.jblue.modelo.objetos.OTomas;
+import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.Objeto;
+import com.jblue.util.excepciones.ExeptionPrinter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.sql.SQLException;
@@ -25,13 +26,13 @@ import java.sql.ResultSet;
  */
 public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
 
-    protected final Conexion cn;
+    protected final Conexion CONEXION;
     protected final String TABLA;
     protected final String[] CAMPOS;
     protected final int NO_CAMPOS;
 
     public FuncionesEnvoltorio(String tabla, String[] campos) {
-        this.cn = Conexion.getInstancia();
+        this.CONEXION = Conexion.getInstancia();
         this.TABLA = tabla;
         this.CAMPOS = campos;
         this.NO_CAMPOS = campos.length;
@@ -46,34 +47,33 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
     }
 
     protected boolean INSERTAR(String[] valores) {
-        return cn.insert(TABLA,
-                cn.getCampos(Arrays.copyOfRange(CAMPOS, 1, CAMPOS.length)),
-                cn.getDatos(Arrays.copyOfRange(valores, 1, valores.length)
-                )
+        return CONEXION.insert(TABLA,
+                CONEXION.getCampos(Arrays.copyOfRange(CAMPOS, 1, CAMPOS.length)),
+                CONEXION.getDatos(Arrays.copyOfRange(valores, 1, valores.length))
         );
     }
 
     protected boolean ELIMINAR(String where) {
-        return cn.delete(TABLA, where);
+        return CONEXION.delete(TABLA, where);
     }
 
     protected boolean ACTUALIZAR(String campo, String valor, String where) {
-        return cn.update(TABLA, campo, valor, where);
+        return CONEXION.update(TABLA, campo, valor, where);
     }
 
     protected boolean ACTUALIZAR(String campos[], String valores[], String where) {
-        return cn.update(TABLA,
-                cn.getCamposDatos(campos, valores),
+        return CONEXION.update(TABLA,
+                CONEXION.getCamposDatos(campos, valores),
                 where
         );
     }
 
     protected <T extends Objeto> ArrayList<T> GET(String cam, String where) {
         try {
-            ResultSet get = cn.select(TABLA, cam, where);
+            ResultSet get = CONEXION.select(TABLA, cam, where);
             ArrayList<T> lista;
             lista = (ArrayList<T>) getLista(get, TABLA, CAMPOS);
-            cn.closeRS();
+            CONEXION.closeRS();
             return lista;
         } catch (SQLException | CloneNotSupportedException ex) {
             System.out.println(ex.getMessage());
@@ -107,8 +107,8 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
                 case "titulares":
                     OTitulares titular = new OTitulares();
                     return runWhile(titular, get, campos);
-                case "tomas":
-                    OTomas toma = new OTomas();
+                case "tipo_tomas":
+                    OTipoTomas toma = new OTipoTomas();
                     return runWhile(toma, get, campos);
             }
         } catch (Exception e) {
@@ -169,15 +169,16 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
      *
      * @return
      */
-    public String getTabla() {
+    public String getTABLA() {
         return TABLA;
     }
 
-    public String[] getCampos() {
+    public String[] getCAMPOS() {
         return CAMPOS;
     }
 
-    public Conexion getCn() {
-        return cn;
+    public Conexion getCONEXION() {
+        return CONEXION;
     }
+
 }

@@ -5,7 +5,7 @@
 package com.jblue.controlador;
 
 import com.jblue.modelo.ConstBD;
-import com.jblue.modelo.funciones.Operaciones;
+import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.vista.ventanas.Login;
@@ -67,6 +67,9 @@ public class CLogin extends SuperControlador {
         return false;
     }
 
+    /**
+     * Metodo de traslado al menu
+     */
     public void irMenu() {
         if (!isDatosValidos()) {
             JOptionPane.showMessageDialog(LOGIN, "Usuario y/o Contraseña no validos", "Error de Acceso", JOptionPane.ERROR_MESSAGE);

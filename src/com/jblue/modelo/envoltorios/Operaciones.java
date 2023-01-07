@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.jblue.modelo.funciones;
+package com.jblue.modelo.envoltorios;
 
-import com.jblue.modelo.funciones.op.FuncionAplicada;
-import com.jblue.modelo.funciones.op.FuncionesEnvoltorio;
+import com.jblue.modelo.envoltorios.op.FuncionAplicada;
+import com.jblue.modelo.envoltorios.op.FuncionesEnvoltorio;
 import com.jblue.modelo.objetos.Objeto;
 import java.util.ArrayList;
 import java.util.logging.Level;

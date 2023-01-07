@@ -6,7 +6,7 @@ package com.jblue.controlador;
 
 import com.jbd.conexion.Conexion;
 import com.jblue.modelo.ConstBD;
-import com.jblue.modelo.funciones.Operaciones;
+import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OTitulares;

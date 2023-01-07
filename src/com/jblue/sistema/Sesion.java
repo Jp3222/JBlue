@@ -12,9 +12,18 @@ import com.jblue.modelo.objetos.OPersonal;
  */
 public class Sesion {
 
-    private OPersonal usuario;
+    private static Sesion instancia;
 
-    public Sesion() {
+    public static synchronized Sesion getInstancia() {
+        if (instancia == null) {
+            instancia = new Sesion();
+        }
+        return instancia;
+    }
+
+    private OPersonal usuario;
+    
+    private Sesion() {
         this.usuario = null;
     }
 

@@ -5,7 +5,7 @@
 package com.jblue.util.modelosgraficos.envoltorios;
 
 import com.jbd.conexion.Conexion;
-import com.jblue.modelo.funciones.Operaciones;
+import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.FormatoBD;
 import com.jblue.util.modelosgraficos.interfaces.InterfaceTablaMov;

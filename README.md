@@ -1,4 +1,4 @@
 # JBlue
-Requerimentos.
-Lenguaje: Java 11
-Base de datos mysql
+### Requerimentos.<br>
+Lenguaje: Java 11<br>
+Base de datos mysql 8 <br>

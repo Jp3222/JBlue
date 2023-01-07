@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
  *
  * @author jp
  */
+@FunctionalInterface
 public interface MouseEvt {
     
     void evt(MouseEvent e);

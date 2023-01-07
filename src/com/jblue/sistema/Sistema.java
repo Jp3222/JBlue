@@ -18,28 +18,29 @@ import java.sql.SQLException;
  */
 public class Sistema implements ExeptionPrinter {
 
-    private final static Sistema instancia = new Sistema();
+    private static Sistema instancia;
 
     public synchronized static Sistema getInstancia() {
+        if (instancia == null) {
+            instancia = new Sistema();
+        }
         return instancia;
     }
 
     private SoConfig so;
-    private boolean reinicio;
     private Conexion cn;
+    private boolean reinicio;
 
     private Sistema() {
-        this.so = new SoConfig();
         this.reinicio = false;
     }
 
     public boolean archivosSistema() {
-        so = new SoConfig();
-        so.cargar();
-        if (!so.getCDA().get(so.getCDA().ARCHIVO, 0).exists()) {
-            so.construir();
-            return false;
-        }
+        
+        return true;
+    }
+
+    public boolean confgSistema() {
         return true;
     }
 
@@ -49,6 +50,7 @@ public class Sistema implements ExeptionPrinter {
             if (cn.getCn().isClosed()) {
                 System.out.println("¡¡¡Conexion ok!!!");
             }
+            System.out.println("CONEXION A BASE DE DATOS");
             return !cn.getCn().isClosed();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -63,10 +65,13 @@ public class Sistema implements ExeptionPrinter {
         this.reinicio = false;
         Login log = new Login();
         log.setVisible(true);
-
+        System.out.println("¡¡¡TODO OK!!!");
     }
 
     public boolean isReinicio() {
+        if (reinicio) {
+            System.out.println("REINICIANDO SISTEMA");
+        }
         return reinicio;
     }
 

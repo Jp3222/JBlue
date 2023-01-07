@@ -28,14 +28,5 @@ public class OTipoTomas extends Objeto {
     public int getRecargo(){
         return Integer.parseInt(info[3]);
     }
-    @Override
-    public void setInfo(String[] info) {
-        super.setInfo(info);
-    }
-
-    @Override
-    public String[] getInfo() {
-        return super.getInfo();
-    }
 
 }

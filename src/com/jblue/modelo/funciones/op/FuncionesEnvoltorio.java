@@ -6,7 +6,6 @@ package com.jblue.modelo.funciones.op;
 
 import com.jblue.modelo.objetos.OPagosTitular;
 import com.jbd.conexion.Conexion;
-import com.jblue.modelo.Const;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OConsumidores;
 import com.jblue.modelo.objetos.OPagosConsumidor;
@@ -38,16 +37,8 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
         this.NO_CAMPOS = campos.length;
     }
 
-    public void AGREGAR(String[] valores, String[] campos, String where) {
-        if (valores[0].equalsIgnoreCase("0")) {
-            INSERTAR(valores);
-        } else {
-            ACTUALIZAR(campos, valores, where);
-        }
-    }
-
     protected boolean INSERTAR(String[] valores) {
-        return CONEXION.insert(TABLA,
+        return CONEXION.insert(TABLA, 
                 CONEXION.getCampos(Arrays.copyOfRange(CAMPOS, 1, CAMPOS.length)),
                 CONEXION.getDatos(Arrays.copyOfRange(valores, 1, valores.length))
         );
@@ -68,9 +59,9 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
         );
     }
 
-    protected <T extends Objeto> ArrayList<T> GET(String cam, String where) {
+    protected <T extends Objeto> ArrayList<T> GET(String campos, String where) {
         try {
-            ResultSet get = CONEXION.select(TABLA, cam, where);
+            ResultSet get = CONEXION.select(TABLA, campos, where);
             ArrayList<T> lista;
             lista = (ArrayList<T>) getLista(get, TABLA, CAMPOS);
             CONEXION.closeRS();
@@ -127,7 +118,6 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
                 o.setInfo(info);
                 lista.add((T) o.clone());
             }
-
             if (lista.isEmpty()) {
                 return null;
             }

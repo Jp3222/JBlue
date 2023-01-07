@@ -181,13 +181,10 @@ public class Login extends SuperVentana {
         this.setTitle(NOMBRE + VERSION + " " + SECCION[0]);
         ImageIcon o = new ImageIcon(this.getClass().getResource("/com/jblue/media/img/x128/jblue_icono.png"));
         this.setIconImage(o.getImage());
-        this.clickJpfPass = false;
-        this.clickJtfUsuario = false;
     }
 
     @Override
     protected void addEventos() {
-        System.out.println("xd");
         jbtSesion.addActionListener(e -> cLogin.irMenu());
         jbtConfBD.addActionListener(e -> cLogin.irMenuConfigBD());
     }

@@ -34,7 +34,7 @@ public abstract class SuperVentana extends JFrame implements InfoApp {
     public abstract void estadoInicial();
 
     /**
-     * Metodo recomentado para darle a ciertos compoentes un estado inicial el
+     * Metodo recomentado para darle a ciertos compoentes un estado final el
      * cual no sera cambiado
      */
     protected void estadoFinal() {

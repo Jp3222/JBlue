@@ -43,7 +43,9 @@ public abstract class Objeto implements Serializable, Cloneable {
         hash = 13 * hash + Arrays.deepHashCode(this.info);
         return hash;
     }
-
+    
+    //[1, juan, 20]
+    //[2, juan, 20]
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

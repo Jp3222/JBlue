@@ -50,6 +50,9 @@ public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio {
         Objeto o = null;
         try {
             ArrayList<T> lista = GET("*", where);
+            if (lista == null) {
+                return null;
+            }
             o = (Objeto) lista.get(0).clone();
             lista.clear();
         } catch (CloneNotSupportedException ex) {
@@ -62,7 +65,5 @@ public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio {
         ArrayList<T> lista = GET("*", where);
         return lista;
     }
-    
-    
-    
+
 }

@@ -77,12 +77,11 @@ public class CMenuPrincipal extends SuperControlador {
         }
         if (MENU_TESORERIA.isVisible() || MENU_TESORERIA.isActive()) {
             MENU_TESORERIA.setVisible(false);
-
             MENU_TESORERIA.dispose();
         }
         MENU_PRINCIPAL.setVisible(false);
         MENU_PRINCIPAL.estadoInicial();
-        MENU_PRINCIPAL.dispose();
+        
         LOGIN.setVisible(true);
     }
 

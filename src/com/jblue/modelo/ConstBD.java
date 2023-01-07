@@ -8,19 +8,22 @@ package com.jblue.modelo;
  *
  * @author jp
  */
-public class Const {
+public class ConstBD {
 
     private static final String NOMBRE = "nombre";
     private static final String ID = "id";
     private static final String AP = "ap";
     private static final String AM = "am";
 
-    public static final String[] BD_CONSUMIDORES = {
-        ID, NOMBRE, AP, AM, "titular", "fregistro", "estado"
-    };
-
-    public static final String[] BD_TITULARES = {
-        ID, NOMBRE, AP, AM, "calle", "tipo_toma", "registro", "estado"
+//    public static final String[] BD_CONSUMIDORES = {
+//        ID, NOMBRE, AP, AM, "titular", "registro", "estado"
+//    };
+//
+//    public static final String[] BD_TITULARES = {
+//        ID, NOMBRE, AP, AM, "calle", "tipo_toma", "registro", "estado"
+//    };
+    public static final String[] BD_USUARIOS = {
+        ID, NOMBRE, AP, AM
     };
 
     public static final String[] BD_TOMAS_REGISTRADAS = {
@@ -34,9 +37,9 @@ public class Const {
     public static final String[] BD_CALLES = {
         ID, "nombre", "numero"
     };
-
+    
     public static final String[] BD_PERSONAL = {
-        ID, NOMBRE, "apellidos", "cargo", "usuario", "contra", "registro"
+        ID, NOMBRE, "apellidos", "cargo", "usuario", "contra", "registro", "estado", "permisos"
     };
 
     /**
@@ -50,4 +53,10 @@ public class Const {
     public static final String[] TABLAS = {
         "personal", "titulares", "consumidores", "calles", "tipo_tomas"
     };
+
+    public static String getAM() {
+        
+        return AM;
+    }
+    
 }

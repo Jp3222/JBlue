@@ -40,11 +40,10 @@ public class MovTablas<T extends Objeto> implements InterfaceTablaMov {
                 ultimo_id_leido = Integer.parseInt(qr.getString("id"));
             }
             cn.closeRS();
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
+        this.ant = 1;
         this.sig = 100;
         this.paso = 100;
     }
@@ -91,6 +90,7 @@ public class MovTablas<T extends Objeto> implements InterfaceTablaMov {
     }
 
     public void sig() {
+        ant += paso;
         sig += paso;
     }
 
@@ -142,12 +142,10 @@ public class MovTablas<T extends Objeto> implements InterfaceTablaMov {
             lista = OPERACIONES.getLista("id >= " + ant + " && id <= " + sig + " " + where);
         } else {
             lista = OPERACIONES.getLista("id >= " + ant + " && id <= " + sig);
-            System.out.println(lista == null);
         }
         //
         if (lista != null) {
             for (T t : lista) {
-                System.out.println(t.toString());
                 MODELO.addRow(FormatoBD.bdSalida(t.getInfo()));
             }
         }

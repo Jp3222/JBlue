@@ -4,9 +4,10 @@
  */
 package com.jblue.sistema.so;
 
+import com.jblue.util.SoInfo;
 import com.jbd.Exeption.ExeptionPrinter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.jblue.util.plataformas.apariencia;
+import java.io.File;
 
 /**
  *
@@ -15,20 +16,20 @@ import java.util.logging.Logger;
 public class SoConfig implements ExeptionPrinter {
 
     private final ConstructorDeArchivos CDA;
-    private final Apariencia APARIENCIA;
+    private final String RAIZ_ARCH;
 
     /**
      *
      */
     public SoConfig() {
-        APARIENCIA = new Apariencia(SoInfo.SO_NOMBRE);
+        this.RAIZ_ARCH = "jblue";
         this.CDA = new ConstructorDeArchivos();
     }
 
     private void archivos() {
-        CDA.add(CDA.DIRECTORIO, SoInfo.RUTA_DOCUMENTOS + "/.jblue");
-        CDA.add(CDA.DIRECTORIO, SoInfo.RUTA_DOCUMENTOS + "/.jblue/user");
-        CDA.add(CDA.DIRECTORIO, SoInfo.RUTA_DOCUMENTOS + "/.jblue/respaldos");
+        CDA.add(CDA.DIRECTORIO, SoInfo.RUTA_DOCUMENTOS + File.separator + ".jblue");
+        CDA.add(CDA.DIRECTORIO, SoInfo.RUTA_DOCUMENTOS + File.separator + ".jblue/user");
+        CDA.add(CDA.DIRECTORIO, SoInfo.RUTA_DOCUMENTOS + File.separator + ".jblue/respaldos");
         CDA.add(CDA.ARCHIVO, SoInfo.RUTA_DOCUMENTOS + "/.jblue/user/userbd.jff");
         //
         CDA.add(CDA.DIRECTORIO, SoInfo.RUTA_ESCRITORIO + "/jblue");
@@ -39,35 +40,32 @@ public class SoConfig implements ExeptionPrinter {
 
     public void cargar() {
         try {
-            APARIENCIA.aparienciaPorDefecto();
+            apariencia.setDefault();
             archivos();
-        } catch (Exception ex) {
-            Logger.getLogger(SoConfig.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void construir() {
-        try {
-            CDA.construirTodos();
-            if (SoInfo.SO_NOMBRE.contains("linux")) {
-                SoLinux so = new SoLinux(this);
-            }
-            if (SoInfo.SO_NOMBRE.contains("windows")) {
-                SoWindows so = new SoWindows(this);
-            }
-            if (SoInfo.SO_NOMBRE.contains("mac")) {
-                SoMac so = new SoMac(this);
-            }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace(pwExeption);
             closeExeptionBuffer();
         }
-
     }
 
     public ConstructorDeArchivos getCDA() {
         return CDA;
     }
 
+    /**
+     * Metodo que contruye una url usando el separador adecuado para cada SO,
+     * usando el conjunto de cadenas pasado por parametro.
+     *
+     * @param noms nombres de carpetas que componen la ruta
+     * @return
+     */
+    public String consURL(String... noms) {
+        String url = "";
+        for (int i = 0; i < noms.length - 1; i++) {
+            url += noms[i] + File.separator;
+        }
+        url += noms[noms.length - 1];
+        return url;
+    }
 }

@@ -8,6 +8,7 @@ import com.jblue.controlador.CMenuBD;
 import com.jblue.util.eventos.TablasEvt.TablasEvt;
 import com.jblue.vista.conf.SuperVentana;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import javax.swing.JTable;
 
 /**
@@ -21,12 +22,14 @@ public class MenuBD extends SuperVentana {
 
     /**
      * Creates new form MenuBD
+     *
      * @param menuPrincipal
      */
     public MenuBD(MenuPrincipal menuPrincipal) {
         this.menuPrincipal = menuPrincipal;
         initComponents();
         llamable();
+
     }
 
     @Override
@@ -40,9 +43,9 @@ public class MenuBD extends SuperVentana {
     @Override
     public void estadoInicial() {
         jToolBar1.setFloatable(false);
-        //
         initPanelCalles();
         initPanelTTomas();
+        initPanelTitulares();
     }
 
     public void initPanelCalles() {
@@ -60,11 +63,46 @@ public class MenuBD extends SuperVentana {
         jtfTipoTomasNombre.setText(null);
         jtfTipoTomaCosto.setText(null);
         jtfTipoTomaRecargo.setText(null);
-
         jbtTTomasGuardar.setEnabled(true);
         jbtTTomasActualizar.setEnabled(false);
         jbtTTomasEliminar.setEnabled(false);
         jbtTTomasCancelar.setEnabled(false);
+    }
+
+    public void initPanelTitulares() {
+        jtfTitularesNom.setText(null);
+        jtfTitularesAp.setText(null);
+        jtfTitularesAm.setText(null);
+        if (!jchbCalle.isSelected()) {
+            jcbTitularesCalle.setSelectedIndex(0);
+        }
+        if (!jchbToma.isSelected()) {
+            jcbTitularesToma.setSelectedIndex(0);
+        }
+        if (!jchbEstado.isSelected()) {
+            jcbTitularesEst.setSelectedIndex(0);
+        }
+
+    }
+
+    public void vaciarComboBox() {
+        while (jcbTitularesCalle.getItemCount() > 1) {
+            jcbTitularesCalle.removeItemAt(1);
+        }
+        while (jcbTitularesToma.getItemCount() > 1) {
+            jcbTitularesToma.removeItemAt(1);
+        }
+    }
+
+    public void llenarComboBox() {
+        ArrayList<String> calles = CON_MENU_BD.getListaCalles();
+        for (String calle : calles) {
+            jcbTitularesCalle.addItem(calle);
+        }
+        ArrayList<String> ttomas = CON_MENU_BD.getListaTTomas();
+        for (String toma : ttomas) {
+            jcbTitularesToma.addItem(toma);
+        }
     }
 
     @Override
@@ -72,10 +110,12 @@ public class MenuBD extends SuperVentana {
         this.setTitle(NOMBRE + VERSION + " " + SECCION[2]);
         this.CON_MENU_BD = new CMenuBD(this);
         this.setIconImage(ICONO.getImage());
-    }
-
-    @Override
-    public void addComponentes() {
+        //
+        jcbTitularesCalle.addItem("CALLE");
+        jcbTitularesToma.addItem("TIPO DE TOMA");
+        jcbTitularesEst.addItem("ESTADO");
+        jcbTitularesEst.addItem("ACTIVO");
+        jcbTitularesEst.addItem("INACTIVO");
     }
 
     @Override
@@ -97,6 +137,11 @@ public class MenuBD extends SuperVentana {
         });
 
         jtabRoot.addChangeListener((ce) -> {
+            if (jpTitulares.isVisible()) {
+                llenarComboBox();
+            } else {
+                vaciarComboBox();
+            }
             if (jpComplementos.isVisible() && jpCalles.isVisible()) {
                 CON_MENU_BD.llenarDatosCalles();
             } else {
@@ -108,11 +153,13 @@ public class MenuBD extends SuperVentana {
 
         evtCalles();
         evtTiposTomas();
+        evtTitulares();
     }
 
     public void evtCalles() {
         TablasEvt evt = new TablasEvt(jtCalles);
         evt.setJButtons(jbtCalleGuardar, jbtCalleActualizar, jbtCalleEliminar, jbtCalleCancelar);
+        
         evt.addMouseListener(evt.MOUSE_CLICKED, (MouseEvent e) -> {
             jtfCalleNombre.setText((String) jtCalles.getValueAt(jtCalles.getSelectedRow(), 1));
             jtfCalleNumero.setText((String) jtCalles.getValueAt(jtCalles.getSelectedRow(), 2));
@@ -121,6 +168,7 @@ public class MenuBD extends SuperVentana {
             jbtCalleActualizar.setEnabled(true);
             jbtCalleCancelar.setEnabled(true);
         });
+        
         evt.addActionListener(0, e -> CON_MENU_BD.addCalles(
                 "0",
                 jtfCalleNombre.getText(),
@@ -180,6 +228,36 @@ public class MenuBD extends SuperVentana {
 
     }
 
+    public void evtTitulares() {
+        TablasEvt t = new TablasEvt(jtTitulares);
+        t.setJButtons(
+                jbtTitularesGuardar, jbtTitularesActualizar,
+                jbtTitularesEliminar, jbtTitularesCancelar
+        );
+        //
+        t.addMouseListener(t.MOUSE_CLICKED, (e) -> {
+            int row = jtTitulares.getSelectedRow();
+            jtfTitularesNom.setText((String) jtTitulares.getValueAt(row, 0));
+            jtfTitularesAp.setText((String) jtTitulares.getValueAt(row, 1));
+            jtfTitularesAm.setText((String) jtTitulares.getValueAt(row, 2));
+        });
+        //
+        t.addActionListener(3, e -> {
+            System.out.println("Holaaa");
+            initPanelTitulares();
+        });
+    }
+
+    public String[] getIndex() {
+        String i1 = jcbTitularesCalle.getItemAt(jcbTitularesCalle.getSelectedIndex());
+        String i2 = jcbTitularesToma.getItemAt(jcbTitularesToma.getSelectedIndex());
+        String i3 = jcbTitularesEst.getItemAt(jcbTitularesEst.getSelectedIndex());
+        String[] split = i1.split(" ");
+        String[] split1 = i2.split(" ");
+        String[] split2 = i3.split(" ");
+        return new String[]{split[0], split1[0], split2[0]};
+    }
+
     public JTable getJtCalles() {
         return jtCalles;
     }
@@ -190,6 +268,10 @@ public class MenuBD extends SuperVentana {
 
     public JTable getJtTomasRegistradas() {
         return jtTomasRegistradas;
+    }
+
+    public JTable getJtTitulares() {
+        return jtTitulares;
     }
 
     /**
@@ -208,27 +290,30 @@ public class MenuBD extends SuperVentana {
         jtabRoot = new javax.swing.JTabbedPane();
         jpTitulares = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtTitulares = new javax.swing.JTable();
         jPanel9 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        jtfTitularesNom = new javax.swing.JTextField();
+        jtfTitularesAp = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jtfTitularesAm = new javax.swing.JTextField();
+        jbtTitularesGuardar = new javax.swing.JButton();
+        jbtTitularesActualizar = new javax.swing.JButton();
+        jbtTitularesEliminar = new javax.swing.JButton();
+        jbtTitularesCancelar = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        jcbTitularesCalle = new javax.swing.JComboBox<>();
+        jcbTitularesToma = new javax.swing.JComboBox<>();
+        jcbTitularesEst = new javax.swing.JComboBox<>();
         jButton6 = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
+        jchbToma = new javax.swing.JCheckBox();
+        jchbCalle = new javax.swing.JCheckBox();
+        jchbEstado = new javax.swing.JCheckBox();
         jpConsumidores = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -280,57 +365,51 @@ public class MenuBD extends SuperVentana {
         jbtSalir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jbtSalir);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtTitulares.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "NOMBRE", "A. PATERNO", "A. MATERNO", "CALLE", "TIPO DE TOMA", "F. REGISTRO", "ESTADO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
+        jtTitulares.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jtTitulares);
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos del titular"));
         jPanel9.setOpaque(false);
 
         jLabel5.setText("Nombre");
 
-        jTextField1.setText("jTextField1");
-        jTextField1.setPreferredSize(new java.awt.Dimension(180, 35));
+        jtfTitularesNom.setPreferredSize(new java.awt.Dimension(180, 35));
 
-        jTextField2.setText("jTextField1");
-        jTextField2.setPreferredSize(new java.awt.Dimension(180, 35));
+        jtfTitularesAp.setPreferredSize(new java.awt.Dimension(180, 35));
 
         jLabel6.setText("A. Paterno.");
 
         jLabel7.setText("A. Materno");
 
-        jTextField3.setText("jTextField1");
-        jTextField3.setPreferredSize(new java.awt.Dimension(180, 35));
+        jtfTitularesAm.setPreferredSize(new java.awt.Dimension(180, 35));
 
-        jButton1.setText("Guardar");
-        jButton1.setPreferredSize(new java.awt.Dimension(70, 35));
+        jbtTitularesGuardar.setText("Guardar");
+        jbtTitularesGuardar.setPreferredSize(new java.awt.Dimension(70, 35));
 
-        jButton2.setText("Actualizar");
-        jButton2.setPreferredSize(new java.awt.Dimension(70, 35));
+        jbtTitularesActualizar.setText("Actualizar");
+        jbtTitularesActualizar.setPreferredSize(new java.awt.Dimension(70, 35));
 
-        jButton3.setText("Eliminar");
-        jButton3.setPreferredSize(new java.awt.Dimension(70, 35));
+        jbtTitularesEliminar.setText("Eliminar");
+        jbtTitularesEliminar.setPreferredSize(new java.awt.Dimension(70, 35));
 
-        jButton4.setText("Cancelar");
-        jButton4.setPreferredSize(new java.awt.Dimension(70, 35));
+        jbtTitularesCancelar.setText("Cancelar");
+        jbtTitularesCancelar.setPreferredSize(new java.awt.Dimension(70, 35));
 
         jButton5.setText("Ant");
         jButton5.setPreferredSize(new java.awt.Dimension(70, 35));
@@ -341,19 +420,22 @@ public class MenuBD extends SuperVentana {
 
         jLabel10.setText("Estado");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.setPreferredSize(new java.awt.Dimension(180, 35));
+        jcbTitularesCalle.setPreferredSize(new java.awt.Dimension(180, 35));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.setPreferredSize(new java.awt.Dimension(180, 35));
+        jcbTitularesToma.setPreferredSize(new java.awt.Dimension(180, 35));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox3.setPreferredSize(new java.awt.Dimension(180, 35));
+        jcbTitularesEst.setPreferredSize(new java.awt.Dimension(180, 35));
 
         jButton6.setText("Sig");
         jButton6.setPreferredSize(new java.awt.Dimension(70, 35));
 
         jLabel11.setText("Tipo de toma");
+
+        jchbToma.setText("Mantener T. Toma");
+
+        jchbCalle.setText("Mantener Calle");
+
+        jchbEstado.setText("Mantener Estado");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -366,42 +448,44 @@ public class MenuBD extends SuperVentana {
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jchbCalle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jcbTitularesCalle, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jtfTitularesNom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel9Layout.createSequentialGroup()
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jtfTitularesAp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel9Layout.createSequentialGroup()
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jcbTitularesToma, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jchbToma, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(jPanel9Layout.createSequentialGroup()
-                                        .addGap(124, 124, 124)
-                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel9Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jtfTitularesAm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(103, 103, 103)
+                                .addComponent(jbtTitularesGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(103, 103, 103)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                                    .addComponent(jchbEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jcbTitularesEst, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jbtTitularesEliminar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jbtTitularesActualizar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtTitularesCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -415,35 +499,41 @@ public class MenuBD extends SuperVentana {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfTitularesNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtTitularesGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfTitularesAp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfTitularesAm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jbtTitularesActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtTitularesEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtTitularesCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcbTitularesCalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcbTitularesToma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                            .addComponent(jcbTitularesEst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jchbToma)
+                            .addComponent(jchbCalle)
+                            .addComponent(jchbEstado))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout jpTitularesLayout = new javax.swing.GroupLayout(jpTitulares);
@@ -751,6 +841,8 @@ public class MenuBD extends SuperVentana {
 
         jtabComplementos.addTab("Tipos de Tomas", jpTiposTomas);
 
+        jpTomasRegistradas.setEnabled(false);
+
         jtTomasRegistradas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -856,15 +948,8 @@ public class MenuBD extends SuperVentana {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -888,11 +973,7 @@ public class MenuBD extends SuperVentana {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JButton jbtCalleActualizar;
@@ -904,6 +985,16 @@ public class MenuBD extends SuperVentana {
     private javax.swing.JButton jbtTTomasCancelar;
     private javax.swing.JButton jbtTTomasEliminar;
     private javax.swing.JButton jbtTTomasGuardar;
+    private javax.swing.JButton jbtTitularesActualizar;
+    private javax.swing.JButton jbtTitularesCancelar;
+    private javax.swing.JButton jbtTitularesEliminar;
+    private javax.swing.JButton jbtTitularesGuardar;
+    private javax.swing.JComboBox<String> jcbTitularesCalle;
+    private javax.swing.JComboBox<String> jcbTitularesEst;
+    private javax.swing.JComboBox<String> jcbTitularesToma;
+    private javax.swing.JCheckBox jchbCalle;
+    private javax.swing.JCheckBox jchbEstado;
+    private javax.swing.JCheckBox jchbToma;
     private javax.swing.JPanel jpCalles;
     private javax.swing.JPanel jpComplementos;
     private javax.swing.JPanel jpConsumidores;
@@ -912,6 +1003,7 @@ public class MenuBD extends SuperVentana {
     private javax.swing.JPanel jpTomasRegistradas;
     private javax.swing.JTable jtCalles;
     private javax.swing.JTable jtTiposTomas;
+    private javax.swing.JTable jtTitulares;
     private javax.swing.JTable jtTomasRegistradas;
     private javax.swing.JTabbedPane jtabComplementos;
     private javax.swing.JTabbedPane jtabRoot;
@@ -920,6 +1012,9 @@ public class MenuBD extends SuperVentana {
     private javax.swing.JTextField jtfTipoTomaCosto;
     private javax.swing.JTextField jtfTipoTomaRecargo;
     private javax.swing.JTextField jtfTipoTomasNombre;
+    private javax.swing.JTextField jtfTitularesAm;
+    private javax.swing.JTextField jtfTitularesAp;
+    private javax.swing.JTextField jtfTitularesNom;
     // End of variables declaration//GEN-END:variables
 
 }

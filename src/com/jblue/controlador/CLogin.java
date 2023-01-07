@@ -4,7 +4,8 @@
  */
 package com.jblue.controlador;
 
-import com.jblue.modelo.funciones.OpPersonal;
+import com.jblue.modelo.ConstBD;
+import com.jblue.modelo.funciones.Operaciones;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.vista.ventanas.Login;
@@ -50,12 +51,13 @@ public class CLogin extends SuperControlador {
         try {
             String usuario = LOGIN.getJtfUsuario().getText();
             String contra = String.valueOf(LOGIN.getJpfPass().getPassword());
-            
+
             EncriptadoAES en = new EncriptadoAES();
-            
-            OpPersonal op = new OpPersonal();
+            Operaciones<OPersonal> o = new Operaciones(ConstBD.TABLAS[0], ConstBD.BD_PERSONAL);
+            //OpPersonal op = new OpPersonal();
             String where = "usuario = '" + en.encriptar(usuario, contra) + "' and contra = '" + en.encriptar(contra, usuario) + "'";
-            OPersonal personal = op.get(where);
+            //OPersonal personal = op.get(where);
+            OPersonal personal = o.get(where);
             if (personal != null) {
                 return true;
             }

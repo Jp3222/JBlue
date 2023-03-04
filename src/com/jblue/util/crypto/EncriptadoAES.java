@@ -4,7 +4,7 @@
  */
 package com.jblue.util.crypto;
 
-import com.jblue.util.SalidaDeErrores;
+import com.jutil.jexception.Excp;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -21,7 +21,7 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * @author jp
  */
-public class EncriptadoAES implements SalidaDeErrores {
+public class EncriptadoAES {
 
     /**
      * Crea la clave de encriptacion usada internamente
@@ -31,7 +31,9 @@ public class EncriptadoAES implements SalidaDeErrores {
      * @throws UnsupportedEncodingException
      * @throws NoSuchAlgorithmException
      */
-    private SecretKeySpec crearClave(String clave) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    private SecretKeySpec crearClave(String clave) throws
+            UnsupportedEncodingException, NoSuchAlgorithmException {
+
         byte[] claveEncriptacion = clave.getBytes("UTF-8");
 
         MessageDigest sha = MessageDigest.getInstance("SHA-1");
@@ -57,7 +59,11 @@ public class EncriptadoAES implements SalidaDeErrores {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
-    public String encriptar(String datos, String claveSecreta) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+    public String encriptar(String datos, String claveSecreta) throws
+            UnsupportedEncodingException, NoSuchAlgorithmException,
+            InvalidKeyException, NoSuchPaddingException,
+            IllegalBlockSizeException, BadPaddingException {
+
         SecretKeySpec secretKey = this.crearClave(claveSecreta);
 
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
@@ -73,8 +79,8 @@ public class EncriptadoAES implements SalidaDeErrores {
     /**
      * Desencripta la cadena de texto indicada usando la clave de encriptacion
      *
-     * @param datosEncriptados Datos encriptados
-     * @param claveSecreta Clave de encriptacion
+     * @param dencp datos encriptados
+     * @param cscre Clave de encriptacion
      * @return Informacion desencriptada
      * @throws UnsupportedEncodingException
      * @throws NoSuchAlgorithmException
@@ -83,35 +89,39 @@ public class EncriptadoAES implements SalidaDeErrores {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
-    public String desencriptar(String datosEncriptados, String claveSecreta) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-        SecretKeySpec secretKey = this.crearClave(claveSecreta);
+    public String desencriptar(String dencp, String cscre) throws
+            UnsupportedEncodingException, NoSuchAlgorithmException,
+            InvalidKeyException, NoSuchPaddingException,
+            IllegalBlockSizeException, BadPaddingException {
+
+        SecretKeySpec secretKey = this.crearClave(cscre);
 
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
-        byte[] bytesEncriptados = Base64.getDecoder().decode(datosEncriptados);
+        byte[] bytesEncriptados = Base64.getDecoder().decode(dencp);
         byte[] datosDesencriptados = cipher.doFinal(bytesEncriptados);
         String datos = new String(datosDesencriptados);
 
         return datos;
     }
 
-    public boolean comparador(String KE1, String VE1, String ke2, String ve2) {
+    public boolean comparador(String ken, String ven, String kdes, String vdes) {
         try {
-            String k = ke2;
-            String v = ve2;
-            String a = encriptar(ke2, v);
-            String b = encriptar(ve2, k);
-            return KE1.equals(a) && VE1.equals(b);
+            String k = kdes;
+            String v = vdes;
+            String a = encriptar(kdes, v);
+            String b = encriptar(vdes, k);
+            return ken.equals(a) && ven.equals(b);
+            
         } catch (UnsupportedEncodingException
                 | NoSuchAlgorithmException
                 | InvalidKeyException
                 | NoSuchPaddingException
                 | IllegalBlockSizeException
                 | BadPaddingException ex) {
-            System.out.println(ex.getLocalizedMessage());
-            ex.printStackTrace(pwError);
-            closeBufferExeption();
+
+            Excp.impTerminal(ex, this.getClass(), true);
         }
         return false;
     }

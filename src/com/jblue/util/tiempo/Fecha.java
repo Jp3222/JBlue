@@ -16,14 +16,6 @@ import java.time.format.DateTimeFormatterBuilder;
  */
 public class Fecha {
 
-    private static Fecha instancia;
-
-    public static Fecha getInstancia() {
-        if (instancia == null) {
-            instancia = new Fecha();
-        }
-        return instancia;
-    }
     private final DateTimeFormatter ORDEN;
     private final Year year;
     private final Month month;
@@ -32,23 +24,39 @@ public class Fecha {
         "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIV"
     };
 
-    private Fecha() {
+    public Fecha() {
         this.ORDEN = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         this.year = Year.now();
         this.localDate = LocalDate.now();
         this.month = localDate.getMonth();
     }
 
+    public LocalDate getNewFechaActual() {
+        return LocalDate.now();
+    }
+
+    public String getNewFechaActualString() {
+        LocalDate now = LocalDate.now();
+        return now.format(ORDEN);
+
+    }
+
     /**
-     * Metodo que retorna la fecha actual
+     * Metodo que retorna la instancia guardada al inicar la clase
      *
      * @return un objeto de tipo LocalDate con la fecha actual
      */
-    public LocalDate fechaActual() {
+    public LocalDate getFechaActual() {
         return localDate;
     }
 
-    public String fechaActualString() {
+    /**
+     * Metodo que retorna la instancia guardada al inicar la clase con el
+     * formato "dd-MM-yyyy" formato requerido para la base de datos
+     *
+     * @return un objeto de tipo LocalDate con la fecha actual
+     */
+    public String getFechaActualString() {
         return localDate.format(ORDEN);
     }
 
@@ -57,12 +65,14 @@ public class Fecha {
      *
      * @return un array cuya posicion
      * <br> 0: mes actual
-     * <br> 1: fmin
-     * <br> 2: fmax
+     * <br> 1: fecha minima del mes = 1
+     * <br> 2: fecha maxima del mes = 28, 30 o 31
      */
     public String[] getMes() {
         return new String[]{
-            MESES[localDate.getMonthValue() - 1], "1", month.length(year.isLeap()) + ""
+            MESES[localDate.getMonthValue() - 1],
+            "1",
+            month.length(year.isLeap()) + ""
         };
     }
 }

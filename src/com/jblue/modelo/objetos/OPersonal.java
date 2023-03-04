@@ -33,7 +33,7 @@ public class OPersonal extends Objeto {
      * @return el nombre del personal
      */
     public String getNombre() {
-        return info[1];
+        return _info[1];
     }
 
     /**
@@ -41,7 +41,7 @@ public class OPersonal extends Objeto {
      * @return los apellidos del personal
      */
     public String getApellidos() {
-        return info[2];
+        return _info[2];
     }
 
     /**
@@ -54,7 +54,7 @@ public class OPersonal extends Objeto {
      * @return un entero con el cargo del personal
      */
     public String getCargo() {
-        return info[3];
+        return _info[3];
     }
 
     /**
@@ -62,7 +62,7 @@ public class OPersonal extends Objeto {
      * @return el nombre usuario encriptado del usuario
      */
     public String getUsuario() {
-        return info[4];
+        return _info[4];
     }
 
     /**
@@ -70,7 +70,7 @@ public class OPersonal extends Objeto {
      * @return la contraseña encriptada del usuario
      */
     public String getContra() {
-        return info[5];
+        return _info[5];
     }
 
     /**
@@ -78,7 +78,7 @@ public class OPersonal extends Objeto {
      * @return la fecha en que se registro el usuario
      */
     public String getFechaRegistro() {
-        return info[6];
+        return _info[6];
     }
 
     /**
@@ -90,7 +90,7 @@ public class OPersonal extends Objeto {
      * @return un entero con el estado del usuario
      */
     public int getEstado() {
-        return Integer.parseInt(info[7]);
+        return Integer.parseInt(_info[7]);
     }
 
     /**
@@ -108,7 +108,7 @@ public class OPersonal extends Objeto {
      * @return
      */
     public String getPermisos() {
-        return info[8];
+        return _info[8];
     }
 
     /**
@@ -117,7 +117,7 @@ public class OPersonal extends Objeto {
      * @return true si y solo si el usuario tiene todos los permisos
      */
     public boolean allPermisos() {
-        char[] p = info[8].toCharArray();
+        char[] p = _info[8].toCharArray();
         int n = (char) p[0];
         return n == 1;
     }

@@ -5,15 +5,14 @@
 package com.jblue.sistema.so;
 
 import com.jblue.util.SoInfo;
-import com.jbd.Exeption.ExeptionPrinter;
-import com.jblue.util.plataformas.apariencia;
+import com.jblue.util.plataformas.soconfig.apariencia;
 import java.io.File;
 
 /**
  *
  * @author jp
  */
-public class SoConfig implements ExeptionPrinter {
+public class SoConfig {
 
     private final ConstructorDeArchivos CDA;
     private final String RAIZ_ARCH;
@@ -43,9 +42,6 @@ public class SoConfig implements ExeptionPrinter {
             apariencia.setDefault();
             archivos();
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace(pwExeption);
-            closeExeptionBuffer();
         }
     }
 

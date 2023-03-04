@@ -4,41 +4,20 @@
  */
 package com.jblue.util;
 
+import java.util.function.Predicate;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JTextField;
+
 /**
  *
  * @author jp
  */
 public class Validar {
-    
+
     /**
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
      * @param o
-     * @return 
+     * @return
      */
     public static boolean datosNULL(String[] o) {
         for (String s : o) {
@@ -48,11 +27,12 @@ public class Validar {
         }
         return false;
     }
-    
+
     /**
      * Evalua si la cadena es un numero entero
+     *
      * @param o
-     * @return 
+     * @return
      */
     public static boolean isSoloNumero(String o) {
         return o.matches("[0-9]*");
@@ -71,12 +51,37 @@ public class Validar {
         return o.matches(regex);
     }
 
-    public static boolean isSoloTexto(String o) {
-        return o.matches("[a-zA-Z]");
+    public static boolean esSoloTexto(String o) {
+        return o.matches("[a-zA-Z]*");
     }
 
     public static boolean contieneSimbolos(String o) {
         return o.matches("[-+\\*/¿?!¡]");
+    }
+
+    public static <T extends JComponent> boolean validarJTF(T[] arr, Predicate<T> valido) {
+        for (T o : arr) {
+            if (!valido.test(o)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean NullVacio() {
+        return true;
+    }
+
+    public static boolean soloTexto(String txt) {
+        return true;
+    }
+
+    public static boolean soloNumeros(String txt) {
+        return true;
+    }
+
+    public static boolean conSimbolos(String txt) {
+        return true;
     }
 
 }

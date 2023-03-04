@@ -9,26 +9,24 @@ package com.jblue.modelo.objetos;
  * @author jp
  */
 public class OCalles extends Objeto {
-    
+
     public OCalles(String[] info) {
         super(info);
     }
-    
+
     public OCalles() {
         super();
     }
-    
+
     public String getNombre() {
-        return info[1];
+        return _info[1];
     }
-    
+
     public String getNumero() {
-        return info[2];
+        return _info[2];
     }
     
-    @Override
-    public void setInfo(String[] info) {
-        super.setInfo(info);
+    public String getCalleStr(){
+        return _info[1] + " " + _info[2];
     }
-    
 }

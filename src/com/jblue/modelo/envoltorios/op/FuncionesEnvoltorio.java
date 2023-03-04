@@ -4,26 +4,23 @@
  */
 package com.jblue.modelo.envoltorios.op;
 
-import com.jblue.modelo.objetos.OPagosTitular;
-import com.jbd.conexion.Conexion;
 import com.jblue.modelo.objetos.OCalles;
-import com.jblue.modelo.objetos.OConsumidores;
-import com.jblue.modelo.objetos.OPagosConsumidor;
 import com.jblue.modelo.objetos.OPersonal;
-import com.jblue.modelo.objetos.OTitulares;
 import com.jblue.modelo.objetos.OTipoTomas;
+import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.modelo.objetos.Objeto;
-import com.jblue.util.excepciones.ExeptionPrinter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import com.jutil.jbd.conexion.Conexion;
+import com.jutil.jexception.Excp;
 
 /**
  *
  * @author jp
  */
-public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
+public abstract class FuncionesEnvoltorio {
 
     protected final Conexion CONEXION;
     protected final String TABLA;
@@ -37,29 +34,45 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
         this.NO_CAMPOS = campos.length;
     }
 
-    protected boolean INSERTAR(String[] valores) {
-        return CONEXION.insert(TABLA, 
+    /**
+     * Este metodo inserta valores en la base de datos ignorando el primer valor
+     * del array suponiendo que pertenece al campo "ID"
+     *
+     * @param valores - conjunto de valores que se insertara
+     * @return true si la inserccion se hizo correctamente en otro clase false
+     */
+    protected boolean _INSERTAR(String[] valores) {
+        return CONEXION.insert(TABLA,
                 CONEXION.getCampos(Arrays.copyOfRange(CAMPOS, 1, CAMPOS.length)),
-                CONEXION.getDatos(Arrays.copyOfRange(valores, 1, valores.length))
+                CONEXION.getDatos(valores)
         );
     }
 
-    protected boolean ELIMINAR(String where) {
+    /**
+     *
+     * Este metodo elimina registros de la base de dataos segun la "condicion
+     * escrita en sql" que se pasa por parametro
+     *
+     * @param where - condicion en "lenguaje sql" para la eliminacion de algun
+     * registro
+     * @return true si la eliminacion se hizo correctamente en otro clase false
+     */
+    protected boolean _ELIMINAR(String where) {
         return CONEXION.delete(TABLA, where);
     }
 
-    protected boolean ACTUALIZAR(String campo, String valor, String where) {
+    protected boolean _ACTUALIZAR(String campo, String valor, String where) {
         return CONEXION.update(TABLA, campo, valor, where);
     }
 
-    protected boolean ACTUALIZAR(String campos[], String valores[], String where) {
+    protected boolean _ACTUALIZAR(String campos[], String valores[], String where) {
         return CONEXION.update(TABLA,
                 CONEXION.getCamposDatos(campos, valores),
                 where
         );
     }
 
-    protected <T extends Objeto> ArrayList<T> GET(String campos, String where) {
+    protected <T extends Objeto> ArrayList<T> _GET(String campos, String where) {
         try {
             ResultSet get = CONEXION.select(TABLA, campos, where);
             ArrayList<T> lista;
@@ -67,9 +80,7 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
             CONEXION.closeRS();
             return lista;
         } catch (SQLException | CloneNotSupportedException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace(pwExeption);
-            closeExeptionBuffer();
+            Excp.impTerminal(ex, this.getClass(), true);
         }
         return null;
     }
@@ -83,29 +94,18 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
                 case "calles":
                     OCalles calle = new OCalles();
                     return runWhile(calle, get, campos);
-                case "consumidores":
-                    OConsumidores consumidores = new OConsumidores();
-                    return runWhile(consumidores, get, campos);
-                case "pagos_consumidores":
-                    OPagosConsumidor pagos = new OPagosConsumidor();
-                    return runWhile(pagos, get, campos);
-                case "pagos_titulares":
-                    OPagosTitular pagostitular = new OPagosTitular();
-                    return runWhile(pagostitular, get, campos);
+                case "usuarios":
+                    OUsuarios usuarios = new OUsuarios();
+                    return runWhile(usuarios, get, campos);
                 case "personal":
                     OPersonal personal = new OPersonal();
                     return runWhile(personal, get, campos);
-                case "titulares":
-                    OTitulares titular = new OTitulares();
-                    return runWhile(titular, get, campos);
                 case "tipo_tomas":
                     OTipoTomas toma = new OTipoTomas();
                     return runWhile(toma, get, campos);
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace(pwExeption);
-            closeExeptionBuffer();
+        } catch (Exception ex) {
+            Excp.impTerminal(ex, this.getClass(), true);
         }
         return null;
     }
@@ -118,13 +118,8 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
                 o.setInfo(info);
                 lista.add((T) o.clone());
             }
-            if (lista.isEmpty()) {
-                return null;
-            }
-        } catch (CloneNotSupportedException | SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace(pwExeption);
-            closeExeptionBuffer();
+        } catch (CloneNotSupportedException | SQLException ex) {
+            Excp.impTerminal(ex, this.getClass(), true);
         }
         return lista;
     }
@@ -139,7 +134,7 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
      * se va a recuperar informacion
      * @return un Array con los datos recuperados
      */
-    public String[] runFor(ResultSet get, String[] campos) {
+    private String[] runFor(ResultSet get, String[] campos) {
         String[] info = new String[campos.length];
         try {
             int i = 0;
@@ -147,10 +142,9 @@ public abstract class FuncionesEnvoltorio implements ExeptionPrinter {
                 info[i] = get.getString(campo);
                 i++;
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace(pwExeption);
-            closeExeptionBuffer();
+        } catch (SQLException ex) {
+            Excp.impTerminal(ex, this.getClass(), true);
+
         }
         return info;
     }

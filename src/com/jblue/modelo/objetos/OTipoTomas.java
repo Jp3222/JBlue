@@ -18,15 +18,15 @@ public class OTipoTomas extends Objeto {
     }
 
     public String getTipo() {
-        return info[1];
+        return _info[1];
     }
 
     public int getCosto() {
-        return Integer.parseInt(info[2]);
+        return Integer.parseInt(_info[2]);
     }
     
     public int getRecargo(){
-        return Integer.parseInt(info[3]);
+        return Integer.parseInt(_info[3]);
     }
 
 }

@@ -13,24 +13,30 @@ import java.time.format.DateTimeFormatter;
  */
 public class Hora {
 
-    private static Hora instancia;
-
-    public synchronized static Hora getInstancia() {
-        if (instancia == null) {
-            instancia = new Hora();
-        }
-        return instancia;
-    }
-
-    private LocalTime lt;
     private final DateTimeFormatter PATRON;
 
-    private Hora() {
-        PATRON = DateTimeFormatter.ofPattern("ss-mm-hh");
+    public Hora() {
+        PATRON = DateTimeFormatter.ofPattern("hh-mm-ss");
     }
 
-    public String getHoraActual() {
-        lt = LocalTime.now();
+    public LocalTime createHora(String str) {
+        LocalTime o = LocalTime.parse(str);
+        return o;
+    }
+
+    public int compareTo(String str1, String str2) {
+        LocalTime x = LocalTime.parse(str1);
+        LocalTime y = LocalTime.parse(str2);
+        return x.compareTo(y);
+
+    }
+
+    public LocalTime getHoraActual() {
+        return LocalTime.now();
+    }
+
+    public String getHoraActualString() {
+        LocalTime lt = LocalTime.now();
         return lt.format(PATRON);
     }
 

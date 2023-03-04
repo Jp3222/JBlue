@@ -32,7 +32,7 @@ public class TablasEvt {
         this.TABLA.addMouseListener(EVT);
     }
 
-    public void setJButtons(JButton... buttons) {
+    public void setBotonesAsociados(JButton... buttons) {
         this.JBT_MAN = buttons;
     }
 

@@ -12,6 +12,11 @@ import com.jblue.modelo.objetos.OPersonal;
  */
 public abstract class EnvPersonal {
 
+    public static final String CREACION = "c",
+            LECTURA = "r",
+            ACTUALIACION = "u",
+            ELIMINACION = "d";
+
     public static boolean allPermisos(OPersonal o) {
         return o.allPermisos();
     }
@@ -40,6 +45,14 @@ public abstract class EnvPersonal {
             arr[i] = "" + d;
         }
         return arr;
+    }
+
+    public static boolean conPermiso(String permiso, OPersonal o) {
+        if (o.allPermisos()) {
+            return true;
+        }
+
+        return o.getPermisos().contains(permiso);
     }
 
     private EnvPersonal() {

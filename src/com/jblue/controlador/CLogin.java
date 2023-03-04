@@ -4,9 +4,10 @@
  */
 package com.jblue.controlador;
 
-import com.jblue.modelo.ConstBD;
 import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.sistema.Sesion;
+import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.vista.ventanas.Login;
 import com.jblue.vista.ventanas.MenuConfigBD;
@@ -53,15 +54,24 @@ public class CLogin extends SuperControlador {
             String contra = String.valueOf(LOGIN.getJpfPass().getPassword());
 
             EncriptadoAES en = new EncriptadoAES();
-            Operaciones<OPersonal> o = new Operaciones(ConstBD.TABLAS[0], ConstBD.BD_PERSONAL);
-            //OpPersonal op = new OpPersonal();
-            String where = "usuario = '" + en.encriptar(usuario, contra) + "' and contra = '" + en.encriptar(contra, usuario) + "'";
-            //OPersonal personal = op.get(where);
+            Operaciones<OPersonal> o = FabricaCache.OP_PERSONAL;
+            String where = "usuario = '" + en.encriptar(usuario, contra) + "' && contra = '" + en.encriptar(contra, usuario) + "'";
             OPersonal personal = o.get(where);
             if (personal != null) {
+                Sesion sesion = Sesion.getInstancia();
+                sesion.setUsuario(personal);
+                boolean inicioSesion = sesion.inicioSesion();
+                if (!inicioSesion) {
+                    JOptionPane.showMessageDialog(MENU_PRINCIPAL, "ERROR AL REGISTRAR SESION");
+                    return false;
+                }
                 return true;
             }
-        } catch (UnsupportedEncodingException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
+        } catch (UnsupportedEncodingException
+                | InvalidKeyException
+                | NoSuchAlgorithmException
+                | BadPaddingException
+                | IllegalBlockSizeException | NoSuchPaddingException e) {
             System.out.println(e.getMessage());
         }
         return false;

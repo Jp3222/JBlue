@@ -17,37 +17,37 @@ public class ConstructorDeArchivos {
     public final int ARCHIVO = 1;
     public final int DIRECTORIO = 2;
 
-    private final ArrayList<File> RUTAS_DIRECTORIOS;
-    private final ArrayList<File> RUTAS_ARCHIVOS;
+    private final ArrayList<File> directorios;
+    private final ArrayList<File> archivos;
 
     public ConstructorDeArchivos() {
-        this.RUTAS_DIRECTORIOS = new ArrayList<>(10);
-        this.RUTAS_ARCHIVOS = new ArrayList<>(10);
+        this.directorios = new ArrayList<>(10);
+        this.archivos = new ArrayList<>(10);
     }
 
     public void add(int tipo, String o) {
         File fl = new File(o);
         if (tipo == ARCHIVO) {
-            RUTAS_ARCHIVOS.add(fl);
+            archivos.add(fl);
         } else if (tipo == DIRECTORIO) {
-            RUTAS_DIRECTORIOS.add(fl);
+            directorios.add(fl);
         }
     }
 
     public File removeRuta(int tipo, int index) {
         if (tipo == ARCHIVO) {
-            return RUTAS_ARCHIVOS.remove(index);
+            return archivos.remove(index);
         } else if (tipo == DIRECTORIO) {
-            return RUTAS_DIRECTORIOS.remove(index);
+            return directorios.remove(index);
         }
         return null;
     }
 
     public File get(int tipo, int index) {
         if (tipo == ARCHIVO) {
-            return RUTAS_ARCHIVOS.get(index);
+            return archivos.get(index);
         } else if (tipo == DIRECTORIO) {
-            return RUTAS_DIRECTORIOS.get(index);
+            return directorios.get(index);
         }
         return null;
     }
@@ -57,7 +57,7 @@ public class ConstructorDeArchivos {
      */
     public void construirArchivos() {
         try {
-            for (File file : RUTAS_ARCHIVOS) {
+            for (File file : archivos) {
                 if (!file.exists()) {
                     file.createNewFile();
                 }
@@ -71,7 +71,7 @@ public class ConstructorDeArchivos {
      * Metodo encargado de construir unicamente directorios
      */
     public void construirDirectorios() {
-        for (File file : RUTAS_DIRECTORIOS) {
+        for (File file : directorios) {
             if (!file.exists()) {
                 file.mkdirs();
             }
@@ -87,12 +87,12 @@ public class ConstructorDeArchivos {
         construirArchivos();
     }
 
-    public ArrayList<File> getRUTAS_ARCHIVOS() {
-        return RUTAS_ARCHIVOS;
+    public ArrayList<File> getArchivos() {
+        return archivos;
     }
 
-    public ArrayList<File> getRUTAS_DIRECTORIOS() {
-        return RUTAS_DIRECTORIOS;
+    public ArrayList<File> getDirectorios() {
+        return directorios;
     }
 
     /**
@@ -102,11 +102,11 @@ public class ConstructorDeArchivos {
     public int isEmpty() {
         int x = 0;
         int y = 0;
-        if (RUTAS_ARCHIVOS.isEmpty()) {
+        if (archivos.isEmpty()) {
             x = 1;
         }
 
-        if (RUTAS_DIRECTORIOS.isEmpty()) {
+        if (directorios.isEmpty()) {
             y = 2;
         }
         return x + y;

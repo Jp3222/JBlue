@@ -5,6 +5,7 @@
 package jblue;
 
 import com.jblue.sistema.Sistema;
+import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,25 +18,25 @@ public class JBlue {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String... args) {
+        System.out.println(Arrays.toString(args));
         //validando la version de java
         String versionStr = System.getProperty("java.version");
         CharSequence subsecuencia = versionStr.subSequence(0, 2);
 
         int versionInt = Integer.parseInt(subsecuencia.toString());
-        if (versionInt < 11) {
+        if (versionInt < 17) {
             JOptionPane.showMessageDialog(null, "Version de java no valida");
             return;
         }
-
-        //inicio del sistema
+        //Inicio del sistema
         Sistema s = Sistema.getInstancia();
         do {
-            if (!s.archivosSistema()) {
-                System.out.println("ERROR EN LOS ARCHIVOS DEL PROGRAMA");
-                break;
-            }
-            System.out.println("¡¡¡ARCHIVOS DEL PROGRAMA LISTOS!!!");
+//            if (!s.archivosSistema()) {
+//                System.out.println("ERROR EN LOS ARCHIVOS DEL PROGRAMA");
+//                break;
+//            }
+//            System.out.println("¡¡¡ARCHIVOS DEL PROGRAMA LISTOS!!!");
 
             if (!s.conexionBD()) {
                 System.out.println("ERROR EN La CONEXION A LA BD");
@@ -56,6 +57,7 @@ public class JBlue {
                 System.gc();
             }
         } while (s.isReinicio());
+
     }
 
 }

@@ -4,11 +4,27 @@
  */
 package com.jblue.vista.ventanas;
 
-import com.jblue.controlador.CLogin;
+import com.jblue.modelo.envoltorios.Operaciones;
+import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.sistema.Sesion;
+import com.jblue.util.cache.FabricaOpraciones;
+import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.vista.conf.SuperVentana;
+import com.jutil.jbd.conexion.Conexion;
+import com.jutil.jexception.Excp;
+import com.jutil.jswing.jswingenv.EnvJTextField;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.swing.ImageIcon;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -16,22 +32,72 @@ import javax.swing.JTextField;
  */
 public class Login extends SuperVentana {
 
-    private boolean clickJtfUsuario, clickJpfPass;
+    private final ImageIcon[] img;
     private final MenuPrincipal MENU_PRINCIPAL;
     private final MenuConfigBD MENU_CONFIG_BD;
-    private final CLogin cLogin;
+    private final EnvJTextField envjtfs[];
 
     /**
-     * Creates new form Login
+     * Creates new form NewLogin
+     *
+     * @param MENU_CONFIG_BD
      */
-    public Login() {
-        this.MENU_PRINCIPAL = new MenuPrincipal(this);
-        this.MENU_CONFIG_BD = new MenuConfigBD();
-        cLogin = new CLogin(this, MENU_PRINCIPAL, MENU_CONFIG_BD);
-        //
+    public Login(MenuConfigBD MENU_CONFIG_BD) {
+        this._TITULO = 1;
+        img = new ImageIcon[2];
+        img[0] = new ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"));
+        img[1] = new ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img3.png"));
+        MENU_PRINCIPAL = new MenuPrincipal(this);
+        this.MENU_CONFIG_BD = MENU_CONFIG_BD;
         initComponents();
+        envjtfs = new EnvJTextField[2];
+        envjtfs[0] = new EnvJTextField(usuario, "ejem: david123");
+        envjtfs[1] = new EnvJTextField(contra, "contraseña 12345");
         llamable();
-        //
+    }
+
+    @Override
+    public final void llamable() {
+        estadoFinal();
+        estadoInicial();
+        addEventos();
+    }
+
+    @Override
+    public void estadoInicial() {
+        usuario.requestFocusInWindow();
+        mostrar.setIcon(img[0]);
+        mostrar.setToolTipText("mostrar");
+        for (EnvJTextField envjtf : envjtfs) {
+            envjtf.defecto();
+        }
+    }
+
+    @Override
+    protected void estadoFinal() {
+        super.estadoFinal();
+        try {
+            Conexion instancia = Conexion.getInstancia();
+            String estado = "Estado ";
+            estado += instancia.isConectado() ? "Conectado" : "Desconectado";
+
+            jlEstado.setText(estado);
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    protected void addComponentes() {
+        super.addComponentes(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    @Override
+    protected void addEventos() {
+        for (EnvJTextField envjtf : envjtfs) {
+            envjtf.borrarAlClick();
+            envjtf.borrarAlEscribir();
+        }
     }
 
     /**
@@ -46,197 +112,252 @@ public class Login extends SuperVentana {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jtfUsuario = new javax.swing.JTextField();
-        jpfPass = new javax.swing.JPasswordField();
-        jbtSesion = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        configuracionBD = new javax.swing.JButton();
+        jlEstado = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jbtConfBD = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        usuario = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        contra = new javax.swing.JPasswordField();
+        mostrar = new javax.swing.JCheckBox();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jbtInicio = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(350, 500));
         setResizable(false);
+        getContentPane().setLayout(new java.awt.BorderLayout(5, 5));
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(350, 500));
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText("Contraseña");
-        jLabel1.setPreferredSize(new java.awt.Dimension(120, 30));
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Inicio de sesion");
+        jLabel1.setPreferredSize(new java.awt.Dimension(350, 25));
+        jPanel1.add(jLabel1, java.awt.BorderLayout.NORTH);
 
-        jLabel2.setText("Usuario");
-        jLabel2.setPreferredSize(new java.awt.Dimension(120, 30));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/img2.png"))); // NOI18N
+        jLabel2.setPreferredSize(new java.awt.Dimension(350, 75));
+        jPanel1.add(jLabel2, java.awt.BorderLayout.CENTER);
 
-        jtfUsuario.setPreferredSize(new java.awt.Dimension(146, 30));
-        jtfUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jtfUsuarioMouseClicked(evt);
+        jPanel2.setPreferredSize(new java.awt.Dimension(350, 300));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jPanel3.setPreferredSize(new java.awt.Dimension(350, 40));
+        jPanel3.setLayout(new java.awt.BorderLayout(5, 5));
+
+        configuracionBD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/img4.png"))); // NOI18N
+        configuracionBD.setPreferredSize(new java.awt.Dimension(75, 40));
+        configuracionBD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                configuracionBDActionPerformed(evt);
             }
         });
-        jtfUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jtfUsuarioKeyPressed(evt);
+        jPanel3.add(configuracionBD, java.awt.BorderLayout.WEST);
+        jPanel3.add(jlEstado, java.awt.BorderLayout.CENTER);
+
+        jLabel4.setPreferredSize(new java.awt.Dimension(75, 40));
+        jPanel3.add(jLabel4, java.awt.BorderLayout.LINE_END);
+
+        jPanel2.add(jPanel3, java.awt.BorderLayout.SOUTH);
+
+        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel5.setLayout(new java.awt.BorderLayout(5, 5));
+
+        jLabel5.setText("Usuario");
+        jLabel5.setPreferredSize(new java.awt.Dimension(100, 40));
+        jPanel5.add(jLabel5, java.awt.BorderLayout.LINE_START);
+
+        usuario.setNextFocusableComponent(contra);
+        usuario.setPreferredSize(new java.awt.Dimension(100, 40));
+        jPanel5.add(usuario, java.awt.BorderLayout.CENTER);
+
+        jLabel9.setPreferredSize(new java.awt.Dimension(30, 40));
+        jPanel5.add(jLabel9, java.awt.BorderLayout.LINE_END);
+
+        jPanel4.add(jPanel5);
+
+        jPanel6.setLayout(new java.awt.BorderLayout(5, 5));
+
+        jLabel6.setText("Contraseña");
+        jLabel6.setPreferredSize(new java.awt.Dimension(100, 40));
+        jPanel6.add(jLabel6, java.awt.BorderLayout.LINE_START);
+
+        contra.setNextFocusableComponent(jbtInicio);
+        jPanel6.add(contra, java.awt.BorderLayout.CENTER);
+
+        mostrar.setToolTipText("mostrar");
+        mostrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mostrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
+        mostrar.setNextFocusableComponent(configuracionBD);
+        mostrar.setPreferredSize(new java.awt.Dimension(30, 40));
+        mostrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mostrarActionPerformed(evt);
             }
         });
+        jPanel6.add(mostrar, java.awt.BorderLayout.LINE_END);
 
-        jpfPass.setPreferredSize(new java.awt.Dimension(128, 30));
-        jpfPass.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jpfPassMouseClicked(evt);
+        jPanel4.add(jPanel6);
+
+        jPanel7.setLayout(new java.awt.BorderLayout(5, 5));
+
+        jLabel7.setPreferredSize(new java.awt.Dimension(100, 18));
+        jPanel7.add(jLabel7, java.awt.BorderLayout.LINE_START);
+
+        jbtInicio.setText("Iniciar Sesion");
+        jbtInicio.setNextFocusableComponent(mostrar);
+        jbtInicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtInicioActionPerformed(evt);
             }
         });
-        jpfPass.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jpfPassKeyPressed(evt);
-            }
-        });
+        jPanel7.add(jbtInicio, java.awt.BorderLayout.CENTER);
 
-        jbtSesion.setText("Iniciar Sesion");
+        jLabel8.setPreferredSize(new java.awt.Dimension(30, 40));
+        jPanel7.add(jLabel8, java.awt.BorderLayout.LINE_END);
 
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/usuario.png"))); // NOI18N
+        jPanel4.add(jPanel7);
 
-        jLabel4.setText("Estado:");
-        jLabel4.setPreferredSize(new java.awt.Dimension(40, 40));
+        jPanel8.setPreferredSize(new java.awt.Dimension(100, 100));
+        jPanel8.setLayout(new java.awt.BorderLayout());
+        jPanel4.add(jPanel8);
 
-        jbtConfBD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/engranajes.png"))); // NOI18N
-        jbtConfBD.setToolTipText("Configuracion de la base de datos");
-        jbtConfBD.setPreferredSize(new java.awt.Dimension(40, 40));
+        jPanel9.setPreferredSize(new java.awt.Dimension(100, 100));
+        jPanel9.setLayout(new java.awt.BorderLayout());
+        jPanel4.add(jPanel9);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbtSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
-                            .addComponent(jpfPass, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jbtConfBD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jpfPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jbtSesion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtConfBD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
+        jPanel2.add(jPanel4, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_END);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    @Override
-    public final void llamable() {
-        estadoFinal();
-        estadoInicial();
-        addComponentes();
-        addEventos();
-    }
 
-    @Override
-    public void estadoInicial() {
-        this.clickJpfPass = false;
-        this.clickJtfUsuario = false;
-        this.jtfUsuario.setText("ejem: maestro123");
-        this.jpfPass.setText("contraseña");
-    }
-
-    @Override
-    protected void estadoFinal() {
-        this.setTitle(NOMBRE + VERSION + " " + SECCION[0]);
-        ImageIcon o = new ImageIcon(this.getClass().getResource("/com/jblue/media/img/x128/jblue_icono.png"));
-        this.setIconImage(o.getImage());
-    }
-
-    @Override
-    protected void addEventos() {
-        jbtSesion.addActionListener(e -> cLogin.irMenu());
-        jbtConfBD.addActionListener(e -> cLogin.irMenuConfigBD());
-    }
-
-
-    private void jtfUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtfUsuarioMouseClicked
-        if (!clickJtfUsuario) {
-            jtfUsuario.setText(null);
-            clickJtfUsuario = true;
+    private void mostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarActionPerformed
+        if (mostrar.isSelected()) {
+            char c = 0;
+            contra.setEchoChar(c);
+            mostrar.setIcon(img[1]);
+            mostrar.setToolTipText("ocultar");
+        } else {
+            contra.setEchoChar('*');
+            mostrar.setIcon(img[0]);
+            mostrar.setToolTipText("mostrar");
         }
-    }//GEN-LAST:event_jtfUsuarioMouseClicked
+    }//GEN-LAST:event_mostrarActionPerformed
 
-    private void jpfPassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpfPassMouseClicked
-        if (!clickJpfPass) {
-            jpfPass.setText(null);
-            clickJpfPass = true;
+    private void jbtInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtInicioActionPerformed
+        try {
+            if (!inicio()) {
+                return;
+            }
+            SwingUtilities.invokeLater(() -> {
+                this.setVisible(false);
+                this.dispose();
+            });
+            SwingUtilities.invokeLater(() -> {
+                MENU_PRINCIPAL.setVisible(true);
+            });
+        } catch (UnsupportedEncodingException
+                | InvalidKeyException | NoSuchAlgorithmException
+                | BadPaddingException | IllegalBlockSizeException
+                | NoSuchPaddingException e) {
+            Excp.impTerminal(e, getClass(), true);
         }
-    }//GEN-LAST:event_jpfPassMouseClicked
 
-    private void jtfUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfUsuarioKeyPressed
-        if (!clickJtfUsuario) {
-            jtfUsuario.setText(null);
-            clickJtfUsuario = true;
+    }//GEN-LAST:event_jbtInicioActionPerformed
+
+    private void configuracionBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configuracionBDActionPerformed
+        dispose();
+        SwingUtilities.invokeLater(() -> MENU_CONFIG_BD.setVisible(true));
+    }//GEN-LAST:event_configuracionBDActionPerformed
+
+    public boolean inicio()
+            throws UnsupportedEncodingException, NoSuchAlgorithmException,
+            InvalidKeyException, NoSuchPaddingException,
+            IllegalBlockSizeException, BadPaddingException {
+
+        if (!datosValidos()) {
+            return false;
         }
-    }//GEN-LAST:event_jtfUsuarioKeyPressed
 
-    private void jpfPassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jpfPassKeyPressed
-        if (!clickJpfPass) {
-            jpfPass.setText(null);
-            clickJpfPass = true;
+        String x = usuario.getText();
+        String y = String.valueOf(contra.getPassword());
+
+        Operaciones<OPersonal> log = FabricaOpraciones.PERSONAL;
+
+        EncriptadoAES en = new EncriptadoAES();
+        String query = "usuario ='" + en.encriptar(x, y) + "' && contra ='" + en.encriptar(y, x) + "'";
+        OPersonal get = log.get(query);
+
+        if (get == null) {
+            JOptionPane.showMessageDialog(this, "Usuario y/o contraseña incorrectos");
+            return false;
         }
-    }//GEN-LAST:event_jpfPassKeyPressed
 
-    public JPasswordField getJpfPass() {
-        return jpfPass;
+        Sesion sesion = Sesion.getInstancia();
+        sesion.setUsuario(get);
+
+        if (!sesion.inicioSesion()) {
+            JOptionPane.showMessageDialog(this, "ERROR AL REGISTRAR SESION");
+            return false;
+        }
+        return true;
     }
 
-    public JTextField getJtfUsuario() {
-        return jtfUsuario;
+    public boolean datosValidos() {
+        String x = usuario.getText();
+        String y = String.valueOf(contra.getPassword());
+        return x != null && !x.isEmpty() && y != null && !y.isEmpty();
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        SwingUtilities.invokeLater(() -> estadoInicial());
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton configuracionBD;
+    private javax.swing.JPasswordField contra;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton jbtConfBD;
-    private javax.swing.JButton jbtSesion;
-    private javax.swing.JPasswordField jpfPass;
-    private javax.swing.JTextField jtfUsuario;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JButton jbtInicio;
+    private javax.swing.JLabel jlEstado;
+    private javax.swing.JCheckBox mostrar;
+    private javax.swing.JTextField usuario;
     // End of variables declaration//GEN-END:variables
-
 }

@@ -5,6 +5,7 @@
 package com.jblue.util.plataformas;
 
 import com.jblue.sistema.so.ConstructorDeArchivos;
+import com.jblue.util.SoInfo;
 import com.jblue.util.plataformas.interfaces.Configuraciones;
 import com.jblue.util.plataformas.soconfig.apariencia;
 
@@ -22,17 +23,20 @@ public class SoConfig implements Configuraciones {
 
     @Override
     public void createLanzador() {
-        throw new UnsupportedOperationException("No creado aun"); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void setDefaultApariencia() {
-        apariencia.setAparienciaDEF();
+        if (SoInfo.isMac() || SoInfo.isWindows()) {
+            apariencia.setDefault();
+            return;
+        }
+        apariencia.setDefault();
     }
 
     @Override
     public void ocultarFicheros() {
-        
+
     }
 
 }

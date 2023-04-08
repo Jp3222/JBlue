@@ -6,14 +6,15 @@ package com.jblue.vista.ventanas.bd;
 
 import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OCalles;
+import com.jblue.util.FormatoBD;
 import com.jblue.util.cache.FabricaCache;
+import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.vista.conf.SuperVentana;
-import com.jutil.jevtfun.eventosfuncionales.EvtWindow;
-import com.jutil.jevtfun.eventosfuncionales.env.BorrarAlClick;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import com.jutil.jswing.jswingenv.EnvJTextField;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,35 +32,45 @@ public class NewMenuCalles extends SuperVentana {
     //
     private final DefaultTableModel modelo;
     //
-    private BorrarAlClick bus;
-    private BorrarAlClick nom;
-    private BorrarAlClick num;
+    private EnvJTextField bus;
+    private EnvJTextField nom;
+    private EnvJTextField num;
 
     /**
      * Creates new form NewMenuCalles
      */
     public NewMenuCalles() {
-
+        _TITULO = 4;
         buscando = false;
         lista_auxiliar = new ArrayList<>();
         memoria_cache = FabricaCache.MC_CALLES;
-        operaciones = FabricaCache.OP_CALLES;
+        operaciones = FabricaOpraciones.CALLES;
         cache = memoria_cache.getLista();
         //
         initComponents();
-        this.bus = new BorrarAlClick(jtfBuscar, "ejem: CHIMALPOPOCA No 10");
+        this.bus = new EnvJTextField(jtfBuscar, "ejem: CHIMALPOPOCA No 10");
         this.bus.defectoAlEnter();
-        this.nom = new BorrarAlClick(jtfNombre, "ejem: MALINCHE");
-        this.num = new BorrarAlClick(jtfNumero, "ejem: 10");
+        this.nom = new EnvJTextField(jtfNombre, "ejem: MALINCHE");
+        this.num = new EnvJTextField(jtfNumero, "ejem: 10");
         modelo = (DefaultTableModel) jtCalles.getModel();
-
         llamable();
     }
 
     @Override
     protected final void llamable() {
+        estadoFinal();
         estadoInicial();
         addEventos();
+    }
+
+    @Override
+    protected void estadoFinal() {
+        super.estadoFinal();
+    }
+
+    @Override
+    protected void addComponentes() {
+        super.addComponentes(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
     @Override
@@ -71,18 +82,6 @@ public class NewMenuCalles extends SuperVentana {
         num.defecto();
         jtfNombre.requestFocus();
         botonesPrimarios();
-    }
-
-    @Override
-    protected void addEventos() {
-        EvtWindow win = new EvtWindow();
-        win.add(win.WINDOW_ACTIVATED, (e) -> {
-            if (isVisible() || isActive()) {
-                cargarTabla();
-            }
-        });
-        win.add(win.WINDOW_CLOSING, (e) -> vaciarTabla());
-
     }
 
     public void botonesPrimarios() {
@@ -100,12 +99,20 @@ public class NewMenuCalles extends SuperVentana {
     }
 
     void cargarTabla() {
+        for (OCalles o : cache) {
+            modelo.addRow(o.getInfo());
+        }
     }
 
     void vaciarTabla() {
+        while (modelo.getRowCount() > 0) {
+            modelo.removeRow(0);
+        }
     }
 
     void actualizarTabla() {
+        vaciarTabla();
+        cargarTabla();
     }
 
     /**
@@ -162,6 +169,12 @@ public class NewMenuCalles extends SuperVentana {
 
         jPanel2.setPreferredSize(new java.awt.Dimension(500, 700));
         jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jtfBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtfBuscarKeyReleased(evt);
+            }
+        });
         jPanel2.add(jtfBuscar, java.awt.BorderLayout.NORTH);
 
         jPanel5.setPreferredSize(new java.awt.Dimension(500, 30));
@@ -211,15 +224,22 @@ public class NewMenuCalles extends SuperVentana {
 
         jtCalles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Nombre", "Numero"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jtCalles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jtCalles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jtCalles.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jtCallesMouseClicked(evt);
@@ -365,28 +385,144 @@ public class NewMenuCalles extends SuperVentana {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtGuardarActionPerformed
-        // TODO add your handling code here:
+        boolean valido = datosValidos();
+        if (!valido) {
+            JOptionPane.showMessageDialog(this, "INSERCCION ERRONEA", "ERROR", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String[] info = getInfo();
+        info = FormatoBD.bdEntrada(info);
+        operaciones.insertar(info);
+        JOptionPane.showMessageDialog(this, "INSERCCION EXITOSA", "OPERACION REALIZADA", JOptionPane.WARNING_MESSAGE);
+
     }//GEN-LAST:event_jbtGuardarActionPerformed
 
     private void jbtActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtActualizarActionPerformed
-        // TODO add your handling code here:
+        boolean valido = datosValidos();
+        if (!valido) {
+            JOptionPane.showMessageDialog(this, "ACTUALIZACION ERRONEA", "ERROR", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String[] info = getInfo();
+        info = FormatoBD.bdEntrada(info);
+        String[] campos = operaciones.getCAMPOS();
+        operaciones.actualizar(campos, info, "id = " + calle_buscada.getId());
+        JOptionPane.showMessageDialog(this, "ACTUALIZACION EXITOSA", "OPERACION REALIZADA", JOptionPane.WARNING_MESSAGE);
+
     }//GEN-LAST:event_jbtActualizarActionPerformed
 
     private void jbtEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtEliminarActionPerformed
-        // TODO add your handling code here:
+        if (calle_buscada == null) {
+            JOptionPane.showMessageDialog(this, "ELIMINACION ERRONEA", "ERROR", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        operaciones.eliminar("id = " + calle_buscada.getId());
+        JOptionPane.showMessageDialog(this, "ELIMINACION EXITOSA", "OPERACION REALIZADA", JOptionPane.WARNING_MESSAGE);
+
     }//GEN-LAST:event_jbtEliminarActionPerformed
 
     private void jbtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtCancelarActionPerformed
-        // TODO add your handling code here:
+        int x = JOptionPane.showConfirmDialog(this, "¿Esta seguro de que desea cancelar la operacion?", "Cancelar Operacion", JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (x == JOptionPane.YES_OPTION) {
+            estadoInicial();
+        }
     }//GEN-LAST:event_jbtCancelarActionPerformed
 
     private void jtCallesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtCallesMouseClicked
-        // TODO add your handling code here:
+        int clicks = evt.getClickCount();
+
+        ArrayList<OCalles> aux;
+
+        if (buscando) {
+            aux = lista_auxiliar;
+        } else {
+            aux = cache;
+        }
+
+        calle_buscada = aux.get(jtCalles.getSelectedRow());
+
+        switch (clicks) {
+            case 1:
+                if (buscando) {
+                    jtfBuscar.setText(calle_buscada.getStringR());
+                }
+                break;
+            case 2:
+                jtfNombre.setText(calle_buscada.getNombre());
+                jtfNumero.setText(calle_buscada.getNumero());
+                botonesSecundarios();
+                jtCalles.clearSelection();
+                actualizarTabla();
+                buscando = false;
+                break;
+        }
+
     }//GEN-LAST:event_jtCallesMouseClicked
 
     private void jbtRecrgarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRecrgarActionPerformed
-        // TODO add your handling code here:
+        actualizarTabla();
     }//GEN-LAST:event_jbtRecrgarActionPerformed
+
+    private void jtfBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfBuscarKeyReleased
+        buscando = true;
+        lista_auxiliar.clear();
+        vaciarTabla();
+        //
+        String texto_buscado = jtfBuscar.getText();
+        texto_buscado = limpiar(texto_buscado);
+        //
+        for (OCalles o : cache) {
+            String aux = limpiar(o.getStringR());
+            if (aux == null || aux.isEmpty() || aux.contains(texto_buscado)) {
+                modelo.addRow(o.getInfo());
+                lista_auxiliar.add(o);
+            }
+        }
+    }//GEN-LAST:event_jtfBuscarKeyReleased
+
+    private String[] getInfo() {
+        return new String[]{
+            jtfNombre.getText(),
+            jtfNumero.getText()
+        };
+    }
+
+    private boolean datosValidos() {
+        String[] info = getInfo();
+        return varValidas(info) && info[0].matches("[a-zA-ZñÑ]") && info[1].matches("[0-9]{0,3}");
+    }
+
+    public boolean varValidas(String... txt) {
+        for (String o : txt) {
+            if (o == null || o.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private String limpiar(String txt) {
+        return txt.trim().replace(" ", "").toUpperCase();
+    }
+
+    @Override
+    public void setVisible(boolean b) {
+        super.setVisible(b);
+        SwingUtilities.invokeLater(() -> cargarTabla());
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        cerrar();
+    }
+
+    void cerrar() {
+        SwingUtilities.invokeLater(() -> {
+            vaciarTabla();
+            estadoInicial();
+        });
+    }
 
 // <editor-fold defaultstate="collapsed" desc="Generated Code">     
     // Variables declaration - do not modify//GEN-BEGIN:variables

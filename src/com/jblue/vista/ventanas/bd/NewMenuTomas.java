@@ -4,14 +4,21 @@
  */
 package com.jblue.vista.ventanas.bd;
 
+import com.jblue.modelo.ConstBD;
 import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OTipoTomas;
+import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.util.FormatoBD;
 import com.jblue.util.cache.FabricaCache;
+import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.vista.conf.SuperVentana;
-import com.jutil.jevtfun.eventosfuncionales.EvtWindow;
-import com.jutil.jevtfun.eventosfuncionales.env.BorrarAlClick;
+import com.jutil.jswing.jswingenv.EnvJTextField;
 import java.util.ArrayList;
+import java.util.Arrays;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -29,79 +36,114 @@ public class NewMenuTomas extends SuperVentana {
     //
     private final DefaultTableModel modelo;
 
-    private BorrarAlClick bus;
-    private BorrarAlClick nom;
-    private BorrarAlClick num;
+    private EnvJTextField env[];
 
     /**
      * Creates new form NewMenuCalles
      */
     public NewMenuTomas() {
+
+        _TITULO = 5;
         this.lista_auxiliar = new ArrayList<>();
         memoria_cache = FabricaCache.MC_TIPOS_DE_TOMAS;
         cache = memoria_cache.getLista();
-        operaciones = FabricaCache.OP_TIPOS_DE_TOMAS;
+        operaciones = FabricaOpraciones.TIPOS_DE_TOMAS;
         //
         initComponents();
-        this.bus = new BorrarAlClick(jtfBuscar, "ejem: CHIMALPOPOCA No 10");
-        this.bus.defectoAlEnter();
-        this.nom = new BorrarAlClick(jtfNombre, "ejem: MALINCHE");
-        this.num = new BorrarAlClick(jtfNumero, "ejem: 10");
-        modelo = (DefaultTableModel) jtCalles.getModel();
+        this.env = new EnvJTextField[4];
+        this.env[0] = new EnvJTextField(jtfBuscar, "ejem: Domestica");
+        this.env[1] = new EnvJTextField(jtfTipo, "ejem: Domestica");
+        this.env[2] = new EnvJTextField(jtfCosto, "ejem: 100");
+        this.env[3] = new EnvJTextField(jtfRecargo, "ejem: 200");
+        modelo = (DefaultTableModel) jtTipoDeTomas.getModel();
 
         llamable();
     }
 
     @Override
     protected final void llamable() {
+        estadoFinal();
         estadoInicial();
         addEventos();
+    }
+
+    @Override
+    protected void estadoFinal() {
+        super.estadoFinal();
     }
 
     @Override
     public void estadoInicial() {
         tipo_de_toma_buscada = null;
         lista_auxiliar.clear();
-        bus.defecto();
-        nom.defecto();
-        num.defecto();
-        jtfNombre.requestFocus();
+        for (EnvJTextField o : env) {
+            o.borrarAlClick();
+            o.borrarAlEscribir();
+            o.defecto();
+        }
+
+        jtfTipo.requestFocusInWindow();
+        jbtCancelar.setEnabled(true);
         botonesPrimarios();
     }
 
     @Override
+    protected void addComponentes() {
+        super.addComponentes(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+    
+    @Override
     protected void addEventos() {
-        EvtWindow win = new EvtWindow();
-        win.add(win.WINDOW_ACTIVATED, (e) -> {
-            if (isVisible() || isActive()) {
-                cargarTabla();
-            }
-        });
-        win.add(win.WINDOW_CLOSING, (e) -> vaciarTabla());
-
     }
 
     public void botonesPrimarios() {
         jbtGuardar.setEnabled(true);
         jbtActualizar.setEnabled(false);
         jbtEliminar.setEnabled(false);
-        jbtCancelar.setEnabled(true);
     }
 
     public void botonesSecundarios() {
         jbtGuardar.setEnabled(false);
         jbtActualizar.setEnabled(true);
         jbtEliminar.setEnabled(true);
-        jbtCancelar.setEnabled(true);
     }
 
     void cargarTabla() {
+
+        for (OTipoTomas o : cache) {
+            modelo.addRow(o.getInfo());
+        }
+
     }
 
     void vaciarTabla() {
+        while (modelo.getRowCount() > 0) {
+            modelo.removeRow(0);
+        }
     }
 
     void actualizarTabla() {
+        vaciarTabla();
+        cargarTabla();
+
+    }
+
+    String limpiar(String txt) {
+        return txt.trim().replace(" ", "").toUpperCase();
+    }
+
+    void buscar(String txt) {
+        buscando = true;
+        lista_auxiliar.clear();
+        vaciarTabla();
+        txt = limpiar(txt);
+        for (OTipoTomas o : cache) {
+            String aux = limpiar(o.getTipo());
+            if (aux.contains(txt)) {
+                modelo.addRow(o.getInfo());
+                lista_auxiliar.add(o);
+            }
+        }
     }
 
     /**
@@ -127,7 +169,7 @@ public class NewMenuTomas extends SuperVentana {
         jbtSiguiente = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jtCalles = new javax.swing.JTable();
+        jtTipoDeTomas = new javax.swing.JTable();
         PanelDeRegistros = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
@@ -135,15 +177,15 @@ public class NewMenuTomas extends SuperVentana {
         jPanel13 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
-        jtfNombre = new javax.swing.JTextField();
+        jtfTipo = new javax.swing.JTextField();
         jPanel15 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel16 = new javax.swing.JPanel();
-        jtfNumero = new javax.swing.JTextField();
+        jtfCosto = new javax.swing.JTextField();
         jPanel24 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel25 = new javax.swing.JPanel();
-        jtfNumero1 = new javax.swing.JTextField();
+        jtfRecargo = new javax.swing.JTextField();
         jPanel17 = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
@@ -162,6 +204,12 @@ public class NewMenuTomas extends SuperVentana {
 
         PanelDeBusqueda.setPreferredSize(new java.awt.Dimension(500, 700));
         PanelDeBusqueda.setLayout(new java.awt.BorderLayout());
+
+        jtfBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtfBuscarKeyReleased(evt);
+            }
+        });
         PanelDeBusqueda.add(jtfBuscar, java.awt.BorderLayout.NORTH);
 
         jPanel5.setPreferredSize(new java.awt.Dimension(500, 30));
@@ -209,23 +257,35 @@ public class NewMenuTomas extends SuperVentana {
         jPanel6.setPreferredSize(new java.awt.Dimension(500, 640));
         jPanel6.setLayout(new java.awt.BorderLayout());
 
-        jtCalles.setModel(new javax.swing.table.DefaultTableModel(
+        jtTipoDeTomas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Tipo", "Costo", "Recargo"
             }
-        ));
-        jtCalles.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jtCallesMouseClicked(evt);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jtCalles);
+        jtTipoDeTomas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtTipoDeTomasMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jtTipoDeTomas);
 
         jPanel6.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -260,8 +320,8 @@ public class NewMenuTomas extends SuperVentana {
 
         jPanel14.setLayout(new java.awt.BorderLayout());
 
-        jtfNombre.setPreferredSize(new java.awt.Dimension(500, 40));
-        jPanel14.add(jtfNombre, java.awt.BorderLayout.CENTER);
+        jtfTipo.setPreferredSize(new java.awt.Dimension(500, 40));
+        jPanel14.add(jtfTipo, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel14);
 
@@ -276,8 +336,13 @@ public class NewMenuTomas extends SuperVentana {
 
         jPanel16.setLayout(new java.awt.BorderLayout());
 
-        jtfNumero.setPreferredSize(new java.awt.Dimension(500, 40));
-        jPanel16.add(jtfNumero, java.awt.BorderLayout.CENTER);
+        jtfCosto.setPreferredSize(new java.awt.Dimension(500, 40));
+        jtfCosto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfCostoKeyTyped(evt);
+            }
+        });
+        jPanel16.add(jtfCosto, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel16);
 
@@ -292,8 +357,13 @@ public class NewMenuTomas extends SuperVentana {
 
         jPanel25.setLayout(new java.awt.BorderLayout());
 
-        jtfNumero1.setPreferredSize(new java.awt.Dimension(500, 40));
-        jPanel25.add(jtfNumero1, java.awt.BorderLayout.CENTER);
+        jtfRecargo.setPreferredSize(new java.awt.Dimension(500, 40));
+        jtfRecargo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfRecargoKeyTyped(evt);
+            }
+        });
+        jPanel25.add(jtfRecargo, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel25);
 
@@ -380,31 +450,200 @@ public class NewMenuTomas extends SuperVentana {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jbtRecrgarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRecrgarActionPerformed
+        actualizarTabla();
+    }//GEN-LAST:event_jbtRecrgarActionPerformed
+
+    private void jtTipoDeTomasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtTipoDeTomasMouseClicked
+        int seleccionado = jtTipoDeTomas.getSelectedRow();
+        if (seleccionado < 0) {
+            return;
+        }
+        int clicks = evt.getClickCount();
+        ArrayList<OTipoTomas> aux;
+        if (buscando) {
+            aux = lista_auxiliar;
+        } else {
+            aux = cache;
+        }
+        if (seleccionado < 0 || seleccionado >= aux.size()) {
+            return;
+        }
+        tipo_de_toma_buscada = aux.get(seleccionado);
+        switch (clicks) {
+            case 1:
+                if (buscando) {
+                    jtfBuscar.setText(tipo_de_toma_buscada.getTipo());
+                }
+                break;
+            case 2:
+                jtfBuscar.setText(null);
+                jtfTipo.setText(tipo_de_toma_buscada.getTipo());
+                jtfCosto.setText(tipo_de_toma_buscada.getCosto() + "");
+                jtfRecargo.setText(tipo_de_toma_buscada.getRecargo() + "");
+                botonesSecundarios();
+                jtTipoDeTomas.clearSelection();
+                actualizarTabla();
+                if (buscando) {
+                    buscando = false;
+                }
+                break;
+        }
+
+    }//GEN-LAST:event_jtTipoDeTomasMouseClicked
+
+    private void jtfBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfBuscarKeyReleased
+        buscar(jtfBuscar.getText());
+    }//GEN-LAST:event_jtfBuscarKeyReleased
+
     private void jbtGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtGuardarActionPerformed
-        // TODO add your handling code here:
+
+        if (!datosValidos()) {
+            JOptionPane.showMessageDialog(this, "Datos No Validos", "Error al guardar", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String[] datos = _datos();
+        datos = FormatoBD.bdEntrada(datos);
+        boolean mov = operaciones.insertar(datos);
+        movimiento(mov);
     }//GEN-LAST:event_jbtGuardarActionPerformed
 
     private void jbtActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtActualizarActionPerformed
         // TODO add your handling code here:
+        if (tipo_de_toma_buscada == null) {
+            JOptionPane.showMessageDialog(this, "Tipo de toma no seleccionada", "Error al eliminar", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (datosValidos()) {
+            JOptionPane.showMessageDialog(this, "Datos No Validos", "Error al actualizar", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        //
+        String[] datos = _datos();
+        datos = FormatoBD.bdEntrada(datos);
+        String[] cam = ConstBD.BD_TIPOS_DE_TOMAS;
+        cam = Arrays.copyOfRange(cam, 1, cam.length);
+        boolean mov = operaciones.actualizar(cam, datos, "id = " + tipo_de_toma_buscada.getId());
+        movimiento(mov);
+
     }//GEN-LAST:event_jbtActualizarActionPerformed
 
     private void jbtEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtEliminarActionPerformed
-        // TODO add your handling code here:
+        if (tipo_de_toma_buscada == null) {
+            JOptionPane.showMessageDialog(this, "Tipo de toma no seleccionada", "Error al eliminar", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        ArrayList<OUsuarios> lista = FabricaOpraciones.USUARIOS.getLista("toma = " + tipo_de_toma_buscada.getId());
+        if (!lista.isEmpty()) {
+            StringBuilder s = new StringBuilder();
+            s.append(lista.size()).append(" usuarios usan este registro");
+            JOptionPane.showMessageDialog(this, s.toString(), "Error al eliminar", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        boolean mov = operaciones.eliminar("id = " + tipo_de_toma_buscada.getId());
+        movimiento(mov);
+
+
     }//GEN-LAST:event_jbtEliminarActionPerformed
 
     private void jbtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtCancelarActionPerformed
-        // TODO add your handling code here:
+        int o = JOptionPane.showConfirmDialog(this, "¿Seguro de cancelar la operacion?", "Cancelar operacion", JOptionPane.INFORMATION_MESSAGE);
+        if (o == JOptionPane.YES_OPTION) {
+            estadoInicial();
+        }
     }//GEN-LAST:event_jbtCancelarActionPerformed
 
-    private void jtCallesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtCallesMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtCallesMouseClicked
+    private void jtfCostoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfCostoKeyTyped
+        if (jtfCosto.getText().length() >= 7) {
+            evt.consume();
+            getToolkit().beep();
+        }
+    }//GEN-LAST:event_jtfCostoKeyTyped
 
-    private void jbtRecrgarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRecrgarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbtRecrgarActionPerformed
+    private void jtfRecargoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfRecargoKeyTyped
+        if (jtfRecargo.getText().length() >= 7) {
+            evt.consume();
+            getToolkit().beep();
+        }
+    }//GEN-LAST:event_jtfRecargoKeyTyped
 
-// <editor-fold defaultstate="collapsed" desc="Generated Code">     
+    void movimiento(boolean mov) {
+        if (mov) {
+            memoria_cache.actualizar();
+            actualizarTabla();
+            estadoInicial();
+            JOptionPane.showConfirmDialog(this, "Operacion exitosa");
+            for (EnvJTextField e : env) {
+                e.defecto();
+            }
+            return;
+        }
+        JOptionPane.showConfirmDialog(this, "Error");
+
+    }
+
+    String[] _datos() {
+        return new String[]{
+            jtfTipo.getText(),
+            jtfCosto.getText(),
+            jtfRecargo.getText()
+        };
+    }
+
+    public boolean datosValidos() {
+        JTextField[] arr = {
+            jtfTipo, jtfCosto, jtfRecargo
+        };
+        for (JTextField i : arr) {
+            if (!varibaleValida(i.getText())) {
+                return false;
+            }
+        }
+
+        if (!soloTexto(jtfTipo.getText())) {
+            return false;
+        }
+        if (!soloNumeros(jtfCosto.getText())) {
+            return false;
+        }
+        return soloNumeros(jtfRecargo.getText());
+
+    }
+
+    public boolean varibaleValida(String txt) {
+        return txt != null && !txt.isEmpty();
+    }
+
+    public boolean soloTexto(String txt) {
+        return txt.matches("( |[a-zA-Z]|[_ñÑáÁéÉíÍóÓúÚ]){1,50}");
+    }
+
+    public boolean soloNumeros(String txt) {
+        return txt.matches("([0-9]{1,4})(|(\\\\.([0-9]{1,2})))");
+    }
+
+    @Override
+    public void setVisible(boolean b) {
+        super.setVisible(b);
+        SwingUtilities.invokeLater(() -> cargarTabla());
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        cerrar();
+    }
+
+    public void cerrar() {
+        SwingUtilities.invokeLater(() -> {
+            vaciarTabla();
+            estadoInicial();
+        });
+    }
+
+// <editor-fold defaultstate="collapsed" desc="Variables del Formulario">     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelDeBusqueda;
     private javax.swing.JPanel PanelDeRegistros;
@@ -443,11 +682,11 @@ public class NewMenuTomas extends SuperVentana {
     private javax.swing.JButton jbtGuardar;
     private javax.swing.JButton jbtRecrgar;
     private javax.swing.JButton jbtSiguiente;
-    private javax.swing.JTable jtCalles;
+    private javax.swing.JTable jtTipoDeTomas;
     private javax.swing.JTextField jtfBuscar;
-    private javax.swing.JTextField jtfNombre;
-    private javax.swing.JTextField jtfNumero;
-    private javax.swing.JTextField jtfNumero1;
+    private javax.swing.JTextField jtfCosto;
+    private javax.swing.JTextField jtfRecargo;
+    private javax.swing.JTextField jtfTipo;
     // End of variables declaration//GEN-END:variables
     //</editor-fold>     
 }

@@ -4,6 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
+import com.jblue.modelo.objetos.sucls.Objeto;
 import com.jblue.modelo.envoltorios.env.EnvUsuario;
 
 /**
@@ -14,7 +15,7 @@ public class OUsuarios extends Objeto {
 
     public OUsuarios(String[] info) {
         super(info);
-        _infoSinFK = InfoSinFK();
+        _conjuntoSinFK = InfoSinFK();
     }
 
     public OUsuarios() {
@@ -27,7 +28,7 @@ public class OUsuarios extends Objeto {
      * @return una cadena con el nombre del usuario
      */
     public String getNombre() {
-        return _info[1];
+        return _conjunto[1];
     }
 
     /**
@@ -35,7 +36,7 @@ public class OUsuarios extends Objeto {
      * @return una cadena con el apellido paterno del usuario
      */
     public String getAp() {
-        return _info[2];
+        return _conjunto[2];
     }
 
     /**
@@ -43,7 +44,7 @@ public class OUsuarios extends Objeto {
      * @return una cadena con el apellido materno del usuario
      */
     public String getAm() {
-        return _info[3];
+        return _conjunto[3];
     }
 
     /**
@@ -52,8 +53,9 @@ public class OUsuarios extends Objeto {
      *
      * @return una cadena con el nombre completo del usuario
      */
-    public String getNombreStr() {
-        return _info[1] + " " + _info[2] + " " + _info[3];
+    @Override
+    public String getStringR() {
+        return getSubCon(1, 2, 3).replace(",", " ");
     }
 
     /**
@@ -61,7 +63,7 @@ public class OUsuarios extends Objeto {
      * @return una cadena con el ID de la calle asociada a este usuario
      */
     public String getCalle() {
-        return _info[4];
+        return _conjunto[4];
     }
 
     /**
@@ -69,7 +71,7 @@ public class OUsuarios extends Objeto {
      * @return una cadena con el ID del tipo de toma asociada a este usuario
      */
     public String getToma() {
-        return _info[5];
+        return _conjunto[5];
     }
 
     /**
@@ -77,7 +79,7 @@ public class OUsuarios extends Objeto {
      * @return una cadena con la fecha de registro de este usuario
      */
     public String getRegistro() {
-        return _info[6];
+        return _conjunto[6];
     }
 
     /**
@@ -86,7 +88,7 @@ public class OUsuarios extends Objeto {
      * inactivo
      */
     public int getEstado() {
-        return Integer.parseInt(_info[7]);
+        return Integer.parseInt(_conjunto[7]);
     }
 
     public boolean isActivo() {
@@ -99,38 +101,36 @@ public class OUsuarios extends Objeto {
      * del usuario al cual esta asociado
      */
     public int getTitutlar() {
-        int i = Integer.parseInt(_info[8]);
+        int i = Integer.parseInt(_conjunto[8]);
         return i;
     }
 
     public boolean isTitular() {
-        return Integer.parseInt(_info[8]) == -1;
+        return Integer.parseInt(_conjunto[8]) == -1;
     }
 
     private String[] InfoSinFK() {
         return new String[]{
-            _info[0],
-            _info[1],
-            _info[2],
-            _info[3],
-            EnvUsuario.getCalle(_info[4]).getCalleStr(),
-            EnvUsuario.getTipo_Toma(_info[5]).getTipo(),
-            _info[6],
+            _conjunto[0],
+            _conjunto[1],
+            _conjunto[2],
+            _conjunto[3],
+            EnvUsuario.getCalle(_conjunto[4]).getStringR(),
+            EnvUsuario.getTipo_De_Toma(_conjunto[5]).getTipo(),
+            _conjunto[6],
             isActivo() ? "ACTIVO" : "INACTIVO",
-            isTitular() ? "TITULAR" : "CONSUMIDOR"
+            isTitular() ? "N/A" : EnvUsuario.getUsuario(_conjunto[8]).getStringR()
         };
     }
 
     @Override
     public void setInfo(String[] info) {
         super.setInfo(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        _infoSinFK = InfoSinFK();
+        _conjuntoSinFK = InfoSinFK();
     }
-    
-    
 
     public String[] getInfoSinFK() {
-        return _infoSinFK;
+        return _conjuntoSinFK;
     }
 
 }

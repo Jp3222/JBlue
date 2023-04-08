@@ -4,7 +4,7 @@
  */
 package com.jblue.modelo.envoltorios.op;
 
-import com.jblue.modelo.objetos.Objeto;
+import com.jblue.modelo.objetos.sucls.Objeto;
 import java.util.ArrayList;
 
 /**

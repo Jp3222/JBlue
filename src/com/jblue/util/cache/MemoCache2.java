@@ -5,7 +5,7 @@
 package com.jblue.util.cache;
 
 import com.jblue.modelo.envoltorios.Operaciones;
-import com.jblue.modelo.objetos.Objeto;
+import com.jblue.modelo.objetos.sucls.Objeto;
 import com.jblue.util.interfacesSuper.InterfaceDatos;
 import com.jblue.util.interfacesSuper.InterfaceIteradora;
 import com.jutil.jbd.conexion.Conexion;

@@ -29,9 +29,21 @@ public class SoInfo {
             escritorio = "Escritorio";
             documentos = "Documentos";
         }
-        String DICCIONARIO[] = {escritorio, documentos};
-        return DICCIONARIO;
+        String diccionario[] = {escritorio, documentos};
+        return diccionario;
 
+    }
+
+    public static boolean isWindows() {
+        return SO_NOMBRE.contains("windows");
+    }
+
+    public static boolean isLinux() {
+        return SO_NOMBRE.contains("linux");
+    }
+
+    public static boolean isMac() {
+        return SO_NOMBRE.contains("mac");
     }
 
     //

@@ -4,6 +4,8 @@
  */
 package com.jblue.modelo.objetos;
 
+import com.jblue.modelo.objetos.sucls.Objeto;
+
 /**
  * OPersonal
  * <br>Clase que modelo objetos segun la tabla personals
@@ -29,11 +31,16 @@ public class OPersonal extends Objeto {
         super();
     }
 
+    @Override
+    public String getStringR() {
+        return getSubCon(1, 2).replace(",", " ");
+    }
+
     /**
      * @return el nombre del personal
      */
     public String getNombre() {
-        return _info[1];
+        return _conjunto[1];
     }
 
     /**
@@ -41,7 +48,7 @@ public class OPersonal extends Objeto {
      * @return los apellidos del personal
      */
     public String getApellidos() {
-        return _info[2];
+        return _conjunto[2];
     }
 
     /**
@@ -54,7 +61,7 @@ public class OPersonal extends Objeto {
      * @return un entero con el cargo del personal
      */
     public String getCargo() {
-        return _info[3];
+        return _conjunto[3];
     }
 
     /**
@@ -62,7 +69,7 @@ public class OPersonal extends Objeto {
      * @return el nombre usuario encriptado del usuario
      */
     public String getUsuario() {
-        return _info[4];
+        return _conjunto[4];
     }
 
     /**
@@ -70,7 +77,7 @@ public class OPersonal extends Objeto {
      * @return la contraseña encriptada del usuario
      */
     public String getContra() {
-        return _info[5];
+        return _conjunto[5];
     }
 
     /**
@@ -78,7 +85,7 @@ public class OPersonal extends Objeto {
      * @return la fecha en que se registro el usuario
      */
     public String getFechaRegistro() {
-        return _info[6];
+        return _conjunto[6];
     }
 
     /**
@@ -90,7 +97,7 @@ public class OPersonal extends Objeto {
      * @return un entero con el estado del usuario
      */
     public int getEstado() {
-        return Integer.parseInt(_info[7]);
+        return Integer.parseInt(_conjunto[7]);
     }
 
     /**
@@ -108,7 +115,7 @@ public class OPersonal extends Objeto {
      * @return
      */
     public String getPermisos() {
-        return _info[8];
+        return _conjunto[8];
     }
 
     /**
@@ -117,7 +124,7 @@ public class OPersonal extends Objeto {
      * @return true si y solo si el usuario tiene todos los permisos
      */
     public boolean allPermisos() {
-        char[] p = _info[8].toCharArray();
+        char[] p = _conjunto[8].toCharArray();
         int n = (char) p[0];
         return n == 1;
     }

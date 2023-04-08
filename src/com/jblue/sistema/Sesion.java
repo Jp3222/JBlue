@@ -39,7 +39,7 @@ public class Sesion {
     private OPersonal usuario;
 
     private Sesion() {
-        this.usuario = null;
+
     }
 
     public OPersonal getUsuario() {

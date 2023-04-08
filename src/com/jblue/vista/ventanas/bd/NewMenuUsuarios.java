@@ -4,49 +4,190 @@
  */
 package com.jblue.vista.ventanas.bd;
 
+import com.jblue.controlador.Usuarios;
+import com.jblue.modelo.ConstBD;
 import com.jblue.modelo.envoltorios.Operaciones;
+import com.jblue.modelo.objetos.OCalles;
+import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.util.FormatoBD;
 import com.jblue.util.cache.FabricaCache;
+import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.util.tiempo.Fecha;
+import com.jblue.vista.conf.SuperVentana;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.DefaultListModel;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author jp
  */
-public class NewMenuUsuarios extends javax.swing.JFrame {
+public class NewMenuUsuarios extends SuperVentana {
 
-    private OUsuarios usuario_seleccionado;
+    /**
+     *
+     */
+    private final Usuarios controlador;
+    /**
+     * Variable en la que se guarda el usuario buscado
+     */
+    private OUsuarios usuario_buscado;
 
+    /**
+     * Variable que la lista de donde se toma el usuario, si de la lista
+     * auxiliar o de la cache
+     */
     private boolean buscando;
-    private final ArrayList<OUsuarios> LISTA_AUX;
-    private final DefaultListModel<String> MODELO_LISTA;
     private final Fecha fecha;
     private final Operaciones<OUsuarios> operaciones;
-    private final MemoCache<OUsuarios> cache;
-    private final ArrayList<OUsuarios> lista_cache;
-    private final DefaultTableModel modelo_tabla_usuarios;
+    private final MemoCache<OUsuarios> memoria_cache;
+    private final ArrayList<OUsuarios> cache;
+    private final ArrayList<OUsuarios> lista_auxiliar;
+
+    private final DefaultTableModel modelo_tabla;
+    private final DefaultListModel<String> modelo_lista;
 
     /**
      * Creates new form NewUsuarios
      */
     public NewMenuUsuarios() {
-        this.LISTA_AUX = new ArrayList<>();
-        this.MODELO_LISTA = new DefaultListModel<>();
+        _TITULO = 3;
+        this.lista_auxiliar = new ArrayList<>();
+        this.modelo_lista = new DefaultListModel<>();
         this.fecha = new Fecha();
-        this.operaciones = FabricaCache.OP_USUARIOS;
-        this.cache = FabricaCache.MC_USUARIOS;
-        this.lista_cache = cache.getLista();
+        this.operaciones = FabricaOpraciones.USUARIOS;
+        this.memoria_cache = FabricaCache.MC_USUARIOS;
+        this.cache = memoria_cache.getLista();
         this.buscando = false;
 
         this.initComponents();
-        this.modelo_tabla_usuarios = (DefaultTableModel) jtUsuarios.getModel();
-        this.jlUsuarios.setModel(MODELO_LISTA);
+        controlador = new Usuarios(this);
 
-        //this.llamable();
+        this.modelo_tabla = (DefaultTableModel) jtUsuarios.getModel();
+        this.jlUsuarios.setModel(modelo_lista);
+        this.llamable();
+    }
+
+    @Override
+    protected final void llamable() {
+        estadoFinal();
+        estadoInicial();
+        addComponentes();
+        addEventos();
+    }
+
+    @Override
+    protected void estadoFinal() {
+        super.estadoFinal();
+    }
+
+    @Override
+    public void estadoInicial() {
+        usuario_buscado = null;
+        buscando = false;
+        jtfNombre.requestFocus();
+        initPanelDeRegistros();
+        initPanelDeConsultas();
+    }
+
+    @Override
+    protected void addComponentes() {
+        super.addComponentes(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+    
+    
+
+    void initPanelDeRegistros() {
+        jtfUsuarioBuscado1.setText(null);
+        jtfNombre.setText(null);
+        jtfAp.setText(null);
+        jtfAm.setText(null);
+        initJCB(jcbTipoToma, mantenerToma.isSelected());
+        initJCB(jcbCalle, mantenerCalle.isSelected());
+        initJCB(jcbEstado, mantenerEstado.isSelected());
+        initJCB(jcbTitular, MantenerTitular.isSelected());
+        botonesPrimarios();
+    }
+
+    void botonesPrimarios() {
+        guardar.setEnabled(true);
+        actualizar.setEnabled(false);
+        eliminar.setEnabled(false);
+    }
+
+    void botonesSecundarios() {
+        guardar.setEnabled(false);
+        actualizar.setEnabled(true);
+        eliminar.setEnabled(true);
+    }
+
+    void initJCB(JComboBox<String> componente, boolean mantener) {
+        if (mantener) {
+            return;
+        }
+        if (componente.getItemCount() == 0) {
+            return;
+        }
+        componente.setSelectedIndex(0);
+    }
+
+    void initPanelDeConsultas() {
+    }
+
+    @Override
+    protected void addEventos() {
+        jPanel11.setVisible(false);
+
+        jchbTitular.addChangeListener((ChangeEvent e) -> {
+            
+            if (jchbTitular.isSelected()) {
+                jcbTitular.setEnabled(false);
+                jPanel11.setVisible(false);
+                return;
+            }
+            jcbTitular.setEnabled(true);
+            jPanel11.setVisible(true);
+        });
+
+        jTabbedPane1.addChangeListener((e) -> {
+            if (jpConsultas.isVisible()) {
+                System.out.println("consultas visible");
+                controlador.cargarTabla();
+                return;
+            }
+            controlador.vaciarTabla();
+            System.out.println("consultas no visible");
+
+        });
+    }
+
+    void buscar(String texto_buscado, boolean solo_activos) {
+        lista_auxiliar.clear();
+        modelo_lista.removeAllElements();
+        texto_buscado = limpiar(texto_buscado);
+        for (OUsuarios o : cache) {
+            if (solo_activos && !o.isActivo()) {
+                continue;
+            }
+            String aux = limpiar(o.getStringR());
+            if (aux.contains(texto_buscado)) {
+                modelo_lista.addElement(o.getStringR());
+                lista_auxiliar.add(o);
+            }
+        }
+
+    }
+
+    String limpiar(String txt) {
+        return txt.trim().replace(" ", "").toLowerCase();
     }
 
     /**
@@ -59,9 +200,9 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel17 = new javax.swing.JPanel();
+        jpRegistros = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        jtfUsuarioBuscado1 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jlUsuarios = new javax.swing.JList<>();
         jSeparator1 = new javax.swing.JSeparator();
@@ -70,66 +211,70 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jtfNombre = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        jtfAp = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        jtfAm = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jPanel10 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox<>();
+        jchbTitular = new javax.swing.JCheckBox();
         jPanel11 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox5 = new javax.swing.JComboBox<>();
+        jcbTitular = new javax.swing.JComboBox<>();
+        MantenerTitular = new javax.swing.JCheckBox();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jcbTipoToma = new javax.swing.JComboBox<>();
+        mantenerToma = new javax.swing.JCheckBox();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jcbCalle = new javax.swing.JComboBox<>();
+        mantenerCalle = new javax.swing.JCheckBox();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jcbEstado = new javax.swing.JComboBox<>();
+        mantenerEstado = new javax.swing.JCheckBox();
         jPanel12 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
-        jButton7 = new javax.swing.JButton();
+        guardar = new javax.swing.JButton();
         jPanel14 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        actualizar = new javax.swing.JButton();
         jPanel15 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        eliminar = new javax.swing.JButton();
         jPanel16 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jPanel18 = new javax.swing.JPanel();
+        cancelar = new javax.swing.JButton();
+        jpConsultas = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
         jPanel21 = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
         jPanel25 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        jComboBox6 = new javax.swing.JComboBox<>();
+        filtro_calle = new javax.swing.JComboBox<>();
         jPanel26 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        jComboBox7 = new javax.swing.JComboBox<>();
+        filtro_toma = new javax.swing.JComboBox<>();
         jPanel29 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jPanel24 = new javax.swing.JPanel();
         jPanel27 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
-        jComboBox8 = new javax.swing.JComboBox<>();
+        filtro_roll = new javax.swing.JComboBox<>();
         jPanel28 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
-        jComboBox9 = new javax.swing.JComboBox<>();
+        filtro_estado = new javax.swing.JComboBox<>();
         jPanel31 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         jPanel32 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jPanel20 = new javax.swing.JPanel();
         jPanel30 = new javax.swing.JPanel();
         jToggleButton2 = new javax.swing.JToggleButton();
-        jTextField6 = new javax.swing.JTextField();
+        jtfBuscado2 = new javax.swing.JTextField();
         jPanel23 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -140,26 +285,31 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(1000, 700));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanel17.setLayout(new javax.swing.BoxLayout(jPanel17, javax.swing.BoxLayout.LINE_AXIS));
+        jpRegistros.setLayout(new javax.swing.BoxLayout(jpRegistros, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jTextField1.setPreferredSize(new java.awt.Dimension(500, 30));
-        jPanel1.add(jTextField1, java.awt.BorderLayout.PAGE_START);
+        jtfUsuarioBuscado1.setPreferredSize(new java.awt.Dimension(500, 30));
+        jtfUsuarioBuscado1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtfUsuarioBuscado1KeyReleased(evt);
+            }
+        });
+        jPanel1.add(jtfUsuarioBuscado1, java.awt.BorderLayout.PAGE_START);
 
-        jlUsuarios.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        jlUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlUsuariosMouseClicked(evt);
+            }
         });
         jScrollPane1.setViewportView(jlUsuarios);
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel17.add(jPanel1);
+        jpRegistros.add(jPanel1);
 
         jSeparator1.setPreferredSize(new java.awt.Dimension(5, 662));
-        jPanel17.add(jSeparator1);
+        jpRegistros.add(jSeparator1);
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
@@ -176,7 +326,7 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         jLabel2.setText("Nombre: ");
         jLabel2.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel4.add(jLabel2, java.awt.BorderLayout.WEST);
-        jPanel4.add(jTextField2, java.awt.BorderLayout.CENTER);
+        jPanel4.add(jtfNombre, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel4);
 
@@ -186,7 +336,7 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         jLabel3.setText("A. Paterno");
         jLabel3.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel5.add(jLabel3, java.awt.BorderLayout.WEST);
-        jPanel5.add(jTextField3, java.awt.BorderLayout.CENTER);
+        jPanel5.add(jtfAp, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel5);
 
@@ -196,9 +346,33 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         jLabel4.setText("A. Materno");
         jLabel4.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel6.add(jLabel4, java.awt.BorderLayout.WEST);
-        jPanel6.add(jTextField4, java.awt.BorderLayout.CENTER);
+        jPanel6.add(jtfAm, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel6);
+
+        jPanel9.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jchbTitular.setText("titular");
+        jchbTitular.setToolTipText("Mantener el roll del usuario, seleccionado");
+        jPanel9.add(jchbTitular, java.awt.BorderLayout.CENTER);
+
+        jPanel3.add(jPanel9);
+
+        jPanel11.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel11.setLayout(new java.awt.BorderLayout());
+
+        jLabel9.setText("T. asociado");
+        jLabel9.setPreferredSize(new java.awt.Dimension(100, 40));
+        jPanel11.add(jLabel9, java.awt.BorderLayout.WEST);
+
+        jPanel11.add(jcbTitular, java.awt.BorderLayout.CENTER);
+
+        MantenerTitular.setText("Man.");
+        MantenerTitular.setToolTipText("Mantener el titular seleccionado");
+        jPanel11.add(MantenerTitular, java.awt.BorderLayout.LINE_END);
+
+        jPanel3.add(jPanel11);
 
         jPanel7.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel7.setLayout(new java.awt.BorderLayout());
@@ -207,8 +381,11 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         jLabel5.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel7.add(jLabel5, java.awt.BorderLayout.WEST);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel7.add(jComboBox1, java.awt.BorderLayout.CENTER);
+        jPanel7.add(jcbTipoToma, java.awt.BorderLayout.CENTER);
+
+        mantenerToma.setText("Man.");
+        mantenerToma.setToolTipText("Mantener el tipo de toma seleccionado");
+        jPanel7.add(mantenerToma, java.awt.BorderLayout.LINE_END);
 
         jPanel3.add(jPanel7);
 
@@ -219,22 +396,13 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         jLabel6.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel8.add(jLabel6, java.awt.BorderLayout.WEST);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel8.add(jComboBox2, java.awt.BorderLayout.CENTER);
+        jPanel8.add(jcbCalle, java.awt.BorderLayout.CENTER);
+
+        mantenerCalle.setText("Man.");
+        mantenerCalle.setToolTipText("Mantener la calle seleccionada\n");
+        jPanel8.add(mantenerCalle, java.awt.BorderLayout.LINE_END);
 
         jPanel3.add(jPanel8);
-
-        jPanel9.setPreferredSize(new java.awt.Dimension(500, 50));
-        jPanel9.setLayout(new java.awt.BorderLayout());
-
-        jLabel7.setText("Roll: ");
-        jLabel7.setPreferredSize(new java.awt.Dimension(100, 40));
-        jPanel9.add(jLabel7, java.awt.BorderLayout.WEST);
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel9.add(jComboBox3, java.awt.BorderLayout.CENTER);
-
-        jPanel3.add(jPanel9);
 
         jPanel10.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel10.setLayout(new java.awt.BorderLayout());
@@ -243,22 +411,14 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         jLabel8.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel10.add(jLabel8, java.awt.BorderLayout.WEST);
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel10.add(jComboBox4, java.awt.BorderLayout.CENTER);
+        jcbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona estado.", "Activo.", "Inactivo." }));
+        jPanel10.add(jcbEstado, java.awt.BorderLayout.CENTER);
+
+        mantenerEstado.setText("Man.");
+        mantenerEstado.setToolTipText("Mantener el estado del usuario seleccionado\n");
+        jPanel10.add(mantenerEstado, java.awt.BorderLayout.LINE_END);
 
         jPanel3.add(jPanel10);
-
-        jPanel11.setPreferredSize(new java.awt.Dimension(500, 50));
-        jPanel11.setLayout(new java.awt.BorderLayout());
-
-        jLabel9.setText("Titular");
-        jLabel9.setPreferredSize(new java.awt.Dimension(100, 40));
-        jPanel11.add(jLabel9, java.awt.BorderLayout.WEST);
-
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel11.add(jComboBox5, java.awt.BorderLayout.CENTER);
-
-        jPanel3.add(jPanel11);
 
         jPanel12.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel12.setLayout(new java.awt.BorderLayout());
@@ -267,42 +427,62 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         jPanel13.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel13.setLayout(new java.awt.BorderLayout());
 
-        jButton7.setText("Guardar");
-        jPanel13.add(jButton7, java.awt.BorderLayout.CENTER);
+        guardar.setText("Guardar");
+        guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarActionPerformed(evt);
+            }
+        });
+        jPanel13.add(guardar, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel13);
 
         jPanel14.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel14.setLayout(new java.awt.BorderLayout());
 
-        jButton2.setText("Actualizar");
-        jPanel14.add(jButton2, java.awt.BorderLayout.CENTER);
+        actualizar.setText("Actualizar");
+        actualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actualizarActionPerformed(evt);
+            }
+        });
+        jPanel14.add(actualizar, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel14);
 
         jPanel15.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel15.setLayout(new java.awt.BorderLayout());
 
-        jButton1.setText("Eliminar");
-        jPanel15.add(jButton1, java.awt.BorderLayout.CENTER);
+        eliminar.setText("Eliminar");
+        eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarActionPerformed(evt);
+            }
+        });
+        jPanel15.add(eliminar, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel15);
 
         jPanel16.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel16.setLayout(new java.awt.BorderLayout());
 
-        jButton3.setText("Cancelar");
-        jPanel16.add(jButton3, java.awt.BorderLayout.CENTER);
+        cancelar.setText("Cancelar");
+        cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarActionPerformed(evt);
+            }
+        });
+        jPanel16.add(cancelar, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel16);
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
 
-        jPanel17.add(jPanel2);
+        jpRegistros.add(jPanel2);
 
-        jTabbedPane1.addTab("Registro de usuarios", jPanel17);
+        jTabbedPane1.addTab("Registro de usuarios", jpRegistros);
 
-        jPanel18.setLayout(new java.awt.BorderLayout());
+        jpConsultas.setLayout(new java.awt.BorderLayout());
 
         jPanel19.setPreferredSize(new java.awt.Dimension(980, 162));
         jPanel19.setLayout(new java.awt.BorderLayout());
@@ -317,8 +497,7 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         jLabel11.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel25.add(jLabel11, java.awt.BorderLayout.WEST);
 
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel25.add(jComboBox6, java.awt.BorderLayout.CENTER);
+        jPanel25.add(filtro_calle, java.awt.BorderLayout.CENTER);
 
         jPanel22.add(jPanel25);
 
@@ -328,8 +507,7 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         jLabel12.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel26.add(jLabel12, java.awt.BorderLayout.WEST);
 
-        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel26.add(jComboBox7, java.awt.BorderLayout.CENTER);
+        jPanel26.add(filtro_toma, java.awt.BorderLayout.CENTER);
 
         jPanel22.add(jPanel26);
 
@@ -350,8 +528,7 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         jLabel14.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel27.add(jLabel14, java.awt.BorderLayout.WEST);
 
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel27.add(jComboBox8, java.awt.BorderLayout.CENTER);
+        jPanel27.add(filtro_roll, java.awt.BorderLayout.CENTER);
 
         jPanel24.add(jPanel27);
 
@@ -361,8 +538,7 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         jLabel15.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel28.add(jLabel15, java.awt.BorderLayout.WEST);
 
-        jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel28.add(jComboBox9, java.awt.BorderLayout.CENTER);
+        jPanel28.add(filtro_estado, java.awt.BorderLayout.CENTER);
 
         jPanel24.add(jPanel28);
 
@@ -388,9 +564,16 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         jButton6.setText("Quitar filtros");
         jPanel32.add(jButton6, java.awt.BorderLayout.LINE_END);
 
+        jCheckBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCheckBox1ItemStateChanged(evt);
+            }
+        });
+        jPanel32.add(jCheckBox1, java.awt.BorderLayout.LINE_START);
+
         jPanel19.add(jPanel32, java.awt.BorderLayout.NORTH);
 
-        jPanel18.add(jPanel19, java.awt.BorderLayout.NORTH);
+        jpConsultas.add(jPanel19, java.awt.BorderLayout.NORTH);
 
         jPanel20.setLayout(new java.awt.BorderLayout());
 
@@ -400,16 +583,22 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         jToggleButton2.setText("Recargar");
         jToggleButton2.setPreferredSize(new java.awt.Dimension(200, 40));
         jPanel30.add(jToggleButton2, java.awt.BorderLayout.LINE_START);
-        jPanel30.add(jTextField6, java.awt.BorderLayout.CENTER);
+
+        jtfBuscado2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtfBuscado2KeyReleased(evt);
+            }
+        });
+        jPanel30.add(jtfBuscado2, java.awt.BorderLayout.CENTER);
 
         jPanel23.setPreferredSize(new java.awt.Dimension(200, 40));
         jPanel23.setLayout(new java.awt.BorderLayout());
 
-        jButton4.setText("jButton4");
+        jButton4.setText("Siguiente");
         jButton4.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel23.add(jButton4, java.awt.BorderLayout.LINE_START);
 
-        jButton5.setText("jButton5");
+        jButton5.setText("Next");
         jButton5.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel23.add(jButton5, java.awt.BorderLayout.CENTER);
 
@@ -436,18 +625,13 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         jtUsuarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jtUsuarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jtUsuarios.getTableHeader().setReorderingAllowed(false);
-        jtUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jtUsuariosMouseClicked(evt);
-            }
-        });
         jScrollPane3.setViewportView(jtUsuarios);
 
         jPanel20.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
-        jPanel18.add(jPanel20, java.awt.BorderLayout.CENTER);
+        jpConsultas.add(jPanel20, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab("Consulta de usuarios", jPanel18);
+        jTabbedPane1.addTab("Consulta de usuarios", jpConsultas);
 
         getContentPane().add(jTabbedPane1);
 
@@ -455,30 +639,282 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jtUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtUsuariosMouseClicked
+    private void jtfUsuarioBuscado1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfUsuarioBuscado1KeyReleased
+        buscando = true;
+        buscar(jtfUsuarioBuscado1.getText(), true);
+    }//GEN-LAST:event_jtfUsuarioBuscado1KeyReleased
 
-        
-        
-    }//GEN-LAST:event_jtUsuariosMouseClicked
+    private void jlUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlUsuariosMouseClicked
+        int index = jlUsuarios.getSelectedIndex();
+        if (index < 0 || index >= jlUsuarios.getModel().getSize()) {
+            return;
+        }
+        int clicks = evt.getClickCount();
+        ArrayList<OUsuarios> aux;
+        if (buscando) {
+            aux = lista_auxiliar;
+        } else {
+            aux = cache;
+        }
+        if (index < 0 || index >= aux.size()) {
+            return;
+        }
 
+        usuario_buscado = aux.get(index);
 
+        switch (clicks) {
+            case 1:
+                if (buscando) {
+                    jtfUsuarioBuscado1.setText(usuario_buscado.getStringR());
+                }
+                break;
+            case 2:
+                jtfNombre.setText(usuario_buscado.getNombre());
+                jtfAp.setText(usuario_buscado.getAp());
+                jtfAm.setText(usuario_buscado.getAm());
+                jcbCalle.setSelectedItem(usuario_buscado.getInfoSinFK()[4]);
+                jcbTipoToma.setSelectedItem(usuario_buscado.getInfoSinFK()[5]);
+                jcbEstado.setSelectedIndex(usuario_buscado.getEstado() == 1 ? 1 : 2);
+
+                if (usuario_buscado.isTitular()) {
+                    jchbTitular.setSelected(true);
+                    jcbTitular.setEnabled(false);
+                } else {
+                    jchbTitular.setSelected(false);
+                    jcbTitular.setSelectedItem(usuario_buscado.getInfoSinFK()[8]);
+                }
+
+                botonesSecundarios();
+                if (buscando) {
+                    controlador.actualizarLista();
+                }
+                buscando = false;
+                break;
+        }
+    }//GEN-LAST:event_jlUsuariosMouseClicked
+
+    private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
+        int op = JOptionPane.showConfirmDialog(this, "Esta seguro de cancelar esta operacion", "cancelar operacion", JOptionPane.YES_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        if (op == JOptionPane.YES_OPTION) {
+            initPanelDeRegistros();
+            controlador.actualizarLista();
+        }
+    }//GEN-LAST:event_cancelarActionPerformed
+
+    private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
+        if (!validar()) {
+            JOptionPane.showMessageDialog(this, "Error en los campos");
+            return;
+        }
+        String[] o = _guardar();
+        o = FormatoBD.bdEntrada(o);
+        boolean insertar = operaciones.insertar(o);
+        movimiento(insertar);
+    }//GEN-LAST:event_guardarActionPerformed
+
+    private void actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarActionPerformed
+        if (!validar()) {
+            JOptionPane.showMessageDialog(this, "Error en los campos");
+            return;
+        }
+        if (usuario_buscado == null) {
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado ningun usuario");
+            return;
+        }
+        if (usuario_buscado.isTitular()) {
+            ArrayList<OUsuarios> lista = operaciones.getLista("titular = " + usuario_buscado.getId());
+            if (!lista.isEmpty()) {
+                StringBuilder str = new StringBuilder("Este usuario tiene los siguientes consumidores\n");
+                for (OUsuarios o : lista) {
+                    str.append(o.getStringR()).append("\n");
+                }
+                JOptionPane.showMessageDialog(this, str.toString());
+                return;
+            }
+        }
+        String[] o = _guardar();
+        o = FormatoBD.bdEntrada(o);
+        String[] arr = ConstBD.BD_USUARIOS;
+        arr = Arrays.copyOfRange(arr, 1, arr.length);
+        boolean act = operaciones.actualizar(arr, o, "id = " + usuario_buscado.getId());
+        movimiento(act);
+
+    }//GEN-LAST:event_actualizarActionPerformed
+
+    private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
+        if (usuario_buscado == null) {
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado ningun usuario");
+            return;
+        }
+        ArrayList<OUsuarios> lista = operaciones.getLista("titular = " + usuario_buscado.getId());
+
+        if (!lista.isEmpty()) {
+            StringBuilder str = new StringBuilder("Este usuario tiene los siguientes consumidores\n");
+            for (OUsuarios o : lista) {
+                str.append(o.getStringR()).append("\n");
+            }
+            JOptionPane.showMessageDialog(this, str.toString());
+            return;
+        }
+
+        boolean op = operaciones.eliminar("id = " + usuario_buscado.getId());
+        movimiento(op);
+
+    }//GEN-LAST:event_eliminarActionPerformed
+
+    private void jtfBuscado2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfBuscado2KeyReleased
+        String texto_buscado = jtfBuscado2.getText();
+        lista_auxiliar.clear();
+        modelo_lista.removeAllElements();
+        texto_buscado = limpiar(texto_buscado);
+        for (OUsuarios o : cache) {
+            String aux = limpiar(o.getStringR());
+            if (aux.contains(texto_buscado)) {
+                modelo_tabla.addRow(o.getInfoSinFK());
+                lista_auxiliar.add(o);
+            }
+        }
+    }//GEN-LAST:event_jtfBuscado2KeyReleased
+
+    private void jCheckBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox1ItemStateChanged
+        JComboBox[] arr = {
+            filtro_calle, filtro_estado, filtro_roll, filtro_toma
+        };
+        if (jCheckBox1.isSelected()) {
+            for (JComboBox i : arr) {
+                i.setEditable(true);
+            }
+        }
+        for (JComboBox i : arr) {
+            i.setEditable(false);
+        }
+    }//GEN-LAST:event_jCheckBox1ItemStateChanged
+
+    public void movimiento(boolean ok) {
+        if (ok) {
+            memoria_cache.vaciar();
+            memoria_cache.setQuery("titular = -1");
+            memoria_cache.cargar();
+            memoria_cache.setQuery("titular > 0");
+            memoria_cache.cargar();
+            memoria_cache.ordenarPorID();
+            controlador.actualizarVistaPrincipal();
+            estadoInicial();
+            JOptionPane.showMessageDialog(this, "Operacion realizada");
+        } else {
+            JOptionPane.showMessageDialog(this, "Operacion no realizada");
+        }
+    }
+
+    String[] _guardar() {
+        Fecha fech = new Fecha();
+
+        ArrayList<OCalles> tomas = FabricaCache.MC_CALLES.getLista();
+        ArrayList<OTipoTomas> calles = FabricaCache.MC_TIPOS_DE_TOMAS.getLista();
+
+        String nom = jtfNombre.getText();
+        String ap = jtfAp.getText();
+        String am = jtfAm.getText();
+
+        if (rootPaneCheckingEnabled) {
+
+        }
+
+        String calle = calles.get(jcbCalle.getSelectedIndex()).getId();
+        String toma = tomas.get(jcbTipoToma.getSelectedIndex()).getId();
+        String registro = fech.getNewFechaActualString();
+        String estado = jcbEstado.getSelectedIndex() == 1 ? "1" : "-1";
+        String titular = this.jchbTitular.isSelected() ? "-1" : cache.get(jcbTitular.getSelectedIndex()).getId();
+
+        String[] o = new String[]{
+            nom, ap, am, calle, toma, registro, estado, titular
+        };
+
+        return o;
+    }
+
+    boolean validar() {
+        int jtf = validarJFT();
+        System.out.println(jtf);
+        if (jtf < 3) {
+            JOptionPane.showMessageDialog(this, "Error en la caja de texto: " + jtf);
+            return false;
+        }
+        int jcb = validarJCB();
+        if (jcb < 4) {
+            JOptionPane.showMessageDialog(this, "Error en el combo box de texto: " + jtf);
+            return false;
+        }
+        return true;
+    }
+
+    int validarJFT() {
+        JTextField[] arr = {
+            jtfNombre, jtfAp, jtfAm
+        };
+        int x = 0;
+        for (JTextField i : arr) {
+            String aux = i.getText();
+            System.out.println(aux);
+            if (!variableValida(aux)) {
+                return x;
+            }
+            if (!soloTexto(aux)) {
+                return x;
+            }
+            x++;
+        }
+        return arr.length;
+    }
+
+    int validarJCB() {
+        if (jcbEstado.getSelectedIndex() == 0) {
+            return 0;
+        }
+        return 4;
+    }
+
+    boolean variableValida(String txt) {
+        return txt != null && !txt.isEmpty();
+    }
+
+    boolean soloTexto(String txt) {
+        return txt.matches("( |[a-zA-Z]|[_ñÑáÁéÉíÍóÓúÚ]){1,30}");
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        if (visible) {
+            SwingUtilities.invokeLater(() -> {
+                controlador.cargarTodo();
+            });
+        }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        SwingUtilities.invokeLater(() -> {
+            controlador.vaciarTodo();
+        });
+    }
+
+// <editor-fold defaultstate="collapsed" desc="Variables de interfaz">      
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JCheckBox MantenerTitular;
+    private javax.swing.JButton actualizar;
+    private javax.swing.JButton cancelar;
+    private javax.swing.JButton eliminar;
+    private javax.swing.JComboBox<String> filtro_calle;
+    private javax.swing.JComboBox<String> filtro_estado;
+    private javax.swing.JComboBox<String> filtro_roll;
+    private javax.swing.JComboBox<String> filtro_toma;
+    private javax.swing.JButton guardar;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private javax.swing.JComboBox<String> jComboBox6;
-    private javax.swing.JComboBox<String> jComboBox7;
-    private javax.swing.JComboBox<String> jComboBox8;
-    private javax.swing.JComboBox<String> jComboBox9;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -492,7 +928,6 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -503,8 +938,6 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel17;
-    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
@@ -531,14 +964,58 @@ public class NewMenuUsuarios extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JToggleButton jToggleButton2;
+    private javax.swing.JComboBox<String> jcbCalle;
+    private javax.swing.JComboBox<String> jcbEstado;
+    private javax.swing.JComboBox<String> jcbTipoToma;
+    private javax.swing.JComboBox<String> jcbTitular;
+    private javax.swing.JCheckBox jchbTitular;
     private javax.swing.JList<String> jlUsuarios;
+    private javax.swing.JPanel jpConsultas;
+    private javax.swing.JPanel jpRegistros;
     private javax.swing.JTable jtUsuarios;
+    private javax.swing.JTextField jtfAm;
+    private javax.swing.JTextField jtfAp;
+    private javax.swing.JTextField jtfBuscado2;
+    private javax.swing.JTextField jtfNombre;
+    private javax.swing.JTextField jtfUsuarioBuscado1;
+    private javax.swing.JCheckBox mantenerCalle;
+    private javax.swing.JCheckBox mantenerEstado;
+    private javax.swing.JCheckBox mantenerToma;
     // End of variables declaration//GEN-END:variables
+
+//</editor-fold>
+    public JComboBox<String> getJcbCalle() {
+        return jcbCalle;
+    }
+
+    public JComboBox<String> getJcbEstado() {
+        return jcbEstado;
+    }
+
+    public JComboBox<String> getJcbTipoToma() {
+        return jcbTipoToma;
+    }
+
+    public JComboBox<String> getJcbTitular() {
+        return jcbTitular;
+    }
+
+    public DefaultListModel<String> getModelo_lista() {
+        return modelo_lista;
+    }
+
+    public DefaultTableModel getModelo_tabla() {
+        return modelo_tabla;
+    }
+
+    public ArrayList<OUsuarios> getCache() {
+        return cache;
+    }
+
+    public ArrayList<OUsuarios> getLista_auxiliar() {
+        return lista_auxiliar;
+    }
+
 }

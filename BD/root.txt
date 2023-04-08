@@ -1,0 +1,1 @@
+('root', '--', '1', 'DYjV5v/rZTjlHOhU5GTewg==', 'Gn6/q0zfTijiIiUDD5bnvA==', '19-12-2022', '1', '1crud')

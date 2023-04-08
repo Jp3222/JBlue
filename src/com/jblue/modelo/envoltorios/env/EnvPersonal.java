@@ -5,6 +5,8 @@
 package com.jblue.modelo.envoltorios.env;
 
 import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.util.cache.FabricaCache;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,6 +18,16 @@ public abstract class EnvPersonal {
             LECTURA = "r",
             ACTUALIACION = "u",
             ELIMINACION = "d";
+
+    public static OPersonal getPersonal(String txt) {
+        ArrayList<OPersonal> lista = FabricaCache.MC_PERSONAL.getLista();
+        for (OPersonal i : lista) {
+            if (i.getId().equals(txt)) {
+                return i;
+            }
+        }
+        return null;
+    }
 
     public static boolean allPermisos(OPersonal o) {
         return o.allPermisos();

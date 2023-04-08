@@ -12,6 +12,13 @@ import javax.swing.JOptionPane;
  */
 public class Mensajes {
 
+    private final static String[] operaciones = {
+        "inserccion", "eliminacion", "actualizacion"
+    };
+    private final static String[] estados = {
+        "exitosa", "erronea"
+    };
+    
     /**
      * Metdo para lanza un mensa
      *
@@ -24,12 +31,6 @@ public class Mensajes {
      * <br>1 = "erroneo"
      */
     public static void Mensaje(int operaccion, int estado) {
-        String[] operaciones = {
-            "inserccion", "eliminacion", "actualizacion"
-        };
-        String[] estados = {
-            "exitosa", "erronea"
-        };
         JOptionPane.showMessageDialog(null, operaciones[operaccion] + " " + estados[estado]);
     }
 

@@ -5,7 +5,7 @@
 package com.jblue.util.modelosgraficos;
 
 import com.jblue.modelo.envoltorios.Operaciones;
-import com.jblue.modelo.objetos.Objeto;
+import com.jblue.modelo.objetos.sucls.Objeto;
 import com.jblue.util.FormatoBD;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.util.interfacesSuper.graficos.InterfaceTablaMov;
@@ -148,7 +148,7 @@ public class MovTablas<T extends Objeto> implements InterfaceTablaMov {
         ArrayList<T> memoria = CACHE.getLista();
         vaciar();
         for (T t : memoria) {
-            String info = t.getStringElements(campos).replace(" ", "");
+            String info = t.getSubCon(campos).replace(" ", "");
             if (info.contains(bus)) {
                 MODELO.addRow(t.getInfo());
             }

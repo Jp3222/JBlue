@@ -4,11 +4,13 @@
  */
 package com.jblue.modelo.envoltorios.env;
 
+import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OCalles;
+import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.cache.FabricaCache;
+import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
 import java.util.ArrayList;
 
@@ -18,24 +20,20 @@ import java.util.ArrayList;
  */
 public class EnvUsuario {
 
-    public static <T extends Objeto, K extends Objeto> int compareTo(T x, K y, Comparador<T, K> fun) {
-        return fun.comparador(x, y);
-    }
-
     public static OCalles getCalle(String txt) {
         MemoCache<OCalles> calles = FabricaCache.MC_CALLES;
         ArrayList<OCalles> memoria = calles.getLista();
         OCalles o = null;
         for (OCalles i : memoria) {
-            if (i.getId().equals(txt) 
-                    || i.getCalleStr().equalsIgnoreCase(txt)) {
+            if (i.getId().equals(txt)
+                    || i.getStringR().equalsIgnoreCase(txt)) {
                 o = i;
             }
         }
         return o;
     }
 
-    public static OTipoTomas getTipo_Toma(String txt) {
+    public static OTipoTomas getTipo_De_Toma(String txt) {
         MemoCache<OTipoTomas> tomas = FabricaCache.MC_TIPOS_DE_TOMAS;
         ArrayList<OTipoTomas> memoria = tomas.getLista();
         OTipoTomas o = null;
@@ -51,12 +49,20 @@ public class EnvUsuario {
         ArrayList<OUsuarios> lista = FabricaCache.MC_USUARIOS.getLista();
         OUsuarios o = null;
         for (OUsuarios oUsuarios : lista) {
-            if (oUsuarios.getId().equals(txt)
-                    || oUsuarios.getNombreStr().equalsIgnoreCase(txt)) {
+            if (oUsuarios.getId().equalsIgnoreCase(txt) || oUsuarios.getStringR().equalsIgnoreCase(txt)) {
                 o = oUsuarios;
+                return o;
             }
         }
         return o;
+    }
+
+    public static int getMesesPagados(String año, String id) {
+        Operaciones<OPagosServicio> op = FabricaOpraciones.PAGOS_X_SERVICIO;
+        ArrayList<OPagosServicio> lista = op.getLista("año = " + año + " and usuario = " + id);
+        int size = lista.size();
+        lista.clear();
+        return size;
     }
 
 }

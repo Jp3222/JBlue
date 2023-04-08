@@ -5,14 +5,16 @@
 package com.jblue.util.cache;
 
 import com.jblue.modelo.envoltorios.Operaciones;
-import com.jblue.modelo.objetos.Objeto;
+import com.jblue.modelo.objetos.sucls.Objeto;
 import com.jblue.util.interfacesSuper.InterfaceDatos;
 import com.jutil.jbd.conexion.Conexion;
+import com.jutil.jexception.Excp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  *
@@ -25,6 +27,7 @@ public class MemoCache<T extends Objeto> implements InterfaceDatos {
     private final Operaciones<T> operaciones;
     private int primerId, ultimoId;
     private String query;
+    private Map<String, Proceso> procesos;
 
     public MemoCache(Operaciones<T> operaciones) {
         this.lista = new ArrayList<>(100);
@@ -52,6 +55,14 @@ public class MemoCache<T extends Objeto> implements InterfaceDatos {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void add(String nombre, Proceso proceso) {
+        procesos.put(nombre, proceso);
+    }
+
+    public void aplicarProceso(String nombre) {
+        procesos.get(nombre).proceso(lista);
     }
 
     public int getPrimerId() {
@@ -85,10 +96,18 @@ public class MemoCache<T extends Objeto> implements InterfaceDatos {
             try {
                 lista.add((T) item.clone());
             } catch (CloneNotSupportedException ex) {
-                Logger.getLogger(MemoCache.class.getName()).log(Level.SEVERE, null, ex);
+                Excp.impTerminal(ex, getClass(), true);
             }
         }
         aux.clear();
+    }
+
+    public void ordenarPorID() {
+        lista.sort((x, y) -> x.compareTo(y));
+    }
+
+    public void ordenarConPredicado(Comparator<T> o) {
+        lista.sort(o);
     }
 
     @Override
@@ -114,6 +133,17 @@ public class MemoCache<T extends Objeto> implements InterfaceDatos {
     @Override
     public void deleteQuery() {
         query = null;
+    }
+
+    public ArrayList<T> subLista(Predicate<T> filtro) {
+        ArrayList<T> arr_aux = new ArrayList<>();
+        for (T t : lista) {
+            if (filtro.negate().test(t)) {
+                continue;
+            }
+            arr_aux.add(t);
+        }
+        return arr_aux;
     }
 
 }

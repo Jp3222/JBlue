@@ -7,7 +7,7 @@ package com.jblue.modelo.envoltorios;
 import com.jblue.modelo.envoltorios.op.FuncionAplicada;
 import com.jblue.modelo.envoltorios.op.FuncionesAbstractas;
 import com.jblue.modelo.envoltorios.op.FuncionesEnvoltorio;
-import com.jblue.modelo.objetos.Objeto;
+import com.jblue.modelo.objetos.sucls.Objeto;
 import com.jutil.jexception.Excp;
 import java.util.ArrayList;
 
@@ -30,7 +30,6 @@ public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio implement
     }
 
     public boolean eliminar(String where, FuncionAplicada funcion) {
-
         return _ELIMINAR(where);
     }
 

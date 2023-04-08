@@ -26,22 +26,336 @@ public class TomasRegistradas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel16 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel17 = new javax.swing.JPanel();
+        jPanel18 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
+        jPanel19 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jPanel20 = new javax.swing.JPanel();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        jSeparator1 = new javax.swing.JSeparator();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        jPanel21 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jComboBox4 = new javax.swing.JComboBox<>();
+        jPanel22 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        jComboBox5 = new javax.swing.JComboBox<>();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jPanel12 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jPanel13 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jTextField4 = new javax.swing.JTextField();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jPanel15 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        jPanel8 = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
+        jPanel9 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
+        jPanel14 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        jPanel16.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(500, 400));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Usuario", "Tipo de Toma", "Dia", "Mes", "Año", "Estado"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jPanel16.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel17.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel17.setLayout(new java.awt.BorderLayout());
+
+        jPanel18.setPreferredSize(new java.awt.Dimension(500, 25));
+        jPanel18.setLayout(new java.awt.BorderLayout());
+
+        jLabel11.setText("Buscar");
+        jLabel11.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel18.add(jLabel11, java.awt.BorderLayout.WEST);
+
+        jTextField5.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel18.add(jTextField5, java.awt.BorderLayout.CENTER);
+
+        jPanel17.add(jPanel18, java.awt.BorderLayout.CENTER);
+
+        jPanel19.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel19.setLayout(new java.awt.BorderLayout());
+
+        jButton1.setText("Recargar");
+        jButton1.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel19.add(jButton1, java.awt.BorderLayout.LINE_START);
+
+        jPanel20.setPreferredSize(new java.awt.Dimension(200, 25));
+        jPanel20.setLayout(new java.awt.BorderLayout());
+
+        jButton5.setText("Ant");
+        jButton5.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel20.add(jButton5, java.awt.BorderLayout.WEST);
+
+        jButton6.setText("Sig");
+        jButton6.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel20.add(jButton6, java.awt.BorderLayout.CENTER);
+
+        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator3.setPreferredSize(new java.awt.Dimension(10, 700));
+        jPanel20.add(jSeparator3, java.awt.BorderLayout.EAST);
+
+        jPanel19.add(jPanel20, java.awt.BorderLayout.LINE_END);
+
+        jPanel17.add(jPanel19, java.awt.BorderLayout.SOUTH);
+
+        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator2.setPreferredSize(new java.awt.Dimension(10, 700));
+        jPanel17.add(jSeparator2, java.awt.BorderLayout.EAST);
+
+        jPanel16.add(jPanel17, java.awt.BorderLayout.PAGE_START);
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator1.setPreferredSize(new java.awt.Dimension(10, 700));
+        jPanel16.add(jSeparator1, java.awt.BorderLayout.EAST);
+
+        getContentPane().add(jPanel16, java.awt.BorderLayout.WEST);
+
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setText("Clave");
+        jLabel1.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel2.add(jLabel1, java.awt.BorderLayout.LINE_START);
+        jPanel2.add(jTextField1, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel2);
+
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setText("Usuario");
+        jLabel2.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel3.add(jLabel2, java.awt.BorderLayout.LINE_START);
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel3.add(jComboBox2, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel3);
+
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setText("Tipo de toma");
+        jLabel3.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel4.add(jLabel3, java.awt.BorderLayout.LINE_START);
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel4.add(jComboBox3, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel4);
+
+        jPanel21.setLayout(new java.awt.BorderLayout());
+
+        jLabel12.setText("Calle 1");
+        jLabel12.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel21.add(jLabel12, java.awt.BorderLayout.LINE_START);
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel21.add(jComboBox4, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel21);
+
+        jPanel22.setLayout(new java.awt.BorderLayout());
+
+        jLabel13.setText("Calle 2");
+        jLabel13.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel22.add(jLabel13, java.awt.BorderLayout.LINE_START);
+
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel22.add(jComboBox5, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel22);
+
+        jPanel5.setLayout(new java.awt.BorderLayout());
+
+        jLabel4.setText("Fecha de registro");
+        jLabel4.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel5.add(jLabel4, java.awt.BorderLayout.NORTH);
+
+        jPanel10.setPreferredSize(new java.awt.Dimension(300, 50));
+        jPanel10.setLayout(new javax.swing.BoxLayout(jPanel10, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel11.setLayout(new java.awt.BorderLayout());
+
+        jLabel5.setText("Dia");
+        jPanel11.add(jLabel5, java.awt.BorderLayout.PAGE_START);
+        jPanel11.add(jTextField2, java.awt.BorderLayout.CENTER);
+
+        jPanel10.add(jPanel11);
+
+        jPanel12.setLayout(new java.awt.BorderLayout());
+
+        jLabel6.setText("Mes");
+        jPanel12.add(jLabel6, java.awt.BorderLayout.PAGE_START);
+        jPanel12.add(jTextField3, java.awt.BorderLayout.CENTER);
+
+        jPanel10.add(jPanel12);
+
+        jPanel13.setLayout(new java.awt.BorderLayout());
+
+        jLabel7.setText("Año");
+        jPanel13.add(jLabel7, java.awt.BorderLayout.PAGE_START);
+        jPanel13.add(jTextField4, java.awt.BorderLayout.CENTER);
+
+        jPanel10.add(jPanel13);
+
+        jPanel5.add(jPanel10, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel5);
+
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        jLabel8.setText("Estado");
+        jLabel8.setPreferredSize(new java.awt.Dimension(100, 50));
+        jPanel6.add(jLabel8, java.awt.BorderLayout.WEST);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel6.add(jComboBox1, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel6);
+
+        jPanel15.setLayout(new java.awt.BorderLayout());
+
+        jLabel9.setPreferredSize(new java.awt.Dimension(100, 50));
+        jPanel15.add(jLabel9, java.awt.BorderLayout.WEST);
+
+        jPanel1.add(jPanel15);
+
+        jPanel7.setLayout(new java.awt.BorderLayout());
+
+        jButton2.setText("Guardar");
+        jButton2.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel7.add(jButton2, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel7);
+
+        jPanel8.setLayout(new java.awt.BorderLayout());
+
+        jButton3.setText("Actualizar");
+        jButton3.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel8.add(jButton3, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel8);
+
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jButton4.setText("Eliminar");
+        jButton4.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel9.add(jButton4, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel9);
+
+        jPanel14.setLayout(new java.awt.BorderLayout());
+
+        jLabel10.setPreferredSize(new java.awt.Dimension(100, 50));
+        jPanel14.add(jLabel10, java.awt.BorderLayout.LINE_START);
+
+        jPanel1.add(jPanel14);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> jComboBox4;
+    private javax.swing.JComboBox<String> jComboBox5;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
+    private javax.swing.JPanel jPanel22;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,16 +4,51 @@
  */
 package com.jblue.vista.conf;
 
+import javax.swing.JPanel;
+
 /**
  *
  * @author jp
  */
-public interface SuperVista {
+public abstract class SuperVista extends JPanel {
 
-    public void init();
+    /**
+     * Metodo recomentado para invocar solo a los metodos definidos siguiendo el
+     * siguiente orden
+     * <br> - estado final
+     * <br> - estado inicial
+     * <br> - estado add componentes
+     * <br> - estado add eventos
+     * <br> una vez sobre escrito el metodo, tambien se recomienda ponerlo en
+     * estado "final" para poder invocarlo en el constructor
+     */
+    protected abstract void llamable();
 
-    public void addComponentes();
+    /**
+     * Metodo recomendado para darle a ciertos componentes un estado inicial al
+     * cual dado un evento en su clase o alguna clase ajena todos los
+     * componentes puedan volver a dicho estado
+     *
+     */
+    public abstract void estadoInicial();
 
-    public void addEventos();
+    /**
+     * Metodo recomentado para darle a ciertos compoentes un estado final el
+     * cual no sera cambiado
+     */
+    protected void estadoFinal() {
+    }
+
+    /**
+     * Metodo recomendado para agregar componentes a otros componentes
+     */
+    protected void addComponentes() {
+    }
+
+    /**
+     * Metodo recomendado para añadir eventos a los componentes definidos
+     */
+    protected void addEventos() {
+    }
 
 }

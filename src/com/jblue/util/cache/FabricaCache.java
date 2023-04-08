@@ -4,27 +4,24 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.modelo.ConstBD;
-import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
+import static com.jblue.util.cache.FabricaOpraciones.PERSONAL;
+import static com.jblue.util.cache.FabricaOpraciones.USUARIOS;
+import static com.jblue.util.cache.FabricaOpraciones.CALLES;
+import static com.jblue.util.cache.FabricaOpraciones.TIPOS_DE_TOMAS;
 
 /**
  *
  * @author jp
  */
 public abstract class FabricaCache {
-
-    public static final Operaciones<OPersonal> OP_PERSONAL = new Operaciones(ConstBD.TABLAS[0], ConstBD.BD_PERSONAL);
-    public static final Operaciones<OUsuarios> OP_USUARIOS = new Operaciones(ConstBD.TABLAS[1], ConstBD.BD_USUARIOS);
-    public static final Operaciones<OCalles> OP_CALLES = new Operaciones(ConstBD.TABLAS[2], ConstBD.BD_CALLES);
-    public static final Operaciones<OTipoTomas> OP_TIPOS_DE_TOMAS = new Operaciones(ConstBD.TABLAS[3], ConstBD.BD_TIPOS_DE_TOMAS);
-    
-    public static final MemoCache<OPersonal> MC_PERSONAL = new MemoCache(OP_PERSONAL);
-    public static final MemoCache<OCalles> MC_CALLES = new MemoCache(OP_CALLES);
-    public static final MemoCache<OTipoTomas> MC_TIPOS_DE_TOMAS = new MemoCache(OP_TIPOS_DE_TOMAS);
-    public static final MemoCache<OUsuarios> MC_USUARIOS = new MemoCache(OP_USUARIOS);
+ 
+    public static final MemoCache<OPersonal> MC_PERSONAL = new MemoCache(PERSONAL);
+    public static final MemoCache<OCalles> MC_CALLES = new MemoCache(CALLES);
+    public static final MemoCache<OTipoTomas> MC_TIPOS_DE_TOMAS = new MemoCache(TIPOS_DE_TOMAS);
+    public static final MemoCache<OUsuarios> MC_USUARIOS = new MemoCache(USUARIOS);
 
 }

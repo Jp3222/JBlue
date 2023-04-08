@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 
 /**
  *
@@ -17,9 +16,11 @@ import java.time.format.DateTimeFormatterBuilder;
 public class Fecha {
 
     private final DateTimeFormatter ORDEN;
+
     private final Year year;
     private final Month month;
     private final LocalDate localDate;
+
     private final String[] MESES = {
         "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIV"
     };
@@ -41,23 +42,9 @@ public class Fecha {
 
     }
 
-    /**
-     * Metodo que retorna la instancia guardada al inicar la clase
-     *
-     * @return un objeto de tipo LocalDate con la fecha actual
-     */
-    public LocalDate getFechaActual() {
-        return localDate;
-    }
-
-    /**
-     * Metodo que retorna la instancia guardada al inicar la clase con el
-     * formato "dd-MM-yyyy" formato requerido para la base de datos
-     *
-     * @return un objeto de tipo LocalDate con la fecha actual
-     */
-    public String getFechaActualString() {
-        return localDate.format(ORDEN);
+    public LocalDate getFechaObj(String o) {
+        LocalDate now = LocalDate.parse(o, ORDEN);
+        return now;
     }
 
     /**
@@ -74,5 +61,17 @@ public class Fecha {
             "1",
             month.length(year.isLeap()) + ""
         };
+    }
+
+    public String getMes(int i) {
+        return MESES[i];
+    }
+
+    public String[] get() {
+        LocalDate l = LocalDate.now();
+        String dia = "" + l.getDayOfMonth();
+        String mes = "" + l.getMonthValue();
+        String año = "" + l.getYear();
+        return new String[]{dia, mes, año};
     }
 }

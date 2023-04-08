@@ -5,16 +5,21 @@
 package com.jblue.modelo.envoltorios.op;
 
 import com.jblue.modelo.objetos.OCalles;
+import com.jblue.modelo.objetos.OPagosOtros;
+import com.jblue.modelo.objetos.OPagosRecargos;
+import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.modelo.objetos.Objeto;
+import com.jblue.modelo.objetos.sucls.Objeto;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -42,10 +47,15 @@ public abstract class FuncionesEnvoltorio {
      * @return true si la inserccion se hizo correctamente en otro clase false
      */
     protected boolean _INSERTAR(String[] valores) {
-        return CONEXION.insert(TABLA,
-                CONEXION.getCampos(Arrays.copyOfRange(CAMPOS, 1, CAMPOS.length)),
-                CONEXION.getDatos(valores)
-        );
+        try {
+            return CONEXION.insert(TABLA,
+                    CONEXION.getCampos(Arrays.copyOfRange(CAMPOS, 1, CAMPOS.length)),
+                    CONEXION.getDatos(valores)
+            );
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionesEnvoltorio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     /**
@@ -58,20 +68,56 @@ public abstract class FuncionesEnvoltorio {
      * @return true si la eliminacion se hizo correctamente en otro clase false
      */
     protected boolean _ELIMINAR(String where) {
-        return CONEXION.delete(TABLA, where);
+        try {
+            return CONEXION.delete(TABLA, where);
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionesEnvoltorio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
+    /**
+     *
+     * @param campo
+     * @param valor
+     * @param where
+     * @return
+     */
     protected boolean _ACTUALIZAR(String campo, String valor, String where) {
-        return CONEXION.update(TABLA, campo, valor, where);
+        try {
+            return CONEXION.update(TABLA, campo, valor, where);
+        } catch (SQLException ex) {
+
+        }
+        return false;
     }
 
+    /**
+     *
+     * @param campos
+     * @param valores
+     * @param where
+     * @return
+     */
     protected boolean _ACTUALIZAR(String campos[], String valores[], String where) {
-        return CONEXION.update(TABLA,
-                CONEXION.getCamposDatos(campos, valores),
-                where
-        );
+        try {
+            return CONEXION.update(TABLA,
+                    CONEXION.getCamposDatos(campos, valores),
+                    where
+            );
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionesEnvoltorio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
+    /**
+     *
+     * @param <T>
+     * @param campos
+     * @param where
+     * @return
+     */
     protected <T extends Objeto> ArrayList<T> _GET(String campos, String where) {
         try {
             ResultSet get = CONEXION.select(TABLA, campos, where);
@@ -85,29 +131,41 @@ public abstract class FuncionesEnvoltorio {
         return null;
     }
 
+    /**
+     *
+     * @param get
+     * @param tabla
+     * @param campos
+     * @return
+     * @throws SQLException
+     * @throws CloneNotSupportedException
+     */
     private ArrayList<Objeto> getLista(ResultSet get, String tabla, String[] campos) throws SQLException, CloneNotSupportedException {
         if (get == null || tabla == null || campos == null) {
             throw new NullPointerException("Alguno de los parametros es null");
         }
+        ArrayList<Objeto> o = null;
         try {
             switch (tabla) {
-                case "calles":
-                    OCalles calle = new OCalles();
-                    return runWhile(calle, get, campos);
-                case "usuarios":
-                    OUsuarios usuarios = new OUsuarios();
-                    return runWhile(usuarios, get, campos);
-                case "personal":
-                    OPersonal personal = new OPersonal();
-                    return runWhile(personal, get, campos);
-                case "tipo_tomas":
-                    OTipoTomas toma = new OTipoTomas();
-                    return runWhile(toma, get, campos);
+                case "calles" ->
+                    o = runWhile(new OCalles(), get, campos);
+                case "tipo_tomas" ->
+                    o = runWhile(new OTipoTomas(), get, campos);
+                case "usuarios" ->
+                    o = runWhile(new OUsuarios(), get, campos);
+                case "personal" ->
+                    o = runWhile(new OPersonal(), get, campos);
+                case "pagos_x_servicio" ->
+                    o = runWhile(new OPagosServicio(), get, campos);
+                case "pagos_x_recargos" ->
+                    o = runWhile(new OPagosRecargos(), get, campos);
+                case "pagos_x_otros" ->
+                    o = runWhile(new OPagosOtros(), get, campos);
             }
         } catch (Exception ex) {
             Excp.impTerminal(ex, this.getClass(), true);
         }
-        return null;
+        return o;
     }
 
     private <T extends Objeto> ArrayList<T> runWhile(T o, ResultSet rs, String[] campos) {
@@ -151,16 +209,24 @@ public abstract class FuncionesEnvoltorio {
 
     /**
      *
-     * @return
+     * @return la tabla con la que se esta trabajando
      */
     public String getTABLA() {
         return TABLA;
     }
 
+    /**
+     *
+     * @return un arreglo con los campos de la tabla
+     */
     public String[] getCAMPOS() {
         return CAMPOS;
     }
 
+    /**
+     *
+     * @return el objeto de conexion
+     */
     public Conexion getCONEXION() {
         return CONEXION;
     }

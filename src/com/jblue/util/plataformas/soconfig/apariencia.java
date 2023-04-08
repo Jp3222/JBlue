@@ -22,41 +22,15 @@ public class apariencia {
 
     public static void setDefault() {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            String UI = UIManager.getSystemLookAndFeelClassName();
+            UIManager.setLookAndFeel(UI);
+
+        } catch (ClassNotFoundException | InstantiationException
+                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+
             Logger.getLogger(apariencia.class.getName()).log(Level.SEVERE, null, ex);
+
         }
-    }
-
-    public static void setAparienciaDEF() {
-        try {
-            String valor = getApariencia(DEF);
-            if (valor != null) {
-                UIManager.setLookAndFeel(valor);
-            }
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
-            System.out.println("error de look " + e.getMessage());
-        }
-    }
-
-    public static void setAparienciaLIN() {
-
-    }
-
-    public static void setAparienciaWIN() {
-    }
-
-    public static void setAparienciaMac() {
-    }
-
-    private static String getApariencia(String name) {
-        UIManager.LookAndFeelInfo[] look = UIManager.getInstalledLookAndFeels();
-        for (UIManager.LookAndFeelInfo o : look) {
-            if (o.getName().toLowerCase().contains(name)) {
-                return o.getClassName();
-            }
-        }
-        return null;
     }
 
 }

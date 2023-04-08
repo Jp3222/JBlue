@@ -14,6 +14,19 @@ import javax.swing.JFrame;
 public abstract class SuperVentana extends JFrame implements InfoApp {
 
     /**
+     * Variable que define el titulo de la ventana
+     * <br> 0 "nueva ventana"
+     * <br> 1 "Inicio de sesion"
+     * <br> 2 "Menu Principal"
+     * <br> 3 "BD usuarios"
+     * <br> 4 "BD calles"
+     * <br> 5 "BD tipo de tomas"
+     * <br> 6 "Menu Tesoreria"
+     * <br> 7 "Menu Presidente"
+     */
+    protected int _TITULO;
+
+    /**
      * Metodo recomentado para invocar solo a los metodos definidos siguiendo el
      * siguiente orden
      * <br> - estado final
@@ -38,6 +51,14 @@ public abstract class SuperVentana extends JFrame implements InfoApp {
      * cual no sera cambiado
      */
     protected void estadoFinal() {
+        this.setIconImage(ICONO_DEL_PROGRAMA.getImage());
+        StringBuilder s = new StringBuilder(NOMBRE_DEL_PROGRAMA);
+
+        s.append(" ")
+                .append(VERSION_DEL_PROGRAMA)
+                .append(" - ").append(MENUS_DEL_PROGRAMA[_TITULO]);
+
+        this.setTitle(s.toString());
     }
 
     /**
@@ -50,6 +71,7 @@ public abstract class SuperVentana extends JFrame implements InfoApp {
      * Metodo recomendado para añadir eventos a los componentes definidos
      */
     protected void addEventos() {
+
     }
 
 }

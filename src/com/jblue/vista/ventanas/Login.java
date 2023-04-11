@@ -4,12 +4,14 @@
  */
 package com.jblue.vista.ventanas;
 
+import com.jblue.vista.ventanas.menus.MenuPrincipal;
 import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.sistema.Sesion;
+import com.jblue.sistema.Sistema;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.crypto.EncriptadoAES;
-import com.jblue.vista.conf.SuperVentana;
+import com.jblue.vista.normas.SuperVentana;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
 import com.jutil.jswing.jswingenv.EnvJTextField;
@@ -22,7 +24,6 @@ import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -32,7 +33,6 @@ import javax.swing.SwingUtilities;
  */
 public class Login extends SuperVentana {
 
-    private final ImageIcon[] img;
     private final MenuPrincipal MENU_PRINCIPAL;
     private final MenuConfigBD MENU_CONFIG_BD;
     private final EnvJTextField envjtfs[];
@@ -44,9 +44,6 @@ public class Login extends SuperVentana {
      */
     public Login(MenuConfigBD MENU_CONFIG_BD) {
         this._TITULO = 1;
-        img = new ImageIcon[2];
-        img[0] = new ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"));
-        img[1] = new ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img3.png"));
         MENU_PRINCIPAL = new MenuPrincipal(this);
         this.MENU_CONFIG_BD = MENU_CONFIG_BD;
         initComponents();
@@ -66,7 +63,6 @@ public class Login extends SuperVentana {
     @Override
     public void estadoInicial() {
         usuario.requestFocusInWindow();
-        mostrar.setIcon(img[0]);
         mostrar.setToolTipText("mostrar");
         for (EnvJTextField envjtf : envjtfs) {
             envjtf.defecto();
@@ -180,7 +176,6 @@ public class Login extends SuperVentana {
         jLabel5.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel5.add(jLabel5, java.awt.BorderLayout.LINE_START);
 
-        usuario.setNextFocusableComponent(contra);
         usuario.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel5.add(usuario, java.awt.BorderLayout.CENTER);
 
@@ -194,15 +189,13 @@ public class Login extends SuperVentana {
         jLabel6.setText("Contraseña");
         jLabel6.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel6.add(jLabel6, java.awt.BorderLayout.LINE_START);
-
-        contra.setNextFocusableComponent(jbtInicio);
         jPanel6.add(contra, java.awt.BorderLayout.CENTER);
 
         mostrar.setToolTipText("mostrar");
         mostrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mostrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
-        mostrar.setNextFocusableComponent(configuracionBD);
         mostrar.setPreferredSize(new java.awt.Dimension(30, 40));
+        mostrar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img3.png"))); // NOI18N
         mostrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mostrarActionPerformed(evt);
@@ -218,7 +211,6 @@ public class Login extends SuperVentana {
         jPanel7.add(jLabel7, java.awt.BorderLayout.LINE_START);
 
         jbtInicio.setText("Iniciar Sesion");
-        jbtInicio.setNextFocusableComponent(mostrar);
         jbtInicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtInicioActionPerformed(evt);
@@ -254,11 +246,9 @@ public class Login extends SuperVentana {
         if (mostrar.isSelected()) {
             char c = 0;
             contra.setEchoChar(c);
-            mostrar.setIcon(img[1]);
             mostrar.setToolTipText("ocultar");
         } else {
             contra.setEchoChar('*');
-            mostrar.setIcon(img[0]);
             mostrar.setToolTipText("mostrar");
         }
     }//GEN-LAST:event_mostrarActionPerformed
@@ -268,6 +258,11 @@ public class Login extends SuperVentana {
             if (!inicio()) {
                 return;
             }
+            if (!Sistema.getInstancia().datosCache()) {
+                System.out.println("ERROR AL CARGAR LA CACHE");
+            }
+            System.out.println("¡¡¡CACHE CARGADA!!!");
+
             SwingUtilities.invokeLater(() -> {
                 this.setVisible(false);
                 this.dispose();
@@ -311,14 +306,13 @@ public class Login extends SuperVentana {
             JOptionPane.showMessageDialog(this, "Usuario y/o contraseña incorrectos");
             return false;
         }
-
         Sesion sesion = Sesion.getInstancia();
         sesion.setUsuario(get);
-
         if (!sesion.inicioSesion()) {
             JOptionPane.showMessageDialog(this, "ERROR AL REGISTRAR SESION");
             return false;
         }
+        MENU_PRINCIPAL.permisos();
         return true;
     }
 
@@ -332,6 +326,10 @@ public class Login extends SuperVentana {
     public void dispose() {
         super.dispose();
         SwingUtilities.invokeLater(() -> estadoInicial());
+    }
+
+    @Override
+    public void permisos() {
     }
 
 

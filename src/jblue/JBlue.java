@@ -32,11 +32,12 @@ public class JBlue {
         //Inicio del sistema
         Sistema s = Sistema.getInstancia();
         do {
-//            if (!s.archivosSistema()) {
-//                System.out.println("ERROR EN LOS ARCHIVOS DEL PROGRAMA");
-//                break;
-//            }
-//            System.out.println("¡¡¡ARCHIVOS DEL PROGRAMA LISTOS!!!");
+            
+            if (!s.archivosSistema()) {
+                System.out.println("ERROR EN LOS ARCHIVOS DEL PROGRAMA");
+                break;
+            }
+            System.out.println("¡¡¡ARCHIVOS DEL PROGRAMA LISTOS!!!");
 
             if (!s.conexionBD()) {
                 System.out.println("ERROR EN La CONEXION A LA BD");
@@ -44,18 +45,17 @@ public class JBlue {
             }
             System.out.println("¡¡¡CONEXION BD LISTA!!!");
 
-            if (!s.datosCache()) {
-                System.out.println("ERROR AL CARGAR LA CACHE");
-            }
-            System.out.println("¡¡¡CACHE CARGADA!!!");
-            //
+            
             if (!s.run()) {
                 System.out.println("ERROR AL CORRER EL PROGRAMA");
             }
             System.out.println("¡¡¡TODO OK!!!");
+            
             if (s.isReinicio()) {
                 System.gc();
+                System.out.println("REINICIANDO EL PROGRAMA");
             }
+            
         } while (s.isReinicio());
 
     }

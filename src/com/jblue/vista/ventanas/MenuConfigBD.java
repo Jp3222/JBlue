@@ -4,8 +4,20 @@
  */
 package com.jblue.vista.ventanas;
 
-import com.jblue.vista.conf.SuperVentana;
+import com.jblue.sistema.Archivos;
+import com.jblue.sistema.Sistema;
+import com.jblue.sistema.so.ConstructorDeArchivos;
+import com.jblue.vista.normas.SuperVentana;
 import com.jutil.jbd.conexion.Conexion;
+import com.jutil.jexception.Excp;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -82,9 +94,9 @@ public class MenuConfigBD extends SuperVentana {
         jLabel5 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        jbtGuardarDatos = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
+        jbtProbarConexion = new javax.swing.JButton();
         jPanel11 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         estado = new javax.swing.JLabel();
@@ -171,26 +183,26 @@ public class MenuConfigBD extends SuperVentana {
         jPanel9.setPreferredSize(new java.awt.Dimension(200, 50));
         jPanel9.setLayout(new java.awt.BorderLayout());
 
-        jButton1.setText("Conectar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jbtGuardarDatos.setText("Guardar");
+        jbtGuardarDatos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jbtGuardarDatosActionPerformed(evt);
             }
         });
-        jPanel9.add(jButton1, java.awt.BorderLayout.CENTER);
+        jPanel9.add(jbtGuardarDatos, java.awt.BorderLayout.CENTER);
 
         jPanel8.add(jPanel9);
 
         jPanel10.setPreferredSize(new java.awt.Dimension(200, 50));
         jPanel10.setLayout(new java.awt.BorderLayout());
 
-        jButton4.setText("Probar conexion");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jbtProbarConexion.setText("Probar conexion");
+        jbtProbarConexion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jbtProbarConexionActionPerformed(evt);
             }
         });
-        jPanel10.add(jButton4, java.awt.BorderLayout.CENTER);
+        jPanel10.add(jbtProbarConexion, java.awt.BorderLayout.CENTER);
 
         jPanel8.add(jPanel10);
 
@@ -217,37 +229,87 @@ public class MenuConfigBD extends SuperVentana {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jbtGuardarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtGuardarDatosActionPerformed
 
-
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        System.out.println("evt");
-        Conexion con = Conexion.getInstancia();
-        if (con != null) {
-            Conexion.ConexionNULL();
+        FileWriter fr;
+        try {
+            Sistema s = Sistema.getInstancia();
+            Archivos archivos = s.getArchivos();
+            ConstructorDeArchivos constructor = archivos.getArchivos();
+            File us = constructor.get(constructor.ARCHIVO, archivos.USUARIO_BD);
+            fr = new FileWriter(us);
+            String[] datos = getDatos();
+            StringBuilder sb = new StringBuilder();
+            sb.append(datos[0]).append(",");
+            sb.append(datos[1]).append(",");
+            sb.append(datos[2]);
+            fr.write(sb.toString());
+            fr.close();
+            dispose();
+        } catch (FileNotFoundException ex) {
+            Excp.impTerminal(ex, getClass(), true);
+        } catch (IOException ex) {
+            Excp.impTerminal(ex, getClass(), true);
         }
+
+    }//GEN-LAST:event_jbtGuardarDatosActionPerformed
+
+    private void jbtProbarConexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtProbarConexionActionPerformed
+        try {
+            System.out.println("evt");
+
+            getDatos();
+            System.out.println(usuario + ", " + contra + ", " + url);
+            Conexion con = Conexion.getInstancia(usuario, contra, url);
+            boolean valid = con.getConexion().isValid(3);
+            System.out.println(valid);
+            String mensaje = "La conexion es: ";
+
+            if (valid) {
+                mensaje += "valida";
+            } else {
+                mensaje += "no valida";
+            }
+            JOptionPane.showMessageDialog(this, mensaje);
+            Conexion.ConexionNULL();
+        } catch (SQLException ex) {
+            Excp.imp(ex, getClass(), true, true);
+        }
+
+    }//GEN-LAST:event_jbtProbarConexionActionPerformed
+
+    public String[] getDatos() {
         usuario = jtfUsuario.getText();
         contra = String.valueOf(jpfContra.getPassword());
         StringBuilder s = new StringBuilder("jdbc:");
+
         s.append(jcbMotor.getItemAt(jcbMotor.getSelectedIndex()))
                 .append("://")
                 .append(jtfHost.getText())
                 .append("/")
                 .append(jtfBDNombre.getText());
         url = s.toString();
-        System.out.println(usuario + ", " + contra + ", " + url);
-//        con = Conexion.getInstancia(usuario, contra, url);
-//        System.out.println(con == null);
+        return new String[]{
+            usuario, contra, url
+        };
+    }
 
-    }//GEN-LAST:event_jButton4ActionPerformed
+    @Override
+    public void permisos() {
+        System.out.println("N/A");
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        synchronized (this) {
+            notify();
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel estado;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -267,6 +329,8 @@ public class MenuConfigBD extends SuperVentana {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JButton jbtGuardarDatos;
+    private javax.swing.JButton jbtProbarConexion;
     private javax.swing.JComboBox<String> jcbMotor;
     private javax.swing.JPasswordField jpfContra;
     private javax.swing.JTextField jtfBDNombre;

@@ -35,7 +35,7 @@ public abstract class Objeto implements Serializable, Cloneable, Comparable<Obje
 
     public void setInfo(String[] info) {
         this._conjunto = info;
-        this._conjuntoSinFK = _conjunto.clone();
+        this._conjuntoSinFK = info.clone();
     }
 
     @Override
@@ -87,7 +87,7 @@ public abstract class Objeto implements Serializable, Cloneable, Comparable<Obje
 
     public void setValue(int index, String newValue) {
         _conjunto[index] = newValue;
-        this._conjuntoSinFK = _conjunto.clone();
+        _conjuntoSinFK[index] = newValue;
     }
 
     @Override

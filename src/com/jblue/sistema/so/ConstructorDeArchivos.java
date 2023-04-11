@@ -58,9 +58,12 @@ public class ConstructorDeArchivos {
     public void construirArchivos() {
         try {
             for (File file : archivos) {
-                if (!file.exists()) {
-                    file.createNewFile();
+                if (file.exists()) {
+                    System.out.println("archivo existe");
+                    continue;
                 }
+                file.createNewFile();
+                System.out.println(file.getAbsolutePath() + file.exists());
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -72,9 +75,11 @@ public class ConstructorDeArchivos {
      */
     public void construirDirectorios() {
         for (File file : directorios) {
-            if (!file.exists()) {
-                file.mkdirs();
+            if (file.exists()) {
+                continue;
             }
+            file.mkdir();
+            System.out.println(file.getAbsolutePath());
         }
     }
 
@@ -96,8 +101,12 @@ public class ConstructorDeArchivos {
     }
 
     /**
+     * metodo que indica si las listas de archivos estan vacias
      *
-     * @return
+     * @return 0 si ninguna de las listas esta vacia
+     * <br> 1 si la lista de archivos esta vacia
+     * <br> 2 si la lista de directorios esta vacia
+     * <br> 3 si ambas listas estan vacias
      */
     public int isEmpty() {
         int x = 0;
@@ -110,6 +119,16 @@ public class ConstructorDeArchivos {
             y = 2;
         }
         return x + y;
+    }
+
+    public void print() {
+        for (File directorio : directorios) {
+            System.out.println(directorio.exists() + " = " + directorio.getAbsoluteFile());
+        }
+
+        for (File archivo : archivos) {
+            System.out.println(archivo.exists() + " = " + archivo.getAbsoluteFile());
+        }
     }
 
 }

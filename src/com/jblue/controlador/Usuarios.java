@@ -7,7 +7,7 @@ package com.jblue.controlador;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.modelo.objetos.sucls.Objeto;
 import com.jblue.util.cache.FabricaCache;
-import com.jblue.vista.ventanas.bd.NewMenuUsuarios;
+import com.jblue.vista.ventanas.menus.bd.MenuUsuarios;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 import javax.swing.DefaultListModel;
@@ -20,9 +20,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Usuarios {
 
-    private final NewMenuUsuarios R;
+    private final MenuUsuarios R;
 
-    public Usuarios(NewMenuUsuarios vista) {
+    public Usuarios(MenuUsuarios vista) {
         this.R = vista;
     }
 
@@ -31,6 +31,19 @@ public class Usuarios {
         cargarComboModel(R.getJcbTipoToma(), FabricaCache.MC_TIPOS_DE_TOMAS.getLista());
         cargarComboModel(R.getJcbTitular(), FabricaCache.MC_USUARIOS.getLista(), (t) -> t.isTitular());
         cargarLista();
+    }
+
+    public void cargarFiltros() {
+        cargarComboModel(R.getFiltro_calle(), FabricaCache.MC_CALLES.getLista());
+        cargarComboModel(R.getFiltro_estado(), FabricaCache.MC_TIPOS_DE_TOMAS.getLista());
+        cargarComboModel(R.getFiltro_toma(), FabricaCache.MC_USUARIOS.getLista(), (t) -> t.isTitular());
+        cargarLista();
+    }
+
+    public void vaciarFiltros() {
+        R.getFiltro_calle().removeAllItems();
+        R.getFiltro_toma().removeAllItems();
+        R.getFiltro_estado().removeAllItems();
     }
 
     public void actualizarVistaPrincipal() {

@@ -24,8 +24,6 @@ public class Media {
     }
 
     public void leer() {
-        System.out.println(raiz.toString());
-        
     }
 
     private String crearURL(String... o) {

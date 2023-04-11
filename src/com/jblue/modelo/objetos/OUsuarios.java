@@ -55,7 +55,7 @@ public class OUsuarios extends Objeto {
      */
     @Override
     public String getStringR() {
-        return getSubCon(1, 2, 3).replace(",", " ");
+        return getSubCon(1, 2, 3).replace(",", " ").replace("_", " ");
     }
 
     /**
@@ -110,27 +110,67 @@ public class OUsuarios extends Objeto {
     }
 
     private String[] InfoSinFK() {
-        return new String[]{
-            _conjunto[0],
-            _conjunto[1],
-            _conjunto[2],
-            _conjunto[3],
-            EnvUsuario.getCalle(_conjunto[4]).getStringR(),
-            EnvUsuario.getTipo_De_Toma(_conjunto[5]).getTipo(),
-            _conjunto[6],
-            isActivo() ? "ACTIVO" : "INACTIVO",
-            isTitular() ? "N/A" : EnvUsuario.getUsuario(_conjunto[8]).getStringR()
-        };
+        _conjuntoSinFK[4] = EnvUsuario.getCalle(_conjunto[4]).getStringR();
+        _conjuntoSinFK[5] = EnvUsuario.getTipo_De_Toma(_conjunto[5]).getStringR();
+        _conjuntoSinFK[7] = isActivo() ? "ACTIVO" : "INACTIVO";
+        OUsuarios usuario = EnvUsuario.getUsuario(_conjunto[8]);
+        _conjuntoSinFK[8] = isTitular() ? "N/A" : usuario.getStringR();
+        return _conjuntoSinFK;
     }
 
+    /**
+     * <br> 1 id
+     * <br> 2 nombre
+     * <br> 3 ap
+     * <br> 4 am
+     * <br> 5 calle
+     * <br> 6 toma
+     * <br> 7 registro
+     * <br> 8 estado
+     * <br> 9 titular
+     *
+     * @param info array que contiene la informacion en el orden mostrado arriba
+     */
     @Override
     public void setInfo(String[] info) {
         super.setInfo(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         _conjuntoSinFK = InfoSinFK();
     }
 
+    /**
+     * <br> 1 id
+     * <br> 2 nombre
+     * <br> 3 ap
+     * <br> 4 am
+     * <br> 5 calle
+     * <br> 6 toma
+     * <br> 7 registro
+     * <br> 8 estado
+     * <br> 9 titular
+     *
+     * @return un arreglo con la informacion en el orden mostrado
+     */
     public String[] getInfoSinFK() {
         return _conjuntoSinFK;
+    }
+
+    /**
+     * <br> 1 id
+     * <br> 2 nombre
+     * <br> 3 ap
+     * <br> 4 am
+     * <br> 5 calle
+     * <br> 6 toma
+     * <br> 7 registro
+     * <br> 8 estado
+     * <br> 9 titular
+     *
+     * @return un arreglo con la informacion en el orden mostrado
+     */
+
+    @Override
+    public String[] getInfo() {
+        return super.getInfo(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
 }

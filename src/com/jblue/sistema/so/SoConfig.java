@@ -4,10 +4,6 @@
  */
 package com.jblue.sistema.so;
 
-import com.jblue.util.SoInfo;
-import com.jblue.util.plataformas.soconfig.apariencia;
-import java.io.File;
-
 /**
  *
  * @author jp

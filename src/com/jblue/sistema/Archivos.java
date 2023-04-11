@@ -6,7 +6,6 @@ package com.jblue.sistema;
 
 import com.jblue.sistema.so.ConstructorDeArchivos;
 import com.jblue.util.SoInfo;
-import com.jblue.util.plataformas.soconfig.apariencia;
 import java.io.File;
 
 /**
@@ -18,22 +17,26 @@ public class Archivos {
     private final ConstructorDeArchivos archivos;
     private final String raiz;
     private final String raiz_de_basura;
-
+    public final int USUARIO_BD;
+    public final int REPORTES = 4;
     /**
      *
      */
     public Archivos() {
-        this.raiz = "jblue";
+        this.USUARIO_BD = 0;
+        this.raiz = "JBlue";
         this.raiz_de_basura = ".blue";
         this.archivos = new ConstructorDeArchivos();
     }
-    
+
     private void archivos() {
+
         //Archivos de respaldo
         archivos.add(archivos.DIRECTORIO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz_de_basura));
         archivos.add(archivos.DIRECTORIO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz_de_basura, "respaldos"));
         archivos.add(archivos.DIRECTORIO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz_de_basura, "cache"));
-        archivos.add(archivos.ARCHIVO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz_de_basura, "bd.jff"));
+        archivos.add(archivos.ARCHIVO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz_de_basura, "config"));
+
         //Archivos visibles
         archivos.add(archivos.DIRECTORIO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz));
         archivos.add(archivos.DIRECTORIO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz, "reportes"));
@@ -43,7 +46,6 @@ public class Archivos {
 
     public void cargar() {
         try {
-            apariencia.setDefault();
             archivos();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -69,4 +71,5 @@ public class Archivos {
         url += noms[noms.length - 1];
         return url;
     }
+
 }

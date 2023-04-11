@@ -47,14 +47,14 @@ public class EnvUsuario {
 
     public static OUsuarios getUsuario(String txt) {
         ArrayList<OUsuarios> lista = FabricaCache.MC_USUARIOS.getLista();
-        OUsuarios o = null;
-        for (OUsuarios oUsuarios : lista) {
-            if (oUsuarios.getId().equalsIgnoreCase(txt) || oUsuarios.getStringR().equalsIgnoreCase(txt)) {
-                o = oUsuarios;
-                return o;
+        OUsuarios aux = null;
+        for (OUsuarios i : lista) {
+            if (i.getId().equals(txt) || i.getStringR().equalsIgnoreCase(txt)) {
+                aux = i;
+                return aux;
             }
         }
-        return o;
+        return aux;
     }
 
     public static int getMesesPagados(String año, String id) {

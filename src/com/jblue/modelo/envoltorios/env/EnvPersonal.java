@@ -22,7 +22,7 @@ public abstract class EnvPersonal {
     public static OPersonal getPersonal(String txt) {
         ArrayList<OPersonal> lista = FabricaCache.MC_PERSONAL.getLista();
         for (OPersonal i : lista) {
-            if (i.getId().equals(txt)) {
+            if (i.getId().equals(txt) || i.getStringR().contains(txt)) {
                 return i;
             }
         }

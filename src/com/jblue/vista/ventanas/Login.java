@@ -33,7 +33,7 @@ import javax.swing.SwingUtilities;
  */
 public class Login extends SuperVentana {
 
-    private final MenuPrincipal MENU_PRINCIPAL;
+    private MenuPrincipal MENU_PRINCIPAL;
     private final MenuConfigBD MENU_CONFIG_BD;
     private final EnvJTextField envjtfs[];
 
@@ -44,7 +44,6 @@ public class Login extends SuperVentana {
      */
     public Login(MenuConfigBD MENU_CONFIG_BD) {
         this._TITULO = 1;
-        MENU_PRINCIPAL = new MenuPrincipal(this);
         this.MENU_CONFIG_BD = MENU_CONFIG_BD;
         initComponents();
         envjtfs = new EnvJTextField[2];
@@ -268,7 +267,9 @@ public class Login extends SuperVentana {
                 this.dispose();
             });
             SwingUtilities.invokeLater(() -> {
+                MENU_PRINCIPAL = new MenuPrincipal(this);
                 MENU_PRINCIPAL.setVisible(true);
+                MENU_PRINCIPAL.permisos();
             });
         } catch (UnsupportedEncodingException
                 | InvalidKeyException | NoSuchAlgorithmException
@@ -312,7 +313,6 @@ public class Login extends SuperVentana {
             JOptionPane.showMessageDialog(this, "ERROR AL REGISTRAR SESION");
             return false;
         }
-        MENU_PRINCIPAL.permisos();
         return true;
     }
 
@@ -358,4 +358,8 @@ public class Login extends SuperVentana {
     private javax.swing.JCheckBox mostrar;
     private javax.swing.JTextField usuario;
     // End of variables declaration//GEN-END:variables
+
+    public void limpiarInstancia() {
+        MENU_PRINCIPAL = null;
+    }
 }

@@ -33,8 +33,8 @@ public class OTipoTomas extends Objeto {
         return Double.parseDouble(_conjunto[2]);
     }
 
-    public int getRecargo() {
-        return Integer.parseInt(_conjunto[3]);
+    public double getRecargo() {
+        return Double.parseDouble(_conjunto[3]);
     }
 
 }

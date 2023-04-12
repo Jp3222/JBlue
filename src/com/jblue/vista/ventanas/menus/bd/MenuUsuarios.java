@@ -4,7 +4,7 @@
  */
 package com.jblue.vista.ventanas.menus.bd;
 
-import com.jblue.controlador.Usuarios;
+import com.jblue.controlador.CUsuarios;
 import com.jblue.modelo.ConstBD;
 import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.envoltorios.env.EnvUsuario;
@@ -36,7 +36,7 @@ public class MenuUsuarios extends SuperVentana {
     /**
      *
      */
-    private final Usuarios controlador;
+    private final CUsuarios controlador;
     /**
      * Variable en la que se guarda el usuario buscado
      */
@@ -74,7 +74,7 @@ public class MenuUsuarios extends SuperVentana {
         this.buscando = false;
 
         this.initComponents();
-        controlador = new Usuarios(this);
+        controlador = new CUsuarios(this);
 
         this.modelo_tabla = (DefaultTableModel) jtUsuarios.getModel();
         this.jlUsuarios.setModel(modelo_lista);
@@ -833,6 +833,7 @@ public class MenuUsuarios extends SuperVentana {
             memoria_cache.setQuery("titular > 0");
             memoria_cache.cargar();
             memoria_cache.ordenarPorID();
+            //
             controlador.actualizarVistaPrincipal();
             estadoInicial();
             JOptionPane.showMessageDialog(this, "Operacion realizada");
@@ -893,7 +894,6 @@ public class MenuUsuarios extends SuperVentana {
         int x = 0;
         for (JTextField i : arr) {
             String aux = i.getText();
-            System.out.println(aux);
             if (!variableValida(aux)) {
                 return x;
             }

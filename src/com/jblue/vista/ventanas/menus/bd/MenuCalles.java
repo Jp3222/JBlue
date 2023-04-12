@@ -4,8 +4,10 @@
  */
 package com.jblue.vista.ventanas.menus.bd;
 
+import com.jblue.controlador.CCalles;
 import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OCalles;
+import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.util.FormatoBD;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.FabricaOpraciones;
@@ -13,7 +15,9 @@ import com.jblue.util.cache.MemoCache;
 import com.jblue.vista.normas.SuperVentana;
 import com.jutil.jswing.jswingenv.EnvJTextField;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
@@ -29,35 +33,35 @@ public class MenuCalles extends SuperVentana {
     private final ArrayList<OCalles> cache;
     private final Operaciones<OCalles> operaciones;
     private boolean buscando;
-    //
-    private final DefaultTableModel modelo;
-    //
-    private EnvJTextField bus;
-    private EnvJTextField nom;
-    private EnvJTextField num;
+
+    private final CCalles controlador;
+
+    private final DefaultTableModel modelo_tabla;
 
     /**
      * Creates new form NewMenuCalles
      */
     public MenuCalles() {
         _TITULO = 4;
-        buscando = false;
+
         lista_auxiliar = new ArrayList<>();
+
         memoria_cache = FabricaCache.MC_CALLES;
-        operaciones = FabricaOpraciones.CALLES;
         cache = memoria_cache.getLista();
+
+        operaciones = FabricaOpraciones.CALLES;
+
         //
         initComponents();
-        this.bus = new EnvJTextField(jtfBuscar, "ejem: CHIMALPOPOCA No 10");
-        this.bus.defectoAlEnter();
-        this.nom = new EnvJTextField(jtfNombre, "ejem: MALINCHE");
-        this.num = new EnvJTextField(jtfNumero, "ejem: 10");
-        modelo = (DefaultTableModel) jtCalles.getModel();
+        modelo_tabla = (DefaultTableModel) jtCalles.getModel();
+        //
+        controlador = new CCalles(this);
         llamable();
     }
 
     @Override
     protected final void llamable() {
+        addComponentes();
         estadoFinal();
         estadoInicial();
         addEventos();
@@ -66,6 +70,7 @@ public class MenuCalles extends SuperVentana {
     @Override
     protected void estadoFinal() {
         super.estadoFinal();
+        jbtCancelar.setEnabled(true);
     }
 
     @Override
@@ -77,9 +82,11 @@ public class MenuCalles extends SuperVentana {
     public void estadoInicial() {
         calle_buscada = null;
         lista_auxiliar.clear();
-        bus.defecto();
-        nom.defecto();
-        num.defecto();
+        buscando = false;
+        //
+        jtfNombre.setText(null);
+        jtfNumero.setText(null);
+        //
         jtfNombre.requestFocus();
         botonesPrimarios();
     }
@@ -88,31 +95,24 @@ public class MenuCalles extends SuperVentana {
         jbtGuardar.setEnabled(true);
         jbtActualizar.setEnabled(false);
         jbtEliminar.setEnabled(false);
-        jbtCancelar.setEnabled(true);
     }
 
     public void botonesSecundarios() {
         jbtGuardar.setEnabled(false);
         jbtActualizar.setEnabled(true);
         jbtEliminar.setEnabled(true);
-        jbtCancelar.setEnabled(true);
     }
 
-    void cargarTabla() {
-        for (OCalles o : cache) {
-            modelo.addRow(o.getInfo());
-        }
-    }
+    @Override
+    protected void addEventos() {
+        super.addEventos();
+        jbtRecrgar.addActionListener(e -> {
+            buscando = false;
+            lista_auxiliar.clear();
+            calle_buscada = null;
+            controlador.actualizarTabla();
 
-    void vaciarTabla() {
-        while (modelo.getRowCount() > 0) {
-            modelo.removeRow(0);
-        }
-    }
-
-    void actualizarTabla() {
-        vaciarTabla();
-        cargarTabla();
+        });
     }
 
     /**
@@ -126,7 +126,7 @@ public class MenuCalles extends SuperVentana {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jtfBuscar = new javax.swing.JTextField();
+        jtfBuscador = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jbtRecrgar = new javax.swing.JButton();
@@ -143,16 +143,15 @@ public class MenuCalles extends SuperVentana {
         jPanel4 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel13 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
         jtfNombre = new javax.swing.JTextField();
-        jPanel15 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
         jPanel16 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
         jtfNumero = new javax.swing.JTextField();
         jPanel17 = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
+        jPanel24 = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
         jbtGuardar = new javax.swing.JButton();
         jPanel20 = new javax.swing.JPanel();
@@ -170,12 +169,13 @@ public class MenuCalles extends SuperVentana {
         jPanel2.setPreferredSize(new java.awt.Dimension(500, 700));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jtfBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+        jtfBuscador.setPreferredSize(new java.awt.Dimension(500, 30));
+        jtfBuscador.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jtfBuscarKeyReleased(evt);
+                jtfBuscadorKeyReleased(evt);
             }
         });
-        jPanel2.add(jtfBuscar, java.awt.BorderLayout.NORTH);
+        jPanel2.add(jtfBuscador, java.awt.BorderLayout.NORTH);
 
         jPanel5.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.LINE_AXIS));
@@ -184,11 +184,7 @@ public class MenuCalles extends SuperVentana {
         jPanel7.setLayout(new java.awt.BorderLayout());
 
         jbtRecrgar.setText("Recargar");
-        jbtRecrgar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtRecrgarActionPerformed(evt);
-            }
-        });
+        jbtRecrgar.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel7.add(jbtRecrgar, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel7);
@@ -205,6 +201,8 @@ public class MenuCalles extends SuperVentana {
         jPanel10.setLayout(new java.awt.BorderLayout());
 
         jbtAnterior.setText("Anterior");
+        jbtAnterior.setEnabled(false);
+        jbtAnterior.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel10.add(jbtAnterior, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel10);
@@ -213,6 +211,8 @@ public class MenuCalles extends SuperVentana {
         jPanel11.setLayout(new java.awt.BorderLayout());
 
         jbtSiguiente.setText("Siguiente");
+        jbtSiguiente.setEnabled(false);
+        jbtSiguiente.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel11.add(jbtSiguiente, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel11);
@@ -221,6 +221,8 @@ public class MenuCalles extends SuperVentana {
 
         jPanel6.setPreferredSize(new java.awt.Dimension(500, 640));
         jPanel6.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(500, 640));
 
         jtCalles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -238,6 +240,7 @@ public class MenuCalles extends SuperVentana {
                 return canEdit [columnIndex];
             }
         });
+        jtCalles.setPreferredSize(new java.awt.Dimension(500, 600));
         jtCalles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jtCalles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jtCalles.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -269,34 +272,38 @@ public class MenuCalles extends SuperVentana {
 
         jPanel4.add(jPanel12);
 
-        jPanel13.setPreferredSize(new java.awt.Dimension(500, 40));
-        jPanel13.setLayout(new java.awt.BorderLayout());
+        jPanel14.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel14.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("Nombre: ");
-        jPanel13.add(jLabel2, java.awt.BorderLayout.CENTER);
+        jLabel2.setPreferredSize(new java.awt.Dimension(60, 25));
+        jPanel14.add(jLabel2, java.awt.BorderLayout.NORTH);
 
-        jPanel4.add(jPanel13);
-
-        jPanel14.setLayout(new java.awt.BorderLayout());
-
-        jtfNombre.setPreferredSize(new java.awt.Dimension(500, 40));
+        jtfNombre.setPreferredSize(new java.awt.Dimension(500, 25));
+        jtfNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfNombreKeyTyped(evt);
+            }
+        });
         jPanel14.add(jtfNombre, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel14);
 
-        jPanel15.setPreferredSize(new java.awt.Dimension(500, 40));
-        jPanel15.setLayout(new java.awt.BorderLayout());
+        jPanel16.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel16.setLayout(new java.awt.BorderLayout());
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel3.setText("Numero: ");
-        jPanel15.add(jLabel3, java.awt.BorderLayout.CENTER);
+        jLabel3.setPreferredSize(new java.awt.Dimension(60, 25));
+        jPanel16.add(jLabel3, java.awt.BorderLayout.NORTH);
 
-        jPanel4.add(jPanel15);
-
-        jPanel16.setLayout(new java.awt.BorderLayout());
-
-        jtfNumero.setPreferredSize(new java.awt.Dimension(500, 40));
+        jtfNumero.setPreferredSize(new java.awt.Dimension(500, 25));
+        jtfNumero.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfNumeroKeyTyped(evt);
+            }
+        });
         jPanel16.add(jtfNumero, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel16);
@@ -317,6 +324,10 @@ public class MenuCalles extends SuperVentana {
         jPanel3.add(jPanel17, java.awt.BorderLayout.PAGE_END);
 
         jPanel18.setLayout(new javax.swing.BoxLayout(jPanel18, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jPanel24.setPreferredSize(new java.awt.Dimension(500, 80));
+        jPanel24.setLayout(new java.awt.BorderLayout());
+        jPanel18.add(jPanel24);
 
         jPanel19.setPreferredSize(new java.awt.Dimension(500, 80));
         jPanel19.setLayout(new java.awt.BorderLayout());
@@ -385,29 +396,29 @@ public class MenuCalles extends SuperVentana {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtGuardarActionPerformed
-        boolean valido = datosValidos();
-        if (!valido) {
-            JOptionPane.showMessageDialog(this, "INSERCCION ERRONEA", "ERROR", JOptionPane.WARNING_MESSAGE);
+        String[] info = getInfo();
+        if (info == null) {
+            JOptionPane.showMessageDialog(this, "INSERCCION ERRONEA", "OPERACION REALIZADA", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        String[] info = getInfo();
         info = FormatoBD.bdEntrada(info);
         operaciones.insertar(info);
         JOptionPane.showMessageDialog(this, "INSERCCION EXITOSA", "OPERACION REALIZADA", JOptionPane.WARNING_MESSAGE);
+        mov();
 
     }//GEN-LAST:event_jbtGuardarActionPerformed
 
     private void jbtActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtActualizarActionPerformed
-        boolean valido = datosValidos();
-        if (!valido) {
+        String[] info = getInfo();
+        if (info == null) {
             JOptionPane.showMessageDialog(this, "ACTUALIZACION ERRONEA", "ERROR", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        String[] info = getInfo();
         info = FormatoBD.bdEntrada(info);
-        String[] campos = operaciones.getCAMPOS();
+        String[] campos = Arrays.copyOfRange(operaciones.getCAMPOS(), 1, operaciones.getCAMPOS().length);
         operaciones.actualizar(campos, info, "id = " + calle_buscada.getId());
         JOptionPane.showMessageDialog(this, "ACTUALIZACION EXITOSA", "OPERACION REALIZADA", JOptionPane.WARNING_MESSAGE);
+        mov();
 
     }//GEN-LAST:event_jbtActualizarActionPerformed
 
@@ -416,8 +427,14 @@ public class MenuCalles extends SuperVentana {
             JOptionPane.showMessageDialog(this, "ELIMINACION ERRONEA", "ERROR", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        if (!borrable(calle_buscada.getId())) {
+            JOptionPane.showMessageDialog(this, "ESTE ELEMENTO NO SE PUEDE BORRAR PORQUE ESTA ASOCIADO", "ERROR", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         operaciones.eliminar("id = " + calle_buscada.getId());
         JOptionPane.showMessageDialog(this, "ELIMINACION EXITOSA", "OPERACION REALIZADA", JOptionPane.WARNING_MESSAGE);
+        mov();
 
     }//GEN-LAST:event_jbtEliminarActionPerformed
 
@@ -429,7 +446,7 @@ public class MenuCalles extends SuperVentana {
     }//GEN-LAST:event_jbtCancelarActionPerformed
 
     private void jtCallesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtCallesMouseClicked
-        int clicks = evt.getClickCount();
+        int index = jtCalles.getSelectedRow();
 
         ArrayList<OCalles> aux;
 
@@ -439,57 +456,71 @@ public class MenuCalles extends SuperVentana {
             aux = cache;
         }
 
-        calle_buscada = aux.get(jtCalles.getSelectedRow());
-
-        switch (clicks) {
-            case 1 -> {
-                if (buscando) {
-                    jtfBuscar.setText(calle_buscada.getStringR());
-                }
-            }
-            case 2 -> {
-                jtfNombre.setText(calle_buscada.getNombre());
-                jtfNumero.setText(calle_buscada.getNumero());
-                botonesSecundarios();
-                jtCalles.clearSelection();
-                actualizarTabla();
-                buscando = false;
-            }
+        if (index < 0 || index >= aux.size()) {
+            return;
         }
 
+        calle_buscada = aux.get(index);
+
+        if (evt.getClickCount() == 2) {
+            jtfNombre.setText(calle_buscada.getNombre());
+            jtfNumero.setText(calle_buscada.getNumero());
+            botonesSecundarios();
+            jtCalles.clearSelection();
+            controlador.actualizarTabla();
+            buscando = false;
+        }
     }//GEN-LAST:event_jtCallesMouseClicked
 
-    private void jbtRecrgarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRecrgarActionPerformed
-        actualizarTabla();
-    }//GEN-LAST:event_jbtRecrgarActionPerformed
+    private void jtfBuscadorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfBuscadorKeyReleased
 
-    private void jtfBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfBuscarKeyReleased
         buscando = true;
-        lista_auxiliar.clear();
-        vaciarTabla();
-        //
-        String texto_buscado = jtfBuscar.getText();
-        texto_buscado = limpiar(texto_buscado);
-        //
-        for (OCalles o : cache) {
-            String aux = limpiar(o.getStringR());
-            if (aux == null || aux.isEmpty() || aux.contains(texto_buscado)) {
-                modelo.addRow(o.getInfo());
-                lista_auxiliar.add(o);
-            }
-        }
-    }//GEN-LAST:event_jtfBuscarKeyReleased
+        controlador.buscar(jtfBuscador.getText(), cache, lista_auxiliar);
 
-    private String[] getInfo() {
-        return new String[]{
-            jtfNombre.getText(),
-            jtfNumero.getText()
-        };
+    }//GEN-LAST:event_jtfBuscadorKeyReleased
+
+    private void jtfNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfNombreKeyTyped
+        if (jtfNombre.getText().length() >= 50) {
+            evt.consume();
+            getToolkit().beep();
+        }
+    }//GEN-LAST:event_jtfNombreKeyTyped
+
+    private void jtfNumeroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfNumeroKeyTyped
+        if (jtfNumero.getText().length() >= 3) {
+            evt.consume();
+            getToolkit().beep();
+        }
+    }//GEN-LAST:event_jtfNumeroKeyTyped
+
+    public void mov() {
+        memoria_cache.actualizar();
+        controlador.actualizarTabla();
+        estadoInicial();
     }
 
-    private boolean datosValidos() {
-        String[] info = getInfo();
-        return varValidas(info) && info[0].matches("[a-zA-ZñÑ]") && info[1].matches("[0-9]{0,3}");
+    public boolean borrable(String id) {
+        Operaciones<OUsuarios> usuarios = FabricaOpraciones.USUARIOS;
+        ArrayList<OUsuarios> lista = usuarios.getLista("calle = " + id);
+        return lista.isEmpty();
+    }
+
+    private String[] getInfo() {
+        String nombre = jtfNombre.getText();
+        String numero = jtfNumero.getText();
+        //validacion
+        if (!datosValidos(nombre, numero)) {
+            return null;
+        }
+        //
+        if (numero.equals("0")) {
+            numero = "S/N";
+        }
+        return new String[]{nombre, numero};
+    }
+
+    private boolean datosValidos(String... info) {
+        return varValidas(info) && info[0].matches("[a-zA-ZñÑáéíóú]{1,50}") && (info[1].equals("S/N") || info[1].matches("[0-9]{1,3}"));
     }
 
     public boolean varValidas(String... txt) {
@@ -501,14 +532,12 @@ public class MenuCalles extends SuperVentana {
         return true;
     }
 
-    private String limpiar(String txt) {
-        return txt.trim().replace(" ", "").toUpperCase();
-    }
-
     @Override
     public void setVisible(boolean b) {
         super.setVisible(b);
-        SwingUtilities.invokeLater(() -> cargarTabla());
+        SwingUtilities.invokeLater(() -> {
+            controlador.cargarTabla();
+        });
     }
 
     @Override
@@ -519,7 +548,7 @@ public class MenuCalles extends SuperVentana {
 
     void cerrar() {
         SwingUtilities.invokeLater(() -> {
-            vaciarTabla();
+            controlador.vaciarTabla();
             estadoInicial();
         });
     }
@@ -533,9 +562,7 @@ public class MenuCalles extends SuperVentana {
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
-    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
@@ -545,6 +572,7 @@ public class MenuCalles extends SuperVentana {
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel23;
+    private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -561,7 +589,7 @@ public class MenuCalles extends SuperVentana {
     private javax.swing.JButton jbtRecrgar;
     private javax.swing.JButton jbtSiguiente;
     private javax.swing.JTable jtCalles;
-    private javax.swing.JTextField jtfBuscar;
+    private javax.swing.JTextField jtfBuscador;
     private javax.swing.JTextField jtfNombre;
     private javax.swing.JTextField jtfNumero;
     // End of variables declaration//GEN-END:variables
@@ -571,5 +599,17 @@ public class MenuCalles extends SuperVentana {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     //</editor-fold>  
-    
+
+    public JTextField getJtfBuscar() {
+        return jtfBuscador;
+    }
+
+    public DefaultTableModel getModelo_Tabla() {
+        return modelo_tabla;
+    }
+
+    public ArrayList<OCalles> getLista_auxiliar() {
+        return lista_auxiliar;
+    }
+
 }

@@ -160,8 +160,8 @@ public class MenuPrincipal extends SuperVentana {
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenu5 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -372,16 +372,17 @@ public class MenuPrincipal extends SuperVentana {
 
         jMenu2.setText("Herramientas");
 
+        jMenu5.setText("Tablas");
+
         jMenuItem3.setText("Generar CSV");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem3);
+        jMenu5.add(jMenuItem3);
 
-        jMenuItem5.setText("Importar CSV");
-        jMenu2.add(jMenuItem5);
+        jMenu2.add(jMenu5);
 
         jMenuBar1.add(jMenu2);
 
@@ -479,6 +480,7 @@ public class MenuPrincipal extends SuperVentana {
         
         SwingUtilities.invokeLater(() -> {
             login.setVisible(true);
+            login.limpiarInstancia();
         });
     }
     
@@ -526,12 +528,12 @@ public class MenuPrincipal extends SuperVentana {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;

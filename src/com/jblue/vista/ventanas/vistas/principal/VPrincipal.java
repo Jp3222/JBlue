@@ -523,12 +523,14 @@ public class VPrincipal extends SuperVista {
         s.append("año = '").append(fh[2]).append("'");
         ArrayList<OPagosServicio> lista = op.getLista(s.toString());
         int i = 0;
+
         for (OPagosServicio oPagosServicio : lista) {
             String[] info = {
                 String.valueOf(i),
                 oPagosServicio.getConjuntoSinFK()[2],
                 oPagosServicio.getMesPagado()
             };
+            
             modelo_tabla.addRow(info);
             i++;
         }

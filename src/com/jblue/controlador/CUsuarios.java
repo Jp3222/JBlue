@@ -18,11 +18,11 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author jp
  */
-public class Usuarios {
+public class CUsuarios {
 
     private final MenuUsuarios R;
 
-    public Usuarios(MenuUsuarios vista) {
+    public CUsuarios(MenuUsuarios vista) {
         this.R = vista;
     }
 
@@ -47,8 +47,8 @@ public class Usuarios {
     }
 
     public void actualizarVistaPrincipal() {
-        actualizarComboModel(R.getJcbCalle(), FabricaCache.MC_CALLES.getLista());
-        actualizarComboModel(R.getJcbTipoToma(), FabricaCache.MC_TIPOS_DE_TOMAS.getLista());
+//        actualizarComboModel(R.getJcbCalle(), FabricaCache.MC_CALLES.getLista());
+//        actualizarComboModel(R.getJcbTipoToma(), FabricaCache.MC_TIPOS_DE_TOMAS.getLista());
         actualizarComboModel(R.getJcbTitular(), FabricaCache.MC_USUARIOS.getLista(), (t) -> t.isTitular());
         actualizarLista();
     }
@@ -70,15 +70,12 @@ public class Usuarios {
      */
     public void cargarJCB(int i) {
         switch (i) {
-            case 0:
+            case 0 ->
                 cargarComboModel(R.getJcbCalle(), FabricaCache.MC_CALLES.getLista());
-                break;
-            case 1:
+            case 1 ->
                 cargarComboModel(R.getJcbTipoToma(), FabricaCache.MC_TIPOS_DE_TOMAS.getLista());
-                break;
-            case 2:
+            case 2 ->
                 cargarComboModel(R.getJcbTitular(), FabricaCache.MC_USUARIOS.getLista(), (t) -> t.isTitular());
-                break;
         }
     }
 
@@ -91,15 +88,12 @@ public class Usuarios {
      */
     public void actualizarJCB(int i) {
         switch (i) {
-            case 0:
+            case 0 ->
                 actualizarComboModel(R.getJcbCalle(), FabricaCache.MC_CALLES.getLista());
-                break;
-            case 1:
+            case 1 ->
                 cargarComboModel(R.getJcbTipoToma(), FabricaCache.MC_TIPOS_DE_TOMAS.getLista());
-                break;
-            case 2:
+            case 2 ->
                 cargarComboModel(R.getJcbTitular(), FabricaCache.MC_USUARIOS.getLista(), (t) -> t.isTitular());
-                break;
         }
     }
 

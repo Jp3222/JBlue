@@ -170,8 +170,17 @@ public class MenuCVS extends javax.swing.JFrame {
             jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             jfc.setMultiSelectionEnabled(false);
             jfc.showOpenDialog(this);
+            jfc.setDialogTitle("Generar CSV");
+            jfc.setApproveButtonText("Guardar");
+            jfc.setDialogType(JFileChooser.SAVE_DIALOG);
             ruta = jfc.getSelectedFile();
+
         }
+
+        if (ruta == null) {
+            return;
+        }
+
         if (jTextField1.getText() == null || jTextField1.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nombre no valido");
             return;

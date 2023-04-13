@@ -16,17 +16,29 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/com/jblue/media/img/x24/usuario(1).png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Perfil"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemMenuTesorero">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/com/jblue/media/img/x24/cofre-del-tesoro.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Tesorero"/>
                 <Property name="name" type="java.lang.String" value="tesorero" noResource="true"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMenuTesoreroActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemMenuPresidente">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/com/jblue/media/img/x24/presidente.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Presidente"/>
                 <Property name="name" type="java.lang.String" value="presidente" noResource="true"/>
               </Properties>
@@ -36,12 +48,18 @@
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="jMenu3">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/com/jblue/media/img/x24/base-de-datos(1).png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Base de datos"/>
                 <Property name="name" type="java.lang.String" value="menu-bd" noResource="true"/>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/com/jblue/media/img/x24/nota.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Tomas Registradas"/>
                     <Property name="name" type="java.lang.String" value="tomas -egistradas" noResource="true"/>
                   </Properties>
@@ -51,6 +69,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="ItemBDUsuario">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/com/jblue/media/img/x24/grupo.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="BD Usuarios"/>
                     <Property name="name" type="java.lang.String" value="usuarios" noResource="true"/>
                   </Properties>
@@ -60,6 +81,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="itemBDCalles">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/com/jblue/media/img/x24/mapa-de-la-calle.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="BD Calles"/>
                     <Property name="name" type="java.lang.String" value="calles" noResource="true"/>
                   </Properties>
@@ -69,6 +93,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="itemBDTomas">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/com/jblue/media/img/x24/grifo.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="BD Tipo de tomas"/>
                     <Property name="name" type="java.lang.String" value="tipo-de-tomas" noResource="true"/>
                   </Properties>
@@ -82,6 +109,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/com/jblue/media/img/x24/cerrar-sesion(2).png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Salir"/>
                 <Property name="name" type="java.lang.String" value="salir" noResource="true"/>
               </Properties>
@@ -98,11 +128,17 @@
           <SubComponents>
             <Menu class="javax.swing.JMenu" name="jMenu5">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/com/jblue/media/img/x24/mesa.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Tablas"/>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/com/jblue/media/img/x24/csv.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Generar CSV"/>
                   </Properties>
                   <Events>
@@ -117,6 +153,19 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Ayuda"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/com/jblue/media/img/x24/information.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Acerca de JBlue"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem5ActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
       </SubComponents>
     </Menu>
@@ -160,7 +209,7 @@
       </AccessibilityProperties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-          <BorderConstraints direction="Center"/>
+          <BorderConstraints direction="First"/>
         </Constraint>
       </Constraints>
 
@@ -219,7 +268,7 @@
                     <Container class="javax.swing.JPanel" name="jPanel7">
                       <Properties>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[300, 593]"/>
+                          <Dimension value="[300, 50]"/>
                         </Property>
                       </Properties>
 
@@ -227,6 +276,9 @@
                       <SubComponents>
                         <Component class="javax.swing.JButton" name="jbtPerfil">
                           <Properties>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x32/usuario.png"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="Perfil"/>
                           </Properties>
                           <Events>
@@ -243,7 +295,7 @@
                     <Container class="javax.swing.JPanel" name="jPanel4">
                       <Properties>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[300, 593]"/>
+                          <Dimension value="[300, 50]"/>
                         </Property>
                       </Properties>
 
@@ -251,7 +303,13 @@
                       <SubComponents>
                         <Component class="javax.swing.JButton" name="jbtCobros">
                           <Properties>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x32/img5.png"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="Cobros"/>
+                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[114, 50]"/>
+                            </Property>
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtCobrosActionPerformed"/>
@@ -267,7 +325,7 @@
                     <Container class="javax.swing.JPanel" name="jPanel3">
                       <Properties>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[300, 593]"/>
+                          <Dimension value="[300, 50]"/>
                         </Property>
                       </Properties>
 
@@ -275,6 +333,9 @@
                       <SubComponents>
                         <Component class="javax.swing.JButton" name="jbtRecargos">
                           <Properties>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x32/multa.png"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="Recargos"/>
                           </Properties>
                           <Events>
@@ -291,7 +352,7 @@
                     <Container class="javax.swing.JPanel" name="jPanel5">
                       <Properties>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[300, 593]"/>
+                          <Dimension value="[300, 50]"/>
                         </Property>
                       </Properties>
 
@@ -299,6 +360,9 @@
                       <SubComponents>
                         <Component class="javax.swing.JButton" name="jbtHistorialPagos">
                           <Properties>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x32/lista-de-verificacion.png"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="Historial De Pagos"/>
                           </Properties>
                           <Events>
@@ -315,7 +379,7 @@
                     <Container class="javax.swing.JPanel" name="jPanel6">
                       <Properties>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[300, 593]"/>
+                          <Dimension value="[300, 50]"/>
                         </Property>
                       </Properties>
 
@@ -324,7 +388,7 @@
                     <Container class="javax.swing.JPanel" name="jPanel8">
                       <Properties>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[300, 593]"/>
+                          <Dimension value="[300, 50]"/>
                         </Property>
                       </Properties>
 
@@ -333,7 +397,7 @@
                     <Container class="javax.swing.JPanel" name="jPanel11">
                       <Properties>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[300, 593]"/>
+                          <Dimension value="[300, 50]"/>
                         </Property>
                       </Properties>
 
@@ -342,7 +406,7 @@
                     <Container class="javax.swing.JPanel" name="jPanel10">
                       <Properties>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[300, 593]"/>
+                          <Dimension value="[300, 50]"/>
                         </Property>
                       </Properties>
 
@@ -351,7 +415,7 @@
                     <Container class="javax.swing.JPanel" name="jPanel9">
                       <Properties>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[300, 593]"/>
+                          <Dimension value="[300, 50]"/>
                         </Property>
                       </Properties>
 
@@ -359,7 +423,13 @@
                       <SubComponents>
                         <Component class="javax.swing.JButton" name="jbtSalir">
                           <Properties>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x32/cerrar-sesion.png"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="Salir"/>
+                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[200, 50]"/>
+                            </Property>
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtSalirActionPerformed"/>
@@ -411,6 +481,15 @@
                         </Constraint>
                       </Constraints>
                     </Component>
+                    <Container class="javax.swing.JPanel" name="img">
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                          <BorderConstraints direction="Center"/>
+                        </Constraint>
+                      </Constraints>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                    </Container>
                   </SubComponents>
                 </Container>
               </SubComponents>

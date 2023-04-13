@@ -32,7 +32,7 @@ public class ConstBD {
      * <br> 9 titular
      */
     public static final String[] BD_USUARIOS = {
-        ID, NOMBRE, AP, AM, "calle", "toma", REGISTRO, "estado", "titular"
+        ID, NOMBRE, AP, AM, "calle", "toma", REGISTRO, "estado", "titular", "codigo"
     };
 
     /**

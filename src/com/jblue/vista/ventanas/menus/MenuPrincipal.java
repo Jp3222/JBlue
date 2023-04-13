@@ -8,17 +8,20 @@ import com.jblue.sistema.Sesion;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.vista.normas.SuperVentana;
 import com.jblue.vista.ventanas.Login;
+import com.jblue.vista.ventanas.menus.ayuda.AcercaDe;
 import com.jblue.vista.ventanas.menus.bd.MenuCalles;
 import com.jblue.vista.ventanas.menus.bd.MenuTomas;
 import com.jblue.vista.ventanas.menus.bd.MenuUsuarios;
 import com.jblue.vista.ventanas.menus.bd.MenuTRegistradas;
 import com.jblue.vista.ventanas.menus.herramientas.MenuCVS;
 import com.jblue.vista.ventanas.vistas.principal.VHistorialPagos;
-import com.jblue.vista.ventanas.vistas.principal.VPrincipal;
+import com.jblue.vista.ventanas.vistas.principal.VCobros;
 import com.jblue.vista.ventanas.vistas.principal.VRecargos;
 import java.awt.BorderLayout;
+import java.awt.Graphics;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,7 +32,7 @@ import javax.swing.SwingUtilities;
  * @author jp
  */
 public class MenuPrincipal extends SuperVentana {
-    
+
     private final Login login;
     private final MenuTesoreria menuTesoreria;
     private final MenuPresidente menuPresidente;
@@ -46,11 +49,11 @@ public class MenuPrincipal extends SuperVentana {
 
     //
     public MenuPrincipal(Login login) {
-        
+
         this.vistas = new JPanel[3];
-        
+
         this._TITULO = 2;
-        
+
         this.login = login;
         //
         this.menuTesoreria = new MenuTesoreria();
@@ -59,7 +62,7 @@ public class MenuPrincipal extends SuperVentana {
         this.menuCalles = new MenuCalles();
         this.menuTipoTomas = new MenuTomas();
         this.menuTomasRegistradas = new MenuTRegistradas();
-        
+
         this.menus = new JFrame[]{
             menuTesoreria,
             menuPresidente,
@@ -74,7 +77,7 @@ public class MenuPrincipal extends SuperVentana {
         this.initComponents();
         llamable();
     }
-    
+
     @Override
     protected final void llamable() {
         addComponentes();
@@ -82,35 +85,34 @@ public class MenuPrincipal extends SuperVentana {
         estadoInicial();
         addEventos();
     }
-    
+
     @Override
     public void estadoInicial() {
-        
+
     }
-    
+
     @Override
     protected void estadoFinal() {
         super.estadoFinal();
     }
-    
+
     @Override
     protected void addEventos() {
         super.addEventos(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
-    
+
     @Override
     protected void addComponentes() {
-        
-        vistas[0] = new VPrincipal();
+
+        vistas[0] = new VCobros();
         vistas[1] = new VRecargos();
         vistas[2] = new VHistorialPagos();
-        
+
         for (int i = 0; i < vistas.length; i++) {
             JPanel menu = (JPanel) jTabbedPane1.getComponentAt(i + 1);
             menu.add(vistas[i], BorderLayout.CENTER);
         }
-        
-        jTabbedPane1.remove(0);
+
     }
 
     /**
@@ -144,6 +146,7 @@ public class MenuPrincipal extends SuperVentana {
         jPanel12 = new javax.swing.JPanel();
         jpVisor = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        img = new javax.swing.JPanel();
         jpCobros = new javax.swing.JPanel();
         jpRecargos = new javax.swing.JPanel();
         jpHistorialPagos = new javax.swing.JPanel();
@@ -163,6 +166,7 @@ public class MenuPrincipal extends SuperVentana {
         jMenu5 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setExtendedState(6);
@@ -183,9 +187,10 @@ public class MenuPrincipal extends SuperVentana {
 
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.PAGE_AXIS));
 
-        jPanel7.setPreferredSize(new java.awt.Dimension(300, 593));
+        jPanel7.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel7.setLayout(new java.awt.BorderLayout());
 
+        jbtPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/usuario.png"))); // NOI18N
         jbtPerfil.setText("Perfil");
         jbtPerfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -196,10 +201,12 @@ public class MenuPrincipal extends SuperVentana {
 
         jPanel2.add(jPanel7);
 
-        jPanel4.setPreferredSize(new java.awt.Dimension(300, 593));
+        jPanel4.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel4.setLayout(new java.awt.BorderLayout());
 
+        jbtCobros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/img5.png"))); // NOI18N
         jbtCobros.setText("Cobros");
+        jbtCobros.setPreferredSize(new java.awt.Dimension(114, 50));
         jbtCobros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtCobrosActionPerformed(evt);
@@ -209,9 +216,10 @@ public class MenuPrincipal extends SuperVentana {
 
         jPanel2.add(jPanel4);
 
-        jPanel3.setPreferredSize(new java.awt.Dimension(300, 593));
+        jPanel3.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
+        jbtRecargos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/multa.png"))); // NOI18N
         jbtRecargos.setText("Recargos");
         jbtRecargos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -222,9 +230,10 @@ public class MenuPrincipal extends SuperVentana {
 
         jPanel2.add(jPanel3);
 
-        jPanel5.setPreferredSize(new java.awt.Dimension(300, 593));
+        jPanel5.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel5.setLayout(new java.awt.BorderLayout());
 
+        jbtHistorialPagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/lista-de-verificacion.png"))); // NOI18N
         jbtHistorialPagos.setText("Historial De Pagos");
         jbtHistorialPagos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -235,26 +244,28 @@ public class MenuPrincipal extends SuperVentana {
 
         jPanel2.add(jPanel5);
 
-        jPanel6.setPreferredSize(new java.awt.Dimension(300, 593));
+        jPanel6.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel6.setLayout(new java.awt.BorderLayout());
         jPanel2.add(jPanel6);
 
-        jPanel8.setPreferredSize(new java.awt.Dimension(300, 593));
+        jPanel8.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel8.setLayout(new java.awt.BorderLayout());
         jPanel2.add(jPanel8);
 
-        jPanel11.setPreferredSize(new java.awt.Dimension(300, 593));
+        jPanel11.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel11.setLayout(new java.awt.BorderLayout());
         jPanel2.add(jPanel11);
 
-        jPanel10.setPreferredSize(new java.awt.Dimension(300, 593));
+        jPanel10.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel10.setLayout(new java.awt.BorderLayout());
         jPanel2.add(jPanel10);
 
-        jPanel9.setPreferredSize(new java.awt.Dimension(300, 593));
+        jPanel9.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel9.setLayout(new java.awt.BorderLayout());
 
+        jbtSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerrar-sesion.png"))); // NOI18N
         jbtSalir.setText("Salir");
+        jbtSalir.setPreferredSize(new java.awt.Dimension(200, 50));
         jbtSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtSalirActionPerformed(evt);
@@ -278,6 +289,9 @@ public class MenuPrincipal extends SuperVentana {
         jLabel3.setPreferredSize(new java.awt.Dimension(323, 50));
         jpVisor.add(jLabel3, java.awt.BorderLayout.PAGE_START);
 
+        img.setLayout(new java.awt.BorderLayout());
+        jpVisor.add(img, java.awt.BorderLayout.CENTER);
+
         jPanel12.add(jpVisor, java.awt.BorderLayout.CENTER);
 
         jpAreaPersonal.add(jPanel12, java.awt.BorderLayout.CENTER);
@@ -294,20 +308,28 @@ public class MenuPrincipal extends SuperVentana {
         jpHistorialPagos.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("Historial de pagos", jpHistorialPagos);
 
-        getContentPane().add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(jTabbedPane1, java.awt.BorderLayout.PAGE_START);
         jTabbedPane1.getAccessibleContext().setAccessibleName("tab_root");
 
         jMenuBar1.setPreferredSize(new java.awt.Dimension(1200, 25));
 
         jMenu1.setText("Menu");
 
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/usuario(1).png"))); // NOI18N
         jMenuItem2.setText("Perfil");
         jMenu1.add(jMenuItem2);
 
+        itemMenuTesorero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cofre-del-tesoro.png"))); // NOI18N
         itemMenuTesorero.setText("Tesorero");
         itemMenuTesorero.setName("tesorero"); // NOI18N
+        itemMenuTesorero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMenuTesoreroActionPerformed(evt);
+            }
+        });
         jMenu1.add(itemMenuTesorero);
 
+        itemMenuPresidente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/presidente.png"))); // NOI18N
         itemMenuPresidente.setText("Presidente");
         itemMenuPresidente.setName("presidente"); // NOI18N
         itemMenuPresidente.addActionListener(new java.awt.event.ActionListener() {
@@ -317,9 +339,11 @@ public class MenuPrincipal extends SuperVentana {
         });
         jMenu1.add(itemMenuPresidente);
 
+        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/base-de-datos(1).png"))); // NOI18N
         jMenu3.setText("Base de datos");
         jMenu3.setName("menu-bd"); // NOI18N
 
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/nota.png"))); // NOI18N
         jMenuItem1.setText("Tomas Registradas");
         jMenuItem1.setName("tomas -egistradas"); // NOI18N
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -329,6 +353,7 @@ public class MenuPrincipal extends SuperVentana {
         });
         jMenu3.add(jMenuItem1);
 
+        ItemBDUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/grupo.png"))); // NOI18N
         ItemBDUsuario.setText("BD Usuarios");
         ItemBDUsuario.setName("usuarios"); // NOI18N
         ItemBDUsuario.addActionListener(new java.awt.event.ActionListener() {
@@ -338,6 +363,7 @@ public class MenuPrincipal extends SuperVentana {
         });
         jMenu3.add(ItemBDUsuario);
 
+        itemBDCalles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/mapa-de-la-calle.png"))); // NOI18N
         itemBDCalles.setText("BD Calles");
         itemBDCalles.setName("calles"); // NOI18N
         itemBDCalles.addActionListener(new java.awt.event.ActionListener() {
@@ -347,6 +373,7 @@ public class MenuPrincipal extends SuperVentana {
         });
         jMenu3.add(itemBDCalles);
 
+        itemBDTomas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/grifo.png"))); // NOI18N
         itemBDTomas.setText("BD Tipo de tomas");
         itemBDTomas.setName("tipo-de-tomas"); // NOI18N
         itemBDTomas.addActionListener(new java.awt.event.ActionListener() {
@@ -359,6 +386,7 @@ public class MenuPrincipal extends SuperVentana {
         jMenu1.add(jMenu3);
         jMenu1.add(jSeparator2);
 
+        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cerrar-sesion(2).png"))); // NOI18N
         jMenuItem4.setText("Salir");
         jMenuItem4.setName("salir"); // NOI18N
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
@@ -372,8 +400,10 @@ public class MenuPrincipal extends SuperVentana {
 
         jMenu2.setText("Herramientas");
 
+        jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/mesa.png"))); // NOI18N
         jMenu5.setText("Tablas");
 
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/csv.png"))); // NOI18N
         jMenuItem3.setText("Generar CSV");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -387,6 +417,16 @@ public class MenuPrincipal extends SuperVentana {
         jMenuBar1.add(jMenu2);
 
         jMenu4.setText("Ayuda");
+
+        jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/information.png"))); // NOI18N
+        jMenuItem5.setText("Acerca de JBlue");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem5);
+
         jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
@@ -414,7 +454,8 @@ public class MenuPrincipal extends SuperVentana {
     }//GEN-LAST:event_itemBDTomasActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        this.dispose();
+        vistaSeleccionada(0);
+        dispose();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jbtCobrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtCobrosActionPerformed
@@ -431,8 +472,6 @@ public class MenuPrincipal extends SuperVentana {
 
     private void jbtSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSalirActionPerformed
         vistaSeleccionada(0);
-        //
-
         dispose();
     }//GEN-LAST:event_jbtSalirActionPerformed
 
@@ -458,38 +497,58 @@ public class MenuPrincipal extends SuperVentana {
         MenuCVS menu = new MenuCVS();
         menu.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
-    
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        SwingUtilities.invokeLater(() -> {
+            AcercaDe ac = new AcercaDe();
+            ac.setVisible(true);
+        });
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void itemMenuTesoreroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuTesoreroActionPerformed
+        SwingUtilities.invokeLater(() -> menuTesoreria.setVisible(true));
+    }//GEN-LAST:event_itemMenuTesoreroActionPerformed
+
     public void vistaSeleccionada(int i) {
         SwingUtilities.invokeLater(() -> jTabbedPane1.setSelectedIndex(i));
     }
-    
+
     @Override
     public void dispose() {
-        irLogin();
+        fx();
         super.dispose();
+        irLogin();
     }
-    
-    private void irLogin() {
+
+    public void fx() {
+        System.out.println("inicio");
         cerrarMenusActivos();
         Sesion instancia = Sesion.getInstancia();
-        
         boolean finSesion = instancia.finSesion();
         if (!finSesion) {
             JOptionPane.showMessageDialog(this, "ERROR AL REGISTRAR FIN DE SESION");
         }
-        
+        sleep();
+        System.out.println("ocultar");
+        setState(JFrame.ICONIFIED);
+        sleep();
+    }
+
+    private void irLogin() {
         SwingUtilities.invokeLater(() -> {
             login.setVisible(true);
             login.limpiarInstancia();
         });
     }
-    
+
     private void cerrarMenusActivos() {
+        System.out.println("menus activos");
         JFrame[] arr = menus;
         for (JFrame o : arr) {
             if (!o.isVisible() && !o.isActive()) {
                 continue;
             }
+            System.out.println(o.getName());
             o.setVisible(true);
             sleep();
             o.setState(JFrame.ICONIFIED);
@@ -501,7 +560,7 @@ public class MenuPrincipal extends SuperVentana {
             sleep();
         }
     }
-    
+
     private void sleep() {
         try {
             Thread.sleep(300);
@@ -509,15 +568,16 @@ public class MenuPrincipal extends SuperVentana {
             Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @Override
     public void permisos() {
-        
+
     }
 
 // <editor-fold defaultstate="collapsed" desc="Variables De Interfaz">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem ItemBDUsuario;
+    private javax.swing.JPanel img;
     private javax.swing.JMenuItem itemBDCalles;
     private javax.swing.JMenuItem itemBDTomas;
     private javax.swing.JMenuItem itemMenuPresidente;
@@ -534,6 +594,7 @@ public class MenuPrincipal extends SuperVentana {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -560,5 +621,23 @@ public class MenuPrincipal extends SuperVentana {
     private javax.swing.JPanel jpVisor;
     // End of variables declaration//GEN-END:variables
 // </editor-fold>
+
+}
+
+class visor extends JPanel {
+
+    int sizeX, sizeY;
+
+    public visor(int sizeX, int sizeY) {
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        ImageIcon o = new ImageIcon(getClass().getResource("/com/jblue/media/img/Fondo.svg.png"));
+        g.drawImage(o.getImage(), 0, 0, sizeX, sizeY, this);
+    }
 
 }

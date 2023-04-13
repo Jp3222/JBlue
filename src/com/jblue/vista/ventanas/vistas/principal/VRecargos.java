@@ -53,10 +53,9 @@ public class VRecargos extends javax.swing.JPanel {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jPanel22 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel21 = new javax.swing.JPanel();
+        jPanel24 = new javax.swing.JPanel();
         buscar = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
         jPanel23 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jlListaUsuarios = new javax.swing.JList<>();
@@ -113,25 +112,14 @@ public class VRecargos extends javax.swing.JPanel {
 
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(1200, 675));
 
-        jPanel3.setLayout(new java.awt.BorderLayout());
+        jPanel3.setLayout(new java.awt.BorderLayout(5, 0));
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(400, 675));
+        jPanel1.setPreferredSize(new java.awt.Dimension(500, 675));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel22.setPreferredSize(new java.awt.Dimension(400, 25));
-        jPanel22.setLayout(new java.awt.BorderLayout());
+        jPanel24.setPreferredSize(new java.awt.Dimension(500, 30));
+        jPanel24.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Usuarios");
-        jLabel1.setPreferredSize(new java.awt.Dimension(400, 30));
-        jPanel22.add(jLabel1, java.awt.BorderLayout.CENTER);
-
-        jPanel1.add(jPanel22, java.awt.BorderLayout.NORTH);
-
-        jPanel21.setPreferredSize(new java.awt.Dimension(400, 50));
-        jPanel21.setLayout(new java.awt.BorderLayout());
-
-        buscar.setText("jTextField1");
         buscar.setMaximumSize(new java.awt.Dimension(400, 30));
         buscar.setMinimumSize(new java.awt.Dimension(400, 30));
         buscar.setPreferredSize(new java.awt.Dimension(400, 30));
@@ -140,26 +128,28 @@ public class VRecargos extends javax.swing.JPanel {
                 buscarKeyReleased(evt);
             }
         });
-        jPanel21.add(buscar, java.awt.BorderLayout.CENTER);
+        jPanel24.add(buscar, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel21, java.awt.BorderLayout.CENTER);
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/buscar.png"))); // NOI18N
+        jPanel24.add(jLabel15, java.awt.BorderLayout.LINE_START);
 
-        jPanel23.setPreferredSize(new java.awt.Dimension(400, 540));
+        jPanel1.add(jPanel24, java.awt.BorderLayout.NORTH);
+
+        jPanel23.setPreferredSize(new java.awt.Dimension(500, 540));
         jPanel23.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane1.setMinimumSize(new java.awt.Dimension(400, 550));
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(500, 550));
         jScrollPane1.setPreferredSize(new java.awt.Dimension(400, 540));
 
         jlListaUsuarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jlListaUsuarios.setLayoutOrientation(javax.swing.JList.HORIZONTAL_WRAP);
         jlListaUsuarios.setPreferredSize(new java.awt.Dimension(400, 500));
         jScrollPane1.setViewportView(jlListaUsuarios);
 
         jPanel23.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel23, java.awt.BorderLayout.PAGE_END);
+        jPanel1.add(jPanel23, java.awt.BorderLayout.CENTER);
 
-        jPanel3.add(jPanel1, java.awt.BorderLayout.LINE_START);
+        jPanel3.add(jPanel1, java.awt.BorderLayout.WEST);
 
         jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.Y_AXIS));
 
@@ -399,12 +389,12 @@ public class VRecargos extends javax.swing.JPanel {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -426,9 +416,8 @@ public class VRecargos extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
-    private javax.swing.JPanel jPanel21;
-    private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel23;
+    private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;

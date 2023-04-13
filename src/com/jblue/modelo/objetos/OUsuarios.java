@@ -109,6 +109,10 @@ public class OUsuarios extends Objeto {
         return Integer.parseInt(_conjunto[8]) == -1;
     }
 
+    public int codigo() {
+        return Integer.parseInt(_conjunto[9]);
+    }
+
     private String[] InfoSinFK() {
         _conjuntoSinFK[4] = EnvUsuario.getCalle(_conjunto[4]).getStringR();
         _conjuntoSinFK[5] = EnvUsuario.getTipo_De_Toma(_conjunto[5]).getStringR();
@@ -167,7 +171,6 @@ public class OUsuarios extends Objeto {
      *
      * @return un arreglo con la informacion en el orden mostrado
      */
-
     @Override
     public String[] getInfo() {
         return super.getInfo(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody

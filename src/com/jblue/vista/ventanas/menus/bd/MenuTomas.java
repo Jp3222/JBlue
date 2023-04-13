@@ -123,7 +123,9 @@ public class MenuTomas extends SuperVentana {
 
         jPanel1 = new javax.swing.JPanel();
         PanelDeBusqueda = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         jtfBuscador = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jbtRecrgar = new javax.swing.JButton();
@@ -158,10 +160,13 @@ public class MenuTomas extends SuperVentana {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
         PanelDeBusqueda.setPreferredSize(new java.awt.Dimension(500, 700));
         PanelDeBusqueda.setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setPreferredSize(new java.awt.Dimension(500, 30));
+        jPanel2.setLayout(new java.awt.BorderLayout());
 
         jtfBuscador.setPreferredSize(new java.awt.Dimension(500, 30));
         jtfBuscador.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -169,27 +174,35 @@ public class MenuTomas extends SuperVentana {
                 jtfBuscadorKeyReleased(evt);
             }
         });
-        PanelDeBusqueda.add(jtfBuscador, java.awt.BorderLayout.NORTH);
+        jPanel2.add(jtfBuscador, java.awt.BorderLayout.CENTER);
 
-        jPanel5.setPreferredSize(new java.awt.Dimension(500, 30));
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/buscar.png"))); // NOI18N
+        jPanel2.add(jLabel7, java.awt.BorderLayout.WEST);
+
+        PanelDeBusqueda.add(jPanel2, java.awt.BorderLayout.PAGE_START);
+
+        jPanel5.setPreferredSize(new java.awt.Dimension(500, 670));
         jPanel5.setLayout(new java.awt.BorderLayout());
 
         jPanel7.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel7.setLayout(new java.awt.BorderLayout());
 
-        jbtRecrgar.setText("Recargar");
+        jbtRecrgar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
+        jbtRecrgar.setToolTipText("Recargar Pagina");
         jbtRecrgar.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel7.add(jbtRecrgar, java.awt.BorderLayout.WEST);
 
         jPanel10.setPreferredSize(new java.awt.Dimension(200, 70));
         jPanel10.setLayout(new java.awt.BorderLayout());
 
-        jbtAnterior.setText("Anterior");
+        jbtAnterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
+        jbtAnterior.setToolTipText("Pagina anterior");
         jbtAnterior.setEnabled(false);
         jbtAnterior.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel10.add(jbtAnterior, java.awt.BorderLayout.WEST);
 
-        jbtSiguiente.setText("Siguiente");
+        jbtSiguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
+        jbtSiguiente.setToolTipText("Pagina siguiente");
         jbtSiguiente.setEnabled(false);
         jbtSiguiente.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel10.add(jbtSiguiente, java.awt.BorderLayout.EAST);
@@ -237,7 +250,7 @@ public class MenuTomas extends SuperVentana {
 
         PanelDeBusqueda.add(jPanel5, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(PanelDeBusqueda);
+        jPanel1.add(PanelDeBusqueda, java.awt.BorderLayout.WEST);
 
         PanelDeRegistros.setPreferredSize(new java.awt.Dimension(500, 700));
         PanelDeRegistros.setLayout(new javax.swing.BoxLayout(PanelDeRegistros, javax.swing.BoxLayout.PAGE_AXIS));
@@ -371,7 +384,7 @@ public class MenuTomas extends SuperVentana {
         jPanel26.setLayout(new java.awt.BorderLayout());
         PanelDeRegistros.add(jPanel26);
 
-        jPanel1.add(PanelDeRegistros);
+        jPanel1.add(PanelDeRegistros, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -580,6 +593,7 @@ public class MenuTomas extends SuperVentana {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel12;
@@ -587,6 +601,7 @@ public class MenuTomas extends SuperVentana {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel19;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;

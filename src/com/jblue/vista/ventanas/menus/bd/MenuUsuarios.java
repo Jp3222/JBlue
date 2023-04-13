@@ -200,14 +200,13 @@ public class MenuUsuarios extends SuperVentana {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jpRegistros = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jlUsuarios = new javax.swing.JList<>();
         jPanel17 = new javax.swing.JPanel();
         jtfBuscadorLista = new javax.swing.JTextField();
         jCheckBox2 = new javax.swing.JCheckBox();
-        jSeparator1 = new javax.swing.JSeparator();
+        jLabel7 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jlUsuarios = new javax.swing.JList<>();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -236,7 +235,7 @@ public class MenuUsuarios extends SuperVentana {
         jLabel8 = new javax.swing.JLabel();
         jcbEstado = new javax.swing.JComboBox<>();
         mantenerEstado = new javax.swing.JCheckBox();
-        jPanel12 = new javax.swing.JPanel();
+        jPanel18 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         guardar = new javax.swing.JButton();
         jPanel14 = new javax.swing.JPanel();
@@ -282,22 +281,15 @@ public class MenuUsuarios extends SuperVentana {
         jtUsuarios = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
-        jpRegistros.setLayout(new javax.swing.BoxLayout(jpRegistros, javax.swing.BoxLayout.LINE_AXIS));
+        jTabbedPane1.setPreferredSize(new java.awt.Dimension(1000, 700));
 
+        jpRegistros.setLayout(new java.awt.BorderLayout());
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(500, 160));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jlUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlUsuariosMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jlUsuarios);
-
-        jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        jPanel17.setLayout(new java.awt.BorderLayout());
+        jPanel17.setLayout(new java.awt.BorderLayout(5, 5));
 
         jtfBuscadorLista.setPreferredSize(new java.awt.Dimension(500, 30));
         jtfBuscadorLista.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -310,68 +302,87 @@ public class MenuUsuarios extends SuperVentana {
         jCheckBox2.setText("Activos");
         jPanel17.add(jCheckBox2, java.awt.BorderLayout.EAST);
 
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/buscar.png"))); // NOI18N
+        jPanel17.add(jLabel7, java.awt.BorderLayout.LINE_START);
+
         jPanel1.add(jPanel17, java.awt.BorderLayout.NORTH);
 
-        jpRegistros.add(jPanel1);
+        jlUsuarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jlUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlUsuariosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jlUsuarios);
 
-        jSeparator1.setPreferredSize(new java.awt.Dimension(5, 662));
-        jpRegistros.add(jSeparator1);
+        jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
+        jpRegistros.add(jPanel1, java.awt.BorderLayout.WEST);
+
+        jPanel2.setPreferredSize(new java.awt.Dimension(500, 670));
         jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Datos Del Usuario");
-        jLabel1.setPreferredSize(new java.awt.Dimension(500, 50));
-        jPanel2.add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
         jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.PAGE_AXIS));
 
+        jPanel4.setMinimumSize(null);
         jPanel4.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel4.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setText("Nombre: ");
-        jLabel2.setPreferredSize(new java.awt.Dimension(100, 40));
-        jPanel4.add(jLabel2, java.awt.BorderLayout.WEST);
+        jLabel2.setPreferredSize(new java.awt.Dimension(500, 20));
+        jPanel4.add(jLabel2, java.awt.BorderLayout.NORTH);
+
+        jtfNombre.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel4.add(jtfNombre, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel4);
 
+        jPanel5.setMinimumSize(null);
         jPanel5.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel5.setLayout(new java.awt.BorderLayout());
 
         jLabel3.setText("A. Paterno");
-        jLabel3.setPreferredSize(new java.awt.Dimension(100, 40));
-        jPanel5.add(jLabel3, java.awt.BorderLayout.WEST);
+        jLabel3.setPreferredSize(new java.awt.Dimension(500, 20));
+        jPanel5.add(jLabel3, java.awt.BorderLayout.NORTH);
+
+        jtfAp.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel5.add(jtfAp, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel5);
 
+        jPanel6.setMinimumSize(null);
         jPanel6.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel6.setLayout(new java.awt.BorderLayout());
 
         jLabel4.setText("A. Materno");
-        jLabel4.setPreferredSize(new java.awt.Dimension(100, 40));
-        jPanel6.add(jLabel4, java.awt.BorderLayout.WEST);
+        jLabel4.setPreferredSize(new java.awt.Dimension(500, 20));
+        jPanel6.add(jLabel4, java.awt.BorderLayout.NORTH);
+
+        jtfAm.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel6.add(jtfAm, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel6);
 
-        jPanel9.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel9.setMinimumSize(null);
+        jPanel9.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel9.setLayout(new java.awt.BorderLayout());
 
         jchbTitular.setText("titular");
         jchbTitular.setToolTipText("Mantener el roll del usuario, seleccionado");
+        jchbTitular.setPreferredSize(new java.awt.Dimension(500, 20));
         jPanel9.add(jchbTitular, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel9);
 
-        jPanel11.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel11.setMinimumSize(null);
+        jPanel11.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel11.setLayout(new java.awt.BorderLayout());
 
         jLabel9.setText("T. asociado");
-        jLabel9.setPreferredSize(new java.awt.Dimension(100, 40));
+        jLabel9.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel11.add(jLabel9, java.awt.BorderLayout.WEST);
 
+        jcbTitular.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel11.add(jcbTitular, java.awt.BorderLayout.CENTER);
 
         MantenerTitular.setText("Man.");
@@ -380,13 +391,15 @@ public class MenuUsuarios extends SuperVentana {
 
         jPanel3.add(jPanel11);
 
-        jPanel7.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel7.setMinimumSize(null);
+        jPanel7.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel7.setLayout(new java.awt.BorderLayout());
 
         jLabel5.setText("T. Toma");
-        jLabel5.setPreferredSize(new java.awt.Dimension(100, 40));
+        jLabel5.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel7.add(jLabel5, java.awt.BorderLayout.WEST);
 
+        jcbTipoToma.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel7.add(jcbTipoToma, java.awt.BorderLayout.CENTER);
 
         mantenerToma.setText("Man.");
@@ -395,13 +408,15 @@ public class MenuUsuarios extends SuperVentana {
 
         jPanel3.add(jPanel7);
 
-        jPanel8.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel8.setMinimumSize(null);
+        jPanel8.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel8.setLayout(new java.awt.BorderLayout());
 
         jLabel6.setText("Calle: ");
-        jLabel6.setPreferredSize(new java.awt.Dimension(100, 40));
+        jLabel6.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel8.add(jLabel6, java.awt.BorderLayout.WEST);
 
+        jcbCalle.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel8.add(jcbCalle, java.awt.BorderLayout.CENTER);
 
         mantenerCalle.setText("Man.");
@@ -410,14 +425,16 @@ public class MenuUsuarios extends SuperVentana {
 
         jPanel3.add(jPanel8);
 
-        jPanel10.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel10.setMinimumSize(null);
+        jPanel10.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel10.setLayout(new java.awt.BorderLayout());
 
         jLabel8.setText("Estado: ");
-        jLabel8.setPreferredSize(new java.awt.Dimension(100, 40));
+        jLabel8.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel10.add(jLabel8, java.awt.BorderLayout.WEST);
 
         jcbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona estado.", "Activo.", "Inactivo." }));
+        jcbEstado.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel10.add(jcbEstado, java.awt.BorderLayout.CENTER);
 
         mantenerEstado.setText("Man.");
@@ -426,14 +443,17 @@ public class MenuUsuarios extends SuperVentana {
 
         jPanel3.add(jPanel10);
 
-        jPanel12.setPreferredSize(new java.awt.Dimension(500, 50));
-        jPanel12.setLayout(new java.awt.BorderLayout());
-        jPanel3.add(jPanel12);
+        jPanel18.setPreferredSize(new java.awt.Dimension(500, 30));
+        jPanel18.setLayout(new java.awt.BorderLayout());
+        jPanel3.add(jPanel18);
 
-        jPanel13.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel13.setMinimumSize(null);
+        jPanel13.setPreferredSize(new java.awt.Dimension(500, 40));
         jPanel13.setLayout(new java.awt.BorderLayout());
 
+        guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
         guardar.setText("Guardar");
+        guardar.setPreferredSize(new java.awt.Dimension(500, 50));
         guardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 guardarActionPerformed(evt);
@@ -443,10 +463,13 @@ public class MenuUsuarios extends SuperVentana {
 
         jPanel3.add(jPanel13);
 
-        jPanel14.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel14.setMinimumSize(null);
+        jPanel14.setPreferredSize(new java.awt.Dimension(500, 40));
         jPanel14.setLayout(new java.awt.BorderLayout());
 
+        actualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/actualizar.png"))); // NOI18N
         actualizar.setText("Actualizar");
+        actualizar.setPreferredSize(new java.awt.Dimension(500, 50));
         actualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 actualizarActionPerformed(evt);
@@ -456,10 +479,13 @@ public class MenuUsuarios extends SuperVentana {
 
         jPanel3.add(jPanel14);
 
-        jPanel15.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel15.setMinimumSize(null);
+        jPanel15.setPreferredSize(new java.awt.Dimension(500, 40));
         jPanel15.setLayout(new java.awt.BorderLayout());
 
+        eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/eliminar.png"))); // NOI18N
         eliminar.setText("Eliminar");
+        eliminar.setPreferredSize(new java.awt.Dimension(500, 50));
         eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 eliminarActionPerformed(evt);
@@ -469,10 +495,13 @@ public class MenuUsuarios extends SuperVentana {
 
         jPanel3.add(jPanel15);
 
-        jPanel16.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel16.setMinimumSize(null);
+        jPanel16.setPreferredSize(new java.awt.Dimension(500, 40));
         jPanel16.setLayout(new java.awt.BorderLayout());
 
+        cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
         cancelar.setText("Cancelar");
+        cancelar.setPreferredSize(new java.awt.Dimension(500, 50));
         cancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelarActionPerformed(evt);
@@ -484,7 +513,7 @@ public class MenuUsuarios extends SuperVentana {
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
 
-        jpRegistros.add(jPanel2);
+        jpRegistros.add(jPanel2, java.awt.BorderLayout.CENTER);
 
         jTabbedPane1.addTab("Registro de usuarios", jpRegistros);
 
@@ -643,7 +672,7 @@ public class MenuUsuarios extends SuperVentana {
 
         jTabbedPane1.addTab("Consulta de usuarios", jpConsultas);
 
-        getContentPane().add(jTabbedPane1);
+        getContentPane().add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);
@@ -656,57 +685,48 @@ public class MenuUsuarios extends SuperVentana {
 
     private void jlUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlUsuariosMouseClicked
         int index = jlUsuarios.getSelectedIndex();
-        if (index < 0 || index >= jlUsuarios.getModel().getSize()) {
-            return;
-        }
-        int clicks = evt.getClickCount();
+
         ArrayList<OUsuarios> aux;
         if (buscando) {
             aux = lista_auxiliar;
         } else {
             aux = cache;
         }
+
         if (index < 0 || index >= aux.size()) {
             return;
         }
 
         usuario_buscado = aux.get(index);
 
-        switch (clicks) {
-            case 1 -> {
-                if (buscando) {
-                    jtfBuscadorLista.setText(usuario_buscado.getStringR());
-                }
-            }
-            case 2 -> {
-                jtfNombre.setText(usuario_buscado.getNombre());
-                jtfAp.setText(usuario_buscado.getAp());
-                jtfAm.setText(usuario_buscado.getAm());
-                jcbCalle.setSelectedItem(usuario_buscado.getInfoSinFK()[4]);
-                jcbTipoToma.setSelectedItem(usuario_buscado.getInfoSinFK()[5]);
-                jcbEstado.setSelectedIndex(usuario_buscado.getEstado() == 1 ? 1 : 2);
+        if (evt.getClickCount() == 2) {
+            jtfNombre.setText(usuario_buscado.getNombre());
+            jtfAp.setText(usuario_buscado.getAp());
+            jtfAm.setText(usuario_buscado.getAm());
+            jcbCalle.setSelectedItem(usuario_buscado.getInfoSinFK()[4]);
+            jcbTipoToma.setSelectedItem(usuario_buscado.getInfoSinFK()[5]);
+            jcbEstado.setSelectedIndex(usuario_buscado.getEstado() == 1 ? 1 : 2);
 
-                if (usuario_buscado.isTitular()) {
-                    jchbTitular.setSelected(true);
-                    jcbTitular.setEnabled(false);
-                } else {
-                    jchbTitular.setSelected(false);
-                    jcbTitular.setSelectedItem(usuario_buscado.getInfoSinFK()[8]);
-                }
-                //
-                if (jchbTitular.isSelected()) {
-                    jcbTitular.setEnabled(false);
-                    jPanel11.setVisible(false);
-                } else {
-                    jcbTitular.setEnabled(true);
-                    jPanel11.setVisible(true);
-                }
-                botonesSecundarios();
-                if (buscando) {
-                    controlador.actualizarLista();
-                }
-                buscando = false;
+            if (usuario_buscado.isTitular()) {
+                jchbTitular.setSelected(true);
+                jcbTitular.setEnabled(false);
+            } else {
+                jchbTitular.setSelected(false);
+                jcbTitular.setSelectedItem(usuario_buscado.getInfoSinFK()[8]);
             }
+            //
+            if (jchbTitular.isSelected()) {
+                jcbTitular.setEnabled(false);
+                jPanel11.setVisible(false);
+            } else {
+                jcbTitular.setEnabled(true);
+                jPanel11.setVisible(true);
+            }
+            botonesSecundarios();
+            if (buscando) {
+                controlador.actualizarLista();
+            }
+            buscando = false;
         }
     }//GEN-LAST:event_jlUsuariosMouseClicked
 
@@ -738,17 +758,7 @@ public class MenuUsuarios extends SuperVentana {
             JOptionPane.showMessageDialog(this, "No se ha seleccionado ningun usuario");
             return;
         }
-        if (usuario_buscado.isTitular()) {
-            ArrayList<OUsuarios> lista = operaciones.getLista("titular = " + usuario_buscado.getId());
-            if (!lista.isEmpty()) {
-                StringBuilder str = new StringBuilder("Este usuario tiene los siguientes consumidores\n");
-                for (OUsuarios o : lista) {
-                    str.append(o.getStringR()).append("\n");
-                }
-                JOptionPane.showMessageDialog(this, str.toString());
-                return;
-            }
-        }
+
         String[] o = _guardar();
         o = FormatoBD.bdEntrada(o);
         String[] arr = ConstBD.BD_USUARIOS;
@@ -975,7 +985,6 @@ public class MenuUsuarios extends SuperVentana {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -988,17 +997,18 @@ public class MenuUsuarios extends SuperVentana {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
@@ -1023,7 +1033,6 @@ public class MenuUsuarios extends SuperVentana {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JComboBox<String> jcbCalle;
     private javax.swing.JComboBox<String> jcbEstado;

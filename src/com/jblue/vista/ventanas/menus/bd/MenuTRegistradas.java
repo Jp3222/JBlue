@@ -26,21 +26,21 @@ public class MenuTRegistradas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel25 = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jPanel17 = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         jPanel19 = new javax.swing.JPanel();
+        jPanel23 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jPanel20 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jSeparator3 = new javax.swing.JSeparator();
-        jSeparator2 = new javax.swing.JSeparator();
-        jSeparator1 = new javax.swing.JSeparator();
+        jPanel24 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -85,9 +85,60 @@ public class MenuTRegistradas extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        jPanel25.setLayout(new java.awt.BorderLayout());
+
+        jPanel16.setPreferredSize(new java.awt.Dimension(500, 700));
         jPanel16.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(500, 400));
+        jPanel17.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel17.setLayout(new java.awt.BorderLayout());
+
+        jPanel18.setPreferredSize(new java.awt.Dimension(500, 30));
+        jPanel18.setLayout(new java.awt.BorderLayout());
+
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/buscar.png"))); // NOI18N
+        jLabel11.setPreferredSize(new java.awt.Dimension(24, 30));
+        jPanel18.add(jLabel11, java.awt.BorderLayout.WEST);
+
+        jTextField5.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel18.add(jTextField5, java.awt.BorderLayout.CENTER);
+
+        jPanel17.add(jPanel18, java.awt.BorderLayout.NORTH);
+
+        jPanel19.setPreferredSize(new java.awt.Dimension(670, 30));
+        jPanel19.setLayout(new java.awt.BorderLayout());
+
+        jPanel23.setPreferredSize(new java.awt.Dimension(500, 30));
+        jPanel23.setLayout(new java.awt.BorderLayout());
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
+        jButton1.setToolTipText("Recargar Pagina");
+        jButton1.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel23.add(jButton1, java.awt.BorderLayout.WEST);
+
+        jPanel20.setPreferredSize(new java.awt.Dimension(200, 25));
+        jPanel20.setLayout(new java.awt.BorderLayout());
+
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
+        jButton5.setToolTipText("Pagina anterior");
+        jButton5.setEnabled(false);
+        jButton5.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel20.add(jButton5, java.awt.BorderLayout.WEST);
+
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
+        jButton6.setToolTipText("Pagina siguiente");
+        jButton6.setEnabled(false);
+        jButton6.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel20.add(jButton6, java.awt.BorderLayout.EAST);
+
+        jPanel23.add(jPanel20, java.awt.BorderLayout.LINE_END);
+
+        jPanel19.add(jPanel23, java.awt.BorderLayout.NORTH);
+
+        jPanel24.setPreferredSize(new java.awt.Dimension(500, 640));
+        jPanel24.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(500, 640));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -97,62 +148,18 @@ public class MenuTRegistradas extends javax.swing.JFrame {
                 "ID", "Usuario", "Tipo de Toma", "Dia", "Mes", "Año", "Estado"
             }
         ));
+        jTable1.setPreferredSize(new java.awt.Dimension(500, 640));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel16.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jPanel24.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel17.setPreferredSize(new java.awt.Dimension(500, 50));
-        jPanel17.setLayout(new java.awt.BorderLayout());
+        jPanel19.add(jPanel24, java.awt.BorderLayout.CENTER);
 
-        jPanel18.setPreferredSize(new java.awt.Dimension(500, 25));
-        jPanel18.setLayout(new java.awt.BorderLayout());
+        jPanel17.add(jPanel19, java.awt.BorderLayout.CENTER);
 
-        jLabel11.setText("Buscar");
-        jLabel11.setPreferredSize(new java.awt.Dimension(100, 25));
-        jPanel18.add(jLabel11, java.awt.BorderLayout.WEST);
+        jPanel16.add(jPanel17, java.awt.BorderLayout.WEST);
 
-        jTextField5.setPreferredSize(new java.awt.Dimension(100, 25));
-        jPanel18.add(jTextField5, java.awt.BorderLayout.CENTER);
-
-        jPanel17.add(jPanel18, java.awt.BorderLayout.CENTER);
-
-        jPanel19.setPreferredSize(new java.awt.Dimension(100, 25));
-        jPanel19.setLayout(new java.awt.BorderLayout());
-
-        jButton1.setText("Recargar");
-        jButton1.setPreferredSize(new java.awt.Dimension(100, 25));
-        jPanel19.add(jButton1, java.awt.BorderLayout.LINE_START);
-
-        jPanel20.setPreferredSize(new java.awt.Dimension(200, 25));
-        jPanel20.setLayout(new java.awt.BorderLayout());
-
-        jButton5.setText("Ant");
-        jButton5.setPreferredSize(new java.awt.Dimension(100, 25));
-        jPanel20.add(jButton5, java.awt.BorderLayout.WEST);
-
-        jButton6.setText("Sig");
-        jButton6.setPreferredSize(new java.awt.Dimension(100, 25));
-        jPanel20.add(jButton6, java.awt.BorderLayout.CENTER);
-
-        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jSeparator3.setPreferredSize(new java.awt.Dimension(10, 700));
-        jPanel20.add(jSeparator3, java.awt.BorderLayout.EAST);
-
-        jPanel19.add(jPanel20, java.awt.BorderLayout.LINE_END);
-
-        jPanel17.add(jPanel19, java.awt.BorderLayout.SOUTH);
-
-        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jSeparator2.setPreferredSize(new java.awt.Dimension(10, 700));
-        jPanel17.add(jSeparator2, java.awt.BorderLayout.EAST);
-
-        jPanel16.add(jPanel17, java.awt.BorderLayout.PAGE_START);
-
-        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jSeparator1.setPreferredSize(new java.awt.Dimension(10, 700));
-        jPanel16.add(jSeparator1, java.awt.BorderLayout.EAST);
-
-        getContentPane().add(jPanel16, java.awt.BorderLayout.WEST);
+        jPanel25.add(jPanel16, java.awt.BorderLayout.WEST);
 
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.PAGE_AXIS));
 
@@ -295,9 +302,12 @@ public class MenuTRegistradas extends javax.swing.JFrame {
 
         jPanel1.add(jPanel14);
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        jPanel25.add(jPanel1, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(jPanel25, java.awt.BorderLayout.CENTER);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -340,6 +350,9 @@ public class MenuTRegistradas extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
+    private javax.swing.JPanel jPanel23;
+    private javax.swing.JPanel jPanel24;
+    private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -348,9 +361,6 @@ public class MenuTRegistradas extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;

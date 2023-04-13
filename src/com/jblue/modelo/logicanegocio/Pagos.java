@@ -10,7 +10,6 @@ import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.sistema.Sesion;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.tiempo.Fecha;
 import java.util.ArrayList;
@@ -72,8 +71,6 @@ public class Pagos {
         } while (dinero_ingresado < total);
 
         int mes = EnvUsuario.getMesesPagados(fecha.get()[2], usuario.getId());
-
-        System.out.println("meses: " + mes);
 
         ArrayList<String[]> lista = new ArrayList<>(meses_pagados);
 

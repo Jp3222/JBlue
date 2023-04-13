@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author jp
  */
-public class VPrincipal extends SuperVista {
+public class VCobros extends SuperVista {
 
     private final Fecha fecha;
     //cache
@@ -52,7 +52,7 @@ public class VPrincipal extends SuperVista {
     /**
      * Creates new form VPrincipal
      */
-    public VPrincipal() {
+    public VCobros() {
         pagos_con = new Pagos();
         this.fecha = new Fecha();
         //

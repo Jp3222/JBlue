@@ -5,10 +5,16 @@
 package com.jblue.vista.ventanas.vistas.principal;
 
 import com.jblue.modelo.envoltorios.Operaciones;
+import com.jblue.modelo.envoltorios.env.EnvUsuario;
 import com.jblue.modelo.objetos.OPagosRecargos;
+import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.sistema.Sesion;
+import com.jblue.util.FormatoBD;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.FabricaOpraciones;
+import com.jblue.util.tiempo.Fecha;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 
@@ -60,31 +66,13 @@ public class VRecargos extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jlListaUsuarios = new javax.swing.JList<>();
         jPanel7 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jPanel10 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
         jPanel12 = new javax.swing.JPanel();
-        jPanel13 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jPanel14 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
         jPanel15 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jcbMes = new javax.swing.JComboBox<>();
         jPanel17 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
         jPanel16 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jPanel18 = new javax.swing.JPanel();
@@ -153,76 +141,18 @@ public class VRecargos extends javax.swing.JPanel {
 
         jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanel8.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel8.setLayout(new java.awt.BorderLayout());
-
-        jLabel3.setText("Personal");
-        jLabel3.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel8.add(jLabel3, java.awt.BorderLayout.LINE_START);
-        jPanel8.add(jTextField3, java.awt.BorderLayout.CENTER);
-
-        jPanel7.add(jPanel8);
-
-        jPanel9.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel9.setLayout(new java.awt.BorderLayout());
-
-        jLabel4.setText("Usuario");
-        jLabel4.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel9.add(jLabel4, java.awt.BorderLayout.LINE_START);
-        jPanel9.add(jTextField4, java.awt.BorderLayout.CENTER);
-
-        jPanel7.add(jPanel9);
-
-        jPanel10.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel10.setLayout(new java.awt.BorderLayout());
-
-        jLabel5.setText("Mes Pagado");
-        jLabel5.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel10.add(jLabel5, java.awt.BorderLayout.LINE_START);
-        jPanel10.add(jTextField5, java.awt.BorderLayout.CENTER);
-
-        jPanel7.add(jPanel10);
-
-        jPanel11.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel11.setLayout(new java.awt.BorderLayout());
-
-        jLabel6.setText("Monto");
-        jLabel6.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel11.add(jLabel6, java.awt.BorderLayout.LINE_START);
-        jPanel11.add(jTextField6, java.awt.BorderLayout.CENTER);
-
-        jPanel7.add(jPanel11);
-
         jPanel12.setPreferredSize(new java.awt.Dimension(100, 50));
         jPanel12.setLayout(new javax.swing.BoxLayout(jPanel12, javax.swing.BoxLayout.LINE_AXIS));
-
-        jPanel13.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel13.setLayout(new java.awt.BorderLayout());
-
-        jLabel7.setText("Dia");
-        jLabel7.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel13.add(jLabel7, java.awt.BorderLayout.LINE_START);
-        jPanel13.add(jTextField7, java.awt.BorderLayout.CENTER);
-
-        jPanel12.add(jPanel13);
-
-        jPanel14.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel14.setLayout(new java.awt.BorderLayout());
-
-        jLabel8.setText("Mes");
-        jLabel8.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel14.add(jLabel8, java.awt.BorderLayout.LINE_START);
-        jPanel14.add(jTextField8, java.awt.BorderLayout.CENTER);
-
-        jPanel12.add(jPanel14);
 
         jPanel15.setPreferredSize(new java.awt.Dimension(100, 50));
         jPanel15.setLayout(new java.awt.BorderLayout());
 
-        jLabel9.setText("Año");
-        jLabel9.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel15.add(jLabel9, java.awt.BorderLayout.LINE_START);
-        jPanel15.add(jTextField9, java.awt.BorderLayout.CENTER);
+        jLabel1.setText("Mes");
+        jLabel1.setPreferredSize(new java.awt.Dimension(100, 50));
+        jPanel15.add(jLabel1, java.awt.BorderLayout.LINE_START);
+
+        jcbMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC" }));
+        jPanel15.add(jcbMes, java.awt.BorderLayout.CENTER);
 
         jPanel12.add(jPanel15);
 
@@ -231,10 +161,10 @@ public class VRecargos extends javax.swing.JPanel {
         jPanel17.setPreferredSize(new java.awt.Dimension(100, 50));
         jPanel17.setLayout(new java.awt.BorderLayout());
 
-        jLabel11.setText("Personal");
-        jLabel11.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel17.add(jLabel11, java.awt.BorderLayout.LINE_START);
-        jPanel17.add(jTextField10, java.awt.BorderLayout.CENTER);
+        jLabel3.setText("Total");
+        jLabel3.setPreferredSize(new java.awt.Dimension(100, 50));
+        jPanel17.add(jLabel3, java.awt.BorderLayout.LINE_START);
+        jPanel17.add(jTextField1, java.awt.BorderLayout.CENTER);
 
         jPanel7.add(jPanel17);
 
@@ -267,6 +197,11 @@ public class VRecargos extends javax.swing.JPanel {
         jPanel19.add(jLabel13, java.awt.BorderLayout.LINE_START);
 
         jButton5.setText("Pagar Recargo");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel19.add(jButton5, java.awt.BorderLayout.CENTER);
 
         jPanel7.add(jPanel19);
@@ -338,8 +273,29 @@ public class VRecargos extends javax.swing.JPanel {
 
     private void jbtGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtGuardarActionPerformed
 
+        if (usuario_buscado == null) {
+            return;
+        }
+        String[] info = getInfo("-1");
+        info = FormatoBD.bdEntrada(info);
+        op.insertar(info);
 
     }//GEN-LAST:event_jbtGuardarActionPerformed
+
+    Fecha fh = new Fecha();
+
+    public String[] getInfo(String estado) {
+        OPersonal personal = Sesion.getInstancia().getUsuario();
+        String _personal = personal.getId();
+        String _usuario = usuario_buscado.getId();
+        OTipoTomas toma = EnvUsuario.getTipo_De_Toma(usuario_buscado.getToma());
+        String _mes = String.valueOf(toma.getRecargo());
+        String _estado = estado;
+        String _registro = fh.getNewFechaActualString();
+        return new String[]{
+            _personal, _usuario, _mes, _estado, _registro
+        };
+    }
 
     private void buscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscarKeyReleased
         buscando = true;
@@ -360,6 +316,16 @@ public class VRecargos extends javax.swing.JPanel {
             lista_aux.add(i);
         }
     }//GEN-LAST:event_buscarKeyReleased
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+
+        if (usuario_buscado == null) {
+            return;
+        }
+
+        op.actualizar("estado", "1", "usuario = '" + usuario_buscado.getId() + "'");
+
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     String _limpiar(String txt) {
         return txt.trim().replace(" ", "").replace("_", "").toLowerCase();
@@ -389,26 +355,16 @@ public class VRecargos extends javax.swing.JPanel {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
@@ -423,22 +379,14 @@ public class VRecargos extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField10;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JButton jbtGuardar;
+    private javax.swing.JComboBox<String> jcbMes;
     private javax.swing.JList<String> jlListaUsuarios;
     // End of variables declaration//GEN-END:variables
 }

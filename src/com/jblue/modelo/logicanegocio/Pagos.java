@@ -55,41 +55,39 @@ public class Pagos {
     }
 
     public double hacerPago(int meses_pagados, double total) {
+
         double dinero_ingresado;
+
         do {
-
             dinero_ingresado = getDineroIngresado();
-
             if (dinero_ingresado == -1) {
                 return -1;
             }
-
             if (dinero_ingresado < total) {
                 JOptionPane.showMessageDialog(null, "El valor ingresado es menor al total", "Cobro", JOptionPane.ERROR_MESSAGE);
             }
-
         } while (dinero_ingresado < total);
 
         int mes = EnvUsuario.getMesesPagados(fecha.get()[2], usuario.getId());
-
         ArrayList<String[]> lista = new ArrayList<>(meses_pagados);
-
         String[] fh = fecha.get();
-
         int meses_pagados_sum;
 
         for (int i = 0; i < meses_pagados; i++) {
-            if (mes >= 11) {
-                mes = 0;
-            }
+
             String[] info = _getInfo(fecha.getMes(mes), fh[0], fh[1], fh[2]);
             lista.add(info);
             mes++;
+
+            if (mes >= 11) {
+                mes = 0;
+            }
         }
         for (String[] strings : lista) {
             System.out.println(Arrays.toString(strings));
             operaciones.insertar(strings);
         }
+        
         return dinero_ingresado - total;
     }
 

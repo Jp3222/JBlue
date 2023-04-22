@@ -4,17 +4,27 @@
  */
 package com.jblue.vista.ventanas.vistas.presidente;
 
+import com.jblue.modelo.envoltorios.Operaciones;
+import com.jblue.modelo.objetos.OHisMovimientos;
+import com.jblue.util.cache.FabricaOpraciones;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author jp
  */
 public class VHistorial extends javax.swing.JPanel {
 
+    Operaciones<OHisMovimientos> operaciones;
+
     /**
      * Creates new form HistorialDeMovimientos
      */
     public VHistorial() {
+        operaciones = FabricaOpraciones.HISTORIAL_DE_MOVIMIENTOS;
         initComponents();
+        cargarTabla();
     }
 
     /**
@@ -56,13 +66,10 @@ public class VHistorial extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Personal", "Movimiento", "Fecha", "Hora"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -141,6 +148,16 @@ public class VHistorial extends javax.swing.JPanel {
         add(jPanel7, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
 
+    public void cargarTabla() {
+        ArrayList<OHisMovimientos> lista = operaciones.getLista("id>0");
+        System.out.println("");
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        System.out.println("xd");
+        for (OHisMovimientos oHisMovimientos : lista) {
+            modelo.addRow(oHisMovimientos.getInfo());
+        }
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

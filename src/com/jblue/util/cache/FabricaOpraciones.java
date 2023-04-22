@@ -25,7 +25,7 @@ public class FabricaOpraciones {
     public static final Operaciones<OUsuarios> USUARIOS = new Operaciones(ConstBD.TABLAS[1], ConstBD.BD_USUARIOS);
     public static final Operaciones<OCalles> CALLES = new Operaciones(ConstBD.TABLAS[2], ConstBD.BD_CALLES);
     public static final Operaciones<OTipoTomas> TIPOS_DE_TOMAS = new Operaciones(ConstBD.TABLAS[3], ConstBD.BD_TIPOS_DE_TOMAS);
-    public static final Operaciones<OHisMovimientos> HISTORIAL_DE_MOVIMIENTOS = new Operaciones(ConstBD.TABLAS[4], ConstBD.BD_PAGOS_X_SERVICIO);
+    public static final Operaciones<OHisMovimientos> HISTORIAL_DE_MOVIMIENTOS = new Operaciones(ConstBD.TABLAS[4], ConstBD.BD_HISTORIAL_MOVIMIENTOS);
     public static final Operaciones<OPagosServicio> PAGOS_X_SERVICIO = new Operaciones(ConstBD.TABLAS[6], ConstBD.BD_PAGOS_X_SERVICIO);
     public static final Operaciones<OPagosRecargos> PAGOS_X_RECARGOS = new Operaciones(ConstBD.TABLAS[7], ConstBD.BD_PAGOS_X_RECARGO);
     public static final Operaciones<OPagosOtros> PAGOS_X_OTROS = new Operaciones(ConstBD.TABLAS[8], ConstBD.BD_PAGOS_X_OTROS);

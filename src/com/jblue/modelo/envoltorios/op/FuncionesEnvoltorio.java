@@ -5,6 +5,7 @@
 package com.jblue.modelo.envoltorios.op;
 
 import com.jblue.modelo.objetos.OCalles;
+import com.jblue.modelo.objetos.OHisMovimientos;
 import com.jblue.modelo.objetos.OPagosOtros;
 import com.jblue.modelo.objetos.OPagosRecargos;
 import com.jblue.modelo.objetos.OPagosServicio;
@@ -161,6 +162,8 @@ public abstract class FuncionesEnvoltorio {
                     o = runWhile(new OPagosRecargos(), get, campos);
                 case "pagos_x_otros" ->
                     o = runWhile(new OPagosOtros(), get, campos);
+                case "historial_movimientos"->
+                    o = runWhile(new OHisMovimientos(), get, campos);
             }
         } catch (Exception ex) {
             Excp.impTerminal(ex, this.getClass(), true);

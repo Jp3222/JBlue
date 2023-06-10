@@ -22,7 +22,10 @@ public class SoInfo {
 
     public static String[] getRutas() {
         String documentos = null, escritorio = null;
-        if (SO_NOMBRE.contains("windows") || LENGUAJE_DEL_SISTEMA.equals("en")) {
+        if (isWindows()) {
+            escritorio = "Desktop";
+            documentos = "Documents";
+        } else if (LENGUAJE_DEL_SISTEMA.equals("en")) {
             escritorio = "Desktop";
             documentos = "Documents";
         } else if (LENGUAJE_DEL_SISTEMA.equals("es")) {
@@ -35,15 +38,19 @@ public class SoInfo {
     }
 
     public static boolean isWindows() {
-        return SO_NOMBRE.contains("windows");
+        return clear(SO_NOMBRE).contains("windows");
     }
 
     public static boolean isLinux() {
-        return SO_NOMBRE.contains("linux");
+        return clear(SO_NOMBRE).contains("linux");
     }
 
     public static boolean isMac() {
-        return SO_NOMBRE.contains("mac");
+        return clear(SO_NOMBRE).contains("mac");
+    }
+    
+    static String clear(String txt){
+        return txt.trim().toLowerCase();
     }
 
     //

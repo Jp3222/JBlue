@@ -6,6 +6,7 @@ package com.jblue.modelo.objetos;
 
 import com.jblue.modelo.objetos.sucls.Objeto;
 import com.jblue.modelo.envoltorios.env.EnvUsuario;
+import java.util.Arrays;
 
 /**
  *
@@ -15,7 +16,6 @@ public class OUsuarios extends Objeto {
 
     public OUsuarios(String[] info) {
         super(info);
-        _conjuntoSinFK = InfoSinFK();
     }
 
     public OUsuarios() {
@@ -55,7 +55,7 @@ public class OUsuarios extends Objeto {
      */
     @Override
     public String getStringR() {
-        return getSubCon(1, 2, 3).replace(",", " ").replace("_", " ");
+        return getSubCon(1, 2, 3).replace(',', ' ');
     }
 
     /**
@@ -66,12 +66,16 @@ public class OUsuarios extends Objeto {
         return _conjunto[4];
     }
 
+    public String getNumeroCasa() {
+        return _conjunto[5];
+    }
+
     /**
      *
      * @return una cadena con el ID del tipo de toma asociada a este usuario
      */
     public String getToma() {
-        return _conjunto[5];
+        return _conjunto[6];
     }
 
     /**
@@ -79,7 +83,7 @@ public class OUsuarios extends Objeto {
      * @return una cadena con la fecha de registro de este usuario
      */
     public String getRegistro() {
-        return _conjunto[6];
+        return _conjunto[7];
     }
 
     /**
@@ -88,7 +92,7 @@ public class OUsuarios extends Objeto {
      * inactivo
      */
     public int getEstado() {
-        return Integer.parseInt(_conjunto[7]);
+        return Integer.parseInt(_conjunto[8]);
     }
 
     public boolean isActivo() {
@@ -100,25 +104,24 @@ public class OUsuarios extends Objeto {
      * @return -1 si el usuario es titular en cualquier otro caso devuelve el id
      * del usuario al cual esta asociado
      */
-    public int getTitutlar() {
-        int i = Integer.parseInt(_conjunto[8]);
-        return i;
+    public String getTitutlar() {
+        return _conjunto[9];
     }
 
     public boolean isTitular() {
-        return Integer.parseInt(_conjunto[8]) == -1;
+        return Integer.parseInt(_conjunto[9]) == -1;
     }
 
-    public int codigo() {
-        return Integer.parseInt(_conjunto[9]);
+    public String getCodigo() {
+        return _conjunto[10];
     }
 
     private String[] InfoSinFK() {
-        _conjuntoSinFK[4] = EnvUsuario.getCalle(_conjunto[4]).getStringR();
-        _conjuntoSinFK[5] = EnvUsuario.getTipo_De_Toma(_conjunto[5]).getStringR();
-        _conjuntoSinFK[7] = isActivo() ? "ACTIVO" : "INACTIVO";
-        OUsuarios usuario = EnvUsuario.getUsuario(_conjunto[8]);
-        _conjuntoSinFK[8] = isTitular() ? "N/A" : usuario.getStringR();
+        _conjuntoSinFK[4] = EnvUsuario.getCalleEnCache(getCalle()).getStringR();
+        _conjuntoSinFK[6] = EnvUsuario.getTipoDeTomaEnCache(getToma()).getStringR();
+        _conjuntoSinFK[8] = isActivo() ? "ACTIVO" : "INACTIVO";
+        OUsuarios usuario = EnvUsuario.getUsuarioXID(getTitutlar());
+        _conjuntoSinFK[9] = isTitular() ? "N/A" : usuario.getStringR();
         return _conjuntoSinFK;
     }
 

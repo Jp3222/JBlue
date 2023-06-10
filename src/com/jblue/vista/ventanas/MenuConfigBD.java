@@ -6,7 +6,8 @@ package com.jblue.vista.ventanas;
 
 import com.jblue.sistema.Archivos;
 import com.jblue.sistema.Sistema;
-import com.jblue.sistema.so.ConstructorDeArchivos;
+import com.jblue.sistema.app.Prop;
+import com.jblue.util.archivos.ConstructorArchivos;
 import com.jblue.vista.normas.SuperVentana;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
@@ -15,8 +16,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -84,24 +83,26 @@ public class MenuConfigBD extends SuperVentana {
         jLabel2 = new javax.swing.JLabel();
         jpfContra = new javax.swing.JPasswordField();
         jPanel6 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jcbMotor = new javax.swing.JComboBox<>();
+        jPanel12 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jtfHost = new javax.swing.JTextField();
+        jPanel13 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jtfPuerto = new javax.swing.JTextField();
+        jPanel14 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jtfBDNombre = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jbtGuardarDatos = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jbtProbarConexion = new javax.swing.JButton();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        estado = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         jPanel2.setLayout(new java.awt.BorderLayout());
@@ -112,7 +113,7 @@ public class MenuConfigBD extends SuperVentana {
         jPanel2.add(jLabel6, java.awt.BorderLayout.NORTH);
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/img2.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/usuario.png"))); // NOI18N
         jLabel7.setPreferredSize(new java.awt.Dimension(800, 170));
         jPanel2.add(jLabel7, java.awt.BorderLayout.CENTER);
 
@@ -143,40 +144,61 @@ public class MenuConfigBD extends SuperVentana {
 
         jPanel3.add(jPanel4);
 
-        jPanel6.setPreferredSize(new java.awt.Dimension(800, 50));
-        jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel6.setPreferredSize(new java.awt.Dimension(800, 80));
+        jPanel6.setLayout(new java.awt.GridLayout(1, 4));
+
+        jPanel5.setLayout(new java.awt.BorderLayout());
 
         jLabel9.setText("Motor");
-        jLabel9.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel6.add(jLabel9);
+        jLabel9.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel5.add(jLabel9, java.awt.BorderLayout.NORTH);
 
         jcbMotor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "mysql" }));
-        jcbMotor.setPreferredSize(new java.awt.Dimension(200, 50));
-        jPanel6.add(jcbMotor);
+        jcbMotor.setPreferredSize(new java.awt.Dimension(100, 50));
+        jPanel5.add(jcbMotor, java.awt.BorderLayout.CENTER);
+
+        jPanel6.add(jPanel5);
+
+        jPanel12.setLayout(new java.awt.BorderLayout());
 
         jLabel10.setText("Host");
-        jLabel10.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel6.add(jLabel10);
+        jLabel10.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel12.add(jLabel10, java.awt.BorderLayout.NORTH);
 
         jtfHost.setText("localhost");
-        jtfHost.setPreferredSize(new java.awt.Dimension(200, 50));
-        jPanel6.add(jtfHost);
+        jtfHost.setPreferredSize(new java.awt.Dimension(100, 50));
+        jPanel12.add(jtfHost, java.awt.BorderLayout.CENTER);
+
+        jPanel6.add(jPanel12);
+
+        jPanel13.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setText("Puerto");
+        jLabel3.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel13.add(jLabel3, java.awt.BorderLayout.NORTH);
+
+        jtfPuerto.setText("3306");
+        jtfPuerto.setPreferredSize(new java.awt.Dimension(100, 50));
+        jPanel13.add(jtfPuerto, java.awt.BorderLayout.CENTER);
+
+        jPanel6.add(jPanel13);
+
+        jPanel14.setLayout(new java.awt.BorderLayout());
 
         jLabel11.setText("nombre");
-        jLabel11.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel6.add(jLabel11);
+        jLabel11.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel14.add(jLabel11, java.awt.BorderLayout.NORTH);
 
         jtfBDNombre.setText("jblue");
         jtfBDNombre.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel6.add(jtfBDNombre);
+        jPanel14.add(jtfBDNombre, java.awt.BorderLayout.CENTER);
+
+        jPanel6.add(jPanel14);
 
         jPanel3.add(jPanel6);
 
         jPanel7.setPreferredSize(new java.awt.Dimension(800, 50));
-        jPanel7.setLayout(new java.awt.BorderLayout());
-
-        jLabel5.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel7.add(jLabel5, java.awt.BorderLayout.LINE_START);
+        jPanel7.setLayout(new java.awt.GridLayout(1, 2));
 
         jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -206,20 +228,9 @@ public class MenuConfigBD extends SuperVentana {
 
         jPanel8.add(jPanel10);
 
-        jPanel7.add(jPanel8, java.awt.BorderLayout.CENTER);
+        jPanel7.add(jPanel8);
 
         jPanel3.add(jPanel7);
-
-        jPanel11.setPreferredSize(new java.awt.Dimension(800, 50));
-        jPanel11.setLayout(new java.awt.BorderLayout());
-
-        jLabel8.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel11.add(jLabel8, java.awt.BorderLayout.LINE_START);
-
-        estado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel11.add(estado, java.awt.BorderLayout.CENTER);
-
-        jPanel3.add(jPanel11);
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.PAGE_END);
 
@@ -235,7 +246,7 @@ public class MenuConfigBD extends SuperVentana {
         try {
             Sistema s = Sistema.getInstancia();
             Archivos archivos = s.getArchivos();
-            ConstructorDeArchivos constructor = archivos.getArchivos();
+            ConstructorArchivos constructor = archivos.getArchivos();
             File us = constructor.get(constructor.ARCHIVO, archivos.USUARIO_BD);
             fr = new FileWriter(us);
             String[] datos = getDatos();
@@ -282,21 +293,17 @@ public class MenuConfigBD extends SuperVentana {
         usuario = jtfUsuario.getText();
         contra = String.valueOf(jpfContra.getPassword());
         StringBuilder s = new StringBuilder("jdbc:");
-
         s.append(jcbMotor.getItemAt(jcbMotor.getSelectedIndex()))
                 .append("://")
                 .append(jtfHost.getText())
+                .append(":")
+                .append(jtfPuerto.getText())
                 .append("/")
                 .append(jtfBDNombre.getText());
         url = s.toString();
         return new String[]{
             usuario, contra, url
         };
-    }
-
-    @Override
-    public void permisos() {
-        System.out.println("N/A");
     }
 
     @Override
@@ -309,22 +316,23 @@ public class MenuConfigBD extends SuperVentana {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel estado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
@@ -335,6 +343,7 @@ public class MenuConfigBD extends SuperVentana {
     private javax.swing.JPasswordField jpfContra;
     private javax.swing.JTextField jtfBDNombre;
     private javax.swing.JTextField jtfHost;
+    private javax.swing.JTextField jtfPuerto;
     private javax.swing.JTextField jtfUsuario;
     // End of variables declaration//GEN-END:variables
 

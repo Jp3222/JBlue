@@ -71,24 +71,29 @@ public class Pagos {
         int mes = EnvUsuario.getMesesPagados(fecha.get()[2], usuario.getId());
         ArrayList<String[]> lista = new ArrayList<>(meses_pagados);
         String[] fh = fecha.get();
-        int meses_pagados_sum;
+        int pagos_realizados = 0;
+
+        if (fecha.getNewFechaActual().getMonthValue() < 12) {
+            if (mes >= 12) {
+                JOptionPane.showMessageDialog(null, "El usuario completo sus 12 pagos, no puede realizar mas.");
+                return -1;
+            }
+        }
 
         for (int i = 0; i < meses_pagados; i++) {
-
+            if (mes >= 12) {
+                mes = 0;
+            }
+            pagos_realizados += toma.getCosto();
             String[] info = _getInfo(fecha.getMes(mes), fh[0], fh[1], fh[2]);
             lista.add(info);
             mes++;
-
-            if (mes >= 11) {
-                mes = 0;
-            }
         }
         for (String[] strings : lista) {
-            System.out.println(Arrays.toString(strings));
             operaciones.insertar(strings);
         }
-        
-        return dinero_ingresado - total;
+
+        return (dinero_ingresado - total);
     }
 
     public String[] _getInfo(String... comp) {

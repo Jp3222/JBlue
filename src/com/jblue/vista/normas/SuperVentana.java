@@ -11,18 +11,23 @@ import javax.swing.JFrame;
  *
  * @author jp
  */
-public abstract class SuperVentana extends JFrame implements InfoApp, Permisos {
+public abstract class SuperVentana extends JFrame implements InfoApp {
 
     /**
-     * Variable que define el titulo de la ventana
-     * <br> 0 "nueva ventana"
-     * <br> 1 "Inicio de sesion"
-     * <br> 2 "Menu Principal"
-     * <br> 3 "BD usuarios"
-     * <br> 4 "BD calles"
-     * <br> 5 "BD tipo de tomas"
-     * <br> 6 "Menu Tesoreria"
-     * <br> 7 "Menu Presidente"
+     * <br> 0 - "nueva ventana"
+     * <br> 1 - "Inicio de sesion"
+     * <br> 2 - "Menu Principal"
+     * <br> 3 - "BD usuarios"
+     * <br> 4 - "BD calles"
+     * <br> 5 - "BD tipo de tomas"
+     * <br> 6 - "Menu Tesoreria"
+     * <br> 7 - "Menu Presidente"
+     * <br> 8 - "Tomas Registradas"
+     * <br> 9 - "Perfil de Usuario"
+     * <br> 10 - "Administrador de Directorios"
+     * <br> 11 - "Administrador de Documentos"
+     * <br> 12 - "Comprobantes"
+     * <br> 13 - "Administrador"
      */
     protected int _TITULO;
 
@@ -51,14 +56,14 @@ public abstract class SuperVentana extends JFrame implements InfoApp, Permisos {
      * cual no sera cambiado
      */
     protected void estadoFinal() {
-        this.setIconImage(ICONO_DEL_PROGRAMA.getImage());
+        this.setIconImage(_ICONO_DEL_PROGRAMA.getImage());
         StringBuilder s = new StringBuilder(NOMBRE_DEL_PROGRAMA);
-
-        s.append(" ")
-                .append(VERSION_DEL_PROGRAMA)
-                .append(" - ").append(MENUS_DEL_PROGRAMA[_TITULO]);
-
-        this.setTitle(s.toString());
+        if (_TITULO != 0) {
+            s.append(" ");
+            s.append(VERSION_DEL_PROGRAMA);
+            s.append(" - ").append(_MENUS_DEL_PROGRAMA[_TITULO]);
+            this.setTitle(s.toString());
+        }
     }
 
     /**

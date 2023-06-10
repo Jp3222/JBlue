@@ -67,6 +67,43 @@ public abstract class EnvPersonal {
         return o.getPermisos().contains(permiso);
     }
 
+    public static boolean isAdministrador(OPersonal o) {
+        return o.getCargo().equalsIgnoreCase("5");
+    }
+
+    public static boolean isPresidente(OPersonal o) {
+        return o.getCargo().equalsIgnoreCase("4");
+    }
+
+    public static boolean isTesorero(OPersonal o) {
+        return o.getCargo().equalsIgnoreCase("3");
+    }
+
+    public static boolean isSecretario(OPersonal o) {
+        return o.getCargo().equalsIgnoreCase("2");
+    }
+
+    public static boolean isPasante(OPersonal o) {
+        return o.getCargo().equalsIgnoreCase("1");
+    }
+
+    public static String getCargoString(OPersonal o) {
+        return switch ("2") {
+            case "1":
+                yield "Pasante";
+            case "2":
+                yield "Secretario";
+            case "3":
+                yield "Tesorero";
+            case "4":
+                yield "Presidente";
+            case "5":
+                yield "Administrador";
+            default:
+                yield "none";
+        };
+    }
+
     private EnvPersonal() {
     }
 }

@@ -4,9 +4,9 @@
  */
 package com.jblue.vista.ventanas.vistas.presidente;
 
-import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OHisMovimientos;
 import com.jblue.util.cache.FabricaOpraciones;
+import com.jblue.util.cache.MemoCache;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -16,15 +16,35 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VHistorial extends javax.swing.JPanel {
 
-    Operaciones<OHisMovimientos> operaciones;
+    private final MemoCache<OHisMovimientos> memoria_cache;
+    private final DefaultTableModel modelo;
 
     /**
-     * Creates new form HistorialDeMovimientos
+     * Creates new form VHistorial
      */
     public VHistorial() {
-        operaciones = FabricaOpraciones.HISTORIAL_DE_MOVIMIENTOS;
+        memoria_cache = new MemoCache(FabricaOpraciones.HISTORIAL_DE_MOVIMIENTOS);
+        memoria_cache.setRangoActivo(true);
+        memoria_cache.cargar();
         initComponents();
-        cargarTabla();
+        modelo = (DefaultTableModel) jtHistorial.getModel();
+    }
+
+    private void cargar() {
+        ArrayList<OHisMovimientos> lista = memoria_cache.getLista();
+        System.out.println(lista.isEmpty());
+        for (OHisMovimientos o : lista) {
+            modelo.addRow(o.getInfo());
+        }
+    }
+
+    private void vaciar() {
+        if (modelo.getRowCount() <= 0) {
+            return;
+        }
+        while (modelo.getRowCount() > 0) {
+            modelo.removeRow(0);
+        }
     }
 
     /**
@@ -36,35 +56,79 @@ public class VHistorial extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jPanel7 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jPanel14 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        jComboBox6 = new javax.swing.JComboBox<>();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jPanel10 = new javax.swing.JPanel();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jSpinner2 = new javax.swing.JSpinner();
-        jPanel12 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jPanel13 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jComboBox5 = new javax.swing.JComboBox<>();
+        jbtRecargar = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jbtAnterior = new javax.swing.JButton();
+        jbtSiguiente = new javax.swing.JButton();
+        rango = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtHistorial = new javax.swing.JTable();
 
-        setPreferredSize(new java.awt.Dimension(900, 700));
+        setName("vista historial de movimientos"); // NOI18N
         setLayout(new java.awt.BorderLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jPanel1.setPreferredSize(new java.awt.Dimension(1000, 200));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1000, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 200, Short.MAX_VALUE)
+        );
+
+        add(jPanel1, java.awt.BorderLayout.PAGE_START);
+
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jPanel3.setPreferredSize(new java.awt.Dimension(1000, 45));
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        jbtRecargar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
+        jbtRecargar.setPreferredSize(new java.awt.Dimension(100, 45));
+        jbtRecargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtRecargarActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jbtRecargar, java.awt.BorderLayout.WEST);
+
+        jPanel4.setPreferredSize(new java.awt.Dimension(200, 45));
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        jbtAnterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
+        jbtAnterior.setPreferredSize(new java.awt.Dimension(100, 45));
+        jbtAnterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtAnteriorActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jbtAnterior, java.awt.BorderLayout.WEST);
+
+        jbtSiguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
+        jbtSiguiente.setPreferredSize(new java.awt.Dimension(100, 45));
+        jbtSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtSiguienteActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jbtSiguiente, java.awt.BorderLayout.EAST);
+
+        jPanel3.add(jPanel4, java.awt.BorderLayout.LINE_END);
+
+        rango.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rango.setText("1 - 1000");
+        jPanel3.add(rango, java.awt.BorderLayout.CENTER);
+
+        jPanel2.add(jPanel3, java.awt.BorderLayout.NORTH);
+
+        jtHistorial.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -72,117 +136,55 @@ public class VHistorial extends javax.swing.JPanel {
                 "ID", "Personal", "Movimiento", "Fecha", "Hora"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jtHistorial);
 
-        add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel7.setLayout(new java.awt.BorderLayout());
-
-        jPanel8.setLayout(new java.awt.BorderLayout());
-
-        jLabel4.setText("Filtros");
-        jPanel8.add(jLabel4, java.awt.BorderLayout.CENTER);
-        jPanel8.add(jCheckBox1, java.awt.BorderLayout.LINE_START);
-
-        jButton1.setText("Eliminar Filtros");
-        jPanel8.add(jButton1, java.awt.BorderLayout.LINE_END);
-
-        jPanel7.add(jPanel8, java.awt.BorderLayout.NORTH);
-
-        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
-
-        jPanel14.setLayout(new java.awt.BorderLayout(10, 0));
-
-        jLabel9.setText("Personal");
-        jPanel14.add(jLabel9, java.awt.BorderLayout.NORTH);
-
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel14.add(jComboBox6, java.awt.BorderLayout.CENTER);
-
-        jPanel3.add(jPanel14);
-
-        jPanel9.setLayout(new java.awt.BorderLayout(10, 0));
-
-        jLabel5.setText("Movimiento");
-        jPanel9.add(jLabel5, java.awt.BorderLayout.NORTH);
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel9.add(jComboBox3, java.awt.BorderLayout.CENTER);
-
-        jPanel3.add(jPanel9);
-
-        jPanel10.setLayout(new javax.swing.BoxLayout(jPanel10, javax.swing.BoxLayout.LINE_AXIS));
-
-        jPanel11.setLayout(new java.awt.BorderLayout());
-
-        jLabel6.setText("Dia");
-        jPanel11.add(jLabel6, java.awt.BorderLayout.PAGE_START);
-        jPanel11.add(jSpinner2, java.awt.BorderLayout.CENTER);
-
-        jPanel10.add(jPanel11);
-
-        jPanel12.setLayout(new java.awt.BorderLayout());
-
-        jLabel7.setText("Mes");
-        jPanel12.add(jLabel7, java.awt.BorderLayout.PAGE_START);
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel12.add(jComboBox4, java.awt.BorderLayout.CENTER);
-
-        jPanel10.add(jPanel12);
-
-        jPanel13.setLayout(new java.awt.BorderLayout());
-
-        jLabel8.setText("Año");
-        jPanel13.add(jLabel8, java.awt.BorderLayout.PAGE_START);
-
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel13.add(jComboBox5, java.awt.BorderLayout.CENTER);
-
-        jPanel10.add(jPanel13);
-
-        jPanel3.add(jPanel10);
-
-        jPanel7.add(jPanel3, java.awt.BorderLayout.CENTER);
-
-        add(jPanel7, java.awt.BorderLayout.NORTH);
+        add(jPanel2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    public void cargarTabla() {
-        ArrayList<OHisMovimientos> lista = operaciones.getLista("id>0");
-        System.out.println("");
-        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        System.out.println("xd");
-        for (OHisMovimientos oHisMovimientos : lista) {
-            modelo.addRow(oHisMovimientos.getInfo());
-        }
+    private void jbtRecargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRecargarActionPerformed
+        memoria_cache.actualizar();
+        cargar();
+    }//GEN-LAST:event_jbtRecargarActionPerformed
 
+    private void jbtSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSiguienteActionPerformed
+        memoria_cache.sig();
+        memoria_cache.actualizar();
+        rango.setText(memoria_cache.getAnt() + " - " + memoria_cache.getSig());
+        vaciar();
+        cargar();
+    }//GEN-LAST:event_jbtSiguienteActionPerformed
+
+    private void jbtAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAnteriorActionPerformed
+        memoria_cache.ant();
+        memoria_cache.actualizar();
+        rango.setText(memoria_cache.getAnt() + " - " + memoria_cache.getSig());
+        vaciar();
+        cargar();
+    }//GEN-LAST:event_jbtAnteriorActionPerformed
+
+    @Override
+    public void setVisible(boolean aFlag) {
+        super.setVisible(aFlag); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        if (aFlag) {
+            cargar();
+        } else {
+            vaciar();
+        }
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private javax.swing.JComboBox<String> jComboBox6;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbtAnterior;
+    private javax.swing.JButton jbtRecargar;
+    private javax.swing.JButton jbtSiguiente;
+    private javax.swing.JTable jtHistorial;
+    private javax.swing.JLabel rango;
     // End of variables declaration//GEN-END:variables
 }

@@ -23,6 +23,7 @@ public class MemoCache2<T extends Objeto> implements InterfaceIteradora, Interfa
     private final ArrayList<T> MEMORIA;
     private final Operaciones<T> OPERACIONES;
     private int rango, IdMin, IdMax;
+    private boolean usar_rango;
     private int primerId, ultimoID;
     private String query;
 
@@ -79,6 +80,12 @@ public class MemoCache2<T extends Objeto> implements InterfaceIteradora, Interfa
         IdMax += rango;
     }
 
+    public boolean siguiente() {
+        boolean r = false;
+
+        return r;
+    }
+
     @Override
     public void ant() {
         if ((IdMin - rango) > 0) {
@@ -117,6 +124,22 @@ public class MemoCache2<T extends Objeto> implements InterfaceIteradora, Interfa
         for (T t : lista) {
             MEMORIA.add(t);
         }
+        lista.clear();
+    }
+
+    private void buscar() {
+        StringBuilder sb = new StringBuilder(100);
+        if (usar_rango) {
+            sb.append("id >= ").append(IdMin).append(" and ").append("id <= ").append(IdMax);
+        }
+        if (query != null) {
+            if (usar_rango) {
+                sb.append(" and ");
+            }
+            sb.append(query);
+        }
+        ArrayList<T> lista = OPERACIONES.getLista(query);
+        lista.addAll(lista);
         lista.clear();
     }
 

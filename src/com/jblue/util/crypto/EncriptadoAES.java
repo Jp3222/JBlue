@@ -106,6 +106,15 @@ public class EncriptadoAES {
         return datos;
     }
 
+    /**
+     * Compara si dos claves encriptadas son correctas
+     *
+     * @param ken - key encriptada
+     * @param ven - value - encriptado
+     * @param kdes - key - descencriptada
+     * @param vdes - value - descencriptada
+     * @return
+     */
     public boolean comparador(String ken, String ven, String kdes, String vdes) {
         try {
             String k = kdes;
@@ -113,7 +122,7 @@ public class EncriptadoAES {
             String a = encriptar(kdes, v);
             String b = encriptar(vdes, k);
             return ken.equals(a) && ven.equals(b);
-            
+
         } catch (UnsupportedEncodingException
                 | NoSuchAlgorithmException
                 | InvalidKeyException

@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * @author jp
  * @param <T>
  */
-public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio implements FuncionesAbstractas {
+public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio implements FuncionesAbstractas, Cloneable {
 
     public Operaciones(String tabla, String[] campos) {
         super(tabla, campos);
@@ -62,8 +62,7 @@ public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio implement
 
     @Override
     public ArrayList<T> getLista(String where) {
-        ArrayList<T> lista = _GET("*", where);
-        return lista;
+        return _GET("*", where);
     }
 
     @Override
@@ -84,6 +83,11 @@ public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio implement
     @Override
     public boolean actualizar(String[] campos, String[] valores, String where) {
         return _ACTUALIZAR(campos, valores, where);
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
 }

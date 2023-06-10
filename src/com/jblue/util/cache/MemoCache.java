@@ -6,14 +6,12 @@ package com.jblue.util.cache;
 
 import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.sucls.Objeto;
-import com.jblue.util.interfacesSuper.InterfaceDatos;
 import com.jutil.jbd.conexion.Conexion;
-import com.jutil.jexception.Excp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Map;
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -21,17 +19,23 @@ import java.util.function.Predicate;
  * @author jp
  * @param <T>
  */
-public class MemoCache<T extends Objeto> implements InterfaceDatos {
+public class MemoCache<T extends Objeto> {
 
-    private final ArrayList<T> lista;
+    private final List<T> lista;
     private final Operaciones<T> operaciones;
-    private int primerId, ultimoId;
+    private int primer_id_leido, ultimo_id_leido;
+    private int ant;
+    private int sig;
+    private int rango;
+    private boolean rangoActivo;
     private String query;
-    private Map<String, Proceso> procesos;
 
     public MemoCache(Operaciones<T> operaciones) {
-        this.lista = new ArrayList<>(100);
+        this.lista = new ArrayList<>(1000);
         this.operaciones = operaciones;
+        rango = 1000;
+        ant = 1;
+        sig = rango;
         getIdsMinMax();
     }
 
@@ -44,12 +48,12 @@ public class MemoCache<T extends Objeto> implements InterfaceDatos {
             Conexion cn = operaciones.getCONEXION();
             try (ResultSet primer_id = cn.queryResult("SELECT id FROM " + operaciones.getTABLA() + " LIMIT 1")) {
                 if (primer_id.next()) {
-                    primerId = Integer.parseInt(primer_id.getString("id"));
+                    primer_id_leido = Integer.parseInt(primer_id.getString("id"));
                 }
             }
             try (ResultSet ultimo_id = cn.queryResult("SELECT id FROM " + operaciones.getTABLA() + " ORDER BY id desc LIMIT 1")) {
                 if (ultimo_id.next()) {
-                    ultimoId = Integer.parseInt(ultimo_id.getString("id"));
+                    ultimo_id_leido = Integer.parseInt(ultimo_id.getString("id"));
                 }
             }
         } catch (SQLException e) {
@@ -57,47 +61,62 @@ public class MemoCache<T extends Objeto> implements InterfaceDatos {
         }
     }
 
-    public void add(String nombre, Proceso proceso) {
-        procesos.put(nombre, proceso);
+    public void rango(int rango) {
+        this.rango = rango;
     }
 
-    public void aplicarProceso(String nombre) {
-        procesos.get(nombre).proceso(lista);
+    public void sig() {
+        ant += rango;
+        sig += rango;
     }
 
-    public int getPrimerId() {
-        return primerId;
+    public void ant() {
+        int aux = ant - rango;
+        if (aux > 0) {
+            ant -= rango;
+            sig -= rango;
+        }
     }
 
-    public int getUltimoId() {
-        return ultimoId;
+    public int getPrimer_id_leido() {
+        return primer_id_leido;
     }
 
-    public void setPrimerId(int primerId) {
-        this.primerId = primerId;
-    }
-
-    public void setUltimoId(int ultimoId) {
-        this.ultimoId = ultimoId;
+    public int getUltimo_id_leido() {
+        return ultimo_id_leido;
     }
 
     public ArrayList<T> getLista() {
-        return lista;
+        return (ArrayList<T>) lista;
     }
 
     public Operaciones<T> getOperaciones() {
         return operaciones;
     }
 
-    @Override
     public void cargar() {
-        ArrayList<T> aux = operaciones.getLista(query);
-        for (T item : aux) {
-            try {
-                lista.add((T) item.clone());
-            } catch (CloneNotSupportedException ex) {
-                Excp.impTerminal(ex, getClass(), true);
+        StringBuilder q = new StringBuilder();
+        if (rangoActivo) {
+            q.append("id >= ").append(ant);
+            q.append(" and ");
+            q.append("id <= ").append(sig);
+        }
+
+        if (query != null) {
+            if (rangoActivo) {
+                q.append(" and ");
             }
+            q.append(query);
+        }
+
+        ArrayList<T> aux;
+        if (q.isEmpty()) {
+            aux = operaciones.getLista("");
+        } else {
+            aux = operaciones.getLista(q.toString());
+        }
+        for (T item : aux) {
+            lista.add((T) item);
         }
         aux.clear();
     }
@@ -110,7 +129,6 @@ public class MemoCache<T extends Objeto> implements InterfaceDatos {
         lista.sort(o);
     }
 
-    @Override
     public void vaciar() {
         if (lista.isEmpty()) {
             return;
@@ -118,25 +136,22 @@ public class MemoCache<T extends Objeto> implements InterfaceDatos {
         lista.clear();
     }
 
-    @Override
     public void actualizar() {
         vaciar();
         cargar();
         getIdsMinMax();
     }
 
-    @Override
     public void setQuery(String query) {
         this.query = query;
     }
 
-    @Override
     public void deleteQuery() {
         query = null;
     }
 
     public ArrayList<T> subLista(Predicate<T> filtro) {
-        ArrayList<T> arr_aux = new ArrayList<>();
+        ArrayList<T> arr_aux = new ArrayList<>(100);
         for (T t : lista) {
             if (filtro.negate().test(t)) {
                 continue;
@@ -144,6 +159,22 @@ public class MemoCache<T extends Objeto> implements InterfaceDatos {
             arr_aux.add(t);
         }
         return arr_aux;
+    }
+
+    public boolean isRangoActivo() {
+        return rangoActivo;
+    }
+
+    public void setRangoActivo(boolean rangoActivo) {
+        this.rangoActivo = rangoActivo;
+    }
+
+    public int getAnt() {
+        return ant;
+    }
+
+    public int getSig() {
+        return sig;
     }
 
 }

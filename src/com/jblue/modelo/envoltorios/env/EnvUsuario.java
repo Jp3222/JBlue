@@ -12,6 +12,7 @@ import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
+import com.jblue.util.tiempo.Fecha;
 import java.util.ArrayList;
 
 /**
@@ -20,20 +21,19 @@ import java.util.ArrayList;
  */
 public class EnvUsuario {
 
-    public static OCalles getCalle(String txt) {
+    public static OCalles getCalleEnCache(String txt) {
         MemoCache<OCalles> calles = FabricaCache.MC_CALLES;
         ArrayList<OCalles> memoria = calles.getLista();
         OCalles o = null;
         for (OCalles i : memoria) {
-            if (i.getId().equals(txt)
-                    || i.getStringR().equalsIgnoreCase(txt)) {
+            if (i.getId().equals(txt) || i.getStringR().equalsIgnoreCase(txt)) {
                 o = i;
             }
         }
         return o;
     }
 
-    public static OTipoTomas getTipo_De_Toma(String txt) {
+    public static OTipoTomas getTipoDeTomaEnCache(String txt) {
         MemoCache<OTipoTomas> tomas = FabricaCache.MC_TIPOS_DE_TOMAS;
         ArrayList<OTipoTomas> memoria = tomas.getLista();
         OTipoTomas o = null;
@@ -45,16 +45,42 @@ public class EnvUsuario {
         return o;
     }
 
-    public static OUsuarios getUsuario(String txt) {
+    public static OUsuarios getUsuarioEnCache(String txt) {
         ArrayList<OUsuarios> lista = FabricaCache.MC_USUARIOS.getLista();
         OUsuarios aux = null;
         for (OUsuarios i : lista) {
             if (i.getId().equals(txt) || i.getStringR().equalsIgnoreCase(txt)) {
                 aux = i;
-                return aux;
+                break;
             }
         }
         return aux;
+    }
+
+    public synchronized static OUsuarios getUsuarioXID(String id) {
+        if (id == null || id.isEmpty()) {
+            return null;
+        }
+        Operaciones<OUsuarios> op = FabricaOpraciones.getUSUARIOS();
+        OUsuarios o = op.get("id = " + id);
+        return o;
+
+    }
+
+    public synchronized static OUsuarios getUsuarioXNombre(String nombre) {
+        if (nombre == null || nombre.isEmpty()) {
+            return null;
+        }
+        String[] split = nombre.split(" ");
+        StringBuilder q = new StringBuilder();
+        q.append("nombre = ").append(split[0]).append(" and ");
+        q.append("ap = ").append(split[1]).append(" and ");
+        q.append("am = ").append(split[2]);
+
+        Operaciones<OUsuarios> op = FabricaOpraciones.USUARIOS;
+        OUsuarios get = op.get(q.toString());
+
+        return get;
     }
 
     public static int getMesesPagados(String año, String id) {
@@ -63,6 +89,16 @@ public class EnvUsuario {
         int size = lista.size();
         lista.clear();
         return size;
+    }
+
+    public static String getMesesPagados(String id) {
+        Fecha fh = new Fecha();
+        int size = getMesesPagados(String.valueOf(fh.getNewFechaActual().getYear()), id);
+        return String.valueOf(size);
+    }
+
+    static String limpiar(String txt) {
+        return txt.trim().replace(" ", "").replace("-", "").replace("_", "");
     }
 
 }

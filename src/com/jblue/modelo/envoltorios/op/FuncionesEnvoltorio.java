@@ -6,7 +6,6 @@ package com.jblue.modelo.envoltorios.op;
 
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OHisMovimientos;
-import com.jblue.modelo.objetos.OPagosOtros;
 import com.jblue.modelo.objetos.OPagosRecargos;
 import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OPersonal;
@@ -19,6 +18,8 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,12 +33,23 @@ public abstract class FuncionesEnvoltorio {
     protected final String TABLA;
     protected final String[] CAMPOS;
     protected final int NO_CAMPOS;
+    private final Map<String, Objeto> map;
 
     public FuncionesEnvoltorio(String tabla, String[] campos) {
         this.CONEXION = Conexion.getInstancia();
         this.TABLA = tabla;
         this.CAMPOS = campos;
         this.NO_CAMPOS = campos.length;
+        map = new HashMap<>(10);
+        map.put("calles", new OCalles());
+        map.put("tipo_tomas", new OTipoTomas());
+        map.put("usuarios", new OUsuarios());
+        map.put("personal", new OPersonal());
+        map.put("pagos_x_servicio", new OPagosServicio());
+        map.put("pagos_x_recargos", new OPagosRecargos());
+        map.put("pagos_x_otros", new OPagosRecargos());
+        map.put("historial_movimientos", new OHisMovimientos());
+
     }
 
     /**
@@ -147,31 +159,14 @@ public abstract class FuncionesEnvoltorio {
         }
         ArrayList<Objeto> o = null;
         try {
-            switch (tabla) {
-                case "calles" ->
-                    o = runWhile(new OCalles(), get, campos);
-                case "tipo_tomas" ->
-                    o = runWhile(new OTipoTomas(), get, campos);
-                case "usuarios" ->
-                    o = runWhile(new OUsuarios(), get, campos);
-                case "personal" ->
-                    o = runWhile(new OPersonal(), get, campos);
-                case "pagos_x_servicio" ->
-                    o = runWhile(new OPagosServicio(), get, campos);
-                case "pagos_x_recargos" ->
-                    o = runWhile(new OPagosRecargos(), get, campos);
-                case "pagos_x_otros" ->
-                    o = runWhile(new OPagosOtros(), get, campos);
-                case "historial_movimientos"->
-                    o = runWhile(new OHisMovimientos(), get, campos);
-            }
+            o = runWhile(map.get(tabla), get, campos);
         } catch (Exception ex) {
             Excp.impTerminal(ex, this.getClass(), true);
         }
         return o;
     }
 
-    private <T extends Objeto> ArrayList<T> runWhile(T o, ResultSet rs, String[] campos) {
+    private synchronized <T extends Objeto> ArrayList<T> runWhile(T o, ResultSet rs, String[] campos) {
         ArrayList<T> lista = new ArrayList<>();
         try {
             while (rs.next()) {
@@ -195,7 +190,7 @@ public abstract class FuncionesEnvoltorio {
      * se va a recuperar informacion
      * @return un Array con los datos recuperados
      */
-    private String[] runFor(ResultSet get, String[] campos) {
+    private synchronized String[] runFor(ResultSet get, String[] campos) {
         String[] info = new String[campos.length];
         try {
             int i = 0;

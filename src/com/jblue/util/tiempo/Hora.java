@@ -1,4 +1,4 @@
-/*
+/**
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -14,9 +14,11 @@ import java.time.format.DateTimeFormatter;
 public class Hora {
 
     private final DateTimeFormatter PATRON;
+    private LocalTime hora_actual;
 
     public Hora() {
         PATRON = DateTimeFormatter.ofPattern("hh-mm-ss");
+        hora_actual = LocalTime.now();
     }
 
     public LocalTime createHora(String str) {
@@ -32,12 +34,27 @@ public class Hora {
     }
 
     public LocalTime getHoraActual() {
-        return LocalTime.now();
+        return hora_actual;
     }
 
     public String getHoraActualString() {
-        LocalTime lt = LocalTime.now();
-        return lt.format(PATRON);
+        return hora_actual.format(PATRON);
+    }
+
+    public int getHora() {
+        return hora_actual.getHour();
+    }
+
+    public int getMinuto() {
+        return hora_actual.getMinute();
+    }
+
+    public int getSegundo() {
+        return hora_actual.getSecond();
+    }
+
+    public void actualizarHora() {
+        hora_actual = LocalTime.now();
     }
 
 }

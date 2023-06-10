@@ -55,9 +55,9 @@ public class OPagos extends Objeto {
         return getSubCon(5, 6, 7).replace(',', '-');
     }
 
-    public String[] getConjuntoSinFK() {
+    protected String[] InfoSinFK() {
         OPersonal personal = EnvPersonal.getPersonal(getPersonal());
-        OUsuarios usuarios = EnvUsuario.getUsuario(getUsuario());
+        OUsuarios usuarios = EnvUsuario.getUsuarioXID(getUsuario());
         _conjuntoSinFK[1] = personal.getStringR();
         _conjuntoSinFK[2] = usuarios.getStringR();
         return _conjuntoSinFK;

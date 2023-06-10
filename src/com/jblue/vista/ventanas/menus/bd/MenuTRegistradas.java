@@ -4,17 +4,34 @@
  */
 package com.jblue.vista.ventanas.menus.bd;
 
+import com.jblue.vista.normas.SuperVentana;
+
 /**
  *
  * @author jp
  */
-public class MenuTRegistradas extends javax.swing.JFrame {
+public class MenuTRegistradas extends SuperVentana {
 
     /**
      * Creates new form TomasRegistradas
      */
     public MenuTRegistradas() {
+        _TITULO = 8;
         initComponents();
+        llamable();
+    }
+
+    @Override
+    protected final void llamable() {
+        addComponentes();
+        estadoFinal();
+        estadoInicial();
+        addEventos();
+    }
+
+    @Override
+    public final void estadoInicial() {
+
     }
 
     /**
@@ -309,6 +326,7 @@ public class MenuTRegistradas extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

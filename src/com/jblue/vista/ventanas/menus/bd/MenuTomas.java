@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
  * @author jp
  */
 public class MenuTomas extends SuperVentana {
-    
+
     private OTipoTomas tipo_de_toma_buscada;
     private final ArrayList<OTipoTomas> lista_auxiliar;
     private final MemoCache<OTipoTomas> memoria_cache;
@@ -35,14 +35,13 @@ public class MenuTomas extends SuperVentana {
     private boolean buscando;
     //
     private final DefaultTableModel modelo_tabla;
-    
+
     private final CTipoTomas controlador;
 
     /**
      * Creates new form NewMenuCalles
      */
     public MenuTomas() {
-        
         _TITULO = 5;
         this.lista_auxiliar = new ArrayList<>();
         memoria_cache = FabricaCache.MC_TIPOS_DE_TOMAS;
@@ -55,20 +54,20 @@ public class MenuTomas extends SuperVentana {
         llamable();
         controlador = new CTipoTomas(this);
     }
-    
+
     @Override
     protected final void llamable() {
         estadoFinal();
         estadoInicial();
         addEventos();
     }
-    
+
     @Override
     protected void estadoFinal() {
         super.estadoFinal();
         jbtCancelar.setEnabled(true);
     }
-    
+
     @Override
     public void estadoInicial() {
         tipo_de_toma_buscada = null;
@@ -82,30 +81,30 @@ public class MenuTomas extends SuperVentana {
         jtfTipo.requestFocusInWindow();
         botonesPrimarios();
     }
-    
+
     @Override
     protected void addComponentes() {
         super.addComponentes(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
-    
+
     @Override
     protected void addEventos() {
-        
+
         jbtRecrgar.addActionListener(e -> {
             controlador.actualizarTabla();
             tipo_de_toma_buscada = null;
             lista_auxiliar.clear();
             jtfBuscador.setText(null);
         });
-        
+
     }
-    
+
     public void botonesPrimarios() {
         jbtGuardar.setEnabled(true);
         jbtActualizar.setEnabled(false);
         jbtEliminar.setEnabled(false);
     }
-    
+
     public void botonesSecundarios() {
         jbtGuardar.setEnabled(false);
         jbtActualizar.setEnabled(true);
@@ -122,7 +121,7 @@ public class MenuTomas extends SuperVentana {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        PanelDeBusqueda = new javax.swing.JPanel();
+        panel_izq = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jtfBuscador = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -135,7 +134,10 @@ public class MenuTomas extends SuperVentana {
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtTipoDeTomas = new javax.swing.JTable();
-        PanelDeRegistros = new javax.swing.JPanel();
+        panel_der = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jPanel17 = new javax.swing.JPanel();
+        panelCampos = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
@@ -147,23 +149,20 @@ public class MenuTomas extends SuperVentana {
         jPanel25 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jtfRecargo = new javax.swing.JTextField();
-        jPanel17 = new javax.swing.JPanel();
-        jPanel19 = new javax.swing.JPanel();
-        jbtGuardar = new javax.swing.JButton();
-        jPanel20 = new javax.swing.JPanel();
-        jbtActualizar = new javax.swing.JButton();
-        jPanel21 = new javax.swing.JPanel();
-        jbtEliminar = new javax.swing.JButton();
-        jPanel22 = new javax.swing.JPanel();
-        jbtCancelar = new javax.swing.JButton();
+        panel_Botones = new javax.swing.JPanel();
         jPanel26 = new javax.swing.JPanel();
+        jbtGuardar = new javax.swing.JButton();
+        jbtActualizar = new javax.swing.JButton();
+        jbtEliminar = new javax.swing.JButton();
+        jbtCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        PanelDeBusqueda.setPreferredSize(new java.awt.Dimension(500, 700));
-        PanelDeBusqueda.setLayout(new java.awt.BorderLayout());
+        panel_izq.setMinimumSize(new java.awt.Dimension(500, 700));
+        panel_izq.setPreferredSize(new java.awt.Dimension(500, 700));
+        panel_izq.setLayout(new java.awt.BorderLayout());
 
         jPanel2.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel2.setLayout(new java.awt.BorderLayout());
@@ -179,7 +178,7 @@ public class MenuTomas extends SuperVentana {
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/buscar.png"))); // NOI18N
         jPanel2.add(jLabel7, java.awt.BorderLayout.WEST);
 
-        PanelDeBusqueda.add(jPanel2, java.awt.BorderLayout.PAGE_START);
+        panel_izq.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
         jPanel5.setPreferredSize(new java.awt.Dimension(500, 670));
         jPanel5.setLayout(new java.awt.BorderLayout());
@@ -248,13 +247,26 @@ public class MenuTomas extends SuperVentana {
 
         jPanel5.add(jPanel6, java.awt.BorderLayout.CENTER);
 
-        PanelDeBusqueda.add(jPanel5, java.awt.BorderLayout.CENTER);
+        panel_izq.add(jPanel5, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(PanelDeBusqueda, java.awt.BorderLayout.WEST);
+        jPanel1.add(panel_izq, java.awt.BorderLayout.WEST);
 
-        PanelDeRegistros.setPreferredSize(new java.awt.Dimension(500, 700));
-        PanelDeRegistros.setLayout(new javax.swing.BoxLayout(PanelDeRegistros, javax.swing.BoxLayout.PAGE_AXIS));
+        panel_der.setMinimumSize(new java.awt.Dimension(500, 700));
+        panel_der.setPreferredSize(new java.awt.Dimension(500, 700));
+        panel_der.setLayout(new java.awt.BorderLayout());
 
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setMinimumSize(new java.awt.Dimension(500, 300));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(500, 700));
+
+        jPanel17.setMinimumSize(new java.awt.Dimension(500, 700));
+        jPanel17.setPreferredSize(new java.awt.Dimension(500, 700));
+        jPanel17.setLayout(new javax.swing.BoxLayout(jPanel17, javax.swing.BoxLayout.PAGE_AXIS));
+
+        panelCampos.setPreferredSize(new java.awt.Dimension(500, 600));
+        panelCampos.setLayout(new java.awt.GridLayout(8, 0));
+
+        jPanel12.setMinimumSize(new java.awt.Dimension(500, 50));
         jPanel12.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel12.setLayout(new java.awt.BorderLayout());
 
@@ -264,8 +276,9 @@ public class MenuTomas extends SuperVentana {
         jLabel1.setPreferredSize(new java.awt.Dimension(500, 40));
         jPanel12.add(jLabel1, java.awt.BorderLayout.CENTER);
 
-        PanelDeRegistros.add(jPanel12);
+        panelCampos.add(jPanel12);
 
+        jPanel14.setMinimumSize(new java.awt.Dimension(500, 50));
         jPanel14.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel14.setLayout(new java.awt.BorderLayout());
 
@@ -282,8 +295,9 @@ public class MenuTomas extends SuperVentana {
         });
         jPanel14.add(jtfTipo, java.awt.BorderLayout.CENTER);
 
-        PanelDeRegistros.add(jPanel14);
+        panelCampos.add(jPanel14);
 
+        jPanel16.setMinimumSize(new java.awt.Dimension(500, 50));
         jPanel16.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel16.setLayout(new java.awt.BorderLayout());
 
@@ -300,8 +314,9 @@ public class MenuTomas extends SuperVentana {
         });
         jPanel16.add(jtfCosto, java.awt.BorderLayout.CENTER);
 
-        PanelDeRegistros.add(jPanel16);
+        panelCampos.add(jPanel16);
 
+        jPanel25.setMinimumSize(new java.awt.Dimension(500, 50));
         jPanel25.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel25.setLayout(new java.awt.BorderLayout());
 
@@ -318,57 +333,52 @@ public class MenuTomas extends SuperVentana {
         });
         jPanel25.add(jtfRecargo, java.awt.BorderLayout.CENTER);
 
-        PanelDeRegistros.add(jPanel25);
+        panelCampos.add(jPanel25);
 
-        jPanel17.setPreferredSize(new java.awt.Dimension(500, 50));
-        jPanel17.setLayout(new java.awt.BorderLayout());
-        PanelDeRegistros.add(jPanel17);
+        jPanel17.add(panelCampos);
 
-        jPanel19.setPreferredSize(new java.awt.Dimension(500, 50));
-        jPanel19.setLayout(new java.awt.BorderLayout());
+        panel_Botones.setPreferredSize(new java.awt.Dimension(500, 100));
+        panel_Botones.setLayout(new java.awt.GridLayout(2, 1));
 
+        jPanel26.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel26.setLayout(new java.awt.GridLayout(1, 3));
+
+        jbtGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
         jbtGuardar.setText("Guardar");
-        jbtGuardar.setPreferredSize(new java.awt.Dimension(500, 50));
+        jbtGuardar.setMinimumSize(new java.awt.Dimension(100, 50));
+        jbtGuardar.setPreferredSize(new java.awt.Dimension(100, 50));
         jbtGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtGuardarActionPerformed(evt);
             }
         });
-        jPanel19.add(jbtGuardar, java.awt.BorderLayout.CENTER);
+        jPanel26.add(jbtGuardar);
 
-        PanelDeRegistros.add(jPanel19);
-
-        jPanel20.setPreferredSize(new java.awt.Dimension(500, 50));
-        jPanel20.setLayout(new java.awt.BorderLayout());
-
+        jbtActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/actualizar.png"))); // NOI18N
         jbtActualizar.setText("Actualizar");
-        jbtActualizar.setPreferredSize(new java.awt.Dimension(500, 50));
+        jbtActualizar.setMinimumSize(new java.awt.Dimension(100, 50));
+        jbtActualizar.setPreferredSize(new java.awt.Dimension(100, 50));
         jbtActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtActualizarActionPerformed(evt);
             }
         });
-        jPanel20.add(jbtActualizar, java.awt.BorderLayout.CENTER);
+        jPanel26.add(jbtActualizar);
 
-        PanelDeRegistros.add(jPanel20);
-
-        jPanel21.setPreferredSize(new java.awt.Dimension(500, 50));
-        jPanel21.setLayout(new java.awt.BorderLayout());
-
+        jbtEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/eliminar.png"))); // NOI18N
         jbtEliminar.setText("Eliminar");
-        jbtEliminar.setPreferredSize(new java.awt.Dimension(500, 50));
+        jbtEliminar.setMinimumSize(new java.awt.Dimension(100, 50));
+        jbtEliminar.setPreferredSize(new java.awt.Dimension(100, 50));
         jbtEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtEliminarActionPerformed(evt);
             }
         });
-        jPanel21.add(jbtEliminar, java.awt.BorderLayout.CENTER);
+        jPanel26.add(jbtEliminar);
 
-        PanelDeRegistros.add(jPanel21);
+        panel_Botones.add(jPanel26);
 
-        jPanel22.setPreferredSize(new java.awt.Dimension(500, 50));
-        jPanel22.setLayout(new java.awt.BorderLayout());
-
+        jbtCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
         jbtCancelar.setText("Cancelar");
         jbtCancelar.setPreferredSize(new java.awt.Dimension(500, 50));
         jbtCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -376,15 +386,15 @@ public class MenuTomas extends SuperVentana {
                 jbtCancelarActionPerformed(evt);
             }
         });
-        jPanel22.add(jbtCancelar, java.awt.BorderLayout.CENTER);
+        panel_Botones.add(jbtCancelar);
 
-        PanelDeRegistros.add(jPanel22);
+        jPanel17.add(panel_Botones);
 
-        jPanel26.setPreferredSize(new java.awt.Dimension(500, 50));
-        jPanel26.setLayout(new java.awt.BorderLayout());
-        PanelDeRegistros.add(jPanel26);
+        jScrollPane2.setViewportView(jPanel17);
 
-        jPanel1.add(PanelDeRegistros, java.awt.BorderLayout.CENTER);
+        panel_der.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(panel_der, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -394,20 +404,20 @@ public class MenuTomas extends SuperVentana {
 
     private void jtTipoDeTomasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtTipoDeTomasMouseClicked
         int seleccionado = jtTipoDeTomas.getSelectedRow();
-        
+
         ArrayList<OTipoTomas> aux;
         if (buscando) {
             aux = lista_auxiliar;
         } else {
             aux = cache;
         }
-        
+
         if (seleccionado < 0 || seleccionado >= aux.size()) {
             return;
         }
-        
+
         tipo_de_toma_buscada = aux.get(seleccionado);
-        
+
         if (evt.getClickCount() == 2) {
             jtfBuscador.setText(null);
             jtfTipo.setText(tipo_de_toma_buscada.getTipo());
@@ -429,12 +439,12 @@ public class MenuTomas extends SuperVentana {
     }//GEN-LAST:event_jtfBuscadorKeyReleased
 
     private void jbtGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtGuardarActionPerformed
-        
+
         if (!datosValidos()) {
             JOptionPane.showMessageDialog(this, "Datos No Validos", "Error al guardar", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         String[] datos = _datos();
         datos = FormatoBD.bdEntrada(datos);
         boolean mov = operaciones.insertar(datos);
@@ -468,14 +478,15 @@ public class MenuTomas extends SuperVentana {
             JOptionPane.showMessageDialog(this, "Tipo de toma no seleccionada", "Error al eliminar", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
         if (!borrable(tipo_de_toma_buscada.getId())) {
             JOptionPane.showMessageDialog(this, "ESTA REGISTRO ESTA REFERENCIADO", "Error al eliminar", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         boolean mov = operaciones.eliminar("id = " + tipo_de_toma_buscada.getId());
         mov(mov);
-        
+
 
     }//GEN-LAST:event_jbtEliminarActionPerformed
 
@@ -505,9 +516,9 @@ public class MenuTomas extends SuperVentana {
             evt.consume();
             getToolkit().beep();
         }
-        
+
     }//GEN-LAST:event_jtfTipoKeyTyped
-    
+
     void mov(boolean mov) {
         if (mov) {
             memoria_cache.actualizar();
@@ -517,9 +528,8 @@ public class MenuTomas extends SuperVentana {
             return;
         }
         JOptionPane.showConfirmDialog(this, "Error");
-        
     }
-    
+
     String[] _datos() {
         return new String[]{
             jtfTipo.getText(),
@@ -527,12 +537,12 @@ public class MenuTomas extends SuperVentana {
             jtfRecargo.getText()
         };
     }
-    
+
     public boolean datosValidos() {
         JTextField[] arr = {
             jtfTipo, jtfCosto, jtfRecargo
         };
-        
+
         for (JTextField i : arr) {
             if (!varibaleValida(i.getText())) {
                 return false;
@@ -545,39 +555,39 @@ public class MenuTomas extends SuperVentana {
             return false;
         }
         return soloNumeros(jtfRecargo.getText());
-        
+
     }
-    
+
     public boolean varibaleValida(String txt) {
         return txt != null && !txt.isEmpty();
     }
-    
+
     public boolean soloTexto(String txt) {
         return txt.matches("( |[a-zA-Z]|[_ñÑáÁéÉíÍóÓúÚ]){1,50}");
     }
-    
+
     public boolean soloNumeros(String txt) {
         return txt.matches("([0-9]{1,4})(|(\\.([0-9]{1,2})))");
     }
-    
+
     public boolean borrable(String id) {
         Operaciones<OUsuarios> usuarios = FabricaOpraciones.USUARIOS;
-        ArrayList<OUsuarios> lista = usuarios.getLista("tipo_toma = " + id);
+        ArrayList<OUsuarios> lista = usuarios.getLista("toma = " + id);
         return lista.isEmpty();
     }
-    
+
     @Override
     public void setVisible(boolean b) {
         super.setVisible(b);
         SwingUtilities.invokeLater(() -> controlador.cargarTabla());
     }
-    
+
     @Override
     public void dispose() {
         super.dispose();
         cerrar();
     }
-    
+
     public void cerrar() {
         SwingUtilities.invokeLater(() -> {
             controlador.vaciarTabla();
@@ -587,8 +597,6 @@ public class MenuTomas extends SuperVentana {
 
 // <editor-fold defaultstate="collapsed" desc="Variables del Formulario">     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel PanelDeBusqueda;
-    private javax.swing.JPanel PanelDeRegistros;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -600,17 +608,14 @@ public class MenuTomas extends SuperVentana {
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
-    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel20;
-    private javax.swing.JPanel jPanel21;
-    private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jbtActualizar;
     private javax.swing.JButton jbtAnterior;
     private javax.swing.JButton jbtCancelar;
@@ -623,16 +628,16 @@ public class MenuTomas extends SuperVentana {
     private javax.swing.JTextField jtfCosto;
     private javax.swing.JTextField jtfRecargo;
     private javax.swing.JTextField jtfTipo;
+    private javax.swing.JPanel panelCampos;
+    private javax.swing.JPanel panel_Botones;
+    private javax.swing.JPanel panel_der;
+    private javax.swing.JPanel panel_izq;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void permisos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     //</editor-fold>   
 
     public DefaultTableModel getModelo_Tabla() {
         return modelo_tabla;
     }
-    
+
 }

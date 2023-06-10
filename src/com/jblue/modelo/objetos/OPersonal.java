@@ -64,6 +64,23 @@ public class OPersonal extends Objeto {
         return _conjunto[3];
     }
 
+    public String getCargoString() {
+        return switch (getCargo()) {
+            case "1":
+                yield "Pasante";
+            case "2":
+                yield "Secretario";
+            case "3":
+                yield "Tesorero";
+            case "4":
+                yield "Presidente";
+            case "5":
+                yield "Administrador";
+            default:
+                yield "none";
+        };
+    }
+
     /**
      *
      * @return el nombre usuario encriptado del usuario
@@ -72,12 +89,20 @@ public class OPersonal extends Objeto {
         return _conjunto[4];
     }
 
+    public void setUsuario(String usuario) {
+        _conjunto[4] = usuario;
+    }
+
     /**
      *
      * @return la contraseña encriptada del usuario
      */
     public String getContra() {
         return _conjunto[5];
+    }
+
+    public void setContra(String contraseña) {
+        _conjunto[5] = contraseña;
     }
 
     /**

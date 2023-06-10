@@ -12,7 +12,7 @@ import com.jblue.modelo.objetos.sucls.Objeto;
  */
 public class OCalles extends Objeto {
 
-    public OCalles(String[] info) {
+    public OCalles(String... info) {
         super(info);
     }
 

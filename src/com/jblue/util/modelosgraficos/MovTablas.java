@@ -35,8 +35,8 @@ public class MovTablas<T extends Objeto> implements InterfaceTablaMov {
 
     @Override
     public void add(String[] o) {
-        CACHE.setUltimoId(CACHE.getUltimoId());
-        o[0] = "" + CACHE.getUltimoId();
+        //CACHE.setUltimo_id_leido(CACHE.getUltimo_id_leido());
+        o[0] = "" + CACHE.getUltimo_id_leido();
         o = FormatoBD.bdEntrada(o);
         MODELO.addRow(o);
     }
@@ -45,10 +45,10 @@ public class MovTablas<T extends Objeto> implements InterfaceTablaMov {
     public void remove(int index) {
         if (index == 0) {
             T get = CACHE.getLista().get(1);
-            CACHE.setPrimerId(Integer.parseInt(get.getId()));
+          //  CACHE.setPrimer_id_leido(Integer.parseInt(get.getId()));
         } else if (index == MODELO.getRowCount() - 1) {
             T get = CACHE.getLista().get(CACHE.getLista().size() - 2);
-            CACHE.setPrimerId(Integer.parseInt(get.getId()));
+            //CACHE.setPrimer_id_leido(Integer.parseInt(get.getId()));
         }
         MODELO.removeRow(index);
     }

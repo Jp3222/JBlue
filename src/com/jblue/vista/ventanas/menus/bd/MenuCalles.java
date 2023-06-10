@@ -13,7 +13,6 @@ import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.vista.normas.SuperVentana;
-import com.jutil.jswing.jswingenv.EnvJTextField;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
@@ -43,9 +42,7 @@ public class MenuCalles extends SuperVentana {
      */
     public MenuCalles() {
         _TITULO = 4;
-
         lista_auxiliar = new ArrayList<>();
-
         memoria_cache = FabricaCache.MC_CALLES;
         cache = memoria_cache.getLista();
 
@@ -125,7 +122,7 @@ public class MenuCalles extends SuperVentana {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        panel_izq = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jtfBuscador = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -138,8 +135,10 @@ public class MenuCalles extends SuperVentana {
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtCalles = new javax.swing.JTable();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
+        panel_der = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jPanel2 = new javax.swing.JPanel();
+        panelCampos = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
@@ -148,25 +147,24 @@ public class MenuCalles extends SuperVentana {
         jPanel16 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jtfNumero = new javax.swing.JTextField();
-        jPanel17 = new javax.swing.JPanel();
-        jPanel18 = new javax.swing.JPanel();
-        jPanel24 = new javax.swing.JPanel();
-        jPanel19 = new javax.swing.JPanel();
-        jbtGuardar = new javax.swing.JButton();
-        jPanel20 = new javax.swing.JPanel();
-        jbtActualizar = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
         jPanel21 = new javax.swing.JPanel();
+        jbtGuardar = new javax.swing.JButton();
+        jbtActualizar = new javax.swing.JButton();
         jbtEliminar = new javax.swing.JButton();
-        jPanel22 = new javax.swing.JPanel();
         jbtCancelar = new javax.swing.JButton();
-        jPanel23 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(500, 300));
+        setPreferredSize(new java.awt.Dimension(500, 700));
 
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel1.setMinimumSize(new java.awt.Dimension(500, 700));
+        jPanel1.setPreferredSize(new java.awt.Dimension(500, 700));
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(500, 700));
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        panel_izq.setMinimumSize(new java.awt.Dimension(500, 700));
+        panel_izq.setPreferredSize(new java.awt.Dimension(500, 700));
+        panel_izq.setLayout(new java.awt.BorderLayout());
 
         jPanel13.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel13.setLayout(new java.awt.BorderLayout());
@@ -182,7 +180,7 @@ public class MenuCalles extends SuperVentana {
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/buscar.png"))); // NOI18N
         jPanel13.add(jLabel4, java.awt.BorderLayout.WEST);
 
-        jPanel2.add(jPanel13, java.awt.BorderLayout.NORTH);
+        panel_izq.add(jPanel13, java.awt.BorderLayout.NORTH);
 
         jPanel5.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel5.setLayout(new java.awt.BorderLayout());
@@ -249,15 +247,24 @@ public class MenuCalles extends SuperVentana {
 
         jPanel5.add(jPanel6, java.awt.BorderLayout.CENTER);
 
-        jPanel2.add(jPanel5, java.awt.BorderLayout.CENTER);
+        panel_izq.add(jPanel5, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel2);
+        jPanel1.add(panel_izq, java.awt.BorderLayout.WEST);
 
-        jPanel3.setPreferredSize(new java.awt.Dimension(500, 700));
-        jPanel3.setLayout(new java.awt.BorderLayout());
+        panel_der.setMinimumSize(new java.awt.Dimension(500, 700));
+        panel_der.setPreferredSize(new java.awt.Dimension(500, 700));
+        panel_der.setLayout(new java.awt.BorderLayout());
 
-        jPanel4.setPreferredSize(new java.awt.Dimension(500, 200));
-        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.PAGE_AXIS));
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setMinimumSize(new java.awt.Dimension(500, 300));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(500, 700));
+
+        jPanel2.setMinimumSize(new java.awt.Dimension(500, 700));
+        jPanel2.setPreferredSize(new java.awt.Dimension(500, 700));
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.PAGE_AXIS));
+
+        panelCampos.setPreferredSize(new java.awt.Dimension(500, 600));
+        panelCampos.setLayout(new java.awt.GridLayout(8, 1));
 
         jPanel12.setLayout(new java.awt.BorderLayout());
 
@@ -267,7 +274,7 @@ public class MenuCalles extends SuperVentana {
         jLabel1.setPreferredSize(new java.awt.Dimension(500, 40));
         jPanel12.add(jLabel1, java.awt.BorderLayout.CENTER);
 
-        jPanel4.add(jPanel12);
+        panelCampos.add(jPanel12);
 
         jPanel14.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel14.setLayout(new java.awt.BorderLayout());
@@ -285,7 +292,7 @@ public class MenuCalles extends SuperVentana {
         });
         jPanel14.add(jtfNombre, java.awt.BorderLayout.CENTER);
 
-        jPanel4.add(jPanel14);
+        panelCampos.add(jPanel14);
 
         jPanel16.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel16.setLayout(new java.awt.BorderLayout());
@@ -303,88 +310,67 @@ public class MenuCalles extends SuperVentana {
         });
         jPanel16.add(jtfNumero, java.awt.BorderLayout.CENTER);
 
-        jPanel4.add(jPanel16);
+        panelCampos.add(jPanel16);
 
-        jPanel3.add(jPanel4, java.awt.BorderLayout.PAGE_START);
+        jPanel2.add(panelCampos);
 
-        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
-        jPanel17.setLayout(jPanel17Layout);
-        jPanel17Layout.setHorizontalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
-        );
-        jPanel17Layout.setVerticalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        jPanel3.setMaximumSize(new java.awt.Dimension(1000, 200));
+        jPanel3.setMinimumSize(new java.awt.Dimension(500, 100));
+        jPanel3.setPreferredSize(new java.awt.Dimension(500, 100));
+        jPanel3.setLayout(new java.awt.GridLayout(2, 1));
 
-        jPanel3.add(jPanel17, java.awt.BorderLayout.PAGE_END);
+        jPanel21.setPreferredSize(new java.awt.Dimension(500, 80));
+        jPanel21.setLayout(new java.awt.GridLayout(1, 3));
 
-        jPanel18.setLayout(new javax.swing.BoxLayout(jPanel18, javax.swing.BoxLayout.PAGE_AXIS));
-
-        jPanel24.setPreferredSize(new java.awt.Dimension(500, 80));
-        jPanel24.setLayout(new java.awt.BorderLayout());
-        jPanel18.add(jPanel24);
-
-        jPanel19.setPreferredSize(new java.awt.Dimension(500, 80));
-        jPanel19.setLayout(new java.awt.BorderLayout());
-
+        jbtGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
         jbtGuardar.setText("Guardar");
+        jbtGuardar.setPreferredSize(new java.awt.Dimension(100, 40));
         jbtGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtGuardarActionPerformed(evt);
             }
         });
-        jPanel19.add(jbtGuardar, java.awt.BorderLayout.CENTER);
+        jPanel21.add(jbtGuardar);
 
-        jPanel18.add(jPanel19);
-
-        jPanel20.setPreferredSize(new java.awt.Dimension(500, 80));
-        jPanel20.setLayout(new java.awt.BorderLayout());
-
+        jbtActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/actualizar.png"))); // NOI18N
         jbtActualizar.setText("Actualizar");
+        jbtActualizar.setPreferredSize(new java.awt.Dimension(100, 40));
         jbtActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtActualizarActionPerformed(evt);
             }
         });
-        jPanel20.add(jbtActualizar, java.awt.BorderLayout.CENTER);
+        jPanel21.add(jbtActualizar);
 
-        jPanel18.add(jPanel20);
-
-        jPanel21.setPreferredSize(new java.awt.Dimension(500, 80));
-        jPanel21.setLayout(new java.awt.BorderLayout());
-
+        jbtEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/eliminar.png"))); // NOI18N
         jbtEliminar.setText("Eliminar");
+        jbtEliminar.setPreferredSize(new java.awt.Dimension(100, 40));
         jbtEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtEliminarActionPerformed(evt);
             }
         });
-        jPanel21.add(jbtEliminar, java.awt.BorderLayout.CENTER);
+        jPanel21.add(jbtEliminar);
 
-        jPanel18.add(jPanel21);
+        jPanel3.add(jPanel21);
 
-        jPanel22.setPreferredSize(new java.awt.Dimension(500, 80));
-        jPanel22.setLayout(new java.awt.BorderLayout());
-
+        jbtCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
         jbtCancelar.setText("Cancelar");
+        jbtCancelar.setPreferredSize(new java.awt.Dimension(100, 40));
         jbtCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtCancelarActionPerformed(evt);
             }
         });
-        jPanel22.add(jbtCancelar, java.awt.BorderLayout.CENTER);
+        jPanel3.add(jbtCancelar);
 
-        jPanel18.add(jPanel22);
+        jPanel2.add(jPanel3);
 
-        jPanel23.setPreferredSize(new java.awt.Dimension(500, 80));
-        jPanel23.setLayout(new java.awt.BorderLayout());
-        jPanel18.add(jPanel23);
+        jScrollPane2.setViewportView(jPanel2);
 
-        jPanel3.add(jPanel18, java.awt.BorderLayout.CENTER);
+        panel_der.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel3);
+        jPanel1.add(panel_der, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -428,7 +414,6 @@ public class MenuCalles extends SuperVentana {
             JOptionPane.showMessageDialog(this, "ESTE ELEMENTO NO SE PUEDE BORRAR PORQUE ESTA ASOCIADO", "ERROR", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
         operaciones.eliminar("id = " + calle_buscada.getId());
         JOptionPane.showMessageDialog(this, "ELIMINACION EXITOSA", "OPERACION REALIZADA", JOptionPane.WARNING_MESSAGE);
         mov();
@@ -517,7 +502,7 @@ public class MenuCalles extends SuperVentana {
     }
 
     private boolean datosValidos(String... info) {
-        return varValidas(info) && info[0].matches("[a-zA-ZñÑáéíóú]{1,50}") && (info[1].equals("S/N") || info[1].matches("[0-9]{1,3}"));
+        return varValidas(info) && info[0].matches("( |_|[a-zA-ZñÑáéíóú]){1,50}") && (info[1].equals("S/N") || info[1].matches("[0-9]{1,3}"));
     }
 
     public boolean varValidas(String... txt) {
@@ -562,21 +547,14 @@ public class MenuCalles extends SuperVentana {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel17;
-    private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
-    private javax.swing.JPanel jPanel22;
-    private javax.swing.JPanel jPanel23;
-    private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jbtActualizar;
     private javax.swing.JButton jbtAnterior;
     private javax.swing.JButton jbtCancelar;
@@ -588,14 +566,12 @@ public class MenuCalles extends SuperVentana {
     private javax.swing.JTextField jtfBuscador;
     private javax.swing.JTextField jtfNombre;
     private javax.swing.JTextField jtfNumero;
+    private javax.swing.JPanel panelCampos;
+    private javax.swing.JPanel panel_der;
+    private javax.swing.JPanel panel_izq;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void permisos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     //</editor-fold>  
-
     public JTextField getJtfBuscar() {
         return jtfBuscador;
     }

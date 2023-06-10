@@ -4,6 +4,7 @@
  */
 package com.jblue.vista.normas;
 
+import java.util.ArrayList;
 import javax.swing.JComponent;
 
 /**
@@ -12,11 +13,24 @@ import javax.swing.JComponent;
  */
 public interface Permisos {
 
+    /**
+     * Este metodo esta pensando para verificar los permisos de lectura y
+     * escritura y bloquear los componentes llamando al metodo por defecto
+     * _bloquean
+     */
     void permisos();
 
-    default void bloqueo(JComponent... componentes) {
+    /**
+     * Este metodo esta pensando para usarse dentro del metodo permisos con el
+     * proposito de bloquear o desbloquear componentes segun los permios del
+     * personal
+     *
+     * @param estado de bloqueo de los componentes
+     * @param componentes - comopoentes que deben bloquear o desbloquearse
+     */
+    default void _bloquear(boolean estado, JComponent... componentes) {
         for (JComponent componente : componentes) {
-            componente.setEnabled(false);
+            componente.setEnabled(estado);
         }
     }
 

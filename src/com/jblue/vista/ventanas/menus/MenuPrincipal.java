@@ -4,7 +4,12 @@
  */
 package com.jblue.vista.ventanas.menus;
 
+import com.jblue.modelo.envoltorios.env.EnvPersonal;
+import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.vista.ventanas.menus.cargos.MenuPresidente;
+import com.jblue.vista.ventanas.menus.cargos.MenuTesoreria;
 import com.jblue.sistema.Sesion;
+import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.vista.normas.SuperVentana;
 import com.jblue.vista.ventanas.Login;
@@ -13,12 +18,17 @@ import com.jblue.vista.ventanas.menus.bd.MenuCalles;
 import com.jblue.vista.ventanas.menus.bd.MenuTomas;
 import com.jblue.vista.ventanas.menus.bd.MenuUsuarios;
 import com.jblue.vista.ventanas.menus.bd.MenuTRegistradas;
+import com.jblue.vista.ventanas.menus.administracion.MenuAdministrador;
+import com.jblue.vista.ventanas.menus.administracion.MenuComprobantes;
+import com.jblue.vista.ventanas.menus.cargos.MenuPerfil;
 import com.jblue.vista.ventanas.menus.herramientas.MenuCVS;
-import com.jblue.vista.ventanas.vistas.principal.VHistorialPagos;
+import com.jblue.vista.ventanas.menus.administracion.MenuDirectorios;
+import com.jblue.vista.ventanas.menus.administracion.MenuDocumentos;
 import com.jblue.vista.ventanas.vistas.principal.VCobros;
 import com.jblue.vista.ventanas.vistas.principal.VRecargos;
 import java.awt.BorderLayout;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -33,43 +43,75 @@ import javax.swing.SwingUtilities;
  */
 public class MenuPrincipal extends SuperVentana {
 
+    /**
+     * Variable del login sel sistema, el cual se muestra si el sistema se
+     * cerrado con los botones de cerrar o precionando la 'x'
+     */
     private final Login login;
+    // ---- Menus del sistema ---- //
     private final MenuTesoreria menuTesoreria;
     private final MenuPresidente menuPresidente;
-    //
+    private final MenuPerfil menuPerfil;
+    private final MenuAdministrador menuAdministrador;
+    private final MenuComprobantes menuTargetas;
+    private final MenuDocumentos menuDocumentos;
+    private final MenuDirectorios menuDirectorios;
+    // ---- Menus de la base de datos ---- //
     private final MenuUsuarios menuUsuarios;
     private final MenuCalles menuCalles;
     private final MenuTomas menuTipoTomas;
     private final MenuTRegistradas menuTomasRegistradas;
-    private final JPanel[] vistas;
+    // ---- Herramientas ---- //
+    private final MenuCVS herrCSV;
+    // ---- Vistas ---- //
+    private final VCobros vistaCobros;
+    private final VRecargos vistaRecargos;
+    // ---- Agrupaciones ---- //
     private final JFrame[] menus;
+    private final JPanel[] vistas;
 
     //
     private final Fecha fecha;
 
     //
     public MenuPrincipal(Login login) {
-
-        this.vistas = new JPanel[3];
-
         this._TITULO = 2;
-
         this.login = login;
-        //
+        //menus
         this.menuTesoreria = new MenuTesoreria();
         this.menuPresidente = new MenuPresidente();
+        this.menuPerfil = new MenuPerfil();
+        this.menuAdministrador = new MenuAdministrador();
+        this.menuTargetas = new MenuComprobantes();
+        this.menuDocumentos = new MenuDocumentos();
+        this.menuDirectorios = new MenuDirectorios();
+        //menus bd
         this.menuUsuarios = new MenuUsuarios();
         this.menuCalles = new MenuCalles();
         this.menuTipoTomas = new MenuTomas();
         this.menuTomasRegistradas = new MenuTRegistradas();
+        //vistas
+        vistaCobros = new VCobros();
+        vistaRecargos = new VRecargos();
+        this.vistas = new JPanel[]{
+            vistaCobros, vistaRecargos
+        };
+
+        this.herrCSV = new MenuCVS();
 
         this.menus = new JFrame[]{
             menuTesoreria,
             menuPresidente,
+            menuPerfil,
+            menuAdministrador,
+            menuTargetas,
+            menuDocumentos,
+            menuDirectorios,
             menuUsuarios,
             menuCalles,
             menuTipoTomas,
-            menuTomasRegistradas
+            menuTomasRegistradas,
+            herrCSV
         };
         //
         fecha = new Fecha();
@@ -88,31 +130,37 @@ public class MenuPrincipal extends SuperVentana {
 
     @Override
     public void estadoInicial() {
-
+        OPersonal o = Sesion.getInstancia().getUsuario();
+        if (EnvPersonal.isTesorero(o)) {
+            itemTesoreria.setEnabled(true);
+        }
+        if (EnvPersonal.isPresidente(o)) {
+            itemPresidente.setEnabled(true);
+        }
+        if (EnvPersonal.isAdministrador(o)) {
+            itemTesoreria.setEnabled(true);
+            itemPresidente.setEnabled(true);
+            itemAdministrador.setEnabled(true);
+        }
     }
 
     @Override
     protected void estadoFinal() {
         super.estadoFinal();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     @Override
     protected void addEventos() {
-        super.addEventos(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        super.addEventos();
     }
 
     @Override
     protected void addComponentes() {
-
-        vistas[0] = new VCobros();
-        vistas[1] = new VRecargos();
-        vistas[2] = new VHistorialPagos();
-
         for (int i = 0; i < vistas.length; i++) {
             JPanel menu = (JPanel) jTabbedPane1.getComponentAt(i + 1);
             menu.add(vistas[i], BorderLayout.CENTER);
         }
-
     }
 
     /**
@@ -136,7 +184,6 @@ public class MenuPrincipal extends SuperVentana {
         jPanel3 = new javax.swing.JPanel();
         jbtRecargos = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
-        jbtHistorialPagos = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
@@ -149,22 +196,31 @@ public class MenuPrincipal extends SuperVentana {
         img = new javax.swing.JPanel();
         jpCobros = new javax.swing.JPanel();
         jpRecargos = new javax.swing.JPanel();
-        jpHistorialPagos = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        itemMenuTesorero = new javax.swing.JMenuItem();
-        itemMenuPresidente = new javax.swing.JMenuItem();
+        itemPerfil = new javax.swing.JMenuItem();
+        itemPresidente = new javax.swing.JMenuItem();
+        itemTesoreria = new javax.swing.JMenuItem();
+        subMenuDocs = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        ItemBDUsuario = new javax.swing.JMenuItem();
-        itemBDCalles = new javax.swing.JMenuItem();
-        itemBDTomas = new javax.swing.JMenuItem();
+        itemDirUsuarios = new javax.swing.JMenuItem();
+        itemDocsUsuarios = new javax.swing.JMenuItem();
+        itemAdministrador = new javax.swing.JMenuItem();
+        itemComprobantes = new javax.swing.JMenuItem();
+        subMenuBD = new javax.swing.JMenu();
+        itemBdTomasRegistradas = new javax.swing.JMenuItem();
+        itemBdUsuarios = new javax.swing.JMenuItem();
+        itemBdCalles = new javax.swing.JMenuItem();
+        itemBdTipoTomas = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        itemSalir = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        csv_rapidos = new javax.swing.JMenuItem();
+        pagos_del_dia = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
 
@@ -232,16 +288,6 @@ public class MenuPrincipal extends SuperVentana {
 
         jPanel5.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel5.setLayout(new java.awt.BorderLayout());
-
-        jbtHistorialPagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/lista-de-verificacion.png"))); // NOI18N
-        jbtHistorialPagos.setText("Historial De Pagos");
-        jbtHistorialPagos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtHistorialPagosActionPerformed(evt);
-            }
-        });
-        jPanel5.add(jbtHistorialPagos, java.awt.BorderLayout.CENTER);
-
         jPanel2.add(jPanel5);
 
         jPanel6.setPreferredSize(new java.awt.Dimension(300, 50));
@@ -300,13 +346,10 @@ public class MenuPrincipal extends SuperVentana {
 
         jpCobros.setPreferredSize(new java.awt.Dimension(1200, 643));
         jpCobros.setLayout(new java.awt.BorderLayout());
-        jTabbedPane1.addTab("Cobros", jpCobros);
+        jTabbedPane1.addTab("Cobros", new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x16/salario.png")), jpCobros); // NOI18N
 
         jpRecargos.setLayout(new java.awt.BorderLayout());
-        jTabbedPane1.addTab("Recargos", jpRecargos);
-
-        jpHistorialPagos.setLayout(new java.awt.BorderLayout());
-        jTabbedPane1.addTab("Historial de pagos", jpHistorialPagos);
+        jTabbedPane1.addTab("Recargos", new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x16/pendiente.png")), jpRecargos); // NOI18N
 
         getContentPane().add(jTabbedPane1, java.awt.BorderLayout.PAGE_START);
         jTabbedPane1.getAccessibleContext().setAccessibleName("tab_root");
@@ -314,87 +357,143 @@ public class MenuPrincipal extends SuperVentana {
         jMenuBar1.setPreferredSize(new java.awt.Dimension(1200, 25));
 
         jMenu1.setText("Menu");
+        jMenu1.setToolTipText("Apartados principales del programa");
 
-        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/usuario(1).png"))); // NOI18N
-        jMenuItem2.setText("Perfil");
-        jMenu1.add(jMenuItem2);
-
-        itemMenuTesorero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cofre-del-tesoro.png"))); // NOI18N
-        itemMenuTesorero.setText("Tesorero");
-        itemMenuTesorero.setName("tesorero"); // NOI18N
-        itemMenuTesorero.addActionListener(new java.awt.event.ActionListener() {
+        itemPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/usuario(1).png"))); // NOI18N
+        itemPerfil.setText("Perfil");
+        itemPerfil.setToolTipText("Apartado para el control de datos del usuario en uso");
+        itemPerfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemMenuTesoreroActionPerformed(evt);
+                itemPerfilActionPerformed(evt);
             }
         });
-        jMenu1.add(itemMenuTesorero);
+        jMenu1.add(itemPerfil);
 
-        itemMenuPresidente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/presidente.png"))); // NOI18N
-        itemMenuPresidente.setText("Presidente");
-        itemMenuPresidente.setName("presidente"); // NOI18N
-        itemMenuPresidente.addActionListener(new java.awt.event.ActionListener() {
+        itemPresidente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/presidente.png"))); // NOI18N
+        itemPresidente.setText("Presidente");
+        itemPresidente.setEnabled(false);
+        itemPresidente.setName("itemPresidente"); // NOI18N
+        itemPresidente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemMenuPresidenteActionPerformed(evt);
+                itemPresidenteActionPerformed(evt);
             }
         });
-        jMenu1.add(itemMenuPresidente);
+        jMenu1.add(itemPresidente);
 
-        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/base-de-datos(1).png"))); // NOI18N
-        jMenu3.setText("Base de datos");
-        jMenu3.setName("menu-bd"); // NOI18N
-
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/nota.png"))); // NOI18N
-        jMenuItem1.setText("Tomas Registradas");
-        jMenuItem1.setName("tomas -egistradas"); // NOI18N
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        itemTesoreria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cofre-del-tesoro.png"))); // NOI18N
+        itemTesoreria.setText("Tesorero");
+        itemTesoreria.setEnabled(false);
+        itemTesoreria.setName("tesorero"); // NOI18N
+        itemTesoreria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                itemTesoreriaActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem1);
+        jMenu1.add(itemTesoreria);
 
-        ItemBDUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/grupo.png"))); // NOI18N
-        ItemBDUsuario.setText("BD Usuarios");
-        ItemBDUsuario.setName("usuarios"); // NOI18N
-        ItemBDUsuario.addActionListener(new java.awt.event.ActionListener() {
+        subMenuDocs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/grupo.png"))); // NOI18N
+        subMenuDocs.setText("Administracion");
+
+        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/confidencial.png"))); // NOI18N
+        jMenu3.setText("Docs");
+
+        itemDirUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/carpeta.png"))); // NOI18N
+        itemDirUsuarios.setText("Directorios de Usuario");
+        itemDirUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ItemBDUsuarioActionPerformed(evt);
+                itemDirUsuariosActionPerformed(evt);
             }
         });
-        jMenu3.add(ItemBDUsuario);
+        jMenu3.add(itemDirUsuarios);
 
-        itemBDCalles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/mapa-de-la-calle.png"))); // NOI18N
-        itemBDCalles.setText("BD Calles");
-        itemBDCalles.setName("calles"); // NOI18N
-        itemBDCalles.addActionListener(new java.awt.event.ActionListener() {
+        itemDocsUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/documento.png"))); // NOI18N
+        itemDocsUsuarios.setText("Documentos de Usuario");
+        itemDocsUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemBDCallesActionPerformed(evt);
+                itemDocsUsuariosActionPerformed(evt);
             }
         });
-        jMenu3.add(itemBDCalles);
+        jMenu3.add(itemDocsUsuarios);
 
-        itemBDTomas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/grifo.png"))); // NOI18N
-        itemBDTomas.setText("BD Tipo de tomas");
-        itemBDTomas.setName("tipo-de-tomas"); // NOI18N
-        itemBDTomas.addActionListener(new java.awt.event.ActionListener() {
+        subMenuDocs.add(jMenu3);
+
+        itemAdministrador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/perfil.png"))); // NOI18N
+        itemAdministrador.setText("Administrador");
+        itemAdministrador.setEnabled(false);
+        itemAdministrador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemBDTomasActionPerformed(evt);
+                itemAdministradorActionPerformed(evt);
             }
         });
-        jMenu3.add(itemBDTomas);
+        subMenuDocs.add(itemAdministrador);
 
-        jMenu1.add(jMenu3);
+        itemComprobantes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/comprobado.png"))); // NOI18N
+        itemComprobantes.setText("Comprobantes");
+        itemComprobantes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemComprobantesActionPerformed(evt);
+            }
+        });
+        subMenuDocs.add(itemComprobantes);
+
+        jMenu1.add(subMenuDocs);
+
+        subMenuBD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/base-de-datos(1).png"))); // NOI18N
+        subMenuBD.setText("Base de datos");
+        subMenuBD.setName("menu-bd"); // NOI18N
+
+        itemBdTomasRegistradas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/nota.png"))); // NOI18N
+        itemBdTomasRegistradas.setText("Tomas Registradas");
+        itemBdTomasRegistradas.setName("tomas -egistradas"); // NOI18N
+        itemBdTomasRegistradas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemBdTomasRegistradasActionPerformed(evt);
+            }
+        });
+        subMenuBD.add(itemBdTomasRegistradas);
+
+        itemBdUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/grupo.png"))); // NOI18N
+        itemBdUsuarios.setText("BD Usuarios");
+        itemBdUsuarios.setName("usuarios"); // NOI18N
+        itemBdUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemBdUsuariosActionPerformed(evt);
+            }
+        });
+        subMenuBD.add(itemBdUsuarios);
+
+        itemBdCalles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/mapa-de-la-calle.png"))); // NOI18N
+        itemBdCalles.setText("BD Calles");
+        itemBdCalles.setName("calles"); // NOI18N
+        itemBdCalles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemBdCallesActionPerformed(evt);
+            }
+        });
+        subMenuBD.add(itemBdCalles);
+
+        itemBdTipoTomas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/grifo.png"))); // NOI18N
+        itemBdTipoTomas.setText("BD Tipo de tomas");
+        itemBdTipoTomas.setName("tipo-de-tomas"); // NOI18N
+        itemBdTipoTomas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemBdTipoTomasActionPerformed(evt);
+            }
+        });
+        subMenuBD.add(itemBdTipoTomas);
+
+        jMenu1.add(subMenuBD);
         jMenu1.add(jSeparator2);
 
-        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cerrar-sesion(2).png"))); // NOI18N
-        jMenuItem4.setText("Salir");
-        jMenuItem4.setName("salir"); // NOI18N
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        itemSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cerrar-sesion(2).png"))); // NOI18N
+        itemSalir.setText("Salir");
+        itemSalir.setName("itemSalir"); // NOI18N
+        itemSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                itemSalirActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem4);
+        jMenu1.add(itemSalir);
 
         jMenuBar1.add(jMenu1);
 
@@ -403,16 +502,50 @@ public class MenuPrincipal extends SuperVentana {
         jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/mesa.png"))); // NOI18N
         jMenu5.setText("Tablas");
 
-        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/csv.png"))); // NOI18N
-        jMenuItem3.setText("Generar CSV");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        csv_rapidos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/csv.png"))); // NOI18N
+        csv_rapidos.setText("CSV Rapidos");
+        csv_rapidos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                csv_rapidosActionPerformed(evt);
             }
         });
-        jMenu5.add(jMenuItem3);
+        jMenu5.add(csv_rapidos);
+
+        pagos_del_dia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/csv.png"))); // NOI18N
+        pagos_del_dia.setText("Pagos Del Dia");
+        pagos_del_dia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pagos_del_diaActionPerformed(evt);
+            }
+        });
+        jMenu5.add(pagos_del_dia);
 
         jMenu2.add(jMenu5);
+
+        jMenu6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/desarrollo-de-software.png"))); // NOI18N
+        jMenu6.setText("Software");
+
+        jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/configuraciones.png"))); // NOI18N
+        jMenuItem6.setText("GC");
+        jMenuItem6.setToolTipText("Recolecor de basura");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem6);
+
+        jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/configuraciones.png"))); // NOI18N
+        jMenuItem7.setText("RC");
+        jMenuItem7.setToolTipText("Reiniciar Cache");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem7);
+
+        jMenu2.add(jMenu6);
 
         jMenuBar1.add(jMenu2);
 
@@ -435,28 +568,22 @@ public class MenuPrincipal extends SuperVentana {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void ItemBDUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemBDUsuarioActionPerformed
-        SwingUtilities.invokeLater(() -> {
-            menuUsuarios.setVisible(true);
-        });
-    }//GEN-LAST:event_ItemBDUsuarioActionPerformed
+    private void itemBdUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemBdUsuariosActionPerformed
+        SwingUtilities.invokeLater(() -> menuUsuarios.setVisible(true));
+    }//GEN-LAST:event_itemBdUsuariosActionPerformed
 
-    private void itemBDCallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemBDCallesActionPerformed
-        SwingUtilities.invokeLater(() -> {
-            menuCalles.setVisible(true);
-        });
-    }//GEN-LAST:event_itemBDCallesActionPerformed
+    private void itemBdCallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemBdCallesActionPerformed
+        SwingUtilities.invokeLater(() -> menuCalles.setVisible(true));
+    }//GEN-LAST:event_itemBdCallesActionPerformed
 
-    private void itemBDTomasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemBDTomasActionPerformed
-        SwingUtilities.invokeLater(() -> {
-            menuTipoTomas.setVisible(true);
-        });
-    }//GEN-LAST:event_itemBDTomasActionPerformed
+    private void itemBdTipoTomasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemBdTipoTomasActionPerformed
+        SwingUtilities.invokeLater(() -> menuTipoTomas.setVisible(true));
+    }//GEN-LAST:event_itemBdTipoTomasActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void itemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSalirActionPerformed
         vistaSeleccionada(0);
         dispose();
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_itemSalirActionPerformed
 
     private void jbtCobrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtCobrosActionPerformed
         vistaSeleccionada(1);
@@ -466,37 +593,26 @@ public class MenuPrincipal extends SuperVentana {
         vistaSeleccionada(2);
     }//GEN-LAST:event_jbtRecargosActionPerformed
 
-    private void jbtHistorialPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtHistorialPagosActionPerformed
-        vistaSeleccionada(3);
-    }//GEN-LAST:event_jbtHistorialPagosActionPerformed
-
     private void jbtSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSalirActionPerformed
         vistaSeleccionada(0);
         dispose();
     }//GEN-LAST:event_jbtSalirActionPerformed
 
-    private void itemMenuPresidenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuPresidenteActionPerformed
-        SwingUtilities.invokeLater(() -> {
-            menuPresidente.setVisible(true);
-        });
+    private void itemPresidenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemPresidenteActionPerformed
+        SwingUtilities.invokeLater(() -> menuPresidente.setVisible(true));
+    }//GEN-LAST:event_itemPresidenteActionPerformed
 
-    }//GEN-LAST:event_itemMenuPresidenteActionPerformed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        SwingUtilities.invokeLater(() -> {
-            menuTomasRegistradas.setVisible(true);
-        });
-
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void itemBdTomasRegistradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemBdTomasRegistradasActionPerformed
+        SwingUtilities.invokeLater(() -> menuTomasRegistradas.setVisible(true));
+    }//GEN-LAST:event_itemBdTomasRegistradasActionPerformed
 
     private void jbtPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtPerfilActionPerformed
-        // TODO add your handling code here:
+        SwingUtilities.invokeLater(() -> menuPerfil.setVisible(true));
     }//GEN-LAST:event_jbtPerfilActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        MenuCVS menu = new MenuCVS();
-        menu.setVisible(true);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    private void csv_rapidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_csv_rapidosActionPerformed
+        SwingUtilities.invokeLater(() -> herrCSV.setVisible(true));
+    }//GEN-LAST:event_csv_rapidosActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         SwingUtilities.invokeLater(() -> {
@@ -505,33 +621,80 @@ public class MenuPrincipal extends SuperVentana {
         });
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
-    private void itemMenuTesoreroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuTesoreroActionPerformed
+    private void itemTesoreriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTesoreriaActionPerformed
         SwingUtilities.invokeLater(() -> menuTesoreria.setVisible(true));
-    }//GEN-LAST:event_itemMenuTesoreroActionPerformed
+    }//GEN-LAST:event_itemTesoreriaActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        StringBuilder s = new StringBuilder();
+        s.append("Esta operacion puede pausar momentaneamente o finalizar el programa").append("\n");
+        s.append("¿Desea continuar?");
+        int input = JOptionPane.showConfirmDialog(this, s.toString());
+        if (input != JOptionPane.YES_OPTION) {
+            return;
+        }
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc();
+
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void itemPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemPerfilActionPerformed
+        SwingUtilities.invokeLater(() -> {
+            menuPerfil.setVisible(true);
+        });
+    }//GEN-LAST:event_itemPerfilActionPerformed
+
+    private void itemAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAdministradorActionPerformed
+        SwingUtilities.invokeLater(() -> {
+            menuAdministrador.setVisible(true);
+        });
+    }//GEN-LAST:event_itemAdministradorActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        StringBuilder s = new StringBuilder();
+        s.append("Esta operacion puede pausar momentaneamente o finalizar el programa").append("\n");
+        s.append("¿Desea continuar?");
+        int input = JOptionPane.showConfirmDialog(this, s.toString());
+        if (input != JOptionPane.YES_OPTION) {
+            return;
+        }
+        FabricaCache.MC_CALLES.actualizar();
+        FabricaCache.MC_PERSONAL.actualizar();
+        FabricaCache.MC_TIPOS_DE_TOMAS.actualizar();
+        FabricaCache.MC_USUARIOS.actualizar();
+
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void pagos_del_diaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pagos_del_diaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pagos_del_diaActionPerformed
+
+    private void itemComprobantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemComprobantesActionPerformed
+
+        menuTargetas.setVisible(true);
+
+    }//GEN-LAST:event_itemComprobantesActionPerformed
+
+    private void itemDocsUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemDocsUsuariosActionPerformed
+        menuDocumentos.setVisible(true);
+    }//GEN-LAST:event_itemDocsUsuariosActionPerformed
+
+    private void itemDirUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemDirUsuariosActionPerformed
+        menuDirectorios.setVisible(true);
+    }//GEN-LAST:event_itemDirUsuariosActionPerformed
 
     public void vistaSeleccionada(int i) {
         SwingUtilities.invokeLater(() -> jTabbedPane1.setSelectedIndex(i));
     }
 
-    @Override
-    public void dispose() {
-        fx();
-        super.dispose();
-        irLogin();
-    }
-
-    public void fx() {
-        System.out.println("inicio");
+    public void finalizarSesion() {
         cerrarMenusActivos();
+
         Sesion instancia = Sesion.getInstancia();
         boolean finSesion = instancia.finSesion();
         if (!finSesion) {
             JOptionPane.showMessageDialog(this, "ERROR AL REGISTRAR FIN DE SESION");
         }
-        sleep();
-        System.out.println("ocultar");
-        setState(JFrame.ICONIFIED);
-        sleep();
     }
 
     private void irLogin() {
@@ -542,46 +705,32 @@ public class MenuPrincipal extends SuperVentana {
     }
 
     private void cerrarMenusActivos() {
-        System.out.println("menus activos");
         JFrame[] arr = menus;
         for (JFrame o : arr) {
             if (!o.isVisible() && !o.isActive()) {
                 continue;
             }
-            System.out.println(o.getName());
-            o.setVisible(true);
-            sleep();
-            o.setState(JFrame.ICONIFIED);
-            //
-            SwingUtilities.invokeLater(() -> {
-                o.setVisible(false);
-                o.dispose();
-            });
-            sleep();
+            o.setVisible(false);
+            o.dispose();
         }
-    }
-
-    private void sleep() {
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    @Override
-    public void permisos() {
-
     }
 
 // <editor-fold defaultstate="collapsed" desc="Variables De Interfaz">
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem ItemBDUsuario;
+    private javax.swing.JMenuItem csv_rapidos;
     private javax.swing.JPanel img;
-    private javax.swing.JMenuItem itemBDCalles;
-    private javax.swing.JMenuItem itemBDTomas;
-    private javax.swing.JMenuItem itemMenuPresidente;
-    private javax.swing.JMenuItem itemMenuTesorero;
+    private javax.swing.JMenuItem itemAdministrador;
+    private javax.swing.JMenuItem itemBdCalles;
+    private javax.swing.JMenuItem itemBdTipoTomas;
+    private javax.swing.JMenuItem itemBdTomasRegistradas;
+    private javax.swing.JMenuItem itemBdUsuarios;
+    private javax.swing.JMenuItem itemComprobantes;
+    private javax.swing.JMenuItem itemDirUsuarios;
+    private javax.swing.JMenuItem itemDocsUsuarios;
+    private javax.swing.JMenuItem itemPerfil;
+    private javax.swing.JMenuItem itemPresidente;
+    private javax.swing.JMenuItem itemSalir;
+    private javax.swing.JMenuItem itemTesoreria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
@@ -589,12 +738,11 @@ public class MenuPrincipal extends SuperVentana {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -610,18 +758,32 @@ public class MenuPrincipal extends SuperVentana {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JButton jbtCobros;
-    private javax.swing.JButton jbtHistorialPagos;
     private javax.swing.JButton jbtPerfil;
     private javax.swing.JButton jbtRecargos;
     private javax.swing.JButton jbtSalir;
     private javax.swing.JPanel jpAreaPersonal;
     private javax.swing.JPanel jpCobros;
-    private javax.swing.JPanel jpHistorialPagos;
     private javax.swing.JPanel jpRecargos;
     private javax.swing.JPanel jpVisor;
+    private javax.swing.JMenuItem pagos_del_dia;
+    private javax.swing.JMenu subMenuBD;
+    private javax.swing.JMenu subMenuDocs;
     // End of variables declaration//GEN-END:variables
-// </editor-fold>
 
+// </editor-fold>
+    
+    @Override
+    public Rectangle getBounds() {
+        vistaCobros.getBounds();
+        return super.getBounds(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    @Override
+    public void dispose() {
+        finalizarSesion();
+        super.dispose();
+        irLogin();
+    }
 }
 
 class visor extends JPanel {

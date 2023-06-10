@@ -4,8 +4,9 @@
  */
 package com.jblue.sistema;
 
-import com.jblue.sistema.so.ConstructorDeArchivos;
+import com.jblue.sistema.app.Prop;
 import com.jblue.util.SoInfo;
+import com.jblue.util.archivos.ConstructorArchivos;
 import java.io.File;
 
 /**
@@ -14,7 +15,7 @@ import java.io.File;
  */
 public class Archivos {
 
-    private final ConstructorDeArchivos archivos;
+    private final ConstructorArchivos archivos;
     private final String raiz;
     private final String raiz_de_basura;
     public final int USUARIO_BD;
@@ -26,19 +27,19 @@ public class Archivos {
         this.USUARIO_BD = 0;
         this.raiz = "JBlue";
         this.raiz_de_basura = ".blue";
-        this.archivos = new ConstructorDeArchivos();
+        this.archivos = new ConstructorArchivos();
     }
 
     private void archivos() {
 
         //Archivos de respaldo
-        archivos.add(archivos.DIRECTORIO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz_de_basura));
-        archivos.add(archivos.DIRECTORIO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz_de_basura, "respaldos"));
-        archivos.add(archivos.DIRECTORIO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz_de_basura, "cache"));
-        archivos.add(archivos.ARCHIVO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz_de_basura, "config"));
+        archivos.add(archivos.DIRECTORIO, Prop.DIR_PROG);
+        archivos.add(archivos.DIRECTORIO, Prop.DIR_PROG_PERSONAL);
+        archivos.add(archivos.DIRECTORIO, Prop.DIR_PROG_USUARIOS);
+        archivos.add(archivos.ARCHIVO, Prop.DIR_ARC_CONFIG);
 
         //Archivos visibles
-        archivos.add(archivos.DIRECTORIO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz));
+        archivos.add(archivos.DIRECTORIO, Prop.DIR_USU);
         archivos.add(archivos.DIRECTORIO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz, "reportes"));
         archivos.add(archivos.DIRECTORIO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz, "PDFs"));
         archivos.add(archivos.DIRECTORIO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz, "Pagos"));
@@ -52,7 +53,7 @@ public class Archivos {
         }
     }
 
-    public ConstructorDeArchivos getArchivos() {
+    public ConstructorArchivos getArchivos() {
         return archivos;
     }
 

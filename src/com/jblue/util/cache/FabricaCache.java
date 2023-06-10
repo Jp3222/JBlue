@@ -18,7 +18,8 @@ import static com.jblue.util.cache.FabricaOpraciones.TIPOS_DE_TOMAS;
  * @author jp
  */
 public abstract class FabricaCache {
- 
+
+    public static boolean cache;
     public static final MemoCache<OPersonal> MC_PERSONAL = new MemoCache(PERSONAL);
     public static final MemoCache<OCalles> MC_CALLES = new MemoCache(CALLES);
     public static final MemoCache<OTipoTomas> MC_TIPOS_DE_TOMAS = new MemoCache(TIPOS_DE_TOMAS);

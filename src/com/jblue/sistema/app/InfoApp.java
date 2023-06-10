@@ -16,26 +16,38 @@ public interface InfoApp {
             VERSION_DEL_PROGRAMA = "0.0";
 
     /**
-     * <br> 0 "nueva ventana"
-     * <br> 1 "Inicio de sesion"
-     * <br> 2 "Menu Principal"
-     * <br> 3 "BD usuarios"
-     * <br> 4 "BD calles"
-     * <br> 5 "BD tipo de tomas"
-     * <br> 6 "Menu Tesoreria"
-     * <br> 7 "Menu Presidente"
+     * <br> 0  - "nueva ventana"
+     * <br> 1  - "Inicio de sesion"
+     * <br> 2  - "Menu Principal"
+     * <br> 3  - "BD usuarios"
+     * <br> 4  - "BD calles"
+     * <br> 5  - "BD tipo de tomas"
+     * <br> 6  - "Menu Tesoreria"
+     * <br> 7  - "Menu Presidente"
+     * <br> 8  - "Tomas Registradas"
+     * <br> 9  - "Perfil de Usuario"
+     * <br> 10 - "Administrador de Directorios"
+     * <br> 11 - "Administrador de Documentos"
+     * <br> 12 - "Comprobantes"
+     * <br> 13 - "Administrador"
      */
-    final String[] MENUS_DEL_PROGRAMA = {
+    final String[] _MENUS_DEL_PROGRAMA = {
         "Nueva ventana",
         "Inicio de sesion",
         "Menu principal",
-        "Menu BD de usuarios",
-        "Menu BD calles",
-        "Menu BD tipo de tomas",
+        "BD Usuarios",
+        "BD Calles",
+        "BD Tipo de Tomas",
         "Tesorero",
-        "Presidente"
+        "Presidente",
+        "Tomas Registradas",
+        "Perfil de Usuario",
+        "Administrador de Directorios",
+        "Administrador de Documentos",
+        "Comprobantes",
+        "Administrador"
     };
 
-    final ImageIcon ICONO_DEL_PROGRAMA = new ImageIcon(InfoApp.class.getResource("/com/jblue/media/img/x128/jblue_icono.png"));
+    final ImageIcon _ICONO_DEL_PROGRAMA = new ImageIcon(InfoApp.class.getResource("/com/jblue/media/img/x128/jblue_icono.png"));
 
 }

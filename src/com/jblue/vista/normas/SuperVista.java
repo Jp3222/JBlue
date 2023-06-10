@@ -30,25 +30,25 @@ public abstract class SuperVista extends JPanel {
      * componentes puedan volver a dicho estado
      *
      */
-    public abstract void estadoInicial();
+    public abstract void componentesEstadoInicial();
 
     /**
      * Metodo recomentado para darle a ciertos compoentes un estado final el
      * cual no sera cambiado
      */
-    protected void estadoFinal() {
+    protected void componentesEstadoFinal() {
     }
 
     /**
      * Metodo recomendado para agregar componentes a otros componentes
      */
-    protected void addComponentes() {
+    protected void contruirComponentes() {
     }
 
     /**
      * Metodo recomendado para añadir eventos a los componentes definidos
      */
-    protected void addEventos() {
+    protected void manejoEventos() {
     }
 
 }

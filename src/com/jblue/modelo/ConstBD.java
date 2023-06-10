@@ -5,10 +5,12 @@
 package com.jblue.modelo;
 
 /**
+ * Esta clase contiene variables relacionadas a la base de datos, solo para uso
+ * interno
  *
  * @author jp
  */
-public class ConstBD {
+public abstract class ConstBD {
 
     private static final String NOMBRE = "nombre";
     private static final String ID = "id";
@@ -18,7 +20,9 @@ public class ConstBD {
     private static final String PERSONAL = "personal";
     private static final String MONTO = "monto";
     private static final String REGISTRO = "registro";
-    private static final String DIA = "dia", MES = "mes", AÑO = "año";
+    private static final String DIA = "dia";
+    private static final String MES = "mes";
+    private static final String AÑO = "año";
 
     /**
      * <br> 1 id
@@ -32,7 +36,7 @@ public class ConstBD {
      * <br> 9 titular
      */
     public static final String[] BD_USUARIOS = {
-        ID, NOMBRE, AP, AM, "calle", "toma", REGISTRO, "estado", "titular", "codigo"
+        ID, NOMBRE, AP, AM, "calle", "ncasa", "toma", REGISTRO, "estado", "titular", "codigo"
     };
 
     /**
@@ -53,7 +57,7 @@ public class ConstBD {
      * <br> 3 numero
      */
     public static final String[] BD_CALLES = {
-        ID, "nombre", "numero"
+        ID, NOMBRE, "numero"
     };
 
     /**
@@ -69,7 +73,7 @@ public class ConstBD {
      * <br> 9 permisos
      */
     public static final String[] BD_PERSONAL = {
-        ID, NOMBRE, "apellidos", "cargo", USUARIO, "contra", REGISTRO, "estado", "permisos"
+        ID, NOMBRE, "apellidos", "cargo", USUARIO, "contra", REGISTRO, "estado", "permisos", "periodo"
     };
 
     /**
@@ -160,7 +164,7 @@ public class ConstBD {
         "calles",
         "tipo_tomas",
         "historial_movimientos",
-        "movimientos",
+        "movimiento",
         "pagos_x_servicio",
         "pagos_x_recargos",
         "pagos_x_otros"
@@ -169,7 +173,13 @@ public class ConstBD {
     public static final String[][] CAMPOS = {
         BD_PERSONAL,
         BD_USUARIOS,
-        BD_CALLES
+        BD_CALLES,
+        BD_TIPOS_DE_TOMAS,
+        BD_HISTORIAL_MOVIMIENTOS,
+        BD_MOVIMIENTOS,
+        BD_PAGOS_X_SERVICIO,
+        BD_PAGOS_X_RECARGO,
+        BD_PAGOS_X_OTROS
     };
 
 }

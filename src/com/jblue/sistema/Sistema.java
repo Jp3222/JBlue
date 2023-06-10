@@ -8,7 +8,7 @@ import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.sistema.so.ConstructorDeArchivos;
+import com.jblue.util.archivos.ConstructorArchivos;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.util.plataformas.soconfig.apariencia;
@@ -50,12 +50,12 @@ public class Sistema {
     private Sistema() {
         this.archivos = new Archivos();
         this.reinicio = false;
-        config = new MenuConfigBD();
         apariencia.setDefault();
+        config = new MenuConfigBD();
     }
 
     public boolean archivosSistema() {
-        ConstructorDeArchivos constructor = archivos.getArchivos();
+        ConstructorArchivos constructor = archivos.getArchivos();
 
         if (constructor.isEmpty() == 0) {
             return true;
@@ -77,10 +77,11 @@ public class Sistema {
 
     public synchronized boolean conexionBD() {
         try {
-            ConstructorDeArchivos constructor = archivos.getArchivos();
+            ConstructorArchivos constructor = archivos.getArchivos();
             File usuario_file = constructor.get(constructor.ARCHIVO, archivos.USUARIO_BD);
             BufferedReader fr = new BufferedReader(new FileReader(usuario_file));
             String linea = fr.readLine();
+
             if (linea == null) {
                 synchronized (config) {
                     Thread t = new Thread(() -> config.setVisible(true));
@@ -100,13 +101,17 @@ public class Sistema {
 
             return !cn.getConexion().isClosed();
         } catch (SQLException | IOException | InterruptedException ex) {
-            Excp.impTerminal(ex, this.getClass(), true);
+            Excp.imp(ex, getClass(), true, true);
+            System.exit(0);
         }
         return false;
     }
 
-    public boolean datosCache() {
-        int i = 0;
+    public boolean datosCSache() {
+        if (FabricaCache.cache) {
+            return true;
+        }
+        FabricaCache.cache = true;
         MemoCache<OCalles> MC_CALLES = FabricaCache.MC_CALLES;
         MC_CALLES.cargar();
 
@@ -117,13 +122,8 @@ public class Sistema {
         MC_TIPOS_DE_TOMAS.cargar();
 
         MemoCache<OUsuarios> MC_USUARIOS = FabricaCache.MC_USUARIOS;
-        MC_USUARIOS.setQuery("titular = -1");
         MC_USUARIOS.cargar();
-        //
-        MC_USUARIOS.setQuery("titular > 0");
-        MC_USUARIOS.cargar();
-        //
-        MC_USUARIOS.ordenarPorID();
+
         return MC_CALLES.getLista() != null
                 && MC_PERSONAL.getLista() != null
                 && MC_TIPOS_DE_TOMAS.getLista() != null

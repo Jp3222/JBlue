@@ -30,25 +30,28 @@ public class CUsuarios {
         cargarComboModel(R.getJcbCalle(), FabricaCache.MC_CALLES.getLista());
         cargarComboModel(R.getJcbTipoToma(), FabricaCache.MC_TIPOS_DE_TOMAS.getLista());
         cargarComboModel(R.getJcbTitular(), FabricaCache.MC_USUARIOS.getLista(), (t) -> t.isTitular());
-        cargarLista();
+        cargarTabla();
     }
 
     public void cargarFiltros() {
+        R.getFiltro_calle().addItem("SELECCIONE CALLE");
+        R.getFiltro_toma().addItem("SELECCIONE TIPO DE TOMA");
         cargarComboModel(R.getFiltro_calle(), FabricaCache.MC_CALLES.getLista());
-        cargarComboModel(R.getFiltro_estado(), FabricaCache.MC_TIPOS_DE_TOMAS.getLista());
-        cargarComboModel(R.getFiltro_toma(), FabricaCache.MC_USUARIOS.getLista(), (t) -> t.isTitular());
-        cargarLista();
+        cargarComboModel(R.getFiltro_toma(), FabricaCache.MC_TIPOS_DE_TOMAS.getLista());
     }
 
     public void vaciarFiltros() {
-        R.getFiltro_calle().removeAllItems();
-        R.getFiltro_toma().removeAllItems();
-        R.getFiltro_estado().removeAllItems();
+        vaciarCB(R.getFiltro_calle());
+        vaciarCB(R.getFiltro_toma());
+    }
+
+    public void vaciarCB(JComboBox<String> componente) {
+        if (componente.getItemCount() > 0) {
+            componente.removeAllItems();
+        }
     }
 
     public void actualizarVistaPrincipal() {
-//        actualizarComboModel(R.getJcbCalle(), FabricaCache.MC_CALLES.getLista());
-//        actualizarComboModel(R.getJcbTipoToma(), FabricaCache.MC_TIPOS_DE_TOMAS.getLista());
         actualizarComboModel(R.getJcbTitular(), FabricaCache.MC_USUARIOS.getLista(), (t) -> t.isTitular());
         actualizarLista();
     }
@@ -102,7 +105,7 @@ public class CUsuarios {
             return;
         }
         for (T t : lista) {
-            componente.addItem(t.getStringR());
+            componente.addItem(t.getStringR().replace("_", " "));
         }
     }
 
@@ -114,7 +117,7 @@ public class CUsuarios {
             if (!filtro.test(t)) {
                 continue;
             }
-            componente.addItem(t.getStringR());
+            componente.addItem(t.getStringR().replace("_", " "));
         }
     }
 
@@ -141,7 +144,7 @@ public class CUsuarios {
         }
         DefaultListModel<String> modelo_lista = R.getModelo_lista();
         for (OUsuarios oUsuarios : lista) {
-            modelo_lista.addElement(oUsuarios.getStringR());
+            modelo_lista.addElement(oUsuarios.getStringR().replace("_", " "));
         }
     }
 
@@ -166,9 +169,7 @@ public class CUsuarios {
     public void actualizarTabla() {
         DefaultTableModel modelo_tabla = R.getModelo_tabla();
         if (modelo_tabla.getRowCount() > 0) {
-            while (modelo_tabla.getRowCount() > 0) {
-                modelo_tabla.removeRow(0);
-            }
+            vaciarTabla();
         }
         cargarTabla();
     }
@@ -178,6 +179,13 @@ public class CUsuarios {
         while (modelo_tabla.getRowCount() > 0) {
             modelo_tabla.removeRow(0);
         }
+    }
+
+    public void filtros_calles() {
+
+    }
+
+    public void filtros_tomas() {
     }
 
 }

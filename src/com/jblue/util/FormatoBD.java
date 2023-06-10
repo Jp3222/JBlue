@@ -15,13 +15,19 @@ public class FormatoBD {
 
     public static String[] bdSalida(String... datos) {
         for (int i = 0; i < datos.length; i++) {
-            datos[i] = datos[i].toUpperCase().replace('_', ' ');
+            if (varInValida(datos[i])) {
+                continue;
+            }
+            datos[i] = datos[i].replace('_', ' ');
         }
         return datos;
     }
 
     public static String[] bdEntrada(String... datos) {
         for (int i = 0; i < datos.length; i++) {
+            if (varInValida(datos[i])) {
+                continue;
+            }
             datos[i] = datos[i].trim().toUpperCase().replace(" ", "_");
         }
         return datos;
@@ -57,5 +63,9 @@ public class FormatoBD {
             }
         }
         return false;
+    }
+
+    private static boolean varInValida(String txt) {
+        return txt == null || txt.isEmpty() || !txt.contains(" ") || txt.matches("[0-9]*(|.[0-9]{1,})");
     }
 }

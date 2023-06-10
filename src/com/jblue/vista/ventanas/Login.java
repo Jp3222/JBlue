@@ -15,6 +15,7 @@ import com.jblue.vista.normas.SuperVentana;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
 import com.jutil.jswing.jswingenv.EnvJTextField;
+import java.awt.event.KeyEvent;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -63,9 +64,12 @@ public class Login extends SuperVentana {
     public void estadoInicial() {
         usuario.requestFocusInWindow();
         mostrar.setToolTipText("mostrar");
+        mostrar.setSelected(false);
+        //
         for (EnvJTextField envjtf : envjtfs) {
             envjtf.defecto();
         }
+        setDefaultLookAndFeelDecorated(false);
     }
 
     @Override
@@ -89,10 +93,12 @@ public class Login extends SuperVentana {
 
     @Override
     protected void addEventos() {
+        jbtInicio.addActionListener(e -> login());
         for (EnvJTextField envjtf : envjtfs) {
             envjtf.borrarAlClick();
             envjtf.borrarAlEscribir();
         }
+
     }
 
     /**
@@ -142,7 +148,7 @@ public class Login extends SuperVentana {
         jPanel1.add(jLabel1, java.awt.BorderLayout.NORTH);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/img2.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/usuario.png"))); // NOI18N
         jLabel2.setPreferredSize(new java.awt.Dimension(350, 75));
         jPanel1.add(jLabel2, java.awt.BorderLayout.CENTER);
 
@@ -188,6 +194,12 @@ public class Login extends SuperVentana {
         jLabel6.setText("Contraseña");
         jLabel6.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel6.add(jLabel6, java.awt.BorderLayout.LINE_START);
+
+        contra.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                contraKeyPressed(evt);
+            }
+        });
         jPanel6.add(contra, java.awt.BorderLayout.CENTER);
 
         mostrar.setToolTipText("mostrar");
@@ -210,11 +222,6 @@ public class Login extends SuperVentana {
         jPanel7.add(jLabel7, java.awt.BorderLayout.LINE_START);
 
         jbtInicio.setText("Iniciar Sesion");
-        jbtInicio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtInicioActionPerformed(evt);
-            }
-        });
         jPanel7.add(jbtInicio, java.awt.BorderLayout.CENTER);
 
         jLabel8.setPreferredSize(new java.awt.Dimension(30, 40));
@@ -243,8 +250,7 @@ public class Login extends SuperVentana {
 
     private void mostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarActionPerformed
         if (mostrar.isSelected()) {
-            char c = 0;
-            contra.setEchoChar(c);
+            contra.setEchoChar((char) 0);
             mostrar.setToolTipText("ocultar");
         } else {
             contra.setEchoChar('*');
@@ -252,66 +258,69 @@ public class Login extends SuperVentana {
         }
     }//GEN-LAST:event_mostrarActionPerformed
 
-    private void jbtInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtInicioActionPerformed
-        try {
-            if (!inicio()) {
-                return;
-            }
-            if (!Sistema.getInstancia().datosCache()) {
-                System.out.println("ERROR AL CARGAR LA CACHE");
-            }
-            System.out.println("¡¡¡CACHE CARGADA!!!");
-
-            SwingUtilities.invokeLater(() -> {
-                this.setVisible(false);
-                this.dispose();
-            });
-            SwingUtilities.invokeLater(() -> {
-                MENU_PRINCIPAL = new MenuPrincipal(this);
-                MENU_PRINCIPAL.setVisible(true);
-                MENU_PRINCIPAL.permisos();
-            });
-        } catch (UnsupportedEncodingException
-                | InvalidKeyException | NoSuchAlgorithmException
-                | BadPaddingException | IllegalBlockSizeException
-                | NoSuchPaddingException e) {
-            Excp.impTerminal(e, getClass(), true);
-        }
-
-    }//GEN-LAST:event_jbtInicioActionPerformed
-
     private void configuracionBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configuracionBDActionPerformed
+        setVisible(false);
         dispose();
         SwingUtilities.invokeLater(() -> MENU_CONFIG_BD.setVisible(true));
     }//GEN-LAST:event_configuracionBDActionPerformed
 
-    public boolean inicio()
-            throws UnsupportedEncodingException, NoSuchAlgorithmException,
-            InvalidKeyException, NoSuchPaddingException,
-            IllegalBlockSizeException, BadPaddingException {
-
-        if (!datosValidos()) {
-            return false;
+    private void contraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contraKeyPressed
+        if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
+            login();
         }
+    }//GEN-LAST:event_contraKeyPressed
 
-        String x = usuario.getText();
-        String y = String.valueOf(contra.getPassword());
+    private boolean sesion = false;
 
-        Operaciones<OPersonal> log = FabricaOpraciones.PERSONAL;
-
-        EncriptadoAES en = new EncriptadoAES();
-        String query = "usuario ='" + en.encriptar(x, y) + "' && contra ='" + en.encriptar(y, x) + "'";
-        OPersonal get = log.get(query);
-
-        if (get == null) {
-            JOptionPane.showMessageDialog(this, "Usuario y/o contraseña incorrectos");
-            return false;
+    public synchronized void login() {
+        if (sesion) {
+            return;
         }
-        Sesion sesion = Sesion.getInstancia();
-        sesion.setUsuario(get);
-        if (!sesion.inicioSesion()) {
-            JOptionPane.showMessageDialog(this, "ERROR AL REGISTRAR SESION");
-            return false;
+        sesion = true;
+        if (!inicio()) {
+            sesion = false;
+            return;
+        }
+        if (!Sistema.getInstancia().datosCSache()) {
+            System.out.println("ERROR AL CARGAR LA CACHE");
+        }
+        System.out.println("¡¡¡CACHE CARGADA!!!");
+
+        SwingUtilities.invokeLater(() -> {
+            this.setVisible(false);
+            this.dispose();
+        });
+        SwingUtilities.invokeLater(() -> {
+            MENU_PRINCIPAL = new MenuPrincipal(this);
+            MENU_PRINCIPAL.setVisible(true);
+        });
+    }
+
+    public boolean inicio() {
+        try {
+            if (!datosValidos()) {
+                return false;
+            }
+            String x = usuario.getText();
+            String y = String.valueOf(contra.getPassword());
+            Operaciones<OPersonal> log = FabricaOpraciones.getPERSONAL();
+            EncriptadoAES en = new EncriptadoAES();
+            String query = "usuario ='" + en.encriptar(x, y) + "' && contra ='" + en.encriptar(y, x) + "'";
+            OPersonal get = log.get(query);
+            if (get == null) {
+                JOptionPane.showMessageDialog(this, "Usuario y/o contraseña incorrectos");
+                return false;
+            }
+            Sesion sesion = Sesion.getInstancia();
+            sesion.setUsuario(get);
+            if (!sesion.inicioSesion()) {
+                JOptionPane.showMessageDialog(this, "ERROR AL REGISTRAR SESION");
+                return false;
+            }
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException
+                | InvalidKeyException | NoSuchPaddingException
+                | IllegalBlockSizeException | BadPaddingException ex) {
+            Excp.impTerminal(ex, getClass(), true);
         }
         return true;
     }
@@ -319,19 +328,13 @@ public class Login extends SuperVentana {
     public boolean datosValidos() {
         String x = usuario.getText();
         String y = String.valueOf(contra.getPassword());
-        return x != null && !x.isEmpty() && y != null && !y.isEmpty();
+        return x != null && !x.isBlank() && y != null && !y.isBlank();
     }
 
-    @Override
-    public void dispose() {
-        super.dispose();
-        SwingUtilities.invokeLater(() -> estadoInicial());
+    public void limpiarInstancia() {
+        MENU_PRINCIPAL = null;
+        sesion = false;
     }
-
-    @Override
-    public void permisos() {
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton configuracionBD;
@@ -358,8 +361,9 @@ public class Login extends SuperVentana {
     private javax.swing.JCheckBox mostrar;
     private javax.swing.JTextField usuario;
     // End of variables declaration//GEN-END:variables
-
-    public void limpiarInstancia() {
-        MENU_PRINCIPAL = null;
+ @Override
+    public void dispose() {
+        super.dispose();
+        SwingUtilities.invokeLater(() -> estadoInicial());
     }
 }

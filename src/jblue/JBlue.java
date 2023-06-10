@@ -21,12 +21,11 @@ public class JBlue {
         //validando la version de java
         String versionStr = System.getProperty("java.version");
         CharSequence subsecuencia = versionStr.subSequence(0, 2);
-
         int versionInt = Integer.parseInt(subsecuencia.toString());
-        if (versionInt < 17) {
+        if (versionInt < 16) {
             JOptionPane.showMessageDialog(null, "Version de java no valida");
             return;
-        }                   
+        }
         //Inicio del sistema
         Sistema s = Sistema.getInstancia();
         do {

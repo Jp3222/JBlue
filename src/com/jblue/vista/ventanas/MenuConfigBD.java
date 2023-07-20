@@ -6,7 +6,6 @@ package com.jblue.vista.ventanas;
 
 import com.jblue.sistema.Archivos;
 import com.jblue.sistema.Sistema;
-import com.jblue.sistema.app.Prop;
 import com.jblue.util.archivos.ConstructorArchivos;
 import com.jblue.vista.normas.SuperVentana;
 import com.jutil.jbd.conexion.Conexion;
@@ -267,16 +266,11 @@ public class MenuConfigBD extends SuperVentana {
 
     private void jbtProbarConexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtProbarConexionActionPerformed
         try {
-            System.out.println("evt");
-
             getDatos();
-            System.out.println(usuario + ", " + contra + ", " + url);
             Conexion con = Conexion.getInstancia(usuario, contra, url);
-            boolean valid = con.getConexion().isValid(3);
-            System.out.println(valid);
+            boolean cerrado = con.getConexion().isClosed();
             String mensaje = "La conexion es: ";
-
-            if (valid) {
+            if (!cerrado) {
                 mensaje += "valida";
             } else {
                 mensaje += "no valida";

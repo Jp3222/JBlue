@@ -13,19 +13,20 @@ import javax.swing.ImageIcon;
 public interface InfoApp {
 
     final String NOMBRE_DEL_PROGRAMA = "jblue ",
-            VERSION_DEL_PROGRAMA = "0.0";
+            VERSION_DEL_PROGRAMA = "0.0",
+            TITULO_VER_PROGRAMA = NOMBRE_DEL_PROGRAMA + VERSION_DEL_PROGRAMA;
 
     /**
-     * <br> 0  - "nueva ventana"
-     * <br> 1  - "Inicio de sesion"
-     * <br> 2  - "Menu Principal"
-     * <br> 3  - "BD usuarios"
-     * <br> 4  - "BD calles"
-     * <br> 5  - "BD tipo de tomas"
-     * <br> 6  - "Menu Tesoreria"
-     * <br> 7  - "Menu Presidente"
-     * <br> 8  - "Tomas Registradas"
-     * <br> 9  - "Perfil de Usuario"
+     * <br> 0 - "nueva ventana"
+     * <br> 1 - "Inicio de sesion"
+     * <br> 2 - "Menu Principal"
+     * <br> 3 - "BD usuarios"
+     * <br> 4 - "BD calles"
+     * <br> 5 - "BD tipo de tomas"
+     * <br> 6 - "Menu Tesoreria"
+     * <br> 7 - "Menu Presidente"
+     * <br> 8 - "Tomas Registradas"
+     * <br> 9 - "Perfil de Usuario"
      * <br> 10 - "Administrador de Directorios"
      * <br> 11 - "Administrador de Documentos"
      * <br> 12 - "Comprobantes"

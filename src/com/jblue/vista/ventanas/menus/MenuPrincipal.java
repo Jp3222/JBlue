@@ -10,9 +10,9 @@ import com.jblue.vista.ventanas.menus.cargos.MenuPresidente;
 import com.jblue.vista.ventanas.menus.cargos.MenuTesoreria;
 import com.jblue.sistema.Sesion;
 import com.jblue.util.cache.FabricaCache;
-import com.jblue.util.tiempo.Fecha;
 import com.jblue.vista.normas.SuperVentana;
 import com.jblue.vista.ventanas.Login;
+import com.jblue.vista.ventanas.componentes.CVisorUsuario;
 import com.jblue.vista.ventanas.menus.ayuda.AcercaDe;
 import com.jblue.vista.ventanas.menus.bd.MenuCalles;
 import com.jblue.vista.ventanas.menus.bd.MenuTomas;
@@ -28,9 +28,8 @@ import com.jblue.vista.ventanas.vistas.principal.VCobros;
 import com.jblue.vista.ventanas.vistas.principal.VRecargos;
 import java.awt.BorderLayout;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -61,6 +60,8 @@ public class MenuPrincipal extends SuperVentana {
     private final MenuCalles menuCalles;
     private final MenuTomas menuTipoTomas;
     private final MenuTRegistradas menuTomasRegistradas;
+    //--//
+    private final CVisorUsuario CVisorUsuario;
     // ---- Herramientas ---- //
     private final MenuCVS herrCSV;
     // ---- Vistas ---- //
@@ -70,10 +71,6 @@ public class MenuPrincipal extends SuperVentana {
     private final JFrame[] menus;
     private final JPanel[] vistas;
 
-    //
-    private final Fecha fecha;
-
-    //
     public MenuPrincipal(Login login) {
         this._TITULO = 2;
         this.login = login;
@@ -90,9 +87,12 @@ public class MenuPrincipal extends SuperVentana {
         this.menuCalles = new MenuCalles();
         this.menuTipoTomas = new MenuTomas();
         this.menuTomasRegistradas = new MenuTRegistradas();
+        //
+        CVisorUsuario = new CVisorUsuario(this, true);
         //vistas
         vistaCobros = new VCobros();
         vistaRecargos = new VRecargos();
+        //
         this.vistas = new JPanel[]{
             vistaCobros, vistaRecargos
         };
@@ -113,9 +113,6 @@ public class MenuPrincipal extends SuperVentana {
             menuTomasRegistradas,
             herrCSV
         };
-        //
-        fecha = new Fecha();
-        //
         this.initComponents();
         llamable();
     }
@@ -130,18 +127,7 @@ public class MenuPrincipal extends SuperVentana {
 
     @Override
     public void estadoInicial() {
-        OPersonal o = Sesion.getInstancia().getUsuario();
-        if (EnvPersonal.isTesorero(o)) {
-            itemTesoreria.setEnabled(true);
-        }
-        if (EnvPersonal.isPresidente(o)) {
-            itemPresidente.setEnabled(true);
-        }
-        if (EnvPersonal.isAdministrador(o)) {
-            itemTesoreria.setEnabled(true);
-            itemPresidente.setEnabled(true);
-            itemAdministrador.setEnabled(true);
-        }
+
     }
 
     @Override
@@ -157,8 +143,10 @@ public class MenuPrincipal extends SuperVentana {
 
     @Override
     protected void addComponentes() {
+        //visor v = new visor();
+        //img.add(v);
         for (int i = 0; i < vistas.length; i++) {
-            JPanel menu = (JPanel) jTabbedPane1.getComponentAt(i + 1);
+            JPanel menu = (JPanel) tab_root.getComponentAt(i + 1);
             menu.add(vistas[i], BorderLayout.CENTER);
         }
     }
@@ -172,32 +160,23 @@ public class MenuPrincipal extends SuperVentana {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jpAreaPersonal = new javax.swing.JPanel();
+        tab_root = new javax.swing.JTabbedPane();
+        panel_area_personal = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
-        jbtPerfil = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        jbtCobros = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        jbtRecargos = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        jPanel11 = new javax.swing.JPanel();
-        jPanel10 = new javax.swing.JPanel();
-        jPanel9 = new javax.swing.JPanel();
-        jbtSalir = new javax.swing.JButton();
+        panel_lat_opciones = new javax.swing.JPanel();
+        perfil = new javax.swing.JButton();
+        cobros = new javax.swing.JButton();
+        recargos = new javax.swing.JButton();
+        salir = new javax.swing.JButton();
         jPanel12 = new javax.swing.JPanel();
         jpVisor = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         img = new javax.swing.JPanel();
-        jpCobros = new javax.swing.JPanel();
-        jpRecargos = new javax.swing.JPanel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        panel_cobros = new javax.swing.JPanel();
+        panel_recargos = new javax.swing.JPanel();
+        menu_en_barra = new javax.swing.JMenuBar();
+        menu_principal = new javax.swing.JMenu();
         itemPerfil = new javax.swing.JMenuItem();
         itemPresidente = new javax.swing.JMenuItem();
         itemTesoreria = new javax.swing.JMenuItem();
@@ -214,24 +193,27 @@ public class MenuPrincipal extends SuperVentana {
         itemBdTipoTomas = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         itemSalir = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        menu_herramientas = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
         csv_rapidos = new javax.swing.JMenuItem();
         pagos_del_dia = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
+        menu_ayuda = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setExtendedState(6);
+        setMinimumSize(new java.awt.Dimension(600, 350));
+        setPreferredSize(new java.awt.Dimension(1200, 700));
+        setState(6);
 
-        jTabbedPane1.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-        jTabbedPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jTabbedPane1.setPreferredSize(new java.awt.Dimension(1200, 675));
+        tab_root.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+        tab_root.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tab_root.setPreferredSize(new java.awt.Dimension(1200, 675));
 
-        jpAreaPersonal.setLayout(new java.awt.BorderLayout());
+        panel_area_personal.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setPreferredSize(new java.awt.Dimension(300, 100));
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -241,90 +223,51 @@ public class MenuPrincipal extends SuperVentana {
         jLabel1.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel1.add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.PAGE_AXIS));
+        panel_lat_opciones.setLayout(new java.awt.GridLayout(10, 1));
 
-        jPanel7.setPreferredSize(new java.awt.Dimension(300, 50));
-        jPanel7.setLayout(new java.awt.BorderLayout());
-
-        jbtPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/usuario.png"))); // NOI18N
-        jbtPerfil.setText("Perfil");
-        jbtPerfil.addActionListener(new java.awt.event.ActionListener() {
+        perfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/usuario.png"))); // NOI18N
+        perfil.setText("Perfil");
+        perfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtPerfilActionPerformed(evt);
+                perfilActionPerformed(evt);
             }
         });
-        jPanel7.add(jbtPerfil, java.awt.BorderLayout.CENTER);
+        panel_lat_opciones.add(perfil);
 
-        jPanel2.add(jPanel7);
-
-        jPanel4.setPreferredSize(new java.awt.Dimension(300, 50));
-        jPanel4.setLayout(new java.awt.BorderLayout());
-
-        jbtCobros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/img5.png"))); // NOI18N
-        jbtCobros.setText("Cobros");
-        jbtCobros.setPreferredSize(new java.awt.Dimension(114, 50));
-        jbtCobros.addActionListener(new java.awt.event.ActionListener() {
+        cobros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/img5.png"))); // NOI18N
+        cobros.setText("Cobros");
+        cobros.setPreferredSize(new java.awt.Dimension(114, 50));
+        cobros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtCobrosActionPerformed(evt);
+                cobrosActionPerformed(evt);
             }
         });
-        jPanel4.add(jbtCobros, java.awt.BorderLayout.CENTER);
+        panel_lat_opciones.add(cobros);
 
-        jPanel2.add(jPanel4);
-
-        jPanel3.setPreferredSize(new java.awt.Dimension(300, 50));
-        jPanel3.setLayout(new java.awt.BorderLayout());
-
-        jbtRecargos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/multa.png"))); // NOI18N
-        jbtRecargos.setText("Recargos");
-        jbtRecargos.addActionListener(new java.awt.event.ActionListener() {
+        recargos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/multa.png"))); // NOI18N
+        recargos.setText("Recargos");
+        recargos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtRecargosActionPerformed(evt);
+                recargosActionPerformed(evt);
             }
         });
-        jPanel3.add(jbtRecargos, java.awt.BorderLayout.CENTER);
+        panel_lat_opciones.add(recargos);
 
-        jPanel2.add(jPanel3);
-
-        jPanel5.setPreferredSize(new java.awt.Dimension(300, 50));
-        jPanel5.setLayout(new java.awt.BorderLayout());
-        jPanel2.add(jPanel5);
-
-        jPanel6.setPreferredSize(new java.awt.Dimension(300, 50));
-        jPanel6.setLayout(new java.awt.BorderLayout());
-        jPanel2.add(jPanel6);
-
-        jPanel8.setPreferredSize(new java.awt.Dimension(300, 50));
-        jPanel8.setLayout(new java.awt.BorderLayout());
-        jPanel2.add(jPanel8);
-
-        jPanel11.setPreferredSize(new java.awt.Dimension(300, 50));
-        jPanel11.setLayout(new java.awt.BorderLayout());
-        jPanel2.add(jPanel11);
-
-        jPanel10.setPreferredSize(new java.awt.Dimension(300, 50));
-        jPanel10.setLayout(new java.awt.BorderLayout());
-        jPanel2.add(jPanel10);
-
-        jPanel9.setPreferredSize(new java.awt.Dimension(300, 50));
-        jPanel9.setLayout(new java.awt.BorderLayout());
-
-        jbtSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerrar-sesion.png"))); // NOI18N
-        jbtSalir.setText("Salir");
-        jbtSalir.setPreferredSize(new java.awt.Dimension(200, 50));
-        jbtSalir.addActionListener(new java.awt.event.ActionListener() {
+        salir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerrar-sesion.png"))); // NOI18N
+        salir.setText("Salir");
+        salir.setPreferredSize(new java.awt.Dimension(200, 50));
+        salir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtSalirActionPerformed(evt);
+                salirActionPerformed(evt);
             }
         });
-        jPanel9.add(jbtSalir, java.awt.BorderLayout.CENTER);
+        panel_lat_opciones.add(salir);
 
-        jPanel2.add(jPanel9);
+        jPanel1.add(panel_lat_opciones, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
+        panel_area_personal.add(jPanel1, java.awt.BorderLayout.LINE_START);
 
-        jpAreaPersonal.add(jPanel1, java.awt.BorderLayout.LINE_START);
-
+        jPanel12.setPreferredSize(new java.awt.Dimension(900, 600));
         jPanel12.setLayout(new java.awt.BorderLayout());
 
         jpVisor.setLayout(new java.awt.BorderLayout());
@@ -340,24 +283,24 @@ public class MenuPrincipal extends SuperVentana {
 
         jPanel12.add(jpVisor, java.awt.BorderLayout.CENTER);
 
-        jpAreaPersonal.add(jPanel12, java.awt.BorderLayout.CENTER);
+        panel_area_personal.add(jPanel12, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab("Area Personal", jpAreaPersonal);
+        tab_root.addTab("Area Personal", panel_area_personal);
 
-        jpCobros.setPreferredSize(new java.awt.Dimension(1200, 643));
-        jpCobros.setLayout(new java.awt.BorderLayout());
-        jTabbedPane1.addTab("Cobros", new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x16/salario.png")), jpCobros); // NOI18N
+        panel_cobros.setPreferredSize(new java.awt.Dimension(1200, 643));
+        panel_cobros.setLayout(new java.awt.BorderLayout());
+        tab_root.addTab("Cobros", new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x16/salario.png")), panel_cobros); // NOI18N
 
-        jpRecargos.setLayout(new java.awt.BorderLayout());
-        jTabbedPane1.addTab("Recargos", new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x16/pendiente.png")), jpRecargos); // NOI18N
+        panel_recargos.setLayout(new java.awt.BorderLayout());
+        tab_root.addTab("Recargos", new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x16/pendiente.png")), panel_recargos); // NOI18N
 
-        getContentPane().add(jTabbedPane1, java.awt.BorderLayout.PAGE_START);
-        jTabbedPane1.getAccessibleContext().setAccessibleName("tab_root");
+        getContentPane().add(tab_root, java.awt.BorderLayout.PAGE_START);
+        tab_root.getAccessibleContext().setAccessibleName("tab_root");
 
-        jMenuBar1.setPreferredSize(new java.awt.Dimension(1200, 25));
+        menu_en_barra.setPreferredSize(new java.awt.Dimension(1200, 25));
 
-        jMenu1.setText("Menu");
-        jMenu1.setToolTipText("Apartados principales del programa");
+        menu_principal.setText("Menu");
+        menu_principal.setToolTipText("Apartados principales del programa");
 
         itemPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/usuario(1).png"))); // NOI18N
         itemPerfil.setText("Perfil");
@@ -367,29 +310,27 @@ public class MenuPrincipal extends SuperVentana {
                 itemPerfilActionPerformed(evt);
             }
         });
-        jMenu1.add(itemPerfil);
+        menu_principal.add(itemPerfil);
 
         itemPresidente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/presidente.png"))); // NOI18N
         itemPresidente.setText("Presidente");
-        itemPresidente.setEnabled(false);
         itemPresidente.setName("itemPresidente"); // NOI18N
         itemPresidente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemPresidenteActionPerformed(evt);
             }
         });
-        jMenu1.add(itemPresidente);
+        menu_principal.add(itemPresidente);
 
         itemTesoreria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cofre-del-tesoro.png"))); // NOI18N
         itemTesoreria.setText("Tesorero");
-        itemTesoreria.setEnabled(false);
         itemTesoreria.setName("tesorero"); // NOI18N
         itemTesoreria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemTesoreriaActionPerformed(evt);
             }
         });
-        jMenu1.add(itemTesoreria);
+        menu_principal.add(itemTesoreria);
 
         subMenuDocs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/grupo.png"))); // NOI18N
         subMenuDocs.setText("Administracion");
@@ -419,7 +360,6 @@ public class MenuPrincipal extends SuperVentana {
 
         itemAdministrador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/perfil.png"))); // NOI18N
         itemAdministrador.setText("Administrador");
-        itemAdministrador.setEnabled(false);
         itemAdministrador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemAdministradorActionPerformed(evt);
@@ -436,7 +376,7 @@ public class MenuPrincipal extends SuperVentana {
         });
         subMenuDocs.add(itemComprobantes);
 
-        jMenu1.add(subMenuDocs);
+        menu_principal.add(subMenuDocs);
 
         subMenuBD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/base-de-datos(1).png"))); // NOI18N
         subMenuBD.setText("Base de datos");
@@ -482,8 +422,8 @@ public class MenuPrincipal extends SuperVentana {
         });
         subMenuBD.add(itemBdTipoTomas);
 
-        jMenu1.add(subMenuBD);
-        jMenu1.add(jSeparator2);
+        menu_principal.add(subMenuBD);
+        menu_principal.add(jSeparator2);
 
         itemSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cerrar-sesion(2).png"))); // NOI18N
         itemSalir.setText("Salir");
@@ -493,11 +433,11 @@ public class MenuPrincipal extends SuperVentana {
                 itemSalirActionPerformed(evt);
             }
         });
-        jMenu1.add(itemSalir);
+        menu_principal.add(itemSalir);
 
-        jMenuBar1.add(jMenu1);
+        menu_en_barra.add(menu_principal);
 
-        jMenu2.setText("Herramientas");
+        menu_herramientas.setText("Herramientas");
 
         jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/mesa.png"))); // NOI18N
         jMenu5.setText("Tablas");
@@ -520,7 +460,7 @@ public class MenuPrincipal extends SuperVentana {
         });
         jMenu5.add(pagos_del_dia);
 
-        jMenu2.add(jMenu5);
+        menu_herramientas.add(jMenu5);
 
         jMenu6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/desarrollo-de-software.png"))); // NOI18N
         jMenu6.setText("Software");
@@ -545,11 +485,11 @@ public class MenuPrincipal extends SuperVentana {
         });
         jMenu6.add(jMenuItem7);
 
-        jMenu2.add(jMenu6);
+        menu_herramientas.add(jMenu6);
 
-        jMenuBar1.add(jMenu2);
+        menu_en_barra.add(menu_herramientas);
 
-        jMenu4.setText("Ayuda");
+        menu_ayuda.setText("Ayuda");
 
         jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/information.png"))); // NOI18N
         jMenuItem5.setText("Acerca de JBlue");
@@ -558,11 +498,11 @@ public class MenuPrincipal extends SuperVentana {
                 jMenuItem5ActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem5);
+        menu_ayuda.add(jMenuItem5);
 
-        jMenuBar1.add(jMenu4);
+        menu_en_barra.add(menu_ayuda);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(menu_en_barra);
 
         pack();
         setLocationRelativeTo(null);
@@ -585,18 +525,18 @@ public class MenuPrincipal extends SuperVentana {
         dispose();
     }//GEN-LAST:event_itemSalirActionPerformed
 
-    private void jbtCobrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtCobrosActionPerformed
+    private void cobrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cobrosActionPerformed
         vistaSeleccionada(1);
-    }//GEN-LAST:event_jbtCobrosActionPerformed
+    }//GEN-LAST:event_cobrosActionPerformed
 
-    private void jbtRecargosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRecargosActionPerformed
+    private void recargosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargosActionPerformed
         vistaSeleccionada(2);
-    }//GEN-LAST:event_jbtRecargosActionPerformed
+    }//GEN-LAST:event_recargosActionPerformed
 
-    private void jbtSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSalirActionPerformed
+    private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
         vistaSeleccionada(0);
         dispose();
-    }//GEN-LAST:event_jbtSalirActionPerformed
+    }//GEN-LAST:event_salirActionPerformed
 
     private void itemPresidenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemPresidenteActionPerformed
         SwingUtilities.invokeLater(() -> menuPresidente.setVisible(true));
@@ -606,9 +546,9 @@ public class MenuPrincipal extends SuperVentana {
         SwingUtilities.invokeLater(() -> menuTomasRegistradas.setVisible(true));
     }//GEN-LAST:event_itemBdTomasRegistradasActionPerformed
 
-    private void jbtPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtPerfilActionPerformed
+    private void perfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_perfilActionPerformed
         SwingUtilities.invokeLater(() -> menuPerfil.setVisible(true));
-    }//GEN-LAST:event_jbtPerfilActionPerformed
+    }//GEN-LAST:event_perfilActionPerformed
 
     private void csv_rapidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_csv_rapidosActionPerformed
         SwingUtilities.invokeLater(() -> herrCSV.setVisible(true));
@@ -627,8 +567,9 @@ public class MenuPrincipal extends SuperVentana {
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         StringBuilder s = new StringBuilder();
-        s.append("Esta operacion puede pausar momentaneamente o finalizar el programa").append("\n");
-        s.append("¿Desea continuar?");
+        s.append("Esta operacion puede pausar momentaneamente o finalizar el programa")
+                .append("\n")
+                .append("¿Desea continuar?");
         int input = JOptionPane.showConfirmDialog(this, s.toString());
         if (input != JOptionPane.YES_OPTION) {
             return;
@@ -684,7 +625,7 @@ public class MenuPrincipal extends SuperVentana {
     }//GEN-LAST:event_itemDirUsuariosActionPerformed
 
     public void vistaSeleccionada(int i) {
-        SwingUtilities.invokeLater(() -> jTabbedPane1.setSelectedIndex(i));
+        SwingUtilities.invokeLater(() -> tab_root.setSelectedIndex(i));
     }
 
     public void finalizarSesion() {
@@ -717,6 +658,7 @@ public class MenuPrincipal extends SuperVentana {
 
 // <editor-fold defaultstate="collapsed" desc="Variables De Interfaz">
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cobros;
     private javax.swing.JMenuItem csv_rapidos;
     private javax.swing.JPanel img;
     private javax.swing.JMenuItem itemAdministrador;
@@ -733,48 +675,37 @@ public class MenuPrincipal extends SuperVentana {
     private javax.swing.JMenuItem itemTesoreria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JButton jbtCobros;
-    private javax.swing.JButton jbtPerfil;
-    private javax.swing.JButton jbtRecargos;
-    private javax.swing.JButton jbtSalir;
-    private javax.swing.JPanel jpAreaPersonal;
-    private javax.swing.JPanel jpCobros;
-    private javax.swing.JPanel jpRecargos;
     private javax.swing.JPanel jpVisor;
+    private javax.swing.JMenu menu_ayuda;
+    private javax.swing.JMenuBar menu_en_barra;
+    private javax.swing.JMenu menu_herramientas;
+    private javax.swing.JMenu menu_principal;
     private javax.swing.JMenuItem pagos_del_dia;
+    private javax.swing.JPanel panel_area_personal;
+    private javax.swing.JPanel panel_cobros;
+    private javax.swing.JPanel panel_lat_opciones;
+    private javax.swing.JPanel panel_recargos;
+    private javax.swing.JButton perfil;
+    private javax.swing.JButton recargos;
+    private javax.swing.JButton salir;
     private javax.swing.JMenu subMenuBD;
     private javax.swing.JMenu subMenuDocs;
+    private javax.swing.JTabbedPane tab_root;
     // End of variables declaration//GEN-END:variables
 
 // </editor-fold>
-    
     @Override
     public Rectangle getBounds() {
-        vistaCobros.getBounds();
+        //vistaCobros.getBounds();
         return super.getBounds(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
@@ -784,22 +715,30 @@ public class MenuPrincipal extends SuperVentana {
         super.dispose();
         irLogin();
     }
+
+    @Override
+    public void permisos() {
+        OPersonal o = Sesion.getInstancia().getUsuario();
+        itemTesoreria.setEnabled(EnvPersonal.isAdministrador(o) || EnvPersonal.isTesorero(o));
+        itemPresidente.setEnabled(EnvPersonal.isAdministrador(o) || EnvPersonal.isPresidente(o));
+        itemAdministrador.setEnabled(EnvPersonal.isAdministrador(o));
+
+    }
+
 }
 
 class visor extends JPanel {
 
-    int sizeX, sizeY;
-
-    public visor(int sizeX, int sizeY) {
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
+    public visor() {
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        ImageIcon o = new ImageIcon(getClass().getResource("/com/jblue/media/img/Fondo.svg.png"));
-        g.drawImage(o.getImage(), 0, 0, sizeX, sizeY, this);
+        ImageIcon o = new ImageIcon(getClass().getResource("/com/jblue/media/img/JBlue 1.0.png"));
+        Image i = o.getImage().getScaledInstance(200, 200, Image.SCALE_FAST);
+        ImageIcon x = new ImageIcon(i);
+        g.drawImage(x.getImage(), 0, 0, this);
     }
 
 }

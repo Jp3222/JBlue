@@ -25,6 +25,15 @@ import java.util.Map;
  */
 public class Configs {
 
+    private static Configs instancia;
+
+    public synchronized static Configs getInstancia() {
+        if (instancia == null) {
+            instancia = new Configs();
+        }
+        return instancia;
+    }
+
     private final HashMap<String, String> configs;
 
     public Configs() {
@@ -32,16 +41,18 @@ public class Configs {
     }
 
     public void prop() {
-        configs.put("bd_config", "[]");
-        configs.put("usuarios_master", "[]");
-
+        configs.put("bd-usuario", "No configurado");
+        configs.put("bd-contraseña", "No configurado");
+        configs.put("bd-url", "No configurado");
+        configs.put("Titulo", InfoApp.NOMBRE_DEL_PROGRAMA + " " + InfoApp.VERSION_DEL_PROGRAMA);
     }
 
-    public String[] getConfig(String s) {
-        String get = configs.get(s);
-        get = get.replace("[", "");
-        get = get.replace("]", "");
-        return get.split(",");
+    public HashMap<String, String> getConfigs() {
+        return configs;
+    }
+
+    public String getPropiedad(String pro) {
+        return configs.get(pro);
     }
 
     public String getString() {

@@ -14,11 +14,6 @@ import java.util.ArrayList;
  */
 public abstract class EnvPersonal {
 
-    public static final String CREACION = "c",
-            LECTURA = "r",
-            ACTUALIACION = "u",
-            ELIMINACION = "d";
-
     public static OPersonal getPersonal(String txt) {
         ArrayList<OPersonal> lista = FabricaCache.MC_PERSONAL.getLista();
         for (OPersonal i : lista) {
@@ -68,11 +63,11 @@ public abstract class EnvPersonal {
     }
 
     public static boolean isAdministrador(OPersonal o) {
-        return o.getCargo().equalsIgnoreCase("5");
+        return o.getCargo().equals("5");
     }
 
     public static boolean isPresidente(OPersonal o) {
-        return o.getCargo().equalsIgnoreCase("4");
+        return o.getCargo().equals("4");
     }
 
     public static boolean isTesorero(OPersonal o) {
@@ -80,15 +75,15 @@ public abstract class EnvPersonal {
     }
 
     public static boolean isSecretario(OPersonal o) {
-        return o.getCargo().equalsIgnoreCase("2");
+        return o.getCargo().equals("2");
     }
 
     public static boolean isPasante(OPersonal o) {
-        return o.getCargo().equalsIgnoreCase("1");
+        return o.getCargo().equals("1");
     }
 
     public static String getCargoString(OPersonal o) {
-        return switch ("2") {
+        return switch (o.getCargo()) {
             case "1":
                 yield "Pasante";
             case "2":

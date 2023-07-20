@@ -4,9 +4,6 @@
  */
 package com.jblue.vista.normas;
 
-import java.util.ArrayList;
-import javax.swing.JComponent;
-
 /**
  *
  * @author jp
@@ -19,19 +16,5 @@ public interface Permisos {
      * _bloquean
      */
     void permisos();
-
-    /**
-     * Este metodo esta pensando para usarse dentro del metodo permisos con el
-     * proposito de bloquear o desbloquear componentes segun los permios del
-     * personal
-     *
-     * @param estado de bloqueo de los componentes
-     * @param componentes - comopoentes que deben bloquear o desbloquearse
-     */
-    default void _bloquear(boolean estado, JComponent... componentes) {
-        for (JComponent componente : componentes) {
-            componente.setEnabled(estado);
-        }
-    }
 
 }

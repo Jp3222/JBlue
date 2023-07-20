@@ -5,13 +5,18 @@
 package com.jblue.vista.normas;
 
 import com.jblue.sistema.app.InfoApp;
+import java.util.HashSet;
+import java.util.Set;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 /**
  *
  * @author jp
  */
-public abstract class SuperVentana extends JFrame implements InfoApp {
+public abstract class SuperVentana extends JFrame implements InfoApp, Permisos {
+
+    protected Set<JComponent> _componentes_bloqueados = new HashSet<>(20);
 
     /**
      * <br> 0 - "nueva ventana"
@@ -77,6 +82,10 @@ public abstract class SuperVentana extends JFrame implements InfoApp {
      */
     protected void addEventos() {
 
+    }
+
+    @Override
+    public void permisos() {
     }
 
 }

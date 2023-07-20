@@ -4,13 +4,21 @@
  */
 package com.jblue.vista.normas;
 
+import java.util.HashSet;
+import java.util.Set;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /**
  *
  * @author jp
  */
-public abstract class SuperVista extends JPanel {
+public abstract class SuperVista extends JPanel implements Permisos {
+
+    protected ImageIcon icon;
+
+    protected Set<JComponent> _componentes_bloqueados = new HashSet<>(20);
 
     /**
      * Metodo recomentado para invocar solo a los metodos definidos siguiendo el
@@ -25,6 +33,7 @@ public abstract class SuperVista extends JPanel {
     protected abstract void llamable();
 
     /**
+     * e
      * Metodo recomendado para darle a ciertos componentes un estado inicial al
      * cual dado un evento en su clase o alguna clase ajena todos los
      * componentes puedan volver a dicho estado
@@ -51,4 +60,17 @@ public abstract class SuperVista extends JPanel {
     protected void manejoEventos() {
     }
 
+    @Override
+    public void permisos() {
+
+    }
+
+    public void setIcon(ImageIcon icon) {
+        this.icon = icon;
+    }
+
+    public ImageIcon getIcon() {
+        return icon;
+    }
+    
 }

@@ -15,7 +15,7 @@ public class FormatoBD {
 
     public static String[] bdSalida(String... datos) {
         for (int i = 0; i < datos.length; i++) {
-            if (varInValida(datos[i])) {
+            if (varInValida(datos[i]) || numero(datos[i])) {
                 continue;
             }
             datos[i] = datos[i].replace('_', ' ');
@@ -66,6 +66,10 @@ public class FormatoBD {
     }
 
     private static boolean varInValida(String txt) {
-        return txt == null || txt.isEmpty() || !txt.contains(" ") || txt.matches("[0-9]*(|.[0-9]{1,})");
+        return txt == null || txt.isBlank();
+    }
+
+    private static boolean numero(String txt) {
+        return txt.matches("[0-9]*(|.[0-9]{1,})");
     }
 }

@@ -36,7 +36,7 @@ public class Login extends SuperVentana {
 
     private MenuPrincipal MENU_PRINCIPAL;
     private final MenuConfigBD MENU_CONFIG_BD;
-    private final EnvJTextField envjtfs[];
+    private final EnvJTextField env_jtf[];
 
     /**
      * Creates new form NewLogin
@@ -47,9 +47,9 @@ public class Login extends SuperVentana {
         this._TITULO = 1;
         this.MENU_CONFIG_BD = MENU_CONFIG_BD;
         initComponents();
-        envjtfs = new EnvJTextField[2];
-        envjtfs[0] = new EnvJTextField(usuario, "ejem: david123");
-        envjtfs[1] = new EnvJTextField(contra, "contraseña 12345");
+        env_jtf = new EnvJTextField[2];
+        env_jtf[0] = new EnvJTextField(usuario, "ejem: david123");
+        env_jtf[1] = new EnvJTextField(contra, "contraseña 12345");
         llamable();
     }
 
@@ -66,7 +66,7 @@ public class Login extends SuperVentana {
         mostrar.setToolTipText("mostrar");
         mostrar.setSelected(false);
         //
-        for (EnvJTextField envjtf : envjtfs) {
+        for (EnvJTextField envjtf : env_jtf) {
             envjtf.defecto();
         }
         setDefaultLookAndFeelDecorated(false);
@@ -88,17 +88,16 @@ public class Login extends SuperVentana {
 
     @Override
     protected void addComponentes() {
-        super.addComponentes(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        super.addComponentes();
     }
 
     @Override
     protected void addEventos() {
         jbtInicio.addActionListener(e -> login());
-        for (EnvJTextField envjtf : envjtfs) {
+        for (EnvJTextField envjtf : env_jtf) {
             envjtf.borrarAlClick();
             envjtf.borrarAlEscribir();
         }
-
     }
 
     /**
@@ -114,10 +113,6 @@ public class Login extends SuperVentana {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        configuracionBD = new javax.swing.JButton();
-        jlEstado = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -131,49 +126,35 @@ public class Login extends SuperVentana {
         jLabel7 = new javax.swing.JLabel();
         jbtInicio = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        jPanel8 = new javax.swing.JPanel();
-        jPanel9 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        configuracionBD = new javax.swing.JButton();
+        jlEstado = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(350, 500));
         setResizable(false);
         getContentPane().setLayout(new java.awt.BorderLayout(5, 5));
 
+        jPanel1.setPreferredSize(new java.awt.Dimension(350, 400));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 0, 36)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Inicio de sesion");
-        jLabel1.setPreferredSize(new java.awt.Dimension(350, 25));
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel1.setPreferredSize(new java.awt.Dimension(350, 50));
         jPanel1.add(jLabel1, java.awt.BorderLayout.NORTH);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/usuario.png"))); // NOI18N
-        jLabel2.setPreferredSize(new java.awt.Dimension(350, 75));
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/img1.png"))); // NOI18N
+        jLabel2.setPreferredSize(new java.awt.Dimension(350, 150));
         jPanel1.add(jLabel2, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(350, 300));
+        jPanel2.setPreferredSize(new java.awt.Dimension(350, 250));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jPanel3.setPreferredSize(new java.awt.Dimension(350, 40));
-        jPanel3.setLayout(new java.awt.BorderLayout(5, 5));
-
-        configuracionBD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/img4.png"))); // NOI18N
-        configuracionBD.setPreferredSize(new java.awt.Dimension(75, 40));
-        configuracionBD.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                configuracionBDActionPerformed(evt);
-            }
-        });
-        jPanel3.add(configuracionBD, java.awt.BorderLayout.WEST);
-        jPanel3.add(jlEstado, java.awt.BorderLayout.CENTER);
-
-        jLabel4.setPreferredSize(new java.awt.Dimension(75, 40));
-        jPanel3.add(jLabel4, java.awt.BorderLayout.LINE_END);
-
-        jPanel2.add(jPanel3, java.awt.BorderLayout.SOUTH);
-
-        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.Y_AXIS));
+        jPanel4.setLayout(new java.awt.GridLayout(5, 1, 5, 5));
 
         jPanel5.setLayout(new java.awt.BorderLayout(5, 5));
 
@@ -229,15 +210,25 @@ public class Login extends SuperVentana {
 
         jPanel4.add(jPanel7);
 
-        jPanel8.setPreferredSize(new java.awt.Dimension(100, 100));
-        jPanel8.setLayout(new java.awt.BorderLayout());
-        jPanel4.add(jPanel8);
-
-        jPanel9.setPreferredSize(new java.awt.Dimension(100, 100));
-        jPanel9.setLayout(new java.awt.BorderLayout());
-        jPanel4.add(jPanel9);
-
         jPanel2.add(jPanel4, java.awt.BorderLayout.CENTER);
+
+        jPanel3.setPreferredSize(new java.awt.Dimension(350, 40));
+        jPanel3.setLayout(new java.awt.BorderLayout(5, 5));
+
+        configuracionBD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/img4.png"))); // NOI18N
+        configuracionBD.setPreferredSize(new java.awt.Dimension(75, 40));
+        configuracionBD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                configuracionBDActionPerformed(evt);
+            }
+        });
+        jPanel3.add(configuracionBD, java.awt.BorderLayout.WEST);
+        jPanel3.add(jlEstado, java.awt.BorderLayout.CENTER);
+
+        jLabel4.setPreferredSize(new java.awt.Dimension(75, 40));
+        jPanel3.add(jLabel4, java.awt.BorderLayout.LINE_END);
+
+        jPanel2.add(jPanel3, java.awt.BorderLayout.SOUTH);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_END);
 
@@ -292,7 +283,9 @@ public class Login extends SuperVentana {
         });
         SwingUtilities.invokeLater(() -> {
             MENU_PRINCIPAL = new MenuPrincipal(this);
+            MENU_PRINCIPAL.permisos();
             MENU_PRINCIPAL.setVisible(true);
+            
         });
     }
 
@@ -311,9 +304,9 @@ public class Login extends SuperVentana {
                 JOptionPane.showMessageDialog(this, "Usuario y/o contraseña incorrectos");
                 return false;
             }
-            Sesion sesion = Sesion.getInstancia();
-            sesion.setUsuario(get);
-            if (!sesion.inicioSesion()) {
+            Sesion ses = Sesion.getInstancia();
+            ses.setUsuario(get);
+            if (!ses.inicioSesion()) {
                 JOptionPane.showMessageDialog(this, "ERROR AL REGISTRAR SESION");
                 return false;
             }
@@ -354,14 +347,14 @@ public class Login extends SuperVentana {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JButton jbtInicio;
     private javax.swing.JLabel jlEstado;
     private javax.swing.JCheckBox mostrar;
     private javax.swing.JTextField usuario;
     // End of variables declaration//GEN-END:variables
- @Override
+
+//
+    @Override
     public void dispose() {
         super.dispose();
         SwingUtilities.invokeLater(() -> estadoInicial());

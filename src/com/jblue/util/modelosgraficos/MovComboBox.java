@@ -5,7 +5,7 @@
 package com.jblue.util.modelosgraficos;
 
 import com.jblue.modelo.objetos.sucls.Objeto;
-import com.jblue.util.cache.MemoCache2;
+import com.jblue.util.cache.MemoCache;
 import com.jblue.util.interfacesSuper.graficos.InterfaceComboBoxMov;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
@@ -20,10 +20,10 @@ public class MovComboBox<T extends Objeto> implements InterfaceComboBoxMov {
 
     private final JComboBox<String> COMBO_BOX;
     private final DefaultComboBoxModel<String> MODELO;
-    private final MemoCache2<T> cache;
+    private final MemoCache<T> cache;
     private int strCont;
 
-    public MovComboBox(JComboBox<String> COMBO_BOX, MemoCache2<T> cache) {
+    public MovComboBox(JComboBox<String> COMBO_BOX, MemoCache<T> cache) {
         this.COMBO_BOX = COMBO_BOX;
         this.MODELO = (DefaultComboBoxModel<String>) COMBO_BOX.getModel();
         this.cache = cache;
@@ -66,7 +66,7 @@ public class MovComboBox<T extends Objeto> implements InterfaceComboBoxMov {
 
     @Override
     public void llenar() {
-        ArrayList<T> lista = cache.getMEMORIA();
+        ArrayList<T> lista = cache.getLista();
         for (T t : lista) {
             MODELO.addElement(t.getSubCon(strCont));
         }

@@ -5,6 +5,8 @@
 package com.jblue.modelo.objetos;
 
 import com.jblue.modelo.objetos.sucls.Objeto;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * OPersonal
@@ -141,6 +143,14 @@ public class OPersonal extends Objeto {
      */
     public String getPermisos() {
         return _conjunto[8];
+    }
+
+    public String getPeriodoString() {
+        return _conjunto[9];
+    }
+
+    public boolean isPeriodoValido() {
+        return !_conjunto[9].equals("IND");
     }
 
     /**

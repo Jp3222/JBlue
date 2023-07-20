@@ -22,22 +22,22 @@ public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio implement
         super(tabla, campos);
     }
 
-    public boolean insertar(String[] valores, FuncionAplicada funcion) {
+    public synchronized boolean insertar(String[] valores, FuncionAplicada funcion) {
         if (funcion != null) {
             valores = funcion.procesamiento(valores);
         }
         return _INSERTAR(valores);
     }
 
-    public boolean eliminar(String where, FuncionAplicada funcion) {
+    public synchronized boolean eliminar(String where, FuncionAplicada funcion) {
         return _ELIMINAR(where);
     }
 
-    public boolean actualizar(String campo, String valor, String where, FuncionAplicada funcion) {
+    public synchronized boolean actualizar(String campo, String valor, String where, FuncionAplicada funcion) {
         return _ACTUALIZAR(campo, valor, where);
     }
 
-    public boolean actualizar(String[] campos, String[] valores, String where, FuncionAplicada funcion) {
+    public synchronized boolean actualizar(String[] campos, String[] valores, String where, FuncionAplicada funcion) {
         if (funcion != null) {
             valores = funcion.procesamiento(valores);
         }

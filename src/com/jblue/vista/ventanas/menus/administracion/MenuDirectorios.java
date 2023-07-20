@@ -20,11 +20,14 @@ import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.sistema.app.Prop;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.vista.normas.SuperVentana;
+import com.jblue.vista.ventanas.componentes.CSelectorObjeto;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 
 /**
  *
@@ -49,8 +52,10 @@ public class MenuDirectorios extends SuperVentana {
         modelo_lista = new DefaultListModel<>();
         initComponents();
         usuarios_sin_dir.setModel(modelo_lista);
-        crear_dir.setEnabled(false);
+        //crear_dir.setEnabled(false);
         llamable();
+        //BasicFileAttributes readAttributes = Files.readAttributes(dir_usuarios.toPath(), BasicFileAttributes.class);
+        // System.out.println(readAttributes.creationTime());
     }
 
     @Override
@@ -63,10 +68,17 @@ public class MenuDirectorios extends SuperVentana {
 
     @Override
     public void estadoInicial() {
-
+        if (modelo_lista.getSize() > 0) {
+            modelo_lista.clear();
+        }
+        crear_dir.setEnabled(false);
     }
+    String dir_nom_formato = "%s - %s";
 
-    final void cargarUsuariosSinDocumentos() {
+    private void cargarLista() {
+        if (modelo_lista.getSize() > 0) {
+            modelo_lista.clear();
+        }
         String[] dirs = dir_usuarios.list();
         if (dirs.length == cache.size()) {
             return;
@@ -74,12 +86,12 @@ public class MenuDirectorios extends SuperVentana {
         ArrayList<String> lista = new ArrayList<>();
         lista.addAll(Arrays.asList(dirs));
         for (OUsuarios i : cache) {
-            System.out.println(i.getStringR());
-            int index = lista.indexOf(i.getStringR());
-            System.out.println("index:" + index);
+
+            int index = lista.indexOf(String.format(dir_nom_formato, i.getId(), i.getStringR()));
             if (index < 0) {
                 modelo_lista.addElement(i.getStringR());
             }
+
         }
     }
 
@@ -92,28 +104,24 @@ public class MenuDirectorios extends SuperVentana {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelDirectorios = new javax.swing.JPanel();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
         panel_usuario_sin_dir = new javax.swing.JPanel();
+        panel_izq = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         usuarios_sin_dir = new javax.swing.JList<>();
-        jPanel8 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        panel_der = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         crear_dir = new javax.swing.JButton();
-        panel_usuarios_con_dir = new javax.swing.JPanel();
+        jToggleButton1 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        panelDirectorios.setLayout(new java.awt.BorderLayout());
-
-        jTabbedPane2.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jTabbedPane2StateChanged(evt);
-            }
-        });
+        setPreferredSize(new java.awt.Dimension(700, 600));
 
         panel_usuario_sin_dir.setName("Usuarios sin directorio"); // NOI18N
+        panel_usuario_sin_dir.setPreferredSize(new java.awt.Dimension(700, 600));
         panel_usuario_sin_dir.setLayout(new java.awt.BorderLayout());
+
+        panel_izq.setLayout(new java.awt.BorderLayout());
 
         jScrollPane2.setPreferredSize(new java.awt.Dimension(300, 300));
 
@@ -124,9 +132,17 @@ public class MenuDirectorios extends SuperVentana {
         });
         jScrollPane2.setViewportView(usuarios_sin_dir);
 
-        panel_usuario_sin_dir.add(jScrollPane2, java.awt.BorderLayout.LINE_START);
+        panel_izq.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
-        jPanel8.setLayout(new java.awt.GridLayout(8, 0));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Usuarios sin directorio");
+        jLabel1.setPreferredSize(new java.awt.Dimension(200, 40));
+        panel_izq.add(jLabel1, java.awt.BorderLayout.NORTH);
+
+        panel_usuario_sin_dir.add(panel_izq, java.awt.BorderLayout.CENTER);
+
+        panel_der.setPreferredSize(new java.awt.Dimension(400, 232));
+        panel_der.setLayout(new java.awt.GridLayout(8, 0));
 
         jButton5.setText("Crear Directorio a todos");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -134,7 +150,7 @@ public class MenuDirectorios extends SuperVentana {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel8.add(jButton5);
+        panel_der.add(jButton5);
 
         crear_dir.setText("Crear Directorio");
         crear_dir.addActionListener(new java.awt.event.ActionListener() {
@@ -142,49 +158,37 @@ public class MenuDirectorios extends SuperVentana {
                 crear_dirActionPerformed(evt);
             }
         });
-        jPanel8.add(crear_dir);
+        panel_der.add(crear_dir);
 
-        panel_usuario_sin_dir.add(jPanel8, java.awt.BorderLayout.CENTER);
+        jToggleButton1.setText("Eliminar Directorio");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+        panel_der.add(jToggleButton1);
 
-        jTabbedPane2.addTab("Usuarios sin Directorio", panel_usuario_sin_dir);
+        panel_usuario_sin_dir.add(panel_der, java.awt.BorderLayout.EAST);
 
-        panel_usuarios_con_dir.setName("Usuarios con directorio"); // NOI18N
-
-        javax.swing.GroupLayout panel_usuarios_con_dirLayout = new javax.swing.GroupLayout(panel_usuarios_con_dir);
-        panel_usuarios_con_dir.setLayout(panel_usuarios_con_dirLayout);
-        panel_usuarios_con_dirLayout.setHorizontalGroup(
-            panel_usuarios_con_dirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 980, Short.MAX_VALUE)
-        );
-        panel_usuarios_con_dirLayout.setVerticalGroup(
-            panel_usuarios_con_dirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 663, Short.MAX_VALUE)
-        );
-
-        jTabbedPane2.addTab("Usuarios con directorio", panel_usuarios_con_dir);
-
-        panelDirectorios.add(jTabbedPane2, java.awt.BorderLayout.CENTER);
-
-        getContentPane().add(panelDirectorios, java.awt.BorderLayout.CENTER);
+        getContentPane().add(panel_usuario_sin_dir, java.awt.BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-
+        JProgressBar jp = new JProgressBar(WIDTH, NORMAL);
         int x = 0;
         for (OUsuarios i : cache) {
             StringBuilder s = new StringBuilder(dir_usuarios.getAbsolutePath());
-            s.append("/").append(i.getStringR());
+            s.append("/").append(String.format(dir_nom_formato, i.getId(), i.getStringR()));
             File j = new File(s.toString());
             if (j.mkdir()) {
                 x++;
             }
         }
         JOptionPane.showMessageDialog(this, "Se crearon: " + x + " directorios");
-
-
+        cargarLista();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void usuarios_sin_dirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usuarios_sin_dirMouseClicked
@@ -197,35 +201,53 @@ public class MenuDirectorios extends SuperVentana {
     }//GEN-LAST:event_usuarios_sin_dirMouseClicked
 
     private void crear_dirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crear_dirActionPerformed
-        String rm = modelo_lista.remove(usuario_seleccionado);
-        StringBuilder s = new StringBuilder(dir_usuarios.getAbsolutePath());
-        s.append("/").append(rm);
-        File f = new File(s.toString());
-        System.out.println(f.getAbsolutePath());
-        if (f.mkdir()) {
-            JOptionPane.showMessageDialog(this, "El directorio se creo correctamente");
-        }
+        OUsuarios usuario = CSelectorObjeto.selectorUsuarios(this);
+        System.out.println(usuario);
+//        String rm = modelo_lista.remove(usuario_seleccionado);
+//        StringBuilder s = new StringBuilder(dir_usuarios.getAbsolutePath());
+//        s.append("/").append(rm);
+//        File f = new File(s.toString());
+//        System.out.println(f.getAbsolutePath());
+//        if (f.mkdir()) {
+//            JOptionPane.showMessageDialog(this, "El directorio se creo correctamente");
+//        }
     }//GEN-LAST:event_crear_dirActionPerformed
 
-    private void jTabbedPane2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane2StateChanged
-
-        if (panel_usuario_sin_dir.isVisible()) {
-            cargarUsuariosSinDocumentos();
-        } else if (modelo_lista.isEmpty()) {
-            modelo_lista.clear();
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        JFileChooser file = new JFileChooser(dir_usuarios);
+        file.setMultiSelectionEnabled(false);
+        file.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int opc = file.showOpenDialog(this);
+        if (opc != JFileChooser.APPROVE_OPTION) {
+            return;
         }
-    }//GEN-LAST:event_jTabbedPane2StateChanged
+        File seleccionado = file.getSelectedFile();
+        String aux = "Directorio %s borrado";
+        if (seleccionado.delete()) {
+            JOptionPane.showMessageDialog(this, String.format(aux, seleccionado.getName()));
+        }
+        cargarLista();
+
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    @Override
+    public void setVisible(boolean b) {
+        super.setVisible(b); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        if (b) {
+            cargarLista();
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton crear_dir;
     private javax.swing.JButton jButton5;
-    private javax.swing.JPanel jPanel8;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JPanel panelDirectorios;
+    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JPanel panel_der;
+    private javax.swing.JPanel panel_izq;
     private javax.swing.JPanel panel_usuario_sin_dir;
-    private javax.swing.JPanel panel_usuarios_con_dir;
     private javax.swing.JList<String> usuarios_sin_dir;
     // End of variables declaration//GEN-END:variables
 }

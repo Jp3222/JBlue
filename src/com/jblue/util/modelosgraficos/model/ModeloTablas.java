@@ -17,7 +17,6 @@
 package com.jblue.util.modelosgraficos.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -26,17 +25,16 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ModeloTablas extends DefaultTableModel {
 
-    private final ArrayList<String> lista;
     private ArrayList<Boolean> cellEdit;
 
     public ModeloTablas(String... columnNames) {
         super(new Object[][]{}, columnNames);
-        lista = new ArrayList<>(columnNames.length + 5);
+        //
         cellEdit = new ArrayList<>(columnNames.length + 5);
+        //
         for (String columnName : columnNames) {
             cellEdit.add(true);
         }
-        lista.addAll(Arrays.asList(columnNames));
     }
 
     @Override
@@ -46,5 +44,20 @@ public class ModeloTablas extends DefaultTableModel {
 
     public void setCellEditable(int columnIndex, boolean value) {
         cellEdit.set(columnIndex, value);
+    }
+
+    public void setAllCellEditable(boolean value) {
+        for (int i = 0; i < cellEdit.size(); i++) {
+            cellEdit.set(i, value);
+        }
+    }
+
+    public void clear() {
+        if (dataVector.isEmpty()) {
+            return;
+        }
+        int size = dataVector.size();
+        dataVector.clear();
+        fireTableRowsDeleted(0, size);
     }
 }

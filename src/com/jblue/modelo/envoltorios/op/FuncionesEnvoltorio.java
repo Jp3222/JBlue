@@ -4,8 +4,10 @@
  */
 package com.jblue.modelo.envoltorios.op;
 
+import com.jblue.modelo.ConstBD;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OHisMovimientos;
+import com.jblue.modelo.objetos.OPagosOtros;
 import com.jblue.modelo.objetos.OPagosRecargos;
 import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OPersonal;
@@ -41,14 +43,14 @@ public abstract class FuncionesEnvoltorio {
         this.CAMPOS = campos;
         this.NO_CAMPOS = campos.length;
         map = new HashMap<>(10);
-        map.put("calles", new OCalles());
-        map.put("tipo_tomas", new OTipoTomas());
-        map.put("usuarios", new OUsuarios());
-        map.put("personal", new OPersonal());
-        map.put("pagos_x_servicio", new OPagosServicio());
-        map.put("pagos_x_recargos", new OPagosRecargos());
-        map.put("pagos_x_otros", new OPagosRecargos());
-        map.put("historial_movimientos", new OHisMovimientos());
+        map.put(ConstBD.TABLAS[0], new OPersonal());
+        map.put(ConstBD.TABLAS[1], new OUsuarios());
+        map.put(ConstBD.TABLAS[2], new OCalles());
+        map.put(ConstBD.TABLAS[3], new OTipoTomas());
+        map.put(ConstBD.TABLAS[4], new OHisMovimientos());
+        map.put(ConstBD.TABLAS[6], new OPagosServicio());
+        map.put(ConstBD.TABLAS[7], new OPagosRecargos());
+        map.put(ConstBD.TABLAS[8], new OPagosOtros());
 
     }
 

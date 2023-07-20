@@ -9,6 +9,7 @@ import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.util.Filtros;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
@@ -49,7 +50,7 @@ public class EnvUsuario {
         ArrayList<OUsuarios> lista = FabricaCache.MC_USUARIOS.getLista();
         OUsuarios aux = null;
         for (OUsuarios i : lista) {
-            if (i.getId().equals(txt) || i.getStringR().equalsIgnoreCase(txt)) {
+            if (i.getId().equals(txt) || i.getStringR().equalsIgnoreCase(txt) || i.getCodigo().equals(txt)) {
                 aux = i;
                 break;
             }
@@ -97,8 +98,23 @@ public class EnvUsuario {
         return String.valueOf(size);
     }
 
-    static String limpiar(String txt) {
-        return txt.trim().replace(" ", "").replace("-", "").replace("_", "");
+    public static boolean filtroID(String txt, OUsuarios o) {
+        return o.getId().equals(txt);
     }
 
+    public static boolean filtroContieneNombre(String txt, OUsuarios o) {
+        String x = Filtros.limpiar(o.getStringR());
+        String y = Filtros.limpiar(txt);
+        return x.contains(y);
+    }
+
+    public static boolean filtroContieneCodigo(String txt, OUsuarios o) {
+        String x = Filtros.limpiar(o.getCodigo());
+        String y = Filtros.limpiar(txt);
+        return x.contains(y);
+    }
+
+    public static boolean filtros(String txt, OUsuarios o) {
+        return filtroID(txt, o) || filtroContieneNombre(txt, o) || filtroContieneCodigo(txt, o);
+    }
 }

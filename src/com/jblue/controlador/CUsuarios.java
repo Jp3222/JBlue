@@ -26,11 +26,10 @@ public class CUsuarios {
         this.R = vista;
     }
 
-    public void cargarTodo() {
+    public void cargarComboBoxes() {
         cargarComboModel(R.getJcbCalle(), FabricaCache.MC_CALLES.getLista());
         cargarComboModel(R.getJcbTipoToma(), FabricaCache.MC_TIPOS_DE_TOMAS.getLista());
         cargarComboModel(R.getJcbTitular(), FabricaCache.MC_USUARIOS.getLista(), (t) -> t.isTitular());
-        cargarTabla();
     }
 
     public void cargarFiltros() {
@@ -53,15 +52,12 @@ public class CUsuarios {
 
     public void actualizarVistaPrincipal() {
         actualizarComboModel(R.getJcbTitular(), FabricaCache.MC_USUARIOS.getLista(), (t) -> t.isTitular());
-        actualizarLista();
     }
 
     public void vaciarTodo() {
-        R.getModelo_lista().removeAllElements();
         R.getJcbCalle().removeAllItems();
         R.getJcbTipoToma().removeAllItems();
         R.getJcbTitular().removeAllItems();
-        R.estadoInicial();
     }
 
     /**
@@ -105,7 +101,7 @@ public class CUsuarios {
             return;
         }
         for (T t : lista) {
-            componente.addItem(t.getStringR().replace("_", " "));
+            componente.addItem(t.getStringR());
         }
     }
 
@@ -117,7 +113,7 @@ public class CUsuarios {
             if (!filtro.test(t)) {
                 continue;
             }
-            componente.addItem(t.getStringR().replace("_", " "));
+            componente.addItem(t.getStringR());
         }
     }
 
@@ -144,7 +140,7 @@ public class CUsuarios {
         }
         DefaultListModel<String> modelo_lista = R.getModelo_lista();
         for (OUsuarios oUsuarios : lista) {
-            modelo_lista.addElement(oUsuarios.getStringR().replace("_", " "));
+            modelo_lista.addElement(oUsuarios.getStringR());
         }
     }
 
@@ -157,6 +153,7 @@ public class CUsuarios {
     }
 
     public void cargarTabla() {
+        System.out.println("lleno");
         ArrayList<OUsuarios> lista = FabricaCache.MC_USUARIOS.getLista();
         if (lista.isEmpty()) {
         }
@@ -175,17 +172,11 @@ public class CUsuarios {
     }
 
     public void vaciarTabla() {
+        System.out.println("vacio");
         DefaultTableModel modelo_tabla = R.getModelo_tabla();
         while (modelo_tabla.getRowCount() > 0) {
             modelo_tabla.removeRow(0);
         }
-    }
-
-    public void filtros_calles() {
-
-    }
-
-    public void filtros_tomas() {
     }
 
 }

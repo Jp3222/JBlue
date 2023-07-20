@@ -25,25 +25,7 @@ public class OPagosServicio extends OPagos {
         return _conjuntoSinFK[2];
     }
 
-    @Override
-    protected String[] InfoSinFK() {
-        super.InfoSinFK(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        _conjuntoSinFK[3] = getMesPagado();
-        _conjuntoSinFK[4] = getMonto();
-        _conjuntoSinFK[5] = getDia();
-        _conjuntoSinFK[6] = getMes();
-        _conjuntoSinFK[7] = getAño();
-        return _conjuntoSinFK;
-    }
-
-    @Override
-    public void setInfo(String[] info) {
-        super.setInfo(info);
-        _conjuntoSinFK = InfoSinFK();
-    }
-
     public String[] getInfoSinFK() {
-
         return _conjuntoSinFK;
     }
 

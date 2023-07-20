@@ -13,7 +13,7 @@ import java.io.File;
 public class SoInfo {
 
     public static final String SO_NOMBRE = System.getProperty("os.name");
-    public static final String RUTA_DE_USUARIO = System.getProperty("user.home");
+    public static final String RUTA_DE_USUARIO = System.getProperty("user.home");//onedrive
     public static final String LENGUAJE_DEL_SISTEMA = System.getProperty("user.language");
     //
     public static final String[] DICCIONARIO_DE_CARPETAS = getRutas();
@@ -34,7 +34,6 @@ public class SoInfo {
         }
         String diccionario[] = {escritorio, documentos};
         return diccionario;
-
     }
 
     public static boolean isWindows() {

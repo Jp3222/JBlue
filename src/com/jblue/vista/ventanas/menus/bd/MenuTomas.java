@@ -10,10 +10,12 @@ import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.util.FormatoBD;
+import com.jblue.util.Func;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.vista.normas.SuperVentana;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
@@ -120,18 +122,17 @@ public class MenuTomas extends SuperVentana {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        root = new javax.swing.JPanel();
         panel_izq = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jtfBuscador = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        jtfBuscador = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jbtRecrgar = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jbtAnterior = new javax.swing.JButton();
         jbtSiguiente = new javax.swing.JButton();
-        jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtTipoDeTomas = new javax.swing.JTable();
         panel_der = new javax.swing.JPanel();
@@ -157,15 +158,22 @@ public class MenuTomas extends SuperVentana {
         jbtCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(500, 300));
+        setPreferredSize(new java.awt.Dimension(1000, 700));
 
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        root.setMinimumSize(new java.awt.Dimension(500, 700));
+        root.setPreferredSize(new java.awt.Dimension(500, 700));
+        root.setLayout(new java.awt.BorderLayout());
 
-        panel_izq.setMinimumSize(new java.awt.Dimension(500, 700));
+        panel_izq.setMinimumSize(new java.awt.Dimension(300, 300));
         panel_izq.setPreferredSize(new java.awt.Dimension(500, 700));
         panel_izq.setLayout(new java.awt.BorderLayout());
 
         jPanel2.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/buscar.png"))); // NOI18N
+        jPanel2.add(jLabel7, java.awt.BorderLayout.WEST);
 
         jtfBuscador.setPreferredSize(new java.awt.Dimension(500, 30));
         jtfBuscador.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -175,10 +183,7 @@ public class MenuTomas extends SuperVentana {
         });
         jPanel2.add(jtfBuscador, java.awt.BorderLayout.CENTER);
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/buscar.png"))); // NOI18N
-        jPanel2.add(jLabel7, java.awt.BorderLayout.WEST);
-
-        panel_izq.add(jPanel2, java.awt.BorderLayout.PAGE_START);
+        panel_izq.add(jPanel2, java.awt.BorderLayout.NORTH);
 
         jPanel5.setPreferredSize(new java.awt.Dimension(500, 670));
         jPanel5.setLayout(new java.awt.BorderLayout());
@@ -188,30 +193,29 @@ public class MenuTomas extends SuperVentana {
 
         jbtRecrgar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
         jbtRecrgar.setToolTipText("Recargar Pagina");
-        jbtRecrgar.setPreferredSize(new java.awt.Dimension(100, 25));
+        jbtRecrgar.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel7.add(jbtRecrgar, java.awt.BorderLayout.WEST);
 
         jPanel10.setPreferredSize(new java.awt.Dimension(200, 70));
-        jPanel10.setLayout(new java.awt.BorderLayout());
+        jPanel10.setLayout(new java.awt.GridLayout(1, 2));
 
         jbtAnterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
         jbtAnterior.setToolTipText("Pagina anterior");
         jbtAnterior.setEnabled(false);
         jbtAnterior.setPreferredSize(new java.awt.Dimension(100, 25));
-        jPanel10.add(jbtAnterior, java.awt.BorderLayout.WEST);
+        jPanel10.add(jbtAnterior);
 
         jbtSiguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
         jbtSiguiente.setToolTipText("Pagina siguiente");
         jbtSiguiente.setEnabled(false);
         jbtSiguiente.setPreferredSize(new java.awt.Dimension(100, 25));
-        jPanel10.add(jbtSiguiente, java.awt.BorderLayout.EAST);
+        jPanel10.add(jbtSiguiente);
 
         jPanel7.add(jPanel10, java.awt.BorderLayout.EAST);
 
         jPanel5.add(jPanel7, java.awt.BorderLayout.NORTH);
 
-        jPanel6.setPreferredSize(new java.awt.Dimension(500, 640));
-        jPanel6.setLayout(new java.awt.BorderLayout());
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(500, 640));
 
         jtTipoDeTomas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -236,6 +240,7 @@ public class MenuTomas extends SuperVentana {
                 return canEdit [columnIndex];
             }
         });
+        jtTipoDeTomas.setPreferredSize(new java.awt.Dimension(400, 640));
         jtTipoDeTomas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jtTipoDeTomasMouseClicked(evt);
@@ -243,13 +248,11 @@ public class MenuTomas extends SuperVentana {
         });
         jScrollPane1.setViewportView(jtTipoDeTomas);
 
-        jPanel6.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        jPanel5.add(jPanel6, java.awt.BorderLayout.CENTER);
+        jPanel5.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         panel_izq.add(jPanel5, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(panel_izq, java.awt.BorderLayout.WEST);
+        root.add(panel_izq, java.awt.BorderLayout.WEST);
 
         panel_der.setMinimumSize(new java.awt.Dimension(500, 700));
         panel_der.setPreferredSize(new java.awt.Dimension(500, 700));
@@ -259,11 +262,11 @@ public class MenuTomas extends SuperVentana {
         jScrollPane2.setMinimumSize(new java.awt.Dimension(500, 300));
         jScrollPane2.setPreferredSize(new java.awt.Dimension(500, 700));
 
-        jPanel17.setMinimumSize(new java.awt.Dimension(500, 700));
-        jPanel17.setPreferredSize(new java.awt.Dimension(500, 700));
+        jPanel17.setMinimumSize(new java.awt.Dimension(400, 600));
+        jPanel17.setPreferredSize(new java.awt.Dimension(400, 600));
         jPanel17.setLayout(new javax.swing.BoxLayout(jPanel17, javax.swing.BoxLayout.PAGE_AXIS));
 
-        panelCampos.setPreferredSize(new java.awt.Dimension(500, 600));
+        panelCampos.setPreferredSize(new java.awt.Dimension(400, 600));
         panelCampos.setLayout(new java.awt.GridLayout(8, 0));
 
         jPanel12.setMinimumSize(new java.awt.Dimension(500, 50));
@@ -340,7 +343,7 @@ public class MenuTomas extends SuperVentana {
         panel_Botones.setPreferredSize(new java.awt.Dimension(500, 100));
         panel_Botones.setLayout(new java.awt.GridLayout(2, 1));
 
-        jPanel26.setPreferredSize(new java.awt.Dimension(500, 50));
+        jPanel26.setPreferredSize(new java.awt.Dimension(400, 50));
         jPanel26.setLayout(new java.awt.GridLayout(1, 3));
 
         jbtGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
@@ -380,7 +383,7 @@ public class MenuTomas extends SuperVentana {
 
         jbtCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
         jbtCancelar.setText("Cancelar");
-        jbtCancelar.setPreferredSize(new java.awt.Dimension(500, 50));
+        jbtCancelar.setPreferredSize(new java.awt.Dimension(400, 50));
         jbtCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtCancelarActionPerformed(evt);
@@ -394,9 +397,9 @@ public class MenuTomas extends SuperVentana {
 
         panel_der.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(panel_der, java.awt.BorderLayout.CENTER);
+        root.add(panel_der, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(root, java.awt.BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);
@@ -602,7 +605,6 @@ public class MenuTomas extends SuperVentana {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel14;
@@ -612,7 +614,6 @@ public class MenuTomas extends SuperVentana {
     private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -632,12 +633,26 @@ public class MenuTomas extends SuperVentana {
     private javax.swing.JPanel panel_Botones;
     private javax.swing.JPanel panel_der;
     private javax.swing.JPanel panel_izq;
+    private javax.swing.JPanel root;
     // End of variables declaration//GEN-END:variables
 
     //</editor-fold>   
-
     public DefaultTableModel getModelo_Tabla() {
         return modelo_tabla;
     }
 
+    @Override
+    public Rectangle getBounds() {
+        red_panel_root = super.getBounds().getWidth() < 800;
+        red_panel_der = panel_der.getBounds().getWidth() < 400;
+        if (red_panel_root && red_panel_der && panel_izq.isVisible()) {
+            Func.ocultarComponente(false, panel_izq);
+        } else if (!red_panel_root) {
+            Func.ocultarComponente(true, panel_izq);
+        }
+        return super.getBounds();
+    }
+
+    private boolean red_panel_root;
+    private boolean red_panel_der;
 }

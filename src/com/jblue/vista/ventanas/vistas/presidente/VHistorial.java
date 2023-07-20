@@ -151,7 +151,7 @@ public class VHistorial extends javax.swing.JPanel {
     private void jbtSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSiguienteActionPerformed
         memoria_cache.sig();
         memoria_cache.actualizar();
-        rango.setText(memoria_cache.getAnt() + " - " + memoria_cache.getSig());
+        rango.setText(memoria_cache.getLimite_min() + " - " + memoria_cache.getLimite_max());
         vaciar();
         cargar();
     }//GEN-LAST:event_jbtSiguienteActionPerformed
@@ -159,7 +159,7 @@ public class VHistorial extends javax.swing.JPanel {
     private void jbtAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAnteriorActionPerformed
         memoria_cache.ant();
         memoria_cache.actualizar();
-        rango.setText(memoria_cache.getAnt() + " - " + memoria_cache.getSig());
+        rango.setText(memoria_cache.getLimite_min() + " - " + memoria_cache.getLimite_max());
         vaciar();
         cargar();
     }//GEN-LAST:event_jbtAnteriorActionPerformed

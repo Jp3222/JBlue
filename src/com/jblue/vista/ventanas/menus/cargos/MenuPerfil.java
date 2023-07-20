@@ -5,8 +5,10 @@
 package com.jblue.vista.ventanas.menus.cargos;
 
 import com.jblue.modelo.envoltorios.Operaciones;
+import com.jblue.modelo.envoltorios.env.EnvPersonal;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.sistema.Sesion;
+import com.jblue.util.Filtros;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.vista.normas.SuperVentana;
@@ -20,6 +22,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -62,6 +65,7 @@ public class MenuPerfil extends SuperVentana {
             componnetes[i].setText(info[i]);
             componnetes[i].setEditable(false);
         }
+        cargo.setText(EnvPersonal.getCargoString(personal));
     }
 
     /**
@@ -91,12 +95,12 @@ public class MenuPerfil extends SuperVentana {
         jLabel2 = new javax.swing.JLabel();
         usuario = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         contraseña = new javax.swing.JTextField();
         jPanel13 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
+        jCheckBox2 = new javax.swing.JCheckBox();
         jPanel6 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         registro = new javax.swing.JTextField();
@@ -170,13 +174,15 @@ public class MenuPerfil extends SuperVentana {
         jPanel10.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel10.setLayout(new java.awt.BorderLayout());
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        jCheckBox1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jCheckBox1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
+        jCheckBox1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img3.png"))); // NOI18N
+        jCheckBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCheckBox1ItemStateChanged(evt);
             }
         });
-        jPanel10.add(jButton1, java.awt.BorderLayout.CENTER);
+        jPanel10.add(jCheckBox1, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel10, java.awt.BorderLayout.EAST);
 
@@ -192,14 +198,15 @@ public class MenuPerfil extends SuperVentana {
         jPanel13.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel13.setLayout(new java.awt.BorderLayout());
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
-        jButton3.setPreferredSize(new java.awt.Dimension(50, 27));
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+        jCheckBox2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jCheckBox2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
+        jCheckBox2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img3.png"))); // NOI18N
+        jCheckBox2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCheckBox2ItemStateChanged(evt);
             }
         });
-        jPanel13.add(jButton3, java.awt.BorderLayout.CENTER);
+        jPanel13.add(jCheckBox2, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel13, java.awt.BorderLayout.EAST);
 
@@ -251,54 +258,17 @@ public class MenuPerfil extends SuperVentana {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String contra = JOptionPane.showInputDialog("Contraseña");
-        if (contra == null || contra.isBlank()) {
-            return;
-        }
-        EncriptadoAES conf;
-        String des = null;
-        try {
-            conf = new EncriptadoAES();
-            OPersonal personal = sesion.getUsuario();
-            des = conf.desencriptar(personal.getUsuario(), contra);
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-            JOptionPane.showMessageDialog(this, "Contraseña Incorrecta");
-            Excp.impTerminal(ex, getClass(), false);
-        }
-        if (des == null) {
-            return;
-        }
-        usuario.setText(des);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        OPersonal personal = sesion.getUsuario();
-        String user = JOptionPane.showInputDialog("Usuario");
-        if (user == null || user.isBlank()) {
-            return;
-        }
-        try {
-            String des = encriptador.desencriptar(personal.getContra(), user);
-            contraseña.setText(des);
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-            JOptionPane.showMessageDialog(this, "Usuario Incorrecta");
-            Excp.imp(ex, getClass(), true, false);
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             String pass = JOptionPane.showInputDialog("Contraseña");
-            if (!_valido(pass)) {
+            if (Filtros.isNullOrBlank(pass)) {
                 return;
             }
             OPersonal p = sesion.getUsuario();
             String usu = encriptador.desencriptar(p.getUsuario(), pass);
-            //String con = encriptador.desencriptar(p.getContra(), user);
 
             String new_pass = JOptionPane.showInputDialog("Nueva Contraseña");
-            if (!_valido(new_pass)) {
+            if (Filtros.isNullOrBlank(new_pass)) {
                 return;
             }
             String usu2 = encriptador.encriptar(usu, new_pass);
@@ -324,19 +294,57 @@ public class MenuPerfil extends SuperVentana {
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    boolean _valido(String txt) {
-        return txt != null && !txt.isBlank();
-    }
+    private void jCheckBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox1ItemStateChanged
+        SwingUtilities.invokeLater(() -> {
+            OPersonal personal = sesion.getUsuario();
+            String texto = personal.getUsuario();
+            if (jCheckBox1.isSelected()) {
+                String contra = JOptionPane.showInputDialog("Contraseña");
+                if (contra == null || contra.isBlank()) {
+                    return;
+                }
+                try {
+                    texto = encriptador.desencriptar(personal.getUsuario(), contra);
+                } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
+                    JOptionPane.showMessageDialog(this, "Contraseña Incorrecta");
+                    Excp.impTerminal(ex, getClass(), false);
+                }
+            }
+            usuario.setText(texto);
+        });
+
+    }//GEN-LAST:event_jCheckBox1ItemStateChanged
+
+    private void jCheckBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox2ItemStateChanged
+        SwingUtilities.invokeLater(() -> {
+            OPersonal personal = sesion.getUsuario();
+            String texto = personal.getContra();
+            if (jCheckBox2.isSelected()) {
+                String user = JOptionPane.showInputDialog("Usuario");
+                if (user == null || user.isBlank()) {
+                    return;
+                }
+                try {
+                    texto = encriptador.desencriptar(personal.getContra(), user);
+                } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
+                    JOptionPane.showMessageDialog(this, "Usuario Incorrecta");
+                    Excp.impTerminal(ex, getClass(), false);
+                }
+            }
+            contraseña.setText(texto);
+        });
+    }//GEN-LAST:event_jCheckBox2ItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel apellidos;
     private javax.swing.JTextField cargo;
     private javax.swing.JTextField contraseña;
     private javax.swing.JTextField estado;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

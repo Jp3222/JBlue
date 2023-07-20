@@ -4,38 +4,49 @@
  */
 package com.jblue.util;
 
-import javax.swing.JOptionPane;
-
 /**
  *
  * @author jp
  */
-public class Mensajes {
+public interface Mensajes {
 
-    private final static String[] operaciones = {
-        "inserccion", "eliminacion", "actualizacion"
-    };
-    private final static String[] estados = {
-        "exitosa", "erronea"
-    };
-    
     /**
-     * Metdo para lanza un mensa
      *
-     * @param operaccion tipo de operaccion que se realizo:
-     * <br>0 = "inserccion"
-     * <br>1 = "eliminacion"
-     * <br>2 = "actualizacion"
-     * @param estado indicador del estado de la operaccion:
-     * <br>0 = "exitoso"
-     * <br>1 = "erroneo"
      */
-    public static void Mensaje(int operaccion, int estado) {
-        JOptionPane.showMessageDialog(null, operaciones[operaccion] + " " + estados[estado]);
-    }
+    static final String FORM_SSS = "%s %s %s";
 
-    public static void DatosNoValidos() {
-        JOptionPane.showMessageDialog(null, "Datos De Entrada No Validos", "Datos Null", JOptionPane.ERROR_MESSAGE);
-    }
+    /**
+     *
+     */
+    static final String FORM_SS = "%s %s";
+
+    /**
+     * Cadenas que representan objetos
+     * <br> 0 - datos
+     * <br> 1 - tabla
+     */
+    static final String[] _OBJETOS = {
+        "datos ", "tabla "
+    };
+
+    /**
+     * Cadenas que representan operaciones que se ejecutan en los objetos
+     * <br> 0 - inserccion
+     * <br> 1 - eliminacion
+     * <br> 3 - actualizacion
+     */
+    static final String[] _OPERACIONES = {
+        "inserccion ", "eliminacion ", "actualizacion "
+    };
+
+    /**
+     * Cadenas que representan los estados de una operacion
+     * <br> 0 - exitosa
+     * <br> 1 - erronea
+     * <br> 2 - no validos
+     */
+    static final String[] _ESTADO = {
+        "exitosa", "erronea", "no validos"
+    };
 
 }

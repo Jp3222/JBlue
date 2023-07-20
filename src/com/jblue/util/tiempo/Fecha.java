@@ -19,16 +19,16 @@ public class Fecha {
         "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"
     };
 
-    private final DateTimeFormatter ORDEN;
-    private final Year year;
-    private final Month month;
-    private final LocalDate localDate;
+    private final DateTimeFormatter FORMATO;
+    private final Year AÑO;
+    private final Month MES;
+    private final LocalDate FECHA_ACTUAL;
 
     public Fecha() {
-        this.ORDEN = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        this.year = Year.now();
-        this.localDate = LocalDate.now();
-        this.month = localDate.getMonth();
+        this.FORMATO = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        this.AÑO = Year.now();
+        this.FECHA_ACTUAL = LocalDate.now();
+        this.MES = FECHA_ACTUAL.getMonth();
     }
 
     public LocalDate getNewFechaActual() {
@@ -37,12 +37,12 @@ public class Fecha {
 
     public String getNewFechaActualString() {
         LocalDate now = LocalDate.now();
-        return now.format(ORDEN);
+        return now.format(FORMATO);
 
     }
 
     public LocalDate getFechaObj(String o) {
-        LocalDate now = LocalDate.parse(o, ORDEN);
+        LocalDate now = LocalDate.parse(o, FORMATO);
         return now;
     }
 
@@ -56,9 +56,9 @@ public class Fecha {
      */
     public String[] getInfoMes() {
         return new String[]{
-            MESES[localDate.getMonthValue() - 1],
+            MESES[FECHA_ACTUAL.getMonthValue() - 1],
             "1",
-            month.length(year.isLeap()) + ""
+            MES.length(AÑO.isLeap()) + ""
         };
     }
 
@@ -80,18 +80,18 @@ public class Fecha {
     }
 
     public int getMaxDiaDelMes() {
-        return localDate.getMonth().length(year.isLeap());
+        return FECHA_ACTUAL.getMonth().length(AÑO.isLeap());
     }
 
     public int getDiaDelMes() {
-        return localDate.getDayOfMonth();
+        return FECHA_ACTUAL.getDayOfMonth();
     }
 
     public int getMes() {
-        return localDate.getMonthValue();
+        return FECHA_ACTUAL.getMonthValue();
     }
 
     public int getAño() {
-        return localDate.getYear();
+        return FECHA_ACTUAL.getYear();
     }
 }

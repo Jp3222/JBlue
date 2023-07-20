@@ -4,6 +4,9 @@
  */
 package com.jblue.util.plataformas.soconfig;
 
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
+import com.jtattoo.plaf.mint.MintLookAndFeel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
@@ -24,12 +27,20 @@ public class apariencia {
         try {
             String UI = UIManager.getSystemLookAndFeelClassName();
             UIManager.setLookAndFeel(UI);
-
         } catch (ClassNotFoundException | InstantiationException
                 | IllegalAccessException | UnsupportedLookAndFeelException ex) {
 
             Logger.getLogger(apariencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
+    public static void setFlatMacLightlaf() {
+
+        try {
+            UIManager.setLookAndFeel(new FlatMacLightLaf());
+        } catch (UnsupportedLookAndFeelException ex) {
+
+            Logger.getLogger(apariencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

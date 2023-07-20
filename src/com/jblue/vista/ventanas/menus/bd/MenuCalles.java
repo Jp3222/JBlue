@@ -9,10 +9,12 @@ import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.util.FormatoBD;
+import com.jblue.util.Func;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.vista.normas.SuperVentana;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
@@ -121,7 +123,7 @@ public class MenuCalles extends SuperVentana {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        _root = new javax.swing.JPanel();
         panel_izq = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jtfBuscador = new javax.swing.JTextField();
@@ -156,11 +158,11 @@ public class MenuCalles extends SuperVentana {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(500, 300));
-        setPreferredSize(new java.awt.Dimension(500, 700));
+        setPreferredSize(new java.awt.Dimension(1000, 700));
 
-        jPanel1.setMinimumSize(new java.awt.Dimension(500, 700));
-        jPanel1.setPreferredSize(new java.awt.Dimension(500, 700));
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        _root.setMinimumSize(new java.awt.Dimension(500, 700));
+        _root.setPreferredSize(new java.awt.Dimension(500, 700));
+        _root.setLayout(new java.awt.BorderLayout());
 
         panel_izq.setMinimumSize(new java.awt.Dimension(500, 700));
         panel_izq.setPreferredSize(new java.awt.Dimension(500, 700));
@@ -182,10 +184,10 @@ public class MenuCalles extends SuperVentana {
 
         panel_izq.add(jPanel13, java.awt.BorderLayout.NORTH);
 
-        jPanel5.setPreferredSize(new java.awt.Dimension(500, 30));
+        jPanel5.setPreferredSize(new java.awt.Dimension(500, 670));
         jPanel5.setLayout(new java.awt.BorderLayout());
 
-        jPanel7.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel7.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel7.setLayout(new java.awt.BorderLayout());
 
         jbtRecrgar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
@@ -249,7 +251,7 @@ public class MenuCalles extends SuperVentana {
 
         panel_izq.add(jPanel5, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(panel_izq, java.awt.BorderLayout.WEST);
+        _root.add(panel_izq, java.awt.BorderLayout.WEST);
 
         panel_der.setMinimumSize(new java.awt.Dimension(500, 700));
         panel_der.setPreferredSize(new java.awt.Dimension(500, 700));
@@ -259,8 +261,8 @@ public class MenuCalles extends SuperVentana {
         jScrollPane2.setMinimumSize(new java.awt.Dimension(500, 300));
         jScrollPane2.setPreferredSize(new java.awt.Dimension(500, 700));
 
-        jPanel2.setMinimumSize(new java.awt.Dimension(500, 700));
-        jPanel2.setPreferredSize(new java.awt.Dimension(500, 700));
+        jPanel2.setMinimumSize(new java.awt.Dimension(400, 600));
+        jPanel2.setPreferredSize(new java.awt.Dimension(400, 600));
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.PAGE_AXIS));
 
         panelCampos.setPreferredSize(new java.awt.Dimension(500, 600));
@@ -314,7 +316,6 @@ public class MenuCalles extends SuperVentana {
 
         jPanel2.add(panelCampos);
 
-        jPanel3.setMaximumSize(new java.awt.Dimension(1000, 200));
         jPanel3.setMinimumSize(new java.awt.Dimension(500, 100));
         jPanel3.setPreferredSize(new java.awt.Dimension(500, 100));
         jPanel3.setLayout(new java.awt.GridLayout(2, 1));
@@ -370,9 +371,9 @@ public class MenuCalles extends SuperVentana {
 
         panel_der.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(panel_der, java.awt.BorderLayout.CENTER);
+        _root.add(panel_der, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(_root, java.awt.BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);
@@ -537,11 +538,11 @@ public class MenuCalles extends SuperVentana {
 
 // <editor-fold defaultstate="collapsed" desc="Generated Code">     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel _root;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
@@ -583,5 +584,23 @@ public class MenuCalles extends SuperVentana {
     public ArrayList<OCalles> getLista_auxiliar() {
         return lista_auxiliar;
     }
+
+    @Override
+    public Rectangle getBounds() {
+        red_panel_root = super.getBounds().getWidth() < 800;
+        red_panel_der = panel_der.getBounds().getWidth() < 400;
+        if (red_panel_root && red_panel_der && panel_izq.isVisible()) {
+            Func.ocultarComponente(false, panel_izq);
+        } else if (!red_panel_root) {
+            Func.ocultarComponente(true, panel_izq);
+        }
+        return super.getBounds();
+    }
+
+    /**
+     * Variable para verificar la dimencion horizontal del panel principal
+     */
+    private boolean red_panel_root;
+    private boolean red_panel_der;
 
 }

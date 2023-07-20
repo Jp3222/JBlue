@@ -12,7 +12,9 @@ import com.jblue.modelo.envoltorios.env.EnvUsuario;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.util.Filtros;
 import com.jblue.util.FormatoBD;
+import com.jblue.util.Func;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
@@ -20,19 +22,22 @@ import com.jblue.util.modelosgraficos.model.ModeloTablas;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.vista.normas.SuperVentana;
 import java.awt.BorderLayout;
+import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import net.sourceforge.jbarcodebean.JBarcodeBean;
@@ -58,17 +63,11 @@ public class MenuUsuarios extends SuperVentana {
      * auxiliar o de la cache
      */
     private boolean buscando;
-    //
-    private boolean filtros;
-    private boolean solo_activos;
-    //
-    private final Fecha fecha;
     private final Operaciones<OUsuarios> operaciones;
     private final MemoCache<OUsuarios> memoria_cache;
     private final ArrayList<OUsuarios> cache;
     private final ArrayList<OUsuarios> lista_auxiliar;
     private final Set<OUsuarios> lista_de_busqueda;
-    private final HashMap<String, String> filtros_seleccionados;
 
     private final ModeloTablas modelo_tabla;
     private final DefaultListModel<String> modelo_lista;
@@ -81,16 +80,14 @@ public class MenuUsuarios extends SuperVentana {
         this.lista_auxiliar = new ArrayList<>(1000);
         this.modelo_lista = new DefaultListModel<>();
         this.lista_de_busqueda = new LinkedHashSet<>(1000);
-        this.filtros_seleccionados = new HashMap<>(5);
-        this.fecha = new Fecha();
         this.operaciones = FabricaOpraciones.USUARIOS;
         this.memoria_cache = FabricaCache.MC_USUARIOS;
         this.cache = memoria_cache.getLista();
         this.buscando = false;
         this.initComponents();
-        controlador = new CUsuarios(this);
-        modelo_tabla = new ModeloTablas(ConstGs.BD_USUARIOS);
-        jtUsuarios.setModel(modelo_tabla);
+        this.controlador = new CUsuarios(this);
+        this.modelo_tabla = new ModeloTablas(ConstGs.BD_USUARIOS);
+        this.jtUsuarios.setModel(modelo_tabla);
         this.jlUsuarios.setModel(modelo_lista);
         this.llamable();
     }
@@ -113,12 +110,12 @@ public class MenuUsuarios extends SuperVentana {
 
     @Override
     public void estadoInicial() {
-        tab_root.setSelectedIndex(0);
+        //tab_root.setSelectedIndex(0);
         usuario_buscado = null;
         buscando = false;
         jtfNombre.requestFocus();
         initPanelDeRegistros();
-        initPanelDeConsultas();
+
     }
 
     @Override
@@ -132,10 +129,13 @@ public class MenuUsuarios extends SuperVentana {
         jtfNombre.setText(null);
         jtfAp.setText(null);
         jtfAm.setText(null);
-        initJCB(jcbTipoToma, mantenerToma.isSelected());
-        initJCB(jcbCalle, mantenerCalle.isSelected());
-        initJCB(jcbEstado, mantenerEstado.isSelected());
-        initJCB(jcbTitular, MantenerTitular.isSelected());
+        jtfNumeroCasa.setText(null);
+        codigo_bar.setText(null);
+
+        _initJCB(jcbTipoToma, mantenerToma.isSelected());
+        _initJCB(jcbCalle, mantenerCalle.isSelected());
+        _initJCB(jcbEstado, mantenerEstado.isSelected());
+        _initJCB(jcbTitular, MantenerTitular.isSelected());
         botonesPrimarios();
     }
 
@@ -151,22 +151,19 @@ public class MenuUsuarios extends SuperVentana {
         eliminar.setEnabled(true);
     }
 
-    void initJCB(JComboBox<String> componente, boolean mantener) {
-        if (mantener) {
-            return;
-        }
-        if (componente.getItemCount() == 0) {
+    void _initJCB(JComboBox<String> componente, boolean mantener) {
+        if (mantener || componente.getItemCount() == 0) {
             return;
         }
         componente.setSelectedIndex(0);
     }
 
-    void initPanelDeConsultas() {
-        filtros(activar_filtros.isSelected());
-    }
-
     @Override
     protected void addEventos() {
+        Set<KeyStroke> set = new LinkedHashSet<>(10);
+        jtfNombre.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, set);
+        jtfAm.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, set);
+        jtfAp.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, set);
 
         jchbTitular.addActionListener(e -> {
             if (jchbTitular.isSelected()) {
@@ -177,43 +174,41 @@ public class MenuUsuarios extends SuperVentana {
         });
 
         tab_root.addChangeListener((e) -> {
-            if (jpConsultas.isVisible()) {
+            if (panelConsultas.isVisible()) {
+                filtros(activar_filtros.isSelected());
                 controlador.cargarFiltros();
+                controlador.cargarTabla();
                 return;
             }
             controlador.vaciarFiltros();
+            controlador.vaciarTabla();
         });
-
-        filtro_calle.addItemListener((e) -> {
-            actualizarFiltros();
-        });
-        filtro_toma.addItemListener((e) -> {
-            actualizarFiltros();
-        });
+        filtro_calle.addItemListener((e) -> actualizarFiltros());
+        filtro_toma.addItemListener((e) -> actualizarFiltros());
     }
 
-    void _buscar(String texto_buscado, boolean solo_activos) {
+    private void _buscadorEnLista(String texto_buscado, boolean solo_activos) {
         lista_auxiliar.clear();
         modelo_lista.removeAllElements();
-        if (texto_buscado == null || texto_buscado.isBlank()) {
+        if (Filtros.isNullOrBlank(texto_buscado)) {
             return;
         }
-        texto_buscado = limpiar(texto_buscado);
-        for (OUsuarios o : cache) {
-            if (solo_activos && !o.isActivo()) {
+        texto_buscado = Filtros.limpiar(texto_buscado);
+        String aux;
+        StringBuilder s = new StringBuilder();
+
+        for (OUsuarios i : cache) {
+            if (solo_activos && !i.isActivo()) {
                 continue;
             }
-            String aux = limpiar(o.getStringR());
+            aux = Filtros.limpiar(i.getStringR());
             if (aux.contains(texto_buscado)) {
-                modelo_lista.addElement(o.getStringR());
-                lista_auxiliar.add(o);
+                s.append(i.getId()).append(" - ").append(i.getStringR());
+                modelo_lista.addElement(s.toString());
+                lista_auxiliar.add(i);
+                s.delete(0, s.length());
             }
         }
-
-    }
-
-    String limpiar(String txt) {
-        return txt.trim().replace(" ", "").replace("_", "").toLowerCase();
     }
 
     /**
@@ -282,13 +277,13 @@ public class MenuUsuarios extends SuperVentana {
         actualizar = new javax.swing.JButton();
         eliminar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
-        jpConsultas = new javax.swing.JPanel();
-        jPanel19 = new javax.swing.JPanel();
-        jPanel32 = new javax.swing.JPanel();
+        panelConsultas = new javax.swing.JPanel();
+        panel_filtros = new javax.swing.JPanel();
+        pf_bar_super = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
         activar_filtros = new javax.swing.JCheckBox();
-        jPanel21 = new javax.swing.JPanel();
+        pf_filtros = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
         jPanel25 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
@@ -296,26 +291,23 @@ public class MenuUsuarios extends SuperVentana {
         jPanel26 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         filtro_toma = new javax.swing.JComboBox<>();
-        jPanel29 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        jPanel24 = new javax.swing.JPanel();
-        jPanel27 = new javax.swing.JPanel();
-        jLabel14 = new javax.swing.JLabel();
-        filtro_is_titular = new javax.swing.JCheckBox();
-        filtro_is_consumidor = new javax.swing.JCheckBox();
         jPanel28 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         filtro_estado = new javax.swing.JComboBox<>();
+        jPanel24 = new javax.swing.JPanel();
+        jPanel27 = new javax.swing.JPanel();
+        filtro_is_titular = new javax.swing.JCheckBox();
+        filtro_is_consumidor = new javax.swing.JCheckBox();
         jPanel31 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         filtro_Titular = new javax.swing.JTextField();
-        jPanel20 = new javax.swing.JPanel();
+        panelInferior = new javax.swing.JPanel();
         jPanel30 = new javax.swing.JPanel();
-        jtfBuscadorTabla = new javax.swing.JTextField();
+        buscador_tabla = new javax.swing.JTextField();
         jPanel23 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        anterior = new javax.swing.JButton();
+        siguiente = new javax.swing.JButton();
+        recargar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jtUsuarios = new javax.swing.JTable();
 
@@ -324,6 +316,7 @@ public class MenuUsuarios extends SuperVentana {
         setMinimumSize(new java.awt.Dimension(500, 300));
 
         tab_root.setMinimumSize(new java.awt.Dimension(500, 200));
+        tab_root.setOpaque(true);
         tab_root.setPreferredSize(new java.awt.Dimension(1000, 700));
 
         panelRegistros.setMinimumSize(new java.awt.Dimension(500, 200));
@@ -393,9 +386,9 @@ public class MenuUsuarios extends SuperVentana {
         jLabel2.setPreferredSize(new java.awt.Dimension(500, 20));
         jPanel4.add(jLabel2, java.awt.BorderLayout.NORTH);
 
-        jtfNombre.setToolTipText("<html>\nCampos: Nombre\n<br>Valor: Solo texto\n<br>Longitud: 32 Caracteres");
+        jtfNombre.setToolTipText("<html>\nCampo: Nombre\n<br>valores admitidos: Solo texto\n<br>tamaño maximo: 32 Caracteres");
         jtfNombre.setName("Nombre"); // NOI18N
-        jtfNombre.setPreferredSize(new java.awt.Dimension(500, 30));
+        jtfNombre.setPreferredSize(new java.awt.Dimension(400, 30));
         jtfNombre.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jtfNombreFocusLost(evt);
@@ -411,8 +404,8 @@ public class MenuUsuarios extends SuperVentana {
         coincidencias.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         coincidencias.setText("0");
         coincidencias.setToolTipText("<html>\n<h1> Numero de coincidencias.</h1>\n<br>\n<p> Este campos e activa con un espacio.<br> y toma encuenta las coincidencias del nombre, apellido paterno y apellido materno</p>");
-        coincidencias.setPreferredSize(new java.awt.Dimension(50, 30));
-        jPanel4.add(coincidencias, java.awt.BorderLayout.LINE_END);
+        coincidencias.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel4.add(coincidencias, java.awt.BorderLayout.EAST);
 
         panelCampos.add(jPanel4);
 
@@ -536,6 +529,7 @@ public class MenuUsuarios extends SuperVentana {
         jPanel18.add(jLabel1, java.awt.BorderLayout.LINE_START);
 
         jtfNumeroCasa.setToolTipText("<html> Campo: Numero de casa  <br>Valor: Solo numeros <br>Longitud: 3 Caracteres");
+        jtfNumeroCasa.setName("Numero de Casa"); // NOI18N
         jtfNumeroCasa.setPreferredSize(new java.awt.Dimension(340, 30));
         jPanel18.add(jtfNumeroCasa, java.awt.BorderLayout.CENTER);
 
@@ -574,6 +568,7 @@ public class MenuUsuarios extends SuperVentana {
         jPanel14.add(jLabel10, java.awt.BorderLayout.LINE_START);
 
         codigo_bar.setEditable(false);
+        codigo_bar.setName("Codigo Barras"); // NOI18N
         jPanel14.add(codigo_bar, java.awt.BorderLayout.CENTER);
 
         jLabel19.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -641,17 +636,17 @@ public class MenuUsuarios extends SuperVentana {
 
         tab_root.addTab("Registro de usuarios", panelRegistros);
 
-        jpConsultas.setPreferredSize(new java.awt.Dimension(1000, 670));
-        jpConsultas.setLayout(new java.awt.BorderLayout());
+        panelConsultas.setPreferredSize(new java.awt.Dimension(1000, 670));
+        panelConsultas.setLayout(new java.awt.BorderLayout());
 
-        jPanel19.setPreferredSize(new java.awt.Dimension(1000, 170));
-        jPanel19.setLayout(new java.awt.BorderLayout());
+        panel_filtros.setPreferredSize(new java.awt.Dimension(1000, 170));
+        panel_filtros.setLayout(new java.awt.BorderLayout());
 
-        jPanel32.setLayout(new java.awt.BorderLayout());
+        pf_bar_super.setLayout(new java.awt.BorderLayout());
 
         jLabel17.setText("Filtros");
         jLabel17.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel32.add(jLabel17, java.awt.BorderLayout.CENTER);
+        pf_bar_super.add(jLabel17, java.awt.BorderLayout.CENTER);
 
         jButton6.setText("Quitar filtros");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -659,21 +654,21 @@ public class MenuUsuarios extends SuperVentana {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel32.add(jButton6, java.awt.BorderLayout.LINE_END);
+        pf_bar_super.add(jButton6, java.awt.BorderLayout.LINE_END);
 
         activar_filtros.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 activar_filtrosItemStateChanged(evt);
             }
         });
-        jPanel32.add(activar_filtros, java.awt.BorderLayout.LINE_START);
+        pf_bar_super.add(activar_filtros, java.awt.BorderLayout.LINE_START);
 
-        jPanel19.add(jPanel32, java.awt.BorderLayout.NORTH);
+        panel_filtros.add(pf_bar_super, java.awt.BorderLayout.NORTH);
 
-        jPanel21.setLayout(new javax.swing.BoxLayout(jPanel21, javax.swing.BoxLayout.LINE_AXIS));
+        pf_filtros.setLayout(new java.awt.GridLayout(1, 2));
 
         jPanel22.setPreferredSize(new java.awt.Dimension(500, 100));
-        jPanel22.setLayout(new javax.swing.BoxLayout(jPanel22, javax.swing.BoxLayout.PAGE_AXIS));
+        jPanel22.setLayout(new java.awt.GridLayout(4, 1));
 
         jPanel25.setLayout(new java.awt.BorderLayout());
 
@@ -695,43 +690,6 @@ public class MenuUsuarios extends SuperVentana {
 
         jPanel22.add(jPanel26);
 
-        jPanel29.setLayout(new java.awt.BorderLayout());
-
-        jLabel13.setPreferredSize(new java.awt.Dimension(100, 40));
-        jPanel29.add(jLabel13, java.awt.BorderLayout.WEST);
-
-        jPanel22.add(jPanel29);
-
-        jPanel21.add(jPanel22);
-
-        jPanel24.setPreferredSize(new java.awt.Dimension(500, 100));
-        jPanel24.setLayout(new javax.swing.BoxLayout(jPanel24, javax.swing.BoxLayout.PAGE_AXIS));
-
-        jPanel27.setLayout(new java.awt.BorderLayout());
-
-        jLabel14.setPreferredSize(new java.awt.Dimension(100, 40));
-        jPanel27.add(jLabel14, java.awt.BorderLayout.WEST);
-
-        filtro_is_titular.setText("Titular");
-        filtro_is_titular.setPreferredSize(new java.awt.Dimension(200, 30));
-        filtro_is_titular.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                filtro_is_titularItemStateChanged(evt);
-            }
-        });
-        jPanel27.add(filtro_is_titular, java.awt.BorderLayout.CENTER);
-
-        filtro_is_consumidor.setText("Consumidor");
-        filtro_is_consumidor.setPreferredSize(new java.awt.Dimension(200, 30));
-        filtro_is_consumidor.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                filtro_is_consumidorItemStateChanged(evt);
-            }
-        });
-        jPanel27.add(filtro_is_consumidor, java.awt.BorderLayout.EAST);
-
-        jPanel24.add(jPanel27);
-
         jPanel28.setLayout(new java.awt.BorderLayout());
 
         jLabel15.setText("Estado");
@@ -746,7 +704,34 @@ public class MenuUsuarios extends SuperVentana {
         });
         jPanel28.add(filtro_estado, java.awt.BorderLayout.CENTER);
 
-        jPanel24.add(jPanel28);
+        jPanel22.add(jPanel28);
+
+        pf_filtros.add(jPanel22);
+
+        jPanel24.setPreferredSize(new java.awt.Dimension(500, 100));
+        jPanel24.setLayout(new java.awt.GridLayout(4, 1));
+
+        jPanel27.setLayout(new java.awt.GridLayout(1, 3));
+
+        filtro_is_titular.setText("Titular");
+        filtro_is_titular.setPreferredSize(new java.awt.Dimension(200, 30));
+        filtro_is_titular.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                filtro_is_titularItemStateChanged(evt);
+            }
+        });
+        jPanel27.add(filtro_is_titular);
+
+        filtro_is_consumidor.setText("Consumidor");
+        filtro_is_consumidor.setPreferredSize(new java.awt.Dimension(200, 30));
+        filtro_is_consumidor.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                filtro_is_consumidorItemStateChanged(evt);
+            }
+        });
+        jPanel27.add(filtro_is_consumidor);
+
+        jPanel24.add(jPanel27);
 
         jPanel31.setLayout(new java.awt.BorderLayout());
 
@@ -757,49 +742,49 @@ public class MenuUsuarios extends SuperVentana {
 
         jPanel24.add(jPanel31);
 
-        jPanel21.add(jPanel24);
+        pf_filtros.add(jPanel24);
 
-        jPanel19.add(jPanel21, java.awt.BorderLayout.CENTER);
+        panel_filtros.add(pf_filtros, java.awt.BorderLayout.CENTER);
 
-        jpConsultas.add(jPanel19, java.awt.BorderLayout.NORTH);
+        panelConsultas.add(panel_filtros, java.awt.BorderLayout.NORTH);
 
-        jPanel20.setPreferredSize(new java.awt.Dimension(1000, 500));
-        jPanel20.setLayout(new java.awt.BorderLayout());
+        panelInferior.setPreferredSize(new java.awt.Dimension(1000, 500));
+        panelInferior.setLayout(new java.awt.BorderLayout());
 
         jPanel30.setMinimumSize(new java.awt.Dimension(980, 30));
-        jPanel30.setPreferredSize(new java.awt.Dimension(980, 40));
+        jPanel30.setPreferredSize(new java.awt.Dimension(980, 35));
         jPanel30.setLayout(new java.awt.BorderLayout());
 
-        jtfBuscadorTabla.addKeyListener(new java.awt.event.KeyAdapter() {
+        buscador_tabla.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jtfBuscadorTablaKeyReleased(evt);
+                buscador_tablaKeyReleased(evt);
             }
         });
-        jPanel30.add(jtfBuscadorTabla, java.awt.BorderLayout.CENTER);
+        jPanel30.add(buscador_tabla, java.awt.BorderLayout.CENTER);
 
         jPanel23.setPreferredSize(new java.awt.Dimension(200, 40));
         jPanel23.setLayout(new java.awt.BorderLayout());
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
-        jButton4.setPreferredSize(new java.awt.Dimension(100, 40));
-        jPanel23.add(jButton4, java.awt.BorderLayout.LINE_START);
+        anterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
+        anterior.setPreferredSize(new java.awt.Dimension(100, 40));
+        jPanel23.add(anterior, java.awt.BorderLayout.WEST);
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
-        jButton5.setPreferredSize(new java.awt.Dimension(100, 40));
-        jPanel23.add(jButton5, java.awt.BorderLayout.CENTER);
+        siguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
+        siguiente.setPreferredSize(new java.awt.Dimension(100, 40));
+        jPanel23.add(siguiente, java.awt.BorderLayout.EAST);
 
         jPanel30.add(jPanel23, java.awt.BorderLayout.LINE_END);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
-        jButton1.setPreferredSize(new java.awt.Dimension(100, 30));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        recargar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
+        recargar.setPreferredSize(new java.awt.Dimension(100, 30));
+        recargar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                recargarActionPerformed(evt);
             }
         });
-        jPanel30.add(jButton1, java.awt.BorderLayout.LINE_START);
+        jPanel30.add(recargar, java.awt.BorderLayout.LINE_START);
 
-        jPanel20.add(jPanel30, java.awt.BorderLayout.NORTH);
+        panelInferior.add(jPanel30, java.awt.BorderLayout.NORTH);
 
         jtUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -814,11 +799,11 @@ public class MenuUsuarios extends SuperVentana {
         jtUsuarios.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(jtUsuarios);
 
-        jPanel20.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+        panelInferior.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
-        jpConsultas.add(jPanel20, java.awt.BorderLayout.CENTER);
+        panelConsultas.add(panelInferior, java.awt.BorderLayout.CENTER);
 
-        tab_root.addTab("Consulta de usuarios", jpConsultas);
+        tab_root.addTab("Consulta de usuarios", panelConsultas);
 
         getContentPane().add(tab_root, java.awt.BorderLayout.CENTER);
 
@@ -828,7 +813,7 @@ public class MenuUsuarios extends SuperVentana {
 
     private void jtfBuscadorListaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfBuscadorListaKeyReleased
         buscando = true;
-        _buscar(jtfBuscadorLista.getText(), activos.isSelected());
+        _buscadorEnLista(jtfBuscadorLista.getText(), activos.isSelected());
     }//GEN-LAST:event_jtfBuscadorListaKeyReleased
 
     private void jlUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlUsuariosMouseClicked
@@ -889,11 +874,12 @@ public class MenuUsuarios extends SuperVentana {
             JOptionPane.showMessageDialog(this, "Error en los campos");
             return;
         }
-        String[] o = _guardar();
+        String[] o = _getInfoUsuario(false);
         o = FormatoBD.bdEntrada(o);
-        System.out.println(Arrays.toString(o));
+        Func.hash(o);
         boolean insertar = operaciones.insertar(o);
-        movimiento(insertar);
+        System.out.println(insertar);
+        _movimiento(insertar);
     }//GEN-LAST:event_guardarActionPerformed
 
     private void actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarActionPerformed
@@ -909,12 +895,12 @@ public class MenuUsuarios extends SuperVentana {
             return;
         }
 
-        String[] o = _guardar();
+        String[] o = _getInfoUsuario(true);
         o = FormatoBD.bdEntrada(o);
         String[] arr = ConstBD.BD_USUARIOS;
         arr = Arrays.copyOfRange(arr, 1, arr.length);
         boolean act = operaciones.actualizar(arr, o, "id = " + usuario_buscado.getId());
-        movimiento(act);
+        _movimiento(act);
 
     }//GEN-LAST:event_actualizarActionPerformed
 
@@ -938,14 +924,41 @@ public class MenuUsuarios extends SuperVentana {
         }
 
         boolean op = operaciones.eliminar("id = " + usuario_buscado.getId());
-        movimiento(op);
+        _movimiento(op);
 
     }//GEN-LAST:event_eliminarActionPerformed
 
-    private void jtfBuscadorTablaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfBuscadorTablaKeyReleased
-        actualizarFiltros();
+    private void buscador_tablaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscador_tablaKeyReleased
+        if (activar_filtros.isSelected()) {
+            actualizarFiltros();
+            return;
+        }
+        lista_de_busqueda.clear();
+        controlador.vaciarTabla();
+        String txt = Filtros.limpiar(buscador_tabla.getText());
+        String aux;
+        for (OUsuarios i : cache) {
+            aux = Filtros.limpiar(i.getStringR());
+            if (aux.contains(txt)) {
+                lista_de_busqueda.add(i);
+            }
+        }
+        cargarTabla(modelo_tabla, lista_de_busqueda);
 
-    }//GEN-LAST:event_jtfBuscadorTablaKeyReleased
+    }//GEN-LAST:event_buscador_tablaKeyReleased
+
+    private boolean _block;
+
+    public void sleep() {
+        _block = true;
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MenuUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            _block = false;
+        }
+    }
 
     private void activar_filtrosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_activar_filtrosItemStateChanged
         jButton6.setEnabled(activar_filtros.isSelected());
@@ -953,9 +966,9 @@ public class MenuUsuarios extends SuperVentana {
 
     }//GEN-LAST:event_activar_filtrosItemStateChanged
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void recargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargarActionPerformed
         controlador.actualizarTabla();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_recargarActionPerformed
 
     private void jcbTitularItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbTitularItemStateChanged
 
@@ -1015,8 +1028,8 @@ public class MenuUsuarios extends SuperVentana {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jtfNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfNombreFocusLost
-        buscando = true;
-        _buscarCoincidencias();
+        //buscando = true;
+        //_buscarCoincidencias();
     }//GEN-LAST:event_jtfNombreFocusLost
 
     public void pintarCodigo(String[] arr, JPanel visor_codigos) {
@@ -1032,13 +1045,10 @@ public class MenuUsuarios extends SuperVentana {
         StringBuilder s = new StringBuilder();
         String v1 = cod(arr[0].split("_"));
         s.append(v1);
-
         String v2 = cod(arr[1].split("_"));
         s.append(v2);
-
         String v3 = cod(arr[2].split("_"));
         s.append(v3);
-
         return s.toString();
     }
 
@@ -1050,18 +1060,19 @@ public class MenuUsuarios extends SuperVentana {
         return String.valueOf(i);
     }
 
-    public void _buscarCoincidencias() {
+    void _buscarCoincidencias() {
         StringBuilder s = new StringBuilder();
-        if (variableValida(jtfNombre.getText())) {
+        if (Filtros.isNullOrBlank(jtfNombre.getText())) {
             s.append(jtfNombre.getText());
         }
-        if (variableValida(jtfAp.getText())) {
+        if (Filtros.isNullOrBlank(jtfAp.getText())) {
             s.append(jtfAp.getText());
         }
-        if (variableValida(jtfAm.getText())) {
+        if (Filtros.isNullOrBlank(jtfAm.getText())) {
             s.append(jtfAm.getText());
         }
-        _buscar(s.toString(), activos.isSelected());
+        buscando = true;
+        _buscadorEnLista(s.toString(), activos.isSelected());
     }
 
     void _coincidencias(KeyEvent e) {
@@ -1070,25 +1081,28 @@ public class MenuUsuarios extends SuperVentana {
             return;
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_TAB) {
-            long contador = cache.stream().filter((t) -> {
-                StringBuilder s = new StringBuilder();
-                if (variableValida(jtfNombre.getText())) {
-                    s.append(jtfNombre.getText());
-                }
-                if (variableValida(jtfAp.getText())) {
-                    s.append(jtfAp.getText());
-                }
-                if (variableValida(jtfAm.getText())) {
-                    s.append(jtfAm.getText());
-                }
-                String x = limpiar(t.getStringR());
-                String y = limpiar(s.toString());
-                return x.contains(y);
-            }).count();
-            //
-
+        if (e.getKeyChar() == KeyEvent.VK_TAB) {
+            long contador = cache
+                    .stream()
+                    .filter((t) -> {
+                        StringBuilder s = new StringBuilder();
+                        if (!Filtros.isNullOrBlank(jtfNombre.getText())) {
+                            s.append(jtfNombre.getText());
+                        }
+                        if (!Filtros.isNullOrBlank(jtfAp.getText())) {
+                            s.append(jtfAp.getText());
+                        }
+                        if (!Filtros.isNullOrBlank(jtfAm.getText())) {
+                            s.append(jtfAm.getText());
+                        }
+                        String x = Filtros.limpiar(t.getStringR());
+                        String y = Filtros.limpiar(s.toString());
+                        return x.contains(y);
+                    })
+                    .count();
+            _buscarCoincidencias();
             coincidencias.setText(String.valueOf(contador));
+            e.getComponent().transferFocus();
         }
     }
 
@@ -1121,15 +1135,9 @@ public class MenuUsuarios extends SuperVentana {
         filtro_Titular.setEnabled(estado);
     }
 
-    public void movimiento(boolean ok) {
-        if (ok) {
-            memoria_cache.vaciar();
-            memoria_cache.setQuery("titular = -1");
-            memoria_cache.cargar();
-            memoria_cache.setQuery("titular > 0");
-            memoria_cache.cargar();
-            memoria_cache.ordenarPorID();
-            //
+    private void _movimiento(boolean estado) {
+        if (estado) {
+            memoria_cache.actualizar();
             controlador.actualizarVistaPrincipal();
             estadoInicial();
             JOptionPane.showMessageDialog(this, "Operacion realizada");
@@ -1138,36 +1146,41 @@ public class MenuUsuarios extends SuperVentana {
         }
     }
 
-    private String[] _guardar() {
+    private String[] _getInfoUsuario(boolean isActualizacion) {
         Fecha fech = new Fecha();
-
         ArrayList<OCalles> calles = FabricaCache.MC_CALLES.getLista();
         ArrayList<OTipoTomas> tomas = FabricaCache.MC_TIPOS_DE_TOMAS.getLista();
-
+        //
         String nom = jtfNombre.getText();
         String ap = jtfAp.getText();
         String am = jtfAm.getText();
-
         String calle = calles.get(jcbCalle.getSelectedIndex()).getId();
         String ncasa = jtfNumeroCasa.getText();
         String toma = tomas.get(jcbTipoToma.getSelectedIndex()).getId();
         String registro = fech.getNewFechaActualString();
+        if (isActualizacion) {
+            registro = usuario_buscado.getRegistro();
+        }
         String estado = jcbEstado.getSelectedIndex() == 1 ? "1" : "-1";
 
         String titular;
+
         if (jchbTitular.isSelected()) {
             titular = "-1";
         } else {
-            String id_aux = "-1";
-            EnvUsuario.getUsuarioEnCache(toma);
-            for (OUsuarios oUsuarios : cache) {
-                if (limpiar(oUsuarios.getStringR()).equalsIgnoreCase(jcbTitular.getItemAt(jcbTitular.getSelectedIndex()))) {
-                    id_aux = oUsuarios.getId();
-                }
+            String aux = EnvUsuario.getUsuarioEnCache(jcbTitular.getItemAt(jcbTitular.getSelectedIndex())).getId();
+            if (Filtros.isNullOrBlank(aux) && aux.equalsIgnoreCase("-1")) {
+                titular = "-1";
+            } else {
+                titular = aux;
             }
-            titular = id_aux;
         }
+
         String codigo = codigo_bar.getText();
+
+        if (Filtros.isNullOrBlank(codigo)) {
+            codigo = "NULL";
+        }
 
         String[] o = new String[]{
             nom, ap, am, calle, ncasa, toma, registro, estado, titular, codigo
@@ -1177,35 +1190,33 @@ public class MenuUsuarios extends SuperVentana {
     }
 
     boolean validar() {
-        int jtf = validarTextField();
-        if (jtf < 3) {
-            JOptionPane.showMessageDialog(this, "Error en la caja de texto: " + jtf);
-            return false;
-        }
         int jcb = validarComboBox();
         if (jcb < 4) {
-            JOptionPane.showMessageDialog(this, "Error en el combo box de texto: " + jtf);
+            JOptionPane.showMessageDialog(this, "Error en el combo box de texto: " + jcb);
             return false;
         }
-        return true;
+        return true && validarTextField();
     }
 
-    int validarTextField() {
+    boolean validarTextField() {
         JTextField[] arr = {
-            jtfNombre, jtfAp, jtfAm
+            jtfNombre, jtfAp, jtfAp
         };
-        int x = 0;
+        String aux;
         for (JTextField i : arr) {
-            String aux = i.getText();
-            if (!variableValida(aux)) {
-                return x;
+            aux = i.getText();
+            if (Filtros.isNullOrBlank(aux) || !Filtros.soloTexto(aux)) {
+                JOptionPane.showMessageDialog(this, "Error en el campo: " + i.getName());
+                return false;
             }
-            if (!soloTexto(aux)) {
-                return x;
-            }
-            x++;
         }
-        return arr.length;
+        aux = jtfNumeroCasa.getText();
+        if (!Filtros.soloNumeros(aux)) {
+            JOptionPane.showMessageDialog(this, "Error en el campo: " + jtfNumeroCasa.getName());
+            return false;
+        }
+
+        return true;
     }
 
     int validarComboBox() {
@@ -1215,14 +1226,6 @@ public class MenuUsuarios extends SuperVentana {
         return 4;
     }
 
-    boolean variableValida(String txt) {
-        return txt != null && !txt.isEmpty();
-    }
-
-    boolean soloTexto(String txt) {
-        return txt.matches("( |[a-zA-Z]|[_ñÑáÁéÉíÍóÓúÚ]){1,30}");
-    }
-
     public void actualizarFiltros() {
         if (!activar_filtros.isSelected()) {
             return;
@@ -1230,34 +1233,31 @@ public class MenuUsuarios extends SuperVentana {
         lista_de_busqueda.clear();
         controlador.vaciarTabla();
         for (OUsuarios i : cache) {
-            boolean s = filtro(i, limpiar(jtfBuscadorTabla.getText()));
-            if (s) {
+            boolean filtrado = _filtros(i, Filtros.limpiar(buscador_tabla.getText()));
+            if (filtrado) {
                 lista_de_busqueda.add(i);
             }
         }
         cargarTabla(modelo_tabla, lista_de_busqueda);
     }
 
-    public boolean filtro(OUsuarios u, String txt) {
+    boolean _filtros(OUsuarios u, String txt) {
         boolean f = true;
-        if (txt != null && !txt.isEmpty()) {
-            f = f && limpiar(u.getStringR()).contains(txt);
+        if (!Filtros.isNullOrBlank(txt)) {
+            f = f && Filtros.limpiar(u.getStringR()).contains(txt);
         }
-
         if (filtro_calle.getItemCount() > 0 && filtro_calle.getSelectedIndex() < filtro_calle.getItemCount() && filtro_calle.getSelectedIndex() != 0) {
-            String x = limpiar(u.getInfoSinFK()[4]);
-            String y = limpiar(filtro_calle.getItemAt(filtro_calle.getSelectedIndex()));
+            String x = Filtros.limpiar(u.getInfoSinFK()[4]);
+            String y = Filtros.limpiar(filtro_calle.getItemAt(filtro_calle.getSelectedIndex()));
             boolean r = y.equalsIgnoreCase(x);
             f = f && r;
         }
-
         if (filtro_toma.getItemCount() > 0 && filtro_toma.getSelectedIndex() < filtro_toma.getItemCount() && filtro_toma.getSelectedIndex() != 0) {
-            String x = limpiar(u.getInfoSinFK()[6]);
-            String y = limpiar(filtro_toma.getItemAt(filtro_toma.getSelectedIndex()));
+            String x = Filtros.limpiar(u.getInfoSinFK()[6]);
+            String y = Filtros.limpiar(filtro_toma.getItemAt(filtro_toma.getSelectedIndex()));
             boolean r = y.equalsIgnoreCase(x);
             f = f && r;
         }
-
         if (filtro_is_titular.isSelected()) {
             f = f && u.isTitular();
         }
@@ -1287,6 +1287,8 @@ public class MenuUsuarios extends SuperVentana {
     private javax.swing.JCheckBox activar_filtros;
     private javax.swing.JCheckBox activos;
     private javax.swing.JButton actualizar;
+    private javax.swing.JButton anterior;
+    private javax.swing.JTextField buscador_tabla;
     private javax.swing.JButton cancelar;
     private javax.swing.JTextField codigo_bar;
     private javax.swing.JLabel coincidencias;
@@ -1298,17 +1300,12 @@ public class MenuUsuarios extends SuperVentana {
     private javax.swing.JCheckBox filtro_is_titular;
     private javax.swing.JComboBox<String> filtro_toma;
     private javax.swing.JButton guardar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -1328,9 +1325,6 @@ public class MenuUsuarios extends SuperVentana {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel19;
-    private javax.swing.JPanel jPanel20;
-    private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel24;
@@ -1338,11 +1332,9 @@ public class MenuUsuarios extends SuperVentana {
     private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel27;
     private javax.swing.JPanel jPanel28;
-    private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
-    private javax.swing.JPanel jPanel32;
     private javax.swing.JPanel jPanel35;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -1359,12 +1351,10 @@ public class MenuUsuarios extends SuperVentana {
     private javax.swing.JComboBox<String> jcbTitular;
     private javax.swing.JCheckBox jchbTitular;
     private javax.swing.JList<String> jlUsuarios;
-    private javax.swing.JPanel jpConsultas;
     private javax.swing.JTable jtUsuarios;
     private javax.swing.JTextField jtfAm;
     private javax.swing.JTextField jtfAp;
     private javax.swing.JTextField jtfBuscadorLista;
-    private javax.swing.JTextField jtfBuscadorTabla;
     private javax.swing.JTextField jtfNombre;
     private javax.swing.JTextField jtfNumeroCasa;
     private javax.swing.JCheckBox mantenerCalle;
@@ -1372,9 +1362,16 @@ public class MenuUsuarios extends SuperVentana {
     private javax.swing.JCheckBox mantenerToma;
     private javax.swing.JPanel panelBotones;
     private javax.swing.JPanel panelCampos;
+    private javax.swing.JPanel panelConsultas;
+    private javax.swing.JPanel panelInferior;
     private javax.swing.JPanel panelRegistros;
     private javax.swing.JPanel panel_der;
+    private javax.swing.JPanel panel_filtros;
     private javax.swing.JPanel panel_izq;
+    private javax.swing.JPanel pf_bar_super;
+    private javax.swing.JPanel pf_filtros;
+    private javax.swing.JButton recargar;
+    private javax.swing.JButton siguiente;
     private javax.swing.JTabbedPane tab_root;
     // End of variables declaration//GEN-END:variables
 
@@ -1425,36 +1422,31 @@ public class MenuUsuarios extends SuperVentana {
 
     @Override
     public Rectangle getBounds() {
-        if ((super.getBounds().getWidth() < 800 && panel_der.getBounds().getWidth() < 400)) {
-            if (panel_izq.isVisible()) {
-                ocultarComponente(panel_izq, false);
-            }
-        } else {
-            if (super.getBounds().getWidth() > 800) {
-                ocultarComponente(panel_izq, true);
-            }
+        red_panel_root = super.getBounds().getWidth() < 800;
+        red_panel_der = panel_der.getBounds().getWidth() < 400;
+        if (red_panel_root && red_panel_der && panel_izq.isVisible()) {
+            Func.ocultarComponente(false, panel_izq);
+        } else if (!red_panel_root) {
+            Func.ocultarComponente(true, panel_izq);
         }
         return super.getBounds();
     }
 
-    public void ocultarComponente(JComponent c, boolean estado) {
-        c.setVisible(estado);
-        c.updateUI();
-    }
+    private boolean red_panel_root;
+    private boolean red_panel_der;
 
     @Override
     public void dispose() {
         super.dispose();
+        estadoInicial();
     }
 
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         if (visible) {
-            SwingUtilities.invokeLater(() -> {
-                controlador.cargarTodo();
-            });
-        }else{
+            SwingUtilities.invokeLater(() -> controlador.cargarComboBoxes());
+        } else {
             controlador.vaciarTodo();
         }
     }

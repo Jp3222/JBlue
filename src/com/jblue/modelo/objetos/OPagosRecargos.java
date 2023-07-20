@@ -11,5 +11,9 @@ import com.jblue.modelo.objetos.sucls.OPagos;
  * @author jp
  */
 public class OPagosRecargos extends OPagos {
-    
+
+    public String[] getInfoSinFK() {
+        return _conjuntoSinFK;
+    }
+
 }

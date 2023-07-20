@@ -5,6 +5,10 @@
 package com.jblue.sistema;
 
 import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.util.tiempo.Fecha;
+import com.jblue.util.tiempo.Hora;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 
 /**
  * Esta clase define al personal de sesion actual, quien hace uso del programa,
@@ -45,6 +49,20 @@ public class Sesion extends Movimientos {
         this.personal = personal;
     }
 
+    public boolean validaciones() {
+        return _tiempo() && _horaValido();
+    }
+
+    boolean _horaValido() {
+        Hora o = new Hora();
+        return o.getHoraActual().compareTo(LocalTime.of(19, 0, 0)) > 0;
+    }
+
+    boolean _tiempo() {
+        Fecha o = new Fecha();
+        return o.getNewFechaActual().getDayOfWeek() == DayOfWeek.SATURDAY;
+    }
+
     public boolean inicioSesion() {
         boolean x = _inicioSesion(personal);
         return x;
@@ -55,5 +73,4 @@ public class Sesion extends Movimientos {
         personal = null;
         return x;
     }
-
 }

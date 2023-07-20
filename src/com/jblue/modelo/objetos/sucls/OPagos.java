@@ -55,12 +55,13 @@ public class OPagos extends Objeto {
         return getSubCon(5, 6, 7).replace(',', '-');
     }
 
-    protected String[] InfoSinFK() {
+    @Override
+    public void setInfo(String[] info) {
+        super.setInfo(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         OPersonal personal = EnvPersonal.getPersonal(getPersonal());
         OUsuarios usuarios = EnvUsuario.getUsuarioXID(getUsuario());
         _conjuntoSinFK[1] = personal.getStringR();
         _conjuntoSinFK[2] = usuarios.getStringR();
-        return _conjuntoSinFK;
     }
 
 }

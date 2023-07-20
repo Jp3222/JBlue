@@ -21,11 +21,29 @@ import java.util.function.Predicate;
  */
 public class MemoCache<T extends Objeto> {
 
+    /**
+     * Capacidad minina de cache
+     * <br> valor = 1000
+     */
+    private static final int CAPACIDAD_MIN = 1000;
+
+    /**
+     * Capacidad media de cache
+     * <br> valor = 2000
+     */
+    private static final int CAPACIDAD_MED = 2000;
+
+    /**
+     * Capacidad maxima de cache
+     * <br> valor = 3000
+     */
+    private static final int CAPACIDAD_MAX = 3000;
+
     private final List<T> lista;
     private final Operaciones<T> operaciones;
     private int primer_id_leido, ultimo_id_leido;
-    private int ant;
-    private int sig;
+    private int limite_min;
+    private int limite_max;
     private int rango;
     private boolean rangoActivo;
     private String query;
@@ -33,10 +51,37 @@ public class MemoCache<T extends Objeto> {
     public MemoCache(Operaciones<T> operaciones) {
         this.lista = new ArrayList<>(1000);
         this.operaciones = operaciones;
-        rango = 1000;
-        ant = 1;
-        sig = rango;
-        getIdsMinMax();
+        this.rango = 1000;
+        this.limite_min = 1;
+        this.limite_max = rango;
+        this.getIdsMinMax();
+    }
+
+    public MemoCache(int capacidad, Operaciones<T> operaciones) {
+        this.lista = new ArrayList<>(CAPACIDAD_MIN);
+        this.operaciones = operaciones;
+        this.rango = CAPACIDAD_MIN;
+        this.limite_min = 1;
+        this.limite_max = rango;
+        this.getIdsMinMax();
+    }
+
+    public MemoCache(Operaciones<T> operaciones, int rango) {
+        this.lista = new ArrayList<>(1000);
+        this.operaciones = operaciones;
+        this.rango = 1000;
+        this.limite_min = 1;
+        this.limite_max = rango;
+        this.getIdsMinMax();
+    }
+
+    public MemoCache(int capacidad, Operaciones<T> operaciones, int rango) {
+        this.lista = new ArrayList<>(1000);
+        this.operaciones = operaciones;
+        this.rango = 1000;
+        this.limite_min = 1;
+        this.limite_max = rango;
+        this.getIdsMinMax();
     }
 
     /**
@@ -66,17 +111,24 @@ public class MemoCache<T extends Objeto> {
     }
 
     public void sig() {
-        ant += rango;
-        sig += rango;
+        limite_min += rango;
+        limite_max += rango;
     }
 
     public void ant() {
-        int aux = ant - rango;
+        int aux = limite_min - rango;
         if (aux > 0) {
-            ant -= rango;
-            sig -= rango;
+            limite_min -= rango;
+            limite_max -= rango;
         }
     }
+
+//    public boolean newSig() {
+//        
+//    }
+//
+//    public boolean newAnt() {
+//    }
 
     public int getPrimer_id_leido() {
         return primer_id_leido;
@@ -97,9 +149,9 @@ public class MemoCache<T extends Objeto> {
     public void cargar() {
         StringBuilder q = new StringBuilder();
         if (rangoActivo) {
-            q.append("id >= ").append(ant);
+            q.append("id >= ").append(limite_min);
             q.append(" and ");
-            q.append("id <= ").append(sig);
+            q.append("id <= ").append(limite_max);
         }
 
         if (query != null) {
@@ -115,6 +167,35 @@ public class MemoCache<T extends Objeto> {
         } else {
             aux = operaciones.getLista(q.toString());
         }
+
+        for (T item : aux) {
+            lista.add((T) item);
+        }
+        aux.clear();
+    }
+
+    private void newCargar() {
+        StringBuilder q = new StringBuilder();
+        if (rangoActivo) {
+            q.append("id >= ").append(limite_min);
+            q.append(" and ");
+            q.append("id <= ").append(limite_max);
+        }
+
+        if (query != null) {
+            if (rangoActivo) {
+                q.append(" and ");
+            }
+            q.append(query);
+        }
+
+        ArrayList<T> aux;
+        if (q.isEmpty()) {
+            aux = operaciones.getLista("");
+        } else {
+            aux = operaciones.getLista(q.toString());
+        }
+
         for (T item : aux) {
             lista.add((T) item);
         }
@@ -134,6 +215,8 @@ public class MemoCache<T extends Objeto> {
             return;
         }
         lista.clear();
+        primer_id_leido = 0;
+        ultimo_id_leido = 0;
     }
 
     public void actualizar() {
@@ -153,7 +236,7 @@ public class MemoCache<T extends Objeto> {
     public ArrayList<T> subLista(Predicate<T> filtro) {
         ArrayList<T> arr_aux = new ArrayList<>(100);
         for (T t : lista) {
-            if (filtro.negate().test(t)) {
+            if (!filtro.test(t)) {
                 continue;
             }
             arr_aux.add(t);
@@ -169,12 +252,12 @@ public class MemoCache<T extends Objeto> {
         this.rangoActivo = rangoActivo;
     }
 
-    public int getAnt() {
-        return ant;
+    public int getLimite_min() {
+        return limite_min;
     }
 
-    public int getSig() {
-        return sig;
+    public int getLimite_max() {
+        return limite_max;
     }
 
 }

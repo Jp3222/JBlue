@@ -42,13 +42,17 @@ public abstract class Movimientos {
         return rt;
     }
 
-    void _insertarSesion() {
+    void _insertar() {
     }
 
-    void _eliminarSesion() {
+    void _eliminar() {
     }
 
-    void _actualizarSesion() {
+    void _actualizar() {
+
+    }
+
+    void _cobrar() {
     }
 
     public String[] getInfo() {

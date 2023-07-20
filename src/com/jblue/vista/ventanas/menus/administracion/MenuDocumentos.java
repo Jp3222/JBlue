@@ -18,19 +18,19 @@ package com.jblue.vista.ventanas.menus.administracion;
 
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.sistema.app.Prop;
+import com.jblue.util.Func;
 import com.jblue.util.SoInfo;
-import com.jblue.util.cache.FabricaCache;
-import com.jblue.util.cache.MemoCache;
 import com.jblue.vista.normas.SuperVentana;
+import com.jblue.vista.ventanas.componentes.CSelectorObjeto;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -43,25 +43,26 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class MenuDocumentos extends SuperVentana {
 
     private final JComponent[] componentes;
-    private final MemoCache<OUsuarios> memoria;
-    private final ArrayList<OUsuarios> cache;
-    private final ArrayList<OUsuarios> lista_aux;
     private final JFileChooser file_chooser;
-    
+    private final DefaultListModel<String> modelo_lista;
+
     /**
      * Creates new form MenuDocumentos
      */
     public MenuDocumentos() {
         _TITULO = 11;
         this.file_chooser = new JFileChooser(SoInfo.RUTA_DOCUMENTOS);
-        memoria = FabricaCache.MC_USUARIOS;
-        cache = memoria.getLista();
-        lista_aux = new ArrayList<>(cache.size());
-        //
         initComponents();
         componentes = new JComponent[]{
-            agregarDoc, olvidarDoc, abrirDocumento, listaDocumentos
+            agregar_doc,
+            olvidar_doc,
+            eliminar_doc,
+            abrir_doc,
+            crear_sub_dir,
+            eliminar_dir
         };
+        modelo_lista = new DefaultListModel<>();
+        listaDocumentos.setModel(modelo_lista);
         llamable();
     }
 
@@ -90,8 +91,11 @@ public class MenuDocumentos extends SuperVentana {
 
     @Override
     public void estadoInicial() {
-        cargarUsuarios();
-        habilidarComponentes(false);
+        Func.habilitarComponentes(false, componentes);
+        usuario.setText(null);
+        if (modelo_lista.getSize() > 0) {
+            modelo_lista.clear();
+        }
     }
 
     /**
@@ -103,128 +107,127 @@ public class MenuDocumentos extends SuperVentana {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        PanelDocumentos = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        usuarios = new javax.swing.JComboBox<>();
+        panel_root = new javax.swing.JPanel();
+        panel_super = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        usuario = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        panel_cen = new javax.swing.JPanel();
+        panel_izq = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         listaDocumentos = new javax.swing.JList<>();
-        jPanel5 = new javax.swing.JPanel();
-        agregarDoc = new javax.swing.JButton();
-        olvidarDoc = new javax.swing.JButton();
-        eliminarDoc = new javax.swing.JButton();
-        abrirDocumento = new javax.swing.JButton();
-        CrearDir = new javax.swing.JButton();
-        EliminarDir = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        panel_der = new javax.swing.JPanel();
+        agregar_doc = new javax.swing.JButton();
+        olvidar_doc = new javax.swing.JButton();
+        eliminar_doc = new javax.swing.JButton();
+        abrir_doc = new javax.swing.JButton();
+        crear_sub_dir = new javax.swing.JButton();
+        eliminar_dir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        PanelDocumentos.setLayout(new java.awt.BorderLayout());
+        panel_root.setPreferredSize(new java.awt.Dimension(700, 500));
+        panel_root.setLayout(new java.awt.BorderLayout(5, 5));
 
-        jPanel3.setPreferredSize(new java.awt.Dimension(1000, 40));
-        jPanel3.setLayout(new java.awt.BorderLayout());
+        panel_super.setPreferredSize(new java.awt.Dimension(700, 40));
+        panel_super.setLayout(new java.awt.BorderLayout(5, 0));
 
-        usuarios.setEditable(true);
-        usuarios.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                usuariosItemStateChanged(evt);
-            }
-        });
-        jPanel3.add(usuarios, java.awt.BorderLayout.CENTER);
-
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Usuario");
         jLabel1.setPreferredSize(new java.awt.Dimension(200, 30));
-        jPanel3.add(jLabel1, java.awt.BorderLayout.LINE_START);
+        panel_super.add(jLabel1, java.awt.BorderLayout.LINE_START);
 
-        PanelDocumentos.add(jPanel3, java.awt.BorderLayout.PAGE_START);
+        usuario.setEditable(false);
+        panel_super.add(usuario, java.awt.BorderLayout.CENTER);
 
-        jPanel4.setPreferredSize(new java.awt.Dimension(1000, 960));
-        jPanel4.setLayout(new java.awt.BorderLayout());
+        jButton1.setText("Seleccionar Usuario");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        panel_super.add(jButton1, java.awt.BorderLayout.LINE_END);
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(300, 623));
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        panel_root.add(panel_super, java.awt.BorderLayout.PAGE_START);
 
+        panel_cen.setPreferredSize(new java.awt.Dimension(700, 430));
+        panel_cen.setLayout(new java.awt.BorderLayout(5, 0));
+
+        panel_izq.setPreferredSize(new java.awt.Dimension(300, 630));
+        panel_izq.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Documentos de usuario");
         jLabel2.setPreferredSize(new java.awt.Dimension(300, 40));
-        jPanel2.add(jLabel2, java.awt.BorderLayout.PAGE_START);
+        panel_izq.add(jLabel2, java.awt.BorderLayout.PAGE_START);
+
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(100, 100));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(300, 200));
 
         listaDocumentos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listaDocumentos.setMaximumSize(new java.awt.Dimension(10000, 10000));
+        listaDocumentos.setMinimumSize(new java.awt.Dimension(100, 100));
         listaDocumentos.setPreferredSize(new java.awt.Dimension(300, 300));
         jScrollPane1.setViewportView(listaDocumentos);
 
-        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        panel_izq.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel4.add(jPanel2, java.awt.BorderLayout.LINE_START);
+        panel_cen.add(panel_izq, java.awt.BorderLayout.CENTER);
 
-        jPanel5.setLayout(new java.awt.GridLayout(3, 3));
+        panel_der.setPreferredSize(new java.awt.Dimension(400, 630));
+        panel_der.setLayout(new java.awt.GridLayout(8, 1, 5, 5));
 
-        agregarDoc.setText("Agregar Documento");
-        agregarDoc.addActionListener(new java.awt.event.ActionListener() {
+        agregar_doc.setText("Agregar Documento");
+        agregar_doc.setPreferredSize(new java.awt.Dimension(300, 40));
+        agregar_doc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                agregarDocActionPerformed(evt);
+                agregar_docActionPerformed(evt);
             }
         });
-        jPanel5.add(agregarDoc);
+        panel_der.add(agregar_doc);
 
-        olvidarDoc.setText("Olvidar Documento");
-        jPanel5.add(olvidarDoc);
+        olvidar_doc.setText("Olvidar Documento");
+        olvidar_doc.setPreferredSize(new java.awt.Dimension(300, 40));
+        panel_der.add(olvidar_doc);
 
-        eliminarDoc.setText("Eliminar Documento");
-        eliminarDoc.addActionListener(new java.awt.event.ActionListener() {
+        eliminar_doc.setText("Eliminar Documento");
+        eliminar_doc.setPreferredSize(new java.awt.Dimension(300, 40));
+        eliminar_doc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                eliminarDocActionPerformed(evt);
+                eliminar_docActionPerformed(evt);
             }
         });
-        jPanel5.add(eliminarDoc);
+        panel_der.add(eliminar_doc);
 
-        abrirDocumento.setText("Abrir Documento");
-        abrirDocumento.addActionListener(new java.awt.event.ActionListener() {
+        abrir_doc.setText("Abrir Documento");
+        abrir_doc.setPreferredSize(new java.awt.Dimension(300, 40));
+        abrir_doc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                abrirDocumentoActionPerformed(evt);
+                abrir_docActionPerformed(evt);
             }
         });
-        jPanel5.add(abrirDocumento);
+        panel_der.add(abrir_doc);
 
-        CrearDir.setText("Crear sub carpeta");
-        jPanel5.add(CrearDir);
+        crear_sub_dir.setText("Crear sub carpeta");
+        crear_sub_dir.setPreferredSize(new java.awt.Dimension(300, 40));
+        panel_der.add(crear_sub_dir);
 
-        EliminarDir.setText("Eliminar sub carpeta");
-        jPanel5.add(EliminarDir);
+        eliminar_dir.setText("Eliminar sub carpeta");
+        eliminar_dir.setPreferredSize(new java.awt.Dimension(300, 40));
+        panel_der.add(eliminar_dir);
 
-        jLabel6.setText("jLabel3");
-        jPanel5.add(jLabel6);
+        panel_cen.add(panel_der, java.awt.BorderLayout.EAST);
 
-        jLabel7.setText("jLabel3");
-        jPanel5.add(jLabel7);
+        panel_root.add(panel_cen, java.awt.BorderLayout.CENTER);
 
-        jLabel8.setText("jLabel3");
-        jPanel5.add(jLabel8);
-
-        jPanel4.add(jPanel5, java.awt.BorderLayout.CENTER);
-
-        PanelDocumentos.add(jPanel4, java.awt.BorderLayout.CENTER);
-
-        getContentPane().add(PanelDocumentos, java.awt.BorderLayout.CENTER);
+        getContentPane().add(panel_root, java.awt.BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void usuariosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_usuariosItemStateChanged
-        if (usuarios.getSelectedIndex() <= 0) {
-            habilidarComponentes(false);
-            return;
-        }
-        habilidarComponentes(true);
-    }//GEN-LAST:event_usuariosItemStateChanged
-
-    private void agregarDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarDocActionPerformed
+    private void agregar_docActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregar_docActionPerformed
         try {
             int button = file_chooser.showOpenDialog(this);
             if (button == JFileChooser.CANCEL_OPTION) {
@@ -236,7 +239,7 @@ public class MenuDocumentos extends SuperVentana {
                 return;
             }
             File dir_us = Prop.FIL_DIR_PROG_USUARIOS;
-            String usu = usuarios.getItemAt(usuarios.getSelectedIndex());
+            String usu = usuario.getText().toUpperCase();
             StringBuilder sb = new StringBuilder(dir_us.getAbsolutePath());
             sb.append("/").append(usu).append("/").append(file.getName());
             File dir_out = new File(sb.toString());
@@ -245,11 +248,11 @@ public class MenuDocumentos extends SuperVentana {
             Logger.getLogger(MenuDocumentos.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }//GEN-LAST:event_agregarDocActionPerformed
+    }//GEN-LAST:event_agregar_docActionPerformed
 
-    private void abrirDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirDocumentoActionPerformed
+    private void abrir_docActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrir_docActionPerformed
         File dir_us = Prop.FIL_DIR_PROG_USUARIOS;
-        String usu = usuarios.getItemAt(usuarios.getSelectedIndex());
+        String usu = usuario.getText().toUpperCase();
         StringBuilder sb = new StringBuilder(dir_us.getAbsolutePath());
         sb.append("/").append(usu).append("/");
         file_chooser.setCurrentDirectory(new File(sb.toString()));
@@ -268,11 +271,11 @@ public class MenuDocumentos extends SuperVentana {
             Logger.getLogger(MenuDocumentos.class.getName()).log(Level.SEVERE, null, ex);
         }
         file_chooser.setCurrentDirectory(new File(SoInfo.RUTA_DE_USUARIO));
-    }//GEN-LAST:event_abrirDocumentoActionPerformed
+    }//GEN-LAST:event_abrir_docActionPerformed
 
-    private void eliminarDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarDocActionPerformed
+    private void eliminar_docActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminar_docActionPerformed
         File dir_us = Prop.FIL_DIR_PROG_USUARIOS;
-        String usu = usuarios.getItemAt(usuarios.getSelectedIndex());
+        String usu = usuario.getText().toUpperCase();
         StringBuilder sb = new StringBuilder(dir_us.getAbsolutePath());
         sb.append("/").append(usu).append("/");
         file_chooser.setCurrentDirectory(new File(sb.toString()));
@@ -289,40 +292,53 @@ public class MenuDocumentos extends SuperVentana {
             JOptionPane.showMessageDialog(this, "Eliminacion Exitosas");
         }
         file_chooser.setCurrentDirectory(new File(SoInfo.RUTA_DE_USUARIO));
-    }//GEN-LAST:event_eliminarDocActionPerformed
+    }//GEN-LAST:event_eliminar_docActionPerformed
 
-    public void cargarUsuarios() {
-        usuarios.addItem("Seleccione Usuario");
-        for (OUsuarios i : cache) {
-            usuarios.addItem(i.getStringR());
-        }
-    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-    public void habilidarComponentes(boolean estado) {
-        for (JComponent i : componentes) {
-            i.setEnabled(estado);
+        OUsuarios o = CSelectorObjeto.selectorUsuarios(this);
+        usuario.setText(o.getStringR());
+        usuario_seleccionado = o;
+        String fil_dir_prog_usuarios = Prop.FIL_DIR_PROG_USUARIOS.getAbsolutePath();
+        File f = new File(String.format("%s/%s", fil_dir_prog_usuarios, o.getStringR()));
+        if (!f.exists()) {
+            JOptionPane.showMessageDialog(this, "Este usuario no tiene un directorio");
+            estadoInicial();
+            return;
         }
-    }
+        Func.habilitarComponentes(true, componentes);
+        modelo_lista.clear();
+        for (String string : f.list()) {
+            modelo_lista.addElement(string);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton CrearDir;
-    private javax.swing.JButton EliminarDir;
-    private javax.swing.JPanel PanelDocumentos;
-    private javax.swing.JButton abrirDocumento;
-    private javax.swing.JButton agregarDoc;
-    private javax.swing.JButton eliminarDoc;
+    private javax.swing.JButton abrir_doc;
+    private javax.swing.JButton agregar_doc;
+    private javax.swing.JButton crear_sub_dir;
+    private javax.swing.JButton eliminar_dir;
+    private javax.swing.JButton eliminar_doc;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> listaDocumentos;
-    private javax.swing.JButton olvidarDoc;
-    private javax.swing.JComboBox<String> usuarios;
+    private javax.swing.JButton olvidar_doc;
+    private javax.swing.JPanel panel_cen;
+    private javax.swing.JPanel panel_der;
+    private javax.swing.JPanel panel_izq;
+    private javax.swing.JPanel panel_root;
+    private javax.swing.JPanel panel_super;
+    private javax.swing.JTextField usuario;
     // End of variables declaration//GEN-END:variables
+    private OUsuarios usuario_seleccionado;
+
+    @Override
+    public void dispose() {
+        super.dispose(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        estadoInicial();
+    }
+
 }

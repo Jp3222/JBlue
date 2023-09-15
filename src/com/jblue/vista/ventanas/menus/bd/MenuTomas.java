@@ -566,7 +566,7 @@ public class MenuTomas extends SuperVentana {
     }
 
     public boolean soloTexto(String txt) {
-        return txt.matches("( |[a-zA-Z]|[_ñÑáÁéÉíÍóÓúÚ]){1,50}");
+        return txt.matches("( |[a-zA-Z0-9]|[_ñÑáÁéÉíÍóÓúÚ]){1,50}");
     }
 
     public boolean soloNumeros(String txt) {

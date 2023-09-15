@@ -37,11 +37,16 @@ public class MenuCVS extends SuperVentana {
     private final ConstructorArchivos contructor;
     private final File ruta_automatica;
     private final String[] TABLAS;
-    private final JFileChooser archivo_escogido;
+    private final JFileChooser ruta_escogida;
     private final DefaultComboBoxModel<String> modelo_combo_box;
 
     public MenuCVS() {
-        this.archivo_escogido = new JFileChooser(SoInfo.HOME);
+        this.ruta_escogida = new JFileChooser(SoInfo.HOME);
+        ruta_escogida.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        ruta_escogida.setMultiSelectionEnabled(false);
+        ruta_escogida.setDialogTitle("Generar CSV");
+        ruta_escogida.setApproveButtonText("Guardar");
+        ruta_escogida.setDialogType(JFileChooser.SAVE_DIALOG);
         TABLAS = ConstGs.TABLAS;
 
         this.archivos_del_sistema = Sistema.getInstancia().getArchivos();
@@ -49,7 +54,7 @@ public class MenuCVS extends SuperVentana {
         this.ruta_automatica = contructor.get(contructor.DIRECTORIO, archivos_del_sistema.REPORTES);
         initComponents();
         modelo_combo_box = new DefaultComboBoxModel<>(TABLAS);
-        jComboBox1.setModel(modelo_combo_box);
+        tabla.setModel(modelo_combo_box);
         llamable();
     }
 
@@ -63,8 +68,8 @@ public class MenuCVS extends SuperVentana {
 
     @Override
     public void estadoInicial() {
-        jTextField1.setText(null);
-        jComboBox1.setSelectedIndex(0);
+        nombre_arch.setText(null);
+        tabla.setSelectedIndex(0);
         ruta_auto_act.setSelected(true);
     }
 
@@ -80,18 +85,19 @@ public class MenuCVS extends SuperVentana {
         jPanel8 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        nombre_arch = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
         Tabla = new javax.swing.JLabel();
+        tabla = new javax.swing.JComboBox<>();
         incluir_campos = new javax.swing.JCheckBox();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
         ruta_auto_act = new javax.swing.JCheckBox();
+        abrir = new javax.swing.JCheckBox();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(500, 400));
@@ -127,8 +133,8 @@ public class MenuCVS extends SuperVentana {
         jLabel1.setPreferredSize(new java.awt.Dimension(150, 50));
         jPanel6.add(jLabel1, java.awt.BorderLayout.WEST);
 
-        jTextField1.setPreferredSize(new java.awt.Dimension(250, 50));
-        jPanel6.add(jTextField1, java.awt.BorderLayout.CENTER);
+        nombre_arch.setPreferredSize(new java.awt.Dimension(250, 50));
+        jPanel6.add(nombre_arch, java.awt.BorderLayout.CENTER);
 
         jButton3.setText("Auto");
         jButton3.setToolTipText("Nombre Rapido.\nGenera un nombre rapido para el documento");
@@ -147,12 +153,12 @@ public class MenuCVS extends SuperVentana {
         jPanel5.setPreferredSize(new java.awt.Dimension(500, 70));
         jPanel5.setLayout(new java.awt.BorderLayout());
 
-        jComboBox1.setPreferredSize(new java.awt.Dimension(100, 45));
-        jPanel5.add(jComboBox1, java.awt.BorderLayout.CENTER);
-
         Tabla.setText("Tabla");
         Tabla.setPreferredSize(new java.awt.Dimension(150, 45));
         jPanel5.add(Tabla, java.awt.BorderLayout.LINE_START);
+
+        tabla.setPreferredSize(new java.awt.Dimension(100, 45));
+        jPanel5.add(tabla, java.awt.BorderLayout.CENTER);
 
         incluir_campos.setText("Incluir Campos");
         incluir_campos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -183,15 +189,18 @@ public class MenuCVS extends SuperVentana {
         jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
 
         jPanel4.setPreferredSize(new java.awt.Dimension(500, 30));
-        jPanel4.setLayout(new java.awt.BorderLayout());
-
-        jButton2.setText("Info");
-        jButton2.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel4.add(jButton2, java.awt.BorderLayout.EAST);
+        jPanel4.setLayout(new java.awt.GridLayout(1, 0));
 
         ruta_auto_act.setSelected(true);
         ruta_auto_act.setText("Ruta automatica");
-        jPanel4.add(ruta_auto_act, java.awt.BorderLayout.CENTER);
+        jPanel4.add(ruta_auto_act);
+
+        abrir.setText("Abrir al generar");
+        jPanel4.add(abrir);
+
+        jButton2.setText("Info");
+        jButton2.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel4.add(jButton2);
 
         jPanel1.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
@@ -204,9 +213,9 @@ public class MenuCVS extends SuperVentana {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
 
-            String tabla_seleccionada = ConstBD.TABLAS[jComboBox1.getSelectedIndex()];
+            String tabla_seleccionada = ConstBD.TABLAS[tabla.getSelectedIndex()];
 
-            String[] campos = ConstBD.CAMPOS[jComboBox1.getSelectedIndex()];
+            String[] campos = ConstBD.CAMPOS[tabla.getSelectedIndex()];
 
             Conexion cn = Conexion.getInstancia();
 
@@ -219,49 +228,32 @@ public class MenuCVS extends SuperVentana {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        String nombre = nombre();
-        jTextField1.setText(nombre);
+        String nombre_auto = nombreAutomatico();
+        nombre_arch.setText(nombre_auto);
     }//GEN-LAST:event_jButton3ActionPerformed
-
-    public String nombre() {
-        Fecha fecha = new Fecha();
-        Hora hora = new Hora();
-        StringBuilder s = new StringBuilder(jComboBox1.getItemAt(jComboBox1.getSelectedIndex()));
-        s.append("_REP_");
-        s.append(fecha.getNewFechaActualString());
-        s.append("_");
-        s.append(hora.getHoraActualString());
-        String nombre = s.toString().replace("-|:", "_");
-        return nombre;
-    }
 
     public void construirArchivo(ResultSet rs, String tabla, String[] campos) {
         File ruta;
         if (ruta_auto_act.isSelected()) {
             ruta = ruta_automatica;
         } else {
-            
-            archivo_escogido.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            archivo_escogido.setMultiSelectionEnabled(false);
-            archivo_escogido.setDialogTitle("Generar CSV");
-            archivo_escogido.setApproveButtonText("Guardar");
-            archivo_escogido.setDialogType(JFileChooser.SAVE_DIALOG);
-            archivo_escogido.showOpenDialog(this);
-            ruta = archivo_escogido.getSelectedFile();
-            System.out.println(archivo_escogido.isDirectorySelectionEnabled());
+            ruta_escogida.showOpenDialog(this);
+            ruta = ruta_escogida.getSelectedFile();
         }
+
         if (ruta == null) {
             estadoInicial();
             JOptionPane.showMessageDialog(this, "Reporte cancelado", "Estado del reporte", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        if (jTextField1.getText() == null || jTextField1.getText().isEmpty()) {
-            String nombre = nombre();
-            jTextField1.setText(nombre);
+        if (nombre_arch.getText() == null || nombre_arch.getText().isEmpty()) {
+            String nombre = nombreAutomatico();
+            nombre_arch.setText(nombre);
         }
         try {
-            File archivo = new File(ruta.getPath() + "/" + jTextField1.getText().trim() + ".csv");
+            String nom_fr_fl = "%s/%s.%s";
+            File archivo = new File(String.format(nom_fr_fl, ruta.getPath(), nombre_arch.getText().trim(), ".csv"));
             if (!archivo.exists()) {
                 archivo.createNewFile();
             }
@@ -270,17 +262,21 @@ public class MenuCVS extends SuperVentana {
                 if (incluir_campos.isSelected()) {
                     construirCabecera(fr, campos);
                 }
+
                 String construirTabla = construirTabla(rs, campos);
                 fr.write(construirTabla);
             }
 
             JOptionPane.showMessageDialog(this, "Reporte creado", "Estado del reporte", JOptionPane.INFORMATION_MESSAGE);
             estadoInicial();
-            Desktop.getDesktop().open(archivo);
-        } catch (IOException ex) {
-            Logger.getLogger(MenuCVS.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
+            if (abrir.isSelected()) {
+                Desktop.getDesktop().open(archivo);
+            }
+
+        } catch (IOException ex) {
+            Excp.imp(ex, getClass(), true, true);
+        }
     }
 
     public void construirCabecera(FileWriter fw, String[] campos) {
@@ -320,14 +316,23 @@ public class MenuCVS extends SuperVentana {
         return sb.toString();
     }
 
+    public String nombreAutomatico() {
+        StringBuilder s = new StringBuilder(tabla.getItemAt(tabla.getSelectedIndex()));
+        s.append("_REP_");
+        s.append(Fecha.getNewFechaActualString());
+        s.append("_");
+        s.append(Hora.getHoraActualStr());
+        return s.toString().replace("-|:", "_");
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Tabla;
+    private javax.swing.JCheckBox abrir;
     private javax.swing.JCheckBox incluir_campos;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -340,7 +345,8 @@ public class MenuCVS extends SuperVentana {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField nombre_arch;
     private javax.swing.JCheckBox ruta_auto_act;
+    private javax.swing.JComboBox<String> tabla;
     // End of variables declaration//GEN-END:variables
 }

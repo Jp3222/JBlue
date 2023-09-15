@@ -167,7 +167,8 @@ public abstract class ConstBD {
         "movimiento",
         "pagos_x_servicio",
         "pagos_x_recargos",
-        "pagos_x_otros"
+        "pagos_x_otros",
+        "valores"
     };
 
     public static final String[][] CAMPOS = {
@@ -180,6 +181,10 @@ public abstract class ConstBD {
         BD_PAGOS_X_SERVICIO,
         BD_PAGOS_X_RECARGO,
         BD_PAGOS_X_OTROS
+    };
+
+    public static final String[] VALORES = {
+        ID, "clave", "valor", "nom_gf"
     };
 
 }

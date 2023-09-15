@@ -4,7 +4,7 @@
  */
 package com.jblue.sistema;
 
-import com.jblue.sistema.app.Prop;
+import com.jblue.sistema.app.AppProp;
 import com.jblue.util.SoInfo;
 import com.jblue.util.archivos.ConstructorArchivos;
 import java.io.File;
@@ -33,13 +33,13 @@ public class Archivos {
     private void archivos() {
 
         //Archivos de respaldo
-        archivos.add(archivos.DIRECTORIO, Prop.DIR_PROG);
-        archivos.add(archivos.DIRECTORIO, Prop.DIR_PROG_PERSONAL);
-        archivos.add(archivos.DIRECTORIO, Prop.DIR_PROG_USUARIOS);
-        archivos.add(archivos.ARCHIVO, Prop.DIR_ARC_CONFIG);
+        archivos.add(archivos.DIRECTORIO, AppProp.DIR_PROG);
+        archivos.add(archivos.DIRECTORIO, AppProp.DIR_PROG_PERSONAL);
+        archivos.add(archivos.DIRECTORIO, AppProp.DIR_PROG_USUARIOS);
+        archivos.add(archivos.ARCHIVO, AppProp.DIR_ARC_CONFIG);
 
         //Archivos visibles
-        archivos.add(archivos.DIRECTORIO, Prop.DIR_USU);
+        archivos.add(archivos.DIRECTORIO, AppProp.DIR_USU);
         archivos.add(archivos.DIRECTORIO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz, "reportes"));
         archivos.add(archivos.DIRECTORIO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz, "PDFs"));
         archivos.add(archivos.DIRECTORIO, consURL(SoInfo.RUTA_DOCUMENTOS, raiz, "Pagos"));

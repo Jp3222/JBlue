@@ -4,6 +4,7 @@
  */
 package com.jblue.sistema;
 
+import com.jblue.sistema.bdmov.Movimientos;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.util.tiempo.Hora;
@@ -54,8 +55,7 @@ public class Sesion extends Movimientos {
     }
 
     boolean _horaValido() {
-        Hora o = new Hora();
-        return o.getHoraActual().compareTo(LocalTime.of(19, 0, 0)) > 0;
+        return Hora.getHoraActual().compareTo(LocalTime.of(19, 0, 0)) > 0;
     }
 
     boolean _tiempo() {

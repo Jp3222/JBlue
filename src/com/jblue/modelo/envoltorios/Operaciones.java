@@ -87,7 +87,7 @@ public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio implement
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        return super.clone(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        return super.clone();
     }
 
 }

@@ -5,8 +5,6 @@
 package com.jblue.util.plataformas.soconfig;
 
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
-import com.jtattoo.plaf.mint.MintLookAndFeel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;

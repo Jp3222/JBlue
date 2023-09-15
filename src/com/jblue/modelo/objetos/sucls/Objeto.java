@@ -63,6 +63,10 @@ public abstract class Objeto implements Serializable, Cloneable, Comparable<Obje
         return _conjunto;
     }
 
+    public String[] getInfoSinFK() {
+        return _conjuntoSinFK;
+    }
+
     /**
      * asigna un array al contenedor principal
      *

@@ -4,13 +4,14 @@
  */
 package com.jblue.vista.ventanas.vistas.compartidos;
 
+import com.jblue.vista.normas.SuperVista;
 import javax.swing.JComponent;
 
 /**
  *
  * @author jp
  */
-public class VBitacora extends javax.swing.JPanel {
+public class VBitacora extends SuperVista {
 
     /**
      * Creates new form VBitacora
@@ -23,6 +24,17 @@ public class VBitacora extends javax.swing.JPanel {
             nombre, guardar, titulo, parrafo, cerrar
         };
         _bloqueo(false, componentes);
+        llamable();
+    }
+
+    @Override
+    protected final void llamable() {
+        componentesEstadoInicial();
+    }
+
+    @Override
+    public void componentesEstadoInicial() {
+
     }
 
     /**

@@ -22,8 +22,10 @@ import com.jblue.util.tiempo.Hora;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -32,23 +34,27 @@ import javax.swing.JComponent;
 public abstract class Func {
 
     public static void habilitarComponente(boolean estado, JComponent componente) {
-        componente.setEnabled(estado);
+        SwingUtilities.invokeLater(() -> componente.setEnabled(estado));
     }
 
     public static void habilitarComponentes(boolean estado, JComponent... componentes) {
-        for (JComponent jComponent : componentes) {
-            jComponent.setEnabled(estado);
-        }
+        SwingUtilities.invokeLater(() -> {
+            for (JComponent jComponent : componentes) {
+                jComponent.setEnabled(estado);
+            }
+        });
     }
 
     public static void ocultarComponente(boolean estado, JComponent componente) {
-        componente.setVisible(estado);
+        SwingUtilities.invokeLater(() -> componente.setVisible(estado));
     }
 
     public static void ocultarComponentes(boolean estado, JComponent... componentes) {
-        for (JComponent jComponent : componentes) {
-            jComponent.setVisible(estado);
-        }
+        SwingUtilities.invokeLater(() -> {
+            for (JComponent jComponent : componentes) {
+                jComponent.setVisible(estado);
+            }
+        });
     }
 
     public static <T extends Objeto> ArrayList<T> buscador(List<T> lista, DefaultListModel<String> modelo, String txt, BiPredicate<T, String> filtro) {
@@ -73,24 +79,34 @@ public abstract class Func {
         System.out.println(sb.toString());
     }
 
-    public static void hash(String... o) {
-        StringBuilder sb = new StringBuilder(20);
-        char c;
-        for (String i : o) {
-            if (Filtros.isNullOrBlank(i)) {
-                continue;
-            }
-            c = i.charAt(0);
-            if (c == '_') {
-                c = 'x';
-            }
-            sb.append(c);
+
+
+    public void pintarLista(DefaultListModel<String> modelo, List<Objeto> lista) {
+        if (!modelo.isEmpty()) {
+            modelo.clear();
+            modelo.setSize(lista.size());
         }
-        Hora h = new Hora();
-        sb.append(h.getHora());
-        sb.append(h.getMinuto());
-        sb.append(h.getSegundo());
-        System.out.println(sb.toString());
+        String fortmato = "%s - %s";
+        String aux;
+        int j = 0;
+        for (Objeto i : lista) {
+            aux = String.format(fortmato, i.getId(), i.getStringR());
+            modelo.add(j, aux);
+            j++;
+        }
     }
 
+    public void pintarComboBox(DefaultComboBoxModel<String> modelo, List<Objeto> lista) {
+        if (modelo.getSize() > 0) {
+            modelo.removeAllElements();
+        }
+        String fortmato = "%s - %s";
+        String aux;
+        int j = 0;
+        for (Objeto i : lista) {
+            aux = String.format(fortmato, i.getId(), i.getStringR());
+            modelo.insertElementAt(aux, j);
+            j++;
+        }
+    }
 }

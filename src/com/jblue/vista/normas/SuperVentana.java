@@ -4,17 +4,17 @@
  */
 package com.jblue.vista.normas;
 
-import com.jblue.sistema.app.InfoApp;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import com.jblue.sistema.app.AppInfo;
 
 /**
  *
  * @author jp
  */
-public abstract class SuperVentana extends JFrame implements InfoApp, Permisos {
+public abstract class SuperVentana extends JFrame implements AppInfo, Permisos {
 
     protected Set<JComponent> _componentes_bloqueados = new HashSet<>(20);
 
@@ -69,6 +69,7 @@ public abstract class SuperVentana extends JFrame implements InfoApp, Permisos {
             s.append(" - ").append(_MENUS_DEL_PROGRAMA[_TITULO]);
             this.setTitle(s.toString());
         }
+
     }
 
     /**
@@ -86,6 +87,16 @@ public abstract class SuperVentana extends JFrame implements InfoApp, Permisos {
 
     @Override
     public void permisos() {
+    }
+
+    protected void updateTitle() {
+        StringBuilder s = new StringBuilder(NOMBRE_DEL_PROGRAMA);
+        if (_TITULO != 0) {
+            s.append(" ");
+            s.append(VERSION_DEL_PROGRAMA);
+            s.append(" - ").append(_MENUS_DEL_PROGRAMA[_TITULO]);
+            this.setTitle(s.toString());
+        }
     }
 
 }

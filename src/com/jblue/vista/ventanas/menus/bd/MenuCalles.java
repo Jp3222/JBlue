@@ -14,6 +14,8 @@ import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.vista.normas.SuperVentana;
+import com.jblue.vista.comp.CBarraEstado;
+import java.awt.BorderLayout;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,10 +54,16 @@ public class MenuCalles extends SuperVentana {
 
         //
         initComponents();
+        llamable();
         modelo_tabla = (DefaultTableModel) jtCalles.getModel();
         //
+        barra_estado = new CBarraEstado();
+        barra_estado.setIdMin(memoria_cache.getLimite_min());
+        barra_estado.setIdMax(memoria_cache.getLimite_max());
+        barra_estado.setResultados(modelo_tabla.getRowCount());
+        panel_tabla.add(barra_estado, BorderLayout.SOUTH);
+        //
         controlador = new CCalles(this);
-        llamable();
     }
 
     @Override
@@ -125,10 +133,10 @@ public class MenuCalles extends SuperVentana {
 
         _root = new javax.swing.JPanel();
         panel_izq = new javax.swing.JPanel();
-        jPanel13 = new javax.swing.JPanel();
+        panel_busqueda = new javax.swing.JPanel();
         jtfBuscador = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
+        panel_tabla = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jbtRecrgar = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
@@ -168,8 +176,8 @@ public class MenuCalles extends SuperVentana {
         panel_izq.setPreferredSize(new java.awt.Dimension(500, 700));
         panel_izq.setLayout(new java.awt.BorderLayout());
 
-        jPanel13.setPreferredSize(new java.awt.Dimension(500, 30));
-        jPanel13.setLayout(new java.awt.BorderLayout());
+        panel_busqueda.setPreferredSize(new java.awt.Dimension(500, 30));
+        panel_busqueda.setLayout(new java.awt.BorderLayout());
 
         jtfBuscador.setPreferredSize(new java.awt.Dimension(500, 30));
         jtfBuscador.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -177,15 +185,15 @@ public class MenuCalles extends SuperVentana {
                 jtfBuscadorKeyReleased(evt);
             }
         });
-        jPanel13.add(jtfBuscador, java.awt.BorderLayout.CENTER);
+        panel_busqueda.add(jtfBuscador, java.awt.BorderLayout.CENTER);
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/buscar.png"))); // NOI18N
-        jPanel13.add(jLabel4, java.awt.BorderLayout.WEST);
+        panel_busqueda.add(jLabel4, java.awt.BorderLayout.WEST);
 
-        panel_izq.add(jPanel13, java.awt.BorderLayout.NORTH);
+        panel_izq.add(panel_busqueda, java.awt.BorderLayout.NORTH);
 
-        jPanel5.setPreferredSize(new java.awt.Dimension(500, 670));
-        jPanel5.setLayout(new java.awt.BorderLayout());
+        panel_tabla.setPreferredSize(new java.awt.Dimension(500, 670));
+        panel_tabla.setLayout(new java.awt.BorderLayout());
 
         jPanel7.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel7.setLayout(new java.awt.BorderLayout());
@@ -193,6 +201,11 @@ public class MenuCalles extends SuperVentana {
         jbtRecrgar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
         jbtRecrgar.setToolTipText("Recargar pagina");
         jbtRecrgar.setPreferredSize(new java.awt.Dimension(100, 30));
+        jbtRecrgar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtRecrgarActionPerformed(evt);
+            }
+        });
         jPanel7.add(jbtRecrgar, java.awt.BorderLayout.WEST);
 
         jPanel10.setPreferredSize(new java.awt.Dimension(200, 30));
@@ -212,7 +225,7 @@ public class MenuCalles extends SuperVentana {
 
         jPanel7.add(jPanel10, java.awt.BorderLayout.EAST);
 
-        jPanel5.add(jPanel7, java.awt.BorderLayout.NORTH);
+        panel_tabla.add(jPanel7, java.awt.BorderLayout.NORTH);
 
         jPanel6.setPreferredSize(new java.awt.Dimension(500, 640));
         jPanel6.setLayout(new java.awt.BorderLayout());
@@ -247,9 +260,9 @@ public class MenuCalles extends SuperVentana {
 
         jPanel6.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel5.add(jPanel6, java.awt.BorderLayout.CENTER);
+        panel_tabla.add(jPanel6, java.awt.BorderLayout.CENTER);
 
-        panel_izq.add(jPanel5, java.awt.BorderLayout.CENTER);
+        panel_izq.add(panel_tabla, java.awt.BorderLayout.CENTER);
 
         _root.add(panel_izq, java.awt.BorderLayout.WEST);
 
@@ -459,6 +472,7 @@ public class MenuCalles extends SuperVentana {
 
         buscando = true;
         controlador.buscar(jtfBuscador.getText(), cache, lista_auxiliar);
+        barra_estado.setResultados(modelo_tabla.getRowCount());
 
     }//GEN-LAST:event_jtfBuscadorKeyReleased
 
@@ -475,6 +489,11 @@ public class MenuCalles extends SuperVentana {
             getToolkit().beep();
         }
     }//GEN-LAST:event_jtfNumeroKeyTyped
+
+    private void jbtRecrgarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRecrgarActionPerformed
+        controlador.actualizarTabla();
+        barra_estado.setResultados(modelo_tabla.getRowCount());
+    }//GEN-LAST:event_jbtRecrgarActionPerformed
 
     public void mov() {
         memoria_cache.actualizar();
@@ -536,7 +555,6 @@ public class MenuCalles extends SuperVentana {
         });
     }
 
-// <editor-fold defaultstate="collapsed" desc="Generated Code">     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel _root;
     private javax.swing.JLabel jLabel1;
@@ -545,13 +563,11 @@ public class MenuCalles extends SuperVentana {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
@@ -568,11 +584,13 @@ public class MenuCalles extends SuperVentana {
     private javax.swing.JTextField jtfNombre;
     private javax.swing.JTextField jtfNumero;
     private javax.swing.JPanel panelCampos;
+    private javax.swing.JPanel panel_busqueda;
     private javax.swing.JPanel panel_der;
     private javax.swing.JPanel panel_izq;
+    private javax.swing.JPanel panel_tabla;
     // End of variables declaration//GEN-END:variables
+    private final CBarraEstado barra_estado;
 
-    //</editor-fold>  
     public JTextField getJtfBuscar() {
         return jtfBuscador;
     }

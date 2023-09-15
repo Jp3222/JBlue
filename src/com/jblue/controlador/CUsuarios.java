@@ -4,6 +4,7 @@
  */
 package com.jblue.controlador;
 
+import com.jblue.mg.ModeloTablas;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.modelo.objetos.sucls.Objeto;
 import com.jblue.util.cache.FabricaCache;
@@ -138,14 +139,14 @@ public class CUsuarios {
         if (lista.isEmpty()) {
             return;
         }
-        DefaultListModel<String> modelo_lista = R.getModelo_lista();
+        DefaultListModel<String> modelo_lista = R.getModeloLista();
         for (OUsuarios oUsuarios : lista) {
             modelo_lista.addElement(oUsuarios.getStringR());
         }
     }
 
     public void actualizarLista() {
-        DefaultListModel<String> modelo_lista = R.getModelo_lista();
+        DefaultListModel<String> modelo_lista = R.getModeloLista();
         if (!modelo_lista.isEmpty()) {
             modelo_lista.clear();
         }
@@ -153,30 +154,24 @@ public class CUsuarios {
     }
 
     public void cargarTabla() {
-        System.out.println("lleno");
         ArrayList<OUsuarios> lista = FabricaCache.MC_USUARIOS.getLista();
         if (lista.isEmpty()) {
         }
-        DefaultTableModel modelo_tabla = R.getModelo_tabla();
+        DefaultTableModel modelo_tabla = (DefaultTableModel) R.getModeloTabla();
         for (OUsuarios oUsuarios : lista) {
             modelo_tabla.addRow(oUsuarios.getInfoSinFK());
         }
     }
 
     public void actualizarTabla() {
-        DefaultTableModel modelo_tabla = R.getModelo_tabla();
-        if (modelo_tabla.getRowCount() > 0) {
-            vaciarTabla();
-        }
+        ModeloTablas modelo_tabla = R.getModeloTabla();
+        modelo_tabla.clear();
         cargarTabla();
     }
 
     public void vaciarTabla() {
-        System.out.println("vacio");
-        DefaultTableModel modelo_tabla = R.getModelo_tabla();
-        while (modelo_tabla.getRowCount() > 0) {
-            modelo_tabla.removeRow(0);
-        }
+        ModeloTablas modelo_tabla = R.getModeloTabla();
+        modelo_tabla.clear();
     }
 
 }

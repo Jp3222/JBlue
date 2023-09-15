@@ -13,6 +13,7 @@ import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.modelo.objetos.OValores;
 import com.jblue.modelo.objetos.sucls.Objeto;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,6 +52,7 @@ public abstract class FuncionesEnvoltorio {
         map.put(ConstBD.TABLAS[6], new OPagosServicio());
         map.put(ConstBD.TABLAS[7], new OPagosRecargos());
         map.put(ConstBD.TABLAS[8], new OPagosOtros());
+        map.put(ConstBD.TABLAS[9], new OValores());
 
     }
 

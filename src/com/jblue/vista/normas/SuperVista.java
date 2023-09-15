@@ -4,10 +4,7 @@
  */
 package com.jblue.vista.normas;
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /**
@@ -16,9 +13,8 @@ import javax.swing.JPanel;
  */
 public abstract class SuperVista extends JPanel implements Permisos {
 
-    protected ImageIcon icon;
-
-    protected Set<JComponent> _componentes_bloqueados = new HashSet<>(20);
+    public SuperVista() {
+    }
 
     /**
      * Metodo recomentado para invocar solo a los metodos definidos siguiendo el
@@ -51,7 +47,7 @@ public abstract class SuperVista extends JPanel implements Permisos {
     /**
      * Metodo recomendado para agregar componentes a otros componentes
      */
-    protected void contruirComponentes() {
+    protected void construirComponentes() {
     }
 
     /**
@@ -65,12 +61,4 @@ public abstract class SuperVista extends JPanel implements Permisos {
 
     }
 
-    public void setIcon(ImageIcon icon) {
-        this.icon = icon;
-    }
-
-    public ImageIcon getIcon() {
-        return icon;
-    }
-    
 }

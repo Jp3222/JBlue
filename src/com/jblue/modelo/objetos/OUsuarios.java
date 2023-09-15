@@ -6,7 +6,6 @@ package com.jblue.modelo.objetos;
 
 import com.jblue.modelo.objetos.sucls.Objeto;
 import com.jblue.modelo.envoltorios.env.EnvUsuario;
-import java.util.Arrays;
 
 /**
  *

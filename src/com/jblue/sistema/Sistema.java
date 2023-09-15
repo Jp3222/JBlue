@@ -8,6 +8,7 @@ import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.modelo.objetos.OValores;
 import com.jblue.util.archivos.ConstructorArchivos;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;
@@ -50,7 +51,7 @@ public class Sistema {
     private Sistema() {
         this.archivos = new Archivos();
         this.reinicio = false;
-        apariencia.setDefault();
+        apariencia.setFlatMacLightlaf();
         config = new MenuConfigBD();
     }
 
@@ -111,7 +112,9 @@ public class Sistema {
         if (FabricaCache.cache) {
             return true;
         }
+
         FabricaCache.cache = true;
+
         MemoCache<OCalles> MC_CALLES = FabricaCache.MC_CALLES;
         MC_CALLES.cargar();
 
@@ -124,10 +127,14 @@ public class Sistema {
         MemoCache<OUsuarios> MC_USUARIOS = FabricaCache.MC_USUARIOS;
         MC_USUARIOS.cargar();
 
+        MemoCache<OValores> MC_VALORES = FabricaCache.MC_VALORES;
+        MC_VALORES.cargar();
+
         return MC_CALLES.getLista() != null
                 && MC_PERSONAL.getLista() != null
                 && MC_TIPOS_DE_TOMAS.getLista() != null
-                && MC_USUARIOS.getLista() != null;
+                && MC_USUARIOS.getLista() != null
+                && MC_VALORES.getLista() != null;
     }
 
     public synchronized boolean run() {

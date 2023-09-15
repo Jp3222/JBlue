@@ -14,6 +14,7 @@ import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.util.tiempo.Fecha;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -74,9 +75,9 @@ public class EnvUsuario {
         }
         String[] split = nombre.split(" ");
         StringBuilder q = new StringBuilder();
-        q.append("nombre = ").append(split[0]).append(" and ");
-        q.append("ap = ").append(split[1]).append(" and ");
-        q.append("am = ").append(split[2]);
+        q.append("nombre = '").append(split[0]).append("' and ");
+        q.append("ap = '").append(split[1]).append("' and ");
+        q.append("am = '").append(split[2]).append("'");
 
         Operaciones<OUsuarios> op = FabricaOpraciones.USUARIOS;
         OUsuarios get = op.get(q.toString());
@@ -92,14 +93,29 @@ public class EnvUsuario {
         return size;
     }
 
+    public static ArrayList<String> getMesesPagadosDelAño(String id) {
+        ArrayList<String> lista = new ArrayList<>(12);
+        Operaciones<OPagosServicio> op = FabricaOpraciones.getPAGOS_X_SERVICIO();
+        LocalDate l = LocalDate.now();
+        ArrayList<OPagosServicio> get = op.getLista("año = " + l.getYear() + " and usuario = " + id);
+        for (OPagosServicio i : get) {
+            lista.add(i.getMesPagado());
+        }
+        return lista;
+    }
+
     public static String getMesesPagados(String id) {
         Fecha fh = new Fecha();
         int size = getMesesPagados(String.valueOf(fh.getNewFechaActual().getYear()), id);
         return String.valueOf(size);
     }
 
-    public static boolean filtroID(String txt, OUsuarios o) {
+    public static boolean filtroIDExacto(String txt, OUsuarios o) {
         return o.getId().equals(txt);
+    }
+
+    public static boolean filtroIDAprox(String txt, OUsuarios o) {
+        return o.getId().contains(txt);
     }
 
     public static boolean filtroContieneNombre(String txt, OUsuarios o) {
@@ -115,6 +131,12 @@ public class EnvUsuario {
     }
 
     public static boolean filtros(String txt, OUsuarios o) {
-        return filtroID(txt, o) || filtroContieneNombre(txt, o) || filtroContieneCodigo(txt, o);
+        return filtroIDExacto(txt, o) || filtroContieneNombre(txt, o) || filtroContieneCodigo(txt, o);
+    }
+    
+    public static boolean isPrimerAño(OUsuarios o){
+        LocalDate x = LocalDate.parse(o.getRegistro(), Fecha.FORMATO);
+        LocalDate y = LocalDate.now();
+        return x.getYear() == y.getYear();
     }
 }

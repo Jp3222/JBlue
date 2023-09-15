@@ -35,7 +35,8 @@ public abstract class ConstGs {
     public static final String REGISTRO = "Registro";
     public static final String DIA = "Dia";
     public static final String MES = "Mes";
-    public static final String AÑO = "Año";
+    public static final String ANIO = "Año";
+    private static final String MES_PAGADO = "Mes Pagado";
 
     /**
      * <br> 1 id
@@ -123,7 +124,7 @@ public abstract class ConstGs {
      * <br> 8 año
      */
     public static final String[] BD_PAGOS_X_SERVICIO = {
-        ID, PERSONAL, USUARIO, "mes_pagado", MONTO, DIA, MES, AÑO
+        ID, PERSONAL, USUARIO, MES_PAGADO, MONTO, DIA, MES, ANIO
     };
 
     /**
@@ -139,7 +140,7 @@ public abstract class ConstGs {
      * <br> 9 año
      */
     public static final String[] BD_PAGOS_X_RECARGO = {
-        ID, PERSONAL, USUARIO, "Mes Pagado", MONTO, "Estado", DIA, MES, AÑO
+        ID, PERSONAL, USUARIO, MES_PAGADO, MONTO, "Estado", DIA, MES, ANIO
     };
 
     /**
@@ -155,7 +156,7 @@ public abstract class ConstGs {
      * <br> 9 año
      */
     public static final String[] BD_PAGOS_X_OTROS = {
-        ID, PERSONAL, USUARIO, MONTO, "Motivo", "Descripcion", DIA, MES, AÑO
+        ID, PERSONAL, USUARIO, MONTO, "Motivo", "Descripcion", DIA, MES, ANIO
     };
 
     /**

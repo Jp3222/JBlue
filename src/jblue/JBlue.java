@@ -1,7 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template6
-
  */
 package jblue;
 
@@ -19,7 +18,7 @@ public class JBlue {
      * @param args the command line arguments
      */
     public static void main(String... args) {
-        
+
         //validando la version de java
         String versionStr = System.getProperty("java.version");
         CharSequence subsecuencia = versionStr.subSequence(0, 2);

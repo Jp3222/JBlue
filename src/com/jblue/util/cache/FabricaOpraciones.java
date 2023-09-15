@@ -14,6 +14,7 @@ import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.modelo.objetos.OValores;
 
 /**
  *
@@ -29,6 +30,7 @@ public class FabricaOpraciones {
     public static final Operaciones<OPagosServicio> PAGOS_X_SERVICIO = new Operaciones(ConstBD.TABLAS[6], ConstBD.BD_PAGOS_X_SERVICIO);
     public static final Operaciones<OPagosRecargos> PAGOS_X_RECARGOS = new Operaciones(ConstBD.TABLAS[7], ConstBD.BD_PAGOS_X_RECARGO);
     public static final Operaciones<OPagosOtros> PAGOS_X_OTROS = new Operaciones(ConstBD.TABLAS[8], ConstBD.BD_PAGOS_X_OTROS);
+    public static final Operaciones<OValores> VALORES = new Operaciones(ConstBD.TABLAS[9], ConstBD.VALORES);
 
     public static Operaciones<OCalles> getCALLES() {
         return CALLES;

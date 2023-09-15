@@ -16,11 +16,11 @@
  */
 package com.jblue.vista.ventanas.vistas.compartidos;
 
+import com.jblue.mg.ModeloTablas;
 import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.objetos.OHisMovimientos;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
-import com.jblue.util.modelosgraficos.model.ModeloTablas;
 import com.jblue.vista.normas.SuperVista;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -54,7 +54,7 @@ public class VHistorialMovimietos extends SuperVista {
 
     @Override
     protected final void llamable() {
-        contruirComponentes();
+        construirComponentes();
         componentesEstadoFinal();
         componentesEstadoInicial();
         manejoEventos();
@@ -74,7 +74,7 @@ public class VHistorialMovimietos extends SuperVista {
     }
 
     @Override
-    protected void contruirComponentes() {
+    protected void construirComponentes() {
 
     }
 

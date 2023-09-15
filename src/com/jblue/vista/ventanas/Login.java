@@ -4,9 +4,9 @@
  */
 package com.jblue.vista.ventanas;
 
-import com.jblue.vista.ventanas.menus.MenuPrincipal;
 import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.sistema.ConfigSis;
 import com.jblue.sistema.Sesion;
 import com.jblue.sistema.Sistema;
 import com.jblue.util.cache.FabricaOpraciones;
@@ -275,6 +275,8 @@ public class Login extends SuperVentana {
         if (!Sistema.getInstancia().datosCSache()) {
             System.out.println("ERROR AL CARGAR LA CACHE");
         }
+        ConfigSis s = new ConfigSis();
+            
         System.out.println("¡¡¡CACHE CARGADA!!!");
 
         SwingUtilities.invokeLater(() -> {
@@ -285,7 +287,7 @@ public class Login extends SuperVentana {
             MENU_PRINCIPAL = new MenuPrincipal(this);
             MENU_PRINCIPAL.permisos();
             MENU_PRINCIPAL.setVisible(true);
-            
+
         });
     }
 

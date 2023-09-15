@@ -16,6 +16,11 @@
  */
 package com.jblue.util;
 
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JComboBox;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author jp
@@ -51,4 +56,21 @@ public class Filtros {
         return txt == null || txt.isBlank() || txt.isEmpty();
     }
 
+    public static boolean swIsCbxRangoValido(JComboBox o) {
+        return o.getItemCount() > 0
+                && o.getSelectedIndex() > 0
+                && o.getSelectedIndex() < o.getItemCount();
+    }
+
+    public static void swPintarTabla(DefaultTableModel modelo, List<String[]> lista) {
+        for (String[] i : lista) {
+            modelo.addRow(i);
+        }
+    }
+
+    public static void swPintarLista(DefaultListModel<String> modelo, List<String> lista) {
+        for (String i : lista) {
+            modelo.addElement(i);
+        }
+    }
 }

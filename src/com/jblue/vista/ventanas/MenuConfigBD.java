@@ -43,7 +43,7 @@ public class MenuConfigBD extends SuperVentana {
 
     //"jp", "12345", "jdbc:mysql://localhost/jblue"
     void probarConexion() {
-        usuario = jtfUsuario.getText();
+        usuario = String.valueOf(jPasswordField1.getPassword());
         contra = String.valueOf(jpfContra.getPassword());
     }
 
@@ -72,15 +72,16 @@ public class MenuConfigBD extends SuperVentana {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jtfUsuario = new javax.swing.JTextField();
+        jPasswordField1 = new javax.swing.JPasswordField();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jpfContra = new javax.swing.JPasswordField();
+        jCheckBox2 = new javax.swing.JCheckBox();
         jPanel6 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
@@ -106,28 +107,39 @@ public class MenuConfigBD extends SuperVentana {
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Base de datos");
-        jLabel6.setPreferredSize(new java.awt.Dimension(800, 30));
-        jPanel2.add(jLabel6, java.awt.BorderLayout.NORTH);
-
+        jLabel7.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/usuario.png"))); // NOI18N
+        jLabel7.setText("Configuracion de Base de datos");
+        jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel7.setPreferredSize(new java.awt.Dimension(800, 170));
-        jPanel2.add(jLabel7, java.awt.BorderLayout.CENTER);
+        jLabel7.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanel2.add(jLabel7, java.awt.BorderLayout.NORTH);
 
         jPanel3.setPreferredSize(new java.awt.Dimension(800, 300));
-        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.PAGE_AXIS));
+        jPanel3.setLayout(new java.awt.GridLayout(4, 1));
 
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 50));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setText("Usuario");
-        jLabel1.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel1.add(jLabel1, java.awt.BorderLayout.LINE_START);
+        jLabel1.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel1.add(jLabel1, java.awt.BorderLayout.NORTH);
 
-        jtfUsuario.setText("root");
-        jPanel1.add(jtfUsuario, java.awt.BorderLayout.CENTER);
+        jPasswordField1.setText("usuario");
+        jPanel1.add(jPasswordField1, java.awt.BorderLayout.CENTER);
+
+        jCheckBox1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jCheckBox1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jCheckBox1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
+        jCheckBox1.setPreferredSize(new java.awt.Dimension(50, 50));
+        jCheckBox1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img3.png"))); // NOI18N
+        jCheckBox1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jCheckBox1StateChanged(evt);
+            }
+        });
+        jPanel1.add(jCheckBox1, java.awt.BorderLayout.EAST);
 
         jPanel3.add(jPanel1);
 
@@ -135,11 +147,24 @@ public class MenuConfigBD extends SuperVentana {
         jPanel4.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setText("Contraeña");
-        jLabel2.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel4.add(jLabel2, java.awt.BorderLayout.LINE_START);
+        jLabel2.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel4.add(jLabel2, java.awt.BorderLayout.NORTH);
 
-        jpfContra.setText("jPasswordField1");
+        jpfContra.setText("contraseña");
+        jpfContra.setPreferredSize(new java.awt.Dimension(100, 50));
         jPanel4.add(jpfContra, java.awt.BorderLayout.CENTER);
+
+        jCheckBox2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jCheckBox2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jCheckBox2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
+        jCheckBox2.setPreferredSize(new java.awt.Dimension(50, 50));
+        jCheckBox2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img3.png"))); // NOI18N
+        jCheckBox2.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jCheckBox2StateChanged(evt);
+            }
+        });
+        jPanel4.add(jCheckBox2, java.awt.BorderLayout.EAST);
 
         jPanel3.add(jPanel4);
 
@@ -196,6 +221,8 @@ public class MenuConfigBD extends SuperVentana {
 
         jPanel3.add(jPanel6);
 
+        jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
+
         jPanel7.setPreferredSize(new java.awt.Dimension(800, 50));
         jPanel7.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -229,9 +256,7 @@ public class MenuConfigBD extends SuperVentana {
 
         jPanel7.add(jPanel8);
 
-        jPanel3.add(jPanel7);
-
-        jPanel2.add(jPanel3, java.awt.BorderLayout.PAGE_END);
+        jPanel2.add(jPanel7, java.awt.BorderLayout.SOUTH);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
@@ -268,8 +293,10 @@ public class MenuConfigBD extends SuperVentana {
         try {
             getDatos();
             Conexion con = Conexion.getInstancia(usuario, contra, url);
-            boolean cerrado = con.getConexion().isClosed();
+            boolean cerrado = !con.getConexion().isValid(1000);
+
             String mensaje = "La conexion es: ";
+
             if (!cerrado) {
                 mensaje += "valida";
             } else {
@@ -277,45 +304,64 @@ public class MenuConfigBD extends SuperVentana {
             }
             JOptionPane.showMessageDialog(this, mensaje);
             Conexion.ConexionNULL();
+
         } catch (SQLException ex) {
             Excp.imp(ex, getClass(), true, true);
         }
 
     }//GEN-LAST:event_jbtProbarConexionActionPerformed
 
+    private void jCheckBox1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBox1StateChanged
+        if (jCheckBox1.isSelected()) {
+            jPasswordField1.setEchoChar((char) 0);
+        } else {
+            jPasswordField1.setEchoChar('*');
+        }
+    }//GEN-LAST:event_jCheckBox1StateChanged
+
+    private void jCheckBox2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBox2StateChanged
+        if (jCheckBox2.isSelected()) {
+            jpfContra.setEchoChar((char) 0);
+        } else {
+            jpfContra.setEchoChar('*');
+        }
+    }//GEN-LAST:event_jCheckBox2StateChanged
+
     public String[] getDatos() {
-        usuario = jtfUsuario.getText();
+        usuario = String.valueOf(jPasswordField1.getPassword());
         contra = String.valueOf(jpfContra.getPassword());
-        StringBuilder s = new StringBuilder("jdbc:");
-        s.append(jcbMotor.getItemAt(jcbMotor.getSelectedIndex()))
+        StringBuilder s = new StringBuilder(100);
+        s.append("jdbc:")
+                .append(jcbMotor.getItemAt(jcbMotor.getSelectedIndex()))
                 .append("://")
                 .append(jtfHost.getText())
                 .append(":")
                 .append(jtfPuerto.getText())
                 .append("/")
                 .append(jtfBDNombre.getText());
+
         url = s.toString();
+
         return new String[]{
             usuario, contra, url
         };
     }
 
     @Override
-    public void dispose() {
+    public synchronized void dispose() {
         super.dispose();
-        synchronized (this) {
-            notify();
-        }
+        notify();
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -331,6 +377,7 @@ public class MenuConfigBD extends SuperVentana {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JButton jbtGuardarDatos;
     private javax.swing.JButton jbtProbarConexion;
     private javax.swing.JComboBox<String> jcbMotor;
@@ -338,7 +385,6 @@ public class MenuConfigBD extends SuperVentana {
     private javax.swing.JTextField jtfBDNombre;
     private javax.swing.JTextField jtfHost;
     private javax.swing.JTextField jtfPuerto;
-    private javax.swing.JTextField jtfUsuario;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -6,6 +6,7 @@ package com.jblue.vista.ventanas.menus.bd;
 
 import com.jblue.modelo.ConstGs;
 import com.jblue.controlador.CUsuarios;
+import com.jblue.mg.ModeloTablas;
 import com.jblue.modelo.ConstBD;
 import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.envoltorios.env.EnvUsuario;
@@ -18,9 +19,9 @@ import com.jblue.util.Func;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
-import com.jblue.util.modelosgraficos.model.ModeloTablas;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.vista.normas.SuperVentana;
+import com.jblue.vista.comp.CBarraEstado;
 import java.awt.BorderLayout;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
@@ -50,29 +51,6 @@ import net.sourceforge.jbarcodebean.model.Code128;
 public class MenuUsuarios extends SuperVentana {
 
     /**
-     *
-     */
-    private final CUsuarios controlador;
-    /**
-     * Variable en la que se guarda el usuario buscado
-     */
-    private OUsuarios usuario_buscado;
-
-    /**
-     * Variable que la lista de donde se toma el usuario, si de la lista
-     * auxiliar o de la cache
-     */
-    private boolean buscando;
-    private final Operaciones<OUsuarios> operaciones;
-    private final MemoCache<OUsuarios> memoria_cache;
-    private final ArrayList<OUsuarios> cache;
-    private final ArrayList<OUsuarios> lista_auxiliar;
-    private final Set<OUsuarios> lista_de_busqueda;
-
-    private final ModeloTablas modelo_tabla;
-    private final DefaultListModel<String> modelo_lista;
-
-    /**
      * Creates new form NewUsuarios
      */
     public MenuUsuarios() {
@@ -83,13 +61,18 @@ public class MenuUsuarios extends SuperVentana {
         this.operaciones = FabricaOpraciones.USUARIOS;
         this.memoria_cache = FabricaCache.MC_USUARIOS;
         this.cache = memoria_cache.getLista();
-        this.buscando = false;
         this.initComponents();
-        this.controlador = new CUsuarios(this);
         this.modelo_tabla = new ModeloTablas(ConstGs.BD_USUARIOS);
+        this.llamable();
+        this.controlador = new CUsuarios(this);
         this.jtUsuarios.setModel(modelo_tabla);
         this.jlUsuarios.setModel(modelo_lista);
-        this.llamable();
+        //
+        this.barra_estado = new CBarraEstado();
+        barra_estado.setIdMin(memoria_cache.getLimite_min());
+        barra_estado.setIdMax(memoria_cache.getLimite_max());
+        barra_estado.setResultados(modelo_tabla.getRowCount());
+        panel_tabla.add(barra_estado, BorderLayout.SOUTH);
     }
 
     @Override
@@ -107,6 +90,8 @@ public class MenuUsuarios extends SuperVentana {
             modelo_tabla.setCellEditable(i, false);
         }
     }
+    
+  
 
     @Override
     public void estadoInicial() {
@@ -280,7 +265,6 @@ public class MenuUsuarios extends SuperVentana {
         panelConsultas = new javax.swing.JPanel();
         panel_filtros = new javax.swing.JPanel();
         pf_bar_super = new javax.swing.JPanel();
-        jLabel17 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
         activar_filtros = new javax.swing.JCheckBox();
         pf_filtros = new javax.swing.JPanel();
@@ -301,7 +285,7 @@ public class MenuUsuarios extends SuperVentana {
         jPanel31 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         filtro_Titular = new javax.swing.JTextField();
-        panelInferior = new javax.swing.JPanel();
+        panel_tabla = new javax.swing.JPanel();
         jPanel30 = new javax.swing.JPanel();
         buscador_tabla = new javax.swing.JTextField();
         jPanel23 = new javax.swing.JPanel();
@@ -644,10 +628,6 @@ public class MenuUsuarios extends SuperVentana {
 
         pf_bar_super.setLayout(new java.awt.BorderLayout());
 
-        jLabel17.setText("Filtros");
-        jLabel17.setPreferredSize(new java.awt.Dimension(100, 30));
-        pf_bar_super.add(jLabel17, java.awt.BorderLayout.CENTER);
-
         jButton6.setText("Quitar filtros");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -656,12 +636,13 @@ public class MenuUsuarios extends SuperVentana {
         });
         pf_bar_super.add(jButton6, java.awt.BorderLayout.LINE_END);
 
+        activar_filtros.setText("Filtros");
         activar_filtros.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 activar_filtrosItemStateChanged(evt);
             }
         });
-        pf_bar_super.add(activar_filtros, java.awt.BorderLayout.LINE_START);
+        pf_bar_super.add(activar_filtros, java.awt.BorderLayout.CENTER);
 
         panel_filtros.add(pf_bar_super, java.awt.BorderLayout.NORTH);
 
@@ -748,8 +729,8 @@ public class MenuUsuarios extends SuperVentana {
 
         panelConsultas.add(panel_filtros, java.awt.BorderLayout.NORTH);
 
-        panelInferior.setPreferredSize(new java.awt.Dimension(1000, 500));
-        panelInferior.setLayout(new java.awt.BorderLayout());
+        panel_tabla.setPreferredSize(new java.awt.Dimension(1000, 500));
+        panel_tabla.setLayout(new java.awt.BorderLayout());
 
         jPanel30.setMinimumSize(new java.awt.Dimension(980, 30));
         jPanel30.setPreferredSize(new java.awt.Dimension(980, 35));
@@ -784,7 +765,7 @@ public class MenuUsuarios extends SuperVentana {
         });
         jPanel30.add(recargar, java.awt.BorderLayout.LINE_START);
 
-        panelInferior.add(jPanel30, java.awt.BorderLayout.NORTH);
+        panel_tabla.add(jPanel30, java.awt.BorderLayout.NORTH);
 
         jtUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -799,9 +780,9 @@ public class MenuUsuarios extends SuperVentana {
         jtUsuarios.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(jtUsuarios);
 
-        panelInferior.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+        panel_tabla.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
-        panelConsultas.add(panelInferior, java.awt.BorderLayout.CENTER);
+        panelConsultas.add(panel_tabla, java.awt.BorderLayout.CENTER);
 
         tab_root.addTab("Consulta de usuarios", panelConsultas);
 
@@ -876,7 +857,6 @@ public class MenuUsuarios extends SuperVentana {
         }
         String[] o = _getInfoUsuario(false);
         o = FormatoBD.bdEntrada(o);
-        Func.hash(o);
         boolean insertar = operaciones.insertar(o);
         System.out.println(insertar);
         _movimiento(insertar);
@@ -944,7 +924,7 @@ public class MenuUsuarios extends SuperVentana {
             }
         }
         cargarTabla(modelo_tabla, lista_de_busqueda);
-
+        barra_estado.setResultados(modelo_tabla.getRowCount());
     }//GEN-LAST:event_buscador_tablaKeyReleased
 
     private boolean _block;
@@ -968,6 +948,8 @@ public class MenuUsuarios extends SuperVentana {
 
     private void recargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargarActionPerformed
         controlador.actualizarTabla();
+        buscador_tabla.setText(null);
+        barra_estado.setResultados(modelo_tabla.getRowCount());
     }//GEN-LAST:event_recargarActionPerformed
 
     private void jcbTitularItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbTitularItemStateChanged
@@ -1239,25 +1221,33 @@ public class MenuUsuarios extends SuperVentana {
             }
         }
         cargarTabla(modelo_tabla, lista_de_busqueda);
+        barra_estado.setResultados(modelo_tabla.getRowCount());
     }
 
-    boolean _filtros(OUsuarios u, String txt) {
+    /**
+     *
+     * @param u
+     * @param txt
+     * @return
+     */
+    private boolean _filtros(OUsuarios u, String txt) {
         boolean f = true;
         if (!Filtros.isNullOrBlank(txt)) {
             f = f && Filtros.limpiar(u.getStringR()).contains(txt);
         }
-        if (filtro_calle.getItemCount() > 0 && filtro_calle.getSelectedIndex() < filtro_calle.getItemCount() && filtro_calle.getSelectedIndex() != 0) {
+        if (Filtros.swIsCbxRangoValido(filtro_calle) && filtro_calle.getSelectedIndex() != 0) {
             String x = Filtros.limpiar(u.getInfoSinFK()[4]);
             String y = Filtros.limpiar(filtro_calle.getItemAt(filtro_calle.getSelectedIndex()));
             boolean r = y.equalsIgnoreCase(x);
             f = f && r;
         }
-        if (filtro_toma.getItemCount() > 0 && filtro_toma.getSelectedIndex() < filtro_toma.getItemCount() && filtro_toma.getSelectedIndex() != 0) {
+        if (Filtros.swIsCbxRangoValido(filtro_toma) && filtro_toma.getSelectedIndex() != 0) {
             String x = Filtros.limpiar(u.getInfoSinFK()[6]);
             String y = Filtros.limpiar(filtro_toma.getItemAt(filtro_toma.getSelectedIndex()));
             boolean r = y.equalsIgnoreCase(x);
             f = f && r;
         }
+
         if (filtro_is_titular.isSelected()) {
             f = f && u.isTitular();
         }
@@ -1266,7 +1256,7 @@ public class MenuUsuarios extends SuperVentana {
             f = f && !u.isTitular();
         }
 
-        if (filtro_estado.getItemCount() > 0 && filtro_estado.getSelectedIndex() < filtro_estado.getItemCount() && filtro_estado.getSelectedIndex() != 0) {
+        if (Filtros.swIsCbxRangoValido(filtro_estado) && filtro_estado.getSelectedIndex() != 0) {
             int i = filtro_estado.getSelectedIndex();
             boolean r;
             if (i == 1) {
@@ -1277,11 +1267,9 @@ public class MenuUsuarios extends SuperVentana {
             f = f && r;
 
         }
-
         return f;
     }
 
-// <editor-fold defaultstate="collapsed" desc="Variables de interfaz">      
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox MantenerTitular;
     private javax.swing.JCheckBox activar_filtros;
@@ -1308,7 +1296,6 @@ public class MenuUsuarios extends SuperVentana {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -1363,19 +1350,43 @@ public class MenuUsuarios extends SuperVentana {
     private javax.swing.JPanel panelBotones;
     private javax.swing.JPanel panelCampos;
     private javax.swing.JPanel panelConsultas;
-    private javax.swing.JPanel panelInferior;
     private javax.swing.JPanel panelRegistros;
     private javax.swing.JPanel panel_der;
     private javax.swing.JPanel panel_filtros;
     private javax.swing.JPanel panel_izq;
+    private javax.swing.JPanel panel_tabla;
     private javax.swing.JPanel pf_bar_super;
     private javax.swing.JPanel pf_filtros;
     private javax.swing.JButton recargar;
     private javax.swing.JButton siguiente;
     private javax.swing.JTabbedPane tab_root;
     // End of variables declaration//GEN-END:variables
+    private final CBarraEstado barra_estado;
+    private boolean red_panel_root;
+    private boolean red_panel_der;
+    /**
+     *
+     */
+    private final CUsuarios controlador;
+    /**
+     * Variable en la que se guarda el usuario buscado
+     */
+    private OUsuarios usuario_buscado;
 
-//</editor-fold>
+    /**
+     * Variable que la lista de donde se toma el usuario, si de la lista
+     * auxiliar o de la cache
+     */
+    private boolean buscando;
+    private final Operaciones<OUsuarios> operaciones;
+    private final MemoCache<OUsuarios> memoria_cache;
+    private final ArrayList<OUsuarios> cache;
+    private final ArrayList<OUsuarios> lista_auxiliar;
+    private final Set<OUsuarios> lista_de_busqueda;
+
+    private final ModeloTablas modelo_tabla;
+    private final DefaultListModel<String> modelo_lista;
+
     public JComboBox<String> getJcbCalle() {
         return jcbCalle;
     }
@@ -1392,11 +1403,11 @@ public class MenuUsuarios extends SuperVentana {
         return jcbTitular;
     }
 
-    public DefaultListModel<String> getModelo_lista() {
+    public DefaultListModel<String> getModeloLista() {
         return modelo_lista;
     }
 
-    public DefaultTableModel getModelo_tabla() {
+    public ModeloTablas getModeloTabla() {
         return modelo_tabla;
     }
 
@@ -1431,9 +1442,6 @@ public class MenuUsuarios extends SuperVentana {
         }
         return super.getBounds();
     }
-
-    private boolean red_panel_root;
-    private boolean red_panel_der;
 
     @Override
     public void dispose() {

@@ -16,9 +16,12 @@
  */
 package com.jblue.vista.ventanas;
 
-import com.jblue.vista.normas.SuperVentana;
-import com.jblue.vista.vistas.perfil.VPerfil;
-import com.jblue.vista.vistas.perfil.tesorero.VTesorero;
+import com.jblue.vista.jbmarco.ConstTitutlos;
+import com.jblue.vista.jbmarco.VentanaExtendida;
+import com.jblue.vista.vistas.menucargos.VPerfil;
+import com.jblue.vista.vistas.menucargos.administrador.VAdministrador;
+import com.jblue.vista.vistas.menucargos.presidente.VPresidente;
+import com.jblue.vista.vistas.menucargos.tesorero.VTesorero;
 import java.awt.CardLayout;
 import java.awt.Container;
 
@@ -26,46 +29,57 @@ import java.awt.Container;
  *
  * @author jp
  */
-public class MenuCargos extends SuperVentana {
+public class MenuCargos extends VentanaExtendida {
 
     /**
      * Creates new form MenuCargos
      */
     public MenuCargos() {
+        super(ConstTitutlos.TL_PERFILES);
         initComponents();
         menu_tesorero = new VTesorero();
         menu_perfil = new VPerfil();
+        menu_presidente = new VPresidente();
+        menu_administrador = new VAdministrador();
+
         ly = (CardLayout) getContentPane().getLayout();
         llamable();
     }
 
     @Override
     protected final void llamable() {
-        addComponentes();
+        construirComponentes();
+        componentesEstadoFinal();
+        componentesEstadoInicial();
+        manejoEventos();
     }
 
     @Override
-    protected void addComponentes() {
+    protected void construirComponentes() {
         Container panel = getContentPane();
         panel.add(menu_tesorero.getName(), menu_tesorero);
         panel.add(menu_perfil.getName(), menu_perfil);
     }
 
     @Override
-    public void estadoInicial() {
+    public void componentesEstadoInicial() {
     }
 
     public void showTesorero() {
-        ly.show(getContentPane(), menu_tesorero.getName());
+        evtCambios(menu_bar, ly, menu_tesorero, ConstTitutlos.TL_PERF_TESORERO);
     }
 
     public void showPerfil() {
-        ly.show(getContentPane(), menu_perfil.getName());
+        evtCambios(menu_bar, ly, menu_perfil, ConstTitutlos.TL_PERF_PERFIL);
     }
-    
-    public void showPresidente(){}
-    public void showSecretario(){}
-    public void showAdministrador(){}
+
+    public void showPresidente() {
+        evtCambios(menu_bar, ly, menu_presidente, ConstTitutlos.TL_PERF_PRESIDENTE);
+    }
+
+    public void showAdministrador() {
+        evtCambios(menu_bar, ly, menu_administrador, ConstTitutlos.TL_PERF_ADMINISTRADOR);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -76,13 +90,15 @@ public class MenuCargos extends SuperVentana {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuBar1 = new javax.swing.JMenuBar();
+        menu_bar = new javax.swing.JMenuBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(800, 500));
+        setPreferredSize(new java.awt.Dimension(1000, 700));
         getContentPane().setLayout(new java.awt.CardLayout());
 
-        jMenuBar1.setPreferredSize(new java.awt.Dimension(100, 30));
-        setJMenuBar(jMenuBar1);
+        menu_bar.setPreferredSize(new java.awt.Dimension(100, 30));
+        setJMenuBar(menu_bar);
 
         pack();
         setLocationRelativeTo(null);
@@ -90,10 +106,12 @@ public class MenuCargos extends SuperVentana {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar menu_bar;
     // End of variables declaration//GEN-END:variables
     private final CardLayout ly;
-    private final VTesorero menu_tesorero;
     private final VPerfil menu_perfil;
+    private final VTesorero menu_tesorero;
+    private final VPresidente menu_presidente;
+    private final VAdministrador menu_administrador;
 
 }

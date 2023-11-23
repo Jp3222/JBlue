@@ -4,15 +4,14 @@
  */
 package com.jblue.vista.ventanas;
 
-import com.jblue.modelo.envoltorios.env.EnvPersonal;
-import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.sistema.Sesion;
 import com.jblue.util.cache.FabricaCache;
-import com.jblue.vista.normas.SuperVentana;
-import com.jblue.vista.ventanas.menus.herramientas.MenuCVS;
-import com.jblue.vista.ventanas.menus.herramientas.MenuDirectorios;
-import com.jblue.vista.ventanas.menus.herramientas.MenuDocumentos;
-import com.jblue.vista.vistas.cobros.VCobros;
+import com.jblue.vista.jbmarco.ConstTitutlos;
+import com.jblue.vista.jbmarco.VentanaSimple;
+import com.jblue.vista.ventanas.herramientas.MenuCVS;
+import com.jblue.vista.ventanas.herramientas.MenuDirectorios;
+import com.jblue.vista.ventanas.herramientas.MenuDocumentos;
+import com.jblue.vista.vistas.menuprincipal.VCobros;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -25,14 +24,15 @@ import javax.swing.SwingUtilities;
  *
  * @author jp
  */
-public class MenuPrincipal extends SuperVentana {
+public class MenuPrincipal extends VentanaSimple {
 
     public MenuPrincipal(Login login) {
+        super(ConstTitutlos.TL_MENU_PRINCIPAL, ConstTitutlos.TL_VENTANAS);
         this.initComponents();
         menus_bd = new MenuBD();
         menu_cargos = new MenuCargos();
         //
-        this._TITULO = 2;
+        //
         this.login = login;
         //
         this.herr_doc = new MenuDocumentos();
@@ -53,31 +53,30 @@ public class MenuPrincipal extends SuperVentana {
 
     @Override
     protected final void llamable() {
-        addComponentes();
-        estadoFinal();
-        estadoInicial();
-        addEventos();
+        construirComponentes();
+        componentesEstadoFinal();
+        componentesEstadoInicial();
+        manejoEventos();
     }
 
     @Override
-    public void estadoInicial() {
+    public void componentesEstadoInicial() {
 
     }
 
     @Override
-    protected void estadoFinal() {
-        super.estadoFinal();
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    protected void componentesEstadoFinal() {
+        super.componentesEstadoFinal();
     }
 
     @Override
-    protected void addComponentes() {
+    protected void construirComponentes() {
         JPanel panel = (JPanel) getContentPane();
         panel.add(vista_cobros, BorderLayout.CENTER);
     }
 
     @Override
-    protected void addEventos() {
+    protected void manejoEventos() {
         addAcLis(e -> evtMostrarMenu((JMenuItem) e.getSource()),
                 item_perfil, item_presidente, item_tesorero, item_administrador,
                 item_comprobantes, item_salir);
@@ -169,8 +168,9 @@ public class MenuPrincipal extends SuperVentana {
         item_Calles = new javax.swing.JMenuItem();
         item_tipo_tomas = new javax.swing.JMenuItem();
         menu_herramientas = new javax.swing.JMenu();
-        item_comprobantes = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        item_comprobantes = new javax.swing.JMenuItem();
         item_dir = new javax.swing.JMenuItem();
         item_docs = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
@@ -187,7 +187,7 @@ public class MenuPrincipal extends SuperVentana {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setExtendedState(6);
         setMinimumSize(new java.awt.Dimension(600, 350));
-        setState(6);
+        setPreferredSize(new java.awt.Dimension(1200, 700));
 
         menu_en_barra.setMinimumSize(new java.awt.Dimension(344, 20));
         menu_en_barra.setPreferredSize(new java.awt.Dimension(1200, 30));
@@ -253,12 +253,15 @@ public class MenuPrincipal extends SuperVentana {
 
         menu_herramientas.setText("Herramientas");
 
-        item_comprobantes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/comprobado.png"))); // NOI18N
-        item_comprobantes.setText("Comprobantes");
-        menu_herramientas.add(item_comprobantes);
+        jMenuItem2.setText("Bloquear Caja");
+        menu_herramientas.add(jMenuItem2);
 
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/confidencial.png"))); // NOI18N
         jMenu3.setText("Docs");
+
+        item_comprobantes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/comprobado.png"))); // NOI18N
+        item_comprobantes.setText("Comprobantes");
+        jMenu3.add(item_comprobantes);
 
         item_dir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/carpeta.png"))); // NOI18N
         item_dir.setText("Directorios de Usuario");
@@ -456,6 +459,7 @@ public class MenuPrincipal extends SuperVentana {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
@@ -488,14 +492,6 @@ public class MenuPrincipal extends SuperVentana {
         finalizarSesion();
         super.dispose();
         irLogin();
-    }
-
-    @Override
-    public void permisos() {
-        OPersonal o = Sesion.getInstancia().getUsuario();
-        item_tesorero.setEnabled(EnvPersonal.isAdministrador(o) || EnvPersonal.isTesorero(o));
-        item_presidente.setEnabled(EnvPersonal.isAdministrador(o) || EnvPersonal.isPresidente(o));
-        item_administrador.setEnabled(EnvPersonal.isAdministrador(o));
     }
 
 }

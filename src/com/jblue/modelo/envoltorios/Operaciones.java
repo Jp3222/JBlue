@@ -29,19 +29,8 @@ public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio implement
         return _INSERTAR(valores);
     }
 
-    public synchronized boolean eliminar(String where, FuncionAplicada funcion) {
-        return _ELIMINAR(where);
-    }
-
-    public synchronized boolean actualizar(String campo, String valor, String where, FuncionAplicada funcion) {
-        return _ACTUALIZAR(campo, valor, where);
-    }
-
-    public synchronized boolean actualizar(String[] campos, String[] valores, String where, FuncionAplicada funcion) {
-        if (funcion != null) {
-            valores = funcion.procesamiento(valores);
-        }
-        return _ACTUALIZAR(campos, valores, where);
+    public boolean actualizar(String[] valores, String where) {
+        return _ACTUALIZAR_SIN_ID(valores, where);
     }
 
     @Override

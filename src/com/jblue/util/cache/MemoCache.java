@@ -49,7 +49,7 @@ public class MemoCache<T extends Objeto> {
     private String query;
 
     public MemoCache(Operaciones<T> operaciones) {
-        this.lista = new ArrayList<>(1000);
+        this.lista = new ArrayList<>(CAPACIDAD_MIN);
         this.operaciones = operaciones;
         this.rango = 1000;
         this.limite_min = 1;
@@ -58,9 +58,9 @@ public class MemoCache<T extends Objeto> {
     }
 
     public MemoCache(int capacidad, Operaciones<T> operaciones) {
-        this.lista = new ArrayList<>(CAPACIDAD_MIN);
+        this.lista = new ArrayList<>(capacidad);
         this.operaciones = operaciones;
-        this.rango = CAPACIDAD_MIN;
+        this.rango = capacidad;
         this.limite_min = 1;
         this.limite_max = rango;
         this.getIdsMinMax();
@@ -69,7 +69,7 @@ public class MemoCache<T extends Objeto> {
     public MemoCache(Operaciones<T> operaciones, int rango) {
         this.lista = new ArrayList<>(1000);
         this.operaciones = operaciones;
-        this.rango = 1000;
+        this.rango = rango;
         this.limite_min = 1;
         this.limite_max = rango;
         this.getIdsMinMax();
@@ -78,7 +78,7 @@ public class MemoCache<T extends Objeto> {
     public MemoCache(int capacidad, Operaciones<T> operaciones, int rango) {
         this.lista = new ArrayList<>(1000);
         this.operaciones = operaciones;
-        this.rango = 1000;
+        this.rango = rango;
         this.limite_min = 1;
         this.limite_max = rango;
         this.getIdsMinMax();
@@ -113,6 +113,7 @@ public class MemoCache<T extends Objeto> {
     public void sig() {
         limite_min += rango;
         limite_max += rango;
+        
     }
 
     public void ant() {
@@ -120,15 +121,10 @@ public class MemoCache<T extends Objeto> {
         if (aux > 0) {
             limite_min -= rango;
             limite_max -= rango;
-        }
-    }
+        } 
+        
 
-//    public boolean newSig() {
-//        
-//    }
-//
-//    public boolean newAnt() {
-//    }
+    }
 
     public int getPrimer_id_leido() {
         return primer_id_leido;
@@ -140,6 +136,10 @@ public class MemoCache<T extends Objeto> {
 
     public ArrayList<T> getLista() {
         return (ArrayList<T>) lista;
+    }
+
+    public List<Objeto> getListaObj() {
+        return (List<Objeto>) lista;
     }
 
     public Operaciones<T> getOperaciones() {

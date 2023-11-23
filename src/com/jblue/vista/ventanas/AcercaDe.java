@@ -5,7 +5,7 @@
 package com.jblue.vista.ventanas;
 
 import com.jblue.util.tiempo.Fecha;
-import com.jblue.vista.normas.SuperVentana;
+import com.jblue.vista.jbmarco.VentanaSimple;
 import java.time.LocalDate;
 import java.time.Month;
 import javax.swing.text.SimpleAttributeSet;
@@ -16,7 +16,7 @@ import javax.swing.text.StyledDocument;
  *
  * @author jp
  */
-public class AcercaDe extends SuperVentana {
+public class AcercaDe extends VentanaSimple {
 
     /**
      * Creates new form AcercaDE
@@ -72,6 +72,7 @@ public class AcercaDe extends SuperVentana {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Acerca de JBlue");
+        setPreferredSize(new java.awt.Dimension(800, 500));
         setResizable(false);
 
         jTabbedPane1.setToolTipText("");
@@ -177,7 +178,7 @@ public class AcercaDe extends SuperVentana {
 
         jTabbedPane1.addTab("Info. del programa", panel_app_info);
 
-        getContentPane().add(jTabbedPane1, java.awt.BorderLayout.PAGE_START);
+        getContentPane().add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);
@@ -216,11 +217,10 @@ public class AcercaDe extends SuperVentana {
 
     @Override
     protected void llamable() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void estadoInicial() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void componentesEstadoInicial() {
     }
+
 }

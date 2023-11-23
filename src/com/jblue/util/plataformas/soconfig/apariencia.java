@@ -4,6 +4,8 @@
  */
 package com.jblue.util.plataformas.soconfig;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,9 +26,8 @@ public class apariencia {
     public static void setDefault() {
         try {
             String UI = UIManager.getSystemLookAndFeelClassName();
-            UIManager.setLookAndFeel(UI);
-        } catch (ClassNotFoundException | InstantiationException
-                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (UnsupportedLookAndFeelException ex) {
 
             Logger.getLogger(apariencia.class.getName()).log(Level.SEVERE, null, ex);
         }

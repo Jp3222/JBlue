@@ -42,6 +42,9 @@ public class CBarraEstado extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         lb_resultado = new javax.swing.JLabel();
         rango = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        lb_resultado1 = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(100, 30));
         setPreferredSize(new java.awt.Dimension(600, 30));
@@ -60,6 +63,13 @@ public class CBarraEstado extends javax.swing.JPanel {
 
         rango.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         add(rango, java.awt.BorderLayout.CENTER);
+
+        jPanel2.setPreferredSize(new java.awt.Dimension(200, 30));
+        jPanel2.setLayout(new java.awt.GridLayout(1, 2, 5, 0));
+        jPanel2.add(jLabel3);
+        jPanel2.add(lb_resultado1);
+
+        add(jPanel2, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
 
     public void setResultados(int resultados) {
@@ -99,8 +109,11 @@ public class CBarraEstado extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lb_resultado;
+    private javax.swing.JLabel lb_resultado1;
     private javax.swing.JLabel rango;
     // End of variables declaration//GEN-END:variables
     private int id_min, id_max;

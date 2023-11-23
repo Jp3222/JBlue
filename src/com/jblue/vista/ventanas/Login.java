@@ -11,7 +11,8 @@ import com.jblue.sistema.Sesion;
 import com.jblue.sistema.Sistema;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.crypto.EncriptadoAES;
-import com.jblue.vista.normas.SuperVentana;
+import com.jblue.vista.jbmarco.ConstTitutlos;
+import com.jblue.vista.jbmarco.VentanaSimple;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
 import com.jutil.jswing.jswingenv.EnvJTextField;
@@ -32,7 +33,7 @@ import javax.swing.SwingUtilities;
  *
  * @author jp
  */
-public class Login extends SuperVentana {
+public class Login extends VentanaSimple {
 
     private MenuPrincipal MENU_PRINCIPAL;
     private final MenuConfigBD MENU_CONFIG_BD;
@@ -44,7 +45,7 @@ public class Login extends SuperVentana {
      * @param MENU_CONFIG_BD
      */
     public Login(MenuConfigBD MENU_CONFIG_BD) {
-        this._TITULO = 1;
+        super(ConstTitutlos.TL_NUEVA_VENTANA, ConstTitutlos.TL_VENTANAS);
         this.MENU_CONFIG_BD = MENU_CONFIG_BD;
         initComponents();
         env_jtf = new EnvJTextField[2];
@@ -55,13 +56,14 @@ public class Login extends SuperVentana {
 
     @Override
     public final void llamable() {
-        estadoFinal();
-        estadoInicial();
-        addEventos();
+        construirComponentes();
+        componentesEstadoFinal();
+        componentesEstadoInicial();
+        manejoEventos();
     }
 
     @Override
-    public void estadoInicial() {
+    public void componentesEstadoInicial() {
         usuario.requestFocusInWindow();
         mostrar.setToolTipText("mostrar");
         mostrar.setSelected(false);
@@ -73,8 +75,8 @@ public class Login extends SuperVentana {
     }
 
     @Override
-    protected void estadoFinal() {
-        super.estadoFinal();
+    protected void componentesEstadoFinal() {
+        super.componentesEstadoFinal();
         try {
             Conexion instancia = Conexion.getInstancia();
             String estado = "Estado ";
@@ -87,12 +89,7 @@ public class Login extends SuperVentana {
     }
 
     @Override
-    protected void addComponentes() {
-        super.addComponentes();
-    }
-
-    @Override
-    protected void addEventos() {
+    protected void manejoEventos() {
         jbtInicio.addActionListener(e -> login());
         for (EnvJTextField envjtf : env_jtf) {
             envjtf.borrarAlClick();
@@ -276,7 +273,7 @@ public class Login extends SuperVentana {
             System.out.println("ERROR AL CARGAR LA CACHE");
         }
         ConfigSis s = new ConfigSis();
-            
+
         System.out.println("¡¡¡CACHE CARGADA!!!");
 
         SwingUtilities.invokeLater(() -> {
@@ -285,9 +282,7 @@ public class Login extends SuperVentana {
         });
         SwingUtilities.invokeLater(() -> {
             MENU_PRINCIPAL = new MenuPrincipal(this);
-            MENU_PRINCIPAL.permisos();
             MENU_PRINCIPAL.setVisible(true);
-
         });
     }
 
@@ -359,6 +354,6 @@ public class Login extends SuperVentana {
     @Override
     public void dispose() {
         super.dispose();
-        SwingUtilities.invokeLater(() -> estadoInicial());
+        SwingUtilities.invokeLater(() -> componentesEstadoInicial());
     }
 }

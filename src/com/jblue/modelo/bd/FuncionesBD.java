@@ -75,7 +75,6 @@ public class FuncionesBD {
             return sb.toString();
         } catch (SQLException ex) {
             Excp.impTerminal(ex, getClass(), false);
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }

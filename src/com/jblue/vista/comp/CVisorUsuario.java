@@ -40,6 +40,13 @@ import javax.swing.KeyStroke;
  */
 public class CVisorUsuario extends javax.swing.JDialog {
 
+    public static CVisorUsuario showVisor(OUsuarios obj) {
+        CVisorUsuario o = new CVisorUsuario(null, true);
+        o.setUsuario(obj);
+        o.setVisible(obj != null);
+        return o;
+    }
+
     private OUsuarios usuario;
 
     private final JTextField[] campos;
@@ -120,7 +127,7 @@ public class CVisorUsuario extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        panel_root = new javax.swing.JPanel();
+        panel_central = new javax.swing.JPanel();
         panel_lateral = new javax.swing.JPanel();
         pl_foto = new javax.swing.JLabel();
         pl_panel_central = new javax.swing.JPanel();
@@ -129,7 +136,10 @@ public class CVisorUsuario extends javax.swing.JDialog {
         tab_root = new javax.swing.JTabbedPane();
         panel_datos_usuario = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
+        panel_camp_id = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        nombre2 = new javax.swing.JTextField();
+        panel_camp_nombre = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         nombre = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
@@ -167,7 +177,7 @@ public class CVisorUsuario extends javax.swing.JDialog {
         panel_pxr = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabla_pxr = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
+        panel_bottom = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel24 = new javax.swing.JPanel();
         okButton = new javax.swing.JButton();
@@ -178,11 +188,11 @@ public class CVisorUsuario extends javax.swing.JDialog {
             }
         });
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(1000, 700));
+        jPanel2.setPreferredSize(new java.awt.Dimension(1000, 600));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        panel_root.setPreferredSize(new java.awt.Dimension(1012, 670));
-        panel_root.setLayout(new java.awt.BorderLayout());
+        panel_central.setPreferredSize(new java.awt.Dimension(1000, 570));
+        panel_central.setLayout(new java.awt.BorderLayout());
 
         panel_lateral.setPreferredSize(new java.awt.Dimension(300, 700));
         panel_lateral.setLayout(new java.awt.BorderLayout());
@@ -206,23 +216,34 @@ public class CVisorUsuario extends javax.swing.JDialog {
 
         panel_lateral.add(pl_panel_central, java.awt.BorderLayout.CENTER);
 
-        panel_root.add(panel_lateral, java.awt.BorderLayout.WEST);
+        panel_central.add(panel_lateral, java.awt.BorderLayout.WEST);
 
         panel_datos_usuario.setLayout(new java.awt.BorderLayout(0, 5));
 
         jPanel4.setPreferredSize(new java.awt.Dimension(700, 620));
-        jPanel4.setLayout(new java.awt.GridLayout(10, 1, 5, 5));
+        jPanel4.setLayout(new java.awt.GridLayout(11, 1, 5, 5));
 
-        jPanel7.setLayout(new java.awt.BorderLayout());
+        panel_camp_id.setLayout(new java.awt.BorderLayout());
+
+        jLabel13.setText("Nombre:");
+        jLabel13.setPreferredSize(new java.awt.Dimension(150, 30));
+        panel_camp_id.add(jLabel13, java.awt.BorderLayout.WEST);
+
+        nombre2.setEditable(false);
+        panel_camp_id.add(nombre2, java.awt.BorderLayout.CENTER);
+
+        jPanel4.add(panel_camp_id);
+
+        panel_camp_nombre.setLayout(new java.awt.BorderLayout());
 
         jLabel3.setText("Nombre:");
         jLabel3.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel7.add(jLabel3, java.awt.BorderLayout.WEST);
+        panel_camp_nombre.add(jLabel3, java.awt.BorderLayout.WEST);
 
         nombre.setEditable(false);
-        jPanel7.add(nombre, java.awt.BorderLayout.CENTER);
+        panel_camp_nombre.add(nombre, java.awt.BorderLayout.CENTER);
 
-        jPanel4.add(jPanel7);
+        jPanel4.add(panel_camp_nombre);
 
         jPanel8.setLayout(new java.awt.BorderLayout());
 
@@ -383,13 +404,13 @@ public class CVisorUsuario extends javax.swing.JDialog {
 
         tab_root.addTab("Pagos x recargos", panel_pxr);
 
-        panel_root.add(tab_root, java.awt.BorderLayout.CENTER);
+        panel_central.add(tab_root, java.awt.BorderLayout.CENTER);
 
-        jPanel2.add(panel_root, java.awt.BorderLayout.CENTER);
+        jPanel2.add(panel_central, java.awt.BorderLayout.CENTER);
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(1000, 35));
-        jPanel1.setLayout(new java.awt.BorderLayout());
-        jPanel1.add(jLabel1, java.awt.BorderLayout.CENTER);
+        panel_bottom.setPreferredSize(new java.awt.Dimension(1000, 35));
+        panel_bottom.setLayout(new java.awt.BorderLayout());
+        panel_bottom.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         jPanel24.setPreferredSize(new java.awt.Dimension(200, 30));
         jPanel24.setLayout(new java.awt.GridLayout(1, 2, 5, 0));
@@ -403,9 +424,9 @@ public class CVisorUsuario extends javax.swing.JDialog {
         jPanel24.add(okButton);
         getRootPane().setDefaultButton(okButton);
 
-        jPanel1.add(jPanel24, java.awt.BorderLayout.EAST);
+        panel_bottom.add(jPanel24, java.awt.BorderLayout.EAST);
 
-        jPanel2.add(jPanel1, java.awt.BorderLayout.SOUTH);
+        jPanel2.add(panel_bottom, java.awt.BorderLayout.SOUTH);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
@@ -476,6 +497,7 @@ public class CVisorUsuario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -483,7 +505,6 @@ public class CVisorUsuario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
@@ -495,21 +516,24 @@ public class CVisorUsuario extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField nombre;
     private javax.swing.JLabel nombre1;
+    private javax.swing.JTextField nombre2;
     private javax.swing.JTextField numero_casa;
     private javax.swing.JButton okButton;
+    private javax.swing.JPanel panel_bottom;
+    private javax.swing.JPanel panel_camp_id;
+    private javax.swing.JPanel panel_camp_nombre;
+    private javax.swing.JPanel panel_central;
     private javax.swing.JPanel panel_datos_contacto;
     private javax.swing.JPanel panel_datos_usuario;
     private javax.swing.JPanel panel_lateral;
     private javax.swing.JPanel panel_pxr;
     private javax.swing.JPanel panel_pxs;
-    private javax.swing.JPanel panel_root;
     private javax.swing.JLabel pl_foto;
     private javax.swing.JPanel pl_panel_central;
     private javax.swing.JTabbedPane tab_root;

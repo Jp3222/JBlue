@@ -38,8 +38,16 @@ public class Filtros {
         return txt.trim().replace(" ", "").replace("_", "").toUpperCase();
     }
 
-    public static boolean soloNumeros(String txt) {
+    public static boolean limpiarYChecar(String a, String b) {
+        return limpiar(a).contains(b);
+    }
+
+    public static boolean soloNumerosDecimales(String txt) {
         return txt.matches("([0-9]{1,4})(|(\\.([0-9]{1,2})))");
+    }
+
+    public static boolean soloNumerosEnteros(String txt) {
+        return txt.matches("[0-9]{1,10}");
     }
 
     public static boolean soloTexto(String txt) {

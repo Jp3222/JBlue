@@ -18,7 +18,6 @@ public class JBlue {
      * @param args the command line arguments
      */
     public static void main(String... args) {
-
         //validando la version de java
         String versionStr = System.getProperty("java.version");
         CharSequence subsecuencia = versionStr.subSequence(0, 2);

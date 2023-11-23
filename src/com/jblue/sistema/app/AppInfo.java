@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
 public interface AppInfo {
 
     final String NOMBRE_DEL_PROGRAMA = "jblue ",
-            VERSION_DEL_PROGRAMA = "0.0",
+            VERSION_DEL_PROGRAMA = "1.0",
             TITULO_VER_PROGRAMA = String.format("%s - %s", NOMBRE_DEL_PROGRAMA, VERSION_DEL_PROGRAMA);
     /**
      * <br> 0 - "nueva ventana"

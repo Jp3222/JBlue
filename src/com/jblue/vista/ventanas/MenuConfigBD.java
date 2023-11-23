@@ -7,7 +7,7 @@ package com.jblue.vista.ventanas;
 import com.jblue.sistema.Archivos;
 import com.jblue.sistema.Sistema;
 import com.jblue.util.archivos.ConstructorArchivos;
-import com.jblue.vista.normas.SuperVentana;
+import com.jblue.vista.jbmarco.VentanaSimple;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
 import java.io.File;
@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
  *
  * @author jp
  */
-public class MenuConfigBD extends SuperVentana {
+public class MenuConfigBD extends VentanaSimple {
 
     private String usuario, contra, url;
     private Conexion cn;
@@ -49,17 +49,19 @@ public class MenuConfigBD extends SuperVentana {
 
     @Override
     protected final void llamable() {
-        estadoFinal();
-        estadoInicial();
+        construirComponentes();
+        componentesEstadoFinal();
+        componentesEstadoInicial();
+        manejoEventos();
     }
 
     @Override
-    public void estadoInicial() {
+    public void componentesEstadoInicial() {
     }
 
     @Override
-    protected void estadoFinal() {
-        super.estadoFinal();
+    protected void componentesEstadoFinal() {
+        super.componentesEstadoFinal();
     }
 
     /**
@@ -103,8 +105,10 @@ public class MenuConfigBD extends SuperVentana {
         jbtProbarConexion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 500));
         setResizable(false);
 
+        jPanel2.setPreferredSize(new java.awt.Dimension(800, 500));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         jLabel7.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
@@ -116,7 +120,7 @@ public class MenuConfigBD extends SuperVentana {
         jLabel7.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         jPanel2.add(jLabel7, java.awt.BorderLayout.NORTH);
 
-        jPanel3.setPreferredSize(new java.awt.Dimension(800, 300));
+        jPanel3.setPreferredSize(new java.awt.Dimension(800, 500));
         jPanel3.setLayout(new java.awt.GridLayout(4, 1));
 
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 50));

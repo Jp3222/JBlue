@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * @author jp
  * @param <T>
  */
-public class MemoriaCache<T extends Objeto> {
+public class MemoriaCache <T extends Objeto> {
 
     private final ArrayList<T> cache;
     private final ArrayList<T> cache_aux;

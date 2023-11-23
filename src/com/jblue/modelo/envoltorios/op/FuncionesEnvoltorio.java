@@ -128,6 +128,18 @@ public abstract class FuncionesEnvoltorio {
         return false;
     }
 
+    protected boolean _ACTUALIZAR_SIN_ID(String valores[], String where) {
+        try {
+            return CONEXION.update(TABLA,
+                    CONEXION.getCamposDatos(Arrays.copyOfRange(CAMPOS, 1, NO_CAMPOS), valores),
+                    where
+            );
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionesEnvoltorio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
     /**
      *
      * @param <T>

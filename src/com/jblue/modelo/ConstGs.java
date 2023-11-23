@@ -181,7 +181,8 @@ public abstract class ConstGs {
         "Movimientos",
         "Pagos por el Servicio",
         "Pagos por Recargos",
-        "Pagos por otros"
+        "Pagos por otros",
+        "Variables del sistema"
     };
 
     public static final String[][] CAMPOS = {

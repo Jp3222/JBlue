@@ -59,8 +59,7 @@ public class Sesion extends Movimientos {
     }
 
     boolean _tiempo() {
-        Fecha o = new Fecha();
-        return o.getNewFechaActual().getDayOfWeek() == DayOfWeek.SATURDAY;
+        return Fecha.getNewFechaActual().getDayOfWeek() == DayOfWeek.SATURDAY;
     }
 
     public boolean inicioSesion() {

@@ -16,31 +16,31 @@
  */
 package com.jblue.vista.ventanas;
 
-import com.jblue.vista.normas.SuperVentana;
-import com.jblue.vista.vistas.bd.usuarios.VUsuarios;
-import com.jblue.vista.vistas.cobros.VCobros;
-import com.jblue.vista.vistas.normas.Vista;
+import com.jblue.vista.jbmarco.VentanaSimple;
+import com.jblue.vista.jbmarco.VistaExtendida;
+import com.jblue.vista.vistas.menubd.usuarios.VUsuarios;
+import com.jblue.vista.vistas.menuprincipal.VCobros;
 
 /**
  *
  * @author jp
  */
-public class MenuPruebas extends SuperVentana {
+public class MenuPruebas extends VentanaSimple {
 
-    private final Vista[] array;
+    private final VistaExtendida[] array;
 
     /**
      * Creates new form Pruebas
      */
     public MenuPruebas() {
-        array = new Vista[2];
+        array = new VistaExtendida[2];
         array[0] = new VCobros();
         array[1] = new VUsuarios();
         //
         initComponents();
         //
         int i = 0;
-        for (Vista j : array) {
+        for (VistaExtendida j : array) {
             tab_root.addTab(j.getName(), j);
             if (j.getIcon() != null) {
                 tab_root.setIconAt(i, j.getIcon());
@@ -88,6 +88,7 @@ public class MenuPruebas extends SuperVentana {
     }
 
     @Override
-    public void estadoInicial() {
+    public void componentesEstadoInicial() {
     }
+
 }

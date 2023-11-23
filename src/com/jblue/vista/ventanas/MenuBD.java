@@ -16,20 +16,20 @@
  */
 package com.jblue.vista.ventanas;
 
-import com.jblue.vista.normas.SuperVentana;
-import com.jblue.vista.vistas.bd.VCalles;
-import com.jblue.vista.vistas.bd.VTipoTomas;
-import com.jblue.vista.vistas.bd.usuarios.VUsuarios;
-import com.jblue.vista.vistas.normas.Vista;
+import com.jblue.vista.jbmarco.ConstTitutlos;
+import com.jblue.vista.jbmarco.VentanaExtendida;
+import com.jblue.vista.vistas.menubd.VCalles;
+import com.jblue.vista.vistas.menubd.VTipoTomas;
+import com.jblue.vista.vistas.menubd.usuarios.VUsuarios;
 import java.awt.CardLayout;
 import java.awt.Container;
-import javax.swing.JMenu;
+import java.awt.Dimension;
 
 /**
  *
  * @author jp
  */
-public class MenuBD extends SuperVentana {
+public class MenuBD extends VentanaExtendida {
 
     private final CardLayout ly;
     private final VCalles menu_calles;
@@ -40,6 +40,7 @@ public class MenuBD extends SuperVentana {
      * Creates new form MenuBD
      */
     public MenuBD() {
+        setTITULOS_VEN(ConstTitutlos.TL_BD);
         initComponents();
         menu_calles = new VCalles();
         menu_usuarios = new VUsuarios();
@@ -58,14 +59,14 @@ public class MenuBD extends SuperVentana {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuBar1 = new javax.swing.JMenuBar();
+        menu_bar = new javax.swing.JMenuBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1000, 700));
         getContentPane().setLayout(new java.awt.CardLayout());
 
-        jMenuBar1.setPreferredSize(new java.awt.Dimension(148, 30));
-        setJMenuBar(jMenuBar1);
+        menu_bar.setPreferredSize(new java.awt.Dimension(148, 30));
+        setJMenuBar(menu_bar);
 
         pack();
         setLocationRelativeTo(null);
@@ -73,12 +74,14 @@ public class MenuBD extends SuperVentana {
 
     @Override
     protected final void llamable() {
-        addComponentes();
-        estadoInicial();
+        construirComponentes();
+        componentesEstadoFinal();
+        componentesEstadoInicial();
+        manejoEventos();
     }
 
     @Override
-    protected void addComponentes() {
+    protected void construirComponentes() {
         Container panel = getContentPane();
         panel.add(menu_calles.getName(), menu_calles);
         panel.add(menu_usuarios.getName(), menu_usuarios);
@@ -86,41 +89,30 @@ public class MenuBD extends SuperVentana {
     }
 
     @Override
-    public void estadoInicial() {
+    public void componentesEstadoInicial() {
         //ly.show(getContentPane(), menu_calles.getName());
     }
 
     public void showCalles() {
-        evt(menu_calles, 4);
+        evtCambios(menu_bar, ly, menu_calles, ConstTitutlos.TL_BD_CALLES);
     }
 
     public void showUsuarios() {
-        evt(menu_usuarios, 3);
+        evtCambios(menu_bar, ly, menu_usuarios, ConstTitutlos.TL_BD_USUARIOS);
     }
 
     public void showTipoTomas() {
-        evt(menu_tipo_tomas, 5);
+        evtCambios(menu_bar, ly, menu_tipo_tomas, ConstTitutlos.TL_BD_TIPO_TOMAS);
     }
 
-    public void evt(Vista vista, int titulo) {
-        if (vista == null) {
-            return;
-        }
-        ly.show(getContentPane(), vista.getName());
-        _TITULO = titulo;
-        updateTitle();
-        //
-        jMenuBar1.removeAll();
-        if (vista.getMenu() != null && !vista.getMenu().isEmpty()) {
-            for (JMenu i : vista.getMenu()) {
-                jMenuBar1.add(i);
-            }
-        }
-        jMenuBar1.updateUI();
+    @Override
+    public void setPreferredSize(Dimension preferredSize) {
+        super.setPreferredSize(preferredSize); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar menu_bar;
     // End of variables declaration//GEN-END:variables
 }

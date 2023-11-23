@@ -12,11 +12,11 @@ import com.jblue.modelo.objetos.OValores;
 import com.jblue.util.archivos.ConstructorArchivos;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;
-import com.jblue.util.plataformas.soconfig.apariencia;
 import com.jblue.vista.ventanas.MenuConfigBD;
 import com.jblue.vista.ventanas.Login;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
+import com.jutil.soyjvm.So;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -39,9 +39,9 @@ public class Sistema {
         }
         return instancia;
     }
+    
     private final MenuConfigBD config;
     private final Archivos archivos;
-
     private Login log;
     private String usuario, contraseña, url;
 
@@ -51,7 +51,7 @@ public class Sistema {
     private Sistema() {
         this.archivos = new Archivos();
         this.reinicio = false;
-        apariencia.setFlatMacLightlaf();
+        So.setDefaultLookAndFeel();
         config = new MenuConfigBD();
     }
 

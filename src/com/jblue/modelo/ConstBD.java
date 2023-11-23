@@ -168,7 +168,7 @@ public abstract class ConstBD {
         "pagos_x_servicio",
         "pagos_x_recargos",
         "pagos_x_otros",
-        "valores"
+        "var_sis"
     };
 
     public static final String[][] CAMPOS = {

@@ -105,8 +105,7 @@ public class EnvUsuario {
     }
 
     public static String getMesesPagados(String id) {
-        Fecha fh = new Fecha();
-        int size = getMesesPagados(String.valueOf(fh.getNewFechaActual().getYear()), id);
+        int size = getMesesPagados(String.valueOf(Fecha.getNewFechaActual().getYear()), id);
         return String.valueOf(size);
     }
 
@@ -133,8 +132,8 @@ public class EnvUsuario {
     public static boolean filtros(String txt, OUsuarios o) {
         return filtroIDExacto(txt, o) || filtroContieneNombre(txt, o) || filtroContieneCodigo(txt, o);
     }
-    
-    public static boolean isPrimerAño(OUsuarios o){
+
+    public static boolean isPrimerAño(OUsuarios o) {
         LocalDate x = LocalDate.parse(o.getRegistro(), Fecha.FORMATO);
         LocalDate y = LocalDate.now();
         return x.getYear() == y.getYear();

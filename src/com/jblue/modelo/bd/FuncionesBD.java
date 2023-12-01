@@ -34,12 +34,12 @@ public class FuncionesBD {
     private final String[] campos;
     private final int no_campos;
     //
-    private final char[] sim;
+    private final char[] SIMBOLOS;
     private final String sql_insert;
 
     public FuncionesBD(String tabla, String[] campos) {
         this.sql_insert = "insert into %s (%s)values%s;";
-        this.sim = new char[]{'(', ')', ',', ';'};
+        this.SIMBOLOS = new char[]{'(', ')', ',', ';'};
         this.conexion = Conexion.getInstancia();
         this.tabla = tabla;
         this.campos = campos;
@@ -55,16 +55,16 @@ public class FuncionesBD {
         _insert(datos, false);
     }
 
-    public String insertCsvData(String[] data) {
+    public String insertCSV(String[] data) {
         try {
             int capacidad = data.length * data[0].length();
             StringBuilder sb = new StringBuilder(capacidad);
             int i = 0;
             while (i < data.length - 1) {
-                sb.append(sim[0]).append(data[i]).append(sim[1]).append(sim[2]);
+                sb.append(SIMBOLOS[0]).append(data[i]).append(SIMBOLOS[1]).append(SIMBOLOS[2]);
                 i++;
             }
-            sb.append(sim[0]).append(data[i]).append(sim[1]);
+            sb.append(SIMBOLOS[0]).append(data[i]).append(SIMBOLOS[1]);
 
             conexion.instruccion(
                     String.format(sql_insert,

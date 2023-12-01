@@ -89,7 +89,7 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
 
     private final DefaultListModel<String> modelo_lista;
     private final ArrayList<T> cache;
-    private final ArrayList<T> lista_aux;
+    private final ArrayList<T> cache_aux;
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -111,7 +111,7 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
         initComponents();
         modelo_lista = new DefaultListModel<>();
         cache = lista;
-        lista_aux = new ArrayList<>(lista.size());
+        cache_aux = new ArrayList<>(lista.size());
         lista_usuarios.setModel(modelo_lista);
         cargar();
         //
@@ -131,8 +131,9 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
 
     public T getObjeto() {
         ArrayList<T> lista;
+        System.out.println(buscado);
         if (buscado) {
-            lista = lista_aux;
+            lista = cache_aux;
         } else {
             lista = cache;
         }
@@ -244,6 +245,7 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
         getContentPane().add(panel_root, java.awt.BorderLayout.CENTER);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
@@ -277,8 +279,10 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
             return;
         }
         modelo_lista.clear();
-        lista_aux.clear();
+        cache_aux.clear();
+
         txt = Filtros.limpiar(txt);
+
         String aux;
         for (T i : cache) {
             aux = Filtros.limpiar(i.getStringR());
@@ -287,13 +291,14 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
             }
             StringBuilder sb = new StringBuilder(100);
             sb.append(i.getId()).append(" - ").append(i.getStringR());
+
             modelo_lista.addElement(sb.toString());
+            cache_aux.add(i);
         }
     }
 
     private void doClose(int retStatus) {
         returnStatus = retStatus;
-        buscado = false;
         setVisible(false);
         dispose();
     }

@@ -17,10 +17,8 @@
 package com.jblue.vista.vistas.menuprincipal.sub;
 
 import com.jblue.mg.ModeloTablas;
-import com.jblue.modelo.ConstBD;
-import com.jblue.modelo.bd.FuncionesBD;
 import com.jblue.modelo.envoltorios.env.EnvUsuario;
-import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.modelo.negocios.RegistroDePagos;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.sistema.Sesion;
@@ -34,9 +32,9 @@ import com.jblue.vista.vistas.menuprincipal.VCobros;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
@@ -46,14 +44,14 @@ import javax.swing.SwingUtilities;
  *
  * @author jp
  */
-public class VCobrosR extends VistaSimple {
+public class VRCobros extends VistaSimple {
 
     /**
      * Creates new form VNewCobros
      *
      * @param root
      */
-    public VCobrosR(VCobros root) throws HeadlessException {
+    public VRCobros(VCobros root) throws HeadlessException {
         memo_cache = FabricaCache.MC_USUARIOS;
         cache = memo_cache.getLista();
         cache_aux = new ArrayList<>(cache.size());
@@ -142,43 +140,38 @@ public class VCobrosR extends VistaSimple {
     }
 
     private void evtCobrar(ActionEvent e) {
-        int meses_pagados = getContadorMeses(cbx_meses);
-        if (meses_pagados <= 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un mes");
-            return;
-        }
-        OTipoTomas o = EnvUsuario.getTipoDeTomaEnCache(usuario_buscado.getToma());
-        double total_a_pagar = meses_pagados * o.getCosto();
-        //
-        String input = JOptionPane.showInputDialog(this, "Dinero Ingresado", "Ingreso de dinero", JOptionPane.QUESTION_MESSAGE);
-        double dinero = Float.parseFloat(input);
-        if (dinero < total_a_pagar) {
-            JOptionPane.showMessageDialog(this, "El monto es menor");
-            return;
-        }
-        String[] mesesSeleccionados = getMesesSeleccionados(cbx_meses);
-        OPersonal usuario = Sesion.getInstancia().getUsuario();
+        String[] meses = getMesesSeleccionados(cbx_meses);
+        String mensaje;
+        
+        if (meses.length > 0) {
+            
+            String dinero = JOptionPane.showInputDialog(
+                    this,
+                    "Ingresa el monto",
+                    "Dinero Ingresado",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            
+            Map<String, String> resultados = RegistroDePagos.registrarPagos(
+                    Sesion.getInstancia().getUsuario(),
+                    usuario_buscado,
+                    meses,
+                    Double.parseDouble(dinero)
+            );
 
-        LocalDate fecha = LocalDate.now();
-
-        ArrayList<String> lista = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-
-        for (String i : mesesSeleccionados) {
-            sb.append(usuario.getId()).append(",");
-            sb.append(usuario_buscado.getId()).append(",");
-            sb.append(i).append(",");
-            sb.append(usuario_costo.getText()).append(",");
-            sb.append(fecha.getDayOfMonth()).append(",");
-            sb.append(fecha.getMonthValue()).append(",");
-            sb.append(fecha.getYear());
-            System.out.println(sb.toString());
-            lista.add(sb.toString());
-            sb.setLength(0);
+            String estado = resultados.get(RegistroDePagos.LLAVE_ESTADO);
+            if (estado.equals(RegistroDePagos.VALOR_CORRECTO)) {
+                mensaje = resultados.get(RegistroDePagos.LLAVE_DATOS);
+            } else {
+                mensaje = resultados.get(RegistroDePagos.LLAVE_ERROR);
+            }
+        } else {
+            mensaje = "Selecciona un mes";
         }
-        FuncionesBD bd = new FuncionesBD(ConstBD.TABLAS[6], ConstBD.BD_PAGOS_X_SERVICIO);
-        String insertCsvData = bd.insertCsvData(lista.toArray(String[]::new));
-        JOptionPane.showMessageDialog(this, bd);
+ 
+        System.out.println(mensaje);
+        JOptionPane.showMessageDialog(this, mensaje);
+
         componentesEstadoInicial();
 
     }
@@ -445,6 +438,11 @@ public class VCobrosR extends VistaSimple {
 
         btn_info_usuarios.setText("Info de usuario");
         btn_info_usuarios.setPreferredSize(new java.awt.Dimension(150, 29));
+        btn_info_usuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_info_usuariosActionPerformed(evt);
+            }
+        });
         jPanel2.add(btn_info_usuarios, java.awt.BorderLayout.EAST);
 
         jPanel9.add(jPanel2);
@@ -727,6 +725,10 @@ public class VCobrosR extends VistaSimple {
             SwingUtilities.invokeLater(() -> setInfoEnPantalla(usuario_buscado));
         }
     }//GEN-LAST:event_buscador_listaKeyPressed
+
+    private void btn_info_usuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_info_usuariosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_info_usuariosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

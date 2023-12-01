@@ -16,8 +16,8 @@
  */
 package com.jblue.vista.vistas.menuprincipal;
 
-import com.jblue.vista.vistas.menuprincipal.sub.VCobrosR;
-import com.jblue.vista.vistas.menuprincipal.sub.VCobrosC;
+import com.jblue.vista.vistas.menuprincipal.sub.VRCobros;
+import com.jblue.vista.vistas.menuprincipal.sub.VCCobros;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;
@@ -38,8 +38,8 @@ public class VCobros extends VistaExtendida {
     public VCobros() {
         initComponents();
         memoria_cache = FabricaCache.MC_USUARIOS;
-        registros = new VCobrosR(this);
-        consultas = new VCobrosC(this);
+        registros = new VRCobros(this);
+        consultas = new VCCobros(this);
         ly_root = (CardLayout) panel_root.getLayout();
         llamable();
     }
@@ -171,8 +171,8 @@ public class VCobros extends VistaExtendida {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel panel_root;
     // End of variables declaration//GEN-END:variables
-    private final VCobrosR registros;
-    private final VCobrosC consultas;
+    private final VRCobros registros;
+    private final VCCobros consultas;
     private final MemoCache<OUsuarios> memoria_cache;
     private final CardLayout ly_root;
 

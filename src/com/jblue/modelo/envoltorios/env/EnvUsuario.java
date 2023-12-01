@@ -35,12 +35,12 @@ public class EnvUsuario {
         return o;
     }
 
-    public static OTipoTomas getTipoDeTomaEnCache(String txt) {
+    public static OTipoTomas getTipoDeTomaEnCache(String id_usuario) {
         MemoCache<OTipoTomas> tomas = FabricaCache.MC_TIPOS_DE_TOMAS;
         ArrayList<OTipoTomas> memoria = tomas.getLista();
         OTipoTomas o = null;
         for (OTipoTomas i : memoria) {
-            if (i.getId().equals(txt) || i.getTipo().equalsIgnoreCase(txt)) {
+            if (i.getId().equals(id_usuario) || i.getTipo().equalsIgnoreCase(id_usuario)) {
                 o = i;
             }
         }

@@ -30,14 +30,14 @@ import java.util.ArrayList;
  *
  * @author jp
  */
-public final class VCobrosC extends VistaSimple {
+public final class VCCobros extends VistaSimple {
 
     /**
      * Creates new form VCobrosR
      *
      * @param root
      */
-    public VCobrosC(VCobros root) {
+    public VCCobros(VCobros root) {
         this.memo_cache = new MemoCache<>(FabricaOpraciones.getPAGOS_X_SERVICIO());
         memo_cache.setRangoActivo(true);
         memo_cache.cargar();

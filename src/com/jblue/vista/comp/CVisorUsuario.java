@@ -27,13 +27,17 @@ import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SpinnerNumberModel;
 
 /**
  *
@@ -74,7 +78,17 @@ public class CVisorUsuario extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         campos = new JTextField[]{
-            dato_id, dato_nombre, dato_ap, dato_am, dato_calle, dato_numero_casa, dato_tipo_toma, dato_fecha_registro, dato_estado, dato_titular, dato_codigo
+            dato_id,
+            dato_nombre,
+            dato_ap,
+            dato_am,
+            dato_calle,
+            dato_numero_casa,
+            dato_tipo_toma,
+            dato_fecha_registro,
+            dato_estado,
+            dato_titular,
+            dato_codigo
         };
         //
         modelo_pagos_x_servicio = new ModeloTablas(ConstGs.BD_PAGOS_X_SERVICIO);
@@ -83,6 +97,7 @@ public class CVisorUsuario extends javax.swing.JDialog {
         //
         tabla_pxs.setModel(modelo_pagos_x_servicio);
         tabla_pxr.setModel(modelo_pagos_x_recargo);
+        tabla_pxo.setModel(modelo_pagos_x_otros);
         //
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
@@ -96,20 +111,23 @@ public class CVisorUsuario extends javax.swing.JDialog {
                 doClose(RET_CANCEL);
             }
         });
-        tab_info_usuario.addChangeListener(i -> {
+
+        tab_info_pagos.addChangeListener(i -> {
             if (panel_pxs.isVisible()) {
                 cargarPagosXServicio();
             } else {
                 modelo_pagos_x_servicio.clear();
             }
         });
-        tab_info_usuario.addChangeListener(i -> {
+
+        tab_info_pagos.addChangeListener(i -> {
             if (panel_pxr.isVisible()) {
                 cargarPagosXRecargos();
             } else {
                 modelo_pagos_x_recargo.clear();
             }
         });
+
         CardLayout ly = (CardLayout) jPanel3.getLayout();
         ly.show(jPanel3, tab_info_usuario.getName());
     }
@@ -143,12 +161,26 @@ public class CVisorUsuario extends javax.swing.JDialog {
         jPanel3 = new javax.swing.JPanel();
         tab_info_pagos = new javax.swing.JTabbedPane();
         panel_pxs = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        filtro_pxs_año = new javax.swing.JSpinner();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla_pxs = new javax.swing.JTable();
         panel_pxr = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabla_pxr = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
+        filtro_pxr_año = new javax.swing.JSpinner();
+        panel_pxo = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jButton5 = new javax.swing.JButton();
+        jLabel18 = new javax.swing.JLabel();
+        filtro_pxo_año = new javax.swing.JSpinner();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tabla_pxo = new javax.swing.JTable();
         tab_info_usuario = new javax.swing.JTabbedPane();
         panel_datos_usuario = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -219,6 +251,11 @@ public class CVisorUsuario extends javax.swing.JDialog {
         pl_foto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pl_foto.setText("Sin foto");
         pl_foto.setPreferredSize(new java.awt.Dimension(300, 250));
+        pl_foto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pl_fotoMouseClicked(evt);
+            }
+        });
         panel_lateral.add(pl_foto, java.awt.BorderLayout.PAGE_START);
 
         pl_panel_central.setLayout(new java.awt.GridLayout(8, 0));
@@ -263,6 +300,23 @@ public class CVisorUsuario extends javax.swing.JDialog {
 
         panel_pxs.setLayout(new java.awt.BorderLayout());
 
+        jPanel1.setPreferredSize(new java.awt.Dimension(700, 40));
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
+        jButton3.setPreferredSize(new java.awt.Dimension(50, 30));
+        jPanel1.add(jButton3, java.awt.BorderLayout.LINE_END);
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Año:");
+        jLabel2.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel1.add(jLabel2, java.awt.BorderLayout.WEST);
+
+        filtro_pxs_año.setModel(new javax.swing.SpinnerNumberModel());
+        jPanel1.add(filtro_pxs_año, java.awt.BorderLayout.CENTER);
+
+        panel_pxs.add(jPanel1, java.awt.BorderLayout.NORTH);
+
         tabla_pxs.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -291,20 +345,57 @@ public class CVisorUsuario extends javax.swing.JDialog {
 
         panel_pxr.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
+        jPanel6.setPreferredSize(new java.awt.Dimension(700, 40));
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
+        jButton4.setPreferredSize(new java.awt.Dimension(50, 30));
+        jPanel6.add(jButton4, java.awt.BorderLayout.LINE_END);
+
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel17.setText("Año:");
+        jLabel17.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel6.add(jLabel17, java.awt.BorderLayout.WEST);
+
+        filtro_pxr_año.setModel(new javax.swing.SpinnerNumberModel());
+        jPanel6.add(filtro_pxr_año, java.awt.BorderLayout.CENTER);
+
+        panel_pxr.add(jPanel6, java.awt.BorderLayout.NORTH);
+
         tab_info_pagos.addTab("Pagos por recargos", panel_pxr);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 629, Short.MAX_VALUE)
-        );
+        panel_pxo.setLayout(new java.awt.BorderLayout());
 
-        tab_info_pagos.addTab("Pagos x Otros", jPanel1);
+        jPanel7.setPreferredSize(new java.awt.Dimension(700, 40));
+        jPanel7.setLayout(new java.awt.BorderLayout());
+
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
+        jButton5.setPreferredSize(new java.awt.Dimension(50, 30));
+        jPanel7.add(jButton5, java.awt.BorderLayout.LINE_END);
+
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel18.setText("Año:");
+        jLabel18.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel7.add(jLabel18, java.awt.BorderLayout.WEST);
+
+        filtro_pxo_año.setModel(new javax.swing.SpinnerNumberModel());
+        jPanel7.add(filtro_pxo_año, java.awt.BorderLayout.CENTER);
+
+        panel_pxo.add(jPanel7, java.awt.BorderLayout.NORTH);
+
+        tabla_pxo.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane3.setViewportView(tabla_pxo);
+
+        panel_pxo.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+
+        tab_info_pagos.addTab("Pagos x Otros", panel_pxo);
 
         jPanel3.add(tab_info_pagos, "Tab Info De Pagos");
         tab_info_pagos.getAccessibleContext().setAccessibleName("");
@@ -543,6 +634,14 @@ public class CVisorUsuario extends javax.swing.JDialog {
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void pl_fotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pl_fotoMouseClicked
+
+        if (evt.getClickCount() == 2) {
+            JOptionPane.showConfirmDialog(this, "Quiere agregar una foto a este usuario", "Foto de usuario", JOptionPane.CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        }
+
+    }//GEN-LAST:event_pl_fotoMouseClicked
+
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
@@ -574,6 +673,13 @@ public class CVisorUsuario extends javax.swing.JDialog {
         for (OPagosServicio i : lista) {
             modelo_pagos_x_servicio.addRow(i.getInfoSinFK());
         }
+        System.out.println("");
+        List<OPagosServicio> collect = lista.stream().sorted().collect(Collectors.toList());
+        SpinnerNumberModel modelo = (SpinnerNumberModel) filtro_pxs_año.getModel();
+        modelo.setMinimum(Integer.valueOf(collect.get(0).getAño()));
+        modelo.setValue(Integer.valueOf(collect.get(0).getAño()));
+        modelo.setMaximum(Integer.valueOf(collect.get(collect.size() - 1).getAño()));
+        collect.clear();
     }
 
     private void cargarPagosXRecargos() {
@@ -602,8 +708,14 @@ public class CVisorUsuario extends javax.swing.JDialog {
     private javax.swing.JTextField dato_tipo_toma;
     private javax.swing.JTextField dato_titular;
     private javax.swing.JLabel espacio1;
+    private javax.swing.JSpinner filtro_pxo_año;
+    private javax.swing.JSpinner filtro_pxr_año;
+    private javax.swing.JSpinner filtro_pxs_año;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -612,6 +724,9 @@ public class CVisorUsuario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -632,10 +747,13 @@ public class CVisorUsuario extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel nombre1;
     private javax.swing.JButton okButton;
     private javax.swing.JPanel panel_bottom;
@@ -648,12 +766,14 @@ public class CVisorUsuario extends javax.swing.JDialog {
     private javax.swing.JPanel panel_datos_contacto;
     private javax.swing.JPanel panel_datos_usuario;
     private javax.swing.JPanel panel_lateral;
+    private javax.swing.JPanel panel_pxo;
     private javax.swing.JPanel panel_pxr;
     private javax.swing.JPanel panel_pxs;
     private javax.swing.JLabel pl_foto;
     private javax.swing.JPanel pl_panel_central;
     private javax.swing.JTabbedPane tab_info_pagos;
     private javax.swing.JTabbedPane tab_info_usuario;
+    private javax.swing.JTable tabla_pxo;
     private javax.swing.JTable tabla_pxr;
     private javax.swing.JTable tabla_pxs;
     // End of variables declaration//GEN-END:variables

@@ -113,14 +113,15 @@ public class VRCobros extends VistaSimple {
         btn_cancelar.addActionListener(e -> evtCancelar(e));
         btn_limpiar.addActionListener(e -> evtLimpiar(e));
         btn_info_usuarios.addActionListener(e -> setInfoEnVisor(e));
+
         //btn_movimientos.addActionListener(e -> cobrar(e));
         chb_todos.addItemListener(e -> SwingUtilities.invokeLater(() -> {
             for (JCheckBox i : cbx_meses) {
                 i.setSelected(chb_todos.isSelected());
             }
         }));
+
         for (JCheckBox i : cbx_meses) {
-            //    i.addItemListener(e -> evtSumTotal());
             i.addChangeListener(e -> evtSumTotal());
         }
     }
@@ -142,34 +143,42 @@ public class VRCobros extends VistaSimple {
     private void evtCobrar(ActionEvent e) {
         String[] meses = getMesesSeleccionados(cbx_meses);
         String mensaje;
-        
+
         if (meses.length > 0) {
-            
+
             String dinero = JOptionPane.showInputDialog(
                     this,
                     "Ingresa el monto",
                     "Dinero Ingresado",
                     JOptionPane.INFORMATION_MESSAGE
             );
-            
-            Map<String, String> resultados = RegistroDePagos.registrarPagos(
-                    Sesion.getInstancia().getUsuario(),
-                    usuario_buscado,
-                    meses,
-                    Double.parseDouble(dinero)
-            );
 
-            String estado = resultados.get(RegistroDePagos.LLAVE_ESTADO);
-            if (estado.equals(RegistroDePagos.VALOR_CORRECTO)) {
-                mensaje = resultados.get(RegistroDePagos.LLAVE_DATOS);
+            Map<String, String> resultados;
+            String estado;
+
+            if (!Filtros.soloNumerosEnteros(dinero) && !Filtros.soloNumerosDecimales(dinero)) {
+                mensaje = "Dato no valido";
             } else {
-                mensaje = resultados.get(RegistroDePagos.LLAVE_ERROR);
+
+                resultados = RegistroDePagos.registrarPagoXServicio(
+                        Sesion.getInstancia().getUsuario(),
+                        usuario_buscado,
+                        meses,
+                        Double.parseDouble(dinero)
+                );
+
+                estado = resultados.get(RegistroDePagos.LLAVE_ESTADO);
+
+                mensaje = estado.equals(RegistroDePagos.VALOR_CORRECTO)
+                        ? resultados.get(RegistroDePagos.LLAVE_DATOS)
+                        : resultados.get(RegistroDePagos.LLAVE_ERROR);
+
             }
+
         } else {
             mensaje = "Selecciona un mes";
         }
- 
-        System.out.println(mensaje);
+
         JOptionPane.showMessageDialog(this, mensaje);
 
         componentesEstadoInicial();
@@ -342,7 +351,6 @@ public class VRCobros extends VistaSimple {
         btn_utilidades = new javax.swing.JButton();
 
         setName("Registro de cobros"); // NOI18N
-        setOpaque(false);
         setPreferredSize(new java.awt.Dimension(1200, 660));
         setLayout(new java.awt.BorderLayout());
 
@@ -350,8 +358,6 @@ public class VRCobros extends VistaSimple {
         panel_izq.setOpaque(false);
         panel_izq.setPreferredSize(new java.awt.Dimension(500, 660));
         panel_izq.setLayout(new java.awt.BorderLayout());
-
-        jScrollPane1.setOpaque(false);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -438,11 +444,6 @@ public class VRCobros extends VistaSimple {
 
         btn_info_usuarios.setText("Info de usuario");
         btn_info_usuarios.setPreferredSize(new java.awt.Dimension(150, 29));
-        btn_info_usuarios.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_info_usuariosActionPerformed(evt);
-            }
-        });
         jPanel2.add(btn_info_usuarios, java.awt.BorderLayout.EAST);
 
         jPanel9.add(jPanel2);
@@ -726,10 +727,6 @@ public class VRCobros extends VistaSimple {
         }
     }//GEN-LAST:event_buscador_listaKeyPressed
 
-    private void btn_info_usuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_info_usuariosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_info_usuariosActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Jlabel1;
@@ -822,6 +819,15 @@ public class VRCobros extends VistaSimple {
         }
         return meses_seleccionados.toArray(String[]::new);
     }
+
+
+    public void bloquear(boolean o) {
+        FuncJBlue.bloquearArbolComponentes(o, panel_der);
+        if (!o) {
+            componentesEstadoInicial();
+        }
+    }
+    
 
     //-- para crear banderas que condicionen estilos --//
     //-- prefijo_accion_nombre--//

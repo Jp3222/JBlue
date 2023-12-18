@@ -175,6 +175,7 @@ public class VUsuariosC extends VistaSimple {
         pf_bar_super.setLayout(new java.awt.BorderLayout());
 
         filtro_quitar.setText("Quitar filtros");
+        filtro_quitar.setPreferredSize(new java.awt.Dimension(150, 29));
         pf_bar_super.add(filtro_quitar, java.awt.BorderLayout.LINE_END);
 
         activar_filtros.setText("Filtros");

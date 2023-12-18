@@ -82,8 +82,13 @@ public class MenuPrincipal extends VentanaSimple {
                 item_comprobantes, item_salir);
 
         addAcLis(e -> evtMostrarBD((JMenuItem) e.getSource()),
-                item_config, item_usuarios, item_Calles, item_tipo_tomas,
-                item_tomas_reg);
+                item_config,
+                item_usuarios,
+                item_Calles,
+                item_tipo_tomas,
+                item_tomas_reg,
+                item_pagos_x_otros_tipos
+        );
 
         addAcLis(e -> evtMostrarHerr((JMenuItem) e.getSource()),
                 item_csv_rap, item_docs, item_dir);
@@ -102,6 +107,10 @@ public class MenuPrincipal extends VentanaSimple {
             menus_bd.showCalles();
         } else if (o == item_tipo_tomas) {
             menus_bd.showTipoTomas();
+        } else if (o == item_config) {
+            menus_bd.showConfiguraciones();
+        } else if (o == item_pagos_x_otros_tipos) {
+            menus_bd.showPagosXOtros();
         } else {
             JOptionPane.showMessageDialog(this, String.format("El apartado '%s' aun esta en desarrollo", o.getText()));
             return;
@@ -167,6 +176,7 @@ public class MenuPrincipal extends VentanaSimple {
         item_usuarios = new javax.swing.JMenuItem();
         item_Calles = new javax.swing.JMenuItem();
         item_tipo_tomas = new javax.swing.JMenuItem();
+        item_pagos_x_otros_tipos = new javax.swing.JMenuItem();
         menu_herramientas = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
@@ -248,6 +258,9 @@ public class MenuPrincipal extends VentanaSimple {
         item_tipo_tomas.setText("BD Tipo de tomas");
         item_tipo_tomas.setName("tipo-de-tomas"); // NOI18N
         menu_bd.add(item_tipo_tomas);
+
+        item_pagos_x_otros_tipos.setText("BD Tipos de pagos");
+        menu_bd.add(item_pagos_x_otros_tipos);
 
         menu_en_barra.add(menu_bd);
 
@@ -447,6 +460,7 @@ public class MenuPrincipal extends VentanaSimple {
     private javax.swing.JMenuItem item_csv_rap;
     private javax.swing.JMenuItem item_dir;
     private javax.swing.JMenuItem item_docs;
+    private javax.swing.JMenuItem item_pagos_x_otros_tipos;
     private javax.swing.JMenuItem item_perfil;
     private javax.swing.JMenuItem item_presidente;
     private javax.swing.JMenuItem item_salir;

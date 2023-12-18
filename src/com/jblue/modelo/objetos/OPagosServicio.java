@@ -24,7 +24,8 @@ public class OPagosServicio extends OPagos {
     public String getStringR() {
         return _conjuntoSinFK[2];
     }
-
+    
+    @Override
     public String[] getInfoSinFK() {
         return _conjuntoSinFK;
     }

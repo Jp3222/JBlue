@@ -4,6 +4,7 @@
  */
 package com.jblue.sistema;
 
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTipoTomas;
@@ -16,12 +17,15 @@ import com.jblue.vista.ventanas.MenuConfigBD;
 import com.jblue.vista.ventanas.Login;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
-import com.jutil.soyjvm.So;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * Sistema
@@ -39,7 +43,7 @@ public class Sistema {
         }
         return instancia;
     }
-    
+
     private final MenuConfigBD config;
     private final Archivos archivos;
     private Login log;
@@ -49,9 +53,14 @@ public class Sistema {
     private boolean reinicio;
 
     private Sistema() {
+        try {
+           
+            UIManager.setLookAndFeel(new FlatMacLightLaf());
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.archivos = new Archivos();
         this.reinicio = false;
-        So.setDefaultLookAndFeel();
         config = new MenuConfigBD();
     }
 

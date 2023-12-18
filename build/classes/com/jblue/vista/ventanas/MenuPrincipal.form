@@ -115,6 +115,11 @@
                 <Property name="name" type="java.lang.String" value="tipo-de-tomas" noResource="true"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="item_pagos_x_otros_tipos">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="BD Tipos de pagos"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="menu_herramientas">

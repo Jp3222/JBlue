@@ -19,12 +19,17 @@ package com.jblue.vista.vistas.menuprincipal.sub;
 import com.jblue.mg.ModeloTablas;
 import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.objetos.OPagosServicio;
+import com.jblue.util.Filtros;
 import com.jblue.util.FuncJBlue;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.vista.jbmarco.VistaSimple;
 import com.jblue.vista.vistas.menuprincipal.VCobros;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -71,16 +76,18 @@ public final class VCCobros extends VistaSimple {
     private void initComponents() {
 
         jPanel15 = new javax.swing.JPanel();
-        filtros_fecha = new javax.swing.JSpinner();
+        jPanel4 = new javax.swing.JPanel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        btn_rec = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        btn_ant = new javax.swing.JButton();
+        btn_sig = new javax.swing.JButton();
+        filtro_buscador = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
 
         setName("Cobros realizados"); // NOI18N
         setLayout(new java.awt.BorderLayout());
@@ -89,12 +96,68 @@ public final class VCCobros extends VistaSimple {
         jPanel15.setPreferredSize(new java.awt.Dimension(1200, 100));
         jPanel15.setLayout(new java.awt.BorderLayout());
 
-        filtros_fecha.setModel(new javax.swing.SpinnerDateModel());
-        jPanel15.add(filtros_fecha, java.awt.BorderLayout.PAGE_START);
+        jPanel4.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        jCheckBox1.setText("Filtros");
+        jCheckBox1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jCheckBox1.setPreferredSize(new java.awt.Dimension(50, 30));
+        jPanel4.add(jCheckBox1, java.awt.BorderLayout.CENTER);
+
+        jButton1.setText("Quitar filtros");
+        jButton1.setPreferredSize(new java.awt.Dimension(150, 29));
+        jPanel4.add(jButton1, java.awt.BorderLayout.LINE_END);
+
+        jPanel15.add(jPanel4, java.awt.BorderLayout.NORTH);
 
         add(jPanel15, java.awt.BorderLayout.NORTH);
 
+        jPanel1.setPreferredSize(new java.awt.Dimension(1000, 400));
         jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        btn_rec.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
+        btn_rec.setPreferredSize(new java.awt.Dimension(100, 27));
+        btn_rec.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_recActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_rec, java.awt.BorderLayout.LINE_START);
+
+        jPanel3.setPreferredSize(new java.awt.Dimension(200, 35));
+        jPanel3.setLayout(new java.awt.GridLayout(1, 2));
+
+        btn_ant.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
+        btn_ant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_antActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btn_ant);
+
+        btn_sig.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
+        btn_sig.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_sigActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btn_sig);
+
+        jPanel2.add(jPanel3, java.awt.BorderLayout.LINE_END);
+
+        filtro_buscador.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                filtro_buscadorKeyTyped(evt);
+            }
+        });
+        jPanel2.add(filtro_buscador, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel2, java.awt.BorderLayout.NORTH);
+
+        jScrollPane3.setPreferredSize(new java.awt.Dimension(1000, 370));
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -108,55 +171,62 @@ public final class VCCobros extends VistaSimple {
 
         jPanel1.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(100, 35));
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
-        jButton1.setPreferredSize(new java.awt.Dimension(100, 27));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton1, java.awt.BorderLayout.LINE_START);
-
-        jPanel3.setPreferredSize(new java.awt.Dimension(200, 35));
-        jPanel3.setLayout(new java.awt.GridLayout(1, 2));
-
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(jButton2);
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
-        jPanel3.add(jButton3);
-
-        jPanel2.add(jPanel3, java.awt.BorderLayout.LINE_END);
-        jPanel2.add(jTextField1, java.awt.BorderLayout.CENTER);
-
-        jPanel1.add(jPanel2, java.awt.BorderLayout.NORTH);
-
         add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btn_recActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_recActionPerformed
         FuncJBlue.pintarTabla(modelo, memo_cache.getListaObj());
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btn_recActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        memo_cache.ant();
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btn_antActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_antActionPerformed
+        SwingUtilities.invokeLater(() -> {
+            memo_cache.ant();
+            memo_cache.actualizar();
+            if (memo_cache.getLista().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No hay usuarios", "Usuarios Buscados", JOptionPane.INFORMATION_MESSAGE);
+                memo_cache.sig();
+                memo_cache.actualizar();
+            }
+            FuncJBlue.pintarTabla(modelo, cache);
+        });
+    }//GEN-LAST:event_btn_antActionPerformed
+
+    private void filtro_buscadorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filtro_buscadorKeyTyped
+        String aux = Filtros.limpiar(filtro_buscador.getText());
+        if (Filtros.isNullOrBlank(aux)) {
+            FuncJBlue.pintarTabla(modelo, cache);
+            return;
+        }
+        buscador(aux);
+    }//GEN-LAST:event_filtro_buscadorKeyTyped
+
+    private void btn_sigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sigActionPerformed
+        SwingUtilities.invokeLater(() -> {
+            memo_cache.sig();
+            memo_cache.actualizar();
+            if (memo_cache.getLista().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No hay usuarios", "Usuarios Buscados", JOptionPane.INFORMATION_MESSAGE);
+                memo_cache.ant();
+                memo_cache.actualizar();
+            }
+            FuncJBlue.pintarTabla(modelo, cache);
+        });
+    }//GEN-LAST:event_btn_sigActionPerformed
+
+    private void buscador(final String aux) {
+        List<OPagosServicio> lista = cache.stream().filter(e -> {
+            String a = Filtros.limpiar(e.getInfoSinFK()[2]);
+            return a.contains(aux);
+        }).collect(Collectors.toList());
+
+        FuncJBlue.pintarTabla(modelo, lista);
+    }
 
     @Override
     public void setVisible(boolean aFlag) {
         super.setVisible(aFlag);
         if (aFlag) {
-            System.out.println(cache.size());
-            FuncJBlue.pintarTabla(modelo, memo_cache.getListaObj());
+            FuncJBlue.pintarTabla(modelo, memo_cache.getLista());
         } else {
             modelo.clear();
         }
@@ -164,17 +234,19 @@ public final class VCCobros extends VistaSimple {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSpinner filtros_fecha;
+    private javax.swing.JButton btn_ant;
+    private javax.swing.JButton btn_rec;
+    private javax.swing.JButton btn_sig;
+    private javax.swing.JTextField filtro_buscador;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 
     private final MemoCache<OPagosServicio> memo_cache;

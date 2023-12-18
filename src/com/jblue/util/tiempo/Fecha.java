@@ -46,7 +46,12 @@ public class Fecha {
     public static String getNewFechaActualString() {
         LocalDate now = LocalDate.now();
         return now.format(FORMATO);
+    }
 
+    public static String getMesActual() {
+        LocalDate now = LocalDate.now();
+        int index = now.getMonthValue();
+        return MESES[index - 1];
     }
 
     public static LocalDate getFechaObj(String o) {

@@ -270,14 +270,17 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
     }//GEN-LAST:event_lista_usuariosMouseClicked
 
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        if (Filtros.isNullOrBlank(jTextField1.getText())) {
+            buscado = false;
+            cargar();
+            return;
+        }
         buscado = true;
+
         _buscador(jTextField1.getText());
     }//GEN-LAST:event_jTextField1KeyReleased
 
     private void _buscador(String txt) {
-        if (Filtros.isNullOrBlank(txt)) {
-            return;
-        }
         modelo_lista.clear();
         cache_aux.clear();
 

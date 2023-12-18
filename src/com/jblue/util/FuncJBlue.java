@@ -106,7 +106,7 @@ public abstract class FuncJBlue {
         System.out.println(sb.toString());
     }
 
-    public static void pintarLista(DefaultListModel<String> modelo, List<Objeto> lista) {
+    public static <T extends Objeto>void pintarLista(DefaultListModel<String> modelo, List<T> lista) {
         if (!modelo.isEmpty()) {
             modelo.clear();
             modelo.setSize(lista.size());
@@ -120,7 +120,7 @@ public abstract class FuncJBlue {
         }
     }
 
-    public static void pintarComboBox(DefaultComboBoxModel<String> modelo, List<Objeto> lista) {
+    public static <T extends Objeto> void pintarComboBox(DefaultComboBoxModel<String> modelo, List<T> lista) {
         if (modelo.getSize() > 0) {
             modelo.removeAllElements();
         }
@@ -133,7 +133,7 @@ public abstract class FuncJBlue {
         }
     }
 
-    public static void pintarTabla(DefaultTableModel modelo, List<Objeto> lista) {
+    public static <T extends Objeto> void pintarTabla(DefaultTableModel modelo, List<T> lista) {
         if (modelo.getRowCount() > 0) {
             while (modelo.getRowCount() > 0) {
                 modelo.removeRow(0);

@@ -19,6 +19,8 @@ package com.jblue.vista.ventanas;
 import com.jblue.vista.jbmarco.ConstTitutlos;
 import com.jblue.vista.jbmarco.VentanaExtendida;
 import com.jblue.vista.vistas.menubd.VCalles;
+import com.jblue.vista.vistas.menubd.VConfiguraciones;
+import com.jblue.vista.vistas.menubd.VPagosXOtros;
 import com.jblue.vista.vistas.menubd.VTipoTomas;
 import com.jblue.vista.vistas.menubd.usuarios.VUsuarios;
 import java.awt.CardLayout;
@@ -35,6 +37,8 @@ public class MenuBD extends VentanaExtendida {
     private final VCalles menu_calles;
     private final VUsuarios menu_usuarios;
     private final VTipoTomas menu_tipo_tomas;
+    private final VConfiguraciones menu_config;
+    private final VPagosXOtros menu_pagos_x_otros;
 
     /**
      * Creates new form MenuBD
@@ -45,9 +49,10 @@ public class MenuBD extends VentanaExtendida {
         menu_calles = new VCalles();
         menu_usuarios = new VUsuarios();
         menu_tipo_tomas = new VTipoTomas();
+        menu_config = new VConfiguraciones();
+        menu_pagos_x_otros = new VPagosXOtros();
         ly = (CardLayout) getContentPane().getLayout();
         llamable();
-
     }
 
     /**
@@ -86,6 +91,8 @@ public class MenuBD extends VentanaExtendida {
         panel.add(menu_calles.getName(), menu_calles);
         panel.add(menu_usuarios.getName(), menu_usuarios);
         panel.add(menu_tipo_tomas.getName(), menu_tipo_tomas);
+        panel.add(menu_config.getName(), menu_config);
+        panel.add(menu_pagos_x_otros.getName(), menu_pagos_x_otros);
     }
 
     @Override
@@ -105,12 +112,19 @@ public class MenuBD extends VentanaExtendida {
         evtCambios(menu_bar, ly, menu_tipo_tomas, ConstTitutlos.TL_BD_TIPO_TOMAS);
     }
 
+    public void showConfiguraciones() {
+        evtCambios(menu_bar, ly, menu_config, ConstTitutlos.TL_BD_TIPO_TOMAS);
+    }
+
+    public void showPagosXOtros() {
+        evtCambios(menu_bar, ly, menu_pagos_x_otros, ConstTitutlos.TL_BD_TIPO_TOMAS);
+    }
+
     @Override
     public void setPreferredSize(Dimension preferredSize) {
         super.setPreferredSize(preferredSize); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar menu_bar;

@@ -17,11 +17,8 @@
 package com.jblue.modelo.bd;
 
 import com.jutil.jbd.conexion.Conexion;
-import com.jutil.jexception.Excp;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -38,7 +35,7 @@ public class FuncionesBD {
     private final String sql_insert;
 
     public FuncionesBD(String tabla, String[] campos) {
-        this.sql_insert = "insert into %s (%s)values%s;";
+        this.sql_insert = "insert into %s(%s) values %s;";
         this.SIMBOLOS = new char[]{'(', ')', ',', ';'};
         this.conexion = Conexion.getInstancia();
         this.tabla = tabla;
@@ -47,50 +44,52 @@ public class FuncionesBD {
 
     }
 
-    public void insert(String[] datos) {
+    public void insert(String[] datos) throws SQLException {
         _insert(datos, true);
     }
 
-    public void insertConID(String[] datos) {
+    public void insertConID(String[] datos) throws SQLException {
         _insert(datos, false);
     }
 
-    public String insertCSV(String[] data) {
-        try {
-            int capacidad = data.length * data[0].length();
-            StringBuilder sb = new StringBuilder(capacidad);
-            int i = 0;
-            while (i < data.length - 1) {
-                sb.append(SIMBOLOS[0]).append(data[i]).append(SIMBOLOS[1]).append(SIMBOLOS[2]);
-                i++;
-            }
-            sb.append(SIMBOLOS[0]).append(data[i]).append(SIMBOLOS[1]);
-
-            conexion.instruccion(
-                    String.format(sql_insert,
-                            tabla,
-                            Arrays.toString(omitirID()),
-                            sb.toString())
-            );
-            return sb.toString();
-        } catch (SQLException ex) {
-            Excp.impTerminal(ex, getClass(), false);
+    public boolean insertCSV(String[] data) throws SQLException {
+        if (data == null || data.length == 0) {
+            return false;
         }
-        return null;
+        StringBuilder sb = new StringBuilder(data.length * data[0].length());
+
+        int i = 0;
+        while (i < data.length - 1) {
+            sb.append("(").append(data[i]).append(")").append(",");
+            i++;
+        }
+        sb.append("(").append(data[i]).append(")");
+        System.out.println(getStringCamposSinID());
+        System.out.println(sb.toString());
+        
+        _insertColl(sb.toString(), true);
+        return false;
     }
 
-    private void _insert(String[] datos, boolean omitirID) {
-        try {
-            String[] campos_aux;
-            if (omitirID) {
-                campos_aux = omitirID();
-            } else {
-                campos_aux = campos;
-            }
-            conexion.insert(tabla, conexion.getCampos(campos_aux), conexion.getDatos(datos));
-        } catch (SQLException ex) {
-            Logger.getLogger(FuncionesBD.class.getName()).log(Level.SEVERE, null, ex);
+    private boolean _insertColl(String datos, boolean omitirID) throws SQLException {
+        String campos_aux;
+        if (omitirID) {
+            campos_aux = getStringCamposSinID();
+        } else {
+            campos_aux = getStringCampos();
         }
+        return conexion.instruccion(String.format(sql_insert, tabla, campos_aux, datos));
+    }
+
+    private void _insert(String[] datos, boolean omitirID) throws SQLException {
+        String campos_aux;
+        if (omitirID) {
+            campos_aux = getStringCamposSinID();
+        } else {
+            campos_aux = getStringCampos();
+        }
+        
+        conexion.insert(tabla, conexion.getCampos(campos_aux), conexion.getDatos(datos));
     }
 
     private void update() {
@@ -104,5 +103,13 @@ public class FuncionesBD {
 
     private String[] omitirID() {
         return Arrays.copyOfRange(campos, 1, no_campos);
+    }
+
+    private String getStringCampos() {
+        return conexion.getCampos(campos);
+    }
+
+    private String getStringCamposSinID() {
+        return conexion.getCampos(omitirID());
     }
 }

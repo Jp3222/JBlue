@@ -45,8 +45,9 @@ public class VentanaExtendida extends VentanaSimple {
         _TITULO = titulo;
         
         updateTitle();
-        //
+        
         menu_bar.removeAll();
+        
         if (vista.getMenu() != null && !vista.getMenu().isEmpty()) {
             for (JMenu i : vista.getMenu()) {
                 menu_bar.add(i);

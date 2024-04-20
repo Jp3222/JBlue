@@ -22,6 +22,7 @@ import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -29,7 +30,7 @@ import java.util.HashMap;
  */
 public class ConfigSis {
 
-    public static final ConfigSis instancia = new ConfigSis();
+    private static final ConfigSis instancia = new ConfigSis();
 
     public static ConfigSis getInstancia() {
         return instancia;
@@ -42,11 +43,13 @@ public class ConfigSis {
 
     private final String[][] CLAVES;
     private final MemoCache<OValores> memo_cache;
+    private final Map<String, OValores> mapa;
+
     private final Operaciones<OValores> op;
     private final ArrayList<OValores> cache;
-    private final HashMap<String, OValores> mapa;
 
-    public ConfigSis() {
+    private ConfigSis() {
+        mapa = new HashMap<>();
         this.CLAVES = new String[][]{
             {USUARIO_MAESTRO, "Usuario Maestro"},
             {DIA_DE_COBRO, "Dia de Cobro"},
@@ -57,7 +60,6 @@ public class ConfigSis {
         op = memo_cache.getOperaciones();
         cache = memo_cache.getLista();
         //
-        mapa = new HashMap<>(cache.size());
         addkey();
         add();
     }
@@ -71,11 +73,11 @@ public class ConfigSis {
                 arr[2] = i[1];
                 boolean insertar = op.insertar(arr);
                 if (insertar) {
-                    System.out.println(String.format("Clave %s Creada", arr[0]));
+                    System.out.println(String.format("CLAVE %s CREADA", arr[0]));
                     memo_cache.actualizar();
                 }
             } else {
-                System.out.println(String.format("Clave %s Confirmada", i[0]));
+                System.out.println(String.format("CLAVE %s CONFIRMADA", i[0]));
             }
         }
         addkey();
@@ -83,7 +85,6 @@ public class ConfigSis {
 
     private void addkey() {
         for (OValores i : cache) {
-            System.out.println(i.getClave());
             mapa.put(i.getClave(), i);
         }
     }

@@ -106,7 +106,7 @@ public abstract class FuncJBlue {
         System.out.println(sb.toString());
     }
 
-    public static <T extends Objeto>void pintarLista(DefaultListModel<String> modelo, List<T> lista) {
+    public static <T extends Objeto> void pintarLista(DefaultListModel<String> modelo, List<T> lista) {
         if (!modelo.isEmpty()) {
             modelo.clear();
             modelo.setSize(lista.size());
@@ -150,6 +150,9 @@ public abstract class FuncJBlue {
         return x.contains(y);
     }
 
+    /**
+     *Formato con salida %s - %s
+     */
     private static String FORMATO_S_S = "%s - %s";
 
 }

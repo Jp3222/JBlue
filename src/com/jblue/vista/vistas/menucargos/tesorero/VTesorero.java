@@ -29,6 +29,7 @@ public class VTesorero extends VistaExtendida {
      */
     public VTesorero() {
         initComponents();
+        
     }
 
     /**
@@ -41,6 +42,7 @@ public class VTesorero extends VistaExtendida {
     private void initComponents() {
 
         setName("Tesorero"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(1200, 600));
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
 

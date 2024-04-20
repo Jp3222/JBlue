@@ -16,9 +16,9 @@
  */
 package com.jblue.vista.vistas.menuprincipal.sub;
 
-import com.jblue.mg.ModeloTablas;
+import com.jblue.util.mg.ModeloTablas;
 import com.jblue.modelo.envoltorios.env.EnvUsuario;
-import com.jblue.modelo.negocios.RegistroDePagos;
+import com.jblue.controlador.RegistroDePagos;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.sistema.Sesion;
@@ -26,6 +26,7 @@ import com.jblue.util.Filtros;
 import com.jblue.util.FuncJBlue;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;
+import com.jblue.util.interpad.pagos.LlavesTipoMov;
 import com.jblue.vista.jbmarco.VistaSimple;
 import com.jblue.vista.comp.CVisorUsuario;
 import com.jblue.vista.vistas.menuprincipal.VCobros;
@@ -108,6 +109,7 @@ public class VRCobros extends VistaSimple {
 
     @Override
     protected void manejoEventos() {
+
         //eventos de botones
         btn_cobrar.addActionListener(e -> evtCobrar(e));
         btn_cancelar.addActionListener(e -> evtCancelar(e));
@@ -117,13 +119,17 @@ public class VRCobros extends VistaSimple {
         //btn_movimientos.addActionListener(e -> cobrar(e));
         chb_todos.addItemListener(e -> SwingUtilities.invokeLater(() -> {
             for (JCheckBox i : cbx_meses) {
-                i.setSelected(chb_todos.isSelected());
+                if (!i.isEnabled()) {
+                    continue;
+                }
+                i.setSelected(!i.isSelected());
             }
         }));
 
         for (JCheckBox i : cbx_meses) {
             i.addChangeListener(e -> evtSumTotal());
         }
+
     }
 
     private void evtSumTotal() {
@@ -133,7 +139,6 @@ public class VRCobros extends VistaSimple {
         int meses = getContadorMeses(cbx_meses);
         OTipoTomas toma = EnvUsuario.getTipoDeTomaEnCache(usuario_buscado.getToma());
         if (toma == null) {
-            System.out.println("toma null");
             return;
         }
         double total = toma.getCosto() * meses;
@@ -160,18 +165,18 @@ public class VRCobros extends VistaSimple {
                 mensaje = "Dato no valido";
             } else {
 
-                resultados = RegistroDePagos.registrarPagoXServicio(
+                resultados = RegistroDePagos.getInstancia().registrarPagoXServicio(
                         Sesion.getInstancia().getUsuario(),
                         usuario_buscado,
                         meses,
                         Double.parseDouble(dinero)
                 );
 
-                estado = resultados.get(RegistroDePagos.LLAVE_ESTADO);
+                estado = resultados.get(LlavesTipoMov.LLAVE_ESTADO);
 
-                mensaje = estado.equals(RegistroDePagos.VALOR_CORRECTO)
-                        ? resultados.get(RegistroDePagos.LLAVE_DATOS)
-                        : resultados.get(RegistroDePagos.LLAVE_ERROR);
+                mensaje = estado.equals(LlavesTipoMov.VALOR_CORRECTO)
+                        ? resultados.get(LlavesTipoMov.LLAVE_DATOS)
+                        : resultados.get(LlavesTipoMov.LLAVE_ERROR);
 
             }
 
@@ -214,6 +219,7 @@ public class VRCobros extends VistaSimple {
             return;
         }
         visor.setUsuario(usuario_buscado);
+        visor.setTitle(usuario_buscado.getStringR());
         visor.setVisible(true);
     }
 
@@ -343,18 +349,23 @@ public class VRCobros extends VistaSimple {
         Jlabel1 = new javax.swing.JLabel();
         lbl_cambio = new javax.swing.JLabel();
         panel_operaciones = new javax.swing.JPanel();
-        btn_cobrar = new javax.swing.JButton();
-        btn_cancelar = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
         btn_limpiar = new javax.swing.JButton();
+        btn_cancelar = new javax.swing.JButton();
+        btn_cobrar = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
         btn_recargos = new javax.swing.JButton();
         btn_otros_pagos = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         btn_utilidades = new javax.swing.JButton();
 
+        setMinimumSize(new java.awt.Dimension(900, 660));
         setName("Registro de cobros"); // NOI18N
         setPreferredSize(new java.awt.Dimension(1200, 660));
         setLayout(new java.awt.BorderLayout());
 
         panel_izq.setBorder(javax.swing.BorderFactory.createTitledBorder("Pagos Recientes"));
+        panel_izq.setMinimumSize(new java.awt.Dimension(500, 660));
         panel_izq.setOpaque(false);
         panel_izq.setPreferredSize(new java.awt.Dimension(500, 660));
         panel_izq.setLayout(new java.awt.BorderLayout());
@@ -383,13 +394,14 @@ public class VRCobros extends VistaSimple {
         add(panel_izq, java.awt.BorderLayout.WEST);
 
         panel_der.setBorder(javax.swing.BorderFactory.createTitledBorder("Registro de pagos"));
+        panel_der.setMinimumSize(new java.awt.Dimension(500, 660));
         panel_der.setOpaque(false);
         panel_der.setPreferredSize(new java.awt.Dimension(700, 660));
-        panel_der.setLayout(new java.awt.BorderLayout());
+        panel_der.setLayout(new java.awt.BorderLayout(0, 10));
 
         panel_busquedas.setOpaque(false);
         panel_busquedas.setPreferredSize(new java.awt.Dimension(700, 150));
-        panel_busquedas.setLayout(new java.awt.BorderLayout());
+        panel_busquedas.setLayout(new java.awt.BorderLayout(0, 5));
 
         jPanel6.setOpaque(false);
         jPanel6.setPreferredSize(new java.awt.Dimension(680, 40));
@@ -431,7 +443,7 @@ public class VRCobros extends VistaSimple {
         jPanel19.setLayout(new java.awt.BorderLayout());
 
         jPanel9.setOpaque(false);
-        jPanel9.setLayout(new java.awt.GridLayout(4, 0));
+        jPanel9.setLayout(new java.awt.GridLayout(4, 0, 0, 5));
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
@@ -521,84 +533,108 @@ public class VRCobros extends VistaSimple {
         ene.setText("ENE");
         ene.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ene.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ene.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
         ene.setPreferredSize(new java.awt.Dimension(10, 47));
+        ene.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         ene.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jPanel11.add(ene);
 
         feb.setText("FEB");
         feb.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         feb.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        feb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
         feb.setPreferredSize(new java.awt.Dimension(10, 47));
+        feb.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         feb.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jPanel11.add(feb);
 
         mar.setText("MAR");
         mar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        mar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
         mar.setPreferredSize(new java.awt.Dimension(10, 47));
+        mar.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         mar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jPanel11.add(mar);
 
         abr.setText("ABR");
         abr.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         abr.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        abr.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
         abr.setPreferredSize(new java.awt.Dimension(10, 47));
+        abr.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         abr.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jPanel11.add(abr);
 
         may.setText("MAY");
         may.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         may.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        may.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
         may.setPreferredSize(new java.awt.Dimension(10, 47));
+        may.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         may.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jPanel11.add(may);
 
         jun.setText("JUN");
         jun.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jun.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jun.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
         jun.setPreferredSize(new java.awt.Dimension(10, 47));
+        jun.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         jun.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jPanel11.add(jun);
 
         jul.setText("JUL");
         jul.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jul.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
         jul.setPreferredSize(new java.awt.Dimension(10, 47));
+        jul.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         jul.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jPanel11.add(jul);
 
         ago.setText("AGO");
         ago.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ago.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ago.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
         ago.setPreferredSize(new java.awt.Dimension(10, 47));
+        ago.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         ago.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jPanel11.add(ago);
 
         sep.setText("SEP");
         sep.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         sep.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        sep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
         sep.setPreferredSize(new java.awt.Dimension(10, 47));
+        sep.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         sep.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jPanel11.add(sep);
 
         oct.setText("OCT");
         oct.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         oct.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        oct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
         oct.setPreferredSize(new java.awt.Dimension(10, 47));
+        oct.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         oct.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jPanel11.add(oct);
 
         nov.setText("NOV");
         nov.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nov.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        nov.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
         nov.setPreferredSize(new java.awt.Dimension(10, 47));
+        nov.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         nov.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jPanel11.add(nov);
 
         dic.setText("DIC");
         dic.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         dic.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        dic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
         dic.setPreferredSize(new java.awt.Dimension(10, 47));
+        dic.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         dic.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jPanel11.add(dic);
 
@@ -626,8 +662,8 @@ public class VRCobros extends VistaSimple {
 
         btn_movimientos.setText("Movimientos");
         btn_movimientos.setToolTipText("");
-        btn_movimientos.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel21.add(btn_movimientos, java.awt.BorderLayout.EAST);
+        btn_movimientos.setPreferredSize(new java.awt.Dimension(200, 30));
+        jPanel21.add(btn_movimientos, java.awt.BorderLayout.LINE_END);
 
         jPanel20.add(jPanel21);
 
@@ -654,26 +690,37 @@ public class VRCobros extends VistaSimple {
         panel_operaciones.setPreferredSize(new java.awt.Dimension(680, 80));
         panel_operaciones.setLayout(new java.awt.GridLayout(2, 3));
 
-        btn_cobrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/img5.png"))); // NOI18N
-        btn_cobrar.setText("Cobrar");
-        panel_operaciones.add(btn_cobrar);
-
-        btn_cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
-        btn_cancelar.setText("Cancelar");
-        panel_operaciones.add(btn_cancelar);
+        jPanel3.setLayout(new java.awt.GridLayout());
 
         btn_limpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/limpiar.png"))); // NOI18N
         btn_limpiar.setText("Limpiar");
-        panel_operaciones.add(btn_limpiar);
+        jPanel3.add(btn_limpiar);
+
+        btn_cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
+        btn_cancelar.setText("Cancelar");
+        jPanel3.add(btn_cancelar);
+
+        btn_cobrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/img5.png"))); // NOI18N
+        btn_cobrar.setText("Cobrar");
+        jPanel3.add(btn_cobrar);
+
+        panel_operaciones.add(jPanel3);
+
+        jPanel5.setLayout(new java.awt.GridLayout());
 
         btn_recargos.setText("Recargos");
-        panel_operaciones.add(btn_recargos);
+        jPanel5.add(btn_recargos);
 
         btn_otros_pagos.setText("Otros Pagos");
-        panel_operaciones.add(btn_otros_pagos);
+        jPanel5.add(btn_otros_pagos);
+
+        jButton1.setText("Pagos atrasados");
+        jPanel5.add(jButton1);
 
         btn_utilidades.setText("Utilidades");
-        panel_operaciones.add(btn_utilidades);
+        jPanel5.add(btn_utilidades);
+
+        panel_operaciones.add(jPanel5);
 
         panel_der.add(panel_operaciones, java.awt.BorderLayout.PAGE_END);
 
@@ -745,6 +792,7 @@ public class VRCobros extends VistaSimple {
     private javax.swing.JCheckBox dic;
     private javax.swing.JCheckBox ene;
     private javax.swing.JCheckBox feb;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -764,7 +812,9 @@ public class VRCobros extends VistaSimple {
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
@@ -820,30 +870,9 @@ public class VRCobros extends VistaSimple {
         return meses_seleccionados.toArray(String[]::new);
     }
 
-
     public void bloquear(boolean o) {
         FuncJBlue.bloquearArbolComponentes(o, panel_der);
-        if (!o) {
-            componentesEstadoInicial();
-        }
+        componentesEstadoInicial();
     }
-    
 
-    //-- para crear banderas que condicionen estilos --//
-    //-- prefijo_accion_nombre--//
-    private boolean flag_red_panel_root;
-    private boolean flag_red_panel_der;
-
-//    @Override
-//    public Rectangle getBounds() {
-//        flag_red_panel_root = super.getBounds().getWidth() < 900;
-//        flag_red_panel_der = panel_der.getBounds().getWidth() < 400;
-//        System.out.println(super.getBounds());
-//        System.out.println(panel_der.getBounds());
-//        System.out.println("");
-//        if (flag_red_panel_root && flag_red_panel_der) {
-//            FuncJBlue.ocultarComponente(!panel_izq.isVisible(), panel_izq);
-//        }
-//        return super.getBounds();
-//    }
 }

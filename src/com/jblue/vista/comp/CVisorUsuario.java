@@ -16,13 +16,14 @@
  */
 package com.jblue.vista.comp;
 
-import com.jblue.mg.ModeloTablas;
+import com.jblue.util.mg.ModeloTablas;
 import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OPagosRecargos;
 import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.util.cache.FabricaOpraciones;
+import com.jblue.vista.jbmarco.Estados;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -43,11 +44,12 @@ import javax.swing.SpinnerNumberModel;
  *
  * @author jp
  */
-public class CVisorUsuario extends javax.swing.JDialog {
+public class CVisorUsuario extends javax.swing.JDialog implements Estados {
 
     public static CVisorUsuario showVisor(OUsuarios obj) {
         CVisorUsuario o = new CVisorUsuario(null, true);
         o.setUsuario(obj);
+        o.setTitle(obj.getStringR());
         o.setVisible(obj != null);
         return o;
     }
@@ -113,11 +115,13 @@ public class CVisorUsuario extends javax.swing.JDialog {
         });
 
         tab_info_pagos.addChangeListener(i -> {
+
             if (panel_pxs.isVisible()) {
                 cargarPagosXServicio();
             } else {
                 modelo_pagos_x_servicio.clear();
             }
+
         });
 
         tab_info_pagos.addChangeListener(i -> {
@@ -127,9 +131,9 @@ public class CVisorUsuario extends javax.swing.JDialog {
                 modelo_pagos_x_recargo.clear();
             }
         });
-
         CardLayout ly = (CardLayout) jPanel3.getLayout();
         ly.show(jPanel3, tab_info_usuario.getName());
+        llamable();
     }
 
     /**
@@ -162,7 +166,7 @@ public class CVisorUsuario extends javax.swing.JDialog {
         tab_info_pagos = new javax.swing.JTabbedPane();
         panel_pxs = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
+        recargar_pxs = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         filtro_pxs_año = new javax.swing.JSpinner();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -303,9 +307,9 @@ public class CVisorUsuario extends javax.swing.JDialog {
         jPanel1.setPreferredSize(new java.awt.Dimension(700, 40));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
-        jButton3.setPreferredSize(new java.awt.Dimension(50, 30));
-        jPanel1.add(jButton3, java.awt.BorderLayout.LINE_END);
+        recargar_pxs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
+        recargar_pxs.setPreferredSize(new java.awt.Dimension(50, 30));
+        jPanel1.add(recargar_pxs, java.awt.BorderLayout.LINE_END);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Año:");
@@ -673,7 +677,7 @@ public class CVisorUsuario extends javax.swing.JDialog {
         for (OPagosServicio i : lista) {
             modelo_pagos_x_servicio.addRow(i.getInfoSinFK());
         }
-        System.out.println("");
+
         List<OPagosServicio> collect = lista.stream().sorted().collect(Collectors.toList());
         SpinnerNumberModel modelo = (SpinnerNumberModel) filtro_pxs_año.getModel();
         modelo.setMinimum(Integer.valueOf(collect.get(0).getAño()));
@@ -688,6 +692,12 @@ public class CVisorUsuario extends javax.swing.JDialog {
         for (OPagosRecargos i : lista) {
             modelo_pagos_x_servicio.addRow(i.getInfoSinFK());
         }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        componentesEstadoInicial();
     }
 
 
@@ -713,7 +723,6 @@ public class CVisorUsuario extends javax.swing.JDialog {
     private javax.swing.JSpinner filtro_pxs_año;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
@@ -771,6 +780,7 @@ public class CVisorUsuario extends javax.swing.JDialog {
     private javax.swing.JPanel panel_pxs;
     private javax.swing.JLabel pl_foto;
     private javax.swing.JPanel pl_panel_central;
+    private javax.swing.JButton recargar_pxs;
     private javax.swing.JTabbedPane tab_info_pagos;
     private javax.swing.JTabbedPane tab_info_usuario;
     private javax.swing.JTable tabla_pxo;
@@ -779,4 +789,44 @@ public class CVisorUsuario extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private int returnStatus = RET_CANCEL;
+
+    @Override
+    public final void llamable() {
+        construirComponentes();
+        componentesEstadoFinal();
+        componentesEstadoInicial();
+        manejoEventos();
+    }
+
+    @Override
+    public void componentesEstadoInicial() {
+        for (JTextField i : campos) {
+            i.setText(null);
+        }
+        if (modelo_pagos_x_servicio.getRowCount() > 0) {
+            modelo_pagos_x_servicio.clear();
+        }
+        if (modelo_pagos_x_recargo.getRowCount() > 0) {
+            modelo_pagos_x_recargo.clear();
+        }
+        if (modelo_pagos_x_otros.getRowCount() > 0) {
+            modelo_pagos_x_recargo.clear();
+        }
+        tab_info_pagos.setSelectedIndex(0);
+        tab_info_usuario.setSelectedIndex(0);
+        CardLayout ly = (CardLayout) jPanel3.getLayout();
+        ly.show(jPanel3, tab_info_usuario.getName());
+    }
+
+    @Override
+    public void componentesEstadoFinal() {
+    }
+
+    @Override
+    public void construirComponentes() {
+    }
+
+    @Override
+    public void manejoEventos() {
+    }
 }

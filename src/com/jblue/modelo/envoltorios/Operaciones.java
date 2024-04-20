@@ -8,7 +8,6 @@ import com.jblue.modelo.envoltorios.op.FuncionAplicada;
 import com.jblue.modelo.envoltorios.op.FuncionesAbstractas;
 import com.jblue.modelo.envoltorios.op.FuncionesEnvoltorio;
 import com.jblue.modelo.objetos.sucls.Objeto;
-import com.jutil.jexception.Excp;
 import java.util.ArrayList;
 
 /**
@@ -36,16 +35,12 @@ public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio implement
     @Override
     public T get(String where) {
         Objeto o = null;
-        try {
-            ArrayList<T> lista = _GET("*", where);
-            if (lista == null || lista.isEmpty()) {
-                return null;
-            }
-            o = (Objeto) lista.get(0).clone();
-            lista.clear();
-        } catch (CloneNotSupportedException ex) {
-            Excp.impTerminal(ex, this.getClass(), true);
+        ArrayList<Objeto> lista = _GET("*", where);
+        if (lista == null || lista.isEmpty()) {
+            return null;
         }
+        o = lista.get(0);
+        
         return (T) o;
     }
 

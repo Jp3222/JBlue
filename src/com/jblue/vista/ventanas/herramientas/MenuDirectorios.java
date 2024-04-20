@@ -17,7 +17,7 @@
 package com.jblue.vista.ventanas.herramientas;
 
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.sistema.app.AppProp;
+import com.jblue.sistema.app.AppFiles;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.vista.jbmarco.VentanaSimple;
 import com.jblue.vista.comp.CSelectorObjeto;
@@ -46,7 +46,7 @@ public class MenuDirectorios extends VentanaSimple {
      */
     public MenuDirectorios() {
         _TITULO = 10;
-        dir_usuarios = AppProp.FIL_DIR_PROG_USUARIOS;
+        dir_usuarios = AppFiles.FIL_DIR_PROG_USUARIOS;
         cache = FabricaCache.MC_USUARIOS.getLista();
         lista_aux = new ArrayList<>(cache.size());
         modelo_lista = new DefaultListModel<>();

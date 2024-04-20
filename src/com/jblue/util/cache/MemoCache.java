@@ -51,7 +51,7 @@ public class MemoCache<T extends Objeto> {
     public MemoCache(Operaciones<T> operaciones) {
         this.lista = new ArrayList<>(CAPACIDAD_MIN);
         this.operaciones = operaciones;
-        this.rango = 1000;
+        this.rango = CAPACIDAD_MIN;
         this.limite_min = 1;
         this.limite_max = rango;
         this.getIdsMinMax();

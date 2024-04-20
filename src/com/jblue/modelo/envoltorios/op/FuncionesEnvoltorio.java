@@ -14,6 +14,7 @@ import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.modelo.objetos.OValores;
+import com.jblue.modelo.objetos.Objetos;
 import com.jblue.modelo.objetos.sucls.Objeto;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,7 +54,6 @@ public abstract class FuncionesEnvoltorio {
         map.put(ConstBD.TABLAS[7], new OPagosRecargos());
         map.put(ConstBD.TABLAS[8], new OPagosOtros());
         map.put(ConstBD.TABLAS[9], new OValores());
-
     }
 
     /**
@@ -65,6 +65,7 @@ public abstract class FuncionesEnvoltorio {
      */
     protected boolean _INSERTAR(String[] valores) {
         try {
+            //System.out.println(Arrays.toString(valores));
             return CONEXION.insert(TABLA,
                     CONEXION.getCampos(Arrays.copyOfRange(CAMPOS, 1, CAMPOS.length)),
                     CONEXION.getDatos(valores)
@@ -151,7 +152,7 @@ public abstract class FuncionesEnvoltorio {
         try {
             ResultSet get = CONEXION.select(TABLA, campos, where);
             ArrayList<T> lista;
-            lista = (ArrayList<T>) getLista(get, TABLA, CAMPOS);
+            lista = getLista(get, TABLA, CAMPOS);
             CONEXION.closeRS();
             return lista;
         } catch (SQLException | CloneNotSupportedException ex) {
@@ -169,28 +170,25 @@ public abstract class FuncionesEnvoltorio {
      * @throws SQLException
      * @throws CloneNotSupportedException
      */
-    private ArrayList<Objeto> getLista(ResultSet get, String tabla, String[] campos) throws SQLException, CloneNotSupportedException {
+    private <T extends Objeto> ArrayList<T> getLista(ResultSet get, String tabla, String[] campos) throws SQLException, CloneNotSupportedException {
         if (get == null || tabla == null || campos == null) {
             throw new NullPointerException("Alguno de los parametros es null");
         }
-        ArrayList<Objeto> o = null;
-        try {
-            o = runWhile(map.get(tabla), get, campos);
-        } catch (Exception ex) {
-            Excp.impTerminal(ex, this.getClass(), true);
-        }
+        ArrayList<T> o = null;
+
+        o = runWhile((T) map.get(tabla), get, campos);
+
         return o;
     }
 
-    private synchronized <T extends Objeto> ArrayList<T> runWhile(T o, ResultSet rs, String[] campos) {
+    private <T extends Objeto> ArrayList<T> runWhile(T o, ResultSet rs, String[] campos) {
         ArrayList<T> lista = new ArrayList<>();
         try {
             while (rs.next()) {
                 String[] info = runFor(rs, campos);
-                o.setInfo(info);
-                lista.add((T) o.clone());
+                lista.add((T) Objetos.getObjeto(TABLA, info));
             }
-        } catch (CloneNotSupportedException | SQLException ex) {
+        } catch (SQLException ex) {
             Excp.impTerminal(ex, this.getClass(), true);
         }
         return lista;
@@ -216,7 +214,6 @@ public abstract class FuncionesEnvoltorio {
             }
         } catch (SQLException ex) {
             Excp.impTerminal(ex, this.getClass(), true);
-
         }
         return info;
     }

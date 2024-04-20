@@ -16,7 +16,7 @@
  */
 package com.jblue.vista.vistas.menubd;
 
-import com.jblue.mg.ModeloTablas;
+import com.jblue.util.mg.ModeloTablas;
 import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OTipoTomas;

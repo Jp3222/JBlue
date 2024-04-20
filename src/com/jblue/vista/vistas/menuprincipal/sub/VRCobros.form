@@ -2,6 +2,9 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
+    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[900, 660]"/>
+    </Property>
     <Property name="name" type="java.lang.String" value="Registro de cobros" noResource="true"/>
     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[1200, 660]"/>
@@ -28,6 +31,9 @@
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Pagos Recientes"/>
           </Border>
+        </Property>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[500, 660]"/>
         </Property>
         <Property name="opaque" type="boolean" value="false"/>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -79,6 +85,9 @@
             <TitledBorder title="Registro de pagos"/>
           </Border>
         </Property>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[500, 660]"/>
+        </Property>
         <Property name="opaque" type="boolean" value="false"/>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[700, 660]"/>
@@ -90,7 +99,9 @@
         </Constraint>
       </Constraints>
 
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout">
+        <Property name="verticalGap" type="int" value="10"/>
+      </Layout>
       <SubComponents>
         <Container class="javax.swing.JPanel" name="panel_busquedas">
           <Properties>
@@ -105,7 +116,9 @@
             </Constraint>
           </Constraints>
 
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout">
+            <Property name="verticalGap" type="int" value="5"/>
+          </Layout>
           <SubComponents>
             <Container class="javax.swing.JPanel" name="jPanel6">
               <Properties>
@@ -218,6 +231,7 @@
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                     <Property name="columns" type="int" value="0"/>
                     <Property name="rows" type="int" value="4"/>
+                    <Property name="verticalGap" type="int" value="5"/>
                   </Layout>
                   <SubComponents>
                     <Container class="javax.swing.JPanel" name="jPanel2">
@@ -474,8 +488,14 @@
                             <Property name="text" type="java.lang.String" value="ENE"/>
                             <Property name="horizontalAlignment" type="int" value="0"/>
                             <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/cruz.png"/>
+                            </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[10, 47]"/>
+                            </Property>
+                            <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/verificar.png"/>
                             </Property>
                             <Property name="verticalTextPosition" type="int" value="3"/>
                           </Properties>
@@ -485,8 +505,14 @@
                             <Property name="text" type="java.lang.String" value="FEB"/>
                             <Property name="horizontalAlignment" type="int" value="0"/>
                             <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/cruz.png"/>
+                            </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[10, 47]"/>
+                            </Property>
+                            <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/verificar.png"/>
                             </Property>
                             <Property name="verticalTextPosition" type="int" value="3"/>
                           </Properties>
@@ -496,8 +522,14 @@
                             <Property name="text" type="java.lang.String" value="MAR"/>
                             <Property name="horizontalAlignment" type="int" value="0"/>
                             <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/cruz.png"/>
+                            </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[10, 47]"/>
+                            </Property>
+                            <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/verificar.png"/>
                             </Property>
                             <Property name="verticalTextPosition" type="int" value="3"/>
                           </Properties>
@@ -507,8 +539,14 @@
                             <Property name="text" type="java.lang.String" value="ABR"/>
                             <Property name="horizontalAlignment" type="int" value="0"/>
                             <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/cruz.png"/>
+                            </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[10, 47]"/>
+                            </Property>
+                            <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/verificar.png"/>
                             </Property>
                             <Property name="verticalTextPosition" type="int" value="3"/>
                           </Properties>
@@ -518,8 +556,14 @@
                             <Property name="text" type="java.lang.String" value="MAY"/>
                             <Property name="horizontalAlignment" type="int" value="0"/>
                             <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/cruz.png"/>
+                            </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[10, 47]"/>
+                            </Property>
+                            <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/verificar.png"/>
                             </Property>
                             <Property name="verticalTextPosition" type="int" value="3"/>
                           </Properties>
@@ -529,8 +573,14 @@
                             <Property name="text" type="java.lang.String" value="JUN"/>
                             <Property name="horizontalAlignment" type="int" value="0"/>
                             <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/cruz.png"/>
+                            </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[10, 47]"/>
+                            </Property>
+                            <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/verificar.png"/>
                             </Property>
                             <Property name="verticalTextPosition" type="int" value="3"/>
                           </Properties>
@@ -540,8 +590,14 @@
                             <Property name="text" type="java.lang.String" value="JUL"/>
                             <Property name="horizontalAlignment" type="int" value="0"/>
                             <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/cruz.png"/>
+                            </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[10, 47]"/>
+                            </Property>
+                            <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/verificar.png"/>
                             </Property>
                             <Property name="verticalTextPosition" type="int" value="3"/>
                           </Properties>
@@ -551,8 +607,14 @@
                             <Property name="text" type="java.lang.String" value="AGO"/>
                             <Property name="horizontalAlignment" type="int" value="0"/>
                             <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/cruz.png"/>
+                            </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[10, 47]"/>
+                            </Property>
+                            <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/verificar.png"/>
                             </Property>
                             <Property name="verticalTextPosition" type="int" value="3"/>
                           </Properties>
@@ -562,8 +624,14 @@
                             <Property name="text" type="java.lang.String" value="SEP"/>
                             <Property name="horizontalAlignment" type="int" value="0"/>
                             <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/cruz.png"/>
+                            </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[10, 47]"/>
+                            </Property>
+                            <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/verificar.png"/>
                             </Property>
                             <Property name="verticalTextPosition" type="int" value="3"/>
                           </Properties>
@@ -573,8 +641,14 @@
                             <Property name="text" type="java.lang.String" value="OCT"/>
                             <Property name="horizontalAlignment" type="int" value="0"/>
                             <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/cruz.png"/>
+                            </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[10, 47]"/>
+                            </Property>
+                            <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/verificar.png"/>
                             </Property>
                             <Property name="verticalTextPosition" type="int" value="3"/>
                           </Properties>
@@ -584,8 +658,14 @@
                             <Property name="text" type="java.lang.String" value="NOV"/>
                             <Property name="horizontalAlignment" type="int" value="0"/>
                             <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/cruz.png"/>
+                            </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[10, 47]"/>
+                            </Property>
+                            <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/verificar.png"/>
                             </Property>
                             <Property name="verticalTextPosition" type="int" value="3"/>
                           </Properties>
@@ -595,8 +675,14 @@
                             <Property name="text" type="java.lang.String" value="DIC"/>
                             <Property name="horizontalAlignment" type="int" value="0"/>
                             <Property name="horizontalTextPosition" type="int" value="0"/>
+                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/cruz.png"/>
+                            </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[10, 47]"/>
+                            </Property>
+                            <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                              <Image iconType="3" name="/com/jblue/media/img/x24/verificar.png"/>
                             </Property>
                             <Property name="verticalTextPosition" type="int" value="3"/>
                           </Properties>
@@ -668,12 +754,12 @@
                         <Property name="text" type="java.lang.String" value="Movimientos"/>
                         <Property name="toolTipText" type="java.lang.String" value=""/>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[100, 30]"/>
+                          <Dimension value="[200, 30]"/>
                         </Property>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                          <BorderConstraints direction="East"/>
+                          <BorderConstraints direction="After"/>
                         </Constraint>
                       </Constraints>
                     </Component>
@@ -742,45 +828,68 @@
             <Property name="rows" type="int" value="2"/>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="btn_cobrar">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/com/jblue/media/img/x32/img5.png"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Cobrar"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btn_cancelar">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/com/jblue/media/img/x32/cerca.png"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Cancelar"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btn_limpiar">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/com/jblue/media/img/x32/limpiar.png"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Limpiar"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btn_recargos">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Recargos"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btn_otros_pagos">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Otros Pagos"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btn_utilidades">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Utilidades"/>
-              </Properties>
-            </Component>
+            <Container class="javax.swing.JPanel" name="jPanel3">
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+                <Property name="columns" type="int" value="0"/>
+                <Property name="rows" type="int" value="1"/>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JButton" name="btn_limpiar">
+                  <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/com/jblue/media/img/x32/limpiar.png"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Limpiar"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btn_cancelar">
+                  <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/com/jblue/media/img/x32/cerca.png"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Cancelar"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btn_cobrar">
+                  <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/com/jblue/media/img/x32/img5.png"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Cobrar"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="jPanel5">
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+                <Property name="columns" type="int" value="0"/>
+                <Property name="rows" type="int" value="1"/>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JButton" name="btn_recargos">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Recargos"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btn_otros_pagos">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Otros Pagos"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="jButton1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Pagos atrasados"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btn_utilidades">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Utilidades"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
           </SubComponents>
         </Container>
       </SubComponents>

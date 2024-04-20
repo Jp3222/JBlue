@@ -21,19 +21,17 @@ import com.jblue.vista.vistas.menuprincipal.sub.VCCobros;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.sistema.Sesion;
 import com.jblue.util.Filtros;
-import com.jblue.util.FuncJBlue;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.vista.comp.CSelectorObjeto;
 import com.jblue.vista.comp.CVisorUsuario;
 import com.jblue.vista.jbmarco.VistaExtendida;
+import com.jutil.jexception.Excp;
 import java.awt.CardLayout;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -183,6 +181,7 @@ public class VCobros extends VistaExtendida {
         bar_panel_der.add(jLabel3, java.awt.BorderLayout.CENTER);
 
         btn_buscador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/buscar.png"))); // NOI18N
+        btn_buscador.setToolTipText("Buscar Usuario");
         btn_buscador.setPreferredSize(new java.awt.Dimension(50, 30));
         btn_buscador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,9 +200,7 @@ public class VCobros extends VistaExtendida {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_buscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscadorActionPerformed
-
         OUsuarios o = CSelectorObjeto.selectorUsuarios(null);
-
         if (o == null) {
             return;
         }
@@ -237,16 +234,21 @@ public class VCobros extends VistaExtendida {
             if (Filtros.isNullOrBlank(in)) {
                 return;
             }
-            EncriptadoAES o = new EncriptadoAES();
             Sesion instancia = Sesion.getInstancia();
-
-            String desencriptar = o.desencriptar(instancia.getUsuario().getUsuario(), in);
-            in = o.encriptar(in, desencriptar);
+            String desencriptar = EncriptadoAES.desencriptar(instancia.getUsuario().getUsuario(), in);
+            in = EncriptadoAES.encriptar(in, desencriptar);
             if (in.equals(instancia.getUsuario().getContra())) {
                 bloquear(false);
             }
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-            Logger.getLogger(VCobros.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (UnsupportedEncodingException
+                | NoSuchAlgorithmException
+                | InvalidKeyException
+                | NoSuchPaddingException
+                | IllegalBlockSizeException
+                | BadPaddingException ex) {
+            JOptionPane.showMessageDialog(this, "Contraseña incorrecta", "Desbloquear Caja", JOptionPane.ERROR_MESSAGE);
+            Excp.impTerminal(ex, getClass(), false);
         }
     }//GEN-LAST:event_btn_desbloc_cajaActionPerformed
 

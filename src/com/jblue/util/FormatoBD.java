@@ -15,7 +15,7 @@ public class FormatoBD {
 
     public static String[] bdSalida(String... datos) {
         for (int i = 0; i < datos.length; i++) {
-            if (varInValida(datos[i]) || numero(datos[i])) {
+            if (Filtros.isNullOrBlank(datos[i]) || numero(datos[i])) {
                 continue;
             }
             datos[i] = datos[i].replace('_', ' ');
@@ -25,7 +25,7 @@ public class FormatoBD {
 
     public static String[] bdEntrada(String... datos) {
         for (int i = 0; i < datos.length; i++) {
-            if (varInValida(datos[i])) {
+            if (Filtros.isNullOrBlank(datos[i])) {
                 continue;
             }
             datos[i] = datos[i].trim().toUpperCase().replace(" ", "_");
@@ -63,10 +63,6 @@ public class FormatoBD {
             }
         }
         return false;
-    }
-
-    private static boolean varInValida(String txt) {
-        return txt == null || txt.isBlank();
     }
 
     private static boolean numero(String txt) {

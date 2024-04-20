@@ -5,8 +5,6 @@
 package com.jblue.modelo.objetos;
 
 import com.jblue.modelo.objetos.sucls.Objeto;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 /**
  * OPersonal

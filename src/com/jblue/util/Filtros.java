@@ -43,7 +43,7 @@ public class Filtros {
     }
 
     public static boolean soloNumerosDecimales(String txt) {
-        return txt.matches("([0-9]{1,4})(|(\\.([0-9]{1,2})))");
+        return txt.matches("([0-9]{1,10})(|(\\.([0-9]{1,10})))");
     }
 
     public static boolean soloNumerosEnteros(String txt) {

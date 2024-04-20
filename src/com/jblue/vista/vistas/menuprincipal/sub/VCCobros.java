@@ -16,7 +16,7 @@
  */
 package com.jblue.vista.vistas.menuprincipal.sub;
 
-import com.jblue.mg.ModeloTablas;
+import com.jblue.util.mg.ModeloTablas;
 import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.util.Filtros;
@@ -49,6 +49,7 @@ public final class VCCobros extends VistaSimple {
         cache = memo_cache.getLista();
         cache_aux = new ArrayList<>(cache.size());
         modelo = new ModeloTablas(ConstGs.BD_PAGOS_X_SERVICIO);
+        modelo.setAllCellEditable(false);
         initComponents();
         jTable2.setModel(modelo);
         llamable();
@@ -75,11 +76,11 @@ public final class VCCobros extends VistaSimple {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel15 = new javax.swing.JPanel();
+        panel_filtros = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jCheckBox1 = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        panel_tabla = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btn_rec = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -92,9 +93,9 @@ public final class VCCobros extends VistaSimple {
         setName("Cobros realizados"); // NOI18N
         setLayout(new java.awt.BorderLayout());
 
-        jPanel15.setName("Cobros realizados"); // NOI18N
-        jPanel15.setPreferredSize(new java.awt.Dimension(1200, 100));
-        jPanel15.setLayout(new java.awt.BorderLayout());
+        panel_filtros.setName("Cobros realizados"); // NOI18N
+        panel_filtros.setPreferredSize(new java.awt.Dimension(1200, 100));
+        panel_filtros.setLayout(new java.awt.BorderLayout());
 
         jPanel4.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel4.setLayout(new java.awt.BorderLayout());
@@ -108,14 +109,14 @@ public final class VCCobros extends VistaSimple {
         jButton1.setPreferredSize(new java.awt.Dimension(150, 29));
         jPanel4.add(jButton1, java.awt.BorderLayout.LINE_END);
 
-        jPanel15.add(jPanel4, java.awt.BorderLayout.NORTH);
+        panel_filtros.add(jPanel4, java.awt.BorderLayout.NORTH);
 
-        add(jPanel15, java.awt.BorderLayout.NORTH);
+        add(panel_filtros, java.awt.BorderLayout.NORTH);
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(1000, 400));
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        panel_tabla.setPreferredSize(new java.awt.Dimension(1000, 400));
+        panel_tabla.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel2.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         btn_rec.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
@@ -155,7 +156,7 @@ public final class VCCobros extends VistaSimple {
         });
         jPanel2.add(filtro_buscador, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel2, java.awt.BorderLayout.NORTH);
+        panel_tabla.add(jPanel2, java.awt.BorderLayout.NORTH);
 
         jScrollPane3.setPreferredSize(new java.awt.Dimension(1000, 370));
 
@@ -169,9 +170,9 @@ public final class VCCobros extends VistaSimple {
         ));
         jScrollPane3.setViewportView(jTable2);
 
-        jPanel1.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+        panel_tabla.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
-        add(jPanel1, java.awt.BorderLayout.CENTER);
+        add(panel_tabla, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_recActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_recActionPerformed
@@ -240,13 +241,13 @@ public final class VCCobros extends VistaSimple {
     private javax.swing.JTextField filtro_buscador;
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable2;
+    private javax.swing.JPanel panel_filtros;
+    private javax.swing.JPanel panel_tabla;
     // End of variables declaration//GEN-END:variables
 
     private final MemoCache<OPagosServicio> memo_cache;

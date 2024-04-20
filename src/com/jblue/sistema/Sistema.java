@@ -4,28 +4,27 @@
  */
 package com.jblue.sistema;
 
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import com.jblue.modelo.objetos.OCalles;
-import com.jblue.modelo.objetos.OPersonal;
-import com.jblue.modelo.objetos.OTipoTomas;
-import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.modelo.objetos.OValores;
-import com.jblue.util.archivos.ConstructorArchivos;
+import com.jblue.sistema.app.AppFiles;
 import com.jblue.util.cache.FabricaCache;
-import com.jblue.util.cache.MemoCache;
-import com.jblue.vista.ventanas.MenuConfigBD;
 import com.jblue.vista.ventanas.Login;
+import com.jblue.vista.ventanas.MenuConfigBD;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
-import java.io.BufferedReader;
+import com.jutil.soyjvm.So;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.JOptionPane;
 
 /**
  * Sistema
@@ -39,118 +38,217 @@ public class Sistema {
 
     public synchronized static Sistema getInstancia() {
         if (instancia == null) {
-            instancia = new Sistema();
+            try {
+                instancia = new Sistema();
+            } catch (IOException ex) {
+                Excp.impTerminal(ex, Sistema.class, true);
+            }
         }
         return instancia;
     }
 
-    private final MenuConfigBD config;
-    private final Archivos archivos;
-    private Login log;
-    private String usuario, contraseña, url;
-
-    private Conexion cn;
+    /**
+     *
+     */
+    private final Properties propiedades;
     private boolean reinicio;
+    private Conexion conexion;
+    public FileReader lector_propiedades;
+    public FileWriter escritor_propiedades;
 
-    private Sistema() {
-        try {
-           
-            UIManager.setLookAndFeel(new FlatMacLightLaf());
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.archivos = new Archivos();
+    private Sistema() throws IOException {
+        propiedades = new Properties(20);
         this.reinicio = false;
-        config = new MenuConfigBD();
+        So.setDefaultLookAndFeel();
     }
 
-    public boolean archivosSistema() {
-        ConstructorArchivos constructor = archivos.getArchivos();
-
-        if (constructor.isEmpty() == 0) {
-            return true;
-        }
-
-        switch (constructor.isEmpty()) {
-            case 1 ->
-                constructor.construirArchivos();
-            case 2 ->
-                constructor.construirDirectorios();
-            case 3 -> {
-                archivos.cargar();
-                constructor.construirTodos();
-            }
-        }
-        constructor.print();
-        return true;
-    }
-
-    public synchronized boolean conexionBD() {
+    public boolean _CargarArchivos() {
         try {
-            ConstructorArchivos constructor = archivos.getArchivos();
-            File usuario_file = constructor.get(constructor.ARCHIVO, archivos.USUARIO_BD);
-            BufferedReader fr = new BufferedReader(new FileReader(usuario_file));
-            String linea = fr.readLine();
-
-            if (linea == null) {
-                synchronized (config) {
-                    Thread t = new Thread(() -> config.setVisible(true));
-                    t.start();
-                    config.wait();
-                    linea = fr.readLine();
+            File file;
+            String formato = "%s = %s";
+            String mensaje;
+            List<String> list = new ArrayList<>();
+            list.addAll(Arrays.asList(AppFiles.ARR_DIR_PROG));
+            list.addAll(Arrays.asList(AppFiles.ARR_DIR_USER));
+            for (String i : list) {
+                file = new File(i);
+                if (file.exists()) {
+                    mensaje = "OK";
+                } else {
+                    file.mkdir();
+                    mensaje = "NEW";
                 }
+                System.out.println(
+                        String.format(formato, file.getAbsolutePath(), mensaje)
+                );
             }
 
-            String[] split = linea.split(",");
+            for (String i : AppFiles.ARR_PROG_ARC) {
+                file = new File(i);
+                if (file.exists()) {
+                    mensaje = "OK";
+                } else {
+                    file.createNewFile();
+                    mensaje = "NEW";
 
-            usuario = split[0];
-            usuario = split[1];
-            usuario = split[2];
-
-            cn = Conexion.getInstancia(split[0], split[1], split[2]);
-
-            return !cn.getConexion().isClosed();
-        } catch (SQLException | IOException | InterruptedException ex) {
-            Excp.imp(ex, getClass(), true, true);
-            System.exit(0);
+                }
+                System.out.println(
+                        String.format(formato, file.getAbsolutePath(), mensaje)
+                );
+            }
+            return true;
+        } catch (IOException ex) {
+            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
 
-    public boolean datosCSache() {
+    public synchronized boolean _ConexionBD() {
+        MenuConfigBD config = new MenuConfigBD();
+        leerPropiedades();
+        boolean conexionNull = propiedades.get("bd-url") == null;
+        if (conexionNull) {
+            synchronized (config) {
+                config.setSistema(this);
+                config.setVisible(true);
+                try {
+                    config.wait();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                escribirPropiedades();
+            }
+        }
+
+        try {
+            conexion = Conexion.getInstancia(
+                    propiedades.getProperty("bd-usuario"),
+                    propiedades.getProperty("bd-contraseña"),
+                    propiedades.getProperty("bd-url")
+            );
+            if (conexionCerrada()) {
+                int in = JOptionPane.showConfirmDialog(null, "Hay un problema con las credenciales, dese reiniciarlas?");
+                if (in == JOptionPane.YES_OPTION) {
+                    propiedades.remove("bd-usuario");
+                    propiedades.remove("bd-contraseña");
+                    propiedades.remove("bd-url");
+                    escribirPropiedades();
+                    return false;
+                }
+            }
+        } catch (SQLException ex) {
+            Excp.imp(ex, getClass(), true, true);
+            System.exit(0);
+        }
+
+        return true;
+    }
+
+    public void leerPropiedades() {
+        try {
+            lector_propiedades = new FileReader(AppFiles.FIL_ARC_CONFIG, Charset.defaultCharset());
+            propiedades.load(lector_propiedades);
+            lector_propiedades.close();
+            System.out.println(propiedades);
+        } catch (FileNotFoundException ex) {
+            Excp.impTerminal(ex, getClass(), false);
+        } catch (IOException ex) {
+            Excp.impTerminal(ex, getClass(), false);
+        }
+    }
+
+    public void escribirPropiedades() {
+        try {
+            if (!propiedades.isEmpty()) {
+                leerPropiedades();
+            }
+            escritor_propiedades = new FileWriter(AppFiles.FIL_ARC_CONFIG, Charset.defaultCharset(), false);
+            propiedades.store(escritor_propiedades, "Propiedades del programa");
+            escritor_propiedades.close();
+        } catch (FileNotFoundException ex1) {
+            Excp.impTerminal(ex1, getClass(), false);
+        } catch (IOException ex1) {
+            Excp.impTerminal(ex1, getClass(), false);
+        }
+    }
+
+    public boolean conexionCerrada() {
+        boolean isClose = false;
+        try {
+            isClose = conexion.getConexion().isClosed();
+        } catch (SQLException ex) {
+            Excp.imp(ex, getClass(), true, true);
+        }
+        return isClose;
+    }
+
+    public boolean _CargarCache() {
         if (FabricaCache.cache) {
             return true;
         }
-
-        FabricaCache.cache = true;
-
-        MemoCache<OCalles> MC_CALLES = FabricaCache.MC_CALLES;
-        MC_CALLES.cargar();
-
-        MemoCache<OPersonal> MC_PERSONAL = FabricaCache.MC_PERSONAL;
-        MC_PERSONAL.cargar();
-
-        MemoCache<OTipoTomas> MC_TIPOS_DE_TOMAS = FabricaCache.MC_TIPOS_DE_TOMAS;
-        MC_TIPOS_DE_TOMAS.cargar();
-
-        MemoCache<OUsuarios> MC_USUARIOS = FabricaCache.MC_USUARIOS;
-        MC_USUARIOS.cargar();
-
-        MemoCache<OValores> MC_VALORES = FabricaCache.MC_VALORES;
-        MC_VALORES.cargar();
-
-        return MC_CALLES.getLista() != null
-                && MC_PERSONAL.getLista() != null
-                && MC_TIPOS_DE_TOMAS.getLista() != null
-                && MC_USUARIOS.getLista() != null
-                && MC_VALORES.getLista() != null;
+        return FabricaCache.iniciarCache();
     }
 
-    public synchronized boolean run() {
+    public boolean _Run() {
         this.reinicio = false;
-        log = new Login(config);
+        Login log = new Login();
         log.setVisible(true);
-        return log.isVisible() && !config.isVisible();
+        return log.isVisible();
+    }
+
+    public void _Stop() {
+        System.exit(0);
+    }
+
+    public void sleep() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void cerrarTodo() {
+        cerrarBD();
+        cerrarPropiedades();
+    }
+
+    public void cerrarBD() {
+        try {
+            if (conexion == null || !conexion.isConectado()) {
+                return;
+            }
+            conexion.getConexion().close();
+        } catch (SQLException ex) {
+            Excp.impTerminal(ex, getClass(), true);
+        }
+    }
+
+    public void cerrarPropiedades() {
+        try {
+            if (escritor_propiedades != null) {
+                escritor_propiedades.close();
+            }
+            if (lector_propiedades != null) {
+                lector_propiedades.close();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public boolean _ComprobarVersion() {
+        String version = System.getProperty("java.version");
+        CharSequence subsecuencia = version.subSequence(0, 2);
+
+        int versionInt = Integer.parseInt(subsecuencia.toString());
+
+        if (versionInt < 16) {
+            JOptionPane.showMessageDialog(null, "Version de java no valida");
+            return false;
+        }
+        return true;
     }
 
     public boolean isReinicio() {
@@ -160,16 +258,9 @@ public class Sistema {
         return reinicio;
     }
 
-    public Archivos getArchivos() {
-        return archivos;
-    }
 
-    public void setReinicio(boolean reinicio) {
-        this.reinicio = reinicio;
-    }
-
-    public Conexion getCn() {
-        return cn;
+    public Properties getPropiedades() {
+        return propiedades;
     }
 
 }

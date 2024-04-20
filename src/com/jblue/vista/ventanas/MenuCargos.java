@@ -24,12 +24,15 @@ import com.jblue.vista.vistas.menucargos.presidente.VPresidente;
 import com.jblue.vista.vistas.menucargos.tesorero.VTesorero;
 import java.awt.CardLayout;
 import java.awt.Container;
+import javax.swing.JPanel;
 
 /**
  *
  * @author jp
  */
 public class MenuCargos extends VentanaExtendida {
+
+    private JPanel[] panels;
 
     /**
      * Creates new form MenuCargos
@@ -41,7 +44,9 @@ public class MenuCargos extends VentanaExtendida {
         menu_perfil = new VPerfil();
         menu_presidente = new VPresidente();
         menu_administrador = new VAdministrador();
-
+        panels = new JPanel[]{
+            menu_tesorero, menu_perfil, menu_presidente, menu_administrador
+        };
         ly = (CardLayout) getContentPane().getLayout();
         llamable();
     }
@@ -57,8 +62,9 @@ public class MenuCargos extends VentanaExtendida {
     @Override
     protected void construirComponentes() {
         Container panel = getContentPane();
-        panel.add(menu_tesorero.getName(), menu_tesorero);
-        panel.add(menu_perfil.getName(), menu_perfil);
+        for (JPanel i : panels) {
+            panel.add(i.getName(), i);
+        }
     }
 
     @Override

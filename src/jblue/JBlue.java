@@ -4,8 +4,9 @@
  */
 package jblue;
 
+import com.jblue.sistema.ConstSisMen;
 import com.jblue.sistema.Sistema;
-import javax.swing.JOptionPane;
+import com.jutil.jexception.Excp;
 
 /**
  *
@@ -18,42 +19,32 @@ public class JBlue {
      * @param args the command line arguments
      */
     public static void main(String... args) {
-        //validando la version de java
-        String versionStr = System.getProperty("java.version");
-        CharSequence subsecuencia = versionStr.subSequence(0, 2);
-        int versionInt = Integer.parseInt(subsecuencia.toString());
-        if (versionInt < 16) {
-            JOptionPane.showMessageDialog(null, "Version de java no valida");
-            return;
-        }
-        //Inicio del sistema
         Sistema s = Sistema.getInstancia();
         do {
 
-            if (!s.archivosSistema()) {
-                System.out.println("ERROR EN LOS ARCHIVOS DEL PROGRAMA");
-                break;
-            }
-            System.out.println("¡¡¡ARCHIVOS DEL PROGRAMA LISTOS!!!");
+            try {
+                synchronized (s) {
+                    System.out.println(s._ComprobarVersion()
+                            ? ConstSisMen.MEN_JAVA_VERSION_OK : ConstSisMen.MEN_JAVA_VERSION_ERR);
 
-            if (!s.conexionBD()) {
-                System.out.println("ERROR EN La CONEXION A LA BD");
-                break;
-            }
-            System.out.println("¡¡¡CONEXION BD LISTA!!!");
+                    System.out.println(s._CargarArchivos()
+                            ? ConstSisMen.MEN_ARCHIVOS_OK : ConstSisMen.MEN_ARCHIVOS_ERR);
 
-            if (!s.run()) {
-                System.out.println("ERROR AL CORRER EL PROGRAMA");
-            }
-            System.out.println("¡¡¡TODO OK!!!");
+                    System.out.println(s._ConexionBD()
+                            ? ConstSisMen.MEN_CONEXION_BD_OK : ConstSisMen.MEN_CONEXION_BD_ERR);
 
-            if (s.isReinicio()) {
-                System.gc();
-                System.out.println("REINICIANDO EL PROGRAMA");
+                    System.out.println(s._Run()
+                            ? ConstSisMen.MEN_RUN_OK : ConstSisMen.MEN_RUN_ERR);
+                    s.wait();
+                }
+            } catch (InterruptedException ex) {
+                Excp.imp(ex, JBlue.class, true, true);
             }
 
         } while (s.isReinicio());
-
+        System.out.println("FIN DEL PROGRAMA");
+        s.cerrarTodo();
+        s._Stop();
     }
 
 }

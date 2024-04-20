@@ -16,7 +16,7 @@
  */
 package com.jblue.vista.vistas.menubd.usuarios.sub;
 
-import com.jblue.mg.ModeloTablas;
+import com.jblue.util.mg.ModeloTablas;
 import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OTipoTomas;
@@ -377,11 +377,9 @@ public class VUsuariosC extends VistaSimple {
         if (flag) {
             cargarFiltros();
             pintarTabla(modelo_tabla, cache);
-            System.out.println("usuarios cargados");
         } else {
             quitarFiltros();
             modelo_tabla.clear();
-            System.out.println("usuarios quitados");
         }
     }
 

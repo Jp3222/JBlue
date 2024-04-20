@@ -11,7 +11,7 @@ import java.util.Arrays;
  *
  * @author jp
  */
-public abstract class Objeto implements Serializable, Cloneable, Comparable<Objeto> {
+public class Objeto implements Serializable, Cloneable, Comparable<Objeto> {
 
     /**
      * Array principal en el que se almacena la colecion de datos segun el tipo
@@ -33,7 +33,7 @@ public abstract class Objeto implements Serializable, Cloneable, Comparable<Obje
      *
      * @param info
      */
-    protected Objeto(String[] info) {
+    public Objeto(String[] info) {
         this._conjunto = info;
         this._conjuntoSinFK = info.clone();
     }
@@ -43,6 +43,7 @@ public abstract class Objeto implements Serializable, Cloneable, Comparable<Obje
      */
     public Objeto() {
         this._conjunto = null;
+        this._conjuntoSinFK = null;
     }
 
     /**
@@ -122,6 +123,10 @@ public abstract class Objeto implements Serializable, Cloneable, Comparable<Obje
         return o.toString();
     }
 
+    public boolean isEmpty() {
+        return _conjunto == null;
+    }
+
     /**
      * metodo que define la representacion del objeto en una cadeja, esto
      * orientado a la representacion garfica
@@ -142,7 +147,7 @@ public abstract class Objeto implements Serializable, Cloneable, Comparable<Obje
 
     public void setValue(int index, String newValue) {
         _conjunto[index] = newValue;
-        _conjuntoSinFK[index] = newValue;
+        _conjuntoSinFK[index] = String.copyValueOf(newValue.toCharArray());
     }
 
     @Override

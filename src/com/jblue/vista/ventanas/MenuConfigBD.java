@@ -4,17 +4,12 @@
  */
 package com.jblue.vista.ventanas;
 
-import com.jblue.sistema.Archivos;
 import com.jblue.sistema.Sistema;
-import com.jblue.util.archivos.ConstructorArchivos;
 import com.jblue.vista.jbmarco.VentanaSimple;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Properties;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,6 +19,7 @@ import javax.swing.JOptionPane;
 public class MenuConfigBD extends VentanaSimple {
 
     private String usuario, contra, url;
+    private Sistema sistema;
     private Conexion cn;
 
     /**
@@ -104,7 +100,7 @@ public class MenuConfigBD extends VentanaSimple {
         jPanel10 = new javax.swing.JPanel();
         jbtProbarConexion = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 500));
         setResizable(false);
 
@@ -269,35 +265,23 @@ public class MenuConfigBD extends VentanaSimple {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtGuardarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtGuardarDatosActionPerformed
-
-        FileWriter fr;
-        try {
-            Sistema s = Sistema.getInstancia();
-            Archivos archivos = s.getArchivos();
-            ConstructorArchivos constructor = archivos.getArchivos();
-            File us = constructor.get(constructor.ARCHIVO, archivos.USUARIO_BD);
-            fr = new FileWriter(us);
+        synchronized (this) {
             String[] datos = getDatos();
-            StringBuilder sb = new StringBuilder();
-            sb.append(datos[0]).append(",");
-            sb.append(datos[1]).append(",");
-            sb.append(datos[2]);
-            fr.write(sb.toString());
-            fr.close();
+            Properties propiedades = sistema.getPropiedades();
+            propiedades.put("bd-usuario", datos[0]);
+            propiedades.put("bd-contraseña", datos[1]);
+            propiedades.put("bd-url", datos[2]);
+            setVisible(false);
             dispose();
-        } catch (FileNotFoundException ex) {
-            Excp.impTerminal(ex, getClass(), true);
-        } catch (IOException ex) {
-            Excp.impTerminal(ex, getClass(), true);
+            notify();
         }
-
     }//GEN-LAST:event_jbtGuardarDatosActionPerformed
 
     private void jbtProbarConexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtProbarConexionActionPerformed
         try {
             getDatos();
             Conexion con = Conexion.getInstancia(usuario, contra, url);
-            boolean cerrado = !con.getConexion().isValid(1000);
+            boolean cerrado = con.getConexion().isClosed();
 
             String mensaje = "La conexion es: ";
 
@@ -334,17 +318,12 @@ public class MenuConfigBD extends VentanaSimple {
     public String[] getDatos() {
         usuario = String.valueOf(jPasswordField1.getPassword());
         contra = String.valueOf(jpfContra.getPassword());
-        StringBuilder s = new StringBuilder(100);
-        s.append("jdbc:")
-                .append(jcbMotor.getItemAt(jcbMotor.getSelectedIndex()))
-                .append("://")
-                .append(jtfHost.getText())
-                .append(":")
-                .append(jtfPuerto.getText())
-                .append("/")
-                .append(jtfBDNombre.getText());
-
-        url = s.toString();
+        url = String.format("jdbc:%s://%s:%s/%s",
+                jcbMotor.getItemAt(jcbMotor.getSelectedIndex()),
+                jtfHost.getText(),
+                jtfPuerto.getText(),
+                jtfBDNombre.getText()
+        );
 
         return new String[]{
             usuario, contra, url
@@ -390,5 +369,9 @@ public class MenuConfigBD extends VentanaSimple {
     private javax.swing.JTextField jtfHost;
     private javax.swing.JTextField jtfPuerto;
     // End of variables declaration//GEN-END:variables
+
+    public void setSistema(Sistema sistema) {
+        this.sistema = sistema;
+    }
 
 }

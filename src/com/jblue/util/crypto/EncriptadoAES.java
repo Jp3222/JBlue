@@ -31,7 +31,7 @@ public class EncriptadoAES {
      * @throws UnsupportedEncodingException
      * @throws NoSuchAlgorithmException
      */
-    private SecretKeySpec crearClave(String clave) throws
+    public static SecretKeySpec crearClave(String clave) throws
             UnsupportedEncodingException, NoSuchAlgorithmException {
 
         byte[] claveEncriptacion = clave.getBytes("UTF-8");
@@ -59,12 +59,12 @@ public class EncriptadoAES {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
-    public String encriptar(String datos, String claveSecreta) throws
+    public static String encriptar(String datos, String claveSecreta) throws
             UnsupportedEncodingException, NoSuchAlgorithmException,
             InvalidKeyException, NoSuchPaddingException,
             IllegalBlockSizeException, BadPaddingException {
 
-        SecretKeySpec secretKey = this.crearClave(claveSecreta);
+        SecretKeySpec secretKey = crearClave(claveSecreta);
 
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -89,12 +89,12 @@ public class EncriptadoAES {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
-    public String desencriptar(String dencp, String cscre) throws
+    public static String desencriptar(String dencp, String cscre) throws
             UnsupportedEncodingException, NoSuchAlgorithmException,
             InvalidKeyException, NoSuchPaddingException,
             IllegalBlockSizeException, BadPaddingException {
 
-        SecretKeySpec secretKey = this.crearClave(cscre);
+        SecretKeySpec secretKey = crearClave(cscre);
 
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
@@ -115,7 +115,7 @@ public class EncriptadoAES {
      * @param vdes - value - descencriptada
      * @return
      */
-    public boolean comparador(String ken, String ven, String kdes, String vdes) {
+    public static boolean comparador(String ken, String ven, String kdes, String vdes) {
         try {
             String k = kdes;
             String v = vdes;
@@ -130,7 +130,7 @@ public class EncriptadoAES {
                 | IllegalBlockSizeException
                 | BadPaddingException ex) {
 
-            Excp.impTerminal(ex, this.getClass(), true);
+            Excp.impTerminal(ex, EncriptadoAES.class, true);
         }
         return false;
     }

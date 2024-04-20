@@ -160,6 +160,18 @@ public abstract class ConstGs {
     };
 
     /**
+     *
+     * <br> 1 id
+     * <br> 2 motivo
+     * <br> 3 descripcion
+     * <br> 4 monto
+     * <br> 5 url_notas
+     */
+    public static final String[] BD_PAGOS_X_OTROS_TIPOS = {
+        ID, "motivo", "descripcion", MONTO, "url_notas"
+    };
+
+    /**
      * Constante que guarda las tablas de la base de datos
      * <br>0 - personal
      * <br>1 - usuarios

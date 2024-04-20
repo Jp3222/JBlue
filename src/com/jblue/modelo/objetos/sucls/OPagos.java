@@ -35,8 +35,8 @@ public class OPagos extends Objeto {
         return _conjunto[3];
     }
 
-    public String getMonto() {
-        return _conjunto[4];
+    public double getMonto() {
+        return Double.parseDouble(_conjunto[4]);
     }
 
     public String getDia() {

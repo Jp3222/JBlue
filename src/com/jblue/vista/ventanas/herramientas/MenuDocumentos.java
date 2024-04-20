@@ -17,7 +17,7 @@
 package com.jblue.vista.ventanas.herramientas;
 
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.sistema.app.AppProp;
+import com.jblue.sistema.app.AppFiles;
 import com.jblue.util.FuncJBlue;
 import com.jblue.util.SoInfo;
 import com.jblue.vista.jbmarco.VentanaSimple;
@@ -238,7 +238,7 @@ public class MenuDocumentos extends VentanaSimple {
                 JOptionPane.showMessageDialog(this, "El archivo no es valido", "Seleccione Documento", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            File dir_us = AppProp.FIL_DIR_PROG_USUARIOS;
+            File dir_us = AppFiles.FIL_DIR_PROG_USUARIOS;
             String usu = usuario.getText().toUpperCase();
             StringBuilder sb = new StringBuilder(dir_us.getAbsolutePath());
             sb.append("/").append(usu).append("/").append(file.getName());
@@ -251,7 +251,7 @@ public class MenuDocumentos extends VentanaSimple {
     }//GEN-LAST:event_agregar_docActionPerformed
 
     private void abrir_docActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrir_docActionPerformed
-        File dir_us = AppProp.FIL_DIR_PROG_USUARIOS;
+        File dir_us = AppFiles.FIL_DIR_PROG_USUARIOS;
         String usu = usuario.getText().toUpperCase();
         StringBuilder sb = new StringBuilder(dir_us.getAbsolutePath());
         sb.append("/").append(usu).append("/");
@@ -274,7 +274,7 @@ public class MenuDocumentos extends VentanaSimple {
     }//GEN-LAST:event_abrir_docActionPerformed
 
     private void eliminar_docActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminar_docActionPerformed
-        File dir_us = AppProp.FIL_DIR_PROG_USUARIOS;
+        File dir_us = AppFiles.FIL_DIR_PROG_USUARIOS;
         String usu = usuario.getText().toUpperCase();
         StringBuilder sb = new StringBuilder(dir_us.getAbsolutePath());
         sb.append("/").append(usu).append("/");
@@ -302,7 +302,7 @@ public class MenuDocumentos extends VentanaSimple {
         }
         usuario.setText(o.getStringR());
         usuario_seleccionado = o;
-        String fil_dir_prog_usuarios = AppProp.FIL_DIR_PROG_USUARIOS.getAbsolutePath();
+        String fil_dir_prog_usuarios = AppFiles.FIL_DIR_PROG_USUARIOS.getAbsolutePath();
         File f = new File(String.format("%s/%s", fil_dir_prog_usuarios, o.getStringR()));
         if (!f.exists()) {
             JOptionPane.showMessageDialog(this, "Este usuario no tiene un directorio");

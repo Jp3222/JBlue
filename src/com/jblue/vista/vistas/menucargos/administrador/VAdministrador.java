@@ -19,8 +19,7 @@ package com.jblue.vista.vistas.menucargos.administrador;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.vista.jbmarco.VistaExtendida;
-import com.jblue.vista.vistas.menucargos.administrador.sub.PersonalC;
-import com.jblue.vista.vistas.menucargos.administrador.sub.PersonalR;
+import com.jblue.vista.vistas.menucargos.util.VCPersonal;
 
 /**
  *
@@ -34,13 +33,14 @@ public class VAdministrador extends VistaExtendida {
     public VAdministrador() {
         initComponents();
         memo_cache = FabricaCache.MC_PERSONAL;
-        personal_consultas = new PersonalC(this);
-        personal_registros = new PersonalR(this);
+        VCPersonal personal_consultas = new VCPersonal(this);
         llamable();
+        panel_central.add(personal_consultas.getName(), personal_consultas);
+
     }
 
     @Override
-    protected void llamable() {
+    protected final void llamable() {
     }
 
     @Override
@@ -56,26 +56,46 @@ public class VAdministrador extends VistaExtendida {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setName("Administrador"); // NOI18N
+        jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        panel_central = new javax.swing.JPanel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1000, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 660, Short.MAX_VALUE)
-        );
+        setName("Administrador"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(1000, 600));
+        setLayout(new java.awt.BorderLayout());
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(200, 600));
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/usuario.png"))); // NOI18N
+        jLabel3.setPreferredSize(new java.awt.Dimension(200, 200));
+        jPanel1.add(jLabel3, java.awt.BorderLayout.NORTH);
+
+        jPanel3.setLayout(new java.awt.GridLayout(6, 0));
+
+        jButton1.setText("Usuarios");
+        jPanel3.add(jButton1);
+
+        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
+
+        add(jPanel1, java.awt.BorderLayout.WEST);
+
+        panel_central.setLayout(new java.awt.CardLayout());
+        add(panel_central, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel panel_central;
     // End of variables declaration//GEN-END:variables
     private final MemoCache memo_cache;
-    private final PersonalC personal_consultas;
-    private final PersonalR personal_registros;
 
     public MemoCache getMemo_cache() {
         return memo_cache;

@@ -8,7 +8,7 @@ import com.jblue.sistema.Sesion;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.vista.jbmarco.ConstTitutlos;
 import com.jblue.vista.jbmarco.VentanaSimple;
-import com.jblue.vista.ventanas.herramientas.MenuCVS;
+import com.jblue.vista.ventanas.herramientas.MenuCVSExport;
 import com.jblue.vista.ventanas.herramientas.MenuDirectorios;
 import com.jblue.vista.ventanas.herramientas.MenuDocumentos;
 import com.jblue.vista.vistas.menuprincipal.VCobros;
@@ -28,6 +28,8 @@ public class MenuPrincipal extends VentanaSimple {
 
     public MenuPrincipal(Login login) {
         super(ConstTitutlos.TL_MENU_PRINCIPAL, ConstTitutlos.TL_VENTANAS);
+        setUndecorated(true);
+        setDefaultLookAndFeelDecorated(false);
         this.initComponents();
         menus_bd = new MenuBD();
         menu_cargos = new MenuCargos();
@@ -39,7 +41,7 @@ public class MenuPrincipal extends VentanaSimple {
         this.herr_dir = new MenuDirectorios();
         //
         vista_cobros = new VCobros();
-        this.herr_csv_rap = new MenuCVS();
+        this.herr_csv_rap = new MenuCVSExport();
         //
         this.menus = new JFrame[]{
             herr_doc,
@@ -185,14 +187,13 @@ public class MenuPrincipal extends VentanaSimple {
         item_docs = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         item_csv_rap = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         pagos_del_dia = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         menu_ayuda = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setExtendedState(6);
@@ -308,6 +309,10 @@ public class MenuPrincipal extends VentanaSimple {
         });
         jMenu5.add(item_csv_rap);
 
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/csv.png"))); // NOI18N
+        jMenuItem1.setText("Importar CSV");
+        jMenu5.add(jMenuItem1);
+
         pagos_del_dia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/csv.png"))); // NOI18N
         pagos_del_dia.setText("Pagos Del Dia");
         jMenu5.add(pagos_del_dia);
@@ -351,18 +356,6 @@ public class MenuPrincipal extends VentanaSimple {
             }
         });
         menu_ayuda.add(jMenuItem5);
-
-        jMenu1.setText("Expetimental");
-
-        jMenuItem1.setText("Menus");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem1);
-
-        menu_ayuda.add(jMenu1);
 
         menu_en_barra.add(menu_ayuda);
 
@@ -420,11 +413,6 @@ public class MenuPrincipal extends VentanaSimple {
         herr_dir.setVisible(true);
     }//GEN-LAST:event_item_dirActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        MenuPruebas p = new MenuPruebas();
-        p.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     public void finalizarSesion() {
         cerrarMenusActivos();
         Sesion instancia = Sesion.getInstancia();
@@ -468,7 +456,6 @@ public class MenuPrincipal extends VentanaSimple {
     private javax.swing.JMenuItem item_tipo_tomas;
     private javax.swing.JMenuItem item_tomas_reg;
     private javax.swing.JMenuItem item_usuarios;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
@@ -489,7 +476,7 @@ public class MenuPrincipal extends VentanaSimple {
     private final Login login;
 
     // ---- Herramientas ---- //
-    private final MenuCVS herr_csv_rap;
+    private final MenuCVSExport herr_csv_rap;
     private final MenuDocumentos herr_doc;
     private final MenuDirectorios herr_dir;
 

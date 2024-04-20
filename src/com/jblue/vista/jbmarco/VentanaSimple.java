@@ -4,6 +4,7 @@
  */
 package com.jblue.vista.jbmarco;
 
+import com.jblue.modelo.ConstGs;
 import javax.swing.JFrame;
 import com.jblue.sistema.app.AppInfo;
 import java.awt.HeadlessException;

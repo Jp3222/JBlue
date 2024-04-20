@@ -145,6 +145,10 @@ public abstract class ConstBD {
         ID, PERSONAL, USUARIO, MONTO, "motivo", "descripcion", DIA, MES, AÑO
     };
 
+    public static final String[] VAR_SIS = {
+        ID, "clave", "valor", "nom_gf"
+    };
+
     /**
      * Constante que guarda las tablas de la base de datos
      * <br>0 - personal
@@ -156,7 +160,7 @@ public abstract class ConstBD {
      * <br>6 - pagos_x_servicio
      * <br>7 - pagos_x_recargos
      * <br>8 - pagos_x_otros
-     *
+     * <br>9 - var_sis
      */
     public static final String[] TABLAS = {
         "personal",
@@ -180,11 +184,8 @@ public abstract class ConstBD {
         BD_MOVIMIENTOS,
         BD_PAGOS_X_SERVICIO,
         BD_PAGOS_X_RECARGO,
-        BD_PAGOS_X_OTROS
-    };
-
-    public static final String[] VALORES = {
-        ID, "clave", "valor", "nom_gf"
+        BD_PAGOS_X_OTROS,
+        VAR_SIS
     };
 
 }

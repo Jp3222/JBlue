@@ -25,6 +25,7 @@ import com.jblue.modelo.objetos.sucls.Objeto;
 import com.jblue.util.Filtros;
 import com.jblue.util.FormatoBD;
 import com.jblue.util.cache.FabricaCache;
+import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.vista.jbmarco.VistaSimple;
@@ -137,12 +138,58 @@ public class VUsuariosR extends VistaSimple {
             return;
         }
         String[] valores = getInfo(false);
+
         String txt = "(";
         for (String i : valores) {
             txt = txt.concat(i).concat(",");
         }
         txt = txt.concat(")");
-        JOptionPane.showMessageDialog(this, txt);
+        System.out.println(txt);
+        Operaciones<OUsuarios> op = FabricaOpraciones.getUSUARIOS();
+        boolean insertar = op.insertar(valores);
+        mov(insertar);
+    }
+
+    private String[] getRegistro(boolean actualizacion) {
+        String nombre, ap, am, calle, ncasa, toma, registro, estado, titular, codigo;
+        nombre = campo_nombre.getText();
+        ap = campo_ap.getText();
+        am = campo_am.getText();
+
+        OCalles calle_o = EnvUsuario.getCalleEnCache(campo_calle.getItemAt(campo_calle.getSelectedIndex()));
+        calle = calle_o.getId();
+
+        boolean numero_cero = sn_numero.isSelected() || Filtros.isNullOrBlank(campo_no_casa.getText());
+        ncasa = numero_cero ? "0" : campo_no_casa.getText();
+
+        OTipoTomas toma_o = EnvUsuario.getTipoDeTomaEnCache(campo_tipo_toma.getItemAt(campo_tipo_toma.getSelectedIndex()));
+        toma = toma_o.getId();
+
+        if (actualizacion) {
+            registro = objeto_buscado.getRegistro();
+        } else {
+            String format = LocalDate.now().format(Fecha.FORMATO);
+            registro = format;
+        }
+        estado = getEstado();
+        return new String[]{
+            nombre, ap, am, calle, ncasa, toma, registro
+        };
+    }
+
+    private String getEstado() {
+        int index = campo_estado.getSelectedIndex();
+        return switch (index) {
+            case 1:
+                yield "1";
+            case 2:
+                yield "0";
+            case 3:
+                yield "-1";
+            default:
+                yield "NULL";
+        };
+
     }
 
     public void evtActualizar() {
@@ -159,15 +206,18 @@ public class VUsuariosR extends VistaSimple {
         }
     }
 
-    private String[] getInfo(boolean act) {
+    private String[] getInfo(boolean actualizacion) {
         String nombre = campo_nombre.getText();
         String ap = campo_ap.getText();
         String am = campo_am.getText();
         String calle = campo_calle.getItemAt(campo_calle.getSelectedIndex());
         String no_casa = campo_no_casa.getText();
+        no_casa = no_casa ==null ? "NULL" : no_casa;
+        
         String tipo_toma = campo_tipo_toma.getItemAt(campo_tipo_toma.getSelectedIndex());
         String registro;
-        if (act) {
+
+        if (actualizacion) {
             registro = objeto_buscado.getRegistro();
         } else {
             LocalDate ld = LocalDate.now();
@@ -307,10 +357,6 @@ public class VUsuariosR extends VistaSimple {
         jLabel8 = new javax.swing.JLabel();
         campo_estado = new javax.swing.JComboBox<>();
         man_estado = new javax.swing.JCheckBox();
-        jPanel14 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        campo_codigo = new javax.swing.JTextField();
-        jLabel19 = new javax.swing.JLabel();
         panelBotones = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         btn_guardar = new javax.swing.JButton();
@@ -542,7 +588,7 @@ public class VUsuariosR extends VistaSimple {
         jLabel8.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel10.add(jLabel8, java.awt.BorderLayout.NORTH);
 
-        campo_estado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona Elemento.", "Activo.", "Inactivo." }));
+        campo_estado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona Elemento.", "Activo.", "Inactivo.", "Baja." }));
         campo_estado.setName("Estado"); // NOI18N
         campo_estado.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel10.add(campo_estado, java.awt.BorderLayout.CENTER);
@@ -554,23 +600,6 @@ public class VUsuariosR extends VistaSimple {
         jPanel10.add(man_estado, java.awt.BorderLayout.EAST);
 
         jPanel1.add(jPanel10);
-
-        jPanel14.setPreferredSize(new java.awt.Dimension(500, 50));
-        jPanel14.setLayout(new java.awt.BorderLayout());
-
-        jLabel10.setText("codigo");
-        jLabel10.setPreferredSize(new java.awt.Dimension(100, 25));
-        jPanel14.add(jLabel10, java.awt.BorderLayout.NORTH);
-
-        campo_codigo.setEditable(false);
-        campo_codigo.setName("Codigo de Identificacion"); // NOI18N
-        campo_codigo.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel14.add(campo_codigo, java.awt.BorderLayout.CENTER);
-
-        jLabel19.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel14.add(jLabel19, java.awt.BorderLayout.EAST);
-
-        jPanel1.add(jPanel14);
 
         panelCampos.add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -615,7 +644,7 @@ public class VUsuariosR extends VistaSimple {
 
     private void jtfBuscadorListaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfBuscadorListaKeyReleased
         String y = Filtros.limpiar(jtfBuscadorLista.getText());
-        if (y==null || y.isBlank()) {
+        if (y == null || y.isBlank()) {
             modelo_lista.clear();
             return;
         }
@@ -645,7 +674,7 @@ public class VUsuariosR extends VistaSimple {
         if (evt.getClickCount() < 2) {
             return;
         }
-        
+
         if (!objetoValido()) {
             return;
         }
@@ -700,7 +729,6 @@ public class VUsuariosR extends VistaSimple {
     private javax.swing.JTextField campo_am;
     private javax.swing.JTextField campo_ap;
     private javax.swing.JComboBox<String> campo_calle;
-    private javax.swing.JTextField campo_codigo;
     private javax.swing.JComboBox<String> campo_estado;
     private javax.swing.JCheckBox campo_is_titular;
     private javax.swing.JCheckBox campo_is_usuario;
@@ -711,9 +739,7 @@ public class VUsuariosR extends VistaSimple {
     private javax.swing.JLabel coincidencias;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -727,7 +753,6 @@ public class VUsuariosR extends VistaSimple {
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel18;

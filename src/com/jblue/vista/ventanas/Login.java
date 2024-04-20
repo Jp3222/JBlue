@@ -7,6 +7,7 @@ package com.jblue.vista.ventanas;
 import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.sistema.ConfigSis;
+import com.jblue.sistema.ConstSisMen;
 import com.jblue.sistema.Sesion;
 import com.jblue.sistema.Sistema;
 import com.jblue.util.cache.FabricaOpraciones;
@@ -14,9 +15,10 @@ import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.vista.jbmarco.ConstTitutlos;
 import com.jblue.vista.jbmarco.VentanaSimple;
 import com.jutil.jbd.conexion.Conexion;
-import com.jutil.jexception.Excp;
 import com.jutil.jswing.jswingenv.EnvJTextField;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -42,11 +44,10 @@ public class Login extends VentanaSimple {
     /**
      * Creates new form NewLogin
      *
-     * @param MENU_CONFIG_BD
      */
-    public Login(MenuConfigBD MENU_CONFIG_BD) {
-        super(ConstTitutlos.TL_NUEVA_VENTANA, ConstTitutlos.TL_VENTANAS);
-        this.MENU_CONFIG_BD = MENU_CONFIG_BD;
+    public Login() {
+        super(ConstTitutlos.TL_PERF_ADMINISTRADOR, ConstTitutlos.TL_PERFILES);
+        this.MENU_CONFIG_BD = new MenuConfigBD();
         initComponents();
         env_jtf = new EnvJTextField[2];
         env_jtf[0] = new EnvJTextField(usuario, "ejem: david123");
@@ -81,7 +82,6 @@ public class Login extends VentanaSimple {
             Conexion instancia = Conexion.getInstancia();
             String estado = "Estado ";
             estado += instancia.isConectado() ? "Conectado" : "Desconectado";
-
             jlEstado.setText(estado);
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
@@ -95,6 +95,19 @@ public class Login extends VentanaSimple {
             envjtf.borrarAlClick();
             envjtf.borrarAlEscribir();
         }
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                synchronized (Sistema.getInstancia()) {
+                    Sistema.getInstancia().notify();
+                }
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+            }
+
+        });
     }
 
     /**
@@ -128,7 +141,7 @@ public class Login extends VentanaSimple {
         jlEstado = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(350, 500));
         setResizable(false);
         getContentPane().setLayout(new java.awt.BorderLayout(5, 5));
@@ -240,6 +253,7 @@ public class Login extends VentanaSimple {
         if (mostrar.isSelected()) {
             contra.setEchoChar((char) 0);
             mostrar.setToolTipText("ocultar");
+
         } else {
             contra.setEchoChar('*');
             mostrar.setToolTipText("mostrar");
@@ -269,17 +283,15 @@ public class Login extends VentanaSimple {
             sesion = false;
             return;
         }
-        if (!Sistema.getInstancia().datosCSache()) {
-            System.out.println("ERROR AL CARGAR LA CACHE");
+
+        if (!Sistema.getInstancia()._CargarCache()) {
+            System.out.println(ConstSisMen.MEN_CACHE_ERR);
         }
-        ConfigSis s = new ConfigSis();
+        System.out.println(ConstSisMen.MEN_CACHE_OK);
+        ConfigSis s = ConfigSis.getInstancia();
+        this.setVisible(false);
+        this.dispose();
 
-        System.out.println("¡¡¡CACHE CARGADA!!!");
-
-        SwingUtilities.invokeLater(() -> {
-            this.setVisible(false);
-            this.dispose();
-        });
         SwingUtilities.invokeLater(() -> {
             MENU_PRINCIPAL = new MenuPrincipal(this);
             MENU_PRINCIPAL.setVisible(true);
@@ -287,38 +299,54 @@ public class Login extends VentanaSimple {
     }
 
     public boolean inicio() {
-        try {
-            if (!datosValidos()) {
-                return false;
-            }
-            String x = usuario.getText();
-            String y = String.valueOf(contra.getPassword());
-            Operaciones<OPersonal> log = FabricaOpraciones.getPERSONAL();
-            EncriptadoAES en = new EncriptadoAES();
-            String query = "usuario ='" + en.encriptar(x, y) + "' && contra ='" + en.encriptar(y, x) + "'";
-            OPersonal get = log.get(query);
-            if (get == null) {
-                JOptionPane.showMessageDialog(this, "Usuario y/o contraseña incorrectos");
-                return false;
-            }
-            Sesion ses = Sesion.getInstancia();
-            ses.setUsuario(get);
-            if (!ses.inicioSesion()) {
-                JOptionPane.showMessageDialog(this, "ERROR AL REGISTRAR SESION");
-                return false;
-            }
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException
-                | InvalidKeyException | NoSuchPaddingException
-                | IllegalBlockSizeException | BadPaddingException ex) {
-            Excp.impTerminal(ex, getClass(), true);
+        if (!camposValidos()) {
+            return false;
+        }
+        OPersonal personal = credencialesValidas(usuario.getText(), String.valueOf(contra.getPassword()));
+        if (personal == null) {
+            return false;
+        }
+        Sesion ses = Sesion.getInstancia();
+        ses.setUsuario(personal);
+
+        if (!ses.inicioSesion()) {
+            JOptionPane.showMessageDialog(this, "ERROR AL REGISTRAR SESION");
+            return false;
         }
         return true;
     }
 
-    public boolean datosValidos() {
+    public boolean camposValidos() {
         String x = usuario.getText();
         String y = String.valueOf(contra.getPassword());
         return x != null && !x.isBlank() && y != null && !y.isBlank();
+    }
+
+    private OPersonal credencialesValidas(String usuario, String contraseña) {
+        OPersonal get = null;
+        try {
+            Operaciones<OPersonal> log = FabricaOpraciones.getPERSONAL();
+            String formar = "usuario = '%s' and contra = '%s'";
+
+            String query = String.format(formar,
+                    EncriptadoAES.encriptar(usuario, contraseña),
+                    EncriptadoAES.encriptar(contraseña, usuario)
+            );
+            get = log.get(query);
+            if (get == null || get.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Usuario y/o contraseña incorrectos");
+                return null;
+            }
+
+        } catch (UnsupportedEncodingException
+                | NoSuchAlgorithmException
+                | InvalidKeyException
+                | NoSuchPaddingException
+                | IllegalBlockSizeException
+                | BadPaddingException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return get;
     }
 
     public void limpiarInstancia() {
@@ -356,4 +384,5 @@ public class Login extends VentanaSimple {
         super.dispose();
         SwingUtilities.invokeLater(() -> componentesEstadoInicial());
     }
+
 }

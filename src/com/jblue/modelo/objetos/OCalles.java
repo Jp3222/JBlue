@@ -4,37 +4,32 @@
  */
 package com.jblue.modelo.objetos;
 
+import com.jblue.modelo.objetos.sucls.Objeto;
+
 /**
  *
  * @author jp
  */
 public class OCalles extends Objeto {
 
-    private String nombre, numero;
-
-    public OCalles(String[] info) {
+    public OCalles(String... info) {
         super(info);
-        this.nombre = info[1];
-        this.numero = info[2];
     }
 
     public OCalles() {
-
+        super();
     }
 
     public String getNombre() {
-        return nombre;
+        return _conjunto[1];
     }
 
     public String getNumero() {
-        return numero;
+        return _conjunto[2];
     }
-
+    
     @Override
-    public void setInfo(String[] info) {
-        super.setInfo(info);
-        this.nombre = info[1];
-        this.numero = info[2];
+    public String getStringR(){
+        return _conjunto[1] + " " + _conjunto[2];
     }
-
 }

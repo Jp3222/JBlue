@@ -4,33 +4,110 @@
  */
 package com.jblue.vista.ventanas;
 
-import com.jblue.controlador.CLogin;
-import com.jblue.vista.conf.SuperVentana;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import com.jblue.modelo.envoltorios.Operaciones;
+import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.sistema.ConfigSis;
+import com.jblue.sistema.ConstSisMen;
+import com.jblue.sistema.Sesion;
+import com.jblue.sistema.Sistema;
+import com.jblue.util.cache.FabricaOpraciones;
+import com.jblue.util.crypto.EncriptadoAES;
+import com.jblue.vista.jbmarco.ConstTitutlos;
+import com.jblue.vista.jbmarco.VentanaSimple;
+import com.jutil.jbd.conexion.Conexion;
+import com.jutil.jswing.jswingenv.EnvJTextField;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author jp
  */
-public class Login extends SuperVentana {
+public class Login extends VentanaSimple {
 
-    private boolean clickJtfUsuario, clickJpfPass;
-    private final MenuPrincipal MENU_PRINCIPAL;
+    private MenuPrincipal MENU_PRINCIPAL;
     private final MenuConfigBD MENU_CONFIG_BD;
-    private final CLogin cLogin;
+    private final EnvJTextField env_jtf[];
 
     /**
-     * Creates new form Login
+     * Creates new form NewLogin
+     *
      */
     public Login() {
-        this.MENU_PRINCIPAL = new MenuPrincipal(this);
+        super(ConstTitutlos.TL_PERF_ADMINISTRADOR, ConstTitutlos.TL_PERFILES);
         this.MENU_CONFIG_BD = new MenuConfigBD();
-        cLogin = new CLogin(this, MENU_PRINCIPAL, MENU_CONFIG_BD);
-        //
         initComponents();
+        env_jtf = new EnvJTextField[2];
+        env_jtf[0] = new EnvJTextField(usuario, "ejem: david123");
+        env_jtf[1] = new EnvJTextField(contra, "contraseña 12345");
         llamable();
+    }
+
+    @Override
+    public final void llamable() {
+        construirComponentes();
+        componentesEstadoFinal();
+        componentesEstadoInicial();
+        manejoEventos();
+    }
+
+    @Override
+    public void componentesEstadoInicial() {
+        usuario.requestFocusInWindow();
+        mostrar.setToolTipText("mostrar");
+        mostrar.setSelected(false);
         //
+        for (EnvJTextField envjtf : env_jtf) {
+            envjtf.defecto();
+        }
+        setDefaultLookAndFeelDecorated(false);
+    }
+
+    @Override
+    protected void componentesEstadoFinal() {
+        super.componentesEstadoFinal();
+        try {
+            Conexion instancia = Conexion.getInstancia();
+            String estado = "Estado ";
+            estado += instancia.isConectado() ? "Conectado" : "Desconectado";
+            jlEstado.setText(estado);
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    protected void manejoEventos() {
+        jbtInicio.addActionListener(e -> login());
+        for (EnvJTextField envjtf : env_jtf) {
+            envjtf.borrarAlClick();
+            envjtf.borrarAlEscribir();
+        }
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                synchronized (Sistema.getInstancia()) {
+                    Sistema.getInstancia().notify();
+                }
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+            }
+
+        });
     }
 
     /**
@@ -45,197 +122,267 @@ public class Login extends SuperVentana {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jtfUsuario = new javax.swing.JTextField();
-        jpfPass = new javax.swing.JPasswordField();
-        jbtSesion = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        usuario = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        contra = new javax.swing.JPasswordField();
+        mostrar = new javax.swing.JCheckBox();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jbtInicio = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        configuracionBD = new javax.swing.JButton();
+        jlEstado = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jbtConfBD = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(350, 500));
         setResizable(false);
+        getContentPane().setLayout(new java.awt.BorderLayout(5, 5));
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(350, 500));
+        jPanel1.setPreferredSize(new java.awt.Dimension(350, 400));
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText("Contraseña");
-        jLabel1.setPreferredSize(new java.awt.Dimension(120, 30));
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 0, 36)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Inicio de sesion");
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel1.setPreferredSize(new java.awt.Dimension(350, 50));
+        jPanel1.add(jLabel1, java.awt.BorderLayout.NORTH);
 
-        jLabel2.setText("Usuario");
-        jLabel2.setPreferredSize(new java.awt.Dimension(120, 30));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/img1.png"))); // NOI18N
+        jLabel2.setPreferredSize(new java.awt.Dimension(350, 150));
+        jPanel1.add(jLabel2, java.awt.BorderLayout.CENTER);
 
-        jtfUsuario.setPreferredSize(new java.awt.Dimension(146, 30));
-        jtfUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jtfUsuarioMouseClicked(evt);
-            }
-        });
-        jtfUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+        jPanel2.setPreferredSize(new java.awt.Dimension(350, 250));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jPanel4.setLayout(new java.awt.GridLayout(5, 1, 5, 5));
+
+        jPanel5.setLayout(new java.awt.BorderLayout(5, 5));
+
+        jLabel5.setText("Usuario");
+        jLabel5.setPreferredSize(new java.awt.Dimension(100, 40));
+        jPanel5.add(jLabel5, java.awt.BorderLayout.LINE_START);
+
+        usuario.setPreferredSize(new java.awt.Dimension(100, 40));
+        jPanel5.add(usuario, java.awt.BorderLayout.CENTER);
+
+        jLabel9.setPreferredSize(new java.awt.Dimension(30, 40));
+        jPanel5.add(jLabel9, java.awt.BorderLayout.LINE_END);
+
+        jPanel4.add(jPanel5);
+
+        jPanel6.setLayout(new java.awt.BorderLayout(5, 5));
+
+        jLabel6.setText("Contraseña");
+        jLabel6.setPreferredSize(new java.awt.Dimension(100, 40));
+        jPanel6.add(jLabel6, java.awt.BorderLayout.LINE_START);
+
+        contra.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jtfUsuarioKeyPressed(evt);
+                contraKeyPressed(evt);
             }
         });
+        jPanel6.add(contra, java.awt.BorderLayout.CENTER);
 
-        jpfPass.setPreferredSize(new java.awt.Dimension(128, 30));
-        jpfPass.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jpfPassMouseClicked(evt);
+        mostrar.setToolTipText("mostrar");
+        mostrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mostrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
+        mostrar.setPreferredSize(new java.awt.Dimension(30, 40));
+        mostrar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img3.png"))); // NOI18N
+        mostrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mostrarActionPerformed(evt);
             }
         });
-        jpfPass.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jpfPassKeyPressed(evt);
+        jPanel6.add(mostrar, java.awt.BorderLayout.LINE_END);
+
+        jPanel4.add(jPanel6);
+
+        jPanel7.setLayout(new java.awt.BorderLayout(5, 5));
+
+        jLabel7.setPreferredSize(new java.awt.Dimension(100, 18));
+        jPanel7.add(jLabel7, java.awt.BorderLayout.LINE_START);
+
+        jbtInicio.setText("Iniciar Sesion");
+        jPanel7.add(jbtInicio, java.awt.BorderLayout.CENTER);
+
+        jLabel8.setPreferredSize(new java.awt.Dimension(30, 40));
+        jPanel7.add(jLabel8, java.awt.BorderLayout.LINE_END);
+
+        jPanel4.add(jPanel7);
+
+        jPanel2.add(jPanel4, java.awt.BorderLayout.CENTER);
+
+        jPanel3.setPreferredSize(new java.awt.Dimension(350, 40));
+        jPanel3.setLayout(new java.awt.BorderLayout(5, 5));
+
+        configuracionBD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/img4.png"))); // NOI18N
+        configuracionBD.setPreferredSize(new java.awt.Dimension(75, 40));
+        configuracionBD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                configuracionBDActionPerformed(evt);
             }
         });
+        jPanel3.add(configuracionBD, java.awt.BorderLayout.WEST);
+        jPanel3.add(jlEstado, java.awt.BorderLayout.CENTER);
 
-        jbtSesion.setText("Iniciar Sesion");
+        jLabel4.setPreferredSize(new java.awt.Dimension(75, 40));
+        jPanel3.add(jLabel4, java.awt.BorderLayout.LINE_END);
 
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/usuario.png"))); // NOI18N
+        jPanel2.add(jPanel3, java.awt.BorderLayout.SOUTH);
 
-        jLabel4.setText("Estado:");
-        jLabel4.setPreferredSize(new java.awt.Dimension(40, 40));
+        jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_END);
 
-        jbtConfBD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/engranajes.png"))); // NOI18N
-        jbtConfBD.setToolTipText("Configuracion de la base de datos");
-        jbtConfBD.setPreferredSize(new java.awt.Dimension(40, 40));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbtSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
-                            .addComponent(jpfPass, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jbtConfBD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jpfPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jbtSesion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtConfBD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    @Override
-    public final void llamable() {
-        estadoInicial();
-        addComponentes();
-        addEventos();
-    }
 
-    @Override
-    public void estadoInicial() {
-        this.clickJpfPass = false;
-        this.clickJtfUsuario = false;
-        this.jtfUsuario.setText("ejem: maestro123");
-        this.jpfPass.setText("contraseña");
-    }
+    private void mostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarActionPerformed
+        if (mostrar.isSelected()) {
+            contra.setEchoChar((char) 0);
+            mostrar.setToolTipText("ocultar");
 
-    @Override
-    protected void estadoFinal() {
-        this.setTitle(NOMBRE + VERSION + " " + SECCION[0]);
-        this.clickJpfPass = false;
-        this.clickJtfUsuario = false;
-    }
-
-    @Override
-    protected void addEventos() {
-        System.out.println("xd");
-        jbtSesion.addActionListener(e -> cLogin.irMenu());
-        jbtConfBD.addActionListener(e -> cLogin.irMenuConfigBD());
-    }
-
-
-    private void jtfUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtfUsuarioMouseClicked
-        if (!clickJtfUsuario) {
-            jtfUsuario.setText(null);
-            clickJtfUsuario = true;
+        } else {
+            contra.setEchoChar('*');
+            mostrar.setToolTipText("mostrar");
         }
-    }//GEN-LAST:event_jtfUsuarioMouseClicked
+    }//GEN-LAST:event_mostrarActionPerformed
 
-    private void jpfPassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpfPassMouseClicked
-        if (!clickJpfPass) {
-            jpfPass.setText(null);
-            clickJpfPass = true;
+    private void configuracionBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configuracionBDActionPerformed
+        setVisible(false);
+        dispose();
+        SwingUtilities.invokeLater(() -> MENU_CONFIG_BD.setVisible(true));
+    }//GEN-LAST:event_configuracionBDActionPerformed
+
+    private void contraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contraKeyPressed
+        if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
+            login();
         }
-    }//GEN-LAST:event_jpfPassMouseClicked
+    }//GEN-LAST:event_contraKeyPressed
 
-    private void jtfUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfUsuarioKeyPressed
-        if (!clickJtfUsuario) {
-            jtfUsuario.setText(null);
-            clickJtfUsuario = true;
+    private boolean sesion = false;
+
+    public synchronized void login() {
+        if (sesion) {
+            return;
         }
-    }//GEN-LAST:event_jtfUsuarioKeyPressed
-
-    private void jpfPassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jpfPassKeyPressed
-        if (!clickJpfPass) {
-            jpfPass.setText(null);
-            clickJpfPass = true;
+        sesion = true;
+        if (!inicio()) {
+            sesion = false;
+            return;
         }
-    }//GEN-LAST:event_jpfPassKeyPressed
 
-    public JPasswordField getJpfPass() {
-        return jpfPass;
+        if (!Sistema.getInstancia()._CargarCache()) {
+            System.out.println(ConstSisMen.MEN_CACHE_ERR);
+        }
+        System.out.println(ConstSisMen.MEN_CACHE_OK);
+        ConfigSis s = ConfigSis.getInstancia();
+        this.setVisible(false);
+        this.dispose();
+
+        SwingUtilities.invokeLater(() -> {
+            MENU_PRINCIPAL = new MenuPrincipal(this);
+            MENU_PRINCIPAL.setVisible(true);
+        });
     }
 
-    public JTextField getJtfUsuario() {
-        return jtfUsuario;
+    public boolean inicio() {
+        if (!camposValidos()) {
+            return false;
+        }
+        OPersonal personal = credencialesValidas(usuario.getText(), String.valueOf(contra.getPassword()));
+        if (personal == null) {
+            return false;
+        }
+        Sesion ses = Sesion.getInstancia();
+        ses.setUsuario(personal);
+
+        if (!ses.inicioSesion()) {
+            JOptionPane.showMessageDialog(this, "ERROR AL REGISTRAR SESION");
+            return false;
+        }
+        return true;
     }
 
+    public boolean camposValidos() {
+        String x = usuario.getText();
+        String y = String.valueOf(contra.getPassword());
+        return x != null && !x.isBlank() && y != null && !y.isBlank();
+    }
+
+    private OPersonal credencialesValidas(String usuario, String contraseña) {
+        OPersonal get = null;
+        try {
+            Operaciones<OPersonal> log = FabricaOpraciones.getPERSONAL();
+            String formar = "usuario = '%s' and contra = '%s'";
+
+            String query = String.format(formar,
+                    EncriptadoAES.encriptar(usuario, contraseña),
+                    EncriptadoAES.encriptar(contraseña, usuario)
+            );
+            get = log.get(query);
+            if (get == null || get.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Usuario y/o contraseña incorrectos");
+                return null;
+            }
+
+        } catch (UnsupportedEncodingException
+                | NoSuchAlgorithmException
+                | InvalidKeyException
+                | NoSuchPaddingException
+                | IllegalBlockSizeException
+                | BadPaddingException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return get;
+    }
+
+    public void limpiarInstancia() {
+        MENU_PRINCIPAL = null;
+        sesion = false;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton configuracionBD;
+    private javax.swing.JPasswordField contra;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton jbtConfBD;
-    private javax.swing.JButton jbtSesion;
-    private javax.swing.JPasswordField jpfPass;
-    private javax.swing.JTextField jtfUsuario;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JButton jbtInicio;
+    private javax.swing.JLabel jlEstado;
+    private javax.swing.JCheckBox mostrar;
+    private javax.swing.JTextField usuario;
     // End of variables declaration//GEN-END:variables
+
+//
+    @Override
+    public void dispose() {
+        super.dispose();
+        SwingUtilities.invokeLater(() -> componentesEstadoInicial());
+    }
 
 }

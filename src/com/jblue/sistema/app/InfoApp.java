@@ -12,6 +12,7 @@ public interface InfoApp {
 
     String NOMBRE = "jblue ",
             VERSION = "0.0";
+    
     String[] SECCION = {
         "Inicio de sesion", "Menu Principal", "Base de datos"
     };

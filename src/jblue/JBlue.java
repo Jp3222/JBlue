@@ -4,13 +4,15 @@
  */
 package jblue;
 
-import com.jblue.modelo.objetos.Objeto;
 import com.jblue.sistema.Sistema;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 /**java
  *
  * @author jp
+ *
  */
 public class JBlue {
 
@@ -18,10 +20,15 @@ public class JBlue {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        Sistema s = new Sistema();
-        s.run();
-        Objeto o = new Objeto()
+    public static void main(String[] args) throws IOException {
+//        Sistema s = Sistema.getInstancia();
+//        if (s.archivosSistema()) {
+//            s.conexionBD();
+//            s.datosCache();
+//            s.run();
+//        }
+
+        
     }
 
 }

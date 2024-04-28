@@ -10,6 +10,6 @@ package com.jblue.util;
  */
 public interface ComparadorDeObjetos {
 
-    <A, B> boolean comparador(A o1, B o2);
+    <A, B> int comparador(A o1, B o2);
 
 }

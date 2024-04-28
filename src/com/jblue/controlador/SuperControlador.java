@@ -16,8 +16,7 @@ import java.awt.event.KeyListener;
 public class SuperControlador implements ActionListener, KeyListener {
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        
+    public void actionPerformed(ActionEvent ae) {
     }
 
     @Override

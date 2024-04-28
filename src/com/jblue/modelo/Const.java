@@ -35,8 +35,16 @@ public class Const {
         ID, "nombre", "numero"
     };
 
-    public static final String[] BD_USUARIOS = {
-        ID, "nombre", "apellidos", "cargo", "usuario", "contraseña"
+    public static final String[] BD_PERSONAL = {
+        ID, NOMBRE, "apellidos", "cargo", "usuario", "contra"
+    };
+
+    /**
+     * Constante dedicada a las tablas de la base de datos
+     * <br>1 - personal
+     */
+    public static final String[] TABLAS = {
+        "personal", "titulares", "consumidores"
     };
 
 }

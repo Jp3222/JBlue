@@ -13,14 +13,16 @@ import java.util.ArrayList;
  */
 public interface FuncionesAbstractas {
 
-    public boolean insert();
+    boolean insertar(String[] valores);
 
-    public boolean delete();
+    boolean eliminar(String where);
 
-    public boolean update();
+    boolean actualizar(String campo, String valor, String where);
 
-    public <T extends Objeto> T get(String where);
+    boolean actualizar(String campos[], String valores[], String where);
 
-    public <T extends Objeto> ArrayList<T> getAll();
+    <T extends Objeto> T get(String where);
+
+    <T extends Objeto> ArrayList<T> getLista(String where);
 
 }

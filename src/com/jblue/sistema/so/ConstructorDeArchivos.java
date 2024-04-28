@@ -4,6 +4,8 @@
  */
 package com.jblue.sistema.so;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -12,12 +14,102 @@ import java.util.ArrayList;
  */
 public class ConstructorDeArchivos {
 
-    private String rutaUsuario;
-    private ArrayList<String> rutasDeTrabajo;
+    public final int ARCHIVO = 1;
+    public final int DIRECTORIO = 2;
 
-    public ConstructorDeArchivos(String rutaUsuario) {
-        this.rutaUsuario = rutaUsuario;
-        this.rutasDeTrabajo = new ArrayList<>();
+    private final ArrayList<File> RUTAS_DIRECTORIOS;
+    private final ArrayList<File> RUTAS_ARCHIVOS;
+
+    public ConstructorDeArchivos() {
+        this.RUTAS_DIRECTORIOS = new ArrayList<>(10);
+        this.RUTAS_ARCHIVOS = new ArrayList<>(10);
+    }
+
+    public void add(int tipo, String o) {
+        File fl = new File(o);
+        if (tipo == ARCHIVO) {
+            RUTAS_ARCHIVOS.add(fl);
+        } else if (tipo == DIRECTORIO) {
+            RUTAS_DIRECTORIOS.add(fl);
+        }
+    }
+
+    public File removeRuta(int tipo, int index) {
+        if (tipo == ARCHIVO) {
+            return RUTAS_ARCHIVOS.remove(index);
+        } else if (tipo == DIRECTORIO) {
+            return RUTAS_DIRECTORIOS.remove(index);
+        }
+        return null;
+    }
+
+    public File get(int tipo, int index) {
+        if (tipo == ARCHIVO) {
+            return RUTAS_ARCHIVOS.get(index);
+        } else if (tipo == DIRECTORIO) {
+            return RUTAS_DIRECTORIOS.get(index);
+        }
+        return null;
+    }
+
+    /**
+     * metodo encargado de construir unicamente archivos
+     */
+    public void construirArchivos() {
+        try {
+            for (File file : RUTAS_ARCHIVOS) {
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Metodo encargado de construir unicamente directorios
+     */
+    public void construirDirectorios() {
+        for (File file : RUTAS_DIRECTORIOS) {
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+        }
+    }
+
+    /**
+     * Metodo que llama primero a la funcion de construir directorios y
+     * consecutivamente a la funcion de construir archivos
+     */
+    public void construirTodos() {
+        construirDirectorios();
+        construirArchivos();
+    }
+
+    public ArrayList<File> getRUTAS_ARCHIVOS() {
+        return RUTAS_ARCHIVOS;
+    }
+
+    public ArrayList<File> getRUTAS_DIRECTORIOS() {
+        return RUTAS_DIRECTORIOS;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int isEmpty() {
+        int x = 0;
+        int y = 0;
+        if (RUTAS_ARCHIVOS.isEmpty()) {
+            x = 1;
+        }
+
+        if (RUTAS_DIRECTORIOS.isEmpty()) {
+            y = 2;
+        }
+        return x + y;
     }
 
 }

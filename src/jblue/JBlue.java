@@ -6,13 +6,7 @@ package jblue;
 
 import com.jblue.sistema.ConstSisMen;
 import com.jblue.sistema.Sistema;
-<<<<<<< HEAD
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Logger;
-=======
 import com.jutil.jexception.Excp;
->>>>>>> 8f3a8b17d2aa82b96abe53ac5619fbd9bd52515c
 
 /**java
  *
@@ -21,21 +15,9 @@ import com.jutil.jexception.Excp;
  */
 public class JBlue {
 
-    private static final Logger LOG = Logger.getLogger(JBlue.class.getName());
     /**
      * @param args the command line arguments
      */
-<<<<<<< HEAD
-    public static void main(String[] args) throws IOException {
-//        Sistema s = Sistema.getInstancia();
-//        if (s.archivosSistema()) {
-//            s.conexionBD();
-//            s.datosCache();
-//            s.run();
-//        }
-
-        
-=======
     public static void main(String... args) {
         Sistema s = Sistema.getInstancia();
         do {
@@ -63,7 +45,6 @@ public class JBlue {
         System.out.println("FIN DEL PROGRAMA");
         s.cerrarTodo();
         s._Stop();
->>>>>>> 8f3a8b17d2aa82b96abe53ac5619fbd9bd52515c
     }
 
 }

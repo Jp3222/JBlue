@@ -46,7 +46,7 @@ public class Login extends VentanaSimple {
      *
      */
     public Login() {
-        super(ConstTitutlos.TL_PERF_ADMINISTRADOR, ConstTitutlos.TL_PERFILES);
+        super(ConstTitutlos.TL_INICIO_SESION, ConstTitutlos.TL_VENTANAS);
         this.MENU_CONFIG_BD = new MenuConfigBD();
         initComponents();
         env_jtf = new EnvJTextField[2];

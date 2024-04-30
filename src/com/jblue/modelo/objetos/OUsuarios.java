@@ -108,7 +108,7 @@ public class OUsuarios extends Objeto {
     }
 
     public boolean isTitular() {
-        return Integer.parseInt(_conjunto[9]) == -1;
+        return Integer.parseInt(_conjunto[9]) < 0;
     }
 
     public String getCodigo() {

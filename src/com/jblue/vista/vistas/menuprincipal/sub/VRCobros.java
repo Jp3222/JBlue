@@ -350,9 +350,9 @@ public class VRCobros extends VistaSimple {
         lbl_cambio = new javax.swing.JLabel();
         panel_operaciones = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        btn_limpiar = new javax.swing.JButton();
-        btn_cancelar = new javax.swing.JButton();
         btn_cobrar = new javax.swing.JButton();
+        btn_cancelar = new javax.swing.JButton();
+        btn_limpiar = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         btn_recargos = new javax.swing.JButton();
         btn_otros_pagos = new javax.swing.JButton();
@@ -690,23 +690,23 @@ public class VRCobros extends VistaSimple {
         panel_operaciones.setPreferredSize(new java.awt.Dimension(680, 80));
         panel_operaciones.setLayout(new java.awt.GridLayout(2, 3));
 
-        jPanel3.setLayout(new java.awt.GridLayout());
-
-        btn_limpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/limpiar.png"))); // NOI18N
-        btn_limpiar.setText("Limpiar");
-        jPanel3.add(btn_limpiar);
-
-        btn_cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
-        btn_cancelar.setText("Cancelar");
-        jPanel3.add(btn_cancelar);
+        jPanel3.setLayout(new java.awt.GridLayout(1, 0));
 
         btn_cobrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/img5.png"))); // NOI18N
         btn_cobrar.setText("Cobrar");
         jPanel3.add(btn_cobrar);
 
+        btn_cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
+        btn_cancelar.setText("Cancelar");
+        jPanel3.add(btn_cancelar);
+
+        btn_limpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/limpiar.png"))); // NOI18N
+        btn_limpiar.setText("Limpiar");
+        jPanel3.add(btn_limpiar);
+
         panel_operaciones.add(jPanel3);
 
-        jPanel5.setLayout(new java.awt.GridLayout());
+        jPanel5.setLayout(new java.awt.GridLayout(1, 0));
 
         btn_recargos.setText("Recargos");
         jPanel5.add(btn_recargos);

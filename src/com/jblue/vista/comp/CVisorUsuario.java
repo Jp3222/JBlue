@@ -680,6 +680,7 @@ public class CVisorUsuario extends javax.swing.JDialog implements Estados {
 
         List<OPagosServicio> collect = lista.stream().sorted().collect(Collectors.toList());
         SpinnerNumberModel modelo = (SpinnerNumberModel) filtro_pxs_año.getModel();
+        
         modelo.setMinimum(Integer.valueOf(collect.get(0).getAño()));
         modelo.setValue(Integer.valueOf(collect.get(0).getAño()));
         modelo.setMaximum(Integer.valueOf(collect.get(collect.size() - 1).getAño()));

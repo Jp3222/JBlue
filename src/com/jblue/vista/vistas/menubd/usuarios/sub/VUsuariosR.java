@@ -17,6 +17,7 @@
 package com.jblue.vista.vistas.menubd.usuarios.sub;
 
 import com.jblue.modelo.envoltorios.Operaciones;
+import com.jblue.modelo.envoltorios.env.EnvPersonal;
 import com.jblue.modelo.envoltorios.env.EnvUsuario;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OTipoTomas;
@@ -210,11 +211,11 @@ public class VUsuariosR extends VistaSimple {
         String nombre = campo_nombre.getText();
         String ap = campo_ap.getText();
         String am = campo_am.getText();
-        String calle = campo_calle.getItemAt(campo_calle.getSelectedIndex());
+        String calle = EnvUsuario.getCalleEnCache(campo_calle.getItemAt(campo_calle.getSelectedIndex())).getId();
         String no_casa = campo_no_casa.getText();
         no_casa = no_casa ==null ? "NULL" : no_casa;
         
-        String tipo_toma = campo_tipo_toma.getItemAt(campo_tipo_toma.getSelectedIndex());
+        String tipo_toma = EnvUsuario.getTipoDeTomaEnCache(campo_tipo_toma.getItemAt(campo_tipo_toma.getSelectedIndex())).getId();
         String registro;
 
         if (actualizacion) {

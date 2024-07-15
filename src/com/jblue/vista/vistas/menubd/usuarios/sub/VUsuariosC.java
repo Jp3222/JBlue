@@ -21,16 +21,20 @@ import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.modelo.objetos.sucls.Objeto;
+import com.jblue.util.bd.Objeto;
 import com.jblue.util.Filtros;
 import com.jblue.util.FuncJBlue;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;
-import com.jblue.vista.jbmarco.VistaSimple;
-import com.jblue.vista.comp.CBarraEstado;
+import com.jblue.vista.marco.vistas.VistaSimple;
+import com.jblue.vista.componentes.CBarraEstado;
 import com.jblue.vista.vistas.menubd.usuarios.VUsuarios;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -55,9 +59,10 @@ public class VUsuariosC extends VistaSimple {
         memoria_cache = root.getMemo_cache();
         cache = memoria_cache.getLista();
         cache_aux = new ArrayList<>(cache.size());
-        modelo_tabla = new ModeloTablas(ConstGs.BD_USUARIOS);
+        mapa_filtros = new HashMap<>();
+        modelo_tabla = new ModeloTablas(ConstGs.TABLA_USUARIOS);
         modelo_tabla.setAllCellEditable(false);
-        filtros = new JComponent[]{
+        componentes_filtros = new JComponent[]{
             filtro_calle,
             filtro_toma,
             filtro_estado,
@@ -81,18 +86,22 @@ public class VUsuariosC extends VistaSimple {
     @Override
     protected void componentesEstadoFinal() {
         tabla_usuarios.setModel(modelo_tabla);
+        mapa_filtros.put(filtro_calle.getName(), (t) -> {
+            return activar_filtros.isSelected()
+                    && filtro_calle.getItemAt(filtro_calle.getSelectedIndex()).getId().equals(t.getCalle());
+        });
     }
 
     @Override
     public void componentesEstadoInicial() {
         activar_filtros.setSelected(false);
-        FuncJBlue.habilitarComponentes(false, filtros);
+        FuncJBlue.habilitarComponentes(false, componentes_filtros);
     }
 
     @Override
     protected void manejoEventos() {
-        activar_filtros.addItemListener((i) -> FuncJBlue.habilitarComponentes(activar_filtros.isSelected(), filtros));
-        filtro_quitar.addActionListener(e -> FuncJBlue.habilitarComponentes(false, filtros));
+        activar_filtros.addItemListener((i) -> FuncJBlue.habilitarComponentes(activar_filtros.isSelected(), componentes_filtros));
+        filtro_quitar.addActionListener(e -> FuncJBlue.habilitarComponentes(false, componentes_filtros));
         recargar.addActionListener(e -> recargarTabla());
         siguiente.addActionListener(e -> sigTabla());
         anterior.addActionListener(e -> antTabla());
@@ -110,14 +119,6 @@ public class VUsuariosC extends VistaSimple {
     }
 
     private void sigTabla() {
-    }
-
-    private void filtros() {
-        Predicate<OUsuarios> predicado = t -> activar_filtros.isSelected();
-        if (comboBoxValido(filtro_calle)) {
-            predicado.and(null);
-        }
-
     }
 
     private boolean comboBoxValido(JComboBox o) {
@@ -322,7 +323,9 @@ public class VUsuariosC extends VistaSimple {
     }//GEN-LAST:event_anteriorActionPerformed
 
     private void buscador(String buscado) {
-        List<OUsuarios> toList = cache.stream().filter((t) -> Filtros.limpiar(t.getStringR()).contains(Filtros.limpiar(buscado))).toList();
+        List<OUsuarios> toList = cache.stream()
+                .filter((t) -> Filtros.limpiar(t.getStringR()).contains(Filtros.limpiar(buscado)))
+                .toList();
         if (!modelo_tabla.isDataEmpty()) {
             modelo_tabla.clear();
         }
@@ -336,12 +339,12 @@ public class VUsuariosC extends VistaSimple {
     private javax.swing.JButton anterior;
     private javax.swing.JTextField buscador_tabla;
     private javax.swing.JTextField filtro_Titular;
-    private javax.swing.JComboBox<String> filtro_calle;
+    private javax.swing.JComboBox<OCalles> filtro_calle;
     private javax.swing.JComboBox<String> filtro_estado;
     private javax.swing.JCheckBox filtro_is_consumidor;
     private javax.swing.JCheckBox filtro_is_titular;
     private javax.swing.JButton filtro_quitar;
-    private javax.swing.JComboBox<String> filtro_toma;
+    private javax.swing.JComboBox<OTipoTomas> filtro_toma;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel15;
@@ -368,8 +371,9 @@ public class VUsuariosC extends VistaSimple {
     private final MemoCache<OUsuarios> memoria_cache;
     private final ArrayList<OUsuarios> cache;
     private final ArrayList<OUsuarios> cache_aux;
-    private final JComponent[] filtros;
+    private final JComponent[] componentes_filtros;
     private String txt_buscado;
+    private final Map<String, Predicate<OUsuarios>> mapa_filtros;
 
     @Override
     public void setVisible(boolean flag) {
@@ -383,17 +387,18 @@ public class VUsuariosC extends VistaSimple {
         }
     }
 
-    private ArrayList<OUsuarios> filtrarLista(final ArrayList<OUsuarios> lista, ArrayList<OUsuarios> aux, Predicate<OUsuarios> filtro) {
-        aux.clear();
-        for (OUsuarios i : lista) {
-            if (filtro.test(i)) {
-                aux.add(i);
-            }
+    private void filtrarLista() {
+        while (modelo_tabla.getRowCount() > 0) {
+            modelo_tabla.removeRow(0);
         }
-        return aux;
     }
 
     private void pintarTabla(DefaultTableModel modelo, ArrayList<OUsuarios> lista) {
+        if (modelo.getRowCount() <= 0) {
+            while (modelo.getRowCount() > 0) {
+                modelo.removeRow(0);
+            }
+        }
         for (OUsuarios i : lista) {
             modelo.addRow(i.getInfoSinFK());
         }
@@ -419,10 +424,16 @@ public class VUsuariosC extends VistaSimple {
         filtro_Titular.setText(null);
     }
 
-    private <T extends Objeto> void pintarJCBX(JComboBox<String> txt, ArrayList<T> lista) {
-        txt.addItem("Seleccione Elemento");
-        for (Objeto i : lista) {
-            txt.addItem(i.getStringR());
+    private <T extends Objeto> void pintarJCBX(JComboBox<T> txt, ArrayList<T> lista) {
+        txt.addItem((T) new Objeto() {
+            @Override
+            public String toString() {
+                return "Seleccione un elemento"; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+            }
+
+        });
+        for (T i : lista) {
+            txt.addItem(i);
         }
     }
 

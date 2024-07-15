@@ -16,12 +16,12 @@
  */
 package com.jblue.vista.ventanas;
 
-import com.jblue.vista.jbmarco.ConstTitutlos;
-import com.jblue.vista.jbmarco.VentanaExtendida;
+import com.jblue.vista.marco.contruccion.ConstTitutlos;
+import com.jblue.vista.marco.ventanas.VentanaExtendida;
 import com.jblue.vista.vistas.menucargos.VPerfil;
-import com.jblue.vista.vistas.menucargos.administrador.VAdministrador;
-import com.jblue.vista.vistas.menucargos.presidente.VPresidente;
-import com.jblue.vista.vistas.menucargos.tesorero.VTesorero;
+import com.jblue.vista.vistas.menucargos.VAdministrador;
+import com.jblue.vista.vistas.menucargos.VPresidente;
+import com.jblue.vista.vistas.menucargos.VTesorero;
 import java.awt.CardLayout;
 import java.awt.Container;
 import javax.swing.JPanel;

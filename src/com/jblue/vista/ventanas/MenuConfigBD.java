@@ -5,7 +5,7 @@
 package com.jblue.vista.ventanas;
 
 import com.jblue.sistema.Sistema;
-import com.jblue.vista.jbmarco.VentanaSimple;
+import com.jblue.vista.marco.ventanas.VentanaSimple;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
 import java.sql.SQLException;
@@ -27,6 +27,7 @@ public class MenuConfigBD extends VentanaSimple {
      */
     public MenuConfigBD() {
         this.url = "jdbc";
+        sistema = Sistema.getInstancia();
         initComponents();
         llamable();
     }
@@ -271,9 +272,11 @@ public class MenuConfigBD extends VentanaSimple {
             propiedades.put("bd-usuario", datos[0]);
             propiedades.put("bd-contraseña", datos[1]);
             propiedades.put("bd-url", datos[2]);
+            sistema.escribirPropiedades();
             setVisible(false);
             dispose();
             notify();
+            System.exit(0);
         }
     }//GEN-LAST:event_jbtGuardarDatosActionPerformed
 

@@ -24,9 +24,9 @@ import com.jblue.util.Filtros;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.util.crypto.EncriptadoAES;
-import com.jblue.vista.comp.CSelectorObjeto;
-import com.jblue.vista.comp.CVisorUsuario;
-import com.jblue.vista.jbmarco.VistaExtendida;
+import com.jblue.vista.componentes.CSelectorObjeto;
+import com.jblue.vista.componentes.CVisorUsuario;
+import com.jblue.vista.marco.vistas.VistaExtendida;
 import com.jutil.jexception.Excp;
 import java.awt.CardLayout;
 import java.io.UnsupportedEncodingException;
@@ -89,6 +89,60 @@ public class VCobros extends VistaExtendida {
             }
             ly_root.show(panel_root, consultas.getName());
         });
+        btn_buscador.addActionListener(e -> evtBuscador());
+        btn_bloq_caja.addActionListener(e -> evtBloc_cj());
+        btn_desbloc_caja.addActionListener(e -> evtDesbloc_cj());
+    }
+
+    private void evtBuscador() {
+        OUsuarios o = CSelectorObjeto.selectorUsuarios(null);
+        if (o == null) {
+            return;
+        }
+
+        CVisorUsuario.showVisor(o);
+    }
+
+    private void evtBloc_cj() {
+        int in = JOptionPane.showConfirmDialog(this,
+                "¿Desea bloquear el apartado de caja?",
+                "Bloquear Caja",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (in == JOptionPane.YES_OPTION) {
+            bloquear(true);
+        }
+    }
+
+    private void evtDesbloc_cj() {
+        try {
+            String entrada = JOptionPane.showInputDialog(this,
+                    "Ingrese su contraseña para desbloquear caja",
+                    "Desbloquear Caja",
+                    JOptionPane.QUESTION_MESSAGE
+            );
+            if (Filtros.isNullOrBlank(entrada)) {
+                return;
+            }
+            Sesion instancia = Sesion.getInstancia();
+            String desencriptar = EncriptadoAES.desencriptar(instancia.getUsuario().getUsuario(), entrada);
+            entrada = EncriptadoAES.encriptar(entrada, desencriptar);
+            if (entrada.equals(instancia.getUsuario().getContra())) {
+                bloquear(false);
+            }
+
+        } catch (UnsupportedEncodingException
+                | NoSuchAlgorithmException
+                | InvalidKeyException
+                | NoSuchPaddingException
+                | IllegalBlockSizeException
+                | BadPaddingException ex) {
+            JOptionPane.showMessageDialog(this, "Contraseña incorrecta", "Desbloquear Caja", JOptionPane.ERROR_MESSAGE);
+            Excp.impTerminal(ex, getClass(), false);
+        }
+
     }
 
     private void bloquear(boolean o) {
@@ -133,20 +187,10 @@ public class VCobros extends VistaExtendida {
 
         btn_bloq_caja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/bloqueado.png"))); // NOI18N
         btn_bloq_caja.setToolTipText("Bloquear caja");
-        btn_bloq_caja.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_bloq_cajaActionPerformed(evt);
-            }
-        });
         bar_panel_izq.add(btn_bloq_caja);
 
         btn_desbloc_caja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/desbloquear.png"))); // NOI18N
         btn_desbloc_caja.setToolTipText("desbloquear caja");
-        btn_desbloc_caja.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_desbloc_cajaActionPerformed(evt);
-            }
-        });
         bar_panel_izq.add(btn_desbloc_caja);
 
         jButton1.setBorderPainted(false);
@@ -183,11 +227,6 @@ public class VCobros extends VistaExtendida {
         btn_buscador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/buscar.png"))); // NOI18N
         btn_buscador.setToolTipText("Buscar Usuario");
         btn_buscador.setPreferredSize(new java.awt.Dimension(50, 30));
-        btn_buscador.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_buscadorActionPerformed(evt);
-            }
-        });
         bar_panel_der.add(btn_buscador, java.awt.BorderLayout.EAST);
 
         jPanel1.add(bar_panel_der);
@@ -198,59 +237,6 @@ public class VCobros extends VistaExtendida {
         panel_root.setLayout(new java.awt.CardLayout());
         add(panel_root, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btn_buscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscadorActionPerformed
-        OUsuarios o = CSelectorObjeto.selectorUsuarios(null);
-        if (o == null) {
-            return;
-        }
-
-        CVisorUsuario.showVisor(o);
-
-    }//GEN-LAST:event_btn_buscadorActionPerformed
-
-    private void btn_bloq_cajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_bloq_cajaActionPerformed
-
-        int in = JOptionPane.showConfirmDialog(this,
-                "¿Desea bloquear el apartado de caja?",
-                "Bloquear Caja",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE
-        );
-
-        if (in == JOptionPane.YES_OPTION) {
-            bloquear(true);
-        }
-
-    }//GEN-LAST:event_btn_bloq_cajaActionPerformed
-
-    private void btn_desbloc_cajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_desbloc_cajaActionPerformed
-        try {
-            String in = JOptionPane.showInputDialog(this,
-                    "Ingrese su contraseña para desbloquear caja",
-                    "Desbloquear Caja",
-                    JOptionPane.QUESTION_MESSAGE
-            );
-            if (Filtros.isNullOrBlank(in)) {
-                return;
-            }
-            Sesion instancia = Sesion.getInstancia();
-            String desencriptar = EncriptadoAES.desencriptar(instancia.getUsuario().getUsuario(), in);
-            in = EncriptadoAES.encriptar(in, desencriptar);
-            if (in.equals(instancia.getUsuario().getContra())) {
-                bloquear(false);
-            }
-
-        } catch (UnsupportedEncodingException
-                | NoSuchAlgorithmException
-                | InvalidKeyException
-                | NoSuchPaddingException
-                | IllegalBlockSizeException
-                | BadPaddingException ex) {
-            JOptionPane.showMessageDialog(this, "Contraseña incorrecta", "Desbloquear Caja", JOptionPane.ERROR_MESSAGE);
-            Excp.impTerminal(ex, getClass(), false);
-        }
-    }//GEN-LAST:event_btn_desbloc_cajaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

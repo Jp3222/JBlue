@@ -5,7 +5,7 @@
 package com.jblue.vista.ventanas;
 
 import com.jblue.util.tiempo.Fecha;
-import com.jblue.vista.jbmarco.VentanaSimple;
+import com.jblue.vista.marco.ventanas.VentanaSimple;
 import java.time.LocalDate;
 import java.time.Month;
 import javax.swing.text.SimpleAttributeSet;

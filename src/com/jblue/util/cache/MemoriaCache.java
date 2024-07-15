@@ -5,7 +5,7 @@
 package com.jblue.util.cache;
 
 import com.jblue.modelo.envoltorios.Operaciones;
-import com.jblue.modelo.objetos.sucls.Objeto;
+import com.jblue.util.bd.Objeto;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 import java.util.logging.Level;

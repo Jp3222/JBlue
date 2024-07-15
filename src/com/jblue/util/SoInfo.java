@@ -4,7 +4,7 @@
  */
 package com.jblue.util;
 
-import com.jutil.soyjvm.So;
+import com.jutil.platf.So;
 import java.io.File;
 
 /**

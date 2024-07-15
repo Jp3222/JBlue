@@ -8,7 +8,8 @@ import com.jblue.sistema.ConstSisMen;
 import com.jblue.sistema.Sistema;
 import com.jutil.jexception.Excp;
 
-/**java
+/**
+ * java
  *
  * @author jp
  *
@@ -19,6 +20,10 @@ public class JBlue {
      * @param args the command line arguments
      */
     public static void main(String... args) {
+        init();
+    }
+
+    public static void init() {
         Sistema s = Sistema.getInstancia();
         do {
 
@@ -29,7 +34,7 @@ public class JBlue {
 
                     System.out.println(s._CargarArchivos()
                             ? ConstSisMen.MEN_ARCHIVOS_OK : ConstSisMen.MEN_ARCHIVOS_ERR);
-
+                    
                     System.out.println(s._ConexionBD()
                             ? ConstSisMen.MEN_CONEXION_BD_OK : ConstSisMen.MEN_CONEXION_BD_ERR);
 
@@ -46,5 +51,4 @@ public class JBlue {
         s.cerrarTodo();
         s._Stop();
     }
-
 }

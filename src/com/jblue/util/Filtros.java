@@ -64,6 +64,15 @@ public class Filtros {
         return txt == null || txt.isBlank() || txt.isEmpty();
     }
 
+    public static boolean isNullOrBlank(String... txt) {
+        for (String i : txt) {
+            if (isNullOrBlank(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean swIsCbxRangoValido(JComboBox o) {
         return o.getItemCount() > 0
                 && o.getSelectedIndex() > 0

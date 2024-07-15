@@ -35,7 +35,7 @@ public abstract class ConstBD {
      * <br> 8 estado
      * <br> 9 titular
      */
-    public static final String[] BD_USUARIOS = {
+    public static final String[] TABLA_USUARIOS = {
         ID, NOMBRE, AP, AM, "calle", "ncasa", "toma", REGISTRO, "estado", "titular", "codigo"
     };
 
@@ -46,7 +46,7 @@ public abstract class ConstBD {
      * <br> 3 costo
      * <br> 4 recargo
      */
-    public static final String[] BD_TIPOS_DE_TOMAS = {
+    public static final String[] TABLA_TIPOS_DE_TOMAS = {
         ID, "tipo", "costo", "recargo"
     };
 
@@ -56,7 +56,7 @@ public abstract class ConstBD {
      * <br> 2 nombre
      * <br> 3 numero
      */
-    public static final String[] BD_CALLES = {
+    public static final String[] TABLA_CALLES = {
         ID, NOMBRE, "numero"
     };
 
@@ -72,8 +72,8 @@ public abstract class ConstBD {
      * <br> 8 estado
      * <br> 9 permisos
      */
-    public static final String[] BD_PERSONAL = {
-        ID, NOMBRE, "apellidos", "cargo", USUARIO, "contra", REGISTRO, "estado", "permisos", "periodo"
+    public static final String[] TABLA_PERSONAL = {
+        ID, NOMBRE, "apellidos", "cargo", USUARIO, "contra", REGISTRO, "estado", "permisos", "fecha_inicio", "fecha_fin"
     };
 
     /**
@@ -84,7 +84,7 @@ public abstract class ConstBD {
      * <br> 4 fecha
      * <br> 5 hora
      */
-    public static final String[] BD_HISTORIAL_MOVIMIENTOS = {
+    public static final String[] TABLA_HISTORIAL_MOVIMIENTOS = {
         ID, PERSONAL, "movimiento", "fecha", "hora"
     };
 
@@ -94,7 +94,7 @@ public abstract class ConstBD {
      * <br> 2 movimiento
      * <br> 3 descripcion
      */
-    public static final String[] BD_MOVIMIENTOS = {
+    public static final String[] TABLA_MOVIMIENTOS = {
         ID, "movimiento", "descripcion"
     };
 
@@ -109,7 +109,7 @@ public abstract class ConstBD {
      * <br> 7 mes
      * <br> 8 año
      */
-    public static final String[] BD_PAGOS_X_SERVICIO = {
+    public static final String[] TABLA_PAGOS_X_SERVICIO = {
         ID, PERSONAL, USUARIO, "mes_pagado", MONTO, DIA, MES, AÑO
     };
 
@@ -125,7 +125,7 @@ public abstract class ConstBD {
      * <br> 8 mes
      * <br> 9 año
      */
-    public static final String[] BD_PAGOS_X_RECARGO = {
+    public static final String[] TABLA_PAGOS_X_RECARGO = {
         ID, PERSONAL, USUARIO, "mes_pagado", MONTO, "estado", DIA, MES, AÑO
     };
 
@@ -141,11 +141,11 @@ public abstract class ConstBD {
      * <br> 8 mes
      * <br> 9 año
      */
-    public static final String[] BD_PAGOS_X_OTROS = {
+    public static final String[] TABLA_PAGOS_X_OTROS = {
         ID, PERSONAL, USUARIO, MONTO, "motivo", "descripcion", DIA, MES, AÑO
     };
 
-    public static final String[] VAR_SIS = {
+    public static final String[] TABLA_VAR_SIS = {
         ID, "clave", "valor", "nom_gf"
     };
 
@@ -176,16 +176,16 @@ public abstract class ConstBD {
     };
 
     public static final String[][] CAMPOS = {
-        BD_PERSONAL,
-        BD_USUARIOS,
-        BD_CALLES,
-        BD_TIPOS_DE_TOMAS,
-        BD_HISTORIAL_MOVIMIENTOS,
-        BD_MOVIMIENTOS,
-        BD_PAGOS_X_SERVICIO,
-        BD_PAGOS_X_RECARGO,
-        BD_PAGOS_X_OTROS,
-        VAR_SIS
+        TABLA_PERSONAL,
+        TABLA_USUARIOS,
+        TABLA_CALLES,
+        TABLA_TIPOS_DE_TOMAS,
+        TABLA_HISTORIAL_MOVIMIENTOS,
+        TABLA_MOVIMIENTOS,
+        TABLA_PAGOS_X_SERVICIO,
+        TABLA_PAGOS_X_RECARGO,
+        TABLA_PAGOS_X_OTROS,
+        TABLA_VAR_SIS
     };
 
 }

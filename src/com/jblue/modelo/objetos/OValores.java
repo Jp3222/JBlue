@@ -16,7 +16,7 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.modelo.objetos.sucls.Objeto;
+import com.jblue.util.bd.Objeto;
 
 /**
  *

@@ -27,8 +27,10 @@ import com.jblue.util.FuncJBlue;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.util.interpad.pagos.LlavesTipoMov;
-import com.jblue.vista.jbmarco.VistaSimple;
-import com.jblue.vista.comp.CVisorUsuario;
+import com.jblue.vista.marco.vistas.VistaSimple;
+import com.jblue.vista.componentes.CVisorUsuario;
+import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
+import com.jblue.vista.marco.contruccion.EvtSetInfo;
 import com.jblue.vista.vistas.menuprincipal.VCobros;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -45,7 +47,7 @@ import javax.swing.SwingUtilities;
  *
  * @author jp
  */
-public class VRCobros extends VistaSimple {
+public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD {
 
     /**
      * Creates new form VNewCobros
@@ -873,6 +875,51 @@ public class VRCobros extends VistaSimple {
     public void bloquear(boolean o) {
         FuncJBlue.bloquearArbolComponentes(o, panel_der);
         componentesEstadoInicial();
+    }
+
+    @Override
+    public void setInfo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean objetoValido() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void evtGuardar() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void evtActualizar() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void evtEliminar() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void evtBuscar() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void evtCancelar() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String[] getInfo(boolean actualizacion) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean camposValidos() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

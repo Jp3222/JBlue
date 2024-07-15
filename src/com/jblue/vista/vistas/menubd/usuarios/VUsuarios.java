@@ -19,17 +19,14 @@ package com.jblue.vista.vistas.menubd.usuarios;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;
-import com.jblue.vista.jbmarco.VistaExtendida;
+import com.jblue.vista.marco.vistas.VistaExtendida;
 import com.jblue.vista.vistas.menubd.usuarios.sub.VUsuariosC;
 import com.jblue.vista.vistas.menubd.usuarios.sub.VUsuariosR;
-import java.awt.CardLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.Icon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 
 /**
  *
@@ -43,9 +40,8 @@ public class VUsuarios extends VistaExtendida {
     public VUsuarios() {
         initComponents();
         memo_cache = FabricaCache.MC_USUARIOS;
-        registros = new VUsuariosR(this);
-        consultas = new VUsuariosC(this);
-        ly = (CardLayout) getLayout();
+        panel_registros = new VUsuariosR(this);
+        panel_consultas = new VUsuariosC(this);
         llamable();
     }
 
@@ -64,27 +60,18 @@ public class VUsuarios extends VistaExtendida {
 
     @Override
     protected void componentesEstadoFinal() {
-        add(consultas.getName(), consultas);
-        add(registros.getName(), registros);
+        jTabbedPane1.add(panel_registros.getName(), panel_registros);
+        jTabbedPane1.add(panel_consultas.getName(), panel_consultas);
     }
 
     @Override
     public void componentesEstadoInicial() {
-        showRegistros();
 
     }
 
     @Override
     protected void manejoEventos() {
 
-    }
-
-    public void showRegistros() {
-        ly.show(this, registros.getName());
-    }
-
-    public void showConsultas() {
-        ly.show(this, consultas.getName());
     }
 
     /**
@@ -96,37 +83,13 @@ public class VUsuarios extends VistaExtendida {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+
         setName("BD Usuarios"); // NOI18N
         setPreferredSize(new java.awt.Dimension(1200, 660));
-        setLayout(new java.awt.CardLayout());
+        setLayout(new java.awt.BorderLayout());
+        add(jTabbedPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    @Override
-    public ArrayList<JMenu> getMenu() {
-        ArrayList<JMenu> menu = new ArrayList<>();
-        menu.add(itemMenuPrincipal());
-        return menu;
-    }
-
-    private JMenu itemMenuPrincipal() {
-        JMenu menu = new JMenu("Menu");
-
-        menu.add(
-                crearMenuItem("Registros de usuarios", null, e -> ly.show(this, registros.getName()))
-        );
-
-        menu.add(
-                crearMenuItem("Consulta de usuarios", null, e -> ly.show(this, consultas.getName()))
-        );
-
-        menu.add(new JPopupMenu.Separator());
-
-        menu.add(
-                crearMenuItem("Salir", null, null)
-        );
-
-        return menu;
-    }
 
     private JMenu itemMenuVer() {
         JMenu menu = new JMenu("Ver");
@@ -150,22 +113,20 @@ public class VUsuarios extends VistaExtendida {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
     private final MemoCache<OUsuarios> memo_cache;
-    private final CardLayout ly;
-    private final VUsuariosR registros;
-    private final VUsuariosC consultas;
+    private final VUsuariosR panel_registros;
+    private final VUsuariosC panel_consultas;
 
     @Override
     public Rectangle getBounds() {
-        registros.getBounds();
+        panel_registros.getBounds();
         return super.getBounds(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
     public MemoCache<OUsuarios> getMemo_cache() {
         return memo_cache;
     }
-    
-    
 
 }

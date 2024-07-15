@@ -16,8 +16,8 @@
  */
 package com.jblue.vista.ventanas;
 
-import com.jblue.vista.jbmarco.ConstTitutlos;
-import com.jblue.vista.jbmarco.VentanaExtendida;
+import com.jblue.vista.marco.contruccion.ConstTitutlos;
+import com.jblue.vista.marco.ventanas.VentanaExtendida;
 import com.jblue.vista.vistas.menubd.VCalles;
 import com.jblue.vista.vistas.menubd.VConfiguraciones;
 import com.jblue.vista.vistas.menubd.VPagosXOtros;

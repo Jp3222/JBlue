@@ -7,7 +7,7 @@ package com.jblue.modelo.envoltorios;
 import com.jblue.modelo.envoltorios.op.FuncionAplicada;
 import com.jblue.modelo.envoltorios.op.FuncionesAbstractas;
 import com.jblue.modelo.envoltorios.op.FuncionesEnvoltorio;
-import com.jblue.modelo.objetos.sucls.Objeto;
+import com.jblue.util.bd.Objeto;
 import java.util.ArrayList;
 
 /**
@@ -34,7 +34,7 @@ public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio implement
 
     @Override
     public T get(String where) {
-        Objeto o = null;
+        Objeto o;
         ArrayList<Objeto> lista = _GET("*", where);
         if (lista == null || lista.isEmpty()) {
             return null;

@@ -25,12 +25,11 @@ import com.jblue.util.FormatoBD;
 import com.jblue.util.FuncJBlue;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;
-import com.jblue.vista.jbmarco.VistaExtendida;
-import com.jblue.vista.jbmarco.inter.EvtAsigInfo;
-import com.jblue.vista.jbmarco.inter.EvtMetodosEstandarBD;
+import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
+import com.jblue.vista.marco.contruccion.EvtSetInfo;
+import com.jblue.vista.marco.vistas.VistaExtendida;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -39,7 +38,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author jp
  */
-public class VCalles extends VistaExtendida implements EvtAsigInfo, EvtMetodosEstandarBD {
+public class VCalles extends VistaExtendida implements EvtSetInfo, EvtRegistrosBD {
 
     /**
      * Creates new form Calles
@@ -49,7 +48,7 @@ public class VCalles extends VistaExtendida implements EvtAsigInfo, EvtMetodosEs
         memo_cache = FabricaCache.MC_CALLES;
         cache = memo_cache.getLista();
         cache_aux = new ArrayList<>(cache.size());
-        modelo = new ModeloTablas(ConstGs.BD_CALLES);
+        modelo = new ModeloTablas(ConstGs.TABLA_CALLES);
         modelo.setAllCellEditable(false);
         tabla_calles.setModel(modelo);
         llamable();
@@ -93,8 +92,8 @@ public class VCalles extends VistaExtendida implements EvtAsigInfo, EvtMetodosEs
     // <editor-fold defaultstate="collapsed" desc="Metodos BD">
     @Override
     public void evtGuardar() {
-        String[] info = getInfo();
-        if (!datosValidos(campo_nombre, campo_numero)) {
+        String[] info = getInfo(false);
+        if (!camposValidos()) {
             return;
         }
         info = FormatoBD.bdEntrada(info);
@@ -105,8 +104,8 @@ public class VCalles extends VistaExtendida implements EvtAsigInfo, EvtMetodosEs
 
     @Override
     public void evtActualizar() {
-        String[] info = getInfo();
-        if (!datosValidos(campo_nombre, campo_numero)) {
+        String[] info = getInfo(true);
+        if (!camposValidos()) {
             return;
         }
         info = FormatoBD.bdEntrada(info);
@@ -257,7 +256,7 @@ public class VCalles extends VistaExtendida implements EvtAsigInfo, EvtMetodosEs
         panel_der.setPreferredSize(new java.awt.Dimension(500, 700));
         panel_der.setLayout(new java.awt.BorderLayout());
 
-        jLabel4.setFont(new java.awt.Font("Cantarell", 0, 36)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Open Sans", 1, 36)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Datos de la Calle");
         jLabel4.setPreferredSize(new java.awt.Dimension(500, 100));
@@ -268,6 +267,7 @@ public class VCalles extends VistaExtendida implements EvtAsigInfo, EvtMetodosEs
 
         jPanel8.setLayout(new java.awt.BorderLayout());
 
+        jLabel2.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
         jLabel2.setLabelFor(campo_nombre);
         jLabel2.setText("Nombre:");
         jLabel2.setPreferredSize(new java.awt.Dimension(100, 19));
@@ -280,6 +280,7 @@ public class VCalles extends VistaExtendida implements EvtAsigInfo, EvtMetodosEs
 
         jPanel9.setLayout(new java.awt.BorderLayout());
 
+        jLabel3.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
         jLabel3.setLabelFor(campo_numero);
         jLabel3.setText("Numero:");
         jLabel3.setPreferredSize(new java.awt.Dimension(100, 19));
@@ -333,7 +334,6 @@ public class VCalles extends VistaExtendida implements EvtAsigInfo, EvtMetodosEs
 
     }//GEN-LAST:event_jtf_buscadorKeyReleased
 
-    @Override
     public void setObjeto(int index) {
         if (index < 0 || index >= modelo.getRowCount()) {
             return;
@@ -367,33 +367,13 @@ public class VCalles extends VistaExtendida implements EvtAsigInfo, EvtMetodosEs
         habilitarBotones(true);
     }//GEN-LAST:event_tabla_callesMouseClicked
 
-    private String[] getInfo() {
+    @Override
+    public String[] getInfo(boolean actualizacion) {
         return new String[]{
             campo_nombre.getText(),
             campo_numero.getText()
         };
     }
-
-    private boolean datosValidos(JTextField... info) {
-        for (JTextField i : info) {
-            if (Filtros.isNullOrBlank(i.getText())) {
-                JOptionPane.showMessageDialog(this, String.format("Campo %s no valido", i.getName()));
-                return false;
-            }
-        }
-        if (!Filtros.soloNumerosEnteros(info[1].getText())
-                && !info[1].getText().equalsIgnoreCase("s/n")) {
-            JOptionPane.showMessageDialog(this, String.format("Campo %s no valido", info[1].getName()));
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public ArrayList<JMenu> getMenu() {
-        return null;
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_actualizar;
@@ -455,6 +435,35 @@ public class VCalles extends VistaExtendida implements EvtAsigInfo, EvtMetodosEs
     private void setInfoEnPantalla(OCalles objeto_buscado) {
         campo_nombre.setText(objeto_buscado.getNombre());
         campo_numero.setText(objeto_buscado.getNumero());
+    }
+
+    @Override
+    public void setInfo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void evtBuscar() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean camposValidos() {
+        JTextField[] info = {
+            campo_nombre, campo_numero
+        };
+        for (JTextField i : info) {
+            if (Filtros.isNullOrBlank(i.getText())) {
+                JOptionPane.showMessageDialog(this, String.format("Campo %s no valido", i.getName()));
+                return false;
+            }
+        }
+        if (!Filtros.soloNumerosEnteros(info[1].getText())
+                && !info[1].getText().equalsIgnoreCase("s/n")) {
+            JOptionPane.showMessageDialog(this, String.format("Campo %s no valido", info[1].getName()));
+            return false;
+        }
+        return true;
     }
 
 }

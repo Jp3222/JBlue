@@ -17,7 +17,7 @@
 package com.jblue.vista.vistas.menubd;
 
 import com.jblue.util.FuncJBlue;
-import com.jblue.vista.jbmarco.VistaExtendida;
+import com.jblue.vista.marco.vistas.VistaExtendida;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 

@@ -25,9 +25,9 @@ import com.jblue.util.FormatoBD;
 import com.jblue.util.FuncJBlue;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;
-import com.jblue.vista.jbmarco.VistaExtendida;
-import com.jblue.vista.jbmarco.inter.EvtAsigInfo;
-import com.jblue.vista.jbmarco.inter.EvtMetodosEstandarBD;
+import com.jblue.vista.marco.vistas.VistaExtendida;
+import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
+import com.jblue.vista.marco.contruccion.EvtSetInfo;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -38,7 +38,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author jp
  */
-public class VTipoTomas extends VistaExtendida implements EvtAsigInfo, EvtMetodosEstandarBD {
+public class VTipoTomas extends VistaExtendida implements EvtSetInfo, EvtRegistrosBD {
 
     /**
      * Creates new form VTipoTomas
@@ -48,7 +48,7 @@ public class VTipoTomas extends VistaExtendida implements EvtAsigInfo, EvtMetodo
         cache = memo_cache.getLista();
         cache_aux = new ArrayList(cache.size());
         initComponents();
-        modelo = new ModeloTablas(ConstGs.BD_TIPOS_DE_TOMAS);
+        modelo = new ModeloTablas(ConstGs.TABLA_TIPOS_DE_TOMAS);
         modelo.setAllCellEditable(false);
         tabla_tipo_tomas.setModel(modelo);
 
@@ -88,7 +88,7 @@ public class VTipoTomas extends VistaExtendida implements EvtAsigInfo, EvtMetodo
             return;
         }
         Operaciones<OTipoTomas> operaciones = memo_cache.getOperaciones();
-        String[] datos = FormatoBD.bdEntrada(getDatos());
+        String[] datos = FormatoBD.bdEntrada(getInfo(false));
         boolean menesaje = operaciones.insertar(datos);
         estado(menesaje);
     }
@@ -106,7 +106,7 @@ public class VTipoTomas extends VistaExtendida implements EvtAsigInfo, EvtMetodo
             return;
         }
         Operaciones<OTipoTomas> operaciones = memo_cache.getOperaciones();
-        String[] datos = FormatoBD.bdEntrada(getDatos());
+        String[] datos = FormatoBD.bdEntrada(getInfo(true));
         boolean menesaje = operaciones.actualizar(datos, "id = " + objeto_buscado.getId());
         estado(menesaje);
     }
@@ -126,14 +126,6 @@ public class VTipoTomas extends VistaExtendida implements EvtAsigInfo, EvtMetodo
             recargar();
         }
         JOptionPane.showMessageDialog(this, String.format("Operacion %s", estado));
-    }
-
-    private String[] getDatos() {
-        return new String[]{
-            campo_tipo.getText(),
-            campo_costo.getText(),
-            campo_recargo.getText()
-        };
     }
 
     private boolean datosValidos() {
@@ -190,7 +182,7 @@ public class VTipoTomas extends VistaExtendida implements EvtAsigInfo, EvtMetodo
         tabla_tipo_tomas = new javax.swing.JTable();
         panel_der = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        panel_campos = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         campo_tipo = new javax.swing.JTextField();
@@ -200,7 +192,7 @@ public class VTipoTomas extends VistaExtendida implements EvtAsigInfo, EvtMetodo
         jPanel10 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         campo_recargo = new javax.swing.JTextField();
-        jPanel7 = new javax.swing.JPanel();
+        panel_botones = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btn_guardar = new javax.swing.JButton();
         btn_actualizar = new javax.swing.JButton();
@@ -283,17 +275,18 @@ public class VTipoTomas extends VistaExtendida implements EvtAsigInfo, EvtMetodo
         panel_der.setPreferredSize(new java.awt.Dimension(500, 700));
         panel_der.setLayout(new java.awt.BorderLayout());
 
-        jLabel4.setFont(new java.awt.Font("Cantarell", 0, 36)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Open Sans", 1, 36)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Datos del tipo de toma");
         jLabel4.setPreferredSize(new java.awt.Dimension(500, 100));
         panel_der.add(jLabel4, java.awt.BorderLayout.NORTH);
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(500, 620));
-        jPanel1.setLayout(new java.awt.GridLayout(6, 0, 0, 5));
+        panel_campos.setPreferredSize(new java.awt.Dimension(500, 620));
+        panel_campos.setLayout(new java.awt.GridLayout(6, 0, 0, 5));
 
         jPanel8.setLayout(new java.awt.BorderLayout());
 
+        jLabel2.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
         jLabel2.setText("Tipo de toma:");
         jLabel2.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel8.add(jLabel2, java.awt.BorderLayout.NORTH);
@@ -301,10 +294,11 @@ public class VTipoTomas extends VistaExtendida implements EvtAsigInfo, EvtMetodo
         campo_tipo.setName("Tipo de toma"); // NOI18N
         jPanel8.add(campo_tipo, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel8);
+        panel_campos.add(jPanel8);
 
         jPanel9.setLayout(new java.awt.BorderLayout());
 
+        jLabel3.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
         jLabel3.setText("Costo:");
         jLabel3.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel9.add(jLabel3, java.awt.BorderLayout.NORTH);
@@ -312,10 +306,11 @@ public class VTipoTomas extends VistaExtendida implements EvtAsigInfo, EvtMetodo
         campo_costo.setName("Costo"); // NOI18N
         jPanel9.add(campo_costo, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel9);
+        panel_campos.add(jPanel9);
 
         jPanel10.setLayout(new java.awt.BorderLayout());
 
+        jLabel5.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
         jLabel5.setLabelFor(campo_recargo);
         jLabel5.setText("Costo de recargo:");
         jLabel5.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -324,12 +319,12 @@ public class VTipoTomas extends VistaExtendida implements EvtAsigInfo, EvtMetodo
         campo_recargo.setName("Costo del recargo"); // NOI18N
         jPanel10.add(campo_recargo, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel10);
+        panel_campos.add(jPanel10);
 
-        panel_der.add(jPanel1, java.awt.BorderLayout.CENTER);
+        panel_der.add(panel_campos, java.awt.BorderLayout.CENTER);
 
-        jPanel7.setPreferredSize(new java.awt.Dimension(500, 100));
-        jPanel7.setLayout(new java.awt.GridLayout(2, 0));
+        panel_botones.setPreferredSize(new java.awt.Dimension(500, 100));
+        panel_botones.setLayout(new java.awt.GridLayout(2, 0));
 
         jPanel2.setLayout(new java.awt.GridLayout(1, 3));
 
@@ -345,13 +340,13 @@ public class VTipoTomas extends VistaExtendida implements EvtAsigInfo, EvtMetodo
         btn_eliminar.setText("Eliminar");
         jPanel2.add(btn_eliminar);
 
-        jPanel7.add(jPanel2);
+        panel_botones.add(jPanel2);
 
         btn_cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
         btn_cancelar.setText("Cancelar");
-        jPanel7.add(btn_cancelar);
+        panel_botones.add(btn_cancelar);
 
-        panel_der.add(jPanel7, java.awt.BorderLayout.SOUTH);
+        panel_der.add(panel_botones, java.awt.BorderLayout.SOUTH);
 
         add(panel_der, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -394,7 +389,6 @@ public class VTipoTomas extends VistaExtendida implements EvtAsigInfo, EvtMetodo
     }//GEN-LAST:event_btn_recargarActionPerformed
     private boolean buscando;
 
-    @Override
     public void setObjeto(int index) {
         if (index < 0 || index >= modelo.getRowCount()) {
             return;
@@ -442,17 +436,17 @@ public class VTipoTomas extends VistaExtendida implements EvtAsigInfo, EvtMetodo
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JTextField jtf_buscador;
+    private javax.swing.JPanel panel_botones;
+    private javax.swing.JPanel panel_campos;
     private javax.swing.JPanel panel_der;
     private javax.swing.JPanel panel_izq;
     private javax.swing.JTable tabla_tipo_tomas;
@@ -489,5 +483,31 @@ public class VTipoTomas extends VistaExtendida implements EvtAsigInfo, EvtMetodo
     private void vaciar() {
         modelo.clear();
     }
+
+    @Override
+    public void setInfo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void evtBuscar() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String[] getInfo(boolean actualizacion) {
+        return new String[]{
+            campo_tipo.getText(),
+            campo_costo.getText(),
+            campo_recargo.getText()
+        };
+    }
+
+    @Override
+    public boolean camposValidos() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    
 
 }

@@ -2,8 +2,8 @@ package com.jblue.vista.ventanas.herramientas;
 
 import com.jblue.modelo.ConstBD;
 import com.jblue.sistema.app.AppFiles;
-import com.jblue.vista.jbmarco.VentanaExtendida;
-import com.jutil.soyjvm.So;
+import com.jblue.vista.marco.ventanas.VentanaExtendida;
+import com.jutil.platf.So;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.io.BufferedReader;

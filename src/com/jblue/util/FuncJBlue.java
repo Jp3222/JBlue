@@ -17,7 +17,7 @@
 package com.jblue.util;
 
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.modelo.objetos.sucls.Objeto;
+import com.jblue.util.bd.Objeto;
 import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;
@@ -37,6 +37,25 @@ import javax.swing.table.DefaultTableModel;
  * @author jp
  */
 public abstract class FuncJBlue {
+
+    public static String[] removerItemArr(String[] arr, int... index) {
+        ArrayList<String> lista = new ArrayList<>(arr.length - index.length);
+        for (int i = 0; i < arr.length; i++) {
+            if (!seEncuentra(index, i)) {
+                lista.add(arr[i]);
+            }
+        }
+        return lista.toArray(String[]::new);
+    }
+
+    public static boolean seEncuentra(int[] arr, int item) {
+        for (int i : arr) {
+            if (item == i) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static void habilitarComponente(boolean estado, JComponent componente) {
         SwingUtilities.invokeLater(() -> componente.setEnabled(estado));
@@ -151,8 +170,8 @@ public abstract class FuncJBlue {
     }
 
     /**
-     *Formato con salida %s - %s
+     * Formato con salida %s - %s
      */
-    private static String FORMATO_S_S = "%s - %s";
+    private static final String FORMATO_S_S = "%s - %s";
 
 }

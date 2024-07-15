@@ -6,16 +6,16 @@ package com.jblue.vista.ventanas;
 
 import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OPersonal;
-import com.jblue.sistema.ConfigSis;
 import com.jblue.sistema.ConstSisMen;
 import com.jblue.sistema.Sesion;
 import com.jblue.sistema.Sistema;
+import com.jblue.util.Filtros;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.crypto.EncriptadoAES;
-import com.jblue.vista.jbmarco.ConstTitutlos;
-import com.jblue.vista.jbmarco.VentanaSimple;
+import com.jblue.vista.marco.contruccion.ConstTitutlos;
+import com.jblue.vista.marco.ventanas.VentanaSimple;
 import com.jutil.jbd.conexion.Conexion;
-import com.jutil.jswing.jswingenv.EnvJTextField;
+import com.jutil.swingw.wrappers.TextFieldWrapper;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -39,7 +39,7 @@ public class Login extends VentanaSimple {
 
     private MenuPrincipal MENU_PRINCIPAL;
     private final MenuConfigBD MENU_CONFIG_BD;
-    private final EnvJTextField env_jtf[];
+    private final TextFieldWrapper campos[];
 
     /**
      * Creates new form NewLogin
@@ -49,9 +49,9 @@ public class Login extends VentanaSimple {
         super(ConstTitutlos.TL_INICIO_SESION, ConstTitutlos.TL_VENTANAS);
         this.MENU_CONFIG_BD = new MenuConfigBD();
         initComponents();
-        env_jtf = new EnvJTextField[2];
-        env_jtf[0] = new EnvJTextField(usuario, "ejem: david123");
-        env_jtf[1] = new EnvJTextField(contra, "contraseña 12345");
+        campos = new TextFieldWrapper[2];
+        campos[0] = new TextFieldWrapper(usuario, "ejem: david123");
+        campos[1] = new TextFieldWrapper(contra, "contraseña 12345");
         llamable();
     }
 
@@ -69,7 +69,7 @@ public class Login extends VentanaSimple {
         mostrar.setToolTipText("mostrar");
         mostrar.setSelected(false);
         //
-        for (EnvJTextField envjtf : env_jtf) {
+        for (TextFieldWrapper envjtf : campos) {
             envjtf.defecto();
         }
         setDefaultLookAndFeelDecorated(false);
@@ -78,6 +78,7 @@ public class Login extends VentanaSimple {
     @Override
     protected void componentesEstadoFinal() {
         super.componentesEstadoFinal();
+
         try {
             Conexion instancia = Conexion.getInstancia();
             String estado = "Estado ";
@@ -91,10 +92,12 @@ public class Login extends VentanaSimple {
     @Override
     protected void manejoEventos() {
         jbtInicio.addActionListener(e -> login());
-        for (EnvJTextField envjtf : env_jtf) {
+
+        for (TextFieldWrapper envjtf : campos) {
             envjtf.borrarAlClick();
             envjtf.borrarAlEscribir();
         }
+
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -102,11 +105,6 @@ public class Login extends VentanaSimple {
                     Sistema.getInstancia().notify();
                 }
             }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-            }
-
         });
     }
 
@@ -272,23 +270,22 @@ public class Login extends VentanaSimple {
         }
     }//GEN-LAST:event_contraKeyPressed
 
-    private boolean sesion = false;
-
     public synchronized void login() {
-        if (sesion) {
+        if (sesion_en_curso) {
             return;
         }
-        sesion = true;
-        if (!inicio()) {
-            sesion = false;
+        sesion_en_curso = true;
+        if (!iniciar()) {
+            sesion_en_curso = false;
             return;
         }
 
         if (!Sistema.getInstancia()._CargarCache()) {
             System.out.println(ConstSisMen.MEN_CACHE_ERR);
         }
+
         System.out.println(ConstSisMen.MEN_CACHE_OK);
-        ConfigSis s = ConfigSis.getInstancia();
+
         this.setVisible(false);
         this.dispose();
 
@@ -298,7 +295,7 @@ public class Login extends VentanaSimple {
         });
     }
 
-    public boolean inicio() {
+    public boolean iniciar() {
         if (!camposValidos()) {
             return false;
         }
@@ -306,10 +303,10 @@ public class Login extends VentanaSimple {
         if (personal == null) {
             return false;
         }
-        Sesion ses = Sesion.getInstancia();
-        ses.setUsuario(personal);
+        Sesion sesion = Sesion.getInstancia();
+        sesion.setUsuario(personal);
 
-        if (!ses.inicioSesion()) {
+        if (!sesion.inicioSesion()) {
             JOptionPane.showMessageDialog(this, "ERROR AL REGISTRAR SESION");
             return false;
         }
@@ -319,20 +316,20 @@ public class Login extends VentanaSimple {
     public boolean camposValidos() {
         String x = usuario.getText();
         String y = String.valueOf(contra.getPassword());
-        return x != null && !x.isBlank() && y != null && !y.isBlank();
+        return !Filtros.isNullOrBlank(x, y);
     }
 
     private OPersonal credencialesValidas(String usuario, String contraseña) {
         OPersonal get = null;
         try {
-            Operaciones<OPersonal> log = FabricaOpraciones.getPERSONAL();
-            String formar = "usuario = '%s' and contra = '%s'";
+            Operaciones<OPersonal> op = FabricaOpraciones.getPERSONAL();
+            String formato = "usuario = '%s' and contra = '%s'";
 
-            String query = String.format(formar,
+            String query = String.format(formato,
                     EncriptadoAES.encriptar(usuario, contraseña),
                     EncriptadoAES.encriptar(contraseña, usuario)
             );
-            get = log.get(query);
+            get = op.get(query);
             if (get == null || get.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Usuario y/o contraseña incorrectos");
                 return null;
@@ -351,7 +348,7 @@ public class Login extends VentanaSimple {
 
     public void limpiarInstancia() {
         MENU_PRINCIPAL = null;
-        sesion = false;
+        sesion_en_curso = false;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -377,8 +374,9 @@ public class Login extends VentanaSimple {
     private javax.swing.JCheckBox mostrar;
     private javax.swing.JTextField usuario;
     // End of variables declaration//GEN-END:variables
+    private boolean sesion_en_curso = false;
 
-//
+    //
     @Override
     public void dispose() {
         super.dispose();

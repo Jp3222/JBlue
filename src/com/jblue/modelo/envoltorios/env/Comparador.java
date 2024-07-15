@@ -4,7 +4,7 @@
  */
 package com.jblue.modelo.envoltorios.env;
 
-import com.jblue.modelo.objetos.sucls.Objeto;
+import com.jblue.util.bd.Objeto;
 
 /**
  *

@@ -17,6 +17,16 @@ public class Fecha {
         "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"
     };
 
+    public static int getIndexMes(String mes) {
+        for (int i = 0; i < MESES.length; i++) {
+            String j = MESES[i];
+            if (j.equalsIgnoreCase(mes)) {
+                return i + 1;
+            }
+        }
+        return -1;
+    }
+
     public static final DateTimeFormatter FORMATO = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public static int getDiaDelMes() {

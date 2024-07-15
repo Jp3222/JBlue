@@ -4,7 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.modelo.objetos.sucls.Objeto;
+import com.jblue.util.bd.Objeto;
 import com.jblue.modelo.envoltorios.env.EnvUsuario;
 
 /**
@@ -176,6 +176,15 @@ public class OUsuarios extends Objeto {
     @Override
     public String[] getInfo() {
         return super.getInfo(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    @Override
+    public String StringRepresentacion() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getNombre()).append(" ");
+        sb.append(getAp()).append(" ");
+        sb.append(getAm());
+        return sb.toString();
     }
 
 }

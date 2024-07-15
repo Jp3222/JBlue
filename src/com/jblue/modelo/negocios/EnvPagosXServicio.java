@@ -82,7 +82,7 @@ public class EnvPagosXServicio extends SuperPagos<OPagosServicio> {
             sb.append("\n");
         }
         mapa.put(LLAVE_DATOS, sb.toString());
-        FuncionesBD o = new FuncionesBD(ConstBD.TABLAS[6], ConstBD.BD_PAGOS_X_SERVICIO);
+        FuncionesBD o = new FuncionesBD(ConstBD.TABLAS[6], ConstBD.TABLA_PAGOS_X_SERVICIO);
         try {
             o.insertCSV(sb.toString().split("\n"));
         } catch (SQLException ex) {

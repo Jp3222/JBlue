@@ -23,15 +23,27 @@ import com.jblue.sistema.Sesion;
 import com.jblue.util.Filtros;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.crypto.EncriptadoAES;
-import com.jblue.vista.jbmarco.VistaExtendida;
+import com.jblue.util.tools.ArchivosPersonal;
+import com.jblue.vista.componentes.CSelectorDeArchivos;
+import com.jblue.vista.marco.vistas.VistaExtendida;
 import com.jutil.jexception.Excp;
+import java.awt.Image;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -48,7 +60,7 @@ public class VPerfil extends VistaExtendida {
     public VPerfil() {
         initComponents();
         this.componnetes = new JTextField[]{
-            cargo, usuario, contraseña, registro, estado, permisos, periodo
+            cargo, usuario, contraseña, registro, estado, permisos, fecha_inicio, fecha_fin
         };
         llamable();
     }
@@ -64,15 +76,21 @@ public class VPerfil extends VistaExtendida {
     @Override
     public void componentesEstadoInicial() {
         Sesion s = Sesion.getInstancia();
-        OPersonal personal = s.getUsuario();
+        personal = s.getUsuario();
         nombre.setText(personal.getNombre());
         apellidos.setText(personal.getApellidos());
+
         String[] info = Arrays.copyOfRange(personal.getInfo(), 3, personal.getInfo().length);
         for (int i = 0; i < info.length; i++) {
             componnetes[i].setText(info[i]);
             componnetes[i].setEditable(false);
         }
         cargo.setText(EnvPersonal.getCargoString(personal));
+    }
+
+    @Override
+    protected void manejoEventos() {
+        jbt_agr_foto.addActionListener(e -> crearFoto());
     }
 
     /**
@@ -85,13 +103,13 @@ public class VPerfil extends VistaExtendida {
     private void initComponents() {
 
         jPanel12 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        foto = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         nombre = new javax.swing.JLabel();
         apellidos = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jbt_agr_foto = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -118,7 +136,10 @@ public class VPerfil extends VistaExtendida {
         permisos = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        periodo = new javax.swing.JTextField();
+        fecha_inicio = new javax.swing.JTextField();
+        jPanel11 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        fecha_fin = new javax.swing.JTextField();
 
         setName("Perfil"); // NOI18N
         setPreferredSize(new java.awt.Dimension(1000, 660));
@@ -127,10 +148,10 @@ public class VPerfil extends VistaExtendida {
         jPanel12.setPreferredSize(new java.awt.Dimension(300, 700));
         jPanel12.setLayout(new java.awt.BorderLayout());
 
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/usuario.png"))); // NOI18N
-        jLabel3.setPreferredSize(new java.awt.Dimension(200, 400));
-        jPanel12.add(jLabel3, java.awt.BorderLayout.NORTH);
+        foto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        foto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/usuario.png"))); // NOI18N
+        foto.setPreferredSize(new java.awt.Dimension(200, 400));
+        jPanel12.add(foto, java.awt.BorderLayout.NORTH);
 
         jPanel2.setLayout(new java.awt.GridLayout(6, 0));
 
@@ -149,9 +170,8 @@ public class VPerfil extends VistaExtendida {
         });
         jPanel2.add(jButton2);
 
-        jButton4.setText("Agregar Foto");
-        jButton4.setEnabled(false);
-        jPanel2.add(jButton4);
+        jbt_agr_foto.setText("Agregar Foto");
+        jPanel2.add(jbt_agr_foto);
 
         jPanel12.add(jPanel2, java.awt.BorderLayout.CENTER);
 
@@ -246,12 +266,21 @@ public class VPerfil extends VistaExtendida {
 
         jPanel9.setLayout(new java.awt.BorderLayout());
 
-        jLabel8.setText("Periodo");
+        jLabel8.setText("Fecha de inicio");
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 17));
         jPanel9.add(jLabel8, java.awt.BorderLayout.LINE_START);
-        jPanel9.add(periodo, java.awt.BorderLayout.CENTER);
+        jPanel9.add(fecha_inicio, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel9);
+
+        jPanel11.setLayout(new java.awt.BorderLayout());
+
+        jLabel10.setText("Fecha de fin");
+        jLabel10.setPreferredSize(new java.awt.Dimension(150, 17));
+        jPanel11.add(jLabel10, java.awt.BorderLayout.LINE_START);
+        jPanel11.add(fecha_fin, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel11);
 
         jScrollPane1.setViewportView(jPanel1);
 
@@ -343,19 +372,49 @@ public class VPerfil extends VistaExtendida {
         });
     }//GEN-LAST:event_jCheckBox2ItemStateChanged
 
+    private void crearFoto() {
+        try {
+            File dir_out = ArchivosPersonal.crearCarpeta(personal);
+            File doc_seleccionado = CSelectorDeArchivos.seleccionarDocumento(null);
+            File new_out = new File(dir_out.getAbsolutePath() + File.separator + doc_seleccionado.getName());
+
+            new_out.createNewFile();
+            Files.copy(Path.of(doc_seleccionado.toURI()), new FileOutputStream(new_out));
+            ImageIcon i = new ImageIcon(new_out.getAbsolutePath());
+
+            double ancho_final = foto.getWidth();
+            double alto_final = foto.getHeight();
+            System.out.println(ancho_final + " x " + alto_final);
+
+            double proporcion = ancho_final / i.getIconWidth();
+            double alto_pro = i.getIconHeight() * proporcion;
+            System.out.println(proporcion);
+            System.out.println(alto_pro);
+            Image scaledInstance = i.getImage().getScaledInstance((int) ancho_final, (int)alto_pro, Image.SCALE_SMOOTH);
+            Icon icono = new ImageIcon(scaledInstance);
+            foto.setIcon(icono);
+
+            foto.repaint();
+        } catch (IOException ex) {
+            Logger.getLogger(VPerfil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel apellidos;
     private javax.swing.JTextField cargo;
     private javax.swing.JTextField contraseña;
     private javax.swing.JTextField estado;
+    private javax.swing.JTextField fecha_fin;
+    private javax.swing.JTextField fecha_inicio;
+    private javax.swing.JLabel foto;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -364,6 +423,7 @@ public class VPerfil extends VistaExtendida {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
@@ -375,8 +435,8 @@ public class VPerfil extends VistaExtendida {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jbt_agr_foto;
     private javax.swing.JLabel nombre;
-    private javax.swing.JTextField periodo;
     private javax.swing.JTextField permisos;
     private javax.swing.JTextField registro;
     private javax.swing.JTextField usuario;
@@ -384,5 +444,5 @@ public class VPerfil extends VistaExtendida {
     private final Sesion sesion = Sesion.getInstancia();
     private final JTextField[] componnetes;
     private final EncriptadoAES encriptador = new EncriptadoAES();
-
+    private OPersonal personal;
 }

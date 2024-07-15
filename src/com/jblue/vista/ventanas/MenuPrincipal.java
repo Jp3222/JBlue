@@ -4,10 +4,11 @@
  */
 package com.jblue.vista.ventanas;
 
+import com.jblue.modelo.envoltorios.env.EnvPersonal;
 import com.jblue.sistema.Sesion;
 import com.jblue.util.cache.FabricaCache;
-import com.jblue.vista.jbmarco.ConstTitutlos;
-import com.jblue.vista.jbmarco.VentanaSimple;
+import com.jblue.vista.marco.contruccion.ConstTitutlos;
+import com.jblue.vista.marco.ventanas.VentanaSimple;
 import com.jblue.vista.ventanas.herramientas.MenuCVSExport;
 import com.jblue.vista.ventanas.herramientas.MenuDirectorios;
 import com.jblue.vista.ventanas.herramientas.MenuDocumentos;
@@ -30,7 +31,9 @@ public class MenuPrincipal extends VentanaSimple {
         super(ConstTitutlos.TL_MENU_PRINCIPAL, ConstTitutlos.TL_VENTANAS);
         setUndecorated(true);
         setDefaultLookAndFeelDecorated(false);
+
         this.initComponents();
+
         menus_bd = new MenuBD();
         menu_cargos = new MenuCargos();
         //
@@ -43,12 +46,14 @@ public class MenuPrincipal extends VentanaSimple {
         vista_cobros = new VCobros();
         this.herr_csv_rap = new MenuCVSExport();
         //
+        this.menu_acerca_de = new AcercaDe();
         this.menus = new JFrame[]{
             herr_doc,
             herr_dir,
             herr_csv_rap,
             menus_bd,
-            menu_cargos
+            menu_cargos,
+            menu_acerca_de
         };
         llamable();
     }
@@ -69,6 +74,7 @@ public class MenuPrincipal extends VentanaSimple {
     @Override
     protected void componentesEstadoFinal() {
         super.componentesEstadoFinal();
+        accesoUsuario();
     }
 
     @Override
@@ -79,9 +85,15 @@ public class MenuPrincipal extends VentanaSimple {
 
     @Override
     protected void manejoEventos() {
+
         addAcLis(e -> evtMostrarMenu((JMenuItem) e.getSource()),
-                item_perfil, item_presidente, item_tesorero, item_administrador,
-                item_comprobantes, item_salir);
+                item_perfil,
+                item_presidente,
+                item_tesorero,
+                item_administrador,
+                item_comprobantes,
+                item_salir
+        );
 
         addAcLis(e -> evtMostrarBD((JMenuItem) e.getSource()),
                 item_config,
@@ -93,7 +105,10 @@ public class MenuPrincipal extends VentanaSimple {
         );
 
         addAcLis(e -> evtMostrarHerr((JMenuItem) e.getSource()),
-                item_csv_rap, item_docs, item_dir);
+                item_csv_rap,
+                item_docs,
+                item_dir
+        );
     }
 
     private void addAcLis(ActionListener evt, JMenuItem... items) {
@@ -114,7 +129,7 @@ public class MenuPrincipal extends VentanaSimple {
         } else if (o == item_pagos_x_otros_tipos) {
             menus_bd.showPagosXOtros();
         } else {
-            JOptionPane.showMessageDialog(this, String.format("El apartado '%s' aun esta en desarrollo", o.getText()));
+            JOptionPane.showMessageDialog(this, String.format(FMT_MEN_D, o.getText()));
             return;
         }
         SwingUtilities.invokeLater(() -> menus_bd.setVisible(true));
@@ -129,7 +144,7 @@ public class MenuPrincipal extends VentanaSimple {
         } else if (o == item_csv_rap) {
             show = herr_csv_rap;
         } else {
-            JOptionPane.showMessageDialog(this, String.format("El apartado '%s' aun esta en desarrollo", o.getText()));
+            JOptionPane.showMessageDialog(this, String.format(FMT_MEN_D, o.getText()));
             return;
         }
         SwingUtilities.invokeLater(() -> show.setVisible(true));
@@ -148,7 +163,7 @@ public class MenuPrincipal extends VentanaSimple {
             dispose();
             return;
         } else {
-            JOptionPane.showMessageDialog(this, String.format("El apartado '%s' aun esta en desarrollo", o.getText()));
+            JOptionPane.showMessageDialog(this, String.format(FMT_MEN_D, o.getText()));
             return;
         }
         menu_cargos.setVisible(true);
@@ -181,6 +196,7 @@ public class MenuPrincipal extends VentanaSimple {
         item_pagos_x_otros_tipos = new javax.swing.JMenuItem();
         menu_herramientas = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         item_comprobantes = new javax.swing.JMenuItem();
         item_dir = new javax.swing.JMenuItem();
@@ -206,26 +222,41 @@ public class MenuPrincipal extends VentanaSimple {
         menu_principal.setText("Menu");
         menu_principal.setToolTipText("Apartados principales del programa");
 
+        item_perfil.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_1, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         item_perfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/usuario(1).png"))); // NOI18N
         item_perfil.setText("Perfil");
         item_perfil.setToolTipText("Apartado para el control de datos del usuario en uso");
+        item_perfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                item_perfilActionPerformed(evt);
+            }
+        });
         menu_principal.add(item_perfil);
 
+        item_presidente.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         item_presidente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/presidente.png"))); // NOI18N
         item_presidente.setText("Presidente");
         item_presidente.setName("item_presidente"); // NOI18N
         menu_principal.add(item_presidente);
 
+        item_tesorero.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         item_tesorero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cofre-del-tesoro.png"))); // NOI18N
         item_tesorero.setText("Tesorero");
         item_tesorero.setName("tesorero"); // NOI18N
+        item_tesorero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                item_tesoreroActionPerformed(evt);
+            }
+        });
         menu_principal.add(item_tesorero);
 
+        item_administrador.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_4, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         item_administrador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/perfil.png"))); // NOI18N
         item_administrador.setText("Administrador");
         menu_principal.add(item_administrador);
         menu_principal.add(jSeparator2);
 
+        item_salir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         item_salir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cerrar-sesion(2).png"))); // NOI18N
         item_salir.setText("Salir");
         item_salir.setName("item_salir"); // NOI18N
@@ -236,6 +267,7 @@ public class MenuPrincipal extends VentanaSimple {
         menu_bd.setText("Base de datos");
         menu_bd.setName("menu-bd"); // NOI18N
 
+        item_config.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/configuraciones.png"))); // NOI18N
         item_config.setText("Configuraciones");
         menu_bd.add(item_config);
         menu_bd.add(jSeparator1);
@@ -260,6 +292,7 @@ public class MenuPrincipal extends VentanaSimple {
         item_tipo_tomas.setName("tipo-de-tomas"); // NOI18N
         menu_bd.add(item_tipo_tomas);
 
+        item_pagos_x_otros_tipos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/factura.png"))); // NOI18N
         item_pagos_x_otros_tipos.setText("BD Tipos de pagos");
         menu_bd.add(item_pagos_x_otros_tipos);
 
@@ -267,8 +300,13 @@ public class MenuPrincipal extends VentanaSimple {
 
         menu_herramientas.setText("Herramientas");
 
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/bloqueado.png"))); // NOI18N
         jMenuItem2.setText("Bloquear Caja");
         menu_herramientas.add(jMenuItem2);
+
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/desbloquear.png"))); // NOI18N
+        jMenuItem3.setText("Desbloquear Caja");
+        menu_herramientas.add(jMenuItem3);
 
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/confidencial.png"))); // NOI18N
         jMenu3.setText("Docs");
@@ -371,8 +409,8 @@ public class MenuPrincipal extends VentanaSimple {
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         SwingUtilities.invokeLater(() -> {
-            AcercaDe ac = new AcercaDe();
-            ac.setVisible(true);
+
+            menu_acerca_de.setVisible(true);
         });
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
@@ -412,6 +450,14 @@ public class MenuPrincipal extends VentanaSimple {
     private void item_dirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_dirActionPerformed
         herr_dir.setVisible(true);
     }//GEN-LAST:event_item_dirActionPerformed
+
+    private void item_perfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_perfilActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_item_perfilActionPerformed
+
+    private void item_tesoreroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_tesoreroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_item_tesoreroActionPerformed
 
     public void finalizarSesion() {
         cerrarMenusActivos();
@@ -461,6 +507,7 @@ public class MenuPrincipal extends VentanaSimple {
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
@@ -479,6 +526,7 @@ public class MenuPrincipal extends VentanaSimple {
     private final MenuCVSExport herr_csv_rap;
     private final MenuDocumentos herr_doc;
     private final MenuDirectorios herr_dir;
+    private final AcercaDe menu_acerca_de;
 
     // ---- Vistas ---- //
     private final VCobros vista_cobros;
@@ -487,6 +535,8 @@ public class MenuPrincipal extends VentanaSimple {
     //
     private final MenuBD menus_bd;
     private final MenuCargos menu_cargos;
+    //
+    private final String FMT_MEN_D = "El apartado '%s' aun esta en desarrollo";
 
     @Override
     public void dispose() {
@@ -495,4 +545,13 @@ public class MenuPrincipal extends VentanaSimple {
         irLogin();
     }
 
+    private void accesoUsuario() {
+//        JMenuItem[] cargos = {
+//            item_presidente, item_tesorero, item_administrador
+//        };
+//        String cargo = EnvPersonal.getCargoString(Sesion.getInstancia().getUsuario());
+//        for (JMenuItem i : cargos) {
+//            i.setEnabled(i.getText().equalsIgnoreCase(cargo));
+//        }
+    }
 }

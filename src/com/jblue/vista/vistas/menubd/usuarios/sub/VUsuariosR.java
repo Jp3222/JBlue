@@ -15,26 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.jblue.vista.vistas.menubd.usuarios.sub;
-
 import com.jblue.modelo.envoltorios.Operaciones;
-import com.jblue.modelo.envoltorios.env.EnvPersonal;
 import com.jblue.modelo.envoltorios.env.EnvUsuario;
 import com.jblue.modelo.objetos.OCalles;
+import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.modelo.objetos.sucls.Objeto;
+import com.jblue.util.bd.Objeto;
 import com.jblue.util.Filtros;
 import com.jblue.util.FormatoBD;
+import com.jblue.util.FuncJBlueBD;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.util.tiempo.Fecha;
-import com.jblue.vista.jbmarco.VistaSimple;
+import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
+import com.jblue.vista.marco.contruccion.FunMovCache;
+import com.jblue.vista.marco.vistas.VistaSimple;
 import com.jblue.vista.vistas.menubd.usuarios.VUsuarios;
 import java.awt.event.ItemEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
@@ -46,10 +49,9 @@ import javax.swing.JTextField;
  *
  * @author jp
  */
-public class VUsuariosR extends VistaSimple {
+public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCache {
 
     private final JTextField[] arr_campos_texto;
-    private final JComboBox[] arr_campos_combo_box;
 
     /**
      * Creates new form VUsuarios
@@ -68,12 +70,6 @@ public class VUsuariosR extends VistaSimple {
             campo_nombre,
             campo_ap,
             campo_am
-        };
-
-        arr_campos_combo_box = new JComboBox[]{
-            campo_titular,
-            campo_tipo_toma,
-            campo_calle
         };
         llamable();
     }
@@ -99,12 +95,7 @@ public class VUsuariosR extends VistaSimple {
         for (JTextField i : arr_campos_texto) {
             i.setText(null);
         }
-        for (JComboBox i : arr_campos_combo_box) {
-            if (i.getItemCount() == 0) {
-                continue;
-            }
-            i.setSelectedIndex(0);
-        }
+        
         campo_titular.setEnabled(false);
         campo_no_casa.setText(null);
         campo_is_titular.setSelected(false);
@@ -132,170 +123,6 @@ public class VUsuariosR extends VistaSimple {
             campo_titular.setVisible(!campo_is_titular.isSelected());
         }
 
-    }
-
-    public void evtGuardar() {
-        if (!camposValidos()) {
-            return;
-        }
-        String[] valores = getInfo(false);
-
-        String txt = "(";
-        for (String i : valores) {
-            txt = txt.concat(i).concat(",");
-        }
-        txt = txt.concat(")");
-        System.out.println(txt);
-        Operaciones<OUsuarios> op = FabricaOpraciones.getUSUARIOS();
-        boolean insertar = op.insertar(valores);
-        mov(insertar);
-    }
-
-    private String[] getRegistro(boolean actualizacion) {
-        String nombre, ap, am, calle, ncasa, toma, registro, estado, titular, codigo;
-        nombre = campo_nombre.getText();
-        ap = campo_ap.getText();
-        am = campo_am.getText();
-
-        OCalles calle_o = EnvUsuario.getCalleEnCache(campo_calle.getItemAt(campo_calle.getSelectedIndex()));
-        calle = calle_o.getId();
-
-        boolean numero_cero = sn_numero.isSelected() || Filtros.isNullOrBlank(campo_no_casa.getText());
-        ncasa = numero_cero ? "0" : campo_no_casa.getText();
-
-        OTipoTomas toma_o = EnvUsuario.getTipoDeTomaEnCache(campo_tipo_toma.getItemAt(campo_tipo_toma.getSelectedIndex()));
-        toma = toma_o.getId();
-
-        if (actualizacion) {
-            registro = objeto_buscado.getRegistro();
-        } else {
-            String format = LocalDate.now().format(Fecha.FORMATO);
-            registro = format;
-        }
-        estado = getEstado();
-        return new String[]{
-            nombre, ap, am, calle, ncasa, toma, registro
-        };
-    }
-
-    private String getEstado() {
-        int index = campo_estado.getSelectedIndex();
-        return switch (index) {
-            case 1:
-                yield "1";
-            case 2:
-                yield "0";
-            case 3:
-                yield "-1";
-            default:
-                yield "NULL";
-        };
-
-    }
-
-    public void evtActualizar() {
-    }
-
-    private void mov(boolean mov) {
-        if (mov) {
-            memoria_cache.actualizar();
-            pintarJCBX(campo_titular, cache);
-            componentesEstadoInicial();
-            JOptionPane.showMessageDialog(this, "Operacion Exitosa");
-        } else {
-            JOptionPane.showMessageDialog(this, "Operacion Erronea");
-        }
-    }
-
-    private String[] getInfo(boolean actualizacion) {
-        String nombre = campo_nombre.getText();
-        String ap = campo_ap.getText();
-        String am = campo_am.getText();
-        String calle = EnvUsuario.getCalleEnCache(campo_calle.getItemAt(campo_calle.getSelectedIndex())).getId();
-        String no_casa = campo_no_casa.getText();
-        no_casa = no_casa ==null ? "NULL" : no_casa;
-        
-        String tipo_toma = EnvUsuario.getTipoDeTomaEnCache(campo_tipo_toma.getItemAt(campo_tipo_toma.getSelectedIndex())).getId();
-        String registro;
-
-        if (actualizacion) {
-            registro = objeto_buscado.getRegistro();
-        } else {
-            LocalDate ld = LocalDate.now();
-            registro = ld.format(Fecha.FORMATO);
-        }
-        String estado = campo_estado.getSelectedIndex() == 1 ? "1" : "-1";
-        String titular = null;
-
-        if (campo_is_titular.isSelected()) {
-            titular = "-1";
-        } else if (campo_is_usuario.isSelected() && campo_titular.getSelectedIndex() == 0) {
-            titular = "-2";
-        } else if (campo_is_usuario.isSelected()) {
-            OUsuarios usuario = EnvUsuario.getUsuarioEnCache(
-                    campo_titular.getItemAt(campo_titular.getSelectedIndex())
-            );
-            titular = usuario.getId();
-        }
-
-        String codigo = "NULL";
-        String[] arr = new String[]{
-            nombre, ap, am, calle, no_casa, tipo_toma, registro, estado, titular, codigo
-        };
-        arr = FormatoBD.bdEntrada(arr);
-        return arr;
-    }
-
-    private boolean camposValidos() {
-        return validarTextFields() && valirarComboBox();
-    }
-
-    private boolean validarTextFields() {
-        String aux;
-        for (JTextField i : arr_campos_texto) {
-            aux = i.getText();
-            if (Filtros.isNullOrBlank(aux)) {
-                JOptionPane.showMessageDialog(this, String.format("Campo %s no valido", i.getName()));
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean valirarComboBox() {
-        for (JComboBox i : arr_campos_combo_box) {
-            if (i == campo_titular && (campo_is_titular.isSelected() || campo_is_usuario.isSelected())) {
-                System.out.println("xd");
-                continue;
-            }
-            if (!Filtros.swIsCbxRangoValido(i)) {
-                System.out.println("xdddd");
-                JOptionPane.showMessageDialog(this, String.format("Campo %s no valido", i.getName()));
-                return false;
-            }
-        }
-        if (campo_estado.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(this, String.format("Campo %s no valido", campo_estado.getName()));
-            return false;
-        }
-        return true;
-    }
-
-    public void evtEliminar() {
-        int input = JOptionPane.showConfirmDialog(this, "¿Desea eliminar esta operacion?");
-        if (input != JOptionPane.YES_OPTION) {
-            return;
-        }
-        Operaciones<OUsuarios> operaciones = memoria_cache.getOperaciones();
-
-    }
-
-    public void evtCancelar() {
-        int input = JOptionPane.showConfirmDialog(this, "¿Desea cancelar esta operacion?");
-        if (input != JOptionPane.YES_OPTION) {
-            return;
-        }
-        componentesEstadoInicial();
     }
 
     /**
@@ -722,6 +549,7 @@ public class VUsuariosR extends VistaSimple {
         }
     }
 
+// <editor-fold defaultstate="collapsed" desc="Variables de codigo">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_actualizar;
     private javax.swing.JButton btn_cancelar;
@@ -729,14 +557,14 @@ public class VUsuariosR extends VistaSimple {
     private javax.swing.JButton btn_guardar;
     private javax.swing.JTextField campo_am;
     private javax.swing.JTextField campo_ap;
-    private javax.swing.JComboBox<String> campo_calle;
+    private javax.swing.JComboBox<OCalles> campo_calle;
     private javax.swing.JComboBox<String> campo_estado;
     private javax.swing.JCheckBox campo_is_titular;
     private javax.swing.JCheckBox campo_is_usuario;
     private javax.swing.JTextField campo_no_casa;
     private javax.swing.JTextField campo_nombre;
-    private javax.swing.JComboBox<String> campo_tipo_toma;
-    private javax.swing.JComboBox<String> campo_titular;
+    private javax.swing.JComboBox<OTipoTomas> campo_tipo_toma;
+    private javax.swing.JComboBox<OUsuarios> campo_titular;
     private javax.swing.JLabel coincidencias;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -786,7 +614,149 @@ public class VUsuariosR extends VistaSimple {
     private final ArrayList<OUsuarios> cache_aux;
     private final DefaultListModel<String> modelo_lista;
     private OUsuarios objeto_buscado;
+    
+            
+// </editor-fold>
 
+// <editor-fold defaultstate="collapsed" desc="CRUD de usuarios">
+    @Override
+    public void evtGuardar() {
+        if (!camposValidos()) {
+            return;
+        }
+        String[] valores = getInfo(false);
+
+        String txt = "(";
+        for (String i : valores) {
+            txt = txt.concat(i).concat(",");
+        }
+        txt = txt.concat(")");
+        System.out.println(txt);
+
+        Operaciones<OUsuarios> op = FabricaOpraciones.getUSUARIOS();
+        boolean insertar = op.insertar(valores);
+        actualizarCache(insertar);
+    }
+
+    @Override
+    public void evtActualizar() {
+        if (!camposValidos()) {
+            return;
+        }
+        String[] valores = getInfo(false);
+
+        String txt = "(";
+        for (String i : valores) {
+            txt = txt.concat(i).concat(",");
+        }
+        txt = txt.concat(")");
+        System.out.println(txt);
+
+        Operaciones<OUsuarios> op = FabricaOpraciones.getUSUARIOS();
+        boolean insertar = op.actualizar(FuncJBlueBD.getCampos(""),
+                valores,
+                "id = " + objeto_buscado.getId());
+        actualizarCache(true);
+    }
+
+    @Override
+    public void evtEliminar() {
+        int input = JOptionPane.showConfirmDialog(this, "¿Desea eliminar esta registro?");
+        if (input != JOptionPane.YES_OPTION) {
+            return;
+        }
+        Operaciones<OPagosServicio> pxs = FabricaOpraciones.getPAGOS_X_SERVICIO();
+        ArrayList<OPagosServicio> lista = pxs.getLista(
+                String.format("usuario = '%s'", objeto_buscado.getId())
+        );
+        if (!lista.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Este registro no se puede eliminar");
+            return;
+        }
+        Operaciones<OUsuarios> operaciones = memoria_cache.getOperaciones();
+        operaciones.eliminar("id = " + objeto_buscado.getId());
+    }
+
+    @Override
+    public void evtCancelar() {
+        boolean cancelar = evtCancelar(this);
+        if (!cancelar) {
+            return;
+        }
+        componentesEstadoInicial();
+    }
+
+    @Override
+    public void evtBuscar() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String[] getInfo(boolean actualizacion) {
+        String nombre = campo_nombre.getText();
+        String ap = campo_ap.getText();
+        String am = campo_am.getText();
+        String calle = campo_calle.getItemAt(campo_calle.getSelectedIndex()).getId();
+        String no_casa = campo_no_casa.getText();
+        no_casa = no_casa == null ? "NULL" : no_casa;
+
+        String tipo_toma = campo_tipo_toma.getItemAt(campo_tipo_toma.getSelectedIndex()).getId();
+        String registro;
+
+        if (actualizacion) {
+            registro = objeto_buscado.getRegistro();
+        } else {
+            LocalDate ld = LocalDate.now();
+            registro = ld.format(Fecha.FORMATO);
+        }
+        String estado = campo_estado.getSelectedIndex() == 1 ? "1" : "-1";
+        String titular = null;
+
+        if (campo_is_titular.isSelected()) {
+            titular = "-1";
+        } else if (campo_is_usuario.isSelected() && campo_titular.getSelectedIndex() == 0) {
+            titular = "-2";
+        } else if (campo_is_usuario.isSelected()) {
+            OUsuarios usuario = campo_titular.getItemAt(campo_titular.getSelectedIndex());
+            titular = usuario.getId();
+        }
+
+        String codigo = "NULL";
+        String[] arr = new String[]{
+            nombre, ap, am, calle, no_casa, tipo_toma, registro, estado, titular, codigo
+        };
+        arr = FormatoBD.bdEntrada(arr);
+        return arr;
+    }
+
+    @Override
+    public boolean camposValidos() {
+        return validarTextFields() && valirarComboBox();
+    }
+
+    private boolean validarTextFields() {
+        String aux;
+        for (JTextField i : arr_campos_texto) {
+            aux = i.getText();
+            if (Filtros.isNullOrBlank(aux)) {
+                JOptionPane.showMessageDialog(this, String.format("Campo %s no valido", i.getName()));
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean valirarComboBox() {
+        if (campo_estado.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, String.format("Campo %s no valido", campo_estado.getName()));
+            return false;
+        }
+        return true;
+    }
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="descripcion">
+// </editor-fold>
     @Override
     public void setVisible(boolean flag) {
         super.setVisible(flag); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
@@ -798,13 +768,18 @@ public class VUsuariosR extends VistaSimple {
     }
 
     private void cargarCampos() {
-        ArrayList<OUsuarios> a = FabricaCache.MC_USUARIOS.getLista();
-        List<OUsuarios> name = a.stream().filter(e -> e.isTitular()).toList();
-        pintarJCBX(campo_titular, name);
+        List<OUsuarios> titulares = FabricaCache.MC_USUARIOS.getLista().stream().filter(u -> u.isTitular()).toList();
+        for (OUsuarios i : titulares) {
+            campo_titular.addItem(i);
+        }
         ArrayList<OTipoTomas> b = FabricaCache.MC_TIPOS_DE_TOMAS.getLista();
-        pintarJCBX(campo_tipo_toma, b);
+        for (OTipoTomas i : b) {
+            campo_tipo_toma.addItem(i);
+        }
         ArrayList<OCalles> c = FabricaCache.MC_CALLES.getLista();
-        pintarJCBX(campo_calle, c);
+        for (OCalles i : c) {
+            campo_calle.addItem(i);
+        }
     }
 
     private void vaciarCampos() {
@@ -825,6 +800,19 @@ public class VUsuariosR extends VistaSimple {
         for (Objeto i : lista) {
             txt.addItem(i.getStringR());
         }
+    }
+
+    @Override
+    public void actualizarCache(boolean actualizar) {
+        if (!actualizar) {
+            return;
+        }
+        memoria_cache.actualizar();
+
+        for (OUsuarios i : cache.stream().filter(u -> u.isTitular()).toList()) {
+            campo_titular.addItem(i);
+        }
+        componentesEstadoInicial();
     }
 
 }

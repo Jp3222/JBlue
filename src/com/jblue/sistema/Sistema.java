@@ -6,11 +6,11 @@ package com.jblue.sistema;
 
 import com.jblue.sistema.app.AppFiles;
 import com.jblue.util.cache.FabricaCache;
+import com.jblue.vista.componentes.NewMenuConfigBD;
 import com.jblue.vista.ventanas.Login;
-import com.jblue.vista.ventanas.MenuConfigBD;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
-import com.jutil.soyjvm.So;
+import com.jutil.platf.So;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -103,30 +103,39 @@ public class Sistema {
         return false;
     }
 
-    public synchronized boolean _ConexionBD() {
-        MenuConfigBD config = new MenuConfigBD();
+    public boolean _ConexionBD() {
+        //MenuConfigBD config = new MenuConfigBD();
         leerPropiedades();
         boolean conexionNull = propiedades.get("bd-url") == null;
         if (conexionNull) {
-            synchronized (config) {
-                config.setSistema(this);
-                config.setVisible(true);
-                try {
-                    config.wait();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                escribirPropiedades();
+            String[] o = null;
+            try {
+                o = NewMenuConfigBD.getConexion();
+            } catch (SQLException ex) {
+                Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
             }
+            propiedades.put("bd-usuario", o[0]);
+            propiedades.put("bd-contraseña", o[1]);
+            propiedades.put("bd-url", o[2]);
+
+//            synchronized (config) {
+//                config.setSistema(this);
+//                config.setVisible(true);
+//                try {
+//                    config.wait();
+//                } catch (InterruptedException ex) {
+//                    Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+            escribirPropiedades();
+//            }
         }
 
         try {
-            conexion = Conexion.getInstancia(
-                    propiedades.getProperty("bd-usuario"),
+            conexion = Conexion.getInstancia(propiedades.getProperty("bd-usuario"),
                     propiedades.getProperty("bd-contraseña"),
-                    propiedades.getProperty("bd-url")
-            );
-            if (conexionCerrada()) {
+                    propiedades.getProperty("bd-url"));
+
+            if (conexionCerrada() || conexionNoValida()) {
                 int in = JOptionPane.showConfirmDialog(null, "Hay un problema con las credenciales, dese reiniciarlas?");
                 if (in == JOptionPane.YES_OPTION) {
                     propiedades.remove("bd-usuario");
@@ -138,10 +147,29 @@ public class Sistema {
             }
         } catch (SQLException ex) {
             Excp.imp(ex, getClass(), true, true);
+            int in = JOptionPane.showConfirmDialog(null, "Hay un problema con las credenciales, dese reiniciarlas?");
+            if (in == JOptionPane.YES_OPTION) {
+                propiedades.remove("bd-usuario");
+                propiedades.remove("bd-contraseña");
+                propiedades.remove("bd-url");
+                escribirPropiedades();
+            }
             System.exit(0);
+
         }
 
         return true;
+    }
+
+    public void reiniciarCredenciales() {
+        int in = JOptionPane.showConfirmDialog(null, "Hay un problema con las credenciales, dese reiniciarlas?");
+        if (in == JOptionPane.YES_OPTION) {
+            propiedades.remove("bd-usuario");
+            propiedades.remove("bd-contraseña");
+            propiedades.remove("bd-url");
+            escribirPropiedades();
+        }
+
     }
 
     public void leerPropiedades() {
@@ -176,6 +204,18 @@ public class Sistema {
         boolean isClose = false;
         try {
             isClose = conexion.getConexion().isClosed();
+        } catch (SQLException ex) {
+            Excp.imp(ex, getClass(), true, true);
+        } finally {
+            System.out.println(isClose);
+        }
+        return isClose;
+    }
+
+    public boolean conexionNoValida() {
+        boolean isClose = false;
+        try {
+            isClose = conexion.getConexion().isReadOnly();
         } catch (SQLException ex) {
             Excp.imp(ex, getClass(), true, true);
         }
@@ -258,9 +298,12 @@ public class Sistema {
         return reinicio;
     }
 
-
     public Properties getPropiedades() {
         return propiedades;
+    }
+
+    public Conexion getConexion() {
+        return conexion;
     }
 
 }

@@ -23,7 +23,7 @@ import com.jblue.util.Filtros;
 import com.jblue.util.FuncJBlue;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
-import com.jblue.vista.jbmarco.VistaSimple;
+import com.jblue.vista.marco.vistas.VistaSimple;
 import com.jblue.vista.vistas.menuprincipal.VCobros;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ public final class VCCobros extends VistaSimple {
         memo_cache.cargar();
         cache = memo_cache.getLista();
         cache_aux = new ArrayList<>(cache.size());
-        modelo = new ModeloTablas(ConstGs.BD_PAGOS_X_SERVICIO);
+        modelo = new ModeloTablas(ConstGs.TABLA_PAGOS_X_SERVICIO);
         modelo.setAllCellEditable(false);
         initComponents();
         jTable2.setModel(modelo);

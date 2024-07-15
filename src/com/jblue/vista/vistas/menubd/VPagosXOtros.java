@@ -19,22 +19,26 @@ package com.jblue.vista.vistas.menubd;
 import com.jblue.util.mg.ModeloTablas;
 import com.jblue.modelo.ConstGs;
 import com.jblue.sistema.app.AppFiles;
-import com.jblue.vista.comp.CSelectorDeArchivos;
-import com.jblue.vista.jbmarco.VistaExtendida;
+import com.jblue.util.Filtros;
+import com.jblue.util.tiempo.Fecha;
+import com.jblue.vista.componentes.CSelectorDeArchivos;
+import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
+import com.jblue.vista.marco.vistas.VistaExtendida;
 import com.jutil.jexception.Excp;
-import com.mysql.cj.result.AbstractNumericValueFactory;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import javax.swing.JFormattedTextField;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import javax.swing.text.NumberFormatter;
 
 /**
  *
  * @author jp
  */
-public class VPagosXOtros extends VistaExtendida {
+public class VPagosXOtros extends VistaExtendida implements EvtRegistrosBD {
 
     private final ModeloTablas modelo;
 
@@ -44,7 +48,7 @@ public class VPagosXOtros extends VistaExtendida {
     public VPagosXOtros() {
         initComponents();
 
-        modelo = new ModeloTablas(ConstGs.BD_PAGOS_X_OTROS_TIPOS);
+        modelo = new ModeloTablas(ConstGs.TABLA_PAGOS_X_OTROS_TIPOS);
         jTable1.setModel(modelo);
 
         llamable();
@@ -52,14 +56,35 @@ public class VPagosXOtros extends VistaExtendida {
 
     @Override
     protected final void llamable() {
-        super.llamable(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        componentesEstadoFinal();
         manejoEventos();
+    }
+
+    @Override
+    protected void componentesEstadoFinal() {
+        LocalDate fecha = LocalDate.now();
+        System.out.println(fecha.format(DateTimeFormatter.ISO_DATE));
+        Month month = fecha.getMonth();
+        for (int i = 0; i < month.length(fecha.isLeapYear()); i++) {
+            campo_dia.addItem(i + 1);
+        }
+
+        for (int i = fecha.getMonthValue() - 1; i < Fecha.MESES.length; i++) {
+            campo_mes.addItem(Fecha.MESES[i]);
+        }
+
+        int año = fecha.getYear();
+
+        campo_año.addItem(año);
+        campo_año.addItem(año++);
+        campo_año.addItem(año++);
+
     }
 
     @Override
     protected void manejoEventos() {
 
-        jButton1.addActionListener(e -> {
+        boton_add_doc.addActionListener(e -> {
             File file = CSelectorDeArchivos.seleccionarDocumento(null);
             if (file == null) {
                 return;
@@ -79,8 +104,8 @@ public class VPagosXOtros extends VistaExtendida {
     }
 
     public void add() {
-        NumberFormatter n = (NumberFormatter) jFormattedTextField2.getFormatter();
-        
+        NumberFormatter n = (NumberFormatter) campo_monto.getFormatter();
+
     }
 
     /**
@@ -92,22 +117,35 @@ public class VPagosXOtros extends VistaExtendida {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        panel_izq = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
+        panel_der = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        panel_campos = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        campo_motivo = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
-        jButton1 = new javax.swing.JButton();
+        campo_monto = new javax.swing.JFormattedTextField();
+        cb_fecha_limite = new javax.swing.JCheckBox();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        JL = new javax.swing.JLabel();
+        campo_dia = new javax.swing.JComboBox<>();
+        campo_mes = new javax.swing.JComboBox<>();
+        campo_año = new javax.swing.JComboBox<>();
+        jPanel1 = new javax.swing.JPanel();
+        boton_add_doc = new javax.swing.JButton();
+        boton_docs_add = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jPanel7 = new javax.swing.JPanel();
+        campo_des = new javax.swing.JTextArea();
+        panel_botones = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         btn_guardar = new javax.swing.JButton();
         btn_actualizar = new javax.swing.JButton();
@@ -115,66 +153,126 @@ public class VPagosXOtros extends VistaExtendida {
         btn_cancelar = new javax.swing.JButton();
 
         setName("Pagos x Otros"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(1000, 500));
         setLayout(new java.awt.BorderLayout());
+
+        panel_izq.setLayout(new java.awt.BorderLayout());
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
-        add(jScrollPane1, java.awt.BorderLayout.LINE_START);
+        panel_izq.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        add(panel_izq, java.awt.BorderLayout.WEST);
+
+        panel_der.setLayout(new java.awt.BorderLayout());
+
+        jLabel4.setFont(new java.awt.Font("Open Sans", 1, 36)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Otros tipos de pago.");
+        jLabel4.setPreferredSize(new java.awt.Dimension(500, 100));
+        panel_der.add(jLabel4, java.awt.BorderLayout.NORTH);
+
+        panel_campos.setLayout(new java.awt.BorderLayout());
 
         jPanel5.setPreferredSize(new java.awt.Dimension(500, 300));
-        jPanel5.setLayout(new java.awt.GridLayout(5, 1, 0, 10));
+        jPanel5.setLayout(new java.awt.GridLayout(5, 1));
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
+        jLabel1.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel1.setText("Motivo");
         jLabel1.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel2.add(jLabel1, java.awt.BorderLayout.WEST);
-        jPanel2.add(jTextField1, java.awt.BorderLayout.CENTER);
+        jPanel2.add(jLabel1, java.awt.BorderLayout.NORTH);
+        jPanel2.add(campo_motivo, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel2);
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
+        jLabel3.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel3.setText("Monto");
         jLabel3.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel4.add(jLabel3, java.awt.BorderLayout.WEST);
+        jPanel4.add(jLabel3, java.awt.BorderLayout.NORTH);
 
-        jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
-        jPanel4.add(jFormattedTextField2, java.awt.BorderLayout.CENTER);
+        campo_monto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        jPanel4.add(campo_monto, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel4);
 
-        jButton1.setText("Añadir Documentos");
-        jPanel5.add(jButton1);
+        cb_fecha_limite.setText("jCheckBox1");
+        jPanel5.add(cb_fecha_limite);
 
-        jPanel1.add(jPanel5, java.awt.BorderLayout.NORTH);
+        jPanel7.setLayout(new java.awt.GridLayout(2, 3));
+
+        jLabel5.setText("Dia");
+        jPanel7.add(jLabel5);
+
+        jLabel6.setText("Mes");
+        jPanel7.add(jLabel6);
+
+        JL.setText("Año");
+        jPanel7.add(JL);
+
+        jPanel7.add(campo_dia);
+
+        jPanel7.add(campo_mes);
+
+        jPanel7.add(campo_año);
+
+        jPanel5.add(jPanel7);
+
+        jPanel1.setLayout(new java.awt.GridLayout(2, 0));
+
+        boton_add_doc.setText("Añadir Documentos");
+        boton_add_doc.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jPanel1.add(boton_add_doc);
+
+        boton_docs_add.setText("Documentos añadidos");
+        jPanel1.add(boton_docs_add);
+
+        jPanel5.add(jPanel1);
+
+        panel_campos.add(jPanel5, java.awt.BorderLayout.CENTER);
 
         jPanel3.setLayout(new java.awt.BorderLayout());
 
+        jLabel2.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
         jLabel2.setText("Descripcion");
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel3.add(jLabel2, java.awt.BorderLayout.NORTH);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        campo_des.setColumns(20);
+        campo_des.setRows(5);
+        jScrollPane2.setViewportView(campo_des);
 
         jPanel3.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
+        panel_campos.add(jPanel3, java.awt.BorderLayout.SOUTH);
 
-        jPanel7.setPreferredSize(new java.awt.Dimension(500, 100));
-        jPanel7.setLayout(new java.awt.GridLayout(2, 0));
+        panel_der.add(panel_campos, java.awt.BorderLayout.CENTER);
+
+        panel_botones.setPreferredSize(new java.awt.Dimension(500, 100));
+        panel_botones.setLayout(new java.awt.GridLayout(2, 0));
 
         jPanel6.setLayout(new java.awt.GridLayout(1, 3));
 
@@ -190,28 +288,39 @@ public class VPagosXOtros extends VistaExtendida {
         btn_eliminar.setText("Eliminar");
         jPanel6.add(btn_eliminar);
 
-        jPanel7.add(jPanel6);
+        panel_botones.add(jPanel6);
 
         btn_cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
         btn_cancelar.setText("Cancelar");
-        jPanel7.add(btn_cancelar);
+        panel_botones.add(btn_cancelar);
 
-        jPanel1.add(jPanel7, java.awt.BorderLayout.SOUTH);
+        panel_der.add(panel_botones, java.awt.BorderLayout.SOUTH);
 
-        add(jPanel1, java.awt.BorderLayout.CENTER);
+        add(panel_der, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel JL;
+    private javax.swing.JButton boton_add_doc;
+    private javax.swing.JButton boton_docs_add;
     private javax.swing.JButton btn_actualizar;
     private javax.swing.JButton btn_cancelar;
     private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_guardar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
+    private javax.swing.JComboBox<Integer> campo_año;
+    private javax.swing.JTextArea campo_des;
+    private javax.swing.JComboBox<Integer> campo_dia;
+    private javax.swing.JComboBox<String> campo_mes;
+    private javax.swing.JFormattedTextField campo_monto;
+    private javax.swing.JTextField campo_motivo;
+    private javax.swing.JCheckBox cb_fecha_limite;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -222,7 +331,58 @@ public class VPagosXOtros extends VistaExtendida {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPanel panel_botones;
+    private javax.swing.JPanel panel_campos;
+    private javax.swing.JPanel panel_der;
+    private javax.swing.JPanel panel_izq;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void evtGuardar() {
+
+    }
+
+    @Override
+    public void evtActualizar() {
+    }
+
+    @Override
+    public void evtEliminar() {
+    }
+
+    @Override
+    public void evtBuscar() {
+    }
+
+    @Override
+    public void evtCancelar() {
+    }
+
+    @Override
+    public String[] getInfo(boolean actualizacion) {
+        String motivo = campo_motivo.getText();
+        String monto = campo_monto.getText();
+        String des = campo_des.getText();
+        LocalDate fh_inicio = LocalDate.now();
+        LocalDate fh_fin;
+        if (cb_fecha_limite.isSelected()) {
+            fh_fin = LocalDate.of(campo_dia.getItemAt(campo_dia.getSelectedIndex()),
+                    Fecha.getIndexMes(campo_mes.getItemAt(campo_dia.getSelectedIndex())),
+                    campo_año.getItemAt(campo_año.getSelectedIndex()));
+        }
+        return new String[]{
+            motivo, monto, des
+        };
+    }
+
+    @Override
+    public boolean camposValidos() {
+        if (Filtros.isNullOrBlank(campo_motivo.getText(), campo_monto.getText())) {
+            return false;
+        }
+        if (Filtros.soloNumerosDecimales(campo_monto.getText())) {
+
+        }
+        return true;
+    }
 }

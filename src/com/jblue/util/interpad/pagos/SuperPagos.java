@@ -19,7 +19,7 @@ package com.jblue.util.interpad.pagos;
 import com.jblue.modelo.envoltorios.Operaciones;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.modelo.objetos.sucls.OPagos;
+import com.jblue.util.bd.OPagos;
 import java.util.HashMap;
 import java.util.Map;
 

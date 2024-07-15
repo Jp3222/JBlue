@@ -5,7 +5,7 @@
 package com.jblue.util.cache;
 
 import com.jblue.modelo.envoltorios.Operaciones;
-import com.jblue.modelo.objetos.sucls.Objeto;
+import com.jblue.util.bd.Objeto;
 import com.jutil.jbd.conexion.Conexion;
 import java.sql.ResultSet;
 import java.sql.SQLException;

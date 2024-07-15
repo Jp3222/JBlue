@@ -79,7 +79,7 @@ public abstract class Movimientos {
         String fecha = Fecha.getNewFechaActualString();
         String hora = Hora.getHoraActualStr();
         //
-        Operaciones op = new Operaciones(ConstBD.TABLAS[4], ConstBD.BD_HISTORIAL_MOVIMIENTOS);
+        Operaciones op = new Operaciones(ConstBD.TABLAS[4], ConstBD.TABLA_HISTORIAL_MOVIMIENTOS);
         String[] valores = {user, mov, fecha, hora};
         return op.insertar(valores, null);
     }

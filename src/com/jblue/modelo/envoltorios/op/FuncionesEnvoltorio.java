@@ -4,26 +4,14 @@
  */
 package com.jblue.modelo.envoltorios.op;
 
-import com.jblue.modelo.ConstBD;
-import com.jblue.modelo.objetos.OCalles;
-import com.jblue.modelo.objetos.OHisMovimientos;
-import com.jblue.modelo.objetos.OPagosOtros;
-import com.jblue.modelo.objetos.OPagosRecargos;
-import com.jblue.modelo.objetos.OPagosServicio;
-import com.jblue.modelo.objetos.OPersonal;
-import com.jblue.modelo.objetos.OTipoTomas;
-import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.modelo.objetos.OValores;
 import com.jblue.modelo.objetos.Objetos;
-import com.jblue.modelo.objetos.sucls.Objeto;
+import com.jblue.util.bd.Objeto;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,23 +25,13 @@ public abstract class FuncionesEnvoltorio {
     protected final String TABLA;
     protected final String[] CAMPOS;
     protected final int NO_CAMPOS;
-    private final Map<String, Objeto> map;
 
     public FuncionesEnvoltorio(String tabla, String[] campos) {
         this.CONEXION = Conexion.getInstancia();
         this.TABLA = tabla;
         this.CAMPOS = campos;
         this.NO_CAMPOS = campos.length;
-        map = new HashMap<>(10);
-        map.put(ConstBD.TABLAS[0], new OPersonal());
-        map.put(ConstBD.TABLAS[1], new OUsuarios());
-        map.put(ConstBD.TABLAS[2], new OCalles());
-        map.put(ConstBD.TABLAS[3], new OTipoTomas());
-        map.put(ConstBD.TABLAS[4], new OHisMovimientos());
-        map.put(ConstBD.TABLAS[6], new OPagosServicio());
-        map.put(ConstBD.TABLAS[7], new OPagosRecargos());
-        map.put(ConstBD.TABLAS[8], new OPagosOtros());
-        map.put(ConstBD.TABLAS[9], new OValores());
+
     }
 
     /**
@@ -174,16 +152,13 @@ public abstract class FuncionesEnvoltorio {
         if (get == null || tabla == null || campos == null) {
             throw new NullPointerException("Alguno de los parametros es null");
         }
-        ArrayList<T> o = null;
-
-        o = runWhile((T) map.get(tabla), get, campos);
-
+        ArrayList<T> o = runWhile(get, campos);
         return o;
     }
 
-    private <T extends Objeto> ArrayList<T> runWhile(T o, ResultSet rs, String[] campos) {
+    private <T extends Objeto> ArrayList<T> runWhile(ResultSet rs, String[] campos) {
         ArrayList<T> lista = new ArrayList<>();
-        try {
+        try (rs) {
             while (rs.next()) {
                 String[] info = runFor(rs, campos);
                 lista.add((T) Objetos.getObjeto(TABLA, info));

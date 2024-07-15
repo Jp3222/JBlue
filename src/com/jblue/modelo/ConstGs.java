@@ -25,17 +25,17 @@ package com.jblue.modelo;
  */
 public abstract class ConstGs {
 
-    public static final String NOMBRE = "Nombre";
-    public static final String ID = "ID";
-    public static final String AP = "A. Paterno";
-    public static final String AM = "A. Materno";
-    public static final String USUARIO = "Usuario";
-    public static final String PERSONAL = "Personal";
-    public static final String MONTO = "Monto";
-    public static final String REGISTRO = "Registro";
-    public static final String DIA = "Dia";
-    public static final String MES = "Mes";
-    public static final String ANIO = "Año";
+    private static final String NOMBRE = "Nombre";
+    private static final String ID = "ID";
+    private static final String AP = "A. Paterno";
+    private static final String AM = "A. Materno";
+    private static final String USUARIO = "Usuario";
+    private static final String PERSONAL = "Personal";
+    private static final String MONTO = "Monto";
+    private static final String REGISTRO = "Registro";
+    private static final String DIA = "Dia";
+    private static final String MES = "Mes";
+    private static final String ANIO = "Año";
     private static final String MES_PAGADO = "Mes Pagado";
 
     /**
@@ -49,7 +49,7 @@ public abstract class ConstGs {
      * <br> 8 estado
      * <br> 9 titular
      */
-    public static final String[] BD_USUARIOS = {
+    public static final String[] TABLA_USUARIOS = {
         ID, NOMBRE, AP, AM, "Calle", "No de Casa", "T. Toma", REGISTRO, "Estado", "Titular", "Codigo"
     };
 
@@ -60,17 +60,17 @@ public abstract class ConstGs {
      * <br> 3 costo
      * <br> 4 recargo
      */
-    public static final String[] BD_TIPOS_DE_TOMAS = {
+    public static final String[] TABLA_TIPOS_DE_TOMAS = {
         ID, "tipo", "costo", "recargo"
     };
 
     /**
-     *
+     * s
      * <br> 1 id
      * <br> 2 nombre
      * <br> 3 numero
      */
-    public static final String[] BD_CALLES = {
+    public static final String[] TABLA_CALLES = {
         ID, NOMBRE, "numero"
     };
 
@@ -86,8 +86,8 @@ public abstract class ConstGs {
      * <br> 8 estado
      * <br> 9 permisos
      */
-    public static final String[] BD_PERSONAL = {
-        ID, NOMBRE, "apellidos", "cargo", USUARIO, "contra", REGISTRO, "estado", "permisos", "periodo"
+    public static final String[] TABLA_PERSONAL = {
+        ID, NOMBRE, "apellidos", "cargo", USUARIO, "contra", REGISTRO, "estado", "permisos", "Fecha de Inicio", "Fecha de Fin"
     };
 
     /**
@@ -98,7 +98,7 @@ public abstract class ConstGs {
      * <br> 4 fecha
      * <br> 5 hora
      */
-    public static final String[] BD_HISTORIAL_MOVIMIENTOS = {
+    public static final String[] TABLA_HISTORIAL_DE_MOVIMIENTOS = {
         ID, PERSONAL, "movimiento", "fecha", "hora"
     };
 
@@ -108,7 +108,7 @@ public abstract class ConstGs {
      * <br> 2 movimiento
      * <br> 3 descripcion
      */
-    public static final String[] BD_MOVIMIENTOS = {
+    public static final String[] TABLA_MOVIMIENTOS = {
         ID, "movimiento", "descripcion"
     };
 
@@ -123,7 +123,7 @@ public abstract class ConstGs {
      * <br> 7 mes
      * <br> 8 año
      */
-    public static final String[] BD_PAGOS_X_SERVICIO = {
+    public static final String[] TABLA_PAGOS_X_SERVICIO = {
         ID, PERSONAL, USUARIO, MES_PAGADO, MONTO, DIA, MES, ANIO
     };
 
@@ -139,7 +139,7 @@ public abstract class ConstGs {
      * <br> 8 mes
      * <br> 9 año
      */
-    public static final String[] BD_PAGOS_X_RECARGO = {
+    public static final String[] TABLA_PAGOS_X_RECARGO = {
         ID, PERSONAL, USUARIO, MES_PAGADO, MONTO, "Estado", DIA, MES, ANIO
     };
 
@@ -155,7 +155,7 @@ public abstract class ConstGs {
      * <br> 8 mes
      * <br> 9 año
      */
-    public static final String[] BD_PAGOS_X_OTROS = {
+    public static final String[] TABLA_PAGOS_X_OTROS = {
         ID, PERSONAL, USUARIO, MONTO, "Motivo", "Descripcion", DIA, MES, ANIO
     };
 
@@ -167,7 +167,7 @@ public abstract class ConstGs {
      * <br> 4 monto
      * <br> 5 url_notas
      */
-    public static final String[] BD_PAGOS_X_OTROS_TIPOS = {
+    public static final String[] TABLA_PAGOS_X_OTROS_TIPOS = {
         ID, "motivo", "descripcion", MONTO, "url_notas"
     };
 
@@ -198,15 +198,15 @@ public abstract class ConstGs {
     };
 
     public static final String[][] CAMPOS = {
-        BD_PERSONAL,
-        BD_USUARIOS,
-        BD_CALLES,
-        BD_TIPOS_DE_TOMAS,
-        BD_HISTORIAL_MOVIMIENTOS,
-        BD_MOVIMIENTOS,
-        BD_PAGOS_X_SERVICIO,
-        BD_PAGOS_X_RECARGO,
-        BD_PAGOS_X_OTROS
+        TABLA_PERSONAL,
+        TABLA_USUARIOS,
+        TABLA_CALLES,
+        TABLA_TIPOS_DE_TOMAS,
+        TABLA_HISTORIAL_DE_MOVIMIENTOS,
+        TABLA_MOVIMIENTOS,
+        TABLA_PAGOS_X_SERVICIO,
+        TABLA_PAGOS_X_RECARGO,
+        TABLA_PAGOS_X_OTROS
     };
 
     private ConstGs() {

@@ -4,7 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.modelo.objetos.sucls.OPagos;
+import com.jblue.util.bd.OPagos;
 
 /**
  *

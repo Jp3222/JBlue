@@ -16,7 +16,7 @@
  */
 package com.jblue.sistema;
 
-import com.jblue.modelo.envoltorios.Operaciones;
+import com.jblue.modelo.bdconexion.Operaciones;
 import com.jblue.modelo.objetos.OValores;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;

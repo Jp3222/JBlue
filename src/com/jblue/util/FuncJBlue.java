@@ -17,7 +17,8 @@
 package com.jblue.util;
 
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.util.bd.Objeto;
+import com.jblue.util.modelo.objetos.Objeto;
+import com.jutil.swingw.modelos.TableModel;
 import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.AbstractTableModel;
 
 /**
  *
@@ -152,14 +153,13 @@ public abstract class FuncJBlue {
         }
     }
 
-    public static <T extends Objeto> void pintarTabla(DefaultTableModel modelo, List<T> lista) {
+    public static <T extends Objeto> void pintarTabla(AbstractTableModel modelo, List<T> lista) {
+        TableModel model = (TableModel) modelo;
         if (modelo.getRowCount() > 0) {
-            while (modelo.getRowCount() > 0) {
-                modelo.removeRow(0);
-            }
+            model.removeAllRows();
         }
         for (Objeto i : lista) {
-            modelo.addRow(i.getInfoSinFK());
+            model.addRow(i.getInfoSinFK());
         }
     }
 

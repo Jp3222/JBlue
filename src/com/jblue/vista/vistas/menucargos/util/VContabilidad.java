@@ -71,14 +71,14 @@ public class VContabilidad extends javax.swing.JPanel {
         jPanel10 = new javax.swing.JPanel();
 
         setPreferredSize(new java.awt.Dimension(950, 600));
-        setLayout(new java.awt.GridLayout(10, 1));
+        setLayout(new java.awt.GridLayout(12, 1));
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setText("Saldo del dia acumulado: ");
         jLabel1.setToolTipText("");
         jLabel1.setPreferredSize(new java.awt.Dimension(200, 19));
-        jPanel1.add(jLabel1, java.awt.BorderLayout.CENTER);
+        jPanel1.add(jLabel1, java.awt.BorderLayout.WEST);
 
         dia.setEditable(false);
         jPanel1.add(dia, java.awt.BorderLayout.CENTER);
@@ -90,7 +90,7 @@ public class VContabilidad extends javax.swing.JPanel {
         jLabel2.setText("Saldo del mes acumulado: ");
         jLabel2.setToolTipText("");
         jLabel2.setPreferredSize(new java.awt.Dimension(200, 19));
-        jPanel2.add(jLabel2, java.awt.BorderLayout.CENTER);
+        jPanel2.add(jLabel2, java.awt.BorderLayout.WEST);
 
         mes.setEditable(false);
         jPanel2.add(mes, java.awt.BorderLayout.CENTER);
@@ -102,7 +102,7 @@ public class VContabilidad extends javax.swing.JPanel {
         jLabel3.setText("Saldo del año acumulado: ");
         jLabel3.setToolTipText("");
         jLabel3.setPreferredSize(new java.awt.Dimension(200, 19));
-        jPanel3.add(jLabel3, java.awt.BorderLayout.CENTER);
+        jPanel3.add(jLabel3, java.awt.BorderLayout.WEST);
 
         año.setEditable(false);
         jPanel3.add(año, java.awt.BorderLayout.CENTER);
@@ -179,7 +179,7 @@ public class VContabilidad extends javax.swing.JPanel {
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 71, Short.MAX_VALUE)
+            .addGap(0, 59, Short.MAX_VALUE)
         );
 
         add(jPanel10);

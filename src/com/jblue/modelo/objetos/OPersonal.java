@@ -4,7 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.bd.Objeto;
+import com.jblue.util.modelo.objetos.Objeto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.sql.Date;

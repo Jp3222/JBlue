@@ -16,7 +16,6 @@
  */
 package com.jblue.vista.vistas.menuprincipal.sub;
 
-import com.jblue.util.mg.ModeloTablas;
 import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.util.Filtros;
@@ -25,6 +24,7 @@ import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.vista.marco.vistas.VistaSimple;
 import com.jblue.vista.vistas.menuprincipal.VCobros;
+import com.jutil.swingw.modelos.TableModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,8 +48,8 @@ public final class VCCobros extends VistaSimple {
         memo_cache.cargar();
         cache = memo_cache.getLista();
         cache_aux = new ArrayList<>(cache.size());
-        modelo = new ModeloTablas(ConstGs.TABLA_PAGOS_X_SERVICIO);
-        modelo.setAllCellEditable(false);
+        modelo = new TableModel(ConstGs.TABLA_PAGOS_X_SERVICIO, 0);
+        modelo.setCellsEditables(false);
         initComponents();
         jTable2.setModel(modelo);
         llamable();
@@ -80,6 +80,13 @@ public final class VCCobros extends VistaSimple {
         jPanel4 = new javax.swing.JPanel();
         jCheckBox1 = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
         panel_tabla = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btn_rec = new javax.swing.JButton();
@@ -110,6 +117,30 @@ public final class VCCobros extends VistaSimple {
         jPanel4.add(jButton1, java.awt.BorderLayout.LINE_END);
 
         panel_filtros.add(jPanel4, java.awt.BorderLayout.NORTH);
+
+        jPanel1.setLayout(new java.awt.GridLayout(1, 4));
+
+        jPanel5.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setText("Fecha de inicio.");
+        jPanel5.add(jLabel1, java.awt.BorderLayout.NORTH);
+
+        jPanel1.add(jPanel5);
+
+        jPanel7.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setText("Fecha de fin.");
+        jPanel7.add(jLabel2, java.awt.BorderLayout.NORTH);
+
+        jPanel1.add(jPanel7);
+
+        jPanel8.setLayout(new java.awt.BorderLayout());
+        jPanel1.add(jPanel8);
+
+        jPanel6.setLayout(new java.awt.BorderLayout());
+        jPanel1.add(jPanel6);
+
+        panel_filtros.add(jPanel1, java.awt.BorderLayout.CENTER);
 
         add(panel_filtros, java.awt.BorderLayout.NORTH);
 
@@ -229,7 +260,7 @@ public final class VCCobros extends VistaSimple {
         if (aFlag) {
             FuncJBlue.pintarTabla(modelo, memo_cache.getLista());
         } else {
-            modelo.clear();
+            modelo.removeAllRows();
         }
     }
 
@@ -241,9 +272,16 @@ public final class VCCobros extends VistaSimple {
     private javax.swing.JTextField filtro_buscador;
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable2;
     private javax.swing.JPanel panel_filtros;
@@ -253,5 +291,5 @@ public final class VCCobros extends VistaSimple {
     private final MemoCache<OPagosServicio> memo_cache;
     private final ArrayList<OPagosServicio> cache;
     private final ArrayList<OPagosServicio> cache_aux;
-    private final ModeloTablas modelo;
+    private final TableModel modelo;
 }

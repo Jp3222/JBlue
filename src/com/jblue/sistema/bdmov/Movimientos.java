@@ -5,7 +5,7 @@
 package com.jblue.sistema.bdmov;
 
 import com.jblue.modelo.ConstBD;
-import com.jblue.modelo.envoltorios.Operaciones;
+import com.jblue.modelo.bdconexion.Operaciones;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.util.tiempo.Hora;
@@ -81,6 +81,6 @@ public abstract class Movimientos {
         //
         Operaciones op = new Operaciones(ConstBD.TABLAS[4], ConstBD.TABLA_HISTORIAL_MOVIMIENTOS);
         String[] valores = {user, mov, fecha, hora};
-        return op.insertar(valores, null);
+        return op.insertar(valores);
     }
 }

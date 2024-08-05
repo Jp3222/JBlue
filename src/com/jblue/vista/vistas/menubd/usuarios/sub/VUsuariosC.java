@@ -16,29 +16,26 @@
  */
 package com.jblue.vista.vistas.menubd.usuarios.sub;
 
-import com.jblue.util.mg.ModeloTablas;
+import com.jutil.swingw.modelos.TableModel;
 import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.util.bd.Objeto;
+import com.jblue.util.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
 import com.jblue.util.FuncJBlue;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.vista.marco.vistas.VistaSimple;
-import com.jblue.vista.componentes.CBarraEstado;
 import com.jblue.vista.vistas.menubd.usuarios.VUsuarios;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Predicate;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.AbstractTableModel;
 
 /**
  *
@@ -46,7 +43,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VUsuariosC extends VistaSimple {
 
-    private final ModeloTablas modelo_tabla;
+    private final TableModel modelo_tabla;
 
     /**
      * Creates new form VUsuariosC
@@ -55,13 +52,11 @@ public class VUsuariosC extends VistaSimple {
      */
     public VUsuariosC(VUsuarios root) {
         initComponents();
-        barra_estado = new CBarraEstado();
         memoria_cache = root.getMemo_cache();
         cache = memoria_cache.getLista();
-        cache_aux = new ArrayList<>(cache.size());
         mapa_filtros = new HashMap<>();
-        modelo_tabla = new ModeloTablas(ConstGs.TABLA_USUARIOS);
-        modelo_tabla.setAllCellEditable(false);
+        modelo_tabla = new TableModel(ConstGs.TABLA_USUARIOS, 0);
+        modelo_tabla.setCellsEditables(false);
         componentes_filtros = new JComponent[]{
             filtro_calle,
             filtro_toma,
@@ -86,43 +81,89 @@ public class VUsuariosC extends VistaSimple {
     @Override
     protected void componentesEstadoFinal() {
         tabla_usuarios.setModel(modelo_tabla);
+
         mapa_filtros.put(filtro_calle.getName(), (t) -> {
-            return activar_filtros.isSelected()
-                    && filtro_calle.getItemAt(filtro_calle.getSelectedIndex()).getId().equals(t.getCalle());
+            return filtroCBXValido(filtro_calle)
+                    ? filtro_calle.getItemAt(filtro_calle.getSelectedIndex()).getId().equals(t.getCalle()) : true;
+        });
+
+        mapa_filtros.put(filtro_toma.getName(), t -> {
+            return filtroCBXValido(filtro_toma)
+                    ? filtro_toma.getItemAt(filtro_toma.getSelectedIndex()).getId().equals(t.getToma()) : true;
+        });
+
+        mapa_filtros.put(filtro_estado.getName(), t -> {
+            if (!filtroCBXValido(filtro_estado)) {
+                return true;
+            }
+            String estado = switch (filtro_estado.getItemAt(filtro_estado.getSelectedIndex())) {
+                case "ACTIVO":
+                    yield "1";
+                case "INACTIVO":
+                    yield "-1";
+                default:
+                    yield "0";
+            };
+            return String.valueOf(t.getEstado()).equals(estado);
+        });
+
+        mapa_filtros.put(filtro_is_titular.getName(), t -> {
+            if (!filtros.isSelected()) {
+                return true;
+            }
+            if (filtro_is_titular.isSelected()) {
+                return t.isTitular();
+            } else if (filtro_is_consumidor.isSelected()) {
+                return !t.isTitular();
+            }
+            return true;
+        });
+
+        mapa_filtros.put(buscador_tabla.getName(), (t) -> {
+            return Filtros.isNullOrBlank(buscador_tabla.getText())
+                    ? true : Filtros.limpiar(t.getStringR()).contains(Filtros.limpiar(buscador_tabla.getText()));
+
         });
     }
 
     @Override
     public void componentesEstadoInicial() {
-        activar_filtros.setSelected(false);
+        filtros.setSelected(false);
         FuncJBlue.habilitarComponentes(false, componentes_filtros);
     }
 
     @Override
     protected void manejoEventos() {
-        activar_filtros.addItemListener((i) -> FuncJBlue.habilitarComponentes(activar_filtros.isSelected(), componentes_filtros));
+        filtros.addItemListener((i) -> FuncJBlue.habilitarComponentes(filtros.isSelected(), componentes_filtros));
         filtro_quitar.addActionListener(e -> FuncJBlue.habilitarComponentes(false, componentes_filtros));
         recargar.addActionListener(e -> recargarTabla());
-        siguiente.addActionListener(e -> sigTabla());
-        anterior.addActionListener(e -> antTabla());
+        filtro_calle.addItemListener(e -> buscador());
+        filtro_toma.addItemListener(e -> buscador());
+        filtro_estado.addItemListener(e -> buscador());
+        filtro_is_titular.addItemListener(e -> {
+            if (filtro_is_consumidor.isSelected()) {
+                filtro_is_consumidor.setSelected(false);
+            }
+        });
+        filtro_is_consumidor.addItemListener(e -> {
+            if (filtro_is_titular.isSelected()) {
+                filtro_is_titular.setSelected(false);
+            }
+        });
+        //filtro_is_titular.addItemListener(e -> buscador());
+        //filtro_is_consumidor.addItemListener(e -> buscador());
     }
 
     private void recargarTabla() {
-        if (!modelo_tabla.isDataEmpty()) {
-            modelo_tabla.clear();
+        if (modelo_tabla.getRowCount() > 0) {
+            modelo_tabla.removeAllRows();
         }
         buscador_tabla.setText(null);
         pintarTabla(modelo_tabla, cache);
     }
 
-    private void antTabla() {
-    }
-
-    private void sigTabla() {
-    }
-
-    private boolean comboBoxValido(JComboBox o) {
-        return o.getSelectedIndex() > 0;
+    private boolean filtroCBXValido(JComboBox o) {
+        return filtros.isSelected() && o.getSelectedIndex() > 0;
     }
 
     /**
@@ -137,7 +178,7 @@ public class VUsuariosC extends VistaSimple {
         panel_filtros = new javax.swing.JPanel();
         pf_bar_super = new javax.swing.JPanel();
         filtro_quitar = new javax.swing.JButton();
-        activar_filtros = new javax.swing.JCheckBox();
+        filtros = new javax.swing.JCheckBox();
         pf_filtros = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
         jPanel25 = new javax.swing.JPanel();
@@ -179,8 +220,8 @@ public class VUsuariosC extends VistaSimple {
         filtro_quitar.setPreferredSize(new java.awt.Dimension(150, 29));
         pf_bar_super.add(filtro_quitar, java.awt.BorderLayout.LINE_END);
 
-        activar_filtros.setText("Filtros");
-        pf_bar_super.add(activar_filtros, java.awt.BorderLayout.CENTER);
+        filtros.setText("Filtros");
+        pf_bar_super.add(filtros, java.awt.BorderLayout.CENTER);
 
         panel_filtros.add(pf_bar_super, java.awt.BorderLayout.NORTH);
 
@@ -266,6 +307,7 @@ public class VUsuariosC extends VistaSimple {
         jPanel30.setPreferredSize(new java.awt.Dimension(980, 35));
         jPanel30.setLayout(new java.awt.BorderLayout());
 
+        buscador_tabla.setName("buscador"); // NOI18N
         buscador_tabla.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 buscador_tablaKeyReleased(evt);
@@ -277,11 +319,6 @@ public class VUsuariosC extends VistaSimple {
 
         anterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
         anterior.setPreferredSize(new java.awt.Dimension(100, 40));
-        anterior.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                anteriorActionPerformed(evt);
-            }
-        });
         jPanel23.add(anterior, java.awt.BorderLayout.WEST);
 
         siguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
@@ -314,28 +351,29 @@ public class VUsuariosC extends VistaSimple {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buscador_tablaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscador_tablaKeyReleased
-        txt_buscado = buscador_tabla.getText();
-        buscador(txt_buscado);
+
+        buscador();
+
     }//GEN-LAST:event_buscador_tablaKeyReleased
 
-    private void anteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anteriorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_anteriorActionPerformed
-
-    private void buscador(String buscado) {
-        List<OUsuarios> toList = cache.stream()
-                .filter((t) -> Filtros.limpiar(t.getStringR()).contains(Filtros.limpiar(buscado)))
+    private void buscador() {
+        List<OUsuarios> toList;
+        toList = cache.stream()
+                .filter(mapa_filtros.get(filtro_calle.getName()))
+                .filter(mapa_filtros.get(filtro_toma.getName()))
+                .filter(mapa_filtros.get(filtro_estado.getName()))
+                .filter(mapa_filtros.get(buscador_tabla.getName()))
                 .toList();
-        if (!modelo_tabla.isDataEmpty()) {
-            modelo_tabla.clear();
+        if (modelo_tabla.getRowCount() > 0) {
+            modelo_tabla.removeAllRows();
         }
-        for (OUsuarios i : toList) {
-            modelo_tabla.addRow(i.getInfoSinFK());
-        }
+        toList.stream().forEach((t) -> {
+            modelo_tabla.addRow(t.getInfoSinFK());
+        });
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox activar_filtros;
     private javax.swing.JButton anterior;
     private javax.swing.JTextField buscador_tabla;
     private javax.swing.JTextField filtro_Titular;
@@ -345,6 +383,7 @@ public class VUsuariosC extends VistaSimple {
     private javax.swing.JCheckBox filtro_is_titular;
     private javax.swing.JButton filtro_quitar;
     private javax.swing.JComboBox<OTipoTomas> filtro_toma;
+    private javax.swing.JCheckBox filtros;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel15;
@@ -367,12 +406,10 @@ public class VUsuariosC extends VistaSimple {
     private javax.swing.JButton siguiente;
     private javax.swing.JTable tabla_usuarios;
     // End of variables declaration//GEN-END:variables
-    private final CBarraEstado barra_estado;
+
     private final MemoCache<OUsuarios> memoria_cache;
     private final ArrayList<OUsuarios> cache;
-    private final ArrayList<OUsuarios> cache_aux;
     private final JComponent[] componentes_filtros;
-    private String txt_buscado;
     private final Map<String, Predicate<OUsuarios>> mapa_filtros;
 
     @Override
@@ -383,17 +420,12 @@ public class VUsuariosC extends VistaSimple {
             pintarTabla(modelo_tabla, cache);
         } else {
             quitarFiltros();
-            modelo_tabla.clear();
+            modelo_tabla.removeAllRows();
         }
     }
 
-    private void filtrarLista() {
-        while (modelo_tabla.getRowCount() > 0) {
-            modelo_tabla.removeRow(0);
-        }
-    }
-
-    private void pintarTabla(DefaultTableModel modelo, ArrayList<OUsuarios> lista) {
+    private void pintarTabla(AbstractTableModel model, List<OUsuarios> lista) {
+        TableModel modelo = (TableModel) model;
         if (modelo.getRowCount() <= 0) {
             while (modelo.getRowCount() > 0) {
                 modelo.removeRow(0);

@@ -4,8 +4,8 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.modelo.envoltorios.Operaciones;
-import com.jblue.util.bd.Objeto;
+import com.jblue.modelo.bdconexion.Operaciones;
+import com.jblue.util.modelo.objetos.Objeto;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 import java.util.logging.Level;

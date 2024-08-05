@@ -18,7 +18,6 @@ package com.jblue.controlador;
 
 import com.jblue.modelo.ConstBD;
 import com.jblue.sistema.Sistema;
-import com.jblue.util.Filtros;
 import com.jblue.util.tiempo.Fecha;
 import com.jutil.jbd.conexion.Conexion;
 import java.sql.ResultSet;

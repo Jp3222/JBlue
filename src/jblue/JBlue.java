@@ -34,7 +34,7 @@ public class JBlue {
 
                     System.out.println(s._CargarArchivos()
                             ? ConstSisMen.MEN_ARCHIVOS_OK : ConstSisMen.MEN_ARCHIVOS_ERR);
-                    
+
                     System.out.println(s._ConexionBD()
                             ? ConstSisMen.MEN_CONEXION_BD_OK : ConstSisMen.MEN_CONEXION_BD_ERR);
 

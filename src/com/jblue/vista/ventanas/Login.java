@@ -4,7 +4,7 @@
  */
 package com.jblue.vista.ventanas;
 
-import com.jblue.modelo.envoltorios.Operaciones;
+import com.jblue.modelo.bdconexion.Operaciones;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.sistema.ConstSisMen;
 import com.jblue.sistema.Sesion;

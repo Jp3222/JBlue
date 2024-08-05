@@ -19,7 +19,7 @@ package com.jblue.vista.componentes;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.util.bd.Objeto;
+import com.jblue.util.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
 import com.jblue.util.cache.FabricaCache;
 import java.awt.event.ActionEvent;

@@ -16,7 +16,6 @@
  */
 package com.jblue.vista.vistas.menubd;
 
-import com.jblue.util.mg.ModeloTablas;
 import com.jblue.modelo.ConstGs;
 import com.jblue.sistema.app.AppFiles;
 import com.jblue.util.Filtros;
@@ -25,6 +24,7 @@ import com.jblue.vista.componentes.CSelectorDeArchivos;
 import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
 import com.jblue.vista.marco.vistas.VistaExtendida;
 import com.jutil.jexception.Excp;
+import com.jutil.swingw.modelos.TableModel;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,7 +40,7 @@ import javax.swing.text.NumberFormatter;
  */
 public class VPagosXOtros extends VistaExtendida implements EvtRegistrosBD {
 
-    private final ModeloTablas modelo;
+    private final TableModel modelo;
 
     /**
      * Creates new form VPagosXOtros
@@ -48,7 +48,7 @@ public class VPagosXOtros extends VistaExtendida implements EvtRegistrosBD {
     public VPagosXOtros() {
         initComponents();
 
-        modelo = new ModeloTablas(ConstGs.TABLA_PAGOS_X_OTROS_TIPOS);
+        modelo = new TableModel(ConstGs.TABLA_PAGOS_X_OTROS_TIPOS, 0);
         jTable1.setModel(modelo);
 
         llamable();

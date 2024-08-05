@@ -17,17 +17,17 @@
 package com.jblue.vista.vistas.menucargos.util;
 
 import com.jblue.modelo.ConstGs;
-import com.jblue.modelo.envoltorios.Operaciones;
+import com.jblue.modelo.bdconexion.Operaciones;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.util.Filtros;
 import com.jblue.util.cache.FabricaCache;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jblue.util.cache.MemoCache;
 import com.jblue.util.crypto.EncriptadoAES;
-import com.jblue.util.mg.ModeloTablas;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.vista.marco.vistas.VistaSimple;
 import com.jblue.vista.vistas.menucargos.VAdministrador;
+import com.jutil.swingw.modelos.TableModel;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -89,7 +89,7 @@ public class VPersonal extends VistaSimple {
 
         this.memo_cache_2 = padre.getMemo_cache();
         cache_2 = memo_cache.getLista();
-        modelo_tabla_2 = new ModeloTablas(ConstGs.TABLA_PERSONAL);
+        modelo_tabla_2 = new TableModel(ConstGs.TABLA_PERSONAL, 0);
         jTable1.setModel(modelo_tabla_2);
     }
 
@@ -686,7 +686,7 @@ public class VPersonal extends VistaSimple {
 
         Operaciones<OPersonal> personal = FabricaOpraciones.getPERSONAL();
         String[] o = _guardar();
-        
+
         personal.insertar(o);
         componentesEstadoInicial();
         FabricaCache.MC_PERSONAL.actualizar();
@@ -1010,7 +1010,7 @@ public class VPersonal extends VistaSimple {
     }
 
     private void _actualizarTabla() {
-        modelo_tabla_2.clear();
+        modelo_tabla_2.removeAllRows();
         _cargarTabla();
     }
 
@@ -1028,6 +1028,6 @@ public class VPersonal extends VistaSimple {
 
     private final MemoCache<OPersonal> memo_cache_2;
     private final ArrayList<OPersonal> cache_2;
-    private final ModeloTablas modelo_tabla_2;
+    private final TableModel modelo_tabla_2;
 
 }

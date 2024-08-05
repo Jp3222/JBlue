@@ -17,7 +17,8 @@
 package com.jblue.modelo.objetos;
 
 import com.jblue.modelo.ConstBD;
-import com.jblue.util.bd.Objeto;
+import com.jblue.util.modelo.objetos.Objeto;
+import com.jutil.jexception.Excp;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -48,7 +49,7 @@ public class Objetos {
         try {
             o = (Objeto) map.get(nombre).clone();
         } catch (CloneNotSupportedException ex) {
-            Logger.getLogger(Objetos.class.getName()).log(Level.SEVERE, null, ex);
+            Excp.impTerminal(ex, Object.class, true);
         }
         o.setInfo(info);
         return o;

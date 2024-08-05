@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.jblue.vista.vistas.menubd.usuarios.sub;
-import com.jblue.modelo.envoltorios.Operaciones;
-import com.jblue.modelo.envoltorios.env.EnvUsuario;
+import com.jblue.modelo.bdconexion.Operaciones;
+import com.jblue.modelo.bdconexion.env.EnvUsuario;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.util.bd.Objeto;
+import com.jblue.util.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
 import com.jblue.util.FormatoBD;
 import com.jblue.util.FuncJBlueBD;

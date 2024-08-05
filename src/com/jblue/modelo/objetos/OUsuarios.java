@@ -4,8 +4,8 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.bd.Objeto;
-import com.jblue.modelo.envoltorios.env.EnvUsuario;
+import com.jblue.util.modelo.objetos.Objeto;
+import com.jblue.modelo.bdconexion.env.EnvUsuario;
 
 /**
  *
@@ -185,6 +185,11 @@ public class OUsuarios extends Objeto {
         sb.append(getAp()).append(" ");
         sb.append(getAm());
         return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return StringRepresentacion();
     }
 
 }

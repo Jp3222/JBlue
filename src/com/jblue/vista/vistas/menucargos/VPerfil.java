@@ -16,8 +16,8 @@
  */
 package com.jblue.vista.vistas.menucargos;
 
-import com.jblue.modelo.envoltorios.Operaciones;
-import com.jblue.modelo.envoltorios.env.EnvPersonal;
+import com.jblue.modelo.bdconexion.Operaciones;
+import com.jblue.modelo.bdconexion.env.EnvPersonal;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.sistema.Sesion;
 import com.jblue.util.Filtros;

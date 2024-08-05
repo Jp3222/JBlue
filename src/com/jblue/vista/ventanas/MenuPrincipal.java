@@ -4,9 +4,10 @@
  */
 package com.jblue.vista.ventanas;
 
-import com.jblue.modelo.envoltorios.env.EnvPersonal;
+import com.jblue.modelo.bdconexion.env.EnvPersonal;
 import com.jblue.sistema.Sesion;
 import com.jblue.util.cache.FabricaCache;
+import com.jblue.vista.componentes.CRecuperarContraseña;
 import com.jblue.vista.marco.contruccion.ConstTitutlos;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
 import com.jblue.vista.ventanas.herramientas.MenuCVSExport;
@@ -197,6 +198,7 @@ public class MenuPrincipal extends VentanaSimple {
         menu_herramientas = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         item_comprobantes = new javax.swing.JMenuItem();
         item_dir = new javax.swing.JMenuItem();
@@ -307,6 +309,14 @@ public class MenuPrincipal extends VentanaSimple {
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/desbloquear.png"))); // NOI18N
         jMenuItem3.setText("Desbloquear Caja");
         menu_herramientas.add(jMenuItem3);
+
+        jMenuItem4.setText("Recuperar");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        menu_herramientas.add(jMenuItem4);
 
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/confidencial.png"))); // NOI18N
         jMenu3.setText("Docs");
@@ -459,6 +469,10 @@ public class MenuPrincipal extends VentanaSimple {
         // TODO add your handling code here:
     }//GEN-LAST:event_item_tesoreroActionPerformed
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        new CRecuperarContraseña(this, true).setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
     public void finalizarSesion() {
         cerrarMenusActivos();
         Sesion instancia = Sesion.getInstancia();
@@ -508,6 +522,7 @@ public class MenuPrincipal extends VentanaSimple {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;

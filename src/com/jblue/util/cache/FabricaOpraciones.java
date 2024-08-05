@@ -5,7 +5,8 @@
 package com.jblue.util.cache;
 
 import com.jblue.modelo.ConstBD;
-import com.jblue.modelo.envoltorios.Operaciones;
+import com.jblue.modelo.bdconexion.FuncionesBD;
+import com.jblue.modelo.bdconexion.Operaciones;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OHisMovimientos;
 import com.jblue.modelo.objetos.OPagosOtros;
@@ -33,7 +34,8 @@ public class FabricaOpraciones {
     public static final Operaciones<OPagosRecargos> PAGOS_X_RECARGOS = new Operaciones(ConstBD.TABLAS[7], ConstBD.TABLA_PAGOS_X_RECARGO);
     public static final Operaciones<OPagosOtros> PAGOS_X_OTROS = new Operaciones(ConstBD.TABLAS[8], ConstBD.TABLA_PAGOS_X_OTROS);
     public static final Operaciones<OValores> VALORES = new Operaciones(ConstBD.TABLAS[9], ConstBD.TABLA_VAR_SIS);
-
+    //
+    
     public static Operaciones<OCalles> getCALLES() {
         return CALLES;
     }

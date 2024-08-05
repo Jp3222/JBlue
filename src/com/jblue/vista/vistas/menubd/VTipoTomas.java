@@ -16,9 +16,8 @@
  */
 package com.jblue.vista.vistas.menubd;
 
-import com.jblue.util.mg.ModeloTablas;
 import com.jblue.modelo.ConstGs;
-import com.jblue.modelo.envoltorios.Operaciones;
+import com.jblue.modelo.bdconexion.Operaciones;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.util.Filtros;
 import com.jblue.util.FormatoBD;
@@ -28,6 +27,7 @@ import com.jblue.util.cache.MemoCache;
 import com.jblue.vista.marco.vistas.VistaExtendida;
 import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
 import com.jblue.vista.marco.contruccion.EvtSetInfo;
+import com.jutil.swingw.modelos.TableModel;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -48,8 +48,8 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfo, EvtRegistr
         cache = memo_cache.getLista();
         cache_aux = new ArrayList(cache.size());
         initComponents();
-        modelo = new ModeloTablas(ConstGs.TABLA_TIPOS_DE_TOMAS);
-        modelo.setAllCellEditable(false);
+        modelo = new TableModel(ConstGs.TABLA_TIPOS_DE_TOMAS, 0);
+        modelo.setCellsEditables(false);
         tabla_tipo_tomas.setModel(modelo);
 
         llamable();
@@ -455,7 +455,7 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfo, EvtRegistr
     private final MemoCache<OTipoTomas> memo_cache;
     private final ArrayList<OTipoTomas> cache;
     private final ArrayList<OTipoTomas> cache_aux;
-    private final ModeloTablas modelo;
+    private final TableModel modelo;
     private OTipoTomas objeto_buscado;
 
     @Override
@@ -476,12 +476,12 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfo, EvtRegistr
     }
 
     private void recargar() {
-        modelo.clear();
+        modelo.removeAllRows();
         cargar();
     }
 
     private void vaciar() {
-        modelo.clear();
+        modelo.removeAllRows();
     }
 
     @Override

@@ -16,9 +16,8 @@
  */
 package com.jblue.vista.vistas.menubd;
 
-import com.jblue.util.mg.ModeloTablas;
 import com.jblue.modelo.ConstGs;
-import com.jblue.modelo.envoltorios.Operaciones;
+import com.jblue.modelo.bdconexion.Operaciones;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.util.Filtros;
 import com.jblue.util.FormatoBD;
@@ -32,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
+import com.jutil.swingw.modelos.TableModel;
 
 /**
  *
@@ -48,8 +47,8 @@ public class VCalles extends VistaExtendida implements EvtSetInfo, EvtRegistrosB
         memo_cache = FabricaCache.MC_CALLES;
         cache = memo_cache.getLista();
         cache_aux = new ArrayList<>(cache.size());
-        modelo = new ModeloTablas(ConstGs.TABLA_CALLES);
-        modelo.setAllCellEditable(false);
+        modelo = new TableModel(ConstGs.TABLA_CALLES,0);
+        modelo.setCellsEditables(false);
         tabla_calles.setModel(modelo);
         llamable();
     }
@@ -324,7 +323,7 @@ public class VCalles extends VistaExtendida implements EvtSetInfo, EvtRegistrosB
     private void btn_recargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_recargarActionPerformed
 
         jtf_buscador.setText(null);
-        FuncJBlue.pintarTabla((DefaultTableModel) tabla_calles.getModel(), memo_cache.getListaObj());
+        FuncJBlue.pintarTabla(modelo, memo_cache.getListaObj());
 
     }//GEN-LAST:event_btn_recargarActionPerformed
 
@@ -405,7 +404,7 @@ public class VCalles extends VistaExtendida implements EvtSetInfo, EvtRegistrosB
     private javax.swing.JTable tabla_calles;
     // End of variables declaration//GEN-END:variables
     private final MemoCache<OCalles> memo_cache;
-    private final ModeloTablas modelo;
+    private final TableModel modelo;
     private final ArrayList<OCalles> cache;
     private final ArrayList<OCalles> cache_aux;
     private OCalles objeto_buscado;
@@ -417,7 +416,7 @@ public class VCalles extends VistaExtendida implements EvtSetInfo, EvtRegistrosB
         if (aFlag) {
             cargar();
         } else {
-            modelo.clear();
+            modelo.removeAllRows();
         }
     }
 
@@ -428,7 +427,7 @@ public class VCalles extends VistaExtendida implements EvtSetInfo, EvtRegistrosB
     }
 
     private void recargar() {
-        modelo.clear();
+        modelo.removeAllRows();
         FuncJBlue.pintarTabla(modelo, memo_cache.getListaObj());
     }
 

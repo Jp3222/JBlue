@@ -16,14 +16,14 @@
  */
 package com.jblue.vista.componentes;
 
-import com.jblue.util.mg.ModeloTablas;
 import com.jblue.modelo.ConstGs;
-import com.jblue.modelo.envoltorios.Operaciones;
+import com.jblue.modelo.bdconexion.Operaciones;
 import com.jblue.modelo.objetos.OPagosRecargos;
 import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.util.cache.FabricaOpraciones;
 import com.jutil.framework.ComponentStates;
+import com.jutil.swingw.modelos.TableModel;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -58,9 +58,9 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
     private OUsuarios usuario;
 
     private final JTextField[] campos;
-    private final ModeloTablas modelo_pagos_x_servicio;
-    private final ModeloTablas modelo_pagos_x_recargo;
-    private final ModeloTablas modelo_pagos_x_otros;
+    private final TableModel modelo_pagos_x_servicio;
+    private final TableModel modelo_pagos_x_recargo;
+    private final TableModel modelo_pagos_x_otros;
 
     /**
      * A return status code - returned if Cancel button has been pressed
@@ -94,9 +94,9 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
             dato_codigo
         };
         //
-        modelo_pagos_x_servicio = new ModeloTablas(ConstGs.TABLA_PAGOS_X_SERVICIO);
-        modelo_pagos_x_recargo = new ModeloTablas(ConstGs.TABLA_PAGOS_X_RECARGO);
-        modelo_pagos_x_otros = new ModeloTablas(ConstGs.TABLA_PAGOS_X_OTROS);
+        modelo_pagos_x_servicio = new TableModel(ConstGs.TABLA_PAGOS_X_SERVICIO, 0);
+        modelo_pagos_x_recargo = new TableModel(ConstGs.TABLA_PAGOS_X_RECARGO, 0);
+        modelo_pagos_x_otros = new TableModel(ConstGs.TABLA_PAGOS_X_OTROS, 0);
         //
         tabla_pxs.setModel(modelo_pagos_x_servicio);
         tabla_pxr.setModel(modelo_pagos_x_recargo);
@@ -120,7 +120,7 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
             if (panel_pxs.isVisible()) {
                 cargarPagosXServicio();
             } else {
-                modelo_pagos_x_servicio.clear();
+                modelo_pagos_x_servicio.removeAllRows();
             }
 
         });
@@ -129,7 +129,7 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
             if (panel_pxr.isVisible()) {
                 cargarPagosXRecargos();
             } else {
-                modelo_pagos_x_recargo.clear();
+                modelo_pagos_x_recargo.removeAllRows();
             }
         });
         CardLayout ly = (CardLayout) jPanel3.getLayout();
@@ -814,13 +814,13 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
             i.setText(null);
         }
         if (modelo_pagos_x_servicio.getRowCount() > 0) {
-            modelo_pagos_x_servicio.clear();
+            modelo_pagos_x_servicio.removeAllRows();
         }
         if (modelo_pagos_x_recargo.getRowCount() > 0) {
-            modelo_pagos_x_recargo.clear();
+            modelo_pagos_x_recargo.removeAllRows();
         }
         if (modelo_pagos_x_otros.getRowCount() > 0) {
-            modelo_pagos_x_recargo.clear();
+            modelo_pagos_x_recargo.removeAllRows();
         }
         tab_info_pagos.setSelectedIndex(0);
         tab_info_usuario.setSelectedIndex(0);

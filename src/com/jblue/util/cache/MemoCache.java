@@ -4,8 +4,9 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.modelo.envoltorios.Operaciones;
-import com.jblue.util.bd.Objeto;
+import com.jblue.modelo.bdconexion.Operaciones;
+import com.jblue.util.modelo.funbd.ModeloFuncionesDB;
+import com.jblue.util.modelo.objetos.Objeto;
 import com.jutil.jbd.conexion.Conexion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,18 +49,18 @@ public class MemoCache<T extends Objeto> {
     private boolean rangoActivo;
     private String query;
 
-    public MemoCache(Operaciones<T> operaciones) {
+    public MemoCache(ModeloFuncionesDB operaciones) {
         this.lista = new ArrayList<>(CAPACIDAD_MIN);
-        this.operaciones = operaciones;
+        this.operaciones = (Operaciones<T>) operaciones;
         this.rango = CAPACIDAD_MIN;
         this.limite_min = 1;
         this.limite_max = rango;
         this.getIdsMinMax();
     }
 
-    public MemoCache(int capacidad, Operaciones<T> operaciones) {
+    public MemoCache(int capacidad, ModeloFuncionesDB operaciones) {
         this.lista = new ArrayList<>(capacidad);
-        this.operaciones = operaciones;
+        this.operaciones = (Operaciones<T>) operaciones;
         this.rango = capacidad;
         this.limite_min = 1;
         this.limite_max = rango;

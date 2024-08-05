@@ -100,9 +100,10 @@ public class EncriptadoAES {
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
         byte[] bytesEncriptados = Base64.getDecoder().decode(dencp);
+        System.out.println(bytesEncriptados.length);
         byte[] datosDesencriptados = cipher.doFinal(bytesEncriptados);
         String datos = new String(datosDesencriptados);
-
+        System.out.println(datosDesencriptados.length);
         return datos;
     }
 

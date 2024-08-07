@@ -17,6 +17,7 @@
 package com.jblue.vista.vistas.menuprincipal.sub;
 
 import com.jblue.controlador.CPagos;
+import com.jblue.controlador.Contabilidad;
 import com.jblue.modelo.bdconexion.FuncionesBD;
 import com.jblue.modelo.bdconexion.env.EnvUsuario;
 import com.jblue.modelo.objetos.OPagosServicio;
@@ -25,25 +26,17 @@ import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.sistema.Sesion;
 import com.jblue.util.Filtros;
 import com.jblue.util.FuncJBlue;
-import com.jblue.util.cache.FabricaCache;
-import com.jblue.util.cache.MemoCache;
-import com.jblue.util.modelo.funbd.FabricaFuncionesBD;
+import com.jblue.util.fabricas.FabricaCache;
+import com.jblue.util.modelo.MemoCache;
+import com.jblue.util.fabricas.FabricaFuncionesBD;
 import com.jblue.util.modelo.pagos.EstadosDePagos;
 import com.jblue.vista.marco.vistas.VistaSimple;
 import com.jblue.vista.componentes.CVisorUsuario;
-import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
-import com.jblue.vista.marco.contruccion.EvtSetInfo;
 import com.jblue.vista.vistas.menuprincipal.VCobros;
 import com.jutil.swingw.modelos.TableModel;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.print.PageFormat;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,12 +47,13 @@ import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import com.jblue.vista.marco.contruccion.EvtSetInfoGrafica;
 
 /**
  *
  * @author jp
  */
-public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD, Printable {
+public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
 
     /**
      * Creates new form VNewCobros
@@ -126,10 +120,18 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
     protected void manejoEventos() {
 
         //eventos de botones
-        btn_cobrar.addActionListener(e -> evtCobrar(e));
-        btn_cancelar.addActionListener(e -> evtCancelar(e));
+        btn_cobrar.addActionListener(e -> evtCobrar());
+        
+        btn_cancelar.addActionListener(e -> evtCancelar());
+        
         btn_limpiar.addActionListener(e -> evtLimpiar(e));
-        btn_info_usuarios.addActionListener(e -> setInfoEnVisor(e));
+        
+        btn_info_usuarios.addActionListener(e -> {
+            if (usuario_buscado == null) {
+                return;
+            }
+            CVisorUsuario.showVisor(usuario_buscado);
+        });
 
         //btn_movimientos.addActionListener(e -> cobrar(e));
         chb_todos.addItemListener(e -> SwingUtilities.invokeLater(() -> {
@@ -160,7 +162,7 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
         lbl_total.setText(String.valueOf(total));
     }
 
-    private void evtCobrar(ActionEvent e) {
+    private void evtCobrar() {
         String[] meses = getMesesSeleccionados(cbx_meses);
         String mensaje;
         if (meses.length > 0) {
@@ -198,10 +200,9 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
         }
 
         JOptionPane.showMessageDialog(this, mensaje);
-
     }
 
-    private void evtCancelar(ActionEvent e) {
+    private void evtCancelar() {
         int in = JOptionPane.showConfirmDialog(this, "¿Desea cancelar esta operacion?");
         if (in != JOptionPane.OK_OPTION) {
             return;
@@ -221,41 +222,10 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
     }
 
     /**
-     * Metodo para asignar el usuario al visor de usuarios
-     *
-     * @param e
-     */
-    private void setInfoEnVisor(ActionEvent e) {
-        if (usuario_buscado == null) {
-            return;
-        }
-        visor.setUsuario(usuario_buscado);
-        visor.setTitle(usuario_buscado.getStringR());
-        visor.setVisible(true);
-    }
-
-    /**
      * Metodo usado para colocar la informacion del usuario en pantalla
      *
      * @param i
      */
-    private void setInfoEnPantalla(OUsuarios i) {
-        if (i == null) {
-            JOptionPane.showMessageDialog(this, "Usuario no valido");
-            return;
-        }
-        String tipo = i.isTitular() ? "Titular" : "Consumidor";
-        usuario_tipo.setText(tipo);
-        usuario_nombre.setText(i.getStringR());
-        OTipoTomas tipo_de_toma = EnvUsuario.getTipoDeTomaEnCache(i.getToma());
-        usuario_tipo_toma.setText(tipo_de_toma.getStringR());
-        usuario_costo.setText(String.valueOf(tipo_de_toma.getCosto()));
-        ArrayList<String> lista = EnvUsuario.getMesesPagadosDelAño(i.getId());
-        usuario_meses_pagados.setText(String.valueOf(lista.size()));
-        pintarMesesPagados(lista);
-        FuncJBlue.habilitarComponentes(lista.size() < 12, btn_cobrar, btn_limpiar);
-    }
-
     private void pintarMesesPagados(List<String> lista) {
         chb_todos.setEnabled(lista.size() < 12);
         if (chb_todos.isSelected()) {
@@ -269,13 +239,18 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
         }
     }
 
-    private void _buscador(String txt) {
+    private void _buscador(final String txt) {
         modelo_lista.clear();
         cache_aux.clear();
         if (Filtros.isNullOrBlank(txt)) {
             return;
         }
-        txt = Filtros.limpiar(txt);
+        cache.stream().forEach((t) -> {
+            if (EnvUsuario.filtros(txt, t)) {
+                cache_aux.add(t);
+                modelo_lista.addElement(String.format("%s - %s", t.getId(), t.getStringR()));
+            }
+        });
         for (OUsuarios i : cache) {
             if (EnvUsuario.filtros(txt, i)) {
                 cache_aux.add(i);
@@ -308,6 +283,12 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
         panel_izq = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        saldo_del_dia = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        no_pagos = new javax.swing.JLabel();
         panel_der = new javax.swing.JPanel();
         panel_busquedas = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -401,6 +382,32 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
         jScrollPane1.setViewportView(jTable1);
 
         panel_izq.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel7.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel7.setLayout(new java.awt.BorderLayout());
+
+        jLabel4.setText("Total Acumulado:");
+        jPanel7.add(jLabel4, java.awt.BorderLayout.LINE_START);
+
+        saldo_del_dia.setToolTipText("Total de pagos acumulados");
+        jPanel7.add(saldo_del_dia, java.awt.BorderLayout.CENTER);
+
+        jPanel8.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel8.setLayout(new java.awt.BorderLayout());
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setText("No.");
+        jPanel8.add(jLabel5, java.awt.BorderLayout.CENTER);
+
+        no_pagos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        no_pagos.setText("0");
+        no_pagos.setToolTipText("Numero de pagos hechos.");
+        no_pagos.setPreferredSize(new java.awt.Dimension(50, 16));
+        jPanel8.add(no_pagos, java.awt.BorderLayout.LINE_END);
+
+        jPanel7.add(jPanel8, java.awt.BorderLayout.EAST);
+
+        panel_izq.add(jPanel7, java.awt.BorderLayout.SOUTH);
 
         add(panel_izq, java.awt.BorderLayout.WEST);
 
@@ -729,11 +736,6 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
         jPanel5.add(jButton1);
 
         btn_utilidades.setText("Utilidades");
-        btn_utilidades.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_utilidadesActionPerformed(evt);
-            }
-        });
         jPanel5.add(btn_utilidades);
 
         panel_operaciones.add(jPanel5);
@@ -743,23 +745,6 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
         add(panel_der, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private boolean usuarioValido() {
-        if (lista_usuarios.getModel().getSize() == 1) {
-            lista_usuarios.setSelectedIndex(0);
-        }
-        setUsuario(lista_usuarios.getSelectedIndex());
-        return usuario_buscado != null;
-    }
-
-    private void setUsuario(int index) {
-        if (index < 0 || index > cache_aux.size()) {
-            return;
-        }
-        usuario_buscado = cache_aux.get(index);
-        buscador_lista.setText(null);
-        lista_usuarios.clearSelection();
-        modelo_lista.clear();
-    }
 
     private void buscador_listaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscador_listaKeyReleased
         _buscador(buscador_lista.getText());
@@ -769,38 +754,26 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
         if (evt.getClickCount() < 2) {
             return;
         }
-        if (!usuarioValido()) {
+        if (!validadInfoGrafica()) {
             return;
         }
         visor.setUsuario(usuario_buscado);
         habilitarComponentes(true);
-        SwingUtilities.invokeLater(() -> setInfoEnPantalla(usuario_buscado));
+        SwingUtilities.invokeLater(() -> setInfoGrafica());
 
     }//GEN-LAST:event_lista_usuariosMouseClicked
 
 
     private void buscador_listaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscador_listaKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (!usuarioValido()) {
+            if (!validadInfoGrafica()) {
                 return;
             }
             visor.setUsuario(usuario_buscado);
             habilitarComponentes(true);
-            SwingUtilities.invokeLater(() -> setInfoEnPantalla(usuario_buscado));
+            SwingUtilities.invokeLater(() -> setInfoGrafica());
         }
     }//GEN-LAST:event_buscador_listaKeyPressed
-
-    private void btn_utilidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_utilidadesActionPerformed
-        PrinterJob pj = PrinterJob.getPrinterJob();
-        if (pj.isCancelled()) {
-            return;
-        }
-
-        if (pj.printDialog()) {
-            pj.setPrintable(this);
-        }
-
-    }//GEN-LAST:event_btn_utilidadesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -825,6 +798,8 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -844,6 +819,8 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -855,6 +832,7 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
     private javax.swing.JList<String> lista_usuarios;
     private javax.swing.JCheckBox mar;
     private javax.swing.JCheckBox may;
+    private javax.swing.JLabel no_pagos;
     private javax.swing.JCheckBox nov;
     private javax.swing.JCheckBox oct;
     private javax.swing.JPanel panel_busquedas;
@@ -862,6 +840,7 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
     private javax.swing.JPanel panel_info;
     private javax.swing.JPanel panel_izq;
     private javax.swing.JPanel panel_operaciones;
+    private javax.swing.JLabel saldo_del_dia;
     private javax.swing.JCheckBox sep;
     private javax.swing.JTextField usuario_costo;
     private javax.swing.JTextField usuario_meses_pagados;
@@ -904,48 +883,40 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
     }
 
     @Override
-    public void setInfo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void setInfoGrafica() {
+        if (usuario_buscado == null) {
+            JOptionPane.showMessageDialog(this, "Usuario no valido");
+            return;
+        }
+        String tipo = usuario_buscado.isTitular() ? "Titular" : "Consumidor";
+        usuario_tipo.setText(tipo);
+        usuario_nombre.setText(usuario_buscado.getStringR());
+        OTipoTomas tipo_de_toma = EnvUsuario.getTipoDeTomaEnCache(usuario_buscado.getToma());
+        usuario_tipo_toma.setText(tipo_de_toma.getStringR());
+        usuario_costo.setText(String.valueOf(tipo_de_toma.getCosto()));
+        ArrayList<String> lista = EnvUsuario.getMesesPagadosDelAño(usuario_buscado.getId());
+        usuario_meses_pagados.setText(String.valueOf(lista.size()));
+        pintarMesesPagados(lista);
+        FuncJBlue.habilitarComponentes(lista.size() < 12, btn_cobrar, btn_limpiar);
+    }
+
+    private void setUsuario(int index) {
+        if (index < 0 || index > cache_aux.size()) {
+            return;
+        }
+        usuario_buscado = cache_aux.get(index);
+        buscador_lista.setText(null);
+        lista_usuarios.clearSelection();
+        modelo_lista.clear();
     }
 
     @Override
-    public boolean objetoValido() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void evtGuardar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void evtActualizar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void evtEliminar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void evtBuscar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void evtCancelar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public String[] getInfo(boolean actualizacion) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean camposValidos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean validadInfoGrafica() {
+        if (lista_usuarios.getModel().getSize() == 1) {
+            lista_usuarios.setSelectedIndex(0);
+        }
+        setUsuario(lista_usuarios.getSelectedIndex());
+        return usuario_buscado != null;
     }
 
     private void pagosDelDia() {
@@ -957,7 +928,7 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
         LocalDate fecha_actual = LocalDate.now();
         String where = "dia = '%s' and mes = '%s' and año = '%s'";
 
-        Optional<ArrayList<OPagosServicio>> resultado = pagosXServicio._SELECT(null,
+        Optional<ArrayList<OPagosServicio>> resultado = pagosXServicio.select(null,
                 String.format(where, fecha_actual.getDayOfMonth(), fecha_actual.getMonthValue(), fecha_actual.getYear())
         );
 
@@ -966,24 +937,16 @@ public class VRCobros extends VistaSimple implements EvtSetInfo, EvtRegistrosBD,
         }
 
         ArrayList<OPagosServicio> lista = resultado.get();
+        no_pagos.setText(String.valueOf(lista.size()));
         for (OPagosServicio i : lista) {
             modelo.addRow(new Object[]{
                 i.getId(), i.getUsuario(), i.getMesPagado()
             });
         }
 
-    }
+        double saldoDelDia = Contabilidad.getSaldoDelDia();
+        saldo_del_dia.setText(String.valueOf(saldoDelDia));
 
-    @Override
-    public int print(Graphics grphcs, PageFormat pf, int i) throws PrinterException {
-        if (i == 0) {
-            Graphics2D o = (Graphics2D) grphcs;
-            o.translate(pf.getImageableX(), pf.getImageableY());
-            printAll(grphcs);
-            return PAGE_EXISTS;
-        } else {
-            return NO_SUCH_PAGE;
-        }
     }
 
 }

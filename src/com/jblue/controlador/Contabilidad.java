@@ -49,9 +49,7 @@ public class Contabilidad {
     }
 
     public static double getSaldo(int dia, int mes, int año) {
-        LocalDate ld = LocalDate.now();
         StringBuilder query = new StringBuilder(20);
-
         if (dia > 0) {
             query.append("dia = ").append(dia);
         }
@@ -60,7 +58,7 @@ public class Contabilidad {
             if (dia > 0) {
                 query.append(" and ");
             }
-            query.append("mes = '").append(Fecha.getMesActual()).append("'");
+            query.append("mes = '").append(mes).append("'");
         }
 
         if (año > 0) {
@@ -69,7 +67,6 @@ public class Contabilidad {
             }
             query.append("año = ").append(año);
         }
-        System.out.println(query.toString());
         return getSaldo(query.toString());
     }
 
@@ -77,10 +74,10 @@ public class Contabilidad {
         Conexion conexion = Sistema.getInstancia().getConexion();
         double saldo = -1;
         try (ResultSet select = conexion.select(ConstBD.TABLAS[6], "monto", where)) {
+            saldo = 0;
             while (select.next()) {
                 saldo = Double.sum(saldo, select.getDouble(1));
             }
-            select.close();
         } catch (SQLException ex) {
             Logger.getLogger(Contabilidad.class.getName()).log(Level.SEVERE, null, ex);
         }

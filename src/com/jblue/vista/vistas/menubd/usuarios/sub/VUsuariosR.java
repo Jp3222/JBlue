@@ -25,9 +25,9 @@ import com.jblue.util.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
 import com.jblue.util.FormatoBD;
 import com.jblue.util.FuncJBlueBD;
-import com.jblue.util.cache.FabricaCache;
-import com.jblue.util.cache.FabricaOpraciones;
-import com.jblue.util.cache.MemoCache;
+import com.jblue.util.fabricas.FabricaCache;
+import com.jblue.util.fabricas.FabricaOpraciones;
+import com.jblue.util.modelo.MemoCache;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
 import com.jblue.vista.marco.contruccion.FunMovCache;
@@ -634,7 +634,7 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         System.out.println(txt);
 
         Operaciones<OUsuarios> op = FabricaOpraciones.getUSUARIOS();
-        boolean insertar = op.insertar(valores);
+        boolean insertar = op.insert(valores);
         actualizarCache(insertar);
     }
 

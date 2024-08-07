@@ -21,7 +21,7 @@ import com.jblue.modelo.bdconexion.env.EnvPersonal;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.sistema.Sesion;
 import com.jblue.util.Filtros;
-import com.jblue.util.cache.FabricaOpraciones;
+import com.jblue.util.fabricas.FabricaOpraciones;
 import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.util.tools.ArchivosPersonal;
 import com.jblue.vista.componentes.CSelectorDeArchivos;

@@ -4,7 +4,6 @@
  */
 package com.jblue.modelo.bdconexion;
 
-import com.jblue.modelo.bdconexion.op.FuncionesAbstractas;
 import com.jblue.modelo.bdconexion.op.FuncionesEnvoltorio;
 import com.jblue.util.modelo.objetos.Objeto;
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ import java.util.Optional;
  * @author jp
  * @param <T>
  */
-public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio implements FuncionesAbstractas, Cloneable {
+public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio implements Cloneable {
 
     public Operaciones(String tabla, String[] campos) {
         super(tabla, campos);
@@ -25,7 +24,6 @@ public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio implement
         return _ACTUALIZAR_SIN_ID(valores, where);
     }
 
-    @Override
     public T get(String where) {
         Objeto o;
         ArrayList<Objeto> lista = _GET("*", where);
@@ -37,29 +35,25 @@ public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio implement
         return (T) o;
     }
 
-    @Override
     public ArrayList<T> getLista(String where) {
         return _GET("*", where);
     }
 
     @Override
-    public boolean insertar(String[] valores) {
-        return _INSERTAR(valores);
+    public boolean insert(String[] valores) {
+        return super.insert(valores);
     }
 
-    @Override
     public boolean eliminar(String where) {
-        return _ELIMINAR(where);
+        return delete(where);
     }
 
-    @Override
     public boolean actualizar(String campo, String valor, String where) {
-        return _ACTUALIZAR(campo, valor, where);
+        return update(campo, valor, where);
     }
 
-    @Override
     public boolean actualizar(String[] campos, String[] valores, String where) {
-        return _ACTUALIZAR(campos, valores, where);
+        return update(campos, valores, where);
     }
 
     @Override
@@ -68,7 +62,7 @@ public class Operaciones<T extends Objeto> extends FuncionesEnvoltorio implement
     }
 
     @Override
-    public <T extends Objeto> Optional<ArrayList<T>> _SELECT(String campos, String where) {
+    public <T extends Objeto> Optional<ArrayList<T>> select(String campos, String where) {
         return Optional.empty();
     }
 

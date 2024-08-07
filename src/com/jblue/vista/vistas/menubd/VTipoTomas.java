@@ -22,23 +22,23 @@ import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.util.Filtros;
 import com.jblue.util.FormatoBD;
 import com.jblue.util.FuncJBlue;
-import com.jblue.util.cache.FabricaCache;
-import com.jblue.util.cache.MemoCache;
+import com.jblue.util.fabricas.FabricaCache;
+import com.jblue.util.modelo.MemoCache;
 import com.jblue.vista.marco.vistas.VistaExtendida;
 import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
-import com.jblue.vista.marco.contruccion.EvtSetInfo;
 import com.jutil.swingw.modelos.TableModel;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import com.jblue.vista.marco.contruccion.EvtSetInfoGrafica;
 
 /**
  *
  * @author jp
  */
-public class VTipoTomas extends VistaExtendida implements EvtSetInfo, EvtRegistrosBD {
+public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, EvtRegistrosBD {
 
     /**
      * Creates new form VTipoTomas
@@ -89,14 +89,14 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfo, EvtRegistr
         }
         Operaciones<OTipoTomas> operaciones = memo_cache.getOperaciones();
         String[] datos = FormatoBD.bdEntrada(getInfo(false));
-        boolean menesaje = operaciones.insertar(datos);
+        boolean menesaje = operaciones.insert(datos);
         estado(menesaje);
     }
 
     @Override
     public void evtEliminar() {
         Operaciones<OTipoTomas> operaciones = memo_cache.getOperaciones();
-        boolean menesaje = operaciones.eliminar("id = " + objeto_buscado.getId());
+        boolean menesaje = operaciones.delete("id = " + objeto_buscado.getId());
         estado(menesaje);
     }
 
@@ -355,7 +355,7 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfo, EvtRegistr
         if (evt.getClickCount() < 2) {
             return;
         }
-        if (!objetoValido()) {
+        if (!validadInfoGrafica()) {
             return;
         }
         setInfoEnPantalla(objeto_buscado);
@@ -405,7 +405,7 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfo, EvtRegistr
     }
 
     @Override
-    public boolean objetoValido() {
+    public boolean validadInfoGrafica() {
         int i = tabla_tipo_tomas.getSelectedRow();
         setObjeto(i);
         return objeto_buscado != null;
@@ -485,7 +485,7 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfo, EvtRegistr
     }
 
     @Override
-    public void setInfo() {
+    public void setInfoGrafica() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

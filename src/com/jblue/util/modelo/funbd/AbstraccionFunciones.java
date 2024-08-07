@@ -44,7 +44,7 @@ public abstract class AbstraccionFunciones implements ModeloFuncionesDB {
     }
 
     @Override
-    public boolean _INSERTAR(String[] valores) {
+    public boolean insert(String[] valores) {
         try {
             //System.out.println(Arrays.toString(valores));
             return conexion.insert(tabla,
@@ -58,7 +58,7 @@ public abstract class AbstraccionFunciones implements ModeloFuncionesDB {
     }
 
     @Override
-    public boolean _ELIMINAR(String where) {
+    public boolean delete(String where) {
         boolean retorno = false;
         try {
             if (Filtros.isNullOrBlank(where)) {
@@ -73,7 +73,7 @@ public abstract class AbstraccionFunciones implements ModeloFuncionesDB {
     }
 
     @Override
-    public boolean _ACTUALIZAR(String campo, String valor, String where) {
+    public boolean update(String campo, String valor, String where) {
         try {
             if (Filtros.isNullOrBlank(campo, valor, where)) {
                 return false;
@@ -87,7 +87,7 @@ public abstract class AbstraccionFunciones implements ModeloFuncionesDB {
     }
 
     @Override
-    public boolean _ACTUALIZAR(String[] campos, String[] valores, String where) {
+    public boolean update(String[] campos, String[] valores, String where) {
         try {
             if (Filtros.isNullOrBlank(campos) || Filtros.isNullOrBlank(valores) || Filtros.isNullOrBlank(where)) {
                 return false;
@@ -103,7 +103,7 @@ public abstract class AbstraccionFunciones implements ModeloFuncionesDB {
     }
 
     @Override
-    public <T extends Objeto> Optional<ArrayList<T>> _SELECT(String campos, String where) {
+    public <T extends Objeto> Optional<ArrayList<T>> select(String campos, String where) {
 
         try {
             String[] arr;

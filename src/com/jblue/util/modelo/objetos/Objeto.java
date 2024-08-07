@@ -11,7 +11,7 @@ import java.util.Arrays;
  *
  * @author jp
  */
-public class Objeto extends BDObjeto implements Serializable, Cloneable, Comparable<Objeto> {
+public class Objeto extends AbstraccionObjeto implements Serializable, Cloneable, Comparable<Objeto> {
 
     public Objeto() {
     }

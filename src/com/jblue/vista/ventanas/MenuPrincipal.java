@@ -6,7 +6,7 @@ package com.jblue.vista.ventanas;
 
 import com.jblue.modelo.bdconexion.env.EnvPersonal;
 import com.jblue.sistema.Sesion;
-import com.jblue.util.cache.FabricaCache;
+import com.jblue.util.fabricas.FabricaCache;
 import com.jblue.vista.componentes.CRecuperarContraseña;
 import com.jblue.vista.marco.contruccion.ConstTitutlos;
 import com.jblue.vista.marco.ventanas.VentanaSimple;

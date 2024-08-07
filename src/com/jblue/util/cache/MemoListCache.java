@@ -16,10 +16,8 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.modelo.ConstBD;
-import com.jblue.modelo.bdconexion.FuncionesBD;
+import com.jblue.util.modelo.cache.AbstraccionListCache;
 import com.jblue.util.modelo.objetos.Objeto;
-import com.jblue.util.cache.inter.AbstraccionListCache;
 
 /**
  *
@@ -28,9 +26,34 @@ import com.jblue.util.cache.inter.AbstraccionListCache;
  */
 public class MemoListCache<T extends Objeto> extends AbstraccionListCache<T> {
 
-    public MemoListCache() {
-        super(new FuncionesBD(ConstBD.TABLAS[0], ConstBD.TABLA_PERSONAL),LinkedList, CAP_MIN, 100);
+    @Override
+    public int getSteps() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    
+    @Override
+    public void loadData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void dumpData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void reLoadData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public int size() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public long sizeDB() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

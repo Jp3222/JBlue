@@ -16,10 +16,8 @@
  */
 package com.jblue.vista.marco.vistas;
 
-import java.util.ArrayList;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JMenu;
 
 /**
  *

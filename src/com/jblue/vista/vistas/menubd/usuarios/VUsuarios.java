@@ -17,8 +17,8 @@
 package com.jblue.vista.vistas.menubd.usuarios;
 
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.util.cache.FabricaCache;
-import com.jblue.util.cache.MemoCache;
+import com.jblue.util.fabricas.FabricaCache;
+import com.jblue.util.modelo.MemoCache;
 import com.jblue.vista.marco.vistas.VistaExtendida;
 import com.jblue.vista.vistas.menubd.usuarios.sub.VUsuariosC;
 import com.jblue.vista.vistas.menubd.usuarios.sub.VUsuariosR;

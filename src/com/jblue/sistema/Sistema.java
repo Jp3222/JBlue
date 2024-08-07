@@ -5,7 +5,7 @@
 package com.jblue.sistema;
 
 import com.jblue.sistema.app.AppFiles;
-import com.jblue.util.cache.FabricaCache;
+import com.jblue.util.fabricas.FabricaCache;
 import com.jblue.vista.componentes.NewMenuConfigBD;
 import com.jblue.vista.ventanas.Login;
 import com.jutil.jbd.conexion.Conexion;

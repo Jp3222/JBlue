@@ -18,8 +18,8 @@ package com.jblue.sistema;
 
 import com.jblue.modelo.bdconexion.Operaciones;
 import com.jblue.modelo.objetos.OValores;
-import com.jblue.util.cache.FabricaCache;
-import com.jblue.util.cache.MemoCache;
+import com.jblue.util.fabricas.FabricaCache;
+import com.jblue.util.modelo.MemoCache;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -71,7 +71,7 @@ public class ConfigSis {
                 arr[0] = i[0];
                 arr[1] = "null";
                 arr[2] = i[1];
-                boolean insertar = op.insertar(arr);
+                boolean insertar = op.insert(arr);
                 if (insertar) {
                     System.out.println(String.format("CLAVE %s CREADA", arr[0]));
                     memo_cache.actualizar();

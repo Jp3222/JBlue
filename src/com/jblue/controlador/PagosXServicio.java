@@ -18,7 +18,7 @@ package com.jblue.controlador;
 
 import com.jblue.modelo.bdconexion.env.EnvUsuario;
 import com.jblue.modelo.objetos.OTipoTomas;
-import com.jblue.util.modelo.pagos.AbstraccionPagos;
+import com.jblue.util.modelo.pagos.AbstraccionCPagos;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -26,10 +26,10 @@ import java.util.Map;
  *
  * @author juan-campos
  */
-class PagosXServicio extends AbstraccionPagos {
+class PagosXServicio extends AbstraccionCPagos {
 
     public PagosXServicio() {
-        super(0);
+        super(PAGOS_X_SER);
     }
 
     @Override

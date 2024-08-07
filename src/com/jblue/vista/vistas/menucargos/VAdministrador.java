@@ -16,8 +16,8 @@
  */
 package com.jblue.vista.vistas.menucargos;
 
-import com.jblue.util.cache.FabricaCache;
-import com.jblue.util.cache.MemoCache;
+import com.jblue.util.fabricas.FabricaCache;
+import com.jblue.util.modelo.MemoCache;
 import com.jblue.vista.marco.vistas.VistaExtendida;
 import com.jblue.vista.vistas.menucargos.util.VPersonal;
 

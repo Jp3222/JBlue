@@ -4,13 +4,13 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.modelo.objetos.OPagos;
+import com.jblue.util.modelo.objetos.AbstraccionOPago;
 
 /**
  *
  * @author jp
  */
-public class OPagosServicio extends OPagos {
+public class OPagosServicio extends AbstraccionOPago {
 
     public OPagosServicio() {
         super();

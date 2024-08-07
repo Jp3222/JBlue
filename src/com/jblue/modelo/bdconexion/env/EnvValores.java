@@ -21,7 +21,6 @@ import com.jblue.util.tiempo.Fecha;
 import com.jblue.util.tiempo.Hora;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  *

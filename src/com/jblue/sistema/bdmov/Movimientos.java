@@ -81,6 +81,6 @@ public abstract class Movimientos {
         //
         Operaciones op = new Operaciones(ConstBD.TABLAS[4], ConstBD.TABLA_HISTORIAL_MOVIMIENTOS);
         String[] valores = {user, mov, fecha, hora};
-        return op.insertar(valores);
+        return op.insert(valores);
     }
 }

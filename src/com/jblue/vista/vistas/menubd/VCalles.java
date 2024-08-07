@@ -22,22 +22,22 @@ import com.jblue.modelo.objetos.OCalles;
 import com.jblue.util.Filtros;
 import com.jblue.util.FormatoBD;
 import com.jblue.util.FuncJBlue;
-import com.jblue.util.cache.FabricaCache;
-import com.jblue.util.cache.MemoCache;
+import com.jblue.util.fabricas.FabricaCache;
+import com.jblue.util.modelo.MemoCache;
 import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
-import com.jblue.vista.marco.contruccion.EvtSetInfo;
 import com.jblue.vista.marco.vistas.VistaExtendida;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import com.jutil.swingw.modelos.TableModel;
+import com.jblue.vista.marco.contruccion.EvtSetInfoGrafica;
 
 /**
  *
  * @author jp
  */
-public class VCalles extends VistaExtendida implements EvtSetInfo, EvtRegistrosBD {
+public class VCalles extends VistaExtendida implements EvtSetInfoGrafica, EvtRegistrosBD {
 
     /**
      * Creates new form Calles
@@ -97,7 +97,7 @@ public class VCalles extends VistaExtendida implements EvtSetInfo, EvtRegistrosB
         }
         info = FormatoBD.bdEntrada(info);
         Operaciones op = memo_cache.getOperaciones();
-        boolean ok = op.insertar(info);
+        boolean ok = op.insert(info);
         estado(ok);
     }
 
@@ -347,7 +347,7 @@ public class VCalles extends VistaExtendida implements EvtSetInfo, EvtRegistrosB
     }
 
     @Override
-    public boolean objetoValido() {
+    public boolean validadInfoGrafica() {
         int i = tabla_calles.getSelectedRow();
         setObjeto(i);
         return objeto_buscado != null;
@@ -357,7 +357,7 @@ public class VCalles extends VistaExtendida implements EvtSetInfo, EvtRegistrosB
         if (evt.getClickCount() < 2) {
             return;
         }
-        if (!objetoValido()) {
+        if (!validadInfoGrafica()) {
             return;
         }
 
@@ -437,7 +437,7 @@ public class VCalles extends VistaExtendida implements EvtSetInfo, EvtRegistrosB
     }
 
     @Override
-    public void setInfo() {
+    public void setInfoGrafica() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

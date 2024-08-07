@@ -20,9 +20,9 @@ import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.bdconexion.Operaciones;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.util.Filtros;
-import com.jblue.util.cache.FabricaCache;
-import com.jblue.util.cache.FabricaOpraciones;
-import com.jblue.util.cache.MemoCache;
+import com.jblue.util.fabricas.FabricaCache;
+import com.jblue.util.fabricas.FabricaOpraciones;
+import com.jblue.util.modelo.MemoCache;
 import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.vista.marco.vistas.VistaSimple;
@@ -687,7 +687,7 @@ public class VPersonal extends VistaSimple {
         Operaciones<OPersonal> personal = FabricaOpraciones.getPERSONAL();
         String[] o = _guardar();
 
-        personal.insertar(o);
+        personal.insert(o);
         componentesEstadoInicial();
         FabricaCache.MC_PERSONAL.actualizar();
         JOptionPane.showMessageDialog(this, "Operacion Exitosa");

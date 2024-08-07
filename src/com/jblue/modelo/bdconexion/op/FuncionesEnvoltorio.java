@@ -42,7 +42,8 @@ public abstract class FuncionesEnvoltorio implements ModeloFuncionesDB {
      * @param valores - conjunto de valores que se insertara
      * @return true si la inserccion se hizo correctamente en otro clase false
      */
-    public boolean _INSERTAR(String[] valores) {
+    @Override
+    public boolean insert(String[] valores) {
         try {
             //System.out.println(Arrays.toString(valores));
             return CONEXION.insert(TABLA,
@@ -64,7 +65,8 @@ public abstract class FuncionesEnvoltorio implements ModeloFuncionesDB {
      * registro
      * @return true si la eliminacion se hizo correctamente en otro clase false
      */
-    public boolean _ELIMINAR(String where) {
+    @Override
+    public boolean delete(String where) {
         try {
             return CONEXION.delete(TABLA, where);
         } catch (SQLException ex) {
@@ -80,7 +82,8 @@ public abstract class FuncionesEnvoltorio implements ModeloFuncionesDB {
      * @param where
      * @return
      */
-    public boolean _ACTUALIZAR(String campo, String valor, String where) {
+    @Override
+    public boolean update(String campo, String valor, String where) {
         try {
             return CONEXION.update(TABLA, campo, valor, where);
         } catch (SQLException ex) {
@@ -96,7 +99,8 @@ public abstract class FuncionesEnvoltorio implements ModeloFuncionesDB {
      * @param where
      * @return
      */
-    public boolean _ACTUALIZAR(String campos[], String valores[], String where) {
+    @Override
+    public boolean update(String campos[], String valores[], String where) {
         try {
             return CONEXION.update(TABLA,
                     CONEXION.getCamposDatos(campos, valores),

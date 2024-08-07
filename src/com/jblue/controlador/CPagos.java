@@ -25,14 +25,21 @@ import java.util.Map;
  * @author juan-campos
  */
 public class CPagos {
+
     private final static CPagos instancia = new CPagos();
 
     public static CPagos getInstancia() {
         return instancia;
     }
-    
-    public final PagosXServicio pagos_x_servicio = new PagosXServicio();
-    
+
+    private final PagosXServicio pagos_x_servicio;
+    private final PagoXRecargo pagos_x_recargo;
+
+    public CPagos() {
+        this.pagos_x_servicio = new PagosXServicio();
+        this.pagos_x_recargo = new PagoXRecargo();
+    }
+
     public Map<String, String> regPagoXServicio(OPersonal personal, OUsuarios usuario, String[] meses, double monto_ingresado) {
         pagos_x_servicio.setPersonal(personal);
         pagos_x_servicio.setUsuario(usuario);

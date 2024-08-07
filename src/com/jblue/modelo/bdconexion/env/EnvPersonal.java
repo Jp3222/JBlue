@@ -5,7 +5,7 @@
 package com.jblue.modelo.bdconexion.env;
 
 import com.jblue.modelo.objetos.OPersonal;
-import com.jblue.util.cache.FabricaCache;
+import com.jblue.util.fabricas.FabricaCache;
 import java.util.ArrayList;
 
 /**

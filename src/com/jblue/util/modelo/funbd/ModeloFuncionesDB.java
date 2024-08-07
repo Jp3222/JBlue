@@ -33,7 +33,7 @@ public interface ModeloFuncionesDB {
      * @param valores - conjunto de valores que se guardaran en la base de datos
      * @return true si la inserccion se hizo correctamente en otro clase false
      */
-    boolean _INSERTAR(String[] valores);
+    boolean insert(String[] valores);
 
     /**
      *
@@ -45,7 +45,7 @@ public interface ModeloFuncionesDB {
      * @return true si la eliminacion se hizo correctamente en caso de que la
      * condicion sea null o erronea false
      */
-    boolean _ELIMINAR(String where);
+    boolean delete(String where);
 
     /**
      * Este metodo actualiza un solo campo a la vez
@@ -55,7 +55,7 @@ public interface ModeloFuncionesDB {
      * @param where - condicion para actualizar ese campo
      * @return true si la operacion se hizo correctamente en otro caso false
      */
-    boolean _ACTUALIZAR(String campo, String valor, String where);
+    boolean update(String campo, String valor, String where);
 
     /**
      * Este metodo actualiza multiples campos a la vez
@@ -65,7 +65,7 @@ public interface ModeloFuncionesDB {
      * @param where - condicion para actualizar
      * @return true si la operacion se hizo correctamente en otro caso false
      */
-    boolean _ACTUALIZAR(String campos[], String valores[], String where);
+    boolean update(String campos[], String valores[], String where);
 
     /**
      *
@@ -74,7 +74,7 @@ public interface ModeloFuncionesDB {
      * @param where
      * @return
      */
-    <T extends Objeto> Optional<ArrayList<T>> _SELECT(String campos, String where);
+    <T extends Objeto> Optional<ArrayList<T>> select(String campos, String where);
 
     
 }

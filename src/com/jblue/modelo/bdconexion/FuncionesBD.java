@@ -59,7 +59,7 @@ public class FuncionesBD extends AbstraccionFunciones {
     }
 
     public boolean _ACTUALIZAR_SIN_ID(String[] valores, String where) {
-        return _ACTUALIZAR(
+        return update(
                 Arrays.copyOfRange(campos, 1, campos.length),
                 valores,
                 where);

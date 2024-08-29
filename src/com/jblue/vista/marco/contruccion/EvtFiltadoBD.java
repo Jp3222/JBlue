@@ -21,11 +21,9 @@ package com.jblue.vista.marco.contruccion;
  * @author juan-campos
  */
 public interface EvtFiltadoBD {
-    
-    void habilidarFiltros();
-    
-    void quitarFiltros();
-    
-    void Filtros();
-    
+
+    void activarFiltros(boolean activar);
+
+    void filtros();
+
 }

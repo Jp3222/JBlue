@@ -18,11 +18,11 @@ package com.jblue.vista.ventanas;
 
 import com.jblue.vista.marco.contruccion.ConstTitutlos;
 import com.jblue.vista.marco.ventanas.VentanaExtendida;
-import com.jblue.vista.vistas.menubd.VCalles;
-import com.jblue.vista.vistas.menubd.VConfiguraciones;
-import com.jblue.vista.vistas.menubd.VPagosXOtros;
-import com.jblue.vista.vistas.menubd.VTipoTomas;
-import com.jblue.vista.vistas.menubd.usuarios.VUsuarios;
+import com.jblue.vista.vistas.VCalles;
+import com.jblue.vista.vistas.VConfiguraciones;
+import com.jblue.vista.vistas.VPagosXOtros;
+import com.jblue.vista.vistas.VTipoTomas;
+import com.jblue.vista.vistas.VUsuarios;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;

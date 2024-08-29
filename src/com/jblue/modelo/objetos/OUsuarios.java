@@ -4,14 +4,15 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.modelo.objetos.Objeto;
-import com.jblue.modelo.bdconexion.env.EnvUsuario;
+import com.jblue.modelo.factories.FabricaCache;
+import com.jblue.modelo.absobj.Objeto;
+import com.jblue.modelo.absobj.ObjetoFK;
 
 /**
  *
  * @author jp
  */
-public class OUsuarios extends Objeto {
+public class OUsuarios extends Objeto implements ObjetoFK {
 
     public OUsuarios(String[] info) {
         super(info);
@@ -27,7 +28,7 @@ public class OUsuarios extends Objeto {
      * @return una cadena con el nombre del usuario
      */
     public String getNombre() {
-        return _conjunto[1];
+        return info[1];
     }
 
     /**
@@ -35,7 +36,7 @@ public class OUsuarios extends Objeto {
      * @return una cadena con el apellido paterno del usuario
      */
     public String getAp() {
-        return _conjunto[2];
+        return info[2];
     }
 
     /**
@@ -43,18 +44,7 @@ public class OUsuarios extends Objeto {
      * @return una cadena con el apellido materno del usuario
      */
     public String getAm() {
-        return _conjunto[3];
-    }
-
-    /**
-     * Metodo que concatena el nombre y los apellidos
-     * <br> nombre + ap + am
-     *
-     * @return una cadena con el nombre completo del usuario
-     */
-    @Override
-    public String getStringR() {
-        return getSubCon(1, 2, 3).replace(',', ' ');
+        return info[3];
     }
 
     /**
@@ -62,11 +52,11 @@ public class OUsuarios extends Objeto {
      * @return una cadena con el ID de la calle asociada a este usuario
      */
     public String getCalle() {
-        return _conjunto[4];
+        return info[4];
     }
 
     public String getNumeroCasa() {
-        return _conjunto[5];
+        return info[5];
     }
 
     /**
@@ -74,7 +64,7 @@ public class OUsuarios extends Objeto {
      * @return una cadena con el ID del tipo de toma asociada a este usuario
      */
     public String getToma() {
-        return _conjunto[6];
+        return info[6];
     }
 
     /**
@@ -82,7 +72,7 @@ public class OUsuarios extends Objeto {
      * @return una cadena con la fecha de registro de este usuario
      */
     public String getRegistro() {
-        return _conjunto[7];
+        return info[7];
     }
 
     /**
@@ -91,7 +81,7 @@ public class OUsuarios extends Objeto {
      * inactivo
      */
     public int getEstado() {
-        return Integer.parseInt(_conjunto[8]);
+        return Integer.parseInt(info[8]);
     }
 
     public boolean isActivo() {
@@ -103,25 +93,25 @@ public class OUsuarios extends Objeto {
      * @return -1 si el usuario es titular en cualquier otro caso devuelve el id
      * del usuario al cual esta asociado
      */
-    public String getTitutlar() {
-        return _conjunto[9];
+    public String getTipo() {
+        return info[9];
+    }
+
+    public String getTipoStr() {
+        return switch (info[9]) {
+            case "1":
+                yield "Titular";
+            default:
+                yield "Consumidor";
+        };
     }
 
     public boolean isTitular() {
-        return Integer.parseInt(_conjunto[9]) < 0;
+        return Integer.parseInt(info[9]) < 0;
     }
 
     public String getCodigo() {
-        return _conjunto[10];
-    }
-
-    private String[] InfoSinFK() {
-        _conjuntoSinFK[4] = EnvUsuario.getCalleEnCache(getCalle()).getStringR();
-        _conjuntoSinFK[6] = EnvUsuario.getTipoDeTomaEnCache(getToma()).getStringR();
-        _conjuntoSinFK[8] = isActivo() ? "ACTIVO" : "INACTIVO";
-        OUsuarios usuario = EnvUsuario.getUsuarioXID(getTitutlar());
-        _conjuntoSinFK[9] = isTitular() ? "N/A" : usuario.getStringR();
-        return _conjuntoSinFK;
+        return info[10];
     }
 
     /**
@@ -140,24 +130,6 @@ public class OUsuarios extends Objeto {
     @Override
     public void setInfo(String[] info) {
         super.setInfo(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        _conjuntoSinFK = InfoSinFK();
-    }
-
-    /**
-     * <br> 1 id
-     * <br> 2 nombre
-     * <br> 3 ap
-     * <br> 4 am
-     * <br> 5 calle
-     * <br> 6 toma
-     * <br> 7 registro
-     * <br> 8 estado
-     * <br> 9 titular
-     *
-     * @return un arreglo con la informacion en el orden mostrado
-     */
-    public String[] getInfoSinFK() {
-        return _conjuntoSinFK;
     }
 
     /**
@@ -179,17 +151,19 @@ public class OUsuarios extends Objeto {
     }
 
     @Override
-    public String StringRepresentacion() {
+    public String[] getInfoSinFK() {
+        String[] _info = this.info.clone();
+        _info[4] = FabricaCache.CALLES.getList((t) -> t.getId().equals(getCalle())).get(0).getNombre();
+        return _info;
+    }
+
+    @Override
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getNombre()).append(" ");
         sb.append(getAp()).append(" ");
         sb.append(getAm());
         return sb.toString();
-    }
-
-    @Override
-    public String toString() {
-        return StringRepresentacion();
     }
 
 }

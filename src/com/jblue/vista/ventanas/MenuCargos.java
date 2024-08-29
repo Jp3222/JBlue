@@ -18,13 +18,11 @@ package com.jblue.vista.ventanas;
 
 import com.jblue.vista.marco.contruccion.ConstTitutlos;
 import com.jblue.vista.marco.ventanas.VentanaExtendida;
-import com.jblue.vista.vistas.menucargos.VPerfil;
-import com.jblue.vista.vistas.menucargos.VAdministrador;
-import com.jblue.vista.vistas.menucargos.VPresidente;
-import com.jblue.vista.vistas.menucargos.VTesorero;
-import java.awt.CardLayout;
-import java.awt.Container;
-import javax.swing.JPanel;
+import com.jblue.vista.vistas.options.VContabilidad;
+import com.jblue.vista.vistas.options.VPerfil;
+import com.jblue.vista.vistas.options.VPersonal;
+import java.awt.BorderLayout;
+import javax.swing.JButton;
 
 /**
  *
@@ -32,22 +30,15 @@ import javax.swing.JPanel;
  */
 public class MenuCargos extends VentanaExtendida {
 
-    private JPanel[] panels;
-
     /**
      * Creates new form MenuCargos
      */
     public MenuCargos() {
         super(ConstTitutlos.TL_PERFILES);
+        view_perfil = new VPerfil();
+        view_contabilidad = new VContabilidad();
+        view_personal = new VPersonal();
         initComponents();
-        menu_tesorero = new VTesorero();
-        menu_perfil = new VPerfil();
-        menu_presidente = new VPresidente();
-        menu_administrador = new VAdministrador();
-        panels = new JPanel[]{
-            menu_tesorero, menu_perfil, menu_presidente, menu_administrador
-        };
-        ly = (CardLayout) getContentPane().getLayout();
         llamable();
     }
 
@@ -61,30 +52,59 @@ public class MenuCargos extends VentanaExtendida {
 
     @Override
     protected void construirComponentes() {
-        Container panel = getContentPane();
-        for (JPanel i : panels) {
-            panel.add(i.getName(), i);
-        }
     }
 
     @Override
     public void componentesEstadoInicial() {
     }
 
-    public void showTesorero() {
-        evtCambios(menu_bar, ly, menu_tesorero, ConstTitutlos.TL_PERF_TESORERO);
+    public int setMenu(String menu) {
+        int r = 0;
+        switch (menu) {
+            case "Perfil" ->
+                showPerfil();
+            case "Presidente" ->
+                showPresidente();
+            case "Tesorero" ->
+                showTesorero();
+            case "Administrador" ->
+                showAdministrador();
+            default ->
+                r = -1;
+        }
+        return r;
     }
 
-    public void showPerfil() {
-        evtCambios(menu_bar, ly, menu_perfil, ConstTitutlos.TL_PERF_PERFIL);
+    private void showTesorero() {
+        clearMenu();
     }
 
-    public void showPresidente() {
-        evtCambios(menu_bar, ly, menu_presidente, ConstTitutlos.TL_PERF_PRESIDENTE);
+    private void showPerfil() {
+        clearMenu();
+        perfil_options = (JButton[]) view_perfil.getOption().toArray(JButton[]::new);
+        panel_central.add(view_perfil);
+        for (JButton i : perfil_options) {
+            panel_option.add(i);
+        }
     }
 
-    public void showAdministrador() {
-        evtCambios(menu_bar, ly, menu_administrador, ConstTitutlos.TL_PERF_ADMINISTRADOR);
+    private void showPresidente() {
+        clearMenu();
+    }
+
+    private void showAdministrador() {
+        panel_central.add(view_personal);
+    }
+
+    private void clearMenu() {
+        int componentCount = panel_central.getComponentCount();
+        if (componentCount > 0) {
+            panel_central.removeAll();
+        }
+        int componentCount2 = panel_option.getComponentCount();
+        if (componentCount2 > 0) {
+            panel_option.removeAll();
+        }
     }
 
     /**
@@ -96,12 +116,35 @@ public class MenuCargos extends VentanaExtendida {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        panel_option = new javax.swing.JPanel();
+        name_user = new javax.swing.JLabel();
+        panel_central = new javax.swing.JPanel();
         menu_bar = new javax.swing.JMenuBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 500));
         setPreferredSize(new java.awt.Dimension(1000, 700));
-        getContentPane().setLayout(new java.awt.CardLayout());
+
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/img2.png"))); // NOI18N
+        jLabel1.setPreferredSize(new java.awt.Dimension(250, 200));
+        jPanel1.add(jLabel1, java.awt.BorderLayout.CENTER);
+
+        panel_option.setPreferredSize(new java.awt.Dimension(250, 400));
+        panel_option.setLayout(new java.awt.GridLayout(8, 1));
+        jPanel1.add(panel_option, java.awt.BorderLayout.SOUTH);
+
+        name_user.setPreferredSize(new java.awt.Dimension(41, 60));
+        jPanel1.add(name_user, java.awt.BorderLayout.PAGE_START);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_START);
+
+        panel_central.setLayout(new java.awt.CardLayout());
+        getContentPane().add(panel_central, java.awt.BorderLayout.CENTER);
 
         menu_bar.setPreferredSize(new java.awt.Dimension(100, 30));
         setJMenuBar(menu_bar);
@@ -112,12 +155,17 @@ public class MenuCargos extends VentanaExtendida {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuBar menu_bar;
+    private javax.swing.JLabel name_user;
+    private javax.swing.JPanel panel_central;
+    private javax.swing.JPanel panel_option;
     // End of variables declaration//GEN-END:variables
-    private final CardLayout ly;
-    private final VPerfil menu_perfil;
-    private final VTesorero menu_tesorero;
-    private final VPresidente menu_presidente;
-    private final VAdministrador menu_administrador;
+    private VPerfil view_perfil;
+    private VContabilidad view_contabilidad;
+    private VPersonal view_personal;
+    private BorderLayout ly;
+    private JButton[] perfil_options;
 
 }

@@ -16,7 +16,7 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.modelo.objetos.Objeto;
+import com.jblue.modelo.absobj.Objeto;
 
 /**
  *
@@ -25,19 +25,19 @@ import com.jblue.util.modelo.objetos.Objeto;
 public class OValores extends Objeto {
 
     public String getClave() {
-        return _conjunto[1];
+        return info[1];
     }
 
     public String getValor() {
-        return _conjunto[2];
+        return info[2];
     }
 
     public String getNombreGrafico() {
-        return _conjunto[3];
+        return info[3];
     }
 
     @Override
-    public String getStringR() {
+    public String toString() {
         return getNombreGrafico();
     }
 

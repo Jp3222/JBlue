@@ -10,7 +10,7 @@ import javax.swing.JPanel;
  *
  * @author jp
  */
-public abstract class VistaSimple extends JPanel{
+public abstract class VistaSimple extends JPanel {
 
     public VistaSimple() {
     }
@@ -20,8 +20,8 @@ public abstract class VistaSimple extends JPanel{
      * siguiente orden
      * <br> - estado final
      * <br> - estado inicial
-     * <br> - estado add componentes
-     * <br> - estado add eventos
+     * <br> - construir Componentes
+     * <br> - manejo Eventos
      * <br> una vez sobre escrito el metodo, tambien se recomienda ponerlo en
      * estado "final" para poder invocarlo en el constructor
      */
@@ -52,9 +52,7 @@ public abstract class VistaSimple extends JPanel{
     /**
      * Metodo recomendado para añadir eventos a los componentes definidos
      */
-    protected void manejoEventos() {
+    protected void eventos() {
     }
-
-    
 
 }

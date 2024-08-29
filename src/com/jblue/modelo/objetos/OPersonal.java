@@ -4,10 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.modelo.objetos.Objeto;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.sql.Date;
+import com.jblue.modelo.absobj.Objeto;
 
 /**
  * OPersonal
@@ -34,16 +31,11 @@ public class OPersonal extends Objeto {
         super();
     }
 
-    @Override
-    public String getStringR() {
-        return getSubCon(1, 2).replace(",", " ");
-    }
-
     /**
      * @return el nombre del personal
      */
     public String getNombre() {
-        return _conjunto[1];
+        return info[1];
     }
 
     /**
@@ -51,7 +43,7 @@ public class OPersonal extends Objeto {
      * @return los apellidos del personal
      */
     public String getApellidos() {
-        return _conjunto[2];
+        return info[2];
     }
 
     /**
@@ -64,7 +56,7 @@ public class OPersonal extends Objeto {
      * @return un entero con el cargo del personal
      */
     public String getCargo() {
-        return _conjunto[3];
+        return info[3];
     }
 
     public String getCargoString() {
@@ -89,11 +81,11 @@ public class OPersonal extends Objeto {
      * @return el nombre usuario encriptado del usuario
      */
     public String getUsuario() {
-        return _conjunto[4];
+        return info[4];
     }
 
     public void setUsuario(String usuario) {
-        _conjunto[4] = usuario;
+        info[4] = usuario;
     }
 
     /**
@@ -101,11 +93,11 @@ public class OPersonal extends Objeto {
      * @return la contraseña encriptada del usuario
      */
     public String getContra() {
-        return _conjunto[5];
+        return info[5];
     }
 
     public void setContra(String contraseña) {
-        _conjunto[5] = contraseña;
+        info[5] = contraseña;
     }
 
     /**
@@ -113,7 +105,7 @@ public class OPersonal extends Objeto {
      * @return la fecha en que se registro el usuario
      */
     public String getFechaRegistro() {
-        return _conjunto[6];
+        return info[6];
     }
 
     /**
@@ -125,7 +117,7 @@ public class OPersonal extends Objeto {
      * @return un entero con el estado del usuario
      */
     public int getEstado() {
-        return Integer.parseInt(_conjunto[7]);
+        return Integer.parseInt(info[7]);
     }
 
     /**
@@ -143,15 +135,15 @@ public class OPersonal extends Objeto {
      * @return
      */
     public String getPermisos() {
-        return _conjunto[8];
+        return info[8];
     }
 
     public String getPeriodoString() {
-        return _conjunto[9];
+        return info[9];
     }
 
     public boolean isPeriodoValido() {
-        return !_conjunto[9].equals("IND");
+        return !info[9].equals("IND");
     }
 
     /**
@@ -160,9 +152,14 @@ public class OPersonal extends Objeto {
      * @return true si y solo si el usuario tiene todos los permisos
      */
     public boolean allPermisos() {
-        char[] p = _conjunto[8].toCharArray();
+        char[] p = info[8].toCharArray();
         int n = (char) p[0];
         return n == 1;
+    }
+
+    @Override
+    public String toString() {
+        return getNombre().concat(" ").concat(getApellidos());
     }
 
 }

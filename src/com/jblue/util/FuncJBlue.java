@@ -17,7 +17,7 @@
 package com.jblue.util;
 
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.util.modelo.objetos.Objeto;
+import com.jblue.modelo.absobj.Objeto;
 import com.jutil.swingw.modelos.TableModel;
 import java.awt.Component;
 import java.awt.Container;
@@ -82,7 +82,7 @@ public abstract class FuncJBlue {
         });
     }
 
-    public static void bloquearArbolComponentes(boolean estado, Component root) {
+    public static void lockTreeComponents(boolean estado, Component root) {
         if (root instanceof JComponent jc) {
             jc.setEnabled(estado);
             JPopupMenu jpm = jc.getComponentPopupMenu();
@@ -99,7 +99,7 @@ public abstract class FuncJBlue {
         }
         if (children != null) {
             for (Component child : children) {
-                bloquearArbolComponentes(estado, child);
+                lockTreeComponents(estado, child);
             }
         }
     }
@@ -108,7 +108,7 @@ public abstract class FuncJBlue {
         ArrayList<T> aux = new ArrayList<>(lista.size());
         String txt_aux;
         for (T t : lista) {
-            txt_aux = t.getStringR();
+            txt_aux = t.toString();
             if (!filtro.test(t, txt_aux)) {
                 continue;
             }
@@ -134,7 +134,7 @@ public abstract class FuncJBlue {
         String aux;
         int j = 0;
         for (Objeto i : lista) {
-            aux = String.format(FORMATO_S_S, i.getId(), i.getStringR());
+            aux = String.format(FORMATO_S_S, i.getId(), i.toString());
             modelo.add(j, aux);
             j++;
         }
@@ -147,7 +147,7 @@ public abstract class FuncJBlue {
         String aux;
         int j = 0;
         for (Objeto i : lista) {
-            aux = String.format(FORMATO_S_S, i.getId(), i.getStringR());
+            aux = String.format(FORMATO_S_S, i.getId(), i.toString());
             modelo.insertElementAt(aux, j);
             j++;
         }
@@ -159,7 +159,7 @@ public abstract class FuncJBlue {
             model.removeAllRows();
         }
         for (Objeto i : lista) {
-            model.addRow(i.getInfoSinFK());
+            model.addRow(i.getInfo());
         }
     }
 

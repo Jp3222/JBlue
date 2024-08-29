@@ -16,7 +16,7 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.modelo.objetos.Objeto;
+import com.jblue.modelo.absobj.Objeto;
 import java.time.LocalDate;
 
 /**
@@ -26,37 +26,32 @@ import java.time.LocalDate;
 public class OPagosOtrosTipos extends Objeto {
 
     public String getMotivo() {
-        return _conjunto[1];
+        return info[1];
     }
 
     public String getDescripcion() {
-        return _conjunto[2];
+        return info[2];
     }
 
     public String getMonto() {
-        return _conjunto[3];
+        return info[3];
     }
 
     public String getUrlNotas() {
-        return _conjunto[4];
+        return info[4];
     }
 
     public LocalDate getFechaInicio() {
-        return LocalDate.parse(_conjunto[5]);
+        return LocalDate.parse(info[5]);
     }
 
     public String getFechaFin() {
-        return _conjunto[6];
-    }
-
-    @Override
-    public String StringRepresentacion() {
-        return getMonto();
+        return info[6];
     }
 
     @Override
     public String toString() {
-        return StringRepresentacion();
+        return getMotivo();
     }
 
 }

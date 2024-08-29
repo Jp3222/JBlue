@@ -24,5 +24,5 @@ public interface EvtSetInfoGrafica {
 
     void setInfoGrafica();
     
-    boolean validadInfoGrafica();
+    boolean isInfoValid();
 }

@@ -5,7 +5,7 @@
 package com.jblue.sistema;
 
 import com.jblue.sistema.app.AppFiles;
-import com.jblue.util.fabricas.FabricaCache;
+import com.jblue.modelo.factories.FabricaCache;
 import com.jblue.vista.componentes.NewMenuConfigBD;
 import com.jblue.vista.ventanas.Login;
 import com.jutil.jbd.conexion.Conexion;
@@ -223,10 +223,10 @@ public class Sistema {
     }
 
     public boolean _CargarCache() {
-        if (FabricaCache.cache) {
+        if (FabricaCache.cache && FabricaCache.cache_list) {
             return true;
         }
-        return FabricaCache.iniciarCache();
+        return FabricaCache.iniciarCache() && FabricaCache.loadCaches();
     }
 
     public boolean _Run() {

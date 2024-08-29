@@ -27,8 +27,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -254,7 +252,7 @@ public class CRecuperarContraseña extends javax.swing.JDialog {
                 }
                 System.out.println(contra_descrip);
             }
-        } catch (SQLException _) {
+        } catch (SQLException e) {
             System.out.println("error");
         }
     }

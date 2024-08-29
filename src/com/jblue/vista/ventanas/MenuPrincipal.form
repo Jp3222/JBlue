@@ -29,9 +29,6 @@
                 <Property name="text" type="java.lang.String" value="Perfil"/>
                 <Property name="toolTipText" type="java.lang.String" value="Apartado para el control de datos del usuario en uso"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="item_perfilActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="item_presidente">
               <Properties>
@@ -56,9 +53,6 @@
                 <Property name="text" type="java.lang.String" value="Tesorero"/>
                 <Property name="name" type="java.lang.String" value="tesorero" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="item_tesoreroActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="item_administrador">
               <Properties>
@@ -314,7 +308,6 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
-    <Property name="extendedState" type="int" value="6"/>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[600, 350]"/>
     </Property>

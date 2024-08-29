@@ -4,16 +4,15 @@
  */
 package com.jblue.vista.ventanas;
 
-import com.jblue.modelo.bdconexion.env.EnvPersonal;
 import com.jblue.sistema.Sesion;
-import com.jblue.util.fabricas.FabricaCache;
+import com.jblue.modelo.factories.FabricaCache;
 import com.jblue.vista.componentes.CRecuperarContraseña;
 import com.jblue.vista.marco.contruccion.ConstTitutlos;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
-import com.jblue.vista.ventanas.herramientas.MenuCVSExport;
-import com.jblue.vista.ventanas.herramientas.MenuDirectorios;
-import com.jblue.vista.ventanas.herramientas.MenuDocumentos;
-import com.jblue.vista.vistas.menuprincipal.VCobros;
+import com.jblue.vista.herramientas.MenuCVSExport;
+import com.jblue.vista.herramientas.MenuDirectorios;
+import com.jblue.vista.herramientas.MenuDocumentos;
+import com.jblue.vista.vistas.VCobros;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -30,9 +29,6 @@ public class MenuPrincipal extends VentanaSimple {
 
     public MenuPrincipal(Login login) {
         super(ConstTitutlos.TL_MENU_PRINCIPAL, ConstTitutlos.TL_VENTANAS);
-        setUndecorated(true);
-        setDefaultLookAndFeelDecorated(false);
-
         this.initComponents();
 
         menus_bd = new MenuBD();
@@ -87,7 +83,7 @@ public class MenuPrincipal extends VentanaSimple {
     @Override
     protected void manejoEventos() {
 
-        addAcLis(e -> evtMostrarMenu((JMenuItem) e.getSource()),
+        addMenuEvent(e -> evtMostrarMenu((JMenuItem) e.getSource()),
                 item_perfil,
                 item_presidente,
                 item_tesorero,
@@ -96,7 +92,7 @@ public class MenuPrincipal extends VentanaSimple {
                 item_salir
         );
 
-        addAcLis(e -> evtMostrarBD((JMenuItem) e.getSource()),
+        addMenuEvent(e -> evtMostrarBD((JMenuItem) e.getSource()),
                 item_config,
                 item_usuarios,
                 item_Calles,
@@ -105,14 +101,14 @@ public class MenuPrincipal extends VentanaSimple {
                 item_pagos_x_otros_tipos
         );
 
-        addAcLis(e -> evtMostrarHerr((JMenuItem) e.getSource()),
+        addMenuEvent(e -> evtMostrarHerr((JMenuItem) e.getSource()),
                 item_csv_rap,
                 item_docs,
                 item_dir
         );
     }
 
-    private void addAcLis(ActionListener evt, JMenuItem... items) {
+    private void addMenuEvent(ActionListener evt, JMenuItem... items) {
         for (JMenuItem i : items) {
             i.addActionListener(evt);
         }
@@ -152,18 +148,12 @@ public class MenuPrincipal extends VentanaSimple {
     }
 
     private void evtMostrarMenu(JMenuItem o) {
-        if (o == item_perfil) {
-            menu_cargos.showPerfil();
-        } else if (o == item_presidente) {
-            menu_cargos.showPresidente();
-        } else if (o == item_tesorero) {
-            menu_cargos.showTesorero();
-        } else if (o == item_administrador) {
-            menu_cargos.showAdministrador();
-        } else if (o == item_salir) {
+        if (o == item_salir) {
             dispose();
             return;
-        } else {
+        }
+        int res = menu_cargos.setMenu(o.getText());
+        if (res == -1) {
             JOptionPane.showMessageDialog(this, String.format(FMT_MEN_D, o.getText()));
             return;
         }
@@ -214,7 +204,6 @@ public class MenuPrincipal extends VentanaSimple {
         jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setExtendedState(6);
         setMinimumSize(new java.awt.Dimension(600, 350));
         setPreferredSize(new java.awt.Dimension(1200, 700));
 
@@ -228,11 +217,6 @@ public class MenuPrincipal extends VentanaSimple {
         item_perfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/usuario(1).png"))); // NOI18N
         item_perfil.setText("Perfil");
         item_perfil.setToolTipText("Apartado para el control de datos del usuario en uso");
-        item_perfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                item_perfilActionPerformed(evt);
-            }
-        });
         menu_principal.add(item_perfil);
 
         item_presidente.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -245,11 +229,6 @@ public class MenuPrincipal extends VentanaSimple {
         item_tesorero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cofre-del-tesoro.png"))); // NOI18N
         item_tesorero.setText("Tesorero");
         item_tesorero.setName("tesorero"); // NOI18N
-        item_tesorero.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                item_tesoreroActionPerformed(evt);
-            }
-        });
         menu_principal.add(item_tesorero);
 
         item_administrador.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_4, java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -461,14 +440,6 @@ public class MenuPrincipal extends VentanaSimple {
         herr_dir.setVisible(true);
     }//GEN-LAST:event_item_dirActionPerformed
 
-    private void item_perfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_perfilActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_item_perfilActionPerformed
-
-    private void item_tesoreroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_tesoreroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_item_tesoreroActionPerformed
-
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         new CRecuperarContraseña(this, true).setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
@@ -564,7 +535,7 @@ public class MenuPrincipal extends VentanaSimple {
 //        JMenuItem[] cargos = {
 //            item_presidente, item_tesorero, item_administrador
 //        };
-//        String cargo = EnvPersonal.getCargoString(Sesion.getInstancia().getUsuario());
+//        String cargo = UtilPersonal.getCargoString(Sesion.getInstancia().getUsuario());
 //        for (JMenuItem i : cargos) {
 //            i.setEnabled(i.getText().equalsIgnoreCase(cargo));
 //        }

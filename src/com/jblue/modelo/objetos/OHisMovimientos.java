@@ -4,7 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.modelo.objetos.Objeto;
+import com.jblue.modelo.absobj.Objeto;
 
 /**
  *
@@ -21,19 +21,19 @@ public class OHisMovimientos extends Objeto {
     }
 
     public String getPersonal() {
-        return _conjunto[1];
+        return info[1];
     }
 
     public String getMovimiento() {
-        return _conjunto[2];
+        return info[2];
     }
 
     public String getFecha() {
-        return _conjunto[3];
+        return info[3];
     }
 
     public String getHora() {
-        return _conjunto[4];
+        return info[4];
     }
 
 }

@@ -4,7 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.modelo.objetos.AbstraccionOPago;
+import com.jblue.modelo.absobj.AbstraccionOPago;
 
 /**
  *

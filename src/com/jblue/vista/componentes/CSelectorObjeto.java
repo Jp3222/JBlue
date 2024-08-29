@@ -19,9 +19,9 @@ package com.jblue.vista.componentes;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.util.modelo.objetos.Objeto;
+import com.jblue.modelo.absobj.Objeto;
 import com.jblue.util.Filtros;
-import com.jblue.util.fabricas.FabricaCache;
+import com.jblue.modelo.factories.FabricaCache;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -127,6 +127,8 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
                 doClose(RET_CANCEL);
             }
         });
+        
+        
     }
 
     public T getObjeto() {
@@ -288,12 +290,12 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
 
         String aux;
         for (T i : cache) {
-            aux = Filtros.limpiar(i.getStringR());
+            aux = Filtros.limpiar(i.toString());
             if (!aux.contains(txt)) {
                 continue;
             }
             StringBuilder sb = new StringBuilder(100);
-            sb.append(i.getId()).append(" - ").append(i.getStringR());
+            sb.append(i.getId()).append(" - ").append(i.toString());
 
             modelo_lista.addElement(sb.toString());
             cache_aux.add(i);
@@ -310,7 +312,7 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
         modelo_lista.clear();
         for (Objeto i : cache) {
             StringBuilder sb = new StringBuilder(100);
-            sb.append(i.getId()).append(" - ").append(i.getStringR());
+            sb.append(i.getId()).append(" - ").append(i.toString());
             modelo_lista.addElement(sb.toString());
         }
     }

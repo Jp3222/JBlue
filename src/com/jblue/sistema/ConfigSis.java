@@ -16,10 +16,10 @@
  */
 package com.jblue.sistema;
 
-import com.jblue.modelo.bdconexion.Operaciones;
+import com.jblue.util.trash.Operaciones;
 import com.jblue.modelo.objetos.OValores;
-import com.jblue.util.fabricas.FabricaCache;
-import com.jblue.util.modelo.MemoCache;
+import com.jblue.modelo.factories.FabricaCache;
+import com.jblue.util.trash.MemoCache;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

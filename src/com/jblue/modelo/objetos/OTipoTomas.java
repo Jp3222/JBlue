@@ -4,7 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.modelo.objetos.Objeto;
+import com.jblue.modelo.absobj.Objeto;
 
 /**
  *
@@ -20,33 +20,21 @@ public class OTipoTomas extends Objeto {
         super();
     }
 
-    @Override
-    public String getStringR() {
-        return getTipo();
-    }
-
-    @Override
-    public String StringRepresentacion() {
-        return getTipo();
-    }
-
     public String getTipo() {
-        return _conjunto[1];
+        return info[1];
     }
 
     public double getCosto() {
-        return Double.parseDouble(_conjunto[2]);
+        return Double.parseDouble(info[2]);
     }
 
     public double getRecargo() {
-        return Double.parseDouble(_conjunto[3]);
+        return Double.parseDouble(info[3]);
     }
 
     @Override
     public String toString() {
-        return StringRepresentacion();
+        return getTipo();
     }
-    
-    
 
 }

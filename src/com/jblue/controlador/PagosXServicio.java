@@ -16,9 +16,9 @@
  */
 package com.jblue.controlador;
 
-import com.jblue.modelo.bdconexion.env.EnvUsuario;
+import com.jblue.util.tools.UtilUsuario;
 import com.jblue.modelo.objetos.OTipoTomas;
-import com.jblue.util.modelo.pagos.AbstraccionCPagos;
+import com.jblue.modelo.absobj.AbstraccionCPagos;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -54,7 +54,7 @@ class PagosXServicio extends AbstraccionCPagos {
         if (!validarPyU()) {
             return movimientos;
         }
-        OTipoTomas toma = EnvUsuario.getTipoDeTomaEnCache(usuario.getToma());
+        OTipoTomas toma = UtilUsuario.getTipoToma(usuario.getToma());
         double costo_mensual = toma.getCosto() * meses_pagados.length;
 
         if (dinero_ingresado < costo_mensual) {
@@ -73,7 +73,6 @@ class PagosXServicio extends AbstraccionCPagos {
         movimientos.put(DATOS, sb.toString());
         movimientos.put(ESTADO, VALOR_CORRECTO);
         conexion._INSERTAR(sb);
-
         return movimientos;
     }
 }

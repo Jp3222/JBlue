@@ -5,7 +5,7 @@
 package com.jblue.sistema.bdmov;
 
 import com.jblue.modelo.ConstBD;
-import com.jblue.modelo.bdconexion.Operaciones;
+import com.jblue.util.trash.Operaciones;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.util.tiempo.Hora;

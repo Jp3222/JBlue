@@ -98,7 +98,8 @@ public interface EvtRegistrosBD {
 
     /**
      *
-     */
+     * @param o
+     * @return  */
     default boolean evtCancelar(VistaSimple o) {
         int in = JOptionPane.showConfirmDialog(o, "¿Desea cancelar esta operacion?", "Cancelar Operacion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         return JOptionPane.YES_OPTION == in;

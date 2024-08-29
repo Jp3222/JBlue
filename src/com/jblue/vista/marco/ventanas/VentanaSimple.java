@@ -4,7 +4,6 @@
  */
 package com.jblue.vista.marco.ventanas;
 
-import com.jblue.modelo.ConstGs;
 import javax.swing.JFrame;
 import com.jblue.sistema.app.AppInfo;
 import java.awt.HeadlessException;

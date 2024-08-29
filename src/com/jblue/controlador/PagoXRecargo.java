@@ -16,14 +16,9 @@
  */
 package com.jblue.controlador;
 
-import com.jblue.modelo.bdconexion.env.EnvUsuario;
+import com.jblue.util.tools.UtilUsuario;
 import com.jblue.modelo.objetos.OTipoTomas;
-import com.jblue.util.modelo.pagos.AbstraccionCPagos;
-import static com.jblue.util.modelo.pagos.EstadosDePagos.DATOS;
-import static com.jblue.util.modelo.pagos.EstadosDePagos.ERROR;
-import static com.jblue.util.modelo.pagos.EstadosDePagos.ESTADO;
-import static com.jblue.util.modelo.pagos.EstadosDePagos.VALOR_CORRECTO;
-import static com.jblue.util.modelo.pagos.EstadosDePagos.VALOR_INCORRECTO;
+import com.jblue.modelo.absobj.AbstraccionCPagos;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -63,7 +58,7 @@ public class PagoXRecargo extends AbstraccionCPagos {
         if (!validarPyU()) {
             return movimientos;
         }
-        OTipoTomas toma = EnvUsuario.getTipoDeTomaEnCache(usuario.getToma());
+        OTipoTomas toma = UtilUsuario.getTipoToma(usuario.getToma());
         double costo_mensual = toma.getCosto() * meses_pagados.length;
 
         if (dinero_ingresado < costo_mensual) {
@@ -89,7 +84,7 @@ public class PagoXRecargo extends AbstraccionCPagos {
         if (!validarPyU()) {
             return movimientos;
         }
-        OTipoTomas toma = EnvUsuario.getTipoDeTomaEnCache(usuario.getToma());
+        OTipoTomas toma = UtilUsuario.getTipoToma(usuario.getToma());
         double costo_mensual = toma.getCosto() * meses_pagados.length;
 
         dinero_ingresado = toma.getRecargo();

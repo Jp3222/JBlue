@@ -4,7 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.modelo.objetos.AbstraccionOPago;
+import com.jblue.modelo.absobj.AbstraccionOPago;
 
 /**
  *
@@ -18,16 +18,6 @@ public class OPagosServicio extends AbstraccionOPago {
 
     public OPagosServicio(String... info) {
         super(info);
-    }
-
-    @Override
-    public String getStringR() {
-        return _conjuntoSinFK[2];
-    }
-    
-    @Override
-    public String[] getInfoSinFK() {
-        return _conjuntoSinFK;
     }
 
 }

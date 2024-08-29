@@ -4,7 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.modelo.objetos.Objeto;
+import com.jblue.modelo.absobj.Objeto;
 
 /**
  *
@@ -21,22 +21,16 @@ public class OCalles extends Objeto {
     }
 
     public String getNombre() {
-        return _conjunto[1];
+        return info[1];
     }
 
     public String getNumero() {
-        return _conjunto[2];
-    }
-
-    @Override
-    public String StringRepresentacion() {
-        return _conjunto[1] + " " + _conjunto[2];
+        return info[2];
     }
 
     @Override
     public String toString() {
-        return StringRepresentacion();
+        return getNombre().concat(" ").concat(getNumero());
     }
 
-    
 }

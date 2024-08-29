@@ -4,16 +4,12 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.modelo.objetos.AbstraccionOPago;
+import com.jblue.modelo.absobj.AbstraccionOPago;
 
 /**
  *
  * @author jp
  */
 public class OPagosRecargos extends AbstraccionOPago {
-
-    public String[] getInfoSinFK() {
-        return _conjuntoSinFK;
-    }
 
 }

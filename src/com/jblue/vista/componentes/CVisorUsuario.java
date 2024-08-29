@@ -17,11 +17,11 @@
 package com.jblue.vista.componentes;
 
 import com.jblue.modelo.ConstGs;
-import com.jblue.modelo.bdconexion.Operaciones;
+import com.jblue.util.trash.Operaciones;
 import com.jblue.modelo.objetos.OPagosRecargos;
 import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.util.fabricas.FabricaOpraciones;
+import com.jblue.modelo.factories.FabricaOpraciones;
 import com.jutil.framework.ComponentStates;
 import com.jutil.swingw.modelos.TableModel;
 import java.awt.CardLayout;
@@ -50,7 +50,7 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
     public static CVisorUsuario showVisor(OUsuarios obj) {
         CVisorUsuario o = new CVisorUsuario(null, true);
         o.setUsuario(obj);
-        o.setTitle(obj.getStringR());
+        o.setTitle(obj.toString());
         o.setVisible(true);
         return o;
     }
@@ -663,7 +663,7 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
     }
 
     private void cargar() {
-        String[] arr = usuario.getInfoSinFK();
+        String[] arr = usuario.getInfo();
         nombre1.setText(usuario.getNombre());
         apellidos2.setText(String.format("%s %s", usuario.getAp(), usuario.getAm()));
 
@@ -675,16 +675,19 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
     private void cargarPagosXServicio() {
         Operaciones<OPagosServicio> o = FabricaOpraciones.getPAGOS_X_SERVICIO();
         ArrayList<OPagosServicio> lista = o.getLista("usuario = " + usuario.getId());
+        if (lista.isEmpty()) {
+            return;
+        }
         for (OPagosServicio i : lista) {
-            modelo_pagos_x_servicio.addRow(i.getInfoSinFK());
+            modelo_pagos_x_servicio.addRow(i.getInfo());
         }
 
         List<OPagosServicio> collect = lista.stream().sorted().collect(Collectors.toList());
         SpinnerNumberModel modelo = (SpinnerNumberModel) filtro_pxs_año.getModel();
 
-        modelo.setMinimum(Integer.valueOf(collect.get(0).getAño()));
-        modelo.setValue(Integer.valueOf(collect.get(0).getAño()));
-        modelo.setMaximum(Integer.valueOf(collect.get(collect.size() - 1).getAño()));
+        modelo.setMinimum(collect.get(0).getAño());
+        modelo.setValue(collect.get(0).getAño());
+        modelo.setMaximum(collect.get(collect.size() - 1).getAño());
         collect.clear();
     }
 
@@ -692,7 +695,7 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
         Operaciones<OPagosRecargos> o = FabricaOpraciones.getPAGOS_X_RECARGOS();
         ArrayList<OPagosRecargos> lista = o.getLista("usuario = " + usuario.getId());
         for (OPagosRecargos i : lista) {
-            modelo_pagos_x_servicio.addRow(i.getInfoSinFK());
+            modelo_pagos_x_servicio.addRow(i.getInfo());
         }
     }
 

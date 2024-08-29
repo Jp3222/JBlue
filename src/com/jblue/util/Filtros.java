@@ -27,6 +27,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Filtros {
 
+
+
     /**
      * Expresion regular que valida caracateres segun el conjunto a-z, A-Z y
      * _ñÑáÁéÉíÍóÓúÚ concatenar un rango para que pueda validar cadenas de texto

@@ -4,31 +4,28 @@
  */
 package com.jblue.vista.ventanas;
 
-import com.jblue.modelo.bdconexion.Operaciones;
+import com.jblue.controlador.CLogin;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.sistema.ConstSisMen;
 import com.jblue.sistema.Sesion;
 import com.jblue.sistema.Sistema;
-import com.jblue.util.Filtros;
-import com.jblue.util.fabricas.FabricaOpraciones;
-import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.vista.marco.contruccion.ConstTitutlos;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.swingw.wrappers.TextFieldWrapper;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import javax.swing.AbstractAction;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 /**
@@ -78,11 +75,11 @@ public class Login extends VentanaSimple {
     @Override
     protected void componentesEstadoFinal() {
         super.componentesEstadoFinal();
-
+        usuario.requestFocus();
         try {
             Conexion instancia = Conexion.getInstancia();
             String estado = "Estado ";
-            estado += instancia.isConectado() ? "Conectado" : "Desconectado";
+            estado = estado.concat(instancia.isConectado() ? "Conectado" : "Desconectado");
             jlEstado.setText(estado);
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,6 +89,16 @@ public class Login extends VentanaSimple {
     @Override
     protected void manejoEventos() {
         jbtInicio.addActionListener(e -> login());
+
+        mostrar.addItemListener((e) -> {
+            if (mostrar.isSelected()) {
+                contra.setEchoChar((char) 0);
+                mostrar.setToolTipText("ocultar");
+                return;
+            }
+            contra.setEchoChar('*');
+            mostrar.setToolTipText("mostrar");
+        });
 
         for (TextFieldWrapper envjtf : campos) {
             envjtf.borrarAlClick();
@@ -106,6 +113,34 @@ public class Login extends VentanaSimple {
                 }
             }
         });
+
+        configuracionBD.addActionListener(e -> {
+            setVisible(false);
+            dispose();
+            SwingUtilities.invokeLater(() -> MENU_CONFIG_BD.setVisible(true));
+        });
+
+        String enter = "ENTER";
+
+        usuario.getInputMap().put(KeyStroke.getKeyStroke((char) KeyEvent.VK_ENTER), enter);
+        usuario.getActionMap().put(enter, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                usuario.transferFocus();
+            }
+        });
+
+        InputMap inputMap = contra.getInputMap(JComponent.WHEN_FOCUSED);
+        inputMap.put(KeyStroke.getKeyStroke((char) KeyEvent.VK_ENTER), enter);
+
+        contra.getActionMap().put(enter, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                login();
+            }
+        });
+
+        contra.getFocusTraversalPolicy();
     }
 
     /**
@@ -156,7 +191,10 @@ public class Login extends VentanaSimple {
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/img1.png"))); // NOI18N
+        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIconTextGap(30);
         jLabel2.setPreferredSize(new java.awt.Dimension(350, 150));
+        jLabel2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jPanel1.add(jLabel2, java.awt.BorderLayout.CENTER);
 
         jPanel2.setPreferredSize(new java.awt.Dimension(350, 250));
@@ -170,6 +208,7 @@ public class Login extends VentanaSimple {
         jLabel5.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel5.add(jLabel5, java.awt.BorderLayout.LINE_START);
 
+        usuario.setNextFocusableComponent(contra);
         usuario.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel5.add(usuario, java.awt.BorderLayout.CENTER);
 
@@ -183,12 +222,6 @@ public class Login extends VentanaSimple {
         jLabel6.setText("Contraseña");
         jLabel6.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel6.add(jLabel6, java.awt.BorderLayout.LINE_START);
-
-        contra.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                contraKeyPressed(evt);
-            }
-        });
         jPanel6.add(contra, java.awt.BorderLayout.CENTER);
 
         mostrar.setToolTipText("mostrar");
@@ -196,11 +229,6 @@ public class Login extends VentanaSimple {
         mostrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
         mostrar.setPreferredSize(new java.awt.Dimension(30, 40));
         mostrar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img3.png"))); // NOI18N
-        mostrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mostrarActionPerformed(evt);
-            }
-        });
         jPanel6.add(mostrar, java.awt.BorderLayout.LINE_END);
 
         jPanel4.add(jPanel6);
@@ -225,11 +253,6 @@ public class Login extends VentanaSimple {
 
         configuracionBD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/img4.png"))); // NOI18N
         configuracionBD.setPreferredSize(new java.awt.Dimension(75, 40));
-        configuracionBD.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                configuracionBDActionPerformed(evt);
-            }
-        });
         jPanel3.add(configuracionBD, java.awt.BorderLayout.WEST);
         jPanel3.add(jlEstado, java.awt.BorderLayout.CENTER);
 
@@ -246,35 +269,12 @@ public class Login extends VentanaSimple {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-
-    private void mostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarActionPerformed
-        if (mostrar.isSelected()) {
-            contra.setEchoChar((char) 0);
-            mostrar.setToolTipText("ocultar");
-
-        } else {
-            contra.setEchoChar('*');
-            mostrar.setToolTipText("mostrar");
-        }
-    }//GEN-LAST:event_mostrarActionPerformed
-
-    private void configuracionBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configuracionBDActionPerformed
-        setVisible(false);
-        dispose();
-        SwingUtilities.invokeLater(() -> MENU_CONFIG_BD.setVisible(true));
-    }//GEN-LAST:event_configuracionBDActionPerformed
-
-    private void contraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contraKeyPressed
-        if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
-            login();
-        }
-    }//GEN-LAST:event_contraKeyPressed
-
     public synchronized void login() {
         if (sesion_en_curso) {
             return;
         }
         sesion_en_curso = true;
+
         if (!iniciar()) {
             sesion_en_curso = false;
             return;
@@ -283,10 +283,8 @@ public class Login extends VentanaSimple {
         if (!Sistema.getInstancia()._CargarCache()) {
             System.out.println(ConstSisMen.MEN_CACHE_ERR);
         }
-
         System.out.println(ConstSisMen.MEN_CACHE_OK);
 
-        this.setVisible(false);
         this.dispose();
 
         SwingUtilities.invokeLater(() -> {
@@ -296,54 +294,19 @@ public class Login extends VentanaSimple {
     }
 
     public boolean iniciar() {
-        if (!camposValidos()) {
+        Optional<OPersonal> res = CLogin.login(usuario.getText(), String.valueOf(contra.getPassword()));
+        if (res.isEmpty()) {
             return false;
         }
-        OPersonal personal = credencialesValidas(usuario.getText(), String.valueOf(contra.getPassword()));
-        if (personal == null) {
-            return false;
-        }
+
         Sesion sesion = Sesion.getInstancia();
-        sesion.setUsuario(personal);
+        sesion.setUsuario(res.get());
 
         if (!sesion.inicioSesion()) {
             JOptionPane.showMessageDialog(this, "ERROR AL REGISTRAR SESION");
             return false;
         }
         return true;
-    }
-
-    public boolean camposValidos() {
-        String x = usuario.getText();
-        String y = String.valueOf(contra.getPassword());
-        return !Filtros.isNullOrBlank(x, y);
-    }
-
-    private OPersonal credencialesValidas(String usuario, String contraseña) {
-        OPersonal get = null;
-        try {
-            Operaciones<OPersonal> op = FabricaOpraciones.getPERSONAL();
-            String formato = "usuario = '%s' and contra = '%s'";
-
-            String query = String.format(formato,
-                    EncriptadoAES.encriptar(usuario, contraseña),
-                    EncriptadoAES.encriptar(contraseña, usuario)
-            );
-            get = op.get(query);
-            if (get == null || get.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Usuario y/o contraseña incorrectos");
-                return null;
-            }
-
-        } catch (UnsupportedEncodingException
-                | NoSuchAlgorithmException
-                | InvalidKeyException
-                | NoSuchPaddingException
-                | IllegalBlockSizeException
-                | BadPaddingException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return get;
     }
 
     public void limpiarInstancia() {

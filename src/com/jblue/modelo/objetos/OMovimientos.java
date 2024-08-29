@@ -4,7 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.modelo.objetos.Objeto;
+import com.jblue.modelo.absobj.Objeto;
 
 /**
  *
@@ -21,11 +21,11 @@ public class OMovimientos extends Objeto {
     }
 
     public String getMovimiento() {
-        return _conjunto[1];
+        return info[1];
     }
 
     public String getDescripcion() {
-        return _conjunto[2];
+        return info[2];
     }
 
 }

@@ -16,7 +16,7 @@
  */
 package com.jblue.controlador;
 
-import com.jblue.modelo.factories.FabricaCache;
+import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
 

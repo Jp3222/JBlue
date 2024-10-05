@@ -21,11 +21,10 @@ import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.modelo.absobj.Objeto;
+import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
 import com.jblue.util.FuncJBlue;
-import com.jblue.modelo.factories.FabricaCache;
-import com.jblue.util.tools.UtilUsuario;
+import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.util.trash.MemoCache;
 import com.jblue.vista.marco.vistas.VistaSimple;
 import com.jblue.vista.vistas.VUsuarios;
@@ -407,11 +406,9 @@ public class VUsuariosC extends VistaSimple {
     public void setVisible(boolean flag) {
         super.setVisible(flag);
         if (flag) {
-            System.out.println("visible");
             cargarFiltros();
             pintarTabla(0, modelo_tabla, cache);
         } else {
-            System.out.println("invisible");
             quitarFiltros();
             modelo_tabla.removeAllRows();
         }

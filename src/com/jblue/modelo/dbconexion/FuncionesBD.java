@@ -16,7 +16,7 @@
  */
 package com.jblue.modelo.dbconexion;
 
-import com.jblue.modelo.absobj.Objeto;
+import com.jblue.modelo.objetos.Objeto;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -33,7 +33,7 @@ public class FuncionesBD<T extends Objeto> extends AbstraccionFunciones<T> {
         super(TABLA, CAMPOS);
     }
 
-    public boolean _INSERTAR_SIN_ID(String... valores) {
+    public boolean insertByData(String... valores) {
         boolean retorno = false;
         try {
             retorno = conexion.insert(tabla,
@@ -45,7 +45,7 @@ public class FuncionesBD<T extends Objeto> extends AbstraccionFunciones<T> {
         return retorno;
     }
 
-    public boolean _INSERTAR(StringBuilder valores) {
+    public boolean insertCol(StringBuilder valores) {
         boolean retorno = false;
         try {
             System.out.println(conexion.getCampos(Arrays.copyOfRange(campos, 1, campos.length)));
@@ -59,7 +59,7 @@ public class FuncionesBD<T extends Objeto> extends AbstraccionFunciones<T> {
         return retorno;
     }
 
-    public boolean _ACTUALIZAR_SIN_ID(String[] valores, String where) {
+    public boolean updateByData(String[] valores, String where) {
         return update(
                 Arrays.copyOfRange(campos, 1, campos.length),
                 valores,

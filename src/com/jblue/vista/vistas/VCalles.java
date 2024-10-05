@@ -22,7 +22,7 @@ import com.jblue.modelo.objetos.OCalles;
 import com.jblue.util.Filtros;
 import com.jblue.util.FormatoBD;
 import com.jblue.util.FuncJBlue;
-import com.jblue.modelo.factories.FabricaCache;
+import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.util.trash.MemoCache;
 import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
 import com.jblue.vista.marco.vistas.VistaExtendida;
@@ -95,7 +95,7 @@ public class VCalles extends VistaExtendida implements EvtSetInfoGrafica, EvtReg
         if (!camposValidos()) {
             return;
         }
-        info = FormatoBD.bdEntrada(info);
+        info = FormatoBD.formatoEntrada(info);
         Operaciones op = memo_cache.getOperaciones();
         boolean ok = op.insert(info);
         estado(ok);
@@ -107,7 +107,7 @@ public class VCalles extends VistaExtendida implements EvtSetInfoGrafica, EvtReg
         if (!camposValidos()) {
             return;
         }
-        info = FormatoBD.bdEntrada(info);
+        info = FormatoBD.formatoEntrada(info);
         Operaciones op = memo_cache.getOperaciones();
         boolean ok = op.actualizar(info, "id = '" + objeto_buscado.getId() + "'");
         estado(ok);
@@ -193,7 +193,7 @@ public class VCalles extends VistaExtendida implements EvtSetInfoGrafica, EvtReg
         jPanel4.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/buscar.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
         jLabel1.setPreferredSize(new java.awt.Dimension(30, 30));
         jPanel4.add(jLabel1, java.awt.BorderLayout.WEST);
 

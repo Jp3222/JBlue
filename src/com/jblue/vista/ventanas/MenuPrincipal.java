@@ -5,7 +5,7 @@
 package com.jblue.vista.ventanas;
 
 import com.jblue.sistema.Sesion;
-import com.jblue.modelo.factories.FabricaCache;
+import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.vista.componentes.CRecuperarContraseña;
 import com.jblue.vista.marco.contruccion.ConstTitutlos;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
@@ -281,7 +281,7 @@ public class MenuPrincipal extends VentanaSimple {
 
         menu_herramientas.setText("Herramientas");
 
-        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/bloqueado.png"))); // NOI18N
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/lock.png"))); // NOI18N
         jMenuItem2.setText("Bloquear Caja");
         menu_herramientas.add(jMenuItem2);
 

@@ -5,7 +5,7 @@
 package com.jblue.sistema;
 
 import com.jblue.sistema.app.AppFiles;
-import com.jblue.modelo.factories.FabricaCache;
+import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.vista.componentes.NewMenuConfigBD;
 import com.jblue.vista.ventanas.Login;
 import com.jutil.jbd.conexion.Conexion;
@@ -104,9 +104,9 @@ public class Sistema {
     }
 
     public boolean _ConexionBD() {
-        //MenuConfigBD config = new MenuConfigBD();
         leerPropiedades();
         boolean conexionNull = propiedades.get("bd-url") == null;
+        //obteniendo credenciales
         if (conexionNull) {
             String[] o = null;
             try {
@@ -117,48 +117,39 @@ public class Sistema {
             propiedades.put("bd-usuario", o[0]);
             propiedades.put("bd-contraseña", o[1]);
             propiedades.put("bd-url", o[2]);
-
-//            synchronized (config) {
-//                config.setSistema(this);
-//                config.setVisible(true);
-//                try {
-//                    config.wait();
-//                } catch (InterruptedException ex) {
-//                    Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
-//                }
+            SistemaR.setConexion(conexion);
             escribirPropiedades();
-//            }
         }
-
+        //estableciendo conexion
         try {
             conexion = Conexion.getInstancia(propiedades.getProperty("bd-usuario"),
                     propiedades.getProperty("bd-contraseña"),
                     propiedades.getProperty("bd-url"));
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, getErrMessage(e.getErrorCode()), "Error de conexion", JOptionPane.ERROR_MESSAGE);
+            switch (e.getErrorCode()) {
+                case 1698, 1045 ->
+                    reiniciarCredenciales();
+                default -> {
 
-            if (conexionCerrada() || conexionNoValida()) {
-                int in = JOptionPane.showConfirmDialog(null, "Hay un problema con las credenciales, dese reiniciarlas?");
-                if (in == JOptionPane.YES_OPTION) {
-                    propiedades.remove("bd-usuario");
-                    propiedades.remove("bd-contraseña");
-                    propiedades.remove("bd-url");
-                    escribirPropiedades();
-                    return false;
                 }
             }
-        } catch (SQLException ex) {
-            Excp.imp(ex, getClass(), true, true);
-            int in = JOptionPane.showConfirmDialog(null, "Hay un problema con las credenciales, dese reiniciarlas?");
-            if (in == JOptionPane.YES_OPTION) {
-                propiedades.remove("bd-usuario");
-                propiedades.remove("bd-contraseña");
-                propiedades.remove("bd-url");
-                escribirPropiedades();
-            }
             System.exit(0);
-
         }
 
         return true;
+    }
+
+    private String getErrMessage(int code) {
+        return switch (code) {
+            case 0:
+                yield "La conexion no se puede establcer";
+            case 1698, 1045:
+                yield "Credenciales no validad";
+            default:
+                yield "Error no registrado";
+        };
+
     }
 
     public void reiniciarCredenciales() {
@@ -302,6 +293,7 @@ public class Sistema {
         return propiedades;
     }
 
+    @Deprecated
     public Conexion getConexion() {
         return conexion;
     }

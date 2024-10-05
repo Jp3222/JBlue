@@ -18,7 +18,7 @@ package com.jblue.vista.herramientas;
 
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.sistema.app.AppFiles;
-import com.jblue.modelo.factories.FabricaCache;
+import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
 import com.jblue.vista.componentes.CSelectorObjeto;
 import java.io.File;

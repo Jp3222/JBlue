@@ -23,7 +23,7 @@ public class FormatoBD {
         return datos;
     }
 
-    public static String[] bdEntrada(String... datos) {
+    public static String[] formatoEntrada(String... datos) {
         for (int i = 0; i < datos.length; i++) {
             if (Filtros.isNullOrBlank(datos[i])) {
                 continue;

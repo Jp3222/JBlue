@@ -18,7 +18,7 @@ package com.jblue.sistema;
 
 import com.jblue.util.trash.Operaciones;
 import com.jblue.modelo.objetos.OValores;
-import com.jblue.modelo.factories.FabricaCache;
+import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.util.trash.MemoCache;
 import java.util.ArrayList;
 import java.util.HashMap;

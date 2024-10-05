@@ -17,7 +17,7 @@
 package com.jblue.util;
 
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.modelo.absobj.Objeto;
+import com.jblue.modelo.objetos.Objeto;
 import com.jutil.swingw.modelos.TableModel;
 import java.awt.Component;
 import java.awt.Container;

@@ -21,7 +21,7 @@ import com.jblue.vista.vistas.cobros.VCCobros;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.sistema.Sesion;
 import com.jblue.util.Filtros;
-import com.jblue.modelo.factories.FabricaCache;
+import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.util.trash.MemoCache;
 import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.vista.componentes.CSelectorObjeto;
@@ -185,7 +185,7 @@ public class VCobros extends VistaExtendida {
         bar_panel_izq.setPreferredSize(new java.awt.Dimension(300, 30));
         bar_panel_izq.setLayout(new java.awt.GridLayout(1, 5));
 
-        btn_bloq_caja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/bloqueado.png"))); // NOI18N
+        btn_bloq_caja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/lock.png"))); // NOI18N
         btn_bloq_caja.setToolTipText("Bloquear caja");
         bar_panel_izq.add(btn_bloq_caja);
 
@@ -224,7 +224,7 @@ public class VCobros extends VistaExtendida {
         jLabel3.setPreferredSize(new java.awt.Dimension(30, 250));
         bar_panel_der.add(jLabel3, java.awt.BorderLayout.CENTER);
 
-        btn_buscador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/buscar.png"))); // NOI18N
+        btn_buscador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/lock.png"))); // NOI18N
         btn_buscador.setToolTipText("Buscar Usuario");
         btn_buscador.setPreferredSize(new java.awt.Dimension(50, 30));
         bar_panel_der.add(btn_buscador, java.awt.BorderLayout.EAST);

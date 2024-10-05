@@ -17,9 +17,10 @@
 package com.jblue.vista.vistas;
 
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.modelo.factories.FabricaCache;
+import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.util.trash.MemoCache;
 import com.jblue.vista.marco.vistas.VistaExtendida;
+import com.jblue.vista.vistas.usuarios.VConsumidores;
 import com.jblue.vista.vistas.usuarios.VUsuariosC;
 import com.jblue.vista.vistas.usuarios.VUsuariosR;
 import java.awt.Rectangle;
@@ -42,6 +43,7 @@ public class VUsuarios extends VistaExtendida {
         memo_cache = FabricaCache.MC_USUARIOS;
         panel_registros = new VUsuariosR(this);
         panel_consultas = new VUsuariosC(this);
+        panel_consumidores = new VConsumidores(this);
         llamable();
     }
 
@@ -71,7 +73,9 @@ public class VUsuarios extends VistaExtendida {
 
     @Override
     protected void eventos() {
-
+        jTabbedPane1.addChangeListener((e) -> {
+            System.out.println(jTabbedPane1.getSelectedIndex());
+        });
     }
 
     /**
@@ -118,6 +122,7 @@ public class VUsuarios extends VistaExtendida {
     private final MemoCache<OUsuarios> memo_cache;
     private final VUsuariosR panel_registros;
     private final VUsuariosC panel_consultas;
+    private final VConsumidores panel_consumidores;
 
     @Override
     public Rectangle getBounds() {

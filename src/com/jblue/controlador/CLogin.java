@@ -20,7 +20,7 @@ import com.jblue.modelo.dbconexion.FuncionesBD;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.util.Filtros;
 import com.jblue.util.crypto.EncriptadoAES;
-import com.jblue.modelo.factories.FabricaFuncionesBD;
+import com.jblue.modelo.fabricas.FabricaFuncionesBD;
 import com.jblue.vista.ventanas.Login;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
@@ -43,16 +43,18 @@ public class CLogin {
 
     public static Optional<OPersonal> login(String user, String password) {
         Optional<OPersonal> res = Optional.empty();
-        
+
         if (Filtros.isNullOrBlank(user, password)) {
             return res;
         }
         FuncionesBD<OPersonal> op = FabricaFuncionesBD.getPersonal();
         try {
+            
             res = op.get(null, WHERE.formatted(
                     EncriptadoAES.encriptar(user, password),
                     EncriptadoAES.encriptar(password, user)
             ));
+            
         } catch (UnsupportedEncodingException
                 | NoSuchAlgorithmException
                 | InvalidKeyException
@@ -61,12 +63,16 @@ public class CLogin {
                 | BadPaddingException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         if (res.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Usuario y/o contraseña incorrectos");
             return Optional.empty();
         }
         return res;
+    }
+
+    public void close() {
+        
     }
 
 }

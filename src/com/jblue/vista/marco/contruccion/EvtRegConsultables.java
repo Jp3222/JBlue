@@ -16,7 +16,7 @@
  */
 package com.jblue.vista.marco.contruccion;
 
-import com.jblue.modelo.absobj.Objeto;
+import com.jblue.modelo.objetos.Objeto;
 import java.util.List;
 
 /**

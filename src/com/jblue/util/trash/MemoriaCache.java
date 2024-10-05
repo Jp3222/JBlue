@@ -5,7 +5,7 @@
 package com.jblue.util.trash;
 
 import com.jblue.util.trash.Operaciones;
-import com.jblue.modelo.absobj.Objeto;
+import com.jblue.modelo.objetos.Objeto;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 import java.util.logging.Level;

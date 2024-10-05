@@ -18,7 +18,7 @@ package com.jblue.controlador;
 
 import com.jblue.util.tools.UtilUsuario;
 import com.jblue.modelo.objetos.OTipoTomas;
-import com.jblue.modelo.absobj.AbstraccionCPagos;
+import com.jblue.util.objetos.pagos.AbstraccionCPagos;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -76,7 +76,7 @@ public class PagoXRecargo extends AbstraccionCPagos {
         sb.append(getResgitro(meses_pagados[i], String.valueOf(toma.getCosto())));
         movimientos.put(DATOS, sb.toString());
         movimientos.put(ESTADO, VALOR_CORRECTO);
-        conexion._INSERTAR(sb);
+        conexion.insertCol(sb);
         return movimientos;
     }
 
@@ -102,7 +102,7 @@ public class PagoXRecargo extends AbstraccionCPagos {
         ));
         movimientos.put(DATOS, sb.toString());
         movimientos.put(ESTADO, VALOR_CORRECTO);
-        conexion._INSERTAR(sb);
+        conexion.insertCol(sb);
         return movimientos;
     }
 

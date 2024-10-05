@@ -22,14 +22,14 @@ import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.modelo.absobj.Objeto;
+import com.jblue.modelo.objetos.Objeto;
 import com.jblue.modelo.cache.MemoListCache;
 import com.jblue.modelo.dbconexion.FuncionesBD;
 import com.jblue.util.Filtros;
 import com.jblue.util.FormatoBD;
-import com.jblue.modelo.factories.FabricaCache;
-import com.jblue.modelo.factories.FabricaFuncionesBD;
-import com.jblue.modelo.factories.FabricaOpraciones;
+import com.jblue.modelo.fabricas.FabricaCache;
+import com.jblue.modelo.fabricas.FabricaFuncionesBD;
+import com.jblue.modelo.fabricas.FabricaOpraciones;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
 import com.jblue.vista.marco.contruccion.FunMovCache;
@@ -213,7 +213,7 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         jPanel12.add(solo_activos, java.awt.BorderLayout.EAST);
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/buscar.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
         jLabel7.setPreferredSize(new java.awt.Dimension(30, 30));
         jPanel12.add(jLabel7, java.awt.BorderLayout.LINE_START);
 
@@ -338,7 +338,7 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         jPanel16.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel16.setLayout(new java.awt.GridLayout(1, 2));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/buscar.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
         jPanel16.add(jButton1);
 
         man_titular_asociado.setText("M.");
@@ -617,7 +617,9 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         if (!camposValidos()) {
             return;
         }
-        String[] valores = getInfo(false);
+        String[] valores = FormatoBD.formatoEntrada(
+                getInfo(false)
+        );
 
         String txt = "(";
         for (String i : valores) {
@@ -626,9 +628,14 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         txt = txt.concat(")");
         System.out.println(txt);
 
-        Operaciones<OUsuarios> op = FabricaOpraciones.getUSUARIOS();
-        boolean insertar = op.insert(valores);
+        FuncionesBD op = FabricaFuncionesBD.getUsuarios();
+        boolean insertar = op.insertOnlyData(valores);
         actualizarCache(insertar);
+        if (insertar) {
+            JOptionPane.showMessageDialog(this, "REGISTRO EXITOSO", "REGISTRO DE DATOS", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "REGISTRO ERRONEO", "REGISTRO DE DATOS", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     @Override
@@ -636,7 +643,9 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         if (!camposValidos()) {
             return;
         }
-        String[] valores = getInfo(false);
+        String[] valores = FormatoBD.formatoEntrada(
+                getInfo(false)
+        );
 
         String txt = "(";
         for (String i : valores) {
@@ -650,6 +659,11 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
                 valores,
                 "id = " + objeto_buscado.getId());
         actualizarCache(true);
+        if (insertar) {
+            JOptionPane.showMessageDialog(this, "ACTUALIZACION EXITOSA", "REGISTRO DE DATOS", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "REGISTRO ERRONEO", "REGISTRO DE DATOS", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     @Override
@@ -691,7 +705,7 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         String am = campo_am.getText();
         String calle = campo_calle.getItemAt(campo_calle.getSelectedIndex()).getId();
         String no_casa = campo_no_casa.getText();
-        no_casa = no_casa == null ? "NULL" : no_casa;
+        no_casa = no_casa.isBlank() ? "S/N" : campo_no_casa.getText();
 
         String tipo_toma = campo_tipo_toma.getItemAt(campo_tipo_toma.getSelectedIndex()).getId();
         String registro;
@@ -718,7 +732,7 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         String[] arr = new String[]{
             nombre, ap, am, calle, no_casa, tipo_toma, registro, estado, titular, codigo
         };
-        arr = FormatoBD.bdEntrada(arr);
+        arr = FormatoBD.formatoEntrada(arr);
         return arr;
     }
 

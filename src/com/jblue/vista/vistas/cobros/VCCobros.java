@@ -20,7 +20,7 @@ import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.util.Filtros;
 import com.jblue.util.FuncJBlue;
-import com.jblue.modelo.factories.FabricaOpraciones;
+import com.jblue.modelo.fabricas.FabricaOpraciones;
 import com.jblue.util.trash.MemoCache;
 import com.jblue.vista.marco.vistas.VistaSimple;
 import com.jblue.vista.vistas.VCobros;

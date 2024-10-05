@@ -21,7 +21,7 @@ import com.jblue.util.trash.Operaciones;
 import com.jblue.modelo.objetos.OPagosRecargos;
 import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.modelo.factories.FabricaOpraciones;
+import com.jblue.modelo.fabricas.FabricaOpraciones;
 import com.jutil.framework.ComponentStates;
 import com.jutil.swingw.modelos.TableModel;
 import java.awt.CardLayout;

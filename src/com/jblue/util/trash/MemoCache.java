@@ -5,7 +5,7 @@
 package com.jblue.util.trash;
 
 import com.jblue.util.trash.Operaciones;
-import com.jblue.modelo.absobj.Objeto;
+import com.jblue.modelo.objetos.Objeto;
 import com.jutil.jbd.conexion.Conexion;
 import java.sql.ResultSet;
 import java.sql.SQLException;

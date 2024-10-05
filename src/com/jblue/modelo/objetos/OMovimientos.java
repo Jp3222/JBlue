@@ -4,8 +4,6 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.modelo.absobj.Objeto;
-
 /**
  *
  * @author jp

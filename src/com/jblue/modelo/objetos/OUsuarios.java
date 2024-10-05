@@ -4,9 +4,8 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.modelo.factories.FabricaCache;
-import com.jblue.modelo.absobj.Objeto;
-import com.jblue.modelo.absobj.ObjetoFK;
+import com.jblue.modelo.fabricas.FabricaCache;
+import com.jblue.util.objetos.ObjetoFK;
 
 /**
  *

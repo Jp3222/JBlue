@@ -6,7 +6,7 @@ package com.jblue.util.trash;
 
 import com.jblue.modelo.dbconexion.ModeloFuncionesDB;
 import com.jblue.util.tools.ObjetoUtil;
-import com.jblue.modelo.absobj.Objeto;
+import com.jblue.modelo.objetos.Objeto;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.sql.SQLException;

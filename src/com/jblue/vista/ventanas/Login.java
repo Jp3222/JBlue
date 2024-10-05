@@ -91,13 +91,10 @@ public class Login extends VentanaSimple {
         jbtInicio.addActionListener(e -> login());
 
         mostrar.addItemListener((e) -> {
-            if (mostrar.isSelected()) {
-                contra.setEchoChar((char) 0);
-                mostrar.setToolTipText("ocultar");
-                return;
-            }
-            contra.setEchoChar('*');
-            mostrar.setToolTipText("mostrar");
+            char echo_char = mostrar.isSelected() ? ((char) 0) : '*';
+            String tool_tip = mostrar.isSelected() ? "Ocultar" : "Mostrar";
+            contra.setEchoChar(echo_char);
+            mostrar.setToolTipText(tool_tip);
         });
 
         for (TextFieldWrapper envjtf : campos) {
@@ -139,7 +136,6 @@ public class Login extends VentanaSimple {
                 login();
             }
         });
-
         contra.getFocusTraversalPolicy();
     }
 
@@ -273,6 +269,7 @@ public class Login extends VentanaSimple {
         if (sesion_en_curso) {
             return;
         }
+        
         sesion_en_curso = true;
 
         if (!iniciar()) {
@@ -284,7 +281,8 @@ public class Login extends VentanaSimple {
             System.out.println(ConstSisMen.MEN_CACHE_ERR);
         }
         System.out.println(ConstSisMen.MEN_CACHE_OK);
-
+        
+        
         this.dispose();
 
         SwingUtilities.invokeLater(() -> {

@@ -57,10 +57,24 @@ public final class VPerfil extends VistaExtendida implements EvtSetInfoGrafica {
     protected void construirComponentes() {
         JButton opt1 = new JButton("Cambiar contraseña");
         opt1.addActionListener(e -> cambiarContraseña());
-        JButton opt2 = new JButton("Cambiar contraseña");
+        JButton opt2 = new JButton("Agregar foto");
         opt2.addActionListener(e -> cambiarFoto());
         option.add(opt1);
         option.add(opt2);
+    }
+
+    @Override
+    protected void eventos() {
+        mostrar_usuario.addChangeListener(e -> cambioIco());
+        mostrar_usuario.addChangeListener(e -> cambioToolTip());
+    }
+
+    private void cambioIco() {
+
+    }
+
+    private void cambioToolTip() {
+
     }
 
     /**
@@ -87,9 +101,11 @@ public final class VPerfil extends VistaExtendida implements EvtSetInfoGrafica {
         jPanel5 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         campo_usuario = new javax.swing.JTextField();
+        mostrar_usuario = new javax.swing.JCheckBox();
         jPanel6 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         campo_contra = new javax.swing.JTextField();
+        mostrar_contra = new javax.swing.JCheckBox();
         jPanel7 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         campo_fecha_registro = new javax.swing.JTextField();
@@ -104,6 +120,8 @@ public final class VPerfil extends VistaExtendida implements EvtSetInfoGrafica {
         jLabel1.setText("Nombre:");
         jLabel1.setPreferredSize(new java.awt.Dimension(150, 17));
         jPanel1.add(jLabel1, java.awt.BorderLayout.LINE_START);
+
+        campo_nombre.setEditable(false);
         jPanel1.add(campo_nombre, java.awt.BorderLayout.CENTER);
 
         add(jPanel1);
@@ -114,6 +132,8 @@ public final class VPerfil extends VistaExtendida implements EvtSetInfoGrafica {
         jLabel2.setText("Apellidos");
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 17));
         jPanel2.add(jLabel2, java.awt.BorderLayout.LINE_START);
+
+        campo_apellidos.setEditable(false);
         jPanel2.add(campo_apellidos, java.awt.BorderLayout.CENTER);
 
         add(jPanel2);
@@ -124,6 +144,8 @@ public final class VPerfil extends VistaExtendida implements EvtSetInfoGrafica {
         jLabel3.setText("Cargo");
         jLabel3.setPreferredSize(new java.awt.Dimension(150, 17));
         jPanel3.add(jLabel3, java.awt.BorderLayout.LINE_START);
+
+        campo_cargo.setEditable(false);
         jPanel3.add(campo_cargo, java.awt.BorderLayout.CENTER);
 
         add(jPanel3);
@@ -134,6 +156,8 @@ public final class VPerfil extends VistaExtendida implements EvtSetInfoGrafica {
         jLabel4.setText("Estado");
         jLabel4.setPreferredSize(new java.awt.Dimension(150, 17));
         jPanel4.add(jLabel4, java.awt.BorderLayout.LINE_START);
+
+        campo_estado.setEditable(false);
         jPanel4.add(campo_estado, java.awt.BorderLayout.CENTER);
 
         add(jPanel4);
@@ -144,7 +168,12 @@ public final class VPerfil extends VistaExtendida implements EvtSetInfoGrafica {
         jLabel5.setText("Usuario");
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 17));
         jPanel5.add(jLabel5, java.awt.BorderLayout.LINE_START);
+
+        campo_usuario.setEditable(false);
         jPanel5.add(campo_usuario, java.awt.BorderLayout.CENTER);
+
+        mostrar_usuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
+        jPanel5.add(mostrar_usuario, java.awt.BorderLayout.LINE_END);
 
         add(jPanel5);
 
@@ -154,7 +183,12 @@ public final class VPerfil extends VistaExtendida implements EvtSetInfoGrafica {
         jLabel6.setText("Contraseña");
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 17));
         jPanel6.add(jLabel6, java.awt.BorderLayout.LINE_START);
+
+        campo_contra.setEditable(false);
         jPanel6.add(campo_contra, java.awt.BorderLayout.CENTER);
+
+        mostrar_contra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
+        jPanel6.add(mostrar_contra, java.awt.BorderLayout.LINE_END);
 
         add(jPanel6);
 
@@ -164,6 +198,8 @@ public final class VPerfil extends VistaExtendida implements EvtSetInfoGrafica {
         jLabel7.setText("Fecha de registro");
         jLabel7.setPreferredSize(new java.awt.Dimension(150, 17));
         jPanel7.add(jLabel7, java.awt.BorderLayout.LINE_START);
+
+        campo_fecha_registro.setEditable(false);
         jPanel7.add(campo_fecha_registro, java.awt.BorderLayout.CENTER);
 
         add(jPanel7);
@@ -192,6 +228,8 @@ public final class VPerfil extends VistaExtendida implements EvtSetInfoGrafica {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JCheckBox mostrar_contra;
+    private javax.swing.JCheckBox mostrar_usuario;
     // End of variables declaration//GEN-END:variables
 
     @Override

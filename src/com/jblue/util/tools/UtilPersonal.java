@@ -5,7 +5,7 @@
 package com.jblue.util.tools;
 
 import com.jblue.modelo.objetos.OPersonal;
-import com.jblue.modelo.factories.FabricaCache;
+import com.jblue.modelo.fabricas.FabricaCache;
 import java.util.ArrayList;
 
 /**

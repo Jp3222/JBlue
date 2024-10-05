@@ -19,12 +19,13 @@ package com.jblue.modelo.dbconexion;
 import com.jblue.util.tools.ObjetoUtil;
 import com.jblue.sistema.Sistema;
 import com.jblue.util.Filtros;
-import com.jblue.modelo.absobj.Objeto;
+import com.jblue.modelo.objetos.Objeto;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -49,6 +50,18 @@ public abstract class AbstraccionFunciones<T extends Objeto> implements ModeloFu
         try {
             return conexion.insert(tabla,
                     conexion.getCampos(campos),
+                    conexion.getDatos(valores)
+            );
+        } catch (SQLException ex) {
+            Excp.imp(ex, getClass(), true, true);
+        }
+        return false;
+    }
+
+    public boolean insertOnlyData(String... valores) {
+        try {
+            return conexion.insert(tabla,
+                    conexion.getCampos(Arrays.copyOfRange(campos, 1, campos.length)),
                     conexion.getDatos(valores)
             );
         } catch (SQLException ex) {

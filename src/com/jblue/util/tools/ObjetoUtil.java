@@ -26,7 +26,7 @@ import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.modelo.objetos.OValores;
-import com.jblue.modelo.absobj.Objeto;
+import com.jblue.modelo.objetos.Objeto;
 import com.jutil.jexception.Excp;
 import java.util.HashMap;
 import java.util.Map;

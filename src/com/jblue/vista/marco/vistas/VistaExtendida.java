@@ -23,7 +23,7 @@ import javax.swing.ImageIcon;
  *
  * @author jp
  */
-public class VistaExtendida extends VistaSimple {
+public class VistaExtendida extends SimpleView {
 
     protected ImageIcon icon;
 

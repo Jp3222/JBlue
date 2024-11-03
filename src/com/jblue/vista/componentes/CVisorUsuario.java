@@ -23,7 +23,7 @@ import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.modelo.fabricas.FabricaOpraciones;
 import com.jutil.framework.ComponentStates;
-import com.jutil.swingw.modelos.TableModel;
+import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -58,9 +58,9 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
     private OUsuarios usuario;
 
     private final JTextField[] campos;
-    private final TableModel modelo_pagos_x_servicio;
-    private final TableModel modelo_pagos_x_recargo;
-    private final TableModel modelo_pagos_x_otros;
+    private final JTableModel modelo_pagos_x_servicio;
+    private final JTableModel modelo_pagos_x_recargo;
+    private final JTableModel modelo_pagos_x_otros;
 
     /**
      * A return status code - returned if Cancel button has been pressed
@@ -94,9 +94,9 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
             dato_codigo
         };
         //
-        modelo_pagos_x_servicio = new TableModel(ConstGs.TABLA_PAGOS_X_SERVICIO, 0);
-        modelo_pagos_x_recargo = new TableModel(ConstGs.TABLA_PAGOS_X_RECARGO, 0);
-        modelo_pagos_x_otros = new TableModel(ConstGs.TABLA_PAGOS_X_OTROS, 0);
+        modelo_pagos_x_servicio = new JTableModel(ConstGs.TABLA_PAGOS_X_SERVICIO, 0);
+        modelo_pagos_x_recargo = new JTableModel(ConstGs.TABLA_PAGOS_X_RECARGO, 0);
+        modelo_pagos_x_otros = new JTableModel(ConstGs.TABLA_PAGOS_X_OTROS, 0);
         //
         tabla_pxs.setModel(modelo_pagos_x_servicio);
         tabla_pxr.setModel(modelo_pagos_x_recargo);

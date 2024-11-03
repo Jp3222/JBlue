@@ -30,6 +30,8 @@ import java.util.function.Predicate;
  */
 public class MemoListCache<T extends Objeto> extends AbstraccionListCache<T> implements Paginado {
 
+    private int page;
+
     public MemoListCache(int capacity, FuncionesBD conexion) {
         super(capacity, conexion);
     }
@@ -55,39 +57,34 @@ public class MemoListCache<T extends Objeto> extends AbstraccionListCache<T> imp
 
     @Override
     public boolean movData(int mov) {
+        int aux;
+
         if (mov == MOV_TO_BACK) {
+            aux = index_min - steps;
+//            if (aux <= 0) {
+//                return false;
+//            }
             this.index_min -= steps;
-            if (index_min < 0) {
-                this.index_min += steps;
-                return false;
-            }
             this.index_max -= steps;
         }
+
         if (mov == MOV_TO_NEXT) {
+            aux = index_max + steps;
+
+//            if (aux > count()) {
+//                return false;
+//            }
             this.index_min += steps;
             this.index_max += steps;
         }
-        loadData();
-        return cache.isEmpty();
-    }
-    
-    private void tranferCache(){
-        if (!buffer_cache.isEmpty()) {
-        }
+        reLoadData();
+        return !cache.isEmpty();
     }
 
-    /* 
-    cache = NEXT = 1
-    buffer = NEXT = 1
-    1: [1, 2, 3]
-    2: [4, 5, 6]
-    3: [7, 8, 9]
-     */
     @Override
-    public boolean movBuffer(int mov) {
-        this.buffer_direc = mov;
-        buffer_cache.addAll(cache);
-        return !buffer_cache.isEmpty();
+    public boolean movBuffer(int page) {
+        
+        return true;
     }
 
     public boolean isBufferBack() {

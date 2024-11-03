@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import com.jutil.swingw.modelos.TableModel;
+import com.jutil.swingw.modelos.JTableModel;
 import com.jblue.vista.marco.contruccion.EvtSetInfoGrafica;
 
 /**
@@ -47,7 +47,7 @@ public class VCalles extends VistaExtendida implements EvtSetInfoGrafica, EvtReg
         memo_cache = FabricaCache.MC_CALLES;
         cache = memo_cache.getLista();
         cache_aux = new ArrayList<>(cache.size());
-        modelo = new TableModel(ConstGs.TABLA_CALLES,0);
+        modelo = new JTableModel(ConstGs.TABLA_CALLES,0);
         modelo.setCellsEditables(false);
         tabla_calles.setModel(modelo);
         llamable();
@@ -269,7 +269,7 @@ public class VCalles extends VistaExtendida implements EvtSetInfoGrafica, EvtReg
         jLabel2.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
         jLabel2.setLabelFor(campo_nombre);
         jLabel2.setText("Nombre:");
-        jLabel2.setPreferredSize(new java.awt.Dimension(100, 19));
+        jLabel2.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel8.add(jLabel2, java.awt.BorderLayout.NORTH);
 
         campo_nombre.setName("Nombre"); // NOI18N
@@ -282,7 +282,7 @@ public class VCalles extends VistaExtendida implements EvtSetInfoGrafica, EvtReg
         jLabel3.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
         jLabel3.setLabelFor(campo_numero);
         jLabel3.setText("Numero:");
-        jLabel3.setPreferredSize(new java.awt.Dimension(100, 19));
+        jLabel3.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel9.add(jLabel3, java.awt.BorderLayout.NORTH);
 
         campo_numero.setName("Numero"); // NOI18N
@@ -404,7 +404,7 @@ public class VCalles extends VistaExtendida implements EvtSetInfoGrafica, EvtReg
     private javax.swing.JTable tabla_calles;
     // End of variables declaration//GEN-END:variables
     private final MemoCache<OCalles> memo_cache;
-    private final TableModel modelo;
+    private final JTableModel modelo;
     private final ArrayList<OCalles> cache;
     private final ArrayList<OCalles> cache_aux;
     private OCalles objeto_buscado;

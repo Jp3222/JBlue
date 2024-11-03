@@ -33,7 +33,7 @@ import com.jblue.modelo.fabricas.FabricaOpraciones;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
 import com.jblue.vista.marco.contruccion.FunMovCache;
-import com.jblue.vista.marco.vistas.VistaSimple;
+import com.jblue.vista.marco.vistas.SimpleView;
 import com.jblue.vista.vistas.VUsuarios;
 import java.awt.event.ItemEvent;
 import java.time.LocalDate;
@@ -50,7 +50,7 @@ import javax.swing.JTextField;
  *
  * @author jp
  */
-public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCache {
+public class VUsuariosR extends SimpleView implements EvtRegistrosBD, FunMovCache {
 
     private final JTextField[] arr_campos_texto;
 
@@ -145,13 +145,11 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         jScrollPane2 = new javax.swing.JScrollPane();
         jPanel3 = new javax.swing.JPanel();
         panelCampos = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel15 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         campo_nombre = new javax.swing.JTextField();
         coincidencias = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
         jPanel35 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         campo_ap = new javax.swing.JTextField();
@@ -159,9 +157,10 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         jLabel4 = new javax.swing.JLabel();
         campo_am = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         campo_is_titular = new javax.swing.JCheckBox();
         campo_is_usuario = new javax.swing.JCheckBox();
-        jPanel1 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         campo_titular = new javax.swing.JComboBox<>();
@@ -248,16 +247,13 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         panelCampos.setPreferredSize(new java.awt.Dimension(500, 600));
         panelCampos.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(500, 150));
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jPanel15.setLayout(new java.awt.GridLayout(2, 0));
+        jPanel1.setLayout(new java.awt.GridLayout(9, 0));
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setText("Nombre: ");
         jLabel2.setMaximumSize(new java.awt.Dimension(60, 20));
-        jLabel2.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel2.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel4.add(jLabel2, java.awt.BorderLayout.NORTH);
 
         campo_nombre.setToolTipText("<html>\nCampo: Nombre\n<br>valores admitidos: Solo texto\n<br>tamaño maximo: 32 Caracteres");
@@ -268,19 +264,16 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         coincidencias.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         coincidencias.setText("0");
         coincidencias.setToolTipText("<html>\n<h1> Numero de coincidencias.</h1>\n<br>\n<p> Este campos e activa con un espacio.<br> y toma encuenta las coincidencias del nombre, apellido paterno y apellido materno</p>");
-        coincidencias.setPreferredSize(new java.awt.Dimension(100, 30));
+        coincidencias.setPreferredSize(new java.awt.Dimension(60, 20));
         jPanel4.add(coincidencias, java.awt.BorderLayout.EAST);
 
-        jPanel15.add(jPanel4);
-
-        jPanel5.setPreferredSize(new java.awt.Dimension(500, 50));
-        jPanel5.setLayout(new java.awt.GridLayout(1, 2));
+        jPanel1.add(jPanel4);
 
         jPanel35.setPreferredSize(new java.awt.Dimension(250, 30));
         jPanel35.setLayout(new java.awt.BorderLayout());
 
         jLabel3.setText("A. Paterno: ");
-        jLabel3.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel3.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel35.add(jLabel3, java.awt.BorderLayout.NORTH);
 
         campo_ap.setToolTipText("<html>\nCampos: Apellido Paterno\n<br>Valor: Solo texto \n<br>Longitud: 32 Caracteres");
@@ -288,13 +281,13 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         campo_ap.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel35.add(campo_ap, java.awt.BorderLayout.CENTER);
 
-        jPanel5.add(jPanel35);
+        jPanel1.add(jPanel35);
 
         jPanel6.setPreferredSize(new java.awt.Dimension(250, 30));
         jPanel6.setLayout(new java.awt.BorderLayout());
 
         jLabel4.setText("A. Materno:");
-        jLabel4.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel4.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel6.add(jLabel4, java.awt.BorderLayout.NORTH);
 
         campo_am.setToolTipText("<html> Campos: Apellido Materno\n<br>Valor: Solo texto <br>Longitud: 32 Caracteres");
@@ -302,33 +295,31 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         campo_am.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel6.add(campo_am, java.awt.BorderLayout.CENTER);
 
-        jPanel5.add(jPanel6);
+        jPanel1.add(jPanel6);
 
-        jPanel15.add(jPanel5);
+        jPanel9.setLayout(new java.awt.GridLayout(2, 2));
 
-        jPanel2.add(jPanel15, java.awt.BorderLayout.CENTER);
-
-        jPanel9.setLayout(new java.awt.GridLayout(1, 2));
+        jLabel10.setText("Tipo: ");
+        jLabel10.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel9.add(jLabel10);
+        jPanel9.add(jLabel11);
 
         campo_is_titular.setText("Titutlar");
         campo_is_titular.setToolTipText("Mantener el roll del usuario, seleccionado");
-        campo_is_titular.setPreferredSize(new java.awt.Dimension(500, 30));
+        campo_is_titular.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel9.add(campo_is_titular);
 
         campo_is_usuario.setText("usuario");
+        campo_is_usuario.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel9.add(campo_is_usuario);
 
-        jPanel2.add(jPanel9, java.awt.BorderLayout.SOUTH);
-
-        panelCampos.add(jPanel2, java.awt.BorderLayout.NORTH);
-
-        jPanel1.setLayout(new java.awt.GridLayout(6, 0));
+        jPanel1.add(jPanel9);
 
         jPanel11.setPreferredSize(new java.awt.Dimension(500, 50));
         jPanel11.setLayout(new java.awt.BorderLayout());
 
         jLabel9.setText("T. asociado");
-        jLabel9.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel9.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel11.add(jLabel9, java.awt.BorderLayout.NORTH);
 
         campo_titular.setName("Titular Asociado"); // NOI18N
@@ -344,7 +335,7 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         man_titular_asociado.setText("M.");
         man_titular_asociado.setToolTipText("Mantener el titular seleccionado");
         man_titular_asociado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        man_titular_asociado.setPreferredSize(new java.awt.Dimension(60, 30));
+        man_titular_asociado.setPreferredSize(new java.awt.Dimension(60, 20));
         jPanel16.add(man_titular_asociado);
 
         jPanel11.add(jPanel16, java.awt.BorderLayout.EAST);
@@ -355,7 +346,7 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         jPanel7.setLayout(new java.awt.BorderLayout());
 
         jLabel5.setText("T. Toma");
-        jLabel5.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel5.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel7.add(jLabel5, java.awt.BorderLayout.NORTH);
 
         campo_tipo_toma.setName("Tipo de toma"); // NOI18N
@@ -365,7 +356,7 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         man_tipo_toma.setText("M.");
         man_tipo_toma.setToolTipText("Mantener el tipo de toma seleccionado");
         man_tipo_toma.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        man_tipo_toma.setPreferredSize(new java.awt.Dimension(60, 30));
+        man_tipo_toma.setPreferredSize(new java.awt.Dimension(60, 20));
         jPanel7.add(man_tipo_toma, java.awt.BorderLayout.EAST);
 
         jPanel1.add(jPanel7);
@@ -374,7 +365,7 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         jPanel8.setLayout(new java.awt.BorderLayout());
 
         jLabel6.setText("Calle: ");
-        jLabel6.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel6.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel8.add(jLabel6, java.awt.BorderLayout.NORTH);
 
         campo_calle.setName("Calle"); // NOI18N
@@ -384,7 +375,7 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         man_calle.setText("M.");
         man_calle.setToolTipText("Mantener la calle seleccionada\n");
         man_calle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        man_calle.setPreferredSize(new java.awt.Dimension(60, 30));
+        man_calle.setPreferredSize(new java.awt.Dimension(60, 20));
         jPanel8.add(man_calle, java.awt.BorderLayout.EAST);
 
         jPanel1.add(jPanel8);
@@ -393,7 +384,7 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         jPanel18.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setText("N. Casa");
-        jLabel1.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel1.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel18.add(jLabel1, java.awt.BorderLayout.NORTH);
 
         campo_no_casa.setToolTipText("<html> Campo: Numero de casa  <br>Valor: Solo numeros <br>Longitud: 3 Caracteres");
@@ -403,7 +394,7 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
 
         sn_numero.setText("S/N");
         sn_numero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        sn_numero.setPreferredSize(new java.awt.Dimension(60, 30));
+        sn_numero.setPreferredSize(new java.awt.Dimension(60, 20));
         jPanel18.add(sn_numero, java.awt.BorderLayout.EAST);
 
         jPanel1.add(jPanel18);
@@ -412,7 +403,7 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         jPanel10.setLayout(new java.awt.BorderLayout());
 
         jLabel8.setText("Estado: ");
-        jLabel8.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel8.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel10.add(jLabel8, java.awt.BorderLayout.NORTH);
 
         campo_estado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona Elemento.", "Activo.", "Inactivo.", "Baja." }));
@@ -423,7 +414,7 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
         man_estado.setText("M.");
         man_estado.setToolTipText("Mantener el estado del usuario seleccionado\n");
         man_estado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        man_estado.setPreferredSize(new java.awt.Dimension(60, 30));
+        man_estado.setPreferredSize(new java.awt.Dimension(60, 20));
         jPanel10.add(man_estado, java.awt.BorderLayout.EAST);
 
         jPanel1.add(jPanel10);
@@ -566,6 +557,8 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
     private javax.swing.JLabel coincidencias;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -580,14 +573,11 @@ public class VUsuariosR extends VistaSimple implements EvtRegistrosBD, FunMovCac
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel35;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;

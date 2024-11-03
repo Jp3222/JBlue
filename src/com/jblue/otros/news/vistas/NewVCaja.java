@@ -16,7 +16,9 @@
  */
 package com.jblue.otros.news.vistas;
 
+import com.jblue.controlador.CCobros;
 import com.jblue.modelo.objetos.OUsuarios;
+import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 
 /**
@@ -26,19 +28,33 @@ import java.awt.CardLayout;
 public class NewVCaja extends javax.swing.JPanel {
 
     private CardLayout ly;
+    private JTableModel model;
+    
 
     /**
      * Creates new form VCaja
      */
     public NewVCaja() {
         initComponents();
+        
+        model = new JTableModel(new String[]{
+            "No.", "Usuario", "Mes Pagado"
+        }, 0);
+        
+        table_history_paids.setModel(model);
+        
         ly = (CardLayout) views_panel.getLayout();
+        
         pay_button.addActionListener((ae) -> {
             ly.show(views_panel, pay_view.getName());
         });
+        
         history_button.addActionListener((ae) -> {
+            CCobros.printPaidsOfDay(model);
             ly.show(views_panel, history_view.getName());
         });
+            
+        
     }
 
     /**
@@ -120,7 +136,7 @@ public class NewVCaja extends javax.swing.JPanel {
         btn_utilidades = new javax.swing.JButton();
         history_view = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table_history_paids = new javax.swing.JTable();
         jPanel18 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         saldo_del_dia = new javax.swing.JLabel();
@@ -134,8 +150,9 @@ public class NewVCaja extends javax.swing.JPanel {
         jPanel1.setPreferredSize(new java.awt.Dimension(900, 30));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jToggleButton2.setText("jToggleButton2");
+        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/lock.png"))); // NOI18N
         jToggleButton2.setPreferredSize(new java.awt.Dimension(100, 30));
+        jToggleButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/desbloquear.png"))); // NOI18N
         jPanel1.add(jToggleButton2, java.awt.BorderLayout.WEST);
 
         jPanel15.setLayout(new java.awt.GridLayout(1, 0));
@@ -157,7 +174,7 @@ public class NewVCaja extends javax.swing.JPanel {
         views_panel.setLayout(new java.awt.CardLayout());
 
         pay_view.setName("pagos"); // NOI18N
-        pay_view.setLayout(new java.awt.BorderLayout());
+        pay_view.setLayout(new javax.swing.BoxLayout(pay_view, javax.swing.BoxLayout.PAGE_AXIS));
 
         panel_busquedas.setOpaque(false);
         panel_busquedas.setPreferredSize(new java.awt.Dimension(700, 150));
@@ -179,7 +196,7 @@ public class NewVCaja extends javax.swing.JPanel {
 
         panel_busquedas.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
-        pay_view.add(panel_busquedas, java.awt.BorderLayout.PAGE_START);
+        pay_view.add(panel_busquedas);
 
         panel_info.setOpaque(false);
         panel_info.setPreferredSize(new java.awt.Dimension(700, 400));
@@ -430,7 +447,7 @@ public class NewVCaja extends javax.swing.JPanel {
 
         panel_info.add(jPanel20, java.awt.BorderLayout.SOUTH);
 
-        pay_view.add(panel_info, java.awt.BorderLayout.CENTER);
+        pay_view.add(panel_info);
 
         panel_operaciones.setOpaque(false);
         panel_operaciones.setPreferredSize(new java.awt.Dimension(680, 80));
@@ -468,14 +485,14 @@ public class NewVCaja extends javax.swing.JPanel {
 
         panel_operaciones.add(jPanel8);
 
-        pay_view.add(panel_operaciones, java.awt.BorderLayout.PAGE_END);
+        pay_view.add(panel_operaciones);
 
         views_panel.add(pay_view, "pagos");
 
         history_view.setName("Historial"); // NOI18N
         history_view.setLayout(new java.awt.BorderLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table_history_paids.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -491,8 +508,8 @@ public class NewVCaja extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
+        table_history_paids.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(table_history_paids);
 
         history_view.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -586,7 +603,6 @@ public class NewVCaja extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JCheckBox jul;
     private javax.swing.JCheckBox jun;
@@ -605,6 +621,7 @@ public class NewVCaja extends javax.swing.JPanel {
     private javax.swing.JPanel pay_view;
     private javax.swing.JLabel saldo_del_dia;
     private javax.swing.JCheckBox sep;
+    private javax.swing.JTable table_history_paids;
     private javax.swing.JPanel views_panel;
     // End of variables declaration//GEN-END:variables
 }

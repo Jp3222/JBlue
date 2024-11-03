@@ -16,7 +16,7 @@
  */
 package com.jblue.vista.marco.contruccion;
 
-import com.jblue.vista.marco.vistas.VistaSimple;
+import com.jblue.vista.marco.vistas.SimpleView;
 import javax.swing.JOptionPane;
 
 /**
@@ -100,7 +100,7 @@ public interface EvtRegistrosBD {
      *
      * @param o
      * @return  */
-    default boolean evtCancelar(VistaSimple o) {
+    default boolean evtCancelar(SimpleView o) {
         int in = JOptionPane.showConfirmDialog(o, "¿Desea cancelar esta operacion?", "Cancelar Operacion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         return JOptionPane.YES_OPTION == in;
     }

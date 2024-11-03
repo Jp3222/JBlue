@@ -30,16 +30,14 @@ import com.jblue.util.FuncJBlue;
 import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.modelo.fabricas.FabricaFuncionesBD;
 import com.jblue.util.objetos.pagos.EstadosDePagos;
-import com.jblue.vista.marco.vistas.VistaSimple;
+import com.jblue.vista.marco.vistas.SimpleView;
 import com.jblue.vista.componentes.CVisorUsuario;
 import com.jblue.vista.vistas.VCobros;
-import com.jutil.swingw.modelos.TableModel;
+import com.jutil.swingw.modelos.JTableModel;
 import java.awt.HeadlessException;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -56,7 +54,7 @@ import java.awt.event.MouseEvent;
  *
  * @author jp
  */
-public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
+public class VRCobros extends SimpleView implements EvtSetInfoGrafica {
 
     /**
      * Creates new form VNewCobros
@@ -65,10 +63,10 @@ public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
      */
     public VRCobros(VCobros root) throws HeadlessException {
         initComponents();
-        meses_del_año = new JCheckBox[]{
+        months = new JCheckBox[]{
             ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic
         };
-        modelo_pagos_recientes = new TableModel(Arrays.asList("NO.", "Usuario", "Mes").toArray(), 0);
+        modelo_pagos_recientes = new JTableModel(new String[]{"NO.", "Usuario", "Mes"}, 0);
         jTable1.setModel(modelo_pagos_recientes);
         modelo_lista = new DefaultListModel<>();
         lista_usuarios.setModel(modelo_lista);
@@ -97,10 +95,11 @@ public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
         objeto_buscado = null;
         meses_pagados = 0;
         chb_todos.setSelected(false);
-        for (JCheckBox i : meses_del_año) {
+        for (JCheckBox i : months) {
             i.setSelected(false);
         }
         habilitarComponentes(false);
+        meses_pagados = 0;
         SwingUtilities.invokeLater(() -> pagosDelDia());
     }
 
@@ -121,9 +120,9 @@ public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
         //eventos de botones
         btn_cobrar.addActionListener(e -> evtCobrar());
 
-        btn_cancelar.addActionListener(e -> evtCancelar());
+        btn_cancelar.addActionListener(e -> CCobros.evtCancelar(this));
 
-        btn_limpiar.addActionListener(e -> evtLimpiar(e));
+        btn_limpiar.addActionListener(e -> CCobros.evtClear(lbl_total, lbl_cambio));
 
         btn_info_usuarios.addActionListener(e -> {
             if (objeto_buscado == null) {
@@ -147,9 +146,8 @@ public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
                 list.stream().forEach((t) -> {
                     modelo_lista.addElement(t);
                 });
-                if (modelo_lista.getSize() == 1) {
-                    lista_usuarios.setSelectedIndex(0);
-                }
+                lista_usuarios.setSelectedIndex(0);
+
             }
 
             @Override
@@ -176,7 +174,7 @@ public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
         });
         //btn_movimientos.addActionListener(e -> cobrar(e));
         chb_todos.addItemListener(e -> SwingUtilities.invokeLater(() -> {
-            for (JCheckBox i : meses_del_año) {
+            for (JCheckBox i : months) {
                 if (!i.isEnabled()) {
                     continue;
                 }
@@ -184,7 +182,7 @@ public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
             }
         }));
 
-        for (JCheckBox i : meses_del_año) {
+        for (JCheckBox i : months) {
             i.addItemListener((e) -> {
                 System.out.println(" ------------------------------------------ ");
                 JCheckBox o = (JCheckBox) e.getItem();
@@ -205,9 +203,9 @@ public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
     }
 
     private void evtCobrar() {
-        String[] meses = getMesesSeleccionados(meses_del_año);
+        ArrayList<JCheckBox> paid_months = getGPaidMonths();
         String mensaje;
-        if (meses.length > 0) {
+        if (paid_months.size() > 0) {
 
             String dinero = JOptionPane.showInputDialog(
                     this,
@@ -222,10 +220,16 @@ public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
             if (!Filtros.soloNumerosDecimales(dinero)) {
                 mensaje = "Dato no valido";
             } else {
+                String[] _months = new String[paid_months.size()];
+                int i = 0;
+                for (JCheckBox j : paid_months) {
+                    _months[i] = j.getText();
+                }
+
                 resultados = CPagos.getInstancia().regPagoXServicio(
                         Sesion.getInstancia().getUsuario(),
                         objeto_buscado,
-                        meses,
+                        _months,
                         Double.parseDouble(dinero)
                 );
 
@@ -246,25 +250,6 @@ public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
         JOptionPane.showMessageDialog(this, mensaje);
     }
 
-    private void evtCancelar() {
-        int in = JOptionPane.showConfirmDialog(this, "¿Desea cancelar esta operacion?");
-        if (in != JOptionPane.OK_OPTION) {
-            return;
-        }
-        componentesEstadoInicial();
-    }
-
-    /**
-     * Metodo para restablecer la etiqueda del "cambio"
-     *
-     * @param e
-     */
-    private void evtLimpiar(ActionEvent e) {
-        String valor = "0.0";
-        lbl_total.setText(valor);
-        Jlabel1.setText(valor);
-    }
-
     /**
      * Metodo usado para colocar la informacion del usuario en pantalla
      *
@@ -276,7 +261,7 @@ public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
             return;
         }
         boolean hab;
-        for (JCheckBox o : meses_del_año) {
+        for (JCheckBox o : months) {
             hab = lista.indexOf(o.getText()) > -1;
             o.setSelected(hab);
             o.setEnabled(hab);
@@ -292,7 +277,7 @@ public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
                 btn_otros_pagos,
                 btn_movimientos,
                 chb_todos);
-        FuncJBlue.habilitarComponentes(o, meses_del_año);
+        FuncJBlue.habilitarComponentes(o, months);
     }
 
     /**
@@ -827,21 +812,21 @@ public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
     private javax.swing.JLabel saldo_del_dia;
     private javax.swing.JCheckBox sep;
     // End of variables declaration//GEN-END:variables
-    private final TableModel modelo_pagos_recientes;
+    private final JTableModel modelo_pagos_recientes;
     private final DefaultListModel<OUsuarios> modelo_lista;
-    private final JCheckBox[] meses_del_año;
+    private final JCheckBox[] months;
     private OUsuarios objeto_buscado;
     private int meses_pagados;
 
-//    private ArrayList<String> meses_seleccionados;
-    private String[] getMesesSeleccionados(JCheckBox... meses) {
-        ArrayList<String> res = new ArrayList<>(12);
-        for (JCheckBox i : meses) {
-            if (i.isEnabled() && i.isSelected()) {
-                res.add(i.getText());
+    public ArrayList<JCheckBox> getGPaidMonths() {
+        ArrayList<JCheckBox> list = new ArrayList<>(12);
+        for (JCheckBox i : months) {
+            if (!i.isEnabled() || !i.isSelected()) {
+                continue;
             }
+            list.add(i);
         }
-        return res.toArray(String[]::new);
+        return list;
     }
 
     public void lock(boolean o) {
@@ -880,7 +865,7 @@ public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
     }
 
     private void pagosDelDia() {
-        TableModel modelo = (TableModel) jTable1.getModel();
+        JTableModel modelo = (JTableModel) jTable1.getModel();
         if (modelo.getRowCount() > 0) {
             modelo.removeAllRows();
         }
@@ -909,6 +894,8 @@ public class VRCobros extends VistaSimple implements EvtSetInfoGrafica {
     }
 
     void setUser() {
+        meses_pagados = 0;
+
         objeto_buscado = lista_usuarios.getSelectedValue();
         buscador_lista.setText(null);
         modelo_lista.clear();

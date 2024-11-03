@@ -243,7 +243,7 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Nombre:"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[100, 19]"/>
+                      <Dimension value="[100, 20]"/>
                     </Property>
                   </Properties>
                   <Constraints>
@@ -278,7 +278,7 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Numero:"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[100, 19]"/>
+                      <Dimension value="[100, 20]"/>
                     </Property>
                   </Properties>
                   <Constraints>

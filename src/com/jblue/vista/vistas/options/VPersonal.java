@@ -25,8 +25,8 @@ import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.modelo.fabricas.FabricaOpraciones;
 import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.util.tiempo.Fecha;
-import com.jblue.vista.marco.vistas.VistaSimple;
-import com.jutil.swingw.modelos.TableModel;
+import com.jblue.vista.marco.vistas.SimpleView;
+import com.jutil.swingw.modelos.JTableModel;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -48,7 +48,7 @@ import javax.swing.SwingUtilities;
  *
  * @author jp
  */
-public class VPersonal extends VistaSimple {
+public class VPersonal extends SimpleView {
 
     /**
      * Creates new form PersonalC
@@ -76,7 +76,7 @@ public class VPersonal extends VistaSimple {
         panel_fecha_fin.setVisible(periodo.isSelected());
         _blq(false);
         llamable();
-        modelo_tabla_2 = new TableModel(ConstGs.TABLA_PERSONAL, 0);
+        modelo_tabla_2 = new JTableModel(ConstGs.TABLA_PERSONAL, 0);
         jTable1.setModel(modelo_tabla_2);
     }
 
@@ -1006,6 +1006,6 @@ public class VPersonal extends VistaSimple {
 
     private final JComponent componentes[];
     private final Fecha fecha;
-    private final TableModel modelo_tabla_2;
+    private final JTableModel modelo_tabla_2;
 
 }

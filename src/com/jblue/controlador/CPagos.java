@@ -35,7 +35,7 @@ public class CPagos {
     private final PagosXServicio pagos_x_servicio;
     private final PagoXRecargo pagos_x_recargo;
 
-    public CPagos() {
+    CPagos() {
         this.pagos_x_servicio = new PagosXServicio();
         this.pagos_x_recargo = new PagoXRecargo();
     }

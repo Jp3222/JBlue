@@ -17,18 +17,18 @@
 package com.jblue.vista.vistas;
 
 import com.jblue.modelo.ConstGs;
-import com.jblue.util.trash.Operaciones;
+import com.jblue.modelo.cache.MemoListCache;
+import com.jblue.modelo.dbconexion.FuncionesBD;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.util.Filtros;
 import com.jblue.util.FormatoBD;
 import com.jblue.util.FuncJBlue;
 import com.jblue.modelo.fabricas.FabricaCache;
-import com.jblue.util.trash.MemoCache;
+import com.jblue.modelo.fabricas.FabricaFuncionesBD;
 import com.jblue.vista.marco.vistas.VistaExtendida;
 import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
-import com.jutil.swingw.modelos.TableModel;
+import com.jutil.swingw.modelos.JTableModel;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -44,11 +44,9 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, Evt
      * Creates new form VTipoTomas
      */
     public VTipoTomas() {
-        memo_cache = FabricaCache.MC_TIPOS_DE_TOMAS;
-        cache = memo_cache.getLista();
-        cache_aux = new ArrayList(cache.size());
+        memo_cache = FabricaCache.TIPO_DE_TOMAS;
         initComponents();
-        modelo = new TableModel(ConstGs.TABLA_TIPOS_DE_TOMAS, 0);
+        modelo = new JTableModel(ConstGs.TABLA_TIPOS_DE_TOMAS, 0);
         modelo.setCellsEditables(false);
         tabla_tipo_tomas.setModel(modelo);
 
@@ -76,6 +74,15 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, Evt
 
     @Override
     protected void eventos() {
+        btn_recargar.addActionListener(e -> {
+            if (!modelo.isRowsEmpty()) {
+                modelo.removeAllRows();
+            }
+            memo_cache.getList().forEach(o -> {
+                modelo.addRow(o.getInfo());
+            });
+        });
+
         btn_guardar.addActionListener(e -> evtGuardar());
         btn_eliminar.addActionListener(e -> evtEliminar());
         btn_actualizar.addActionListener(e -> evtActualizar());
@@ -87,7 +94,7 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, Evt
         if (!datosValidos()) {
             return;
         }
-        Operaciones<OTipoTomas> operaciones = memo_cache.getOperaciones();
+        FuncionesBD<OTipoTomas> operaciones = FabricaFuncionesBD.getTipoTomas();
         String[] datos = FormatoBD.formatoEntrada(getInfo(false));
         boolean menesaje = operaciones.insert(datos);
         estado(menesaje);
@@ -95,7 +102,7 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, Evt
 
     @Override
     public void evtEliminar() {
-        Operaciones<OTipoTomas> operaciones = memo_cache.getOperaciones();
+        FuncionesBD<OTipoTomas> operaciones = FabricaFuncionesBD.getTipoTomas();
         boolean menesaje = operaciones.delete("id = " + objeto_buscado.getId());
         estado(menesaje);
     }
@@ -105,9 +112,9 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, Evt
         if (!datosValidos()) {
             return;
         }
-        Operaciones<OTipoTomas> operaciones = memo_cache.getOperaciones();
+        FuncionesBD<OTipoTomas> operaciones = FabricaFuncionesBD.getTipoTomas();
         String[] datos = FormatoBD.formatoEntrada(getInfo(true));
-        boolean menesaje = operaciones.actualizar(datos, "id = " + objeto_buscado.getId());
+        boolean menesaje = operaciones.updateByData(datos, "id = " + objeto_buscado.getId());
         estado(menesaje);
     }
 
@@ -122,7 +129,8 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, Evt
         String estado = ok ? "Exitosa" : "Erronea";
         if (ok) {
             componentesEstadoInicial();
-            memo_cache.actualizar();
+            memo_cache.reLoadData();
+            memo_cache.dumpBuffer();
             recargar();
         }
         JOptionPane.showMessageDialog(this, String.format("Operacion %s", estado));
@@ -282,13 +290,13 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, Evt
         panel_der.add(jLabel4, java.awt.BorderLayout.NORTH);
 
         panel_campos.setPreferredSize(new java.awt.Dimension(500, 620));
-        panel_campos.setLayout(new java.awt.GridLayout(6, 0, 0, 5));
+        panel_campos.setLayout(new java.awt.GridLayout(7, 0, 0, 5));
 
         jPanel8.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
         jLabel2.setText("Tipo de toma:");
-        jLabel2.setPreferredSize(new java.awt.Dimension(100, 30));
+        jLabel2.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel8.add(jLabel2, java.awt.BorderLayout.NORTH);
 
         campo_tipo.setName("Tipo de toma"); // NOI18N
@@ -300,7 +308,7 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, Evt
 
         jLabel3.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
         jLabel3.setText("Costo:");
-        jLabel3.setPreferredSize(new java.awt.Dimension(100, 30));
+        jLabel3.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel9.add(jLabel3, java.awt.BorderLayout.NORTH);
 
         campo_costo.setName("Costo"); // NOI18N
@@ -313,7 +321,7 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, Evt
         jLabel5.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
         jLabel5.setLabelFor(campo_recargo);
         jLabel5.setText("Costo de recargo:");
-        jLabel5.setPreferredSize(new java.awt.Dimension(100, 30));
+        jLabel5.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel10.add(jLabel5, java.awt.BorderLayout.NORTH);
 
         campo_recargo.setName("Costo del recargo"); // NOI18N
@@ -351,6 +359,7 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, Evt
         add(panel_der, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void tabla_tipo_tomasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla_tipo_tomasMouseClicked
         if (evt.getClickCount() < 2) {
             return;
@@ -360,31 +369,21 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, Evt
         }
         setInfoEnPantalla(objeto_buscado);
         jtf_buscador.setText(null);
-        FuncJBlue.pintarTabla((DefaultTableModel) tabla_tipo_tomas.getModel(), memo_cache.getListaObj());
+        FuncJBlue.pintarTabla((DefaultTableModel) tabla_tipo_tomas.getModel(), memo_cache.getList());
         habilitarBotones(true);
     }//GEN-LAST:event_tabla_tipo_tomasMouseClicked
 
     private void jtf_buscadorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtf_buscadorKeyReleased
         String aux = Filtros.limpiar(jtf_buscador.getText());
-        buscando = !(aux == null || aux.isBlank());
+        buscando = aux != null && !aux.isBlank();
         if (buscando) {
-            if (!cache_aux.isEmpty()) {
-                cache_aux.clear();
-            }
-            cache_aux.addAll(
-                    cache.stream()
-                            .filter(o -> Filtros.limpiarYChecar(o.toString(), aux))
-                            .toList()
-            );
-            FuncJBlue.pintarTabla(modelo, (List) cache_aux);
-        } else {
-            FuncJBlue.pintarTabla(modelo, memo_cache.getListaObj());
+
         }
     }//GEN-LAST:event_jtf_buscadorKeyReleased
 
     private void btn_recargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_recargarActionPerformed
         jtf_buscador.setText(null);
-        FuncJBlue.pintarTabla((DefaultTableModel) tabla_tipo_tomas.getModel(), memo_cache.getListaObj());
+        FuncJBlue.pintarTabla(tabla_tipo_tomas.getModel(), memo_cache.getList());
 
     }//GEN-LAST:event_btn_recargarActionPerformed
     private boolean buscando;
@@ -393,12 +392,7 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, Evt
         if (index < 0 || index >= modelo.getRowCount()) {
             return;
         }
-        ArrayList<OTipoTomas> aux;
-        if (buscando) {
-            aux = cache_aux;
-        } else {
-            aux = cache;
-        }
+        ArrayList<OTipoTomas> aux = memo_cache.getList();
         objeto_buscado = aux.get(index);
         jtf_buscador.setText(null);
         tabla_tipo_tomas.clearSelection();
@@ -452,10 +446,8 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, Evt
     private javax.swing.JTable tabla_tipo_tomas;
     private javax.swing.JScrollPane tabla_usuarios;
     // End of variables declaration//GEN-END:variables
-    private final MemoCache<OTipoTomas> memo_cache;
-    private final ArrayList<OTipoTomas> cache;
-    private final ArrayList<OTipoTomas> cache_aux;
-    private final TableModel modelo;
+    private final MemoListCache<OTipoTomas> memo_cache;
+    private final JTableModel modelo;
     private OTipoTomas objeto_buscado;
 
     @Override
@@ -470,9 +462,9 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, Evt
     }
 
     private void cargar() {
-        for (OTipoTomas i : cache) {
-            modelo.addRow(i.getInfo());
-        }
+        memo_cache.getList().forEach(e -> {
+            modelo.addRow(e.getInfo());
+        });
     }
 
     private void recargar() {
@@ -507,7 +499,5 @@ public class VTipoTomas extends VistaExtendida implements EvtSetInfoGrafica, Evt
     public boolean camposValidos() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
-    
 
 }

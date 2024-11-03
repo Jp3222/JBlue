@@ -16,8 +16,9 @@
  */
 package com.jblue.vista.vistas.usuarios;
 
-import com.jutil.swingw.modelos.TableModel;
+import com.jutil.swingw.modelos.JTableModel;
 import com.jblue.modelo.ConstGs;
+import com.jblue.modelo.cache.MemoListCache;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
@@ -25,8 +26,7 @@ import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
 import com.jblue.util.FuncJBlue;
 import com.jblue.modelo.fabricas.FabricaCache;
-import com.jblue.util.trash.MemoCache;
-import com.jblue.vista.marco.vistas.VistaSimple;
+import com.jblue.vista.marco.vistas.SimpleView;
 import com.jblue.vista.vistas.VUsuarios;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -43,9 +43,9 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author jp
  */
-public class VUsuariosC extends VistaSimple {
+public class VUsuariosC extends SimpleView {
 
-    private final TableModel modelo_tabla;
+    private final JTableModel modelo_tabla;
 
     /**
      * Creates new form VUsuariosC
@@ -54,10 +54,8 @@ public class VUsuariosC extends VistaSimple {
      */
     public VUsuariosC(VUsuarios root) {
         initComponents();
-        memoria_cache = root.getMemo_cache();
-        cache = memoria_cache.getLista();
         mapa_filtros = new HashMap<>();
-        modelo_tabla = new TableModel(ConstGs.TABLA_USUARIOS, 0);
+        modelo_tabla = new JTableModel(ConstGs.TABLA_USUARIOS, 0);
         modelo_tabla.setCellsEditables(false);
         componentes_filtros = new JComponent[]{
             filtro_calle,
@@ -138,7 +136,7 @@ public class VUsuariosC extends VistaSimple {
     protected void eventos() {
         recargar.addActionListener(e -> {
             buscador_tabla.setText(null);
-            recargarTabla(2, modelo_tabla, cache);
+            recargarTabla(2, modelo_tabla, cache.getList());
         });
 
         filtros.addItemListener((i) -> FuncJBlue.habilitarComponentes(filtros.isSelected(), componentes_filtros));
@@ -353,7 +351,7 @@ public class VUsuariosC extends VistaSimple {
 
     private void buscador() {
         List<OUsuarios> toList;
-        toList = cache.stream()
+        toList = cache.getList().stream()
                 .filter(mapa_filtros.get(filtro_calle.getName()))
                 .filter(mapa_filtros.get(filtro_toma.getName()))
                 .filter(mapa_filtros.get(filtro_estado.getName()))
@@ -397,17 +395,15 @@ public class VUsuariosC extends VistaSimple {
     private javax.swing.JTable tabla_usuarios;
     // End of variables declaration//GEN-END:variables
 
-    private final MemoCache<OUsuarios> memoria_cache;
-    private final ArrayList<OUsuarios> cache;
     private final JComponent[] componentes_filtros;
     private final Map<String, Predicate<OUsuarios>> mapa_filtros;
-
+    private final MemoListCache<OUsuarios> cache = FabricaCache.USUARIOS;
     @Override
     public void setVisible(boolean flag) {
         super.setVisible(flag);
         if (flag) {
             cargarFiltros();
-            pintarTabla(0, modelo_tabla, cache);
+            pintarTabla(0, modelo_tabla, cache.getList());
         } else {
             quitarFiltros();
             modelo_tabla.removeAllRows();
@@ -415,7 +411,7 @@ public class VUsuariosC extends VistaSimple {
     }
 
     private void pintarTabla(int where, DefaultTableModel model, List<OUsuarios> lista) {
-        TableModel modelo = (TableModel) model;
+        JTableModel modelo = (JTableModel) model;
         if (modelo.getRowCount() > 0) {
             modelo.removeAllRows();
         }
@@ -424,7 +420,7 @@ public class VUsuariosC extends VistaSimple {
         }
     }
 
-    private void recargarTabla(int where, TableModel modelo_tabla, List<OUsuarios> lista) {
+    private void recargarTabla(int where, JTableModel modelo_tabla, List<OUsuarios> lista) {
         List<String> rowData = modelo_tabla.getRowData(0);
         int size = lista.stream().filter((t) -> !rowData.contains(t.getId())).toList().size();
         if (rowData.size() == lista.size() && size == 0) {

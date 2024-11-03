@@ -16,17 +16,82 @@
  */
 package com.jblue.otros.news.vistas;
 
+import com.jblue.controlador.CCalles;
+import com.jblue.modelo.ConstGs;
+import com.jblue.modelo.cache.MemoListCache;
+import com.jblue.modelo.fabricas.FabricaCache;
+import com.jblue.modelo.objetos.OCalles;
+import com.jblue.vista.marco.vistas.SimpleView;
+import com.jutil.swingw.modelos.JTableModel;
+import java.awt.CardLayout;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author juan-campos
  */
-public class NewCalles extends javax.swing.JPanel {
+public class NewCalles extends SimpleView {
+
+    private OCalles search_object;
+
+    private final CardLayout ly;
 
     /**
      * Creates new form NewCalles
      */
     public NewCalles() {
         initComponents();
+        MEMO_CACHE = FabricaCache.CALLES;
+        table.setComponentPopupMenu(table_pop_up);
+        table_pop_up.add("Eliminar");
+        table_pop_up.add("ditar");
+        JMenuItem com = (JMenuItem) table_pop_up.getComponent(1);
+        com.addActionListener(e -> itemEdit());
+        model = new JTableModel(ConstGs.TABLA_CALLES, 0);
+        table.setModel(model);
+        ly = (CardLayout) root_panel.getLayout();
+        ly.show(root_panel, register_panel.getName());
+        llamable();
+    }
+
+    @Override
+    protected final void llamable() {
+        construirComponentes();
+        eventos();
+        componentesEstadoFinal();
+        componentesEstadoInicial();
+
+    }
+
+    @Override
+    public void componentesEstadoInicial() {
+        campo_nombre.setText(null);
+        campo_numero.setText(null);
+        search_object = null;
+    }
+
+    @Override
+    protected void eventos() {
+        register_button.addActionListener(e -> setView(0));
+        search_button.addActionListener(e -> setView(1));
+        //
+        save_button.addActionListener(e -> CCalles.save(search_object, getData()));
+    }
+
+    private void setView(int option) {
+        String op = switch (option) {
+            case 1:
+                yield search_panel.getName();
+            default:
+                yield register_panel.getName();
+        };
+        ly.show(root_panel, op);
+
+    }
+
+    public String[] getData() {
+        return new String[]{};
     }
 
     /**
@@ -38,21 +103,273 @@ public class NewCalles extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setName("Calles"); // NOI18N
+        table_pop_up = new javax.swing.JPopupMenu();
+        tools_panel = new javax.swing.JPanel();
+        jToggleButton2 = new javax.swing.JToggleButton();
+        jPanel15 = new javax.swing.JPanel();
+        register_button = new javax.swing.JButton();
+        search_button = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        root_panel = new javax.swing.JPanel();
+        register_panel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        campo_nombre = new javax.swing.JTextField();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        campo_numero = new javax.swing.JTextField();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        save_button = new javax.swing.JButton();
+        update_button = new javax.swing.JButton();
+        delete_button = new javax.swing.JButton();
+        cancel_button = new javax.swing.JButton();
+        jPanel10 = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        search_panel = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        btn_recargar = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jtf_buscador = new javax.swing.JTextField();
+        jPanel11 = new javax.swing.JPanel();
+        btn_ant = new javax.swing.JButton();
+        btn_sig = new javax.swing.JButton();
+        panel_izq = new javax.swing.JPanel();
+        tabla_usuarios = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
-        );
+        setName("Calles"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(900, 700));
+        setLayout(new java.awt.BorderLayout());
+
+        tools_panel.setPreferredSize(new java.awt.Dimension(900, 30));
+        tools_panel.setLayout(new java.awt.BorderLayout(10, 10));
+
+        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
+        jToggleButton2.setPreferredSize(new java.awt.Dimension(100, 30));
+        jToggleButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/desbloquear.png"))); // NOI18N
+        tools_panel.add(jToggleButton2, java.awt.BorderLayout.WEST);
+
+        jPanel15.setLayout(new java.awt.GridLayout(1, 0));
+
+        register_button.setText("Registrar Calle");
+        jPanel15.add(register_button);
+
+        search_button.setText("Consultar Calles");
+        jPanel15.add(search_button);
+
+        tools_panel.add(jPanel15, java.awt.BorderLayout.CENTER);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/configuraciones.png"))); // NOI18N
+        jButton2.setPreferredSize(new java.awt.Dimension(100, 30));
+        tools_panel.add(jButton2, java.awt.BorderLayout.EAST);
+
+        add(tools_panel, java.awt.BorderLayout.NORTH);
+
+        root_panel.setLayout(new java.awt.CardLayout());
+
+        register_panel.setName("registros"); // NOI18N
+        register_panel.setLayout(new java.awt.BorderLayout(10, 10));
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(500, 620));
+        jPanel1.setLayout(new java.awt.GridLayout(10, 0, 0, 5));
+
+        jLabel4.setFont(new java.awt.Font("Open Sans", 1, 36)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Datos de la Calle");
+        jLabel4.setPreferredSize(new java.awt.Dimension(500, 100));
+        jPanel1.add(jLabel4);
+
+        jPanel8.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
+        jLabel2.setText("Nombre:");
+        jLabel2.setOpaque(true);
+        jLabel2.setPreferredSize(new java.awt.Dimension(150, 30));
+        jPanel8.add(jLabel2, java.awt.BorderLayout.WEST);
+
+        campo_nombre.setName("Nombre"); // NOI18N
+        jPanel8.add(campo_nombre, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel8);
+
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
+        jLabel3.setText("Numero:");
+        jLabel3.setOpaque(true);
+        jLabel3.setPreferredSize(new java.awt.Dimension(150, 30));
+        jPanel9.add(jLabel3, java.awt.BorderLayout.WEST);
+
+        campo_numero.setName("Numero"); // NOI18N
+        jPanel9.add(campo_numero, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel9);
+
+        register_panel.add(jPanel1, java.awt.BorderLayout.CENTER);
+
+        jPanel7.setPreferredSize(new java.awt.Dimension(500, 80));
+        jPanel7.setLayout(new java.awt.GridLayout(2, 0));
+
+        jPanel2.setLayout(new java.awt.GridLayout(1, 3));
+
+        save_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
+        save_button.setText("Guardar");
+        jPanel2.add(save_button);
+
+        update_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/sincronizar.png"))); // NOI18N
+        update_button.setText("Actualizar");
+        jPanel2.add(update_button);
+
+        delete_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/eliminar.png"))); // NOI18N
+        delete_button.setText("Eliminar");
+        jPanel2.add(delete_button);
+
+        jPanel7.add(jPanel2);
+
+        cancel_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
+        cancel_button.setText("Cancelar");
+        jPanel7.add(cancel_button);
+
+        register_panel.add(jPanel7, java.awt.BorderLayout.SOUTH);
+
+        jPanel10.setPreferredSize(new java.awt.Dimension(30, 100));
+        register_panel.add(jPanel10, java.awt.BorderLayout.WEST);
+
+        jPanel12.setPreferredSize(new java.awt.Dimension(30, 100));
+        register_panel.add(jPanel12, java.awt.BorderLayout.EAST);
+
+        root_panel.add(register_panel, "registros");
+
+        search_panel.setName("consultas"); // NOI18N
+        search_panel.setLayout(new java.awt.BorderLayout());
+
+        jPanel5.setMinimumSize(new java.awt.Dimension(100, 30));
+        jPanel5.setPreferredSize(new java.awt.Dimension(500, 40));
+        jPanel5.setLayout(new java.awt.BorderLayout(10, 10));
+
+        btn_recargar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
+        btn_recargar.setPreferredSize(new java.awt.Dimension(200, 30));
+        jPanel5.add(btn_recargar, java.awt.BorderLayout.WEST);
+
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
+        jLabel1.setPreferredSize(new java.awt.Dimension(30, 30));
+        jPanel6.add(jLabel1, java.awt.BorderLayout.WEST);
+        jPanel6.add(jtf_buscador, java.awt.BorderLayout.CENTER);
+
+        jPanel5.add(jPanel6, java.awt.BorderLayout.CENTER);
+
+        jPanel11.setLayout(new java.awt.GridLayout(1, 2));
+
+        btn_ant.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
+        btn_ant.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel11.add(btn_ant);
+
+        btn_sig.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
+        btn_sig.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel11.add(btn_sig);
+
+        jPanel5.add(jPanel11, java.awt.BorderLayout.EAST);
+
+        search_panel.add(jPanel5, java.awt.BorderLayout.NORTH);
+
+        panel_izq.setPreferredSize(new java.awt.Dimension(500, 700));
+        panel_izq.setLayout(new java.awt.BorderLayout(10, 10));
+
+        table.setAutoCreateRowSorter(true);
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        table.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        table.setShowGrid(true);
+        table.getTableHeader().setReorderingAllowed(false);
+        tabla_usuarios.setViewportView(table);
+
+        panel_izq.add(tabla_usuarios, java.awt.BorderLayout.CENTER);
+
+        search_panel.add(panel_izq, java.awt.BorderLayout.CENTER);
+
+        root_panel.add(search_panel, "consultas");
+
+        add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    @Override
+    public void setVisible(boolean aFlag) {
+        super.setVisible(aFlag); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        if (aFlag) {
+            CCalles.loadTableData(model, MEMO_CACHE);
+        } else {
+            CCalles.dumpData(model);
+        }
+    }
+
+    private void itemEdit() {
+        int index = table.getSelectedRow();
+        if (index < 0) {
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado un elemento", "Editar", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        search_object = new OCalles((String[]) model.getRow(index));
+
+        campo_nombre.setText(search_object.getNombre());
+        campo_numero.setText(search_object.getNumero());
+        setView(0);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_ant;
+    private javax.swing.JButton btn_recargar;
+    private javax.swing.JButton btn_sig;
+    private javax.swing.JTextField campo_nombre;
+    private javax.swing.JTextField campo_numero;
+    private javax.swing.JButton cancel_button;
+    private javax.swing.JButton delete_button;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JToggleButton jToggleButton2;
+    private javax.swing.JTextField jtf_buscador;
+    private javax.swing.JPanel panel_izq;
+    private javax.swing.JButton register_button;
+    private javax.swing.JPanel register_panel;
+    private javax.swing.JPanel root_panel;
+    private javax.swing.JButton save_button;
+    private javax.swing.JButton search_button;
+    private javax.swing.JPanel search_panel;
+    private javax.swing.JScrollPane tabla_usuarios;
+    private javax.swing.JTable table;
+    private javax.swing.JPopupMenu table_pop_up;
+    private javax.swing.JPanel tools_panel;
+    private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
+    private final JTableModel model;
+    private final MemoListCache<OCalles> MEMO_CACHE;
+
 }

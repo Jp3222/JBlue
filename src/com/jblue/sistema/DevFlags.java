@@ -16,28 +16,34 @@
  */
 package com.jblue.sistema;
 
-import com.jblue.media.JBMedia;
-import com.jutil.jbd.conexion.Conexion;
-
 /**
+ * En esta clase se pueden poner variables booleanas para comportamientos en
+ * desarrollo
+ *
  *
  * @author juan-campos
  */
-public class SistemaR {
+public class DevFlags {
 
-    private static Conexion cn;
-
-    public static JBMedia getMedia() {
-        return JBMedia.getInstance();
-    }
-
-    static void setConexion(Conexion cn) {
-        SistemaR.cn = cn;
-    }
-
-    public static Conexion getConexion() {
-        return cn;
+    /*
+    ejemplo:
+    
+    try{
+        codigo...
+    }catch{
+        if(MNS_ERR){
+            System.out.println("Mensaje de desarrollador");
+        }
     }
     
-    
+     */
+    /**
+     * Mensajes de error en desarrollo
+     */
+    public static boolean FUTURE_VIEW = true;
+    /**
+     * Mensaje de error para el usuario
+     */
+    public static boolean DEV_MSN = true;
+
 }

@@ -23,11 +23,6 @@ import com.jblue.vista.marco.vistas.VistaExtendida;
 import com.jblue.vista.vistas.usuarios.VConsumidores;
 import com.jblue.vista.vistas.usuarios.VUsuariosC;
 import com.jblue.vista.vistas.usuarios.VUsuariosR;
-import java.awt.Rectangle;
-import java.awt.event.ActionListener;
-import javax.swing.Icon;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 
 /**
  *
@@ -40,7 +35,6 @@ public class VUsuarios extends VistaExtendida {
      */
     public VUsuarios() {
         initComponents();
-        memo_cache = FabricaCache.MC_USUARIOS;
         panel_registros = new VUsuariosR(this);
         panel_consultas = new VUsuariosC(this);
         panel_consumidores = new VConsumidores(this);
@@ -64,6 +58,7 @@ public class VUsuarios extends VistaExtendida {
     protected void componentesEstadoFinal() {
         jTabbedPane1.add(panel_registros.getName(), panel_registros);
         jTabbedPane1.add(panel_consultas.getName(), panel_consultas);
+        jTabbedPane1.add(panel_consumidores.getName(), panel_consumidores);
     }
 
     @Override
@@ -73,9 +68,7 @@ public class VUsuarios extends VistaExtendida {
 
     @Override
     protected void eventos() {
-        jTabbedPane1.addChangeListener((e) -> {
-            System.out.println(jTabbedPane1.getSelectedIndex());
-        });
+
     }
 
     /**
@@ -95,43 +88,12 @@ public class VUsuarios extends VistaExtendida {
         add(jTabbedPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private JMenu itemMenuVer() {
-        JMenu menu = new JMenu("Ver");
-        return menu;
-    }
-
-    private JMenu itemMenuEditar() {
-        return null;
-    }
-
-    public JMenuItem crearMenuItem(String texto, Icon icono, ActionListener evento) {
-        JMenuItem item = new JMenuItem(texto);
-        if (icono != null) {
-            item.setIcon(icono);
-        }
-        if (evento != null) {
-            item.addActionListener(evento);
-        }
-        return item;
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
-    private final MemoCache<OUsuarios> memo_cache;
     private final VUsuariosR panel_registros;
     private final VUsuariosC panel_consultas;
     private final VConsumidores panel_consumidores;
-
-    @Override
-    public Rectangle getBounds() {
-        panel_registros.getBounds();
-        return super.getBounds(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-    }
-
-    public MemoCache<OUsuarios> getMemo_cache() {
-        return memo_cache;
-    }
 
 }

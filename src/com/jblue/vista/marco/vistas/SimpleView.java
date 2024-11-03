@@ -10,9 +10,9 @@ import javax.swing.JPanel;
  *
  * @author jp
  */
-public abstract class VistaSimple extends JPanel {
+public abstract class SimpleView extends JPanel {
 
-    public VistaSimple() {
+    public SimpleView() {
     }
 
     /**

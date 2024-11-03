@@ -16,9 +16,24 @@
  */
 package com.jblue.controlador;
 
+import com.jblue.modelo.dbconexion.FuncionesBD;
 import com.jblue.modelo.fabricas.FabricaCache;
+import com.jblue.modelo.fabricas.FabricaFuncionesBD;
+import com.jblue.modelo.objetos.OPagosServicio;
+import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.sistema.Sesion;
+import com.jblue.vista.marco.vistas.SimpleView;
+import com.jutil.swingw.modelos.JTableModel;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -33,5 +48,45 @@ public class CCobros {
         OTipoTomas get = FabricaCache.TIPO_DE_TOMAS.get((t) -> user.getToma().equals(t.getId()));
         double total = meses_seleccionados * get.getCosto();
         return total;
+    }
+
+    public static Map<String, String> regPagoxServicio(OUsuarios usuario, String[] meses, int monto_ingresado) {
+        OPersonal personal = Sesion.getInstancia().getUsuario();
+        return CPagos.getInstancia().regPagoXServicio(personal, usuario, meses, 0);
+
+    }
+
+    public static void printPaidsOfDay(JTableModel model) {
+        try {
+            FuncionesBD<OPagosServicio> fun = FabricaFuncionesBD.getPagosXServicio();
+            LocalDate ld = LocalDate.now();
+            final String query = "dia = '%s' and mes = '%s' and año = '%s'";
+            ArrayList<OPagosServicio> list = fun.getList("*", query.formatted(ld.getDayOfMonth(),
+                    ld.getMonthValue(),
+                    ld.getYear()));
+            if (list.isEmpty()) {
+                return;
+            }
+            
+            for (OPagosServicio i : list) {
+                model.addData(i.getId(), i.getUsuario(), i.getMesPagado());
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CCobros.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void evtCancelar(SimpleView o) {
+        int in = JOptionPane.showConfirmDialog(o, "¿Desea cancelar esta operacion?");
+        if (in != JOptionPane.OK_OPTION) {
+            return;
+        }
+        o.componentesEstadoInicial();
+    }
+
+    public static void evtClear(JLabel... o) {
+        String txt = "0.0";
+        o[0].setText(txt);
+        o[1].setText("0.0");
     }
 }

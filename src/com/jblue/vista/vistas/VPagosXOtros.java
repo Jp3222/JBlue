@@ -24,7 +24,7 @@ import com.jblue.vista.componentes.CSelectorDeArchivos;
 import com.jblue.vista.marco.contruccion.EvtRegistrosBD;
 import com.jblue.vista.marco.vistas.VistaExtendida;
 import com.jutil.jexception.Excp;
-import com.jutil.swingw.modelos.TableModel;
+import com.jutil.swingw.modelos.JTableModel;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,7 +40,7 @@ import javax.swing.text.NumberFormatter;
  */
 public class VPagosXOtros extends VistaExtendida implements EvtRegistrosBD {
 
-    private final TableModel modelo;
+    private final JTableModel modelo;
 
     /**
      * Creates new form VPagosXOtros
@@ -48,7 +48,7 @@ public class VPagosXOtros extends VistaExtendida implements EvtRegistrosBD {
     public VPagosXOtros() {
         initComponents();
 
-        modelo = new TableModel(ConstGs.TABLA_PAGOS_X_OTROS_TIPOS, 0);
+        modelo = new JTableModel(ConstGs.TABLA_PAGOS_X_OTROS_TIPOS, 0);
         jTable1.setModel(modelo);
 
         llamable();
@@ -200,7 +200,7 @@ public class VPagosXOtros extends VistaExtendida implements EvtRegistrosBD {
         jLabel1.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel1.setText("Motivo");
-        jLabel1.setPreferredSize(new java.awt.Dimension(150, 30));
+        jLabel1.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel2.add(jLabel1, java.awt.BorderLayout.NORTH);
         jPanel2.add(campo_motivo, java.awt.BorderLayout.CENTER);
 
@@ -211,7 +211,7 @@ public class VPagosXOtros extends VistaExtendida implements EvtRegistrosBD {
         jLabel3.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel3.setText("Monto");
-        jLabel3.setPreferredSize(new java.awt.Dimension(150, 30));
+        jLabel3.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel4.add(jLabel3, java.awt.BorderLayout.NORTH);
 
         campo_monto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
@@ -225,12 +225,15 @@ public class VPagosXOtros extends VistaExtendida implements EvtRegistrosBD {
         jPanel7.setLayout(new java.awt.GridLayout(2, 3));
 
         jLabel5.setText("Dia");
+        jLabel5.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel7.add(jLabel5);
 
         jLabel6.setText("Mes");
+        jLabel6.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel7.add(jLabel6);
 
         JL.setText("Año");
+        JL.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel7.add(JL);
 
         jPanel7.add(campo_dia);

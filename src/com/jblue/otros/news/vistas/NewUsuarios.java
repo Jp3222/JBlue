@@ -16,35 +16,50 @@
  */
 package com.jblue.otros.news.vistas;
 
+import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OTipoTomas;
+import com.jblue.vista.marco.vistas.SimpleView;
+import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 
 /**
  *
  * @author juan-campos
  */
-public class NewUsuarios extends javax.swing.JPanel {
+public class NewUsuarios extends SimpleView {
 
     private CardLayout ly;
-
+    private final JTableModel model;
     /**
      * Creates new form NewUsuarios
      */
     public NewUsuarios() {
         initComponents();
+        model = new JTableModel(ConstGs.TABLA_USUARIOS, 0);
+        tabla_usuarios.setModel(model);
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
         eventos();
     }
-
-    private void eventos() {
+    
+    @Override
+    protected void eventos() {
         register_button.addActionListener(e -> {
             ly.show(root_panel, register_panel.getName());
         });
         consult_button.addActionListener(e -> {
             ly.show(root_panel, search_panel.getName());
         });
+    }
+
+    @Override
+    protected void llamable() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void componentesEstadoInicial() {
     }
 
     /**
@@ -90,12 +105,6 @@ public class NewUsuarios extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         tabla_usuarios = new javax.swing.JTable();
         register_panel = new javax.swing.JPanel();
-        south_panel = new javax.swing.JPanel();
-        jPanel13 = new javax.swing.JPanel();
-        btn_guardar = new javax.swing.JButton();
-        btn_actualizar = new javax.swing.JButton();
-        btn_eliminar = new javax.swing.JButton();
-        btn_cancelar = new javax.swing.JButton();
         center_panel = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         pc_tipo = new javax.swing.JPanel();
@@ -131,6 +140,12 @@ public class NewUsuarios extends javax.swing.JPanel {
         man_estado = new javax.swing.JCheckBox();
         left_panel = new javax.swing.JPanel();
         right_panel = new javax.swing.JPanel();
+        south_panel = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
+        btn_guardar = new javax.swing.JButton();
+        btn_actualizar = new javax.swing.JButton();
+        btn_eliminar = new javax.swing.JButton();
+        btn_cancelar = new javax.swing.JButton();
         north_panel = new javax.swing.JPanel();
         np_cp_center = new javax.swing.JPanel();
         register_button = new javax.swing.JButton();
@@ -274,6 +289,7 @@ public class NewUsuarios extends javax.swing.JPanel {
 
             }
         ));
+        tabla_usuarios.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         tabla_usuarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tabla_usuarios.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(tabla_usuarios);
@@ -286,35 +302,6 @@ public class NewUsuarios extends javax.swing.JPanel {
 
         register_panel.setName("Consultar"); // NOI18N
         register_panel.setLayout(new java.awt.BorderLayout());
-
-        south_panel.setLayout(new java.awt.GridLayout(2, 0));
-
-        jPanel13.setPreferredSize(new java.awt.Dimension(500, 40));
-        jPanel13.setLayout(new java.awt.GridLayout(1, 3));
-
-        btn_guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
-        btn_guardar.setText("Guardar");
-        btn_guardar.setPreferredSize(new java.awt.Dimension(166, 40));
-        jPanel13.add(btn_guardar);
-
-        btn_actualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/actualizar.png"))); // NOI18N
-        btn_actualizar.setText("Actualizar");
-        btn_actualizar.setPreferredSize(new java.awt.Dimension(166, 40));
-        jPanel13.add(btn_actualizar);
-
-        btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/eliminar.png"))); // NOI18N
-        btn_eliminar.setText("Eliminar");
-        btn_eliminar.setPreferredSize(new java.awt.Dimension(166, 40));
-        jPanel13.add(btn_eliminar);
-
-        south_panel.add(jPanel13);
-
-        btn_cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
-        btn_cancelar.setText("Cancelar");
-        btn_cancelar.setPreferredSize(new java.awt.Dimension(500, 40));
-        south_panel.add(btn_cancelar);
-
-        register_panel.add(south_panel, java.awt.BorderLayout.SOUTH);
 
         center_panel.setPreferredSize(new java.awt.Dimension(500, 600));
         center_panel.setLayout(new java.awt.GridLayout(10, 1, 10, 10));
@@ -498,14 +485,43 @@ public class NewUsuarios extends javax.swing.JPanel {
 
         register_panel.add(right_panel, java.awt.BorderLayout.EAST);
 
+        south_panel.setLayout(new java.awt.GridLayout(2, 0));
+
+        jPanel13.setPreferredSize(new java.awt.Dimension(500, 40));
+        jPanel13.setLayout(new java.awt.GridLayout(1, 3));
+
+        btn_guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
+        btn_guardar.setText("Guardar");
+        btn_guardar.setPreferredSize(new java.awt.Dimension(166, 40));
+        jPanel13.add(btn_guardar);
+
+        btn_actualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/actualizar.png"))); // NOI18N
+        btn_actualizar.setText("Actualizar");
+        btn_actualizar.setPreferredSize(new java.awt.Dimension(166, 40));
+        jPanel13.add(btn_actualizar);
+
+        btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/eliminar.png"))); // NOI18N
+        btn_eliminar.setText("Eliminar");
+        btn_eliminar.setPreferredSize(new java.awt.Dimension(166, 40));
+        jPanel13.add(btn_eliminar);
+
+        south_panel.add(jPanel13);
+
+        btn_cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
+        btn_cancelar.setText("Cancelar");
+        btn_cancelar.setPreferredSize(new java.awt.Dimension(500, 40));
+        south_panel.add(btn_cancelar);
+
+        register_panel.add(south_panel, java.awt.BorderLayout.SOUTH);
+
         root_panel.add(register_panel, "Consultar");
 
         add(root_panel, java.awt.BorderLayout.CENTER);
 
-        north_panel.setPreferredSize(new java.awt.Dimension(900, 40));
+        north_panel.setPreferredSize(new java.awt.Dimension(900, 30));
         north_panel.setLayout(new java.awt.BorderLayout(10, 10));
 
-        np_cp_center.setLayout(new java.awt.GridLayout());
+        np_cp_center.setLayout(new java.awt.GridLayout(1, 0));
 
         register_button.setText("Registar");
         np_cp_center.add(register_button);
@@ -620,4 +636,5 @@ public class NewUsuarios extends javax.swing.JPanel {
     private javax.swing.JPanel south_panel;
     private javax.swing.JTable tabla_usuarios;
     // End of variables declaration//GEN-END:variables
+
 }

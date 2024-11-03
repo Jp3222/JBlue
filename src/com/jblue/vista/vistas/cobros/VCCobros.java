@@ -17,17 +17,16 @@
 package com.jblue.vista.vistas.cobros;
 
 import com.jblue.modelo.ConstGs;
+import com.jblue.modelo.cache.MemoListCache;
+import com.jblue.modelo.fabricas.FabricaFuncionesBD;
 import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.util.Filtros;
 import com.jblue.util.FuncJBlue;
-import com.jblue.modelo.fabricas.FabricaOpraciones;
-import com.jblue.util.trash.MemoCache;
-import com.jblue.vista.marco.vistas.VistaSimple;
+import com.jblue.vista.marco.vistas.SimpleView;
 import com.jblue.vista.vistas.VCobros;
-import com.jutil.swingw.modelos.TableModel;
+import com.jutil.swingw.modelos.JTableModel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -35,7 +34,7 @@ import javax.swing.SwingUtilities;
  *
  * @author jp
  */
-public final class VCCobros extends VistaSimple {
+public final class VCCobros extends SimpleView {
 
     /**
      * Creates new form VCobrosR
@@ -43,12 +42,9 @@ public final class VCCobros extends VistaSimple {
      * @param root
      */
     public VCCobros(VCobros root) {
-        this.memo_cache = new MemoCache<>(FabricaOpraciones.getPAGOS_X_SERVICIO());
-        memo_cache.setRangoActivo(true);
-        memo_cache.cargar();
-        cache = memo_cache.getLista();
-        cache_aux = new ArrayList<>(cache.size());
-        modelo = new TableModel(ConstGs.TABLA_PAGOS_X_SERVICIO, 0);
+        this.memo_cache = new MemoListCache(FabricaFuncionesBD.getPagosXServicio());
+        memo_cache.loadData();
+        modelo = new JTableModel(ConstGs.TABLA_PAGOS_X_SERVICIO, 0);
         modelo.setCellsEditables(false);
         initComponents();
         jTable2.setModel(modelo);
@@ -281,20 +277,18 @@ public final class VCCobros extends VistaSimple {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_recActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_recActionPerformed
-        FuncJBlue.pintarTabla(modelo, memo_cache.getListaObj());
+        FuncJBlue.pintarTabla(modelo, memo_cache.getList());
         updateTableInfo();
     }//GEN-LAST:event_btn_recActionPerformed
 
     private void btn_antActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_antActionPerformed
         SwingUtilities.invokeLater(() -> {
-            memo_cache.ant();
-            memo_cache.actualizar();
-            if (memo_cache.getLista().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "No hay usuarios", "Usuarios Buscados", JOptionPane.INFORMATION_MESSAGE);
-                memo_cache.sig();
-                memo_cache.actualizar();
+            if (!memo_cache.back()) {
+                JOptionPane.showMessageDialog(this, "No hay mas datos disponibles", "Datos", JOptionPane.INFORMATION_MESSAGE);
+                memo_cache.next();
+
             }
-            FuncJBlue.pintarTabla(modelo, cache);
+            FuncJBlue.pintarTabla(modelo, memo_cache.getList());
             updateTableInfo();
         });
     }//GEN-LAST:event_btn_antActionPerformed
@@ -302,7 +296,7 @@ public final class VCCobros extends VistaSimple {
     private void filtro_buscadorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filtro_buscadorKeyTyped
         String aux = Filtros.limpiar(filtro_buscador.getText());
         if (Filtros.isNullOrBlank(aux)) {
-            FuncJBlue.pintarTabla(modelo, cache);
+            FuncJBlue.pintarTabla(modelo, memo_cache.getList());
             return;
         }
         buscador(aux);
@@ -310,24 +304,22 @@ public final class VCCobros extends VistaSimple {
 
     private void btn_sigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sigActionPerformed
         SwingUtilities.invokeLater(() -> {
-            memo_cache.sig();
-            memo_cache.actualizar();
-            if (memo_cache.getLista().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "No hay usuarios", "Usuarios Buscados", JOptionPane.INFORMATION_MESSAGE);
-                memo_cache.ant();
-                memo_cache.actualizar();
+            if (!memo_cache.next()) {
+                JOptionPane.showMessageDialog(this, "No hay mas datos disponibles", "Datos", JOptionPane.INFORMATION_MESSAGE);
+                memo_cache.back();
             }
-            FuncJBlue.pintarTabla(modelo, cache);
+
+            FuncJBlue.pintarTabla(modelo, memo_cache.getList());
             updateTableInfo();
         });
+
     }//GEN-LAST:event_btn_sigActionPerformed
 
     private void buscador(final String aux) {
-        List<OPagosServicio> lista = cache.stream().filter(e -> {
+        List<OPagosServicio> lista = memo_cache.getList(e -> {
             String a = Filtros.limpiar(e.toString());
             return a.contains(aux);
-        }).collect(Collectors.toList());
-
+        });
         FuncJBlue.pintarTabla(modelo, lista);
         updateTableInfo();
     }
@@ -336,7 +328,7 @@ public final class VCCobros extends VistaSimple {
     public void setVisible(boolean aFlag) {
         super.setVisible(aFlag);
         if (aFlag) {
-            FuncJBlue.pintarTabla(modelo, memo_cache.getLista());
+            FuncJBlue.pintarTabla(modelo, memo_cache.getList());
             updateTableInfo();
         } else {
             if (modelo.getRowCount() > 0) {
@@ -346,13 +338,17 @@ public final class VCCobros extends VistaSimple {
     }
 
     public void updateTableInfo() {
-        lbl_resultados.setText(String.valueOf(memo_cache.getLista().size()));
-        lbl_rango.setText("%s - %s".formatted(memo_cache.getLimite_min(), memo_cache.getLimite_max()));
-        lbl_total_r.setText(String.valueOf(memo_cache.getCount()));
+        ArrayList<OPagosServicio> list = memo_cache.getList();
+        lbl_resultados.setText(String.valueOf(list.size()));
+        lbl_rango.setText(
+                "%s - %s".formatted(memo_cache.getIndexMin(),
+                        memo_cache.getIndexMax()));
+
+        lbl_total_r.setText(String.valueOf(memo_cache.count()));
     }
-    
-    void filtros(){
-        
+
+    void filtros() {
+
     }
 
 
@@ -392,8 +388,7 @@ public final class VCCobros extends VistaSimple {
     private javax.swing.JPanel panel_tabla;
     // End of variables declaration//GEN-END:variables
 
-    private final MemoCache<OPagosServicio> memo_cache;
-    private final ArrayList<OPagosServicio> cache;
-    private final ArrayList<OPagosServicio> cache_aux;
-    private final TableModel modelo;
+    //private final MemoCache<OPagosServicio> memo_cache;
+    private final MemoListCache<OPagosServicio> memo_cache;
+    private final JTableModel modelo;
 }

@@ -19,10 +19,14 @@ package com.jblue.util.cache;
 import com.jblue.modelo.dbconexion.FuncionesBD;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.tools.ObjetoUtil;
+import com.jutil.jbd.conexion.Conexion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,13 +39,15 @@ import java.util.logging.Logger;
 public abstract class AbstraccionListCache<T extends Objeto> implements ModeloListCache<T> {
 
     protected final ArrayList<T> cache;
-    protected final ArrayList<T> buffer_cache;
+    protected final Map<String, List<T>> buffer_cache;
     protected final FuncionesBD<T> conexion;
     protected int index_min, index_max, steps;
+    protected long count;
+    protected int call_count;
 
     public AbstraccionListCache(int capacity, FuncionesBD conexion) {
         this.cache = new ArrayList<>(capacity);
-        this.buffer_cache = new ArrayList<>(capacity);
+        this.buffer_cache = new HashMap<>(10);
         this.conexion = conexion;
         this.index_min = 1;
         this.index_max = capacity;
@@ -56,17 +62,26 @@ public abstract class AbstraccionListCache<T extends Objeto> implements ModeloLi
     @Override
     public void loadData() {
         String query = "SELECT * FROM %s WHERE id >= %s and id <= %s";
+        query = query.formatted(conexion.getTabla(), index_min, index_max);
+        if (buffer_cache.containsKey(query)) {
+            cache.addAll(buffer_cache.get(query));
+            return;
+        }
+        System.out.println("leyendo base de datos...");
         try {
-            ResultSet rs = conexion.getConexion().queryResult(query.formatted(conexion.getTabla(), index_min, index_max));
+            Conexion conn = conexion.getConexion();
+            ResultSet rs_data = conn.queryResult(query);
             String[] info;
-            while (rs.next()) {
+            while (rs_data.next()) {
                 info = new String[conexion.getCampos().length];
                 for (int i = 0; i < conexion.getCampos().length; i++) {
-                    info[i] = rs.getString(conexion.getCampos()[i]);
+                    info[i] = rs_data.getString(conexion.getCampos()[i]);
                 }
                 Objeto objeto = ObjetoUtil.getObjeto(conexion.getTabla(), info);
                 cache.add((T) objeto);
             }
+
+            buffer_cache.put(query, (List<T>) cache.clone());
         } catch (SQLException ex) {
             Logger.getLogger(AbstraccionListCache.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -96,6 +111,10 @@ public abstract class AbstraccionListCache<T extends Objeto> implements ModeloLi
         loadData();
     }
 
+    public void dumpBuffer() {
+        buffer_cache.clear();
+    }
+
     @Override
     public ArrayList<T> getList() {
         return cache;
@@ -108,15 +127,41 @@ public abstract class AbstraccionListCache<T extends Objeto> implements ModeloLi
 
     @Override
     public long count() {
+//        switch (call_count) {
+//            case 0 ->
+//                count = count_count();
+//            case 5 ->
+//                call_count = 0;
+//            default ->
+//                call_count++;
+//        }
+//        return count;
+        return count_count();
+    }
+
+    private long count_count() {
         String query = "SELECT count(id) FROM %s";
-        long count = 0;
+        Conexion _conn = conexion.getConexion();
+        ResultSet res_count;
+        long aux_count = 0;
         try {
-            ResultSet rs = conexion.getConexion().queryResult(query.formatted(conexion.getTabla()));
-            count = rs.getLong(1);
+            res_count = _conn.queryResult(query.formatted(conexion.getTabla()));
+            if (res_count.next()) {
+                aux_count = res_count.getLong(1);
+            }
+            res_count.close();
         } catch (SQLException ex) {
             Logger.getLogger(AbstraccionListCache.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return count;
+        return aux_count;
+    }
+
+    public int getIndexMax() {
+        return index_max;
+    }
+
+    public int getIndexMin() {
+        return index_min;
     }
 
 }

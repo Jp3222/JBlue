@@ -16,17 +16,31 @@
  */
 package com.jblue.otros.news.vistas;
 
+import java.awt.CardLayout;
+
 /**
  *
  * @author juan-campos
  */
 public class NewTipoDeTomas extends javax.swing.JPanel {
-
+    private final CardLayout ly;
     /**
      * Creates new form NewTipoDeTomas
      */
     public NewTipoDeTomas() {
         initComponents();
+        ly = (CardLayout) root_panel.getLayout();
+        ly.show(root_panel, register_panel.getName());
+        eventos();
+    }
+
+    private void eventos() {
+        register_button.addActionListener(e -> {
+            ly.show(root_panel, register_panel.getName());
+        });
+        search_button.addActionListener(e -> {
+            ly.show(root_panel, search_panel.getName());
+        });
     }
 
     /**
@@ -38,21 +52,280 @@ public class NewTipoDeTomas extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setName("Tipo de Tomas"); // NOI18N
+        tools_panel = new javax.swing.JPanel();
+        jToggleButton2 = new javax.swing.JToggleButton();
+        jPanel15 = new javax.swing.JPanel();
+        register_button = new javax.swing.JButton();
+        search_button = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        root_panel = new javax.swing.JPanel();
+        register_panel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        panel_campos = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        campo_tipo = new javax.swing.JTextField();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        campo_costo = new javax.swing.JTextField();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        campo_recargo = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        panel_botones = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        btn_guardar = new javax.swing.JButton();
+        btn_actualizar = new javax.swing.JButton();
+        btn_eliminar = new javax.swing.JButton();
+        btn_cancelar = new javax.swing.JButton();
+        search_panel = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        btn_recargar = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jtf_buscador = new javax.swing.JTextField();
+        jPanel11 = new javax.swing.JPanel();
+        btn_ant = new javax.swing.JButton();
+        btn_sig = new javax.swing.JButton();
+        panel_izq = new javax.swing.JPanel();
+        tabla_usuarios = new javax.swing.JScrollPane();
+        tabla_tipo_tomas = new javax.swing.JTable();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
+        setName("Tipo de Tomas"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(900, 700));
+        setLayout(new java.awt.BorderLayout());
+
+        tools_panel.setPreferredSize(new java.awt.Dimension(900, 30));
+        tools_panel.setLayout(new java.awt.BorderLayout(10, 10));
+
+        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
+        jToggleButton2.setPreferredSize(new java.awt.Dimension(100, 30));
+        jToggleButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/desbloquear.png"))); // NOI18N
+        tools_panel.add(jToggleButton2, java.awt.BorderLayout.WEST);
+
+        jPanel15.setLayout(new java.awt.GridLayout(1, 0));
+
+        register_button.setText("Registrar Tipo de Tomas");
+        jPanel15.add(register_button);
+
+        search_button.setText("Consultar los Tipos de Tomas");
+        jPanel15.add(search_button);
+
+        tools_panel.add(jPanel15, java.awt.BorderLayout.CENTER);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/configuraciones.png"))); // NOI18N
+        jButton2.setPreferredSize(new java.awt.Dimension(100, 30));
+        tools_panel.add(jButton2, java.awt.BorderLayout.EAST);
+
+        add(tools_panel, java.awt.BorderLayout.NORTH);
+
+        root_panel.setLayout(new java.awt.CardLayout());
+
+        register_panel.setName("Registrar"); // NOI18N
+        register_panel.setLayout(new java.awt.BorderLayout(10, 10));
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(30, 100));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 30, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 580, Short.MAX_VALUE)
         );
+
+        register_panel.add(jPanel1, java.awt.BorderLayout.WEST);
+
+        panel_campos.setPreferredSize(new java.awt.Dimension(500, 620));
+        panel_campos.setLayout(new java.awt.GridLayout(10, 0, 0, 5));
+
+        jLabel4.setFont(new java.awt.Font("Open Sans", 1, 36)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Datos del tipo de toma");
+        jLabel4.setPreferredSize(new java.awt.Dimension(500, 100));
+        panel_campos.add(jLabel4);
+
+        jPanel8.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
+        jLabel2.setText("Tipo de toma:");
+        jLabel2.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel8.add(jLabel2, java.awt.BorderLayout.WEST);
+
+        campo_tipo.setName("Tipo de toma"); // NOI18N
+        jPanel8.add(campo_tipo, java.awt.BorderLayout.CENTER);
+
+        panel_campos.add(jPanel8);
+
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
+        jLabel3.setText("Costo:");
+        jLabel3.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel9.add(jLabel3, java.awt.BorderLayout.WEST);
+
+        campo_costo.setName("Costo"); // NOI18N
+        jPanel9.add(campo_costo, java.awt.BorderLayout.CENTER);
+
+        panel_campos.add(jPanel9);
+
+        jPanel10.setLayout(new java.awt.BorderLayout());
+
+        jLabel5.setFont(new java.awt.Font("Open Sans", 0, 18)); // NOI18N
+        jLabel5.setText("Costo de recargo:");
+        jLabel5.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel10.add(jLabel5, java.awt.BorderLayout.WEST);
+
+        campo_recargo.setName("Costo del recargo"); // NOI18N
+        jPanel10.add(campo_recargo, java.awt.BorderLayout.CENTER);
+
+        panel_campos.add(jPanel10);
+
+        register_panel.add(panel_campos, java.awt.BorderLayout.CENTER);
+
+        jPanel2.setPreferredSize(new java.awt.Dimension(30, 100));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 30, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 580, Short.MAX_VALUE)
+        );
+
+        register_panel.add(jPanel2, java.awt.BorderLayout.EAST);
+
+        panel_botones.setPreferredSize(new java.awt.Dimension(500, 80));
+        panel_botones.setLayout(new java.awt.GridLayout(2, 0));
+
+        jPanel3.setLayout(new java.awt.GridLayout(1, 3));
+
+        btn_guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
+        btn_guardar.setText("Guardar");
+        jPanel3.add(btn_guardar);
+
+        btn_actualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/sincronizar.png"))); // NOI18N
+        btn_actualizar.setText("Actualizar");
+        jPanel3.add(btn_actualizar);
+
+        btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/eliminar.png"))); // NOI18N
+        btn_eliminar.setText("Eliminar");
+        jPanel3.add(btn_eliminar);
+
+        panel_botones.add(jPanel3);
+
+        btn_cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
+        btn_cancelar.setText("Cancelar");
+        panel_botones.add(btn_cancelar);
+
+        register_panel.add(panel_botones, java.awt.BorderLayout.SOUTH);
+
+        root_panel.add(register_panel, "Registrar");
+
+        search_panel.setName("Consultar"); // NOI18N
+        search_panel.setLayout(new java.awt.BorderLayout());
+
+        jPanel5.setMinimumSize(new java.awt.Dimension(100, 30));
+        jPanel5.setPreferredSize(new java.awt.Dimension(500, 40));
+        jPanel5.setLayout(new java.awt.BorderLayout(10, 10));
+
+        btn_recargar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
+        btn_recargar.setPreferredSize(new java.awt.Dimension(200, 30));
+        jPanel5.add(btn_recargar, java.awt.BorderLayout.WEST);
+
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
+        jLabel1.setPreferredSize(new java.awt.Dimension(30, 30));
+        jPanel6.add(jLabel1, java.awt.BorderLayout.WEST);
+        jPanel6.add(jtf_buscador, java.awt.BorderLayout.CENTER);
+
+        jPanel5.add(jPanel6, java.awt.BorderLayout.CENTER);
+
+        jPanel11.setLayout(new java.awt.GridLayout(1, 2));
+
+        btn_ant.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
+        btn_ant.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel11.add(btn_ant);
+
+        btn_sig.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
+        btn_sig.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel11.add(btn_sig);
+
+        jPanel5.add(jPanel11, java.awt.BorderLayout.EAST);
+
+        search_panel.add(jPanel5, java.awt.BorderLayout.NORTH);
+
+        panel_izq.setPreferredSize(new java.awt.Dimension(500, 700));
+        panel_izq.setLayout(new java.awt.BorderLayout(10, 10));
+
+        tabla_tipo_tomas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tabla_usuarios.setViewportView(tabla_tipo_tomas);
+
+        panel_izq.add(tabla_usuarios, java.awt.BorderLayout.CENTER);
+
+        search_panel.add(panel_izq, java.awt.BorderLayout.CENTER);
+
+        root_panel.add(search_panel, "Consultar");
+
+        add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_actualizar;
+    private javax.swing.JButton btn_ant;
+    private javax.swing.JButton btn_cancelar;
+    private javax.swing.JButton btn_eliminar;
+    private javax.swing.JButton btn_guardar;
+    private javax.swing.JButton btn_recargar;
+    private javax.swing.JButton btn_sig;
+    private javax.swing.JTextField campo_costo;
+    private javax.swing.JTextField campo_recargo;
+    private javax.swing.JTextField campo_tipo;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JToggleButton jToggleButton2;
+    private javax.swing.JTextField jtf_buscador;
+    private javax.swing.JPanel panel_botones;
+    private javax.swing.JPanel panel_campos;
+    private javax.swing.JPanel panel_izq;
+    private javax.swing.JButton register_button;
+    private javax.swing.JPanel register_panel;
+    private javax.swing.JPanel root_panel;
+    private javax.swing.JButton search_button;
+    private javax.swing.JPanel search_panel;
+    private javax.swing.JTable tabla_tipo_tomas;
+    private javax.swing.JScrollPane tabla_usuarios;
+    private javax.swing.JPanel tools_panel;
     // End of variables declaration//GEN-END:variables
 }

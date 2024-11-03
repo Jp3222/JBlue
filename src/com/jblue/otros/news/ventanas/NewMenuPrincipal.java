@@ -16,9 +16,19 @@
  */
 package com.jblue.otros.news.ventanas;
 
+import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.otros.news.vistas.NewCalles;
+import com.jblue.otros.news.vistas.NewMenuType;
+import com.jblue.otros.news.vistas.NewTipoDeTomas;
 import com.jblue.otros.news.vistas.NewUsuarios;
 import com.jblue.otros.news.vistas.NewVCaja;
+import com.jblue.sistema.Sesion;
+import com.jblue.vista.componentes.CSelectorObjeto;
+import com.jblue.vista.componentes.CVisorUsuario;
+import com.jblue.vista.ventanas.Login;
 import java.awt.CardLayout;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -27,33 +37,80 @@ import java.awt.CardLayout;
 public class NewMenuPrincipal extends javax.swing.JFrame {
 
     private final NewVCaja caja;
+    private final NewMenuType menu_type;
     private final NewUsuarios usuarios;
+    private final NewCalles calles;
+    private final NewTipoDeTomas tipo_de_tomas;
+
     private final CardLayout ly;
+    private final Login LOGIN;
 
     /**
      * Creates new form NewMenuPrincipal
+     *
+     * @param LOGIN
      */
-    public NewMenuPrincipal() {
+    public NewMenuPrincipal(Login LOGIN) {
         initComponents();
+        this.LOGIN = LOGIN;
         caja = new NewVCaja();
         usuarios = new NewUsuarios();
+        menu_type = new NewMenuType(this);
+        calles = new NewCalles();
+        tipo_de_tomas = new NewTipoDeTomas();
 
         btn_tipo_pagos.setComponentPopupMenu(jPopupMenu1);
         ly = (CardLayout) views_panel.getLayout();
 
         views_panel.add(caja, caja.getName());
         views_panel.add(usuarios, usuarios.getName());
+        views_panel.add(calles, calles.getName());
+        views_panel.add(tipo_de_tomas, tipo_de_tomas.getName());
+        views_panel.add(menu_type, menu_type.getName());
         eventos();
     }
 
     private void eventos() {
-        btn_home.addActionListener(e -> {
-            ly.show(views_panel, caja.getName());
-        });
+        btn_home.addActionListener(e -> setView(0));
+        btn_usuarios.addActionListener(e -> setView(1));
+        btn_calles.addActionListener(e -> setView(2));
+        btn_tipo_tomas.addActionListener(e -> setView(3));
+        btn_tipo_pagos.addActionListener(e -> setView(4));
+        menu_button.addActionListener(e -> setView(5));
 
-        btn_usuarios.addActionListener(e -> {
-            ly.show(views_panel, usuarios.getName());
+        search_button.addActionListener(e -> {
+            OUsuarios obj = CSelectorObjeto.selectorUsuarios(this);
+            CVisorUsuario.showVisor(obj);
         });
+    }
+
+    private void setView(int option) {
+        String op = switch (option) {
+            case 0:
+                yield caja.getName();
+            case 1:
+                yield usuarios.getName();
+            case 2:
+                yield calles.getName();
+            case 3:
+                yield tipo_de_tomas.getName();
+            case 5:
+                yield menu_type.getName();
+            case 6:
+                yield OUT;
+            default:
+                JOptionPane.showMessageDialog(center_panel, "Esta opcion aun no esta disponible", "Opcion No encontrada", JOptionPane.INFORMATION_MESSAGE);
+                yield caja.getName();
+        };
+        if (op.equals(OUT)) {
+            this.dispose();
+            return;
+        }
+        ly.show(views_panel, op);
+    }
+
+    public void goToHome() {
+        ly.show(views_panel, caja.getName());
     }
 
     /**
@@ -72,7 +129,7 @@ public class NewMenuPrincipal extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        search_button = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         menu_button = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -109,7 +166,7 @@ public class NewMenuPrincipal extends javax.swing.JFrame {
         jMenuItem4.setText("Administrador");
         jPopupMenu1.add(jMenuItem4);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1200, 700));
         getContentPane().setLayout(new java.awt.BorderLayout(5, 5));
 
@@ -119,16 +176,15 @@ public class NewMenuPrincipal extends javax.swing.JFrame {
         jPanel3.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        jButton2.setContentAreaFilled(false);
-        jButton2.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel3.add(jButton2, java.awt.BorderLayout.LINE_START);
+        search_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
+        search_button.setPreferredSize(new java.awt.Dimension(50, 50));
+        jPanel3.add(search_button, java.awt.BorderLayout.LINE_START);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Home");
         jPanel3.add(jLabel1, java.awt.BorderLayout.CENTER);
 
-        menu_button.setText("...");
+        menu_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/menu.png"))); // NOI18N
         menu_button.setPreferredSize(new java.awt.Dimension(50, 50));
         jPanel3.add(menu_button, java.awt.BorderLayout.LINE_END);
 
@@ -137,7 +193,7 @@ public class NewMenuPrincipal extends javax.swing.JFrame {
         jPanel4.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Foto");
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/usuario.png"))); // NOI18N
         jLabel2.setPreferredSize(new java.awt.Dimension(41, 200));
         jPanel4.add(jLabel2, java.awt.BorderLayout.PAGE_START);
 
@@ -146,7 +202,7 @@ public class NewMenuPrincipal extends javax.swing.JFrame {
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         btn_home.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/usuario(1).png"))); // NOI18N
+        btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/home.png"))); // NOI18N
         btn_home.setText("Inicio");
         btn_home.setHideActionText(true);
         btn_home.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
@@ -158,7 +214,7 @@ public class NewMenuPrincipal extends javax.swing.JFrame {
         jPanel6.setLayout(new java.awt.BorderLayout());
 
         btn_usuarios.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        btn_usuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/usuario(1).png"))); // NOI18N
+        btn_usuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/usuario.png"))); // NOI18N
         btn_usuarios.setText("Usuarios");
         btn_usuarios.setHideActionText(true);
         btn_usuarios.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
@@ -170,7 +226,7 @@ public class NewMenuPrincipal extends javax.swing.JFrame {
         jPanel7.setLayout(new java.awt.BorderLayout());
 
         btn_calles.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        btn_calles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/mapa-de-la-calle.png"))); // NOI18N
+        btn_calles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/calles.png"))); // NOI18N
         btn_calles.setText("Calles");
         btn_calles.setHideActionText(true);
         btn_calles.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
@@ -182,7 +238,7 @@ public class NewMenuPrincipal extends javax.swing.JFrame {
         jPanel8.setLayout(new java.awt.BorderLayout());
 
         btn_tipo_tomas.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        btn_tipo_tomas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/grifo.png"))); // NOI18N
+        btn_tipo_tomas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/toma agua.png"))); // NOI18N
         btn_tipo_tomas.setText("Tipo de tomas");
         btn_tipo_tomas.setHideActionText(true);
         btn_tipo_tomas.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
@@ -194,7 +250,7 @@ public class NewMenuPrincipal extends javax.swing.JFrame {
         jPanel9.setLayout(new java.awt.BorderLayout());
 
         btn_tipo_pagos.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        btn_tipo_pagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/grifo.png"))); // NOI18N
+        btn_tipo_pagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/tipo de pago.png"))); // NOI18N
         btn_tipo_pagos.setText("Tipo de pagos");
         btn_tipo_pagos.setHideActionText(true);
         btn_tipo_pagos.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
@@ -227,36 +283,9 @@ public class NewMenuPrincipal extends javax.swing.JFrame {
         getContentPane().add(center_panel, java.awt.BorderLayout.CENTER);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if (info.getName().contains("GTK")) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new NewMenuPrincipal().setVisible(true);
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_calles;
@@ -266,7 +295,6 @@ public class NewMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btn_usuarios;
     private javax.swing.JPanel center_panel;
     private javax.swing.JButton exit_button;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuItem jMenuItem1;
@@ -285,6 +313,19 @@ public class NewMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton menu_button;
+    private javax.swing.JButton search_button;
     private javax.swing.JPanel views_panel;
     // End of variables declaration//GEN-END:variables
+    private final String OUT = "OUT";
+
+    @Override
+    public void dispose() {
+        Sesion.getInstancia().finSesion();
+        super.dispose(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        SwingUtilities.invokeLater(() -> {
+            LOGIN.setVisible(true);
+            LOGIN.limpiarInstancia();
+        });
+    }
+
 }

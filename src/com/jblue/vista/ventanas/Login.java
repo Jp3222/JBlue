@@ -27,6 +27,8 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import com.jblue.otros.news.ventanas.NewMenuPrincipal;
+import com.jblue.sistema.DevFlags;
 
 /**
  *
@@ -35,6 +37,7 @@ import javax.swing.SwingUtilities;
 public class Login extends VentanaSimple {
 
     private MenuPrincipal MENU_PRINCIPAL;
+    private NewMenuPrincipal NEW_MAIN_MENU;
     private final MenuConfigBD MENU_CONFIG_BD;
     private final TextFieldWrapper campos[];
 
@@ -269,7 +272,7 @@ public class Login extends VentanaSimple {
         if (sesion_en_curso) {
             return;
         }
-        
+
         sesion_en_curso = true;
 
         if (!iniciar()) {
@@ -277,17 +280,24 @@ public class Login extends VentanaSimple {
             return;
         }
 
+// Las caches deberan cargarse solo cuando se requieran
         if (!Sistema.getInstancia()._CargarCache()) {
             System.out.println(ConstSisMen.MEN_CACHE_ERR);
         }
         System.out.println(ConstSisMen.MEN_CACHE_OK);
-        
-        
+
         this.dispose();
 
         SwingUtilities.invokeLater(() -> {
-            MENU_PRINCIPAL = new MenuPrincipal(this);
-            MENU_PRINCIPAL.setVisible(true);
+            if (DevFlags.FUTURE_VIEW) {
+                //Nuevo menu estandarizado a las aplicaciones 
+                NEW_MAIN_MENU = new NewMenuPrincipal(this);
+                NEW_MAIN_MENU.setVisible(true);
+            } else {
+                //Menu anterior
+                MENU_PRINCIPAL = new MenuPrincipal(this);
+                MENU_PRINCIPAL.setVisible(true);
+            }
         });
     }
 
@@ -308,7 +318,8 @@ public class Login extends VentanaSimple {
     }
 
     public void limpiarInstancia() {
-        MENU_PRINCIPAL = null;
+        //MENU_PRINCIPAL = null;
+        NEW_MAIN_MENU = null;
         sesion_en_curso = false;
     }
 

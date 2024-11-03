@@ -117,7 +117,6 @@ public class Sistema {
             propiedades.put("bd-usuario", o[0]);
             propiedades.put("bd-contraseña", o[1]);
             propiedades.put("bd-url", o[2]);
-            SistemaR.setConexion(conexion);
             escribirPropiedades();
         }
         //estableciendo conexion

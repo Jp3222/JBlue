@@ -32,7 +32,8 @@ public interface ModeloCache<T extends Objeto> {
     /**
      * retorna el rango de identificadores el cual puede ser MIN = 1000, MID =
      * 2000, MAX = 3000 el valor puede ser definido segun la capacidad del
-     * dispositivo en este caso esta pensando para un JTable
+     * dispositivo en este caso esta pensando para que un JTable no sea dificl
+     * de leer
      *
      *
      * @return el rango de ID's

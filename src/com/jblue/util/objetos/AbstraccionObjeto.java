@@ -66,9 +66,4 @@ public abstract class AbstraccionObjeto implements ModeloObjeto {
         return Arrays.deepEquals(this.info, other.info);
     }
 
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
 }

@@ -6,6 +6,8 @@ package com.jblue.modelo.objetos;
 
 import com.jblue.util.objetos.AbstraccionObjeto;
 import com.jblue.util.objetos.ModeloObjeto;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -43,6 +45,20 @@ public class Objeto extends AbstraccionObjeto implements ModeloObjeto {
     public boolean isEmpty() {
         return info == null;
     }
-    
-    
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public Objeto clone() {
+        Objeto o = null;
+        try {
+            o = (Objeto) super.clone();
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(Objeto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return o;
+    }
+
 }

@@ -151,16 +151,54 @@ public abstract class ConstBD {
 
     /**
      * Constante que guarda las tablas de la base de datos
-     * <br>0 - personal
-     * <br>1 - usuarios
-     * <br>2 - calles
-     * <br>3 - tipo de tomas
-     * <br>4 - historial de movimientos
-     * <br>5 - movimientos
-     * <br>6 - pagos_x_servicio
-     * <br>7 - pagos_x_recargos
-     * <br>8 - pagos_x_otros
-     * <br>9 - var_sis
+     * <table>
+     * <tr>
+     * <th>#</th>
+     * <th>Tabla</th>
+     * </tr>
+     *
+     * <tr>
+     * <th>0</th>
+     * <td>Personal</td>
+     * </tr>
+     * <tr>
+     * <th>1</th>
+     * <td>Usuarios</td>
+     * </tr>
+     * <tr>
+     * <th>2</th>
+     * <td>Calles</td>
+     * </tr>
+     * <tr>
+     * <th>3</th>
+     * <th>Tipo de tomas</th>
+     * </tr>
+     * <tr>
+     * <th>4</th>
+     * <th>Historial</th>
+     * </tr>
+     * <tr>
+     * <th>5</th>
+     * <th>Movimientos</th>
+     * </tr>
+     * <tr>
+     * <th>6</th>
+     * <th>Pagos por el servicio</th>
+     * </tr>
+     * <tr>
+     * <th>7</th>
+     * <th>Pagos por recargos</th>
+     * </tr>
+     * <tr>
+     * <th>8</th>
+     * <th>Otros Pagos</th>
+     * </tr>
+     * <tr>
+     * <th>9</th>
+     * <th>Variables del sistema</th>
+     * </tr>
+     *
+     * </table>
      */
     public static final String[] TABLAS = {
         "personal",

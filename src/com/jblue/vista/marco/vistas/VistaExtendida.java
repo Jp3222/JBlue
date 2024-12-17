@@ -27,14 +27,6 @@ public class VistaExtendida extends SimpleView {
 
     protected ImageIcon icon;
 
-    @Override
-    protected void llamable() {
-    }
-
-    @Override
-    public void componentesEstadoInicial() {
-    }
-
     public Icon getIcon() {
         return icon;
     }
@@ -42,4 +34,30 @@ public class VistaExtendida extends SimpleView {
     public void setIcon(Icon icon) {
         this.icon = (ImageIcon) icon;
     }
+
+    @Override
+    public void build() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void events() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void components() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void initialState() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void finalState() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

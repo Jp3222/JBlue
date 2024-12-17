@@ -81,7 +81,7 @@ public class CCobros {
         if (in != JOptionPane.OK_OPTION) {
             return;
         }
-        o.componentesEstadoInicial();
+        o.initialState();
     }
 
     public static void evtClear(JLabel... o) {

@@ -23,6 +23,6 @@ import com.jblue.modelo.objetos.Objeto;
  * @author juan-campos
  * @param <T>
  */
-public interface ModeloListCache<T extends Objeto> extends ModeloCache<T>, CacheList<T> {
+public interface ModeloListCache<T extends Objeto> extends ModeloCache<T>, ListCache<T> {
 
 }

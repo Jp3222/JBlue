@@ -16,10 +16,10 @@
  */
 package com.jblue.modelo.dbconexion;
 
-import com.jblue.util.tools.ObjetoUtil;
 import com.jblue.sistema.Sistema;
 import com.jblue.util.Filtros;
 import com.jblue.modelo.objetos.Objeto;
+import com.jblue.util.tools.ObjectUtils;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
 import java.sql.ResultSet;
@@ -27,6 +27,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -125,12 +127,8 @@ public abstract class AbstraccionFunciones<T extends Objeto> implements ModeloFu
 
     @Override
     public Optional<ArrayList<T>> select(String campos, String where) {
-        try {
-            return Optional.of(getList(campos, where));
-        } catch (SQLException ex) {
-            Excp.impTerminal(ex, this.getClass(), true);
-        }
-        return Optional.empty();
+        return Optional.of(getList(campos, where));
+
     }
 
     /**
@@ -149,28 +147,31 @@ public abstract class AbstraccionFunciones<T extends Objeto> implements ModeloFu
      * retornara un objeto vacio
      * @throws java.sql.SQLException
      */
-    public ArrayList<T> getList(String campos, String where) throws SQLException {
-        ArrayList<T> lista;
-        String[] arr;
-        if (campos == null || campos.isBlank() || campos.contains("*")) {
-            arr = this.campos;
-        } else {
-            arr = campos.split(",");
-        }
-        ResultSet rs = conexion.select(tabla, campos, where);
-        lista = new ArrayList<>();
-
-        String[] aux;
-        int i;
-        while (rs.next()) {
-            aux = new String[arr.length];
-            i = 0;
-            for (String j : arr) {
-                aux[i] = rs.getString(j);
-                i++;
+    public ArrayList<T> getList(String campos, String where) {
+        ArrayList<T> lista = new ArrayList<>();
+        try {
+            String[] arr;
+            if (campos == null || campos.isBlank() || campos.contains("*")) {
+                arr = this.campos;
+            } else {
+                arr = campos.split(",");
             }
-            Objeto objeto = ObjetoUtil.getObjeto(tabla, aux);
-            lista.add((T) objeto);
+            ResultSet rs = conexion.select(tabla, campos, where);
+
+            String[] aux;
+            int i;
+            while (rs.next()) {
+                aux = new String[arr.length];
+                i = 0;
+                for (String j : arr) {
+                    aux[i] = rs.getString(j);
+                    i++;
+                }
+                Objeto objeto = ObjectUtils.getObjeto(tabla, aux);
+                lista.add((T) objeto);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AbstraccionFunciones.class.getName()).log(Level.SEVERE, null, ex);
         }
         return lista;
     }

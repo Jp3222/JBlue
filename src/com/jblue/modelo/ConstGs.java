@@ -209,6 +209,4 @@ public abstract class ConstGs {
         TABLA_PAGOS_X_OTROS
     };
 
-    private ConstGs() {
-    }
 }

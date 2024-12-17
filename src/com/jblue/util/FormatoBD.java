@@ -13,22 +13,12 @@ import java.util.function.Predicate;
  */
 public class FormatoBD {
 
-    public static String[] bdSalida(String... datos) {
-        for (int i = 0; i < datos.length; i++) {
-            if (Filtros.isNullOrBlank(datos[i]) || numero(datos[i])) {
-                continue;
-            }
-            datos[i] = datos[i].replace('_', ' ');
-        }
-        return datos;
-    }
-
-    public static String[] formatoEntrada(String... datos) {
+    public static String[] inputFormat(String... datos) {
         for (int i = 0; i < datos.length; i++) {
             if (Filtros.isNullOrBlank(datos[i])) {
                 continue;
             }
-            datos[i] = datos[i].trim().toUpperCase().replace(" ", "_");
+            datos[i] = datos[i].trim().toUpperCase().replace("[.,]", "").replace(" ", "_");
         }
         return datos;
     }

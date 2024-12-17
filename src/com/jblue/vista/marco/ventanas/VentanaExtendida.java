@@ -16,11 +16,7 @@
  */
 package com.jblue.vista.marco.ventanas;
 
-import com.jblue.vista.marco.vistas.VistaExtendida;
-import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.HeadlessException;
-import javax.swing.JMenuBar;
 
 /**
  *
@@ -31,36 +27,34 @@ public class VentanaExtendida extends VentanaSimple {
     public VentanaExtendida() {
     }
 
-    public VentanaExtendida(String[] _TITULOS_VEN) throws HeadlessException {
-        super(_TITULOS_VEN);
-    }
-
-    public VentanaExtendida(int _TITULO, String[] _TITULOS_VEN) throws HeadlessException {
-        super(_TITULO, _TITULOS_VEN);
-    }
-
-    protected void evtCambios(JMenuBar menu_bar, CardLayout ly, VistaExtendida vista, int titulo) {
-        if (vista == null) {
-            return;
-        }
-        ly.show(getContentPane(), vista.getName());
-        _TITULO = titulo;
-
-        updateTitle();
-    }
-
-    @Override
-    protected void llamable() {
-
-    }
-
-    @Override
-    public void componentesEstadoInicial() {
-    }
-
     @Override
     public void setPreferredSize(Dimension preferredSize) {
         super.setPreferredSize(preferredSize); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    @Override
+    public void build() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void events() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void components() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void initialState() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void finalState() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

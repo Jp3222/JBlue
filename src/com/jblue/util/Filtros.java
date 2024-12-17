@@ -41,7 +41,7 @@ public class Filtros {
     }
 
     public static boolean limpiarYChecar(String a, String b) {
-        return limpiar(a).contains(b);
+        return limpiar(a).contains(limpiar(b));
     }
 
     public static boolean soloNumerosDecimales(String txt) {

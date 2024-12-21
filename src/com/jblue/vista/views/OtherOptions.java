@@ -18,7 +18,7 @@ package com.jblue.vista.views;
 
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.sistema.DevFlags;
-import com.jblue.vista.windows.NewMenuPrincipal;
+import com.jblue.vista.windows.WMainMenu;
 import com.jblue.sistema.Sesion;
 import com.jblue.util.tools.ObjectUtils;
 import com.jblue.vista.windows.AcercaDe;
@@ -32,7 +32,7 @@ import javax.swing.JFrame;
  */
 public class OtherOptions extends javax.swing.JPanel {
 
-    private final NewMenuPrincipal father;
+    private final WMainMenu father;
     private final JButton[] options;
     private final MenuCargos profile;
     private final JFrame[] arr_win_opt;
@@ -44,7 +44,7 @@ public class OtherOptions extends javax.swing.JPanel {
      *
      * @param father
      */
-    public OtherOptions(NewMenuPrincipal father) {
+    public OtherOptions(WMainMenu father) {
         initComponents();
 
         this.profile = new MenuCargos();

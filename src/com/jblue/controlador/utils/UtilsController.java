@@ -14,24 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador;
+package com.jblue.controlador.utils;
+
+import com.jblue.controlador.Controller;
+import com.jblue.vista.windows.UtilsViewWindows;
+import java.awt.event.ActionEvent;
 
 /**
  *
  * @author juan-campos
  */
-public interface ControllerBD {
+public class UtilsController extends Controller {
 
-    static final String SAVE_COMMAND = "save";
-    static final String UPDATE = "update";
-    static final String DELETE = "delete";
-    static final String SEARCH = "search";
-    
-    void save();
-    
-    void delete();
-    
-    void update();
-    
-    void cancel();
+    UtilsViewWindows view;
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()) {
+            case "late_payments":
+                    view.setView(1);
+                break;
+            default:
+                throw new AssertionError();
+        }
+    }
+
 }

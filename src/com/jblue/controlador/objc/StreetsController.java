@@ -40,7 +40,7 @@ public class StreetsController extends Controller implements ControllerBD {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
-            case SAVE ->
+            case SAVE_COMMAND ->
                 save();
             case UPDATE ->
                 update();

@@ -26,7 +26,7 @@ import com.jblue.sistema.Sesion;
 import com.jblue.sistema.Sistema;
 import com.jblue.vista.windows.Login;
 import com.jblue.vista.windows.MenuConfigBD;
-import com.jblue.vista.windows.NewMenuPrincipal;
+import com.jblue.vista.windows.WMainMenu;
 import java.awt.event.ActionEvent;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
@@ -48,7 +48,7 @@ public class CLogin extends Controller {
 
     private final Login WIN_LOGIN;
     private final MenuConfigBD DB_CONFIG_MENU;
-    private NewMenuPrincipal WIN_MAIN_MENU;
+    private WMainMenu WIN_MAIN_MENU;
 
     public CLogin(Login WIN_LOGIN, MenuConfigBD DB_CONFIG_MENU) {
         this.WIN_LOGIN = WIN_LOGIN;
@@ -95,7 +95,7 @@ public class CLogin extends Controller {
         WIN_LOGIN.dispose();
 
         //Nuevo menu estandarizado a las aplicaciones 
-        WIN_MAIN_MENU = new NewMenuPrincipal(WIN_LOGIN);
+        WIN_MAIN_MENU = new WMainMenu(WIN_LOGIN);
         WIN_MAIN_MENU.setVisible(true);
         WIN_LOGIN.setSesionActive(false);
 

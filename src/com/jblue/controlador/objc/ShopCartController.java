@@ -17,16 +17,15 @@
 package com.jblue.controlador.objc;
 
 import com.jblue.controlador.Controller;
-import com.jblue.util.cache.MemoListCache;
 import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.util.Filtros;
+import com.jblue.util.tools.GraphicsUtils;
 import com.jblue.vista.components.CVisorUsuario;
-import com.jblue.vista.views.NewVCaja;
+import com.jblue.vista.views.ShopCartView;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -37,18 +36,22 @@ import javax.swing.JOptionPane;
  *
  * @author juan-campos
  */
-public class ShopCartController extends Controller implements  KeyListener {
+public class ShopCartController extends Controller implements KeyListener {
 
-    private final NewVCaja view;
-    
-    public ShopCartController(NewVCaja view) {
+    private final ShopCartView view;
+
+    public ShopCartController(ShopCartView view) {
         super();
         this.view = view;
+        memo_cache = FabricaCache.USUARIOS;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
+            case "lock" -> {
+                GraphicsUtils.disableTreeLock(view.isRootPanelLock(), view.getRootPanel());
+            }
             case "info" -> {
                 if (view.getObjectSearch() == null) {
                     JOptionPane.showMessageDialog(view, "Usuario no encontrado");
@@ -72,6 +75,9 @@ public class ShopCartController extends Controller implements  KeyListener {
             }
             case "clear" -> {
             }
+            case "all_months" -> {
+                view.setAllMonths(true);
+            }
             default -> {
                 JButton o = (JButton) e.getSource();
                 String msg = "La opcion '%s' no esta disponible".formatted(o.getText());
@@ -81,15 +87,12 @@ public class ShopCartController extends Controller implements  KeyListener {
     }
 
     @Override
-    public void keyReleased(KeyEvent ke) {
+    public void keyReleased(KeyEvent e) {
     }
 
     @Override
-    public void keyTyped(KeyEvent ke) {
-    }
+    public void keyTyped(KeyEvent e) {
 
-    @Override
-    public void keyPressed(KeyEvent e) {
         DefaultListModel<OUsuarios> listModel = view.getListModel();
         listModel.clear();
 
@@ -100,6 +103,11 @@ public class ShopCartController extends Controller implements  KeyListener {
         }
         List<OUsuarios> list = memo_cache.getList(o -> Filtros.limpiarYChecar(o.toString(), msg));
         listModel.addAll(list);
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
     }
 
     @Override

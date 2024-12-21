@@ -23,7 +23,7 @@ import com.jblue.vista.views.OtherOptions;
 import com.jblue.vista.views.NewTipoDePagos;
 import com.jblue.vista.views.NewTipoDeTomas;
 import com.jblue.vista.views.NewUsuarios;
-import com.jblue.vista.views.NewVCaja;
+import com.jblue.vista.views.ShopCartView;
 import com.jblue.vista.views.Tools;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
@@ -33,9 +33,9 @@ import javax.swing.SwingUtilities;
  *
  * @author juan-campos
  */
-public final class NewMenuPrincipal extends VentanaSimple {
+public final class WMainMenu extends VentanaSimple {
 
-    private final NewVCaja caja;
+    private final ShopCartView caja;
     private final OtherOptions menu_type;
     private final NewUsuarios usuarios;
     private final NewCalles calles;
@@ -51,11 +51,11 @@ public final class NewMenuPrincipal extends VentanaSimple {
      *
      * @param LOGIN
      */
-    public NewMenuPrincipal(Login LOGIN) {
+    public WMainMenu(Login LOGIN) {
         initComponents();
         this.LOGIN = LOGIN;
 
-        caja = new NewVCaja();
+        caja = new ShopCartView();
         usuarios = new NewUsuarios();
         menu_type = new OtherOptions(this);
         calles = new NewCalles();

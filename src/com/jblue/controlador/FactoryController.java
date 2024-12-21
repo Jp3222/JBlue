@@ -19,7 +19,7 @@ package com.jblue.controlador;
 import com.jblue.controlador.objc.ShopCartController;
 import com.jblue.controlador.objc.StreetsController;
 import com.jblue.vista.views.NewCalles;
-import com.jblue.vista.views.NewVCaja;
+import com.jblue.vista.views.ShopCartView;
 import com.jblue.vista.windows.Login;
 import com.jblue.vista.windows.MenuConfigBD;
 
@@ -33,11 +33,11 @@ public class FactoryController {
         return new CLogin(WIN_LOGIN, DB_CONFIG_MENU);
     }
 
-    public static Controller getShopCartController(NewVCaja view) {
+    public static Controller getShopCartController(ShopCartView view) {
         return new ShopCartController(view);
     }
     
-    public static Controller getStreetsController(NewCalles view){
+    public static Controller getStreetsController(NewCalles view) {
         return new StreetsController(view);
     }
 }

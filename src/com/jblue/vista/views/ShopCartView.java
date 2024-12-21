@@ -27,7 +27,11 @@ import java.awt.CardLayout;
 import com.jutil.framework.ViewStates;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JTextField;
 
@@ -35,25 +39,35 @@ import javax.swing.JTextField;
  *
  * @author juan-campos
  */
-public class NewVCaja extends javax.swing.JPanel implements ViewStates {
+public class ShopCartView extends javax.swing.JPanel implements ViewStates {
 
     private final CardLayout ly;
     private final JTableModel table_model;
     private final DefaultListModel<OUsuarios> list_model;
     private OUsuarios object_search;
+    ArrayList<JCheckBox> month_paid_list;
 
     /**
      * Creates new form VCaja
      */
-    public NewVCaja() {
+    public ShopCartView() {
         initComponents();
         list_model = new DefaultListModel();
         table_model = new JTableModel(new String[]{
             "No.", "Usuario", "Mes Pagado"
         }, 0);
+        month_paid_list = new ArrayList<>(12);
+        
+        month_paid_list.addAll(Arrays.asList(
+                ene, feb, mar,
+                abr, may, jun,
+                jul, ago, sep,
+                oct, nov, dic
+        ));
+        
         table_history_paids.setModel(table_model);
         user_list.setModel(list_model);
-        ly = (CardLayout) views_panel.getLayout();
+        ly = (CardLayout) root_panel.getLayout();
         build();
     }
 
@@ -76,17 +90,21 @@ public class NewVCaja extends javax.swing.JPanel implements ViewStates {
         pay_last_button.addActionListener(controller);
         util_button.addActionListener(controller);
         info_button.addActionListener(controller);
+        lock_button.addActionListener(controller);
+        search_user_button.addActionListener(controller);
+        //
+        all_months_buttons.addActionListener(controller);
         //
         search_field.addKeyListener((KeyListener) controller);
         //
         user_list.addMouseListener((MouseListener) controller);
         register_button.addActionListener((ae) -> {
-            ly.show(views_panel, pay_view.getName());
+            ly.show(root_panel, pay_view.getName());
         });
 
         history_button.addActionListener((ae) -> {
             CCobros.printPaidsOfDay(table_model);
-            ly.show(views_panel, history_view.getName());
+            ly.show(root_panel, history_view.getName());
         });
     }
 
@@ -109,6 +127,51 @@ public class NewVCaja extends javax.swing.JPanel implements ViewStates {
 
     }
 
+    public JTextField getSearchField() {
+        return search_field;
+    }
+
+    public DefaultListModel<OUsuarios> getListModel() {
+        return list_model;
+    }
+
+    public JList<OUsuarios> getUserList() {
+        return user_list;
+    }
+
+    public OUsuarios getObjectSearch() {
+        return object_search;
+    }
+
+    public void setObjectSearch(OUsuarios object_search) {
+        this.object_search = object_search;
+    }
+
+    public JComponent getRootPanel() {
+        return root_panel;
+    }
+
+    public boolean isRootPanelLock() {
+        return lock_button.isSelected();
+    }
+
+    public void updateScreenInfo() {
+        String user_type = object_search.isTitular() ? "Titular" : "Consumidor";
+        user_type_field.setText(user_type);
+        name_user_field.setText(object_search.getNombre());
+        OTipoTomas get = FabricaCache.TIPO_DE_TOMAS.get(e -> e.getId().equals(object_search.getToma()));
+        type_toma_field.setText(get.getTipo());
+        cost_field.setText(String.valueOf(get.getCosto()));
+    }
+
+    public void clear() {
+
+    }
+
+    public void setAllMonths(boolean b) {
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -118,13 +181,13 @@ public class NewVCaja extends javax.swing.JPanel implements ViewStates {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jToggleButton2 = new javax.swing.JToggleButton();
+        tools_bar_panel = new javax.swing.JPanel();
+        lock_button = new javax.swing.JToggleButton();
         jPanel15 = new javax.swing.JPanel();
         register_button = new javax.swing.JButton();
         history_button = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        views_panel = new javax.swing.JPanel();
+        search_user_button = new javax.swing.JButton();
+        root_panel = new javax.swing.JPanel();
         pay_view = new javax.swing.JPanel();
         panel_busquedas = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -153,7 +216,7 @@ public class NewVCaja extends javax.swing.JPanel implements ViewStates {
         month_paid_field = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        chb_todos = new javax.swing.JCheckBox();
+        all_months_buttons = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
         ene = new javax.swing.JCheckBox();
@@ -199,13 +262,14 @@ public class NewVCaja extends javax.swing.JPanel implements ViewStates {
         setName("Inicio"); // NOI18N
         setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(900, 30));
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        tools_bar_panel.setPreferredSize(new java.awt.Dimension(900, 30));
+        tools_bar_panel.setLayout(new java.awt.BorderLayout());
 
-        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/lock.png"))); // NOI18N
-        jToggleButton2.setPreferredSize(new java.awt.Dimension(100, 30));
-        jToggleButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/desbloquear.png"))); // NOI18N
-        jPanel1.add(jToggleButton2, java.awt.BorderLayout.WEST);
+        lock_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/lock.png"))); // NOI18N
+        lock_button.setActionCommand("lock");
+        lock_button.setPreferredSize(new java.awt.Dimension(100, 30));
+        lock_button.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/desbloquear.png"))); // NOI18N
+        tools_bar_panel.add(lock_button, java.awt.BorderLayout.WEST);
 
         jPanel15.setLayout(new java.awt.GridLayout(1, 0));
 
@@ -217,15 +281,16 @@ public class NewVCaja extends javax.swing.JPanel implements ViewStates {
         history_button.setText("Pagos del dia");
         jPanel15.add(history_button);
 
-        jPanel1.add(jPanel15, java.awt.BorderLayout.CENTER);
+        tools_bar_panel.add(jPanel15, java.awt.BorderLayout.CENTER);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        jButton2.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel1.add(jButton2, java.awt.BorderLayout.EAST);
+        search_user_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
+        search_user_button.setActionCommand("search_user_button");
+        search_user_button.setPreferredSize(new java.awt.Dimension(100, 30));
+        tools_bar_panel.add(search_user_button, java.awt.BorderLayout.EAST);
 
-        add(jPanel1, java.awt.BorderLayout.NORTH);
+        add(tools_bar_panel, java.awt.BorderLayout.NORTH);
 
-        views_panel.setLayout(new java.awt.CardLayout());
+        root_panel.setLayout(new java.awt.CardLayout());
 
         pay_view.setName("pagos"); // NOI18N
         pay_view.setLayout(new javax.swing.BoxLayout(pay_view, javax.swing.BoxLayout.PAGE_AXIS));
@@ -347,11 +412,12 @@ public class NewVCaja extends javax.swing.JPanel implements ViewStates {
         jPanel5.setPreferredSize(new java.awt.Dimension(700, 40));
         jPanel5.setLayout(new java.awt.BorderLayout());
 
-        chb_todos.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        chb_todos.setText("Todos");
-        chb_todos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        chb_todos.setPreferredSize(new java.awt.Dimension(100, 23));
-        jPanel5.add(chb_todos, java.awt.BorderLayout.EAST);
+        all_months_buttons.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        all_months_buttons.setText("Todos");
+        all_months_buttons.setActionCommand("all_months");
+        all_months_buttons.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        all_months_buttons.setPreferredSize(new java.awt.Dimension(100, 23));
+        jPanel5.add(all_months_buttons, java.awt.BorderLayout.EAST);
 
         jLabel6.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -581,7 +647,7 @@ public class NewVCaja extends javax.swing.JPanel implements ViewStates {
 
         pay_view.add(panel_operaciones);
 
-        views_panel.add(pay_view, "pagos");
+        root_panel.add(pay_view, "pagos");
 
         history_view.setName("Historial"); // NOI18N
         history_view.setLayout(new java.awt.BorderLayout());
@@ -633,9 +699,9 @@ public class NewVCaja extends javax.swing.JPanel implements ViewStates {
 
         history_view.add(jPanel18, java.awt.BorderLayout.SOUTH);
 
-        views_panel.add(history_view, "Historial");
+        root_panel.add(history_view, "Historial");
 
-        add(views_panel, java.awt.BorderLayout.CENTER);
+        add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -643,9 +709,9 @@ public class NewVCaja extends javax.swing.JPanel implements ViewStates {
     private javax.swing.JLabel Jlabel1;
     private javax.swing.JCheckBox abr;
     private javax.swing.JCheckBox ago;
+    private javax.swing.JCheckBox all_months_buttons;
     private javax.swing.JButton btn_movimientos;
     private javax.swing.JButton cancel_button;
-    private javax.swing.JCheckBox chb_todos;
     private javax.swing.JButton clear_button;
     private javax.swing.JTextField cost_field;
     private javax.swing.JCheckBox dic;
@@ -654,7 +720,6 @@ public class NewVCaja extends javax.swing.JPanel implements ViewStates {
     private javax.swing.JButton history_button;
     private javax.swing.JPanel history_view;
     private javax.swing.JButton info_button;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -665,7 +730,6 @@ public class NewVCaja extends javax.swing.JPanel implements ViewStates {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
@@ -687,11 +751,11 @@ public class NewVCaja extends javax.swing.JPanel implements ViewStates {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JCheckBox jul;
     private javax.swing.JCheckBox jun;
     private javax.swing.JLabel lbl_cambio;
     private javax.swing.JLabel lbl_total;
+    private javax.swing.JToggleButton lock_button;
     private javax.swing.JCheckBox mar;
     private javax.swing.JCheckBox may;
     private javax.swing.JTextField month_paid_field;
@@ -708,48 +772,17 @@ public class NewVCaja extends javax.swing.JPanel implements ViewStates {
     private javax.swing.JPanel pay_view;
     private javax.swing.JButton recargos_button;
     private javax.swing.JButton register_button;
+    private javax.swing.JPanel root_panel;
     private javax.swing.JLabel saldo_del_dia;
     private javax.swing.JTextField search_field;
+    private javax.swing.JButton search_user_button;
     private javax.swing.JCheckBox sep;
     private javax.swing.JTable table_history_paids;
+    private javax.swing.JPanel tools_bar_panel;
     private javax.swing.JTextField type_toma_field;
     private javax.swing.JList<OUsuarios> user_list;
     private javax.swing.JTextField user_type_field;
     private javax.swing.JButton util_button;
-    private javax.swing.JPanel views_panel;
     // End of variables declaration//GEN-END:variables
-
-    public JTextField getSearchField() {
-        return search_field;
-    }
-
-    public DefaultListModel<OUsuarios> getListModel() {
-        return list_model;
-    }
-
-    public JList<OUsuarios> getUserList() {
-        return user_list;
-    }
-
-    public OUsuarios getObjectSearch() {
-        return object_search;
-    }
-
-    public void setObjectSearch(OUsuarios object_search) {
-        this.object_search = object_search;
-    }
-
-    public void updateScreenInfo() {
-        String user_type = object_search.isTitular() ? "Titular" : "Consumidor";
-        user_type_field.setText(user_type);
-        name_user_field.setText(object_search.getNombre());
-        OTipoTomas get = FabricaCache.TIPO_DE_TOMAS.get(e -> e.getId().equals(object_search.getToma()));
-        type_toma_field.setText(get.getTipo());
-        cost_field.setText(String.valueOf(get.getCosto()));
-    }
-    
-    public void clear(){
-    
-    }
 
 }

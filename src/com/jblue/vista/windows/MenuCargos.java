@@ -210,7 +210,7 @@ public class MenuCargos extends VentanaSimple {
         jPanel1.add(user_photo, java.awt.BorderLayout.CENTER);
 
         panel_option.setPreferredSize(new java.awt.Dimension(250, 400));
-        panel_option.setLayout(new java.awt.GridLayout(1, 0));
+        panel_option.setLayout(new java.awt.GridLayout(8, 0));
         jPanel1.add(panel_option, java.awt.BorderLayout.SOUTH);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_START);

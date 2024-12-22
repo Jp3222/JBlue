@@ -22,6 +22,8 @@ import com.jblue.util.cache.MemoListCache;
 import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.util.Filtros;
+import com.jblue.util.FormatoBD;
+import com.jblue.vista.marco.DBValues;
 import com.jblue.vista.marco.vistas.SimpleView;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
@@ -32,7 +34,7 @@ import javax.swing.JOptionPane;
  *
  * @author juan-campos
  */
-public final class NewCalles extends SimpleView {
+public final class StreetsView extends SimpleView implements DBValues {
 
     private StreetsController controlador;
     private OCalles search_object;
@@ -42,7 +44,7 @@ public final class NewCalles extends SimpleView {
     /**
      * Creates new form NewCalles
      */
-    public NewCalles() {
+    public StreetsView() {
         initComponents();
         MEMO_CACHE = FabricaCache.CALLES;
         table.setComponentPopupMenu(table_pop_up);
@@ -93,8 +95,6 @@ public final class NewCalles extends SimpleView {
     @Override
     public void finalState() {
     }
-    
-    
 
     private void setView(int option) {
         String op = switch (option) {
@@ -105,21 +105,6 @@ public final class NewCalles extends SimpleView {
         };
         ly.show(root_panel, op);
 
-    }
-
-    public String[] getData() {
-        String name = campo_nombre.getText();
-        if (Filtros.isNullOrBlank(name)) {
-            JOptionPane.showMessageDialog(root_panel, "Campo no valido");
-            return null;
-        }
-        String number = campo_numero.getText();
-        if (Filtros.isNullOrBlank(number)) {
-            number = "S/N";
-        }
-        return new String[]{
-            name, number
-        };
     }
 
     /**
@@ -150,7 +135,7 @@ public final class NewCalles extends SimpleView {
         campo_numero = new javax.swing.JTextField();
         jPanel13 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        campo_numero1 = new javax.swing.JTextField();
+        campo_maps = new javax.swing.JTextField();
         maps_button = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -248,14 +233,14 @@ public final class NewCalles extends SimpleView {
         jPanel13.setLayout(new java.awt.BorderLayout());
 
         jLabel5.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel5.setText("Numero:");
+        jLabel5.setText("Ubicacion:");
         jLabel5.setOpaque(true);
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel13.add(jLabel5, java.awt.BorderLayout.WEST);
 
-        campo_numero1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        campo_numero1.setName("Numero"); // NOI18N
-        jPanel13.add(campo_numero1, java.awt.BorderLayout.CENTER);
+        campo_maps.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        campo_maps.setName("Numero"); // NOI18N
+        jPanel13.add(campo_maps, java.awt.BorderLayout.CENTER);
 
         maps_button.setText("maps");
         maps_button.setActionCommand("google-maps");
@@ -390,9 +375,9 @@ public final class NewCalles extends SimpleView {
     private javax.swing.JButton btn_ant;
     private javax.swing.JButton btn_recargar;
     private javax.swing.JButton btn_sig;
+    private javax.swing.JTextField campo_maps;
     private javax.swing.JTextField campo_nombre;
     private javax.swing.JTextField campo_numero;
-    private javax.swing.JTextField campo_numero1;
     private javax.swing.JButton cancel_button;
     private javax.swing.JButton delete_button;
     private javax.swing.JButton jButton2;
@@ -431,5 +416,20 @@ public final class NewCalles extends SimpleView {
     // End of variables declaration//GEN-END:variables
     private final JTableModel model;
     private final MemoListCache<OCalles> MEMO_CACHE;
+
+    @Override
+    public boolean isValuesOk() {
+        return !Filtros.isNullOrBlank(campo_nombre.getText());
+    }
+
+    @Override
+    public String[] getDbValues() {
+        String[] values = new String[3];
+        values[0] = campo_nombre.getText();
+        values[1] = campo_numero.getText();
+        values[2] = campo_maps.getText();
+        values = FormatoBD.inputFormat(values);
+        return values;
+    }
 
 }

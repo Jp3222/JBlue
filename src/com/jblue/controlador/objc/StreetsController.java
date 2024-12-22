@@ -18,14 +18,19 @@ package com.jblue.controlador.objc;
 
 import com.jblue.controlador.Controller;
 import com.jblue.controlador.ControllerBD;
+import com.jblue.modelo.dbconexion.FuncionesBD;
 import com.jblue.modelo.fabricas.FabricaCache;
-import com.jblue.vista.views.NewCalles;
+import com.jblue.modelo.fabricas.FabricaFuncionesBD;
+import com.jblue.modelo.objetos.OCalles;
+import com.jblue.util.cache.MemoListCache;
+import com.jblue.vista.views.StreetsView;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -33,8 +38,12 @@ import java.util.logging.Logger;
  */
 public class StreetsController extends Controller implements ControllerBD {
 
-    public StreetsController(NewCalles view) {
-        super(FabricaCache.CALLES);
+    private final MemoListCache<OCalles> memo_cache;
+    private final StreetsView view;
+
+    public StreetsController(StreetsView view) {
+        this.view = view;
+        memo_cache = FabricaCache.CALLES;
     }
 
     @Override
@@ -48,10 +57,8 @@ public class StreetsController extends Controller implements ControllerBD {
                 delete();
             case "google-maps" -> {
                 try {
-
                     String uri = "https://www.google.com.mx/maps/place/Cuauhtemoc,+62757+Cuautla,+Mor./@18.8677895,-98.930224,16z/data=!3m1!4b1!4m6!3m5!1s0x85ce6ead484a42d1:0xe9451cff404f4b4c!8m2!3d18.8678174!4d-98.9259142!16s%2Fg%2F1tj9tnz6?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D";
-                    String facebook = "https://www.facebook.com/";
-                    Desktop.getDesktop().browse(URI.create((facebook)));
+                    Desktop.getDesktop().browse(URI.create((uri)));
 
                 } catch (IOException ex) {
                     Logger.getLogger(StreetsController.class.getName()).log(Level.SEVERE, null, ex);
@@ -65,8 +72,9 @@ public class StreetsController extends Controller implements ControllerBD {
 
     @Override
     public void save() {
-
-        //memo_cache.getConexion().insertByData();
+        FuncionesBD<OCalles> fn = FabricaFuncionesBD.getCalles();
+        boolean op = fn.insertByData(view.getDbValues());
+        messages(op);
     }
 
     @Override
@@ -81,4 +89,11 @@ public class StreetsController extends Controller implements ControllerBD {
     public void cancel() {
     }
 
+    private void messages(boolean o) {
+        if (o) {
+            JOptionPane.showMessageDialog(view, "Operacion exitosa", "Estado de la operacion", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(view, "Operacion erronea", "Estado de la operacion", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

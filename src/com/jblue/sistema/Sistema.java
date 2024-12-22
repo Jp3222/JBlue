@@ -7,7 +7,7 @@ package com.jblue.sistema;
 import com.jblue.sistema.app.AppFiles;
 import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.vista.components.NewMenuConfigBD;
-import com.jblue.vista.windows.Login;
+import com.jblue.vista.windows.LoginWindows;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
 import com.jutil.platf.So;
@@ -221,7 +221,7 @@ public class Sistema {
 
     public boolean _Run() {
         this.reinicio = false;
-        Login log = new Login();
+        LoginWindows log = new LoginWindows();
         log.setVisible(true);
         return log.isVisible();
     }

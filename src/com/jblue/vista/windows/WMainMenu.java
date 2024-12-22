@@ -18,7 +18,7 @@ package com.jblue.vista.windows;
 
 import com.jblue.vista.components.CVisorUsuario;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
-import com.jblue.vista.views.NewCalles;
+import com.jblue.vista.views.StreetsView;
 import com.jblue.vista.views.OtherOptions;
 import com.jblue.vista.views.NewTipoDePagos;
 import com.jblue.vista.views.NewTipoDeTomas;
@@ -38,12 +38,12 @@ public final class WMainMenu extends VentanaSimple {
     private final ShopCartView caja;
     private final OtherOptions menu_type;
     private final NewUsuarios usuarios;
-    private final NewCalles calles;
+    private final StreetsView calles;
     private final NewTipoDeTomas tipo_de_tomas;
     private final NewTipoDePagos tipo_de_pagos;
     private final CardLayout ly;
     private final Tools tools;
-    private final Login LOGIN;
+    private final LoginWindows LOGIN;
     private CVisorUsuario showVisor;
 
     /**
@@ -51,14 +51,14 @@ public final class WMainMenu extends VentanaSimple {
      *
      * @param LOGIN
      */
-    public WMainMenu(Login LOGIN) {
+    public WMainMenu(LoginWindows LOGIN) {
         initComponents();
         this.LOGIN = LOGIN;
 
         caja = new ShopCartView();
         usuarios = new NewUsuarios();
         menu_type = new OtherOptions(this);
-        calles = new NewCalles();
+        calles = new StreetsView();
         tipo_de_tomas = new NewTipoDeTomas();
         tipo_de_pagos = new NewTipoDePagos();
         tools = new Tools();

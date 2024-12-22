@@ -16,29 +16,46 @@
  */
 package com.jblue.controlador;
 
-import com.jblue.controlador.objc.ShopCartController;
-import com.jblue.controlador.objc.StreetsController;
-import com.jblue.vista.views.StreetsView;
-import com.jblue.vista.views.ShopCartView;
-import com.jblue.vista.windows.LoginWindows;
-import com.jblue.vista.windows.MenuConfigBD;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 /**
  *
  * @author juan-campos
  */
-public class FactoryController {
+public class WindowController extends Controller implements WindowListener {
 
-    public static WindowController getLoginController(LoginWindows WIN_LOGIN, MenuConfigBD DB_CONFIG_MENU) {
-        return new LoginController(WIN_LOGIN, DB_CONFIG_MENU);
+    @Override
+    public void actionPerformed(ActionEvent ae) {
     }
 
-    public static Controller getShopCartController(ShopCartView view) {
-        return new ShopCartController(view);
+    @Override
+    public void windowOpened(WindowEvent we) {
     }
 
-    public static Controller getStreetsController(StreetsView view) {
-        return new StreetsController(view);
+    @Override
+    public void windowClosing(WindowEvent we) {
     }
 
+    @Override
+    public void windowClosed(WindowEvent we) {
+    }
+
+    @Override
+    public void windowIconified(WindowEvent we) {
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent we) {
+    }
+
+    @Override
+    public void windowActivated(WindowEvent we) {
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent we) {
+    }
+    
 }

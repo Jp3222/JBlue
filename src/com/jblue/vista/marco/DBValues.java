@@ -14,17 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador;
-
-import com.jblue.util.cache.MemoListCache;
-import com.jblue.modelo.objetos.OUsuarios;
-import com.jutil.swingw.modelos.JTableModel;
-import java.awt.event.ActionEvent;
+package com.jblue.vista.marco;
 
 /**
  *
  * @author juan-campos
  */
-public class CUser {
+public interface DBValues {
 
+    boolean isValuesOk();
+
+    String[] getDbValues();
 }

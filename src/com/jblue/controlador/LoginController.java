@@ -24,10 +24,12 @@ import com.jblue.modelo.fabricas.FabricaFuncionesBD;
 import com.jblue.sistema.ConstSisMen;
 import com.jblue.sistema.Sesion;
 import com.jblue.sistema.Sistema;
-import com.jblue.vista.windows.Login;
+import com.jblue.vista.windows.LoginWindows;
 import com.jblue.vista.windows.MenuConfigBD;
 import com.jblue.vista.windows.WMainMenu;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -44,45 +46,40 @@ import javax.swing.JOptionPane;
  *
  * @author juan-campos
  */
-public class CLogin extends Controller {
+public class LoginController extends WindowController {
 
-    private final Login WIN_LOGIN;
+    private final LoginWindows view;
     private final MenuConfigBD DB_CONFIG_MENU;
     private WMainMenu WIN_MAIN_MENU;
 
-    public CLogin(Login WIN_LOGIN, MenuConfigBD DB_CONFIG_MENU) {
-        this.WIN_LOGIN = WIN_LOGIN;
+    public LoginController(LoginWindows WIN_LOGIN, MenuConfigBD DB_CONFIG_MENU) {
+        this.view = WIN_LOGIN;
         this.DB_CONFIG_MENU = DB_CONFIG_MENU;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
-            case "session" ->
+            case "login" ->
                 login();
-            case "config" -> {
-                WIN_LOGIN.dispose();
-                DB_CONFIG_MENU.setVisible(true);
-            }
-            case "show"-> {
-                JCheckBox o = WIN_LOGIN.getMostrar();
-                String message = o.isSelected() ? "ocultar" : "mostrar";
-                o.setToolTipText(message);
-            }
+            case "config" ->
+                config();
+            case "show" ->
+                show();
             default ->
-                throw new AssertionError();
+                defaultCase(e.getActionCommand(), null, -1);
         }
     }
 
     private final String WHERE = "usuario = '%s' and contra = '%s'";
 
     public synchronized void login() {
-        if (WIN_LOGIN.isSesionActive()) {
+        if (view.isSesionActive()) {
             return;
         }
-        WIN_LOGIN.setSesionActive(true);
+        view.setSesionActive(true);
         if (!start()) {
-            WIN_LOGIN.setSesionActive(false);
+            view.setSesionActive(false);
             return;
         }
 
@@ -92,18 +89,37 @@ public class CLogin extends Controller {
         }
         System.out.println(ConstSisMen.MEN_CACHE_OK);
 
-        WIN_LOGIN.dispose();
+        view.dispose();
 
         //Nuevo menu estandarizado a las aplicaciones 
-        WIN_MAIN_MENU = new WMainMenu(WIN_LOGIN);
+        WIN_MAIN_MENU = new WMainMenu(view);
         WIN_MAIN_MENU.setVisible(true);
-        WIN_LOGIN.setSesionActive(false);
+        view.setSesionActive(false);
 
     }
 
+    @Override
+    public void windowClosing(WindowEvent we) {
+        Sistema sys = Sistema.getInstancia();
+        synchronized (sys) {
+            sys.notify();
+        }
+    }
+
+    public void config() {
+        view.dispose();
+        DB_CONFIG_MENU.setVisible(true);
+    }
+
+    public void show() {
+        JCheckBox o = view.getMostrar();
+        String message = o.isSelected() ? "ocultar" : "mostrar";
+        o.setToolTipText(message);
+    }
+
     public boolean start() {
-        Optional<OPersonal> res = query(WIN_LOGIN.getUser().getText(),
-                String.valueOf(WIN_LOGIN.getPassword().getPassword())
+        Optional<OPersonal> res = query(view.getUser().getText(),
+                String.valueOf(view.getPassword().getPassword())
         );
 
         if (res.isEmpty()) {
@@ -137,13 +153,27 @@ public class CLogin extends Controller {
                 | NoSuchPaddingException
                 | IllegalBlockSizeException
                 | BadPaddingException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginWindows.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (res.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Usuario y/o contraseña incorrectos");
             return Optional.empty();
         }
         return res;
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        boolean key_pressed = e.getKeyCode() == KeyEvent.VK_ENTER;
+        boolean user_component = e.getComponent() == view.getUser();
+        boolean password_component = e.getComponent() == view.getPassword();
+        if (key_pressed && user_component) {
+            view.getUser().transferFocus();
+        } else if (key_pressed && password_component) {
+            view.getLoginButton().requestFocus();
+        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            login();
+        }
     }
 
 }

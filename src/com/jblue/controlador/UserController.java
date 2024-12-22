@@ -16,29 +16,22 @@
  */
 package com.jblue.controlador;
 
-import com.jblue.controlador.objc.ShopCartController;
-import com.jblue.controlador.objc.StreetsController;
-import com.jblue.vista.views.StreetsView;
-import com.jblue.vista.views.ShopCartView;
-import com.jblue.vista.windows.LoginWindows;
-import com.jblue.vista.windows.MenuConfigBD;
+import com.jblue.modelo.objetos.OUsuarios;
+import java.awt.event.ActionEvent;
 
 /**
  *
  * @author juan-campos
  */
-public class FactoryController {
+public class UserController extends Controller<OUsuarios> {
 
-    public static WindowController getLoginController(LoginWindows WIN_LOGIN, MenuConfigBD DB_CONFIG_MENU) {
-        return new LoginController(WIN_LOGIN, DB_CONFIG_MENU);
+    public UserController() {
     }
 
-    public static Controller getShopCartController(ShopCartView view) {
-        return new ShopCartController(view);
-    }
-
-    public static Controller getStreetsController(StreetsView view) {
-        return new StreetsController(view);
+    
+    
+    @Override
+    public void actionPerformed(ActionEvent ae) {
     }
 
 }

@@ -32,16 +32,6 @@ import javax.swing.JOptionPane;
  */
 public abstract class Controller<T extends Objeto> implements ActionListener, KeyListener, MouseListener {
 
-    protected MemoListCache<T> memo_cache;
-
-    public Controller(MemoListCache<T> memo_list) {
-        this.memo_cache = memo_list;
-    }
-
-    public Controller() {
-        this(null);
-    }
-
     @Override
     public void keyPressed(KeyEvent ke) {
     }

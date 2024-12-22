@@ -20,6 +20,7 @@ import com.jblue.controlador.Controller;
 import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.util.Filtros;
+import com.jblue.util.cache.MemoListCache;
 import com.jblue.util.tools.GraphicsUtils;
 import com.jblue.vista.components.CVisorUsuario;
 import com.jblue.vista.views.ShopCartView;
@@ -38,10 +39,10 @@ import javax.swing.JOptionPane;
  */
 public class ShopCartController extends Controller implements KeyListener {
 
+    private final MemoListCache<OUsuarios> memo_cache;
     private final ShopCartView view;
 
     public ShopCartController(ShopCartView view) {
-        super();
         this.view = view;
         memo_cache = FabricaCache.USUARIOS;
     }

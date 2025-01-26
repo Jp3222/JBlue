@@ -20,13 +20,19 @@ package com.jblue.sistema.app;
  *
  * @author jp
  */
-public class AppConfig {
-
-    public static final String BD_USUARIO = "bd-usuario";
-    public static final String BD_CONTRA = "bd-contraseña";
-    public static final String BD_URL = "bd-url";
-    public static final String PROG_UM = "usuario-maestro";
-    public static final String PROG_CM = "contra-maestra";
+public interface AppConfig {
+    
+    //
+    public static final String DB_USER = "DB USER";
+    public static final String DB_PASSWORD = "DB PASSWORD";
+    public static final String DB_URL = "DB URL";
+    //
+    public static final String TITLE1 = "TITLE 1";
+    public static final String TITLE2 = "TITLE 2";
+    public static final String LOGIN_ICON = "LOGIN ICON";
+    //
+    public static final String HOUR_OPEN = "HOUR OPEN";
+    public static final String HOUR_CLOSE = "HOUR CLOSE";
     
     
 }

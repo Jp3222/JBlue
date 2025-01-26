@@ -16,12 +16,10 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.util.cache.AbstractListCache;
-import com.jblue.modelo.dbconexion.FuncionesBD;
+import com.jblue.modelo.dbconexion.ModeloFuncionesDB;
 import com.jblue.modelo.objetos.Objeto;
 import java.util.List;
 import java.util.function.Predicate;
-import com.jblue.util.cache.Paginated;
 
 /**
  *
@@ -32,11 +30,11 @@ public class MemoListCache<T extends Objeto> extends AbstractListCache<T> implem
 
     private int page;
 
-    public MemoListCache(int capacity, FuncionesBD conexion) {
+    public MemoListCache(int capacity, ModeloFuncionesDB conexion) {
         super(capacity, conexion);
     }
 
-    public MemoListCache(FuncionesBD conexion) {
+    public MemoListCache(ModeloFuncionesDB conexion) {
         super(conexion);
     }
 
@@ -97,7 +95,7 @@ public class MemoListCache<T extends Objeto> extends AbstractListCache<T> implem
 
     private int buffer_direc;
 
-    public FuncionesBD<T> getConexion() {
+    public ModeloFuncionesDB<T> getConnection() {
         return conexion;
     }
     

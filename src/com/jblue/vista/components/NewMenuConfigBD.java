@@ -16,12 +16,12 @@
  */
 package com.jblue.vista.components;
 
-import com.jblue.modelo.ConstGs;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.jexception.Excp;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.util.Properties;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -37,13 +37,13 @@ import javax.swing.KeyStroke;
 public class NewMenuConfigBD extends javax.swing.JDialog {
 
     public static String[] getConexion() throws SQLException {
-        NewMenuConfigBD o = new NewMenuConfigBD(null, true);
+        NewMenuConfigBD o = new NewMenuConfigBD(null);
         o.setVisible(true);
         return new String[]{
             o.getUsuario(), o.getContraseña(), o.getURL()
         };
     }
-
+    private Properties properties;
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -57,10 +57,9 @@ public class NewMenuConfigBD extends javax.swing.JDialog {
      * Creates new form NewMenuConfigBD
      *
      * @param parent
-     * @param modal
      */
-    public NewMenuConfigBD(JFrame parent, boolean modal) {
-        super(parent, modal);
+    public NewMenuConfigBD(JFrame parent) {
+        super(parent, true);
         initComponents();
         setTitle("Conexion a Base de datos");
         // Close the dialog when Esc is pressed

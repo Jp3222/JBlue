@@ -237,24 +237,7 @@ public class CRecuperarContraseña extends javax.swing.JDialog {
     }
 
     private void recuperarContraseña() {
-        Conexion conexion = Sistema.getInstancia().getConexion();
-        try (ResultSet select = conexion.select(ConstBD.TABLAS[0], "usuario, contra")) {
-            String usuario_desencrip = jTextField1.getText(),
-                    usuario_encrip,
-                    contra_encrip,
-                    contra_descrip = "N/E";
-            while (select.next()) {
-                contra_encrip = select.getString("contra");
-                try {
-                    contra_descrip = EncriptadoAES.desencriptar(contra_encrip, usuario_desencrip);
-                } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-                    System.out.println("bad-pass");
-                }
-                System.out.println(contra_descrip);
-            }
-        } catch (SQLException e) {
-            System.out.println("error");
-        }
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

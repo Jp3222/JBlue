@@ -39,6 +39,7 @@
           <Image iconType="3" name="/com/jblue/media/img/x128/help_x128.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Ayuda"/>
+        <Property name="actionCommand" type="java.lang.String" value="help"/>
         <Property name="horizontalTextPosition" type="int" value="0"/>
         <Property name="verticalTextPosition" type="int" value="3"/>
       </Properties>
@@ -52,6 +53,7 @@
           <Image iconType="3" name="/com/jblue/media/img/x128/usuario.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Perfil"/>
+        <Property name="actionCommand" type="java.lang.String" value="profile"/>
         <Property name="horizontalTextPosition" type="int" value="0"/>
         <Property name="name" type="java.lang.String" value="Perfil" noResource="true"/>
         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -63,6 +65,7 @@
           <Font name="Liberation Sans" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Secretario"/>
+        <Property name="actionCommand" type="java.lang.String" value="secretary"/>
         <Property name="name" type="java.lang.String" value="Secretario" noResource="true"/>
       </Properties>
     </Component>
@@ -72,6 +75,7 @@
           <Font name="Liberation Sans" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Tesorero"/>
+        <Property name="actionCommand" type="java.lang.String" value="tesorero"/>
         <Property name="name" type="java.lang.String" value="Tesorero" noResource="true"/>
       </Properties>
     </Component>
@@ -81,6 +85,7 @@
           <Font name="Liberation Sans" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Presidente"/>
+        <Property name="actionCommand" type="java.lang.String" value="presidente"/>
         <Property name="name" type="java.lang.String" value="Presidente" noResource="true"/>
       </Properties>
     </Component>
@@ -90,31 +95,35 @@
           <Font name="Liberation Sans" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Administrador"/>
+        <Property name="actionCommand" type="java.lang.String" value="admin"/>
         <Property name="name" type="java.lang.String" value="Administrador" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="config_button">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Liberation Sans" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Configuraciones"/>
+        <Property name="actionCommand" type="java.lang.String" value="config"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton3">
+    <Component class="javax.swing.JButton" name="tools_button">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Liberation Sans" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Herramientas del Software"/>
+        <Property name="actionCommand" type="java.lang.String" value="tools"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton8">
+    <Component class="javax.swing.JButton" name="new_button">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Liberation Sans" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Previos"/>
+        <Property name="actionCommand" type="java.lang.String" value="new"/>
         <Property name="name" type="java.lang.String" value="" noResource="true"/>
       </Properties>
     </Component>

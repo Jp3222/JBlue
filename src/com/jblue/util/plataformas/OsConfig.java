@@ -65,7 +65,7 @@ public interface OsConfig {
      * puede mejorar este apartado, adelante.
      */
     public default String[] getDiccionario() {
-        return switch (So.USER_LANGUAJE) {
+        return switch (So.USER_LANGUAGE) {
             case "en":
                 yield DICCIONARIO_EN;
             case "es":

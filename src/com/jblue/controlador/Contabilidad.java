@@ -71,7 +71,7 @@ public class Contabilidad {
     }
 
     private static double getSaldo(String where) {
-        Conexion conexion = Sistema.getInstancia().getConexion();
+        Conexion conexion = Conexion.getInstancia();
         double saldo = -1;
         try (ResultSet select = conexion.select(ConstBD.TABLAS[6], "monto", where)) {
             saldo = 0;

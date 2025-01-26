@@ -16,89 +16,46 @@
  */
 package com.jblue.vista.views.options;
 
-import com.jblue.modelo.ConstGs;
-import com.jblue.modelo.dbconexion.FuncionesBD;
-import com.jblue.util.cache.MemoListCache;
+import com.jblue.modelo.ConstBD;
 import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
-import com.jblue.modelo.fabricas.FabricaCache;
-import com.jblue.modelo.fabricas.FabricaFuncionesBD;
-import com.jblue.util.crypto.EncriptadoAES;
-import com.jblue.util.tiempo.Fecha;
 import com.jblue.vista.marco.OptionMenu;
-import com.jblue.vista.marco.vistas.SimpleView;
+import com.jblue.vista.marco.vistas.DBView;
 import com.jutil.swingw.modelos.JTableModel;
+import java.awt.CardLayout;
 import java.awt.event.ActionListener;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
 
 /**
  *
  * @author jp
  */
-public class VPersonal extends SimpleView implements OptionMenu {
+public class VPersonal extends DBView implements OptionMenu {
+
+    private final JTableModel model;
+    private final CardLayout ly;
+    private OPersonal object_search;
+    private final JButton option;
 
     /**
      * Creates new form PersonalC
      *
-     * @param memo_cache
+     *
      */
     public VPersonal() {
-        memoria_cache = FabricaCache.PERSONAL;
-        fecha = new Fecha();
-        SEC_USUARIOS = 0;
-        SEC_CALLES = 3;
-        SEC_TIPO_TOMAS = 6;
-        SEC_TOMAS_REG = 9;
         initComponents();
+        model = new JTableModel(ConstBD.TABLA_PERSONAL, 0);
+        ly = (CardLayout) root_panel.getLayout();
         this.option = mkButton(getName(), null, null);
-        this.PERMISOS = new JCheckBox[]{
-            usuarios_ac, usuarios_es, usuarios_lc,
-            calles_ac, calles_es, calles_lc,
-            tipotomas_ac, tipotomas_es, tipotomas_lc,
-            tomasreg_ac, tomasreg_es, tomasreg_lc
-        };
-        this.componentes = new JComponent[]{
-            nombre, apellidos, estado, cargo, usuario, contra, periodo
-        };
-        panel_fecha_inicio.setVisible(periodo.isSelected());
-        panel_fecha_fin.setVisible(periodo.isSelected());
-        _blq(false);
-        build();
-        modelo_tabla_2 = new JTableModel(ConstGs.TABLA_PERSONAL, 0);
-        jTable1.setModel(modelo_tabla_2);
-    }
 
-   
+    }
 
     @Override
     public void initialState() {
-        nombre.setText(null);
-        apellidos.setText(null);
-        estado.setSelectedIndex(0);
-        fecha_registro.setText(null);
-        cargo.setSelectedIndex(0);
-        usuario.setText(null);
-        contra.setText(null);
-        //
-        periodo.setSelected(false);
-        //
-        _botones(false);
+
     }
 
     /**
@@ -110,492 +67,307 @@ public class VPersonal extends SimpleView implements OptionMenu {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel9 = new javax.swing.JPanel();
-        p_datos_usuarios = new javax.swing.JPanel();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        nombre = new javax.swing.JTextField();
-        jPanel12 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        apellidos = new javax.swing.JTextField();
-        jPanel19 = new javax.swing.JPanel();
-        jLabel14 = new javax.swing.JLabel();
-        estado = new javax.swing.JComboBox<>();
-        jPanel34 = new javax.swing.JPanel();
-        jLabel15 = new javax.swing.JLabel();
-        fecha_registro = new javax.swing.JTextField();
-        p_datos_cargo = new javax.swing.JPanel();
-        jPanel16 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        usuario = new javax.swing.JTextField();
-        jPanel17 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        contra = new javax.swing.JPasswordField();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        cargo = new javax.swing.JComboBox<>();
-        periodo = new javax.swing.JCheckBox();
-        panel_fecha_inicio = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jPanel21 = new javax.swing.JPanel();
-        jPanel22 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        año_inicio = new javax.swing.JSpinner();
-        jPanel24 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        mes_inicio = new javax.swing.JComboBox<>();
-        jPanel23 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        dia_inicio = new javax.swing.JSpinner();
-        panel_fecha_fin = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        jPanel26 = new javax.swing.JPanel();
-        jPanel27 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        año_fin = new javax.swing.JSpinner();
-        jPanel28 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
-        mes_fin = new javax.swing.JComboBox<>();
-        jPanel29 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        dia_fin = new javax.swing.JSpinner();
-        p_permisos = new javax.swing.JPanel();
-        jPanel30 = new javax.swing.JPanel();
-        usuarios_ac = new javax.swing.JCheckBox();
-        usuarios_es = new javax.swing.JCheckBox();
-        usuarios_lc = new javax.swing.JCheckBox();
-        jPanel31 = new javax.swing.JPanel();
-        calles_ac = new javax.swing.JCheckBox();
-        calles_es = new javax.swing.JCheckBox();
-        calles_lc = new javax.swing.JCheckBox();
-        jPanel32 = new javax.swing.JPanel();
-        tipotomas_ac = new javax.swing.JCheckBox();
-        tipotomas_es = new javax.swing.JCheckBox();
-        tipotomas_lc = new javax.swing.JCheckBox();
-        jPanel33 = new javax.swing.JPanel();
-        tomasreg_ac = new javax.swing.JCheckBox();
-        tomasreg_es = new javax.swing.JCheckBox();
-        tomasreg_lc = new javax.swing.JCheckBox();
-        jPanel10 = new javax.swing.JPanel();
-        nuevo = new javax.swing.JButton();
-        guardar = new javax.swing.JButton();
-        cancelar = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jPanel2 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        north_panel = new javax.swing.JPanel();
+        np_cp_center = new javax.swing.JPanel();
+        register_button = new javax.swing.JButton();
+        search_button = new javax.swing.JButton();
+        np_cp_west = new javax.swing.JPanel();
+        search_object = new javax.swing.JButton();
+        np_cp_east = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        root_panel = new javax.swing.JPanel();
+        register_panel = new javax.swing.JPanel();
+        center_panel = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel19 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jPanel14 = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jPanel15 = new javax.swing.JPanel();
+        jLabel21 = new javax.swing.JLabel();
+        jPasswordField1 = new javax.swing.JPasswordField();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jPanel20 = new javax.swing.JPanel();
+        jLabel22 = new javax.swing.JLabel();
+        jPasswordField2 = new javax.swing.JPasswordField();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jPanel25 = new javax.swing.JPanel();
+        jCheckBox3 = new javax.swing.JCheckBox();
+        jPanel35 = new javax.swing.JPanel();
+        jLabel24 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        jComboBox4 = new javax.swing.JComboBox<>();
+        jComboBox5 = new javax.swing.JComboBox<>();
+        options_panel = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
+        save_button = new javax.swing.JButton();
+        update_button = new javax.swing.JButton();
+        delete_button = new javax.swing.JButton();
+        cancel_button = new javax.swing.JButton();
+        search_panel = new javax.swing.JPanel();
+        panel_tabla = new javax.swing.JPanel();
+        jPanel30 = new javax.swing.JPanel();
+        search_field = new javax.swing.JTextField();
+        jPanel23 = new javax.swing.JPanel();
+        back_button = new javax.swing.JButton();
+        next_button = new javax.swing.JButton();
+        reload_button = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        objects_table = new javax.swing.JTable();
+        status_bar_panel = new javax.swing.JPanel();
+        jPanel32 = new javax.swing.JPanel();
+        jLabel23 = new javax.swing.JLabel();
+        count = new javax.swing.JLabel();
+        range = new javax.swing.JLabel();
+        jPanel29 = new javax.swing.JPanel();
+        jLabel17 = new javax.swing.JLabel();
+        total = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(700, 600));
         setName("Personal"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
 
-        jPanel3.setLayout(new java.awt.BorderLayout());
+        north_panel.setPreferredSize(new java.awt.Dimension(900, 30));
+        north_panel.setLayout(new java.awt.BorderLayout(5, 5));
 
-        jPanel9.setPreferredSize(new java.awt.Dimension(1000, 400));
-        jPanel9.setLayout(new java.awt.GridLayout(1, 3));
+        np_cp_center.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
 
-        p_datos_usuarios.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Personales"));
-        p_datos_usuarios.setPreferredSize(new java.awt.Dimension(333, 600));
-        p_datos_usuarios.setLayout(new java.awt.GridLayout(8, 1));
+        register_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        register_button.setText("Registar");
+        register_button.setActionCommand("register_view");
+        np_cp_center.add(register_button);
 
-        jPanel11.setLayout(new java.awt.BorderLayout());
+        search_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        search_button.setText("Consultar");
+        search_button.setActionCommand("search_view");
+        np_cp_center.add(search_button);
 
-        jLabel1.setText("Nombre");
-        jLabel1.setPreferredSize(new java.awt.Dimension(333, 30));
-        jPanel11.add(jLabel1, java.awt.BorderLayout.NORTH);
+        north_panel.add(np_cp_center, java.awt.BorderLayout.CENTER);
 
-        nombre.setName("Nombre"); // NOI18N
-        nombre.setPreferredSize(new java.awt.Dimension(333, 30));
-        jPanel11.add(nombre, java.awt.BorderLayout.CENTER);
+        np_cp_west.setPreferredSize(new java.awt.Dimension(100, 30));
+        np_cp_west.setLayout(new java.awt.BorderLayout());
 
-        p_datos_usuarios.add(jPanel11);
+        search_object.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
+        search_object.setActionCommand("search_object");
+        np_cp_west.add(search_object, java.awt.BorderLayout.CENTER);
 
-        jPanel12.setLayout(new java.awt.BorderLayout());
+        north_panel.add(np_cp_west, java.awt.BorderLayout.WEST);
 
-        jLabel2.setText("Apellidos");
-        jLabel2.setPreferredSize(new java.awt.Dimension(333, 30));
-        jPanel12.add(jLabel2, java.awt.BorderLayout.NORTH);
+        np_cp_east.setPreferredSize(new java.awt.Dimension(100, 30));
+        np_cp_east.setLayout(new java.awt.BorderLayout());
 
-        apellidos.setName("Apellidos"); // NOI18N
-        apellidos.setPreferredSize(new java.awt.Dimension(333, 30));
-        jPanel12.add(apellidos, java.awt.BorderLayout.CENTER);
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/configuraciones.png"))); // NOI18N
+        np_cp_east.add(jButton3, java.awt.BorderLayout.CENTER);
 
-        p_datos_usuarios.add(jPanel12);
+        north_panel.add(np_cp_east, java.awt.BorderLayout.EAST);
 
-        jPanel19.setLayout(new java.awt.BorderLayout());
+        add(north_panel, java.awt.BorderLayout.NORTH);
 
-        jLabel14.setText("Estado");
-        jLabel14.setPreferredSize(new java.awt.Dimension(333, 30));
-        jPanel19.add(jLabel14, java.awt.BorderLayout.NORTH);
+        root_panel.setLayout(new java.awt.CardLayout(10, 10));
 
-        estado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estado", "Activo", "Inactivo" }));
-        estado.setName("Estado"); // NOI18N
-        estado.setPreferredSize(new java.awt.Dimension(333, 30));
-        jPanel19.add(estado, java.awt.BorderLayout.CENTER);
+        register_panel.setName("register"); // NOI18N
+        register_panel.setLayout(new java.awt.BorderLayout());
 
-        p_datos_usuarios.add(jPanel19);
+        center_panel.setPreferredSize(new java.awt.Dimension(500, 600));
+        center_panel.setLayout(new java.awt.GridLayout(13, 1, 0, 10));
 
-        jPanel34.setLayout(new java.awt.BorderLayout());
+        jLabel11.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("Datos del personal");
+        center_panel.add(jLabel11);
 
-        jLabel15.setText("Fecha de registro");
-        jLabel15.setPreferredSize(new java.awt.Dimension(333, 30));
-        jPanel34.add(jLabel15, java.awt.BorderLayout.NORTH);
+        jPanel6.setLayout(new java.awt.BorderLayout());
 
-        fecha_registro.setEnabled(false);
-        fecha_registro.setName("Fecha de Registro"); // NOI18N
-        fecha_registro.setPreferredSize(new java.awt.Dimension(333, 30));
-        jPanel34.add(fecha_registro, java.awt.BorderLayout.CENTER);
+        jLabel16.setText("Nombre: ");
+        jLabel16.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel6.add(jLabel16, java.awt.BorderLayout.LINE_START);
 
-        p_datos_usuarios.add(jPanel34);
+        jTextField1.setText("jTextField1");
+        jPanel6.add(jTextField1, java.awt.BorderLayout.CENTER);
 
-        jPanel9.add(p_datos_usuarios);
+        center_panel.add(jPanel6);
 
-        p_datos_cargo.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de usuario"));
-        p_datos_cargo.setPreferredSize(new java.awt.Dimension(333, 600));
-        p_datos_cargo.setLayout(new java.awt.GridLayout(8, 1));
+        jPanel7.setLayout(new java.awt.BorderLayout());
 
-        jPanel16.setPreferredSize(new java.awt.Dimension(300, 50));
-        jPanel16.setLayout(new java.awt.BorderLayout());
+        jLabel18.setText("Apellidos: ");
+        jLabel18.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel7.add(jLabel18, java.awt.BorderLayout.LINE_START);
 
-        jLabel4.setText("Usuario");
-        jLabel4.setPreferredSize(new java.awt.Dimension(333, 30));
-        jPanel16.add(jLabel4, java.awt.BorderLayout.PAGE_START);
+        jTextField2.setText("jTextField2");
+        jPanel7.add(jTextField2, java.awt.BorderLayout.CENTER);
 
-        usuario.setName("Usuario"); // NOI18N
-        usuario.setPreferredSize(new java.awt.Dimension(333, 30));
-        jPanel16.add(usuario, java.awt.BorderLayout.CENTER);
+        center_panel.add(jPanel7);
 
-        p_datos_cargo.add(jPanel16);
+        jPanel8.setLayout(new java.awt.BorderLayout());
 
-        jPanel17.setPreferredSize(new java.awt.Dimension(300, 50));
-        jPanel17.setLayout(new java.awt.BorderLayout());
+        jLabel19.setText("Cargo");
+        jLabel19.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel8.add(jLabel19, java.awt.BorderLayout.LINE_START);
 
-        jLabel5.setText("Contraseña");
-        jLabel5.setPreferredSize(new java.awt.Dimension(333, 30));
-        jPanel17.add(jLabel5, java.awt.BorderLayout.PAGE_START);
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel8.add(jComboBox1, java.awt.BorderLayout.CENTER);
 
-        contra.setName("Contraseña"); // NOI18N
-        contra.setPreferredSize(new java.awt.Dimension(333, 30));
-        jPanel17.add(contra, java.awt.BorderLayout.CENTER);
+        center_panel.add(jPanel8);
 
-        p_datos_cargo.add(jPanel17);
+        jPanel14.setLayout(new java.awt.BorderLayout());
 
-        jPanel5.setPreferredSize(new java.awt.Dimension(300, 50));
-        jPanel5.setLayout(new java.awt.BorderLayout());
+        jLabel20.setText("Estado: ");
+        jLabel20.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel14.add(jLabel20, java.awt.BorderLayout.LINE_START);
 
-        jLabel3.setText("Cargo");
-        jLabel3.setMinimumSize(new java.awt.Dimension(333, 18));
-        jLabel3.setPreferredSize(new java.awt.Dimension(333, 30));
-        jPanel5.add(jLabel3, java.awt.BorderLayout.NORTH);
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel14.add(jComboBox2, java.awt.BorderLayout.CENTER);
 
-        cargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione cargo", "pasante", "secretario", "tesorero", "presidente", "administrador" }));
-        cargo.setName("Cargo"); // NOI18N
-        cargo.setPreferredSize(new java.awt.Dimension(333, 30));
-        cargo.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cargoItemStateChanged(evt);
-            }
-        });
-        jPanel5.add(cargo, java.awt.BorderLayout.CENTER);
+        center_panel.add(jPanel14);
 
-        p_datos_cargo.add(jPanel5);
+        jPanel15.setLayout(new java.awt.BorderLayout());
 
-        periodo.setText("Limitar Periodo");
-        periodo.setPreferredSize(new java.awt.Dimension(300, 50));
-        periodo.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                periodoItemStateChanged(evt);
-            }
-        });
-        periodo.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                periodoStateChanged(evt);
-            }
-        });
-        p_datos_cargo.add(periodo);
+        jLabel21.setText("Usuario: ");
+        jLabel21.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel15.add(jLabel21, java.awt.BorderLayout.LINE_START);
 
-        panel_fecha_inicio.setPreferredSize(new java.awt.Dimension(300, 50));
-        panel_fecha_inicio.setLayout(new java.awt.BorderLayout());
+        jPasswordField1.setText("jPasswordField1");
+        jPanel15.add(jPasswordField1, java.awt.BorderLayout.CENTER);
 
-        jLabel6.setText("Fecha de inicio");
-        jLabel6.setPreferredSize(new java.awt.Dimension(98, 20));
-        panel_fecha_inicio.add(jLabel6, java.awt.BorderLayout.PAGE_START);
+        jCheckBox1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jCheckBox1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
+        jCheckBox1.setPreferredSize(new java.awt.Dimension(50, 20));
+        jCheckBox1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img3.png"))); // NOI18N
+        jPanel15.add(jCheckBox1, java.awt.BorderLayout.LINE_END);
 
-        jPanel21.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel21.setLayout(new java.awt.GridLayout(1, 3));
+        center_panel.add(jPanel15);
 
-        jPanel22.setPreferredSize(new java.awt.Dimension(111, 60));
-        jPanel22.setLayout(new java.awt.BorderLayout());
+        jPanel20.setLayout(new java.awt.BorderLayout());
 
-        jLabel9.setText("Año");
-        jLabel9.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel22.add(jLabel9, java.awt.BorderLayout.PAGE_START);
+        jLabel22.setText("Contraseña: ");
+        jLabel22.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel20.add(jLabel22, java.awt.BorderLayout.LINE_START);
 
-        año_inicio.setModel(new javax.swing.SpinnerNumberModel(2023, 2023, null, 1));
-        jPanel22.add(año_inicio, java.awt.BorderLayout.CENTER);
+        jPasswordField2.setText("jPasswordField2");
+        jPanel20.add(jPasswordField2, java.awt.BorderLayout.CENTER);
 
-        jPanel21.add(jPanel22);
+        jCheckBox2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jCheckBox2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
+        jCheckBox2.setPreferredSize(new java.awt.Dimension(50, 20));
+        jCheckBox2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img3.png"))); // NOI18N
+        jPanel20.add(jCheckBox2, java.awt.BorderLayout.LINE_END);
 
-        jPanel24.setPreferredSize(new java.awt.Dimension(111, 60));
-        jPanel24.setLayout(new java.awt.BorderLayout());
+        center_panel.add(jPanel20);
 
-        jLabel8.setText("Mes");
-        jLabel8.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel24.add(jLabel8, java.awt.BorderLayout.PAGE_START);
+        jPanel25.setLayout(new java.awt.BorderLayout());
 
-        mes_inicio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC" }));
-        jPanel24.add(mes_inicio, java.awt.BorderLayout.CENTER);
+        jCheckBox3.setText("jCheckBox3");
+        jPanel25.add(jCheckBox3, java.awt.BorderLayout.CENTER);
 
-        jPanel21.add(jPanel24);
+        center_panel.add(jPanel25);
 
-        jPanel23.setPreferredSize(new java.awt.Dimension(111, 60));
-        jPanel23.setLayout(new java.awt.BorderLayout());
+        jPanel35.setLayout(new java.awt.BorderLayout());
 
-        jLabel7.setText("Dia");
-        jLabel7.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel23.add(jLabel7, java.awt.BorderLayout.PAGE_START);
+        jLabel24.setText("F. Limite: ");
+        jLabel24.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel35.add(jLabel24, java.awt.BorderLayout.LINE_START);
 
-        dia_inicio.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
-        jPanel23.add(dia_inicio, java.awt.BorderLayout.CENTER);
+        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
-        jPanel21.add(jPanel23);
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel1.add(jComboBox3);
 
-        panel_fecha_inicio.add(jPanel21, java.awt.BorderLayout.CENTER);
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel1.add(jComboBox4);
 
-        p_datos_cargo.add(panel_fecha_inicio);
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel1.add(jComboBox5);
 
-        panel_fecha_fin.setPreferredSize(new java.awt.Dimension(300, 50));
-        panel_fecha_fin.setLayout(new java.awt.BorderLayout());
+        jPanel35.add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        jLabel10.setText("Fecha de fin");
-        jLabel10.setPreferredSize(new java.awt.Dimension(98, 20));
-        panel_fecha_fin.add(jLabel10, java.awt.BorderLayout.PAGE_START);
+        center_panel.add(jPanel35);
 
-        jPanel26.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel26.setLayout(new java.awt.GridLayout(1, 3));
+        register_panel.add(center_panel, java.awt.BorderLayout.CENTER);
 
-        jPanel27.setPreferredSize(new java.awt.Dimension(111, 60));
-        jPanel27.setLayout(new java.awt.BorderLayout());
+        options_panel.setLayout(new java.awt.GridLayout(2, 0));
 
-        jLabel11.setText("Año");
-        jLabel11.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel27.add(jLabel11, java.awt.BorderLayout.PAGE_START);
+        jPanel13.setPreferredSize(new java.awt.Dimension(500, 40));
+        jPanel13.setLayout(new java.awt.GridLayout(1, 3));
 
-        año_fin.setModel(new javax.swing.SpinnerNumberModel(2023, 2023, null, 1));
-        jPanel27.add(año_fin, java.awt.BorderLayout.CENTER);
+        save_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        save_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
+        save_button.setText("Guardar");
+        save_button.setActionCommand("save");
+        save_button.setPreferredSize(new java.awt.Dimension(166, 40));
+        jPanel13.add(save_button);
 
-        jPanel26.add(jPanel27);
+        update_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        update_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/actualizar.png"))); // NOI18N
+        update_button.setText("Actualizar");
+        update_button.setActionCommand("update");
+        update_button.setPreferredSize(new java.awt.Dimension(166, 40));
+        jPanel13.add(update_button);
 
-        jPanel28.setPreferredSize(new java.awt.Dimension(111, 60));
-        jPanel28.setLayout(new java.awt.BorderLayout());
+        delete_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        delete_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/eliminar.png"))); // NOI18N
+        delete_button.setText("Eliminar");
+        delete_button.setActionCommand("delete");
+        delete_button.setPreferredSize(new java.awt.Dimension(166, 40));
+        jPanel13.add(delete_button);
 
-        jLabel12.setText("Mes");
-        jLabel12.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel28.add(jLabel12, java.awt.BorderLayout.PAGE_START);
+        options_panel.add(jPanel13);
 
-        mes_fin.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC" }));
-        jPanel28.add(mes_fin, java.awt.BorderLayout.CENTER);
+        cancel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        cancel_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
+        cancel_button.setText("Cancelar");
+        cancel_button.setActionCommand("cancel");
+        cancel_button.setPreferredSize(new java.awt.Dimension(500, 40));
+        options_panel.add(cancel_button);
 
-        jPanel26.add(jPanel28);
+        register_panel.add(options_panel, java.awt.BorderLayout.SOUTH);
 
-        jPanel29.setPreferredSize(new java.awt.Dimension(111, 60));
-        jPanel29.setLayout(new java.awt.BorderLayout());
+        root_panel.add(register_panel, "register");
 
-        jLabel13.setText("Dia");
-        jLabel13.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel29.add(jLabel13, java.awt.BorderLayout.PAGE_START);
+        search_panel.setName("consult"); // NOI18N
+        search_panel.setLayout(new java.awt.BorderLayout(5, 5));
 
-        dia_fin.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
-        jPanel29.add(dia_fin, java.awt.BorderLayout.CENTER);
+        panel_tabla.setPreferredSize(new java.awt.Dimension(1000, 500));
+        panel_tabla.setLayout(new java.awt.BorderLayout(5, 5));
 
-        jPanel26.add(jPanel29);
+        jPanel30.setMinimumSize(new java.awt.Dimension(980, 30));
+        jPanel30.setPreferredSize(new java.awt.Dimension(500, 30));
+        jPanel30.setLayout(new java.awt.BorderLayout(5, 5));
 
-        panel_fecha_fin.add(jPanel26, java.awt.BorderLayout.CENTER);
+        search_field.setName("buscador"); // NOI18N
+        jPanel30.add(search_field, java.awt.BorderLayout.CENTER);
 
-        p_datos_cargo.add(panel_fecha_fin);
+        jPanel23.setLayout(new java.awt.BorderLayout(5, 5));
 
-        jPanel9.add(p_datos_cargo);
+        back_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
+        back_button.setActionCommand("back");
+        back_button.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel23.add(back_button, java.awt.BorderLayout.WEST);
 
-        p_permisos.setBorder(javax.swing.BorderFactory.createTitledBorder("Permisos"));
-        p_permisos.setPreferredSize(new java.awt.Dimension(333, 600));
-        p_permisos.setLayout(new java.awt.GridLayout(7, 1));
+        next_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
+        next_button.setActionCommand("next");
+        next_button.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel23.add(next_button, java.awt.BorderLayout.EAST);
 
-        jPanel30.setPreferredSize(new java.awt.Dimension(333, 100));
-        jPanel30.setLayout(new java.awt.GridLayout(1, 3));
+        jPanel30.add(jPanel23, java.awt.BorderLayout.LINE_END);
 
-        usuarios_ac.setText("AC");
-        usuarios_ac.setToolTipText("Permiso de Acceso");
-        usuarios_ac.setEnabled(false);
-        usuarios_ac.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel30.add(usuarios_ac);
+        reload_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
+        reload_button.setActionCommand("reload");
+        reload_button.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel30.add(reload_button, java.awt.BorderLayout.LINE_START);
 
-        usuarios_es.setText("ES");
-        usuarios_es.setToolTipText("Permiso de Escritura");
-        usuarios_es.setEnabled(false);
-        usuarios_es.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel30.add(usuarios_es);
+        panel_tabla.add(jPanel30, java.awt.BorderLayout.NORTH);
 
-        usuarios_lc.setText("LC");
-        usuarios_lc.setToolTipText("Permiso de Lectura");
-        usuarios_lc.setEnabled(false);
-        usuarios_lc.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel30.add(usuarios_lc);
-
-        p_permisos.add(jPanel30);
-
-        jPanel31.setPreferredSize(new java.awt.Dimension(333, 100));
-        jPanel31.setLayout(new java.awt.GridLayout(1, 3));
-
-        calles_ac.setText("AC");
-        calles_ac.setToolTipText("Permiso de Acceso");
-        calles_ac.setEnabled(false);
-        calles_ac.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel31.add(calles_ac);
-
-        calles_es.setText("ES");
-        calles_es.setToolTipText("Permiso de Escritura");
-        calles_es.setEnabled(false);
-        calles_es.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel31.add(calles_es);
-
-        calles_lc.setText("LC");
-        calles_lc.setToolTipText("Permiso de Lectura");
-        calles_lc.setEnabled(false);
-        calles_lc.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel31.add(calles_lc);
-
-        p_permisos.add(jPanel31);
-
-        jPanel32.setPreferredSize(new java.awt.Dimension(333, 100));
-        jPanel32.setLayout(new java.awt.GridLayout(1, 3));
-
-        tipotomas_ac.setText("AC");
-        tipotomas_ac.setToolTipText("Permiso de Acceso");
-        tipotomas_ac.setEnabled(false);
-        tipotomas_ac.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel32.add(tipotomas_ac);
-
-        tipotomas_es.setText("ES");
-        tipotomas_es.setToolTipText("Permiso de Escritura");
-        tipotomas_es.setEnabled(false);
-        tipotomas_es.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel32.add(tipotomas_es);
-
-        tipotomas_lc.setText("LC");
-        tipotomas_lc.setToolTipText("Permiso de Lectura");
-        tipotomas_lc.setEnabled(false);
-        tipotomas_lc.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel32.add(tipotomas_lc);
-
-        p_permisos.add(jPanel32);
-
-        jPanel33.setPreferredSize(new java.awt.Dimension(333, 100));
-        jPanel33.setLayout(new java.awt.GridLayout(1, 3));
-
-        tomasreg_ac.setText("AC");
-        tomasreg_ac.setToolTipText("Permiso de Acceso");
-        tomasreg_ac.setEnabled(false);
-        tomasreg_ac.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel33.add(tomasreg_ac);
-
-        tomasreg_es.setText("ES");
-        tomasreg_es.setToolTipText("Permiso de Escritura");
-        tomasreg_es.setEnabled(false);
-        tomasreg_es.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel33.add(tomasreg_es);
-
-        tomasreg_lc.setText("LC");
-        tomasreg_lc.setToolTipText("Permiso de Lectura");
-        tomasreg_lc.setEnabled(false);
-        tomasreg_lc.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel33.add(tomasreg_lc);
-
-        p_permisos.add(jPanel33);
-
-        jPanel9.add(p_permisos);
-
-        jPanel3.add(jPanel9, java.awt.BorderLayout.CENTER);
-
-        jPanel10.setPreferredSize(new java.awt.Dimension(1000, 50));
-
-        nuevo.setText("Nuevo");
-        nuevo.setPreferredSize(new java.awt.Dimension(200, 40));
-        nuevo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nuevoActionPerformed(evt);
-            }
-        });
-        jPanel10.add(nuevo);
-
-        guardar.setText("Guardar");
-        guardar.setPreferredSize(new java.awt.Dimension(200, 40));
-        guardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                guardarActionPerformed(evt);
-            }
-        });
-        jPanel10.add(guardar);
-
-        cancelar.setText("Cancelar");
-        cancelar.setPreferredSize(new java.awt.Dimension(200, 40));
-        cancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelarActionPerformed(evt);
-            }
-        });
-        jPanel10.add(cancelar);
-
-        jPanel3.add(jPanel10, java.awt.BorderLayout.SOUTH);
-
-        jTabbedPane1.addTab("Registros", jPanel3);
-
-        jPanel4.setLayout(new java.awt.BorderLayout());
-
-        jPanel1.setPreferredSize(new java.awt.Dimension(1000, 35));
-        jPanel1.setLayout(new java.awt.BorderLayout(5, 0));
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
-        jButton1.setPreferredSize(new java.awt.Dimension(150, 30));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton1, java.awt.BorderLayout.WEST);
-        jPanel1.add(jTextField1, java.awt.BorderLayout.CENTER);
-
-        jPanel2.setPreferredSize(new java.awt.Dimension(200, 30));
-        jPanel2.setLayout(new java.awt.GridLayout(1, 2, 5, 0));
-
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton2);
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton3);
-
-        jPanel1.add(jPanel2, java.awt.BorderLayout.EAST);
-
-        jPanel4.add(jPanel1, java.awt.BorderLayout.NORTH);
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        objects_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -603,401 +375,174 @@ public class VPersonal extends SimpleView implements OptionMenu {
 
             }
         ));
-        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
+        objects_table.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        objects_table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        objects_table.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(objects_table);
 
-        jPanel4.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        panel_tabla.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab("Consultas", jPanel4);
+        search_panel.add(panel_tabla, java.awt.BorderLayout.CENTER);
 
-        add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+        status_bar_panel.setPreferredSize(new java.awt.Dimension(100, 30));
+        status_bar_panel.setLayout(new java.awt.BorderLayout());
+
+        jPanel32.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel32.setLayout(new java.awt.BorderLayout());
+
+        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel23.setText("No.");
+        jPanel32.add(jLabel23, java.awt.BorderLayout.CENTER);
+
+        count.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        count.setText("0");
+        count.setToolTipText("Numero de pagos hechos.");
+        count.setPreferredSize(new java.awt.Dimension(50, 16));
+        jPanel32.add(count, java.awt.BorderLayout.LINE_END);
+
+        status_bar_panel.add(jPanel32, java.awt.BorderLayout.WEST);
+
+        range.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        range.setText("0 - 0");
+        range.setToolTipText("");
+        status_bar_panel.add(range, java.awt.BorderLayout.CENTER);
+
+        jPanel29.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel29.setLayout(new java.awt.BorderLayout());
+
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel17.setText("Total:");
+        jPanel29.add(jLabel17, java.awt.BorderLayout.CENTER);
+
+        total.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total.setText("0");
+        total.setToolTipText("Numero de pagos hechos.");
+        total.setPreferredSize(new java.awt.Dimension(50, 16));
+        jPanel29.add(total, java.awt.BorderLayout.LINE_END);
+
+        status_bar_panel.add(jPanel29, java.awt.BorderLayout.EAST);
+
+        search_panel.add(status_bar_panel, java.awt.BorderLayout.SOUTH);
+
+        root_panel.add(search_panel, "consult");
+
+        add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cargoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cargoItemStateChanged
-        switch (cargo.getSelectedIndex()) {
-            case 1 ->
-                pasante();
-            case 2 ->
-                secretario();
-            case 3 ->
-                tesorero();
-            case 4 ->
-                presidente();
-            default ->
-                defecto();
-        }
-    }//GEN-LAST:event_cargoItemStateChanged
-
-    private void periodoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_periodoItemStateChanged
-        panel_fecha_inicio.setVisible(periodo.isSelected());
-        panel_fecha_fin.setVisible(periodo.isSelected());
-    }//GEN-LAST:event_periodoItemStateChanged
-
-    private void periodoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_periodoStateChanged
-        if (periodo.isSelected()) {
-            valoresDia(dia_inicio);
-            mes_inicio.setSelectedIndex(Fecha.getMesInt() - 1);
-            valoresAño(año_inicio);
-
-            valoresDia(dia_fin);
-            mes_fin.setSelectedIndex(Fecha.getMesInt() - 1);
-            valoresAño(año_fin);
-        }
-    }//GEN-LAST:event_periodoStateChanged
-
-    private void nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoActionPerformed
-        _blq(true);
-        _botones(true);
-    }//GEN-LAST:event_nuevoActionPerformed
-
-    private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
-
-        FuncionesBD<OPersonal> personal = FabricaFuncionesBD.getPersonal();
-        String[] o = _guardar();
-
-        personal.insertByData(o);
-        initialState();
-        FabricaCache.PERSONAL.reLoadData();
-        JOptionPane.showMessageDialog(this, "Operacion Exitosa");
-    }//GEN-LAST:event_guardarActionPerformed
-
-    private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
-        _blq(false);
-        _botones(false);
-    }//GEN-LAST:event_cancelarActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        _actualizarTabla();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-
-    }//GEN-LAST:event_jButton3ActionPerformed
-    private String[] _guardar() {
-        try {
-            String nom = nombre.getText();
-            String ap = apellidos.getText();
-            String car = String.valueOf(cargo.getSelectedIndex());
-            String user = encriptador.encriptar(usuario.getText(), String.valueOf(contra.getPassword()));
-            String pass = encriptador.encriptar(String.valueOf(contra.getPassword()), usuario.getText());
-            String regis = fecha_registro.getText();
-            String esta = estado.getSelectedIndex() == 1 ? "1" : "-1";
-            String permi = getPermisosAsignados();
-            String per;
-            if (periodo.isSelected()) {
-                per = getPeriodo();
-            } else {
-                per = "IND";
-            }
-            return new String[]{
-                nom, ap, car, user, pass, regis, esta, permi, per
-            };
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    public String getPeriodo() {
-        String inicio = consFecha(dia_inicio, mes_inicio, año_inicio);
-        String fin = consFecha(dia_fin, mes_fin, año_fin);
-        StringBuilder sb = new StringBuilder(20);
-        sb.append(inicio).append(":");
-        sb.append(fin);
-        return sb.toString();
-    }
-
-    public String consFecha(JSpinner dia, JComboBox<String> mes, JSpinner año) {
-        StringBuilder sb = new StringBuilder();
-        //
-        SpinnerNumberModel _dia = (SpinnerNumberModel) dia.getModel();
-        String d = String.valueOf(_dia.getNumber().intValue());
-        if (d.length() == 1) {
-            sb.append("0");
-        }
-        sb.append(d).append("-");
-        int m = mes.getSelectedIndex();
-        m += 1;
-        if (m <= 9) {
-            sb.append("0");
-        }
-        sb.append(m).append("-");
-        SpinnerNumberModel _año = (SpinnerNumberModel) año.getModel();
-        int y = _año.getNumber().intValue();
-        sb.append(y);
-        return sb.toString();
-    }
-
-    public void valoresDia(JSpinner sp) {
-        SpinnerNumberModel model = (SpinnerNumberModel) sp.getModel();
-        model.setMaximum(Fecha.getDiaMaxDelMes());
-        model.setValue(Fecha.getDiaDelMes());
-    }
-
-    public void valoresAño(JSpinner sp) {
-        SpinnerNumberModel model = (SpinnerNumberModel) sp.getModel();
-        model.setMinimum(Fecha.getAñoActual());
-        model.setMaximum(Fecha.getAñoActual() + 4);
-        model.setValue(model.getMinimum());
-    }
-
-    final void _blq(boolean estado) {
-        SwingUtilities.invokeLater(() -> {
-            if (estado) {
-                fecha_registro.setText(fecha.getNewFechaActualString());
-
-            } else {
-                fecha_registro.setText(null);
-            }
-            for (JComponent componente : componentes) {
-                componente.setEnabled(estado);
-            }
-            if (periodo.isSelected()) {
-                periodo.setSelected(false);
-            }
-            this.estado.setSelectedIndex(0);
-            cargo.setSelectedIndex(0);
-        });
-    }
-
-    private void _botones(boolean estado) {
-        nuevo.setEnabled(!estado);
-        guardar.setEnabled(estado);
-        cancelar.setEnabled(estado);
-    }
-
-    private boolean _camposValidos() {
-        JTextField[] comp = {
-            nombre, apellidos, usuario, contra
-        };
-
-        for (JTextField i : comp) {
-            if (Filtros.isNullOrBlank(i.getText())) {
-                JOptionPane.showMessageDialog(this, "El campo: " + i.getName() + " no es valido");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private void defecto() {
-        asignarPermisos(SEC_USUARIOS, 0);
-        asignarPermisos(SEC_CALLES, 0);
-        asignarPermisos(SEC_TIPO_TOMAS, 0);
-        asignarPermisos(SEC_TOMAS_REG, 0);
-    }
-
-    public void pasante() {
-        asignarPermisos(SEC_USUARIOS, 7);
-        asignarPermisos(SEC_CALLES, 7);
-        asignarPermisos(SEC_TIPO_TOMAS, 7);
-        asignarPermisos(SEC_TOMAS_REG, 5);
-    }
-
-    public void secretario() {
-        asignarPermisos(SEC_USUARIOS, 7);
-        asignarPermisos(SEC_CALLES, 7);
-        asignarPermisos(SEC_TIPO_TOMAS, 7);
-        asignarPermisos(SEC_TOMAS_REG, 5);
-    }
-
-    public void tesorero() {
-        asignarPermisos(SEC_USUARIOS, 7);
-        asignarPermisos(SEC_CALLES, 7);
-        asignarPermisos(SEC_TIPO_TOMAS, 7);
-        asignarPermisos(SEC_TOMAS_REG, 3);
-    }
-
-    public void presidente() {
-        asignarPermisos(SEC_USUARIOS, 7);
-        asignarPermisos(SEC_CALLES, 7);
-        asignarPermisos(SEC_TIPO_TOMAS, 7);
-        asignarPermisos(SEC_TOMAS_REG, 7);
-    }
-
-    public void asignarPermisos(int seccion, int permisos) {
-        int ac = seccion;
-        int es = seccion + 1;
-        int lc = seccion + 2;
-        switch (permisos) {
-            case 0 -> {
-                PERMISOS[ac].setSelected(false);
-                PERMISOS[es].setSelected(false);
-                PERMISOS[lc].setSelected(false);
-            }
-            case 3 -> {
-                PERMISOS[ac].setSelected(true);
-                PERMISOS[es].setSelected(false);
-                PERMISOS[lc].setSelected(true);
-            }
-
-            case 4 -> {
-                PERMISOS[ac].setSelected(true);
-                PERMISOS[es].setSelected(true);
-                PERMISOS[lc].setSelected(false);
-            }
-
-            case 7 -> {
-                PERMISOS[ac].setSelected(true);
-                PERMISOS[es].setSelected(true);
-                PERMISOS[lc].setSelected(true);
-            }
-
-        }
-    }
-
-    private String getPermisosAsignados() {
-        StringBuilder sb = new StringBuilder();
-
-        int usuarios, tipo_tomas, calles, tomas_reg;
-
-        usuarios = getNivelPermisos(usuarios_ac.isSelected(), usuarios_es.isSelected(), usuarios_lc.isSelected());
-
-        calles = getNivelPermisos(calles_ac.isSelected(), calles_es.isSelected(), calles_lc.isSelected());
-
-        tipo_tomas = getNivelPermisos(tipotomas_ac.isSelected(), tipotomas_es.isSelected(), tipotomas_lc.isSelected());
-
-        tomas_reg = getNivelPermisos(tomasreg_ac.isSelected(), tomasreg_es.isSelected(), tomasreg_lc.isSelected());
-
-        sb.append(usuarios).append(tipo_tomas).append(calles).append(tomas_reg);
-
-        return sb.toString();
-    }
-
-    private int getNivelPermisos(boolean... permisos) {
-        if (permisos.length > 3) {
-            return -1;
-        }
-        int nivel = 0;
-        if (permisos[0]) {
-            nivel += 1;
-        }
-
-        if (permisos[1]) {
-            nivel += 2;
-        }
-
-        if (permisos[2]) {
-            nivel += 4;
-        }
-        return nivel;
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField apellidos;
-    private javax.swing.JSpinner año_fin;
-    private javax.swing.JSpinner año_inicio;
-    private javax.swing.JCheckBox calles_ac;
-    private javax.swing.JCheckBox calles_es;
-    private javax.swing.JCheckBox calles_lc;
-    private javax.swing.JButton cancelar;
-    private javax.swing.JComboBox<String> cargo;
-    private javax.swing.JPasswordField contra;
-    private javax.swing.JSpinner dia_fin;
-    private javax.swing.JSpinner dia_inicio;
-    private javax.swing.JComboBox<String> estado;
-    private javax.swing.JTextField fecha_registro;
-    private javax.swing.JButton guardar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton back_button;
+    private javax.swing.JButton cancel_button;
+    private javax.swing.JPanel center_panel;
+    private javax.swing.JLabel count;
+    private javax.swing.JButton delete_button;
     private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JCheckBox jCheckBox3;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> jComboBox4;
+    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel17;
-    private javax.swing.JPanel jPanel19;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel21;
-    private javax.swing.JPanel jPanel22;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel23;
-    private javax.swing.JPanel jPanel24;
-    private javax.swing.JPanel jPanel26;
-    private javax.swing.JPanel jPanel27;
-    private javax.swing.JPanel jPanel28;
+    private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel29;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
-    private javax.swing.JPanel jPanel31;
     private javax.swing.JPanel jPanel32;
-    private javax.swing.JPanel jPanel33;
-    private javax.swing.JPanel jPanel34;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JPanel jPanel35;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JPasswordField jPasswordField2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JComboBox<String> mes_fin;
-    private javax.swing.JComboBox<String> mes_inicio;
-    private javax.swing.JTextField nombre;
-    private javax.swing.JButton nuevo;
-    private javax.swing.JPanel p_datos_cargo;
-    private javax.swing.JPanel p_datos_usuarios;
-    private javax.swing.JPanel p_permisos;
-    private javax.swing.JPanel panel_fecha_fin;
-    private javax.swing.JPanel panel_fecha_inicio;
-    private javax.swing.JCheckBox periodo;
-    private javax.swing.JCheckBox tipotomas_ac;
-    private javax.swing.JCheckBox tipotomas_es;
-    private javax.swing.JCheckBox tipotomas_lc;
-    private javax.swing.JCheckBox tomasreg_ac;
-    private javax.swing.JCheckBox tomasreg_es;
-    private javax.swing.JCheckBox tomasreg_lc;
-    private javax.swing.JTextField usuario;
-    private javax.swing.JCheckBox usuarios_ac;
-    private javax.swing.JCheckBox usuarios_es;
-    private javax.swing.JCheckBox usuarios_lc;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JButton next_button;
+    private javax.swing.JPanel north_panel;
+    private javax.swing.JPanel np_cp_center;
+    private javax.swing.JPanel np_cp_east;
+    private javax.swing.JPanel np_cp_west;
+    private javax.swing.JTable objects_table;
+    private javax.swing.JPanel options_panel;
+    private javax.swing.JPanel panel_tabla;
+    private javax.swing.JLabel range;
+    private javax.swing.JButton register_button;
+    private javax.swing.JPanel register_panel;
+    private javax.swing.JButton reload_button;
+    private javax.swing.JPanel root_panel;
+    private javax.swing.JButton save_button;
+    private javax.swing.JButton search_button;
+    private javax.swing.JTextField search_field;
+    private javax.swing.JButton search_object;
+    private javax.swing.JPanel search_panel;
+    private javax.swing.JPanel status_bar_panel;
+    private javax.swing.JLabel total;
+    private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
 
-    private void _cargarTabla() {
-        memoria_cache.getList().forEach((t) -> {
-            modelo_tabla_2.addRow(t.getInfo());
-        });
+    @Override
+    public JTextField getTextComponenteTable() {
+        return search_field;
     }
 
-    private void _actualizarTabla() {
-        if (modelo_tabla_2.getRowCount() > 0) {
-            modelo_tabla_2.removeAllRows();
-        }
-        _cargarTabla();
+    @Override
+    public String getTextSearchTable() {
+        return Filtros.limpiar(search_field.getText());
     }
 
-    private final EncriptadoAES encriptador = new EncriptadoAES();
-    private final MemoListCache<OPersonal> memoria_cache;
-    private final JCheckBox[] PERMISOS;
-    private final int SEC_USUARIOS,
-            SEC_CALLES,
-            SEC_TIPO_TOMAS,
-            SEC_TOMAS_REG;
+    @Override
+    public JTable getTable() {
+        return objects_table;
+    }
 
-    private final JComponent componentes[];
-    private final Fecha fecha;
-    private final JTableModel modelo_tabla_2;
+    @Override
+    public JTableModel getModel() {
+        return model;
+    }
 
-    private final JButton option;
+    @Override
+    public void setViewShow(int view_show) {
+        this.view_show = view_show;
+        String op = switch (view_show) {
+            case 2:
+                yield search_panel.getName();
+            default:
+                yield register_panel.getName();
+        };
+        ly.show(root_panel, op);
+    }
+
+    @Override
+    public int getViewShow() {
+        return view_show;
+    }
+
+    @Override
+    public void setObjectSearch(Objeto o) {
+        this.object_search = (OPersonal) o;
+    }
+
+    @Override
+    public OPersonal getObjectSearch() {
+        return object_search;
+    }
 
     @Override
     public JButton getOption() {
@@ -1013,19 +558,10 @@ public class VPersonal extends SimpleView implements OptionMenu {
     }
 
     @Override
-    public void build() {
-    }
-
-    @Override
-    public void events() {
-    }
-
-    @Override
-    public void components() {
-    }
-
-    @Override
-    public void finalState() {
+    public void setRowsData(String... info) {
+        count.setText(info[0]);
+        range.setText(info[1]);
+        total.setText(info[2]);
     }
 
 }

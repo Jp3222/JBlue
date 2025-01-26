@@ -16,12 +16,20 @@
  */
 package com.jblue.controlador;
 
-import com.jblue.controlador.objc.ShopCartController;
-import com.jblue.controlador.objc.StreetsController;
+import com.jblue.controlador.winc.WindowController;
+import com.jblue.controlador.viewc.UserController;
+import com.jblue.controlador.winc.LoginController;
+import com.jblue.controlador.viewc.ShopCartController;
+import com.jblue.controlador.viewc.StreetsController;
+import com.jblue.controlador.viewc.WaterIntakesController;
+import com.jblue.controlador.winc.MainController;
+import com.jblue.vista.views.WaterIntakesView;
+import com.jblue.vista.views.UserView;
 import com.jblue.vista.views.StreetsView;
 import com.jblue.vista.views.ShopCartView;
 import com.jblue.vista.windows.LoginWindows;
-import com.jblue.vista.windows.MenuConfigBD;
+import com.jblue.vista.windows.ConfigWindow;
+import com.jblue.vista.windows.WMainMenu;
 
 /**
  *
@@ -29,8 +37,12 @@ import com.jblue.vista.windows.MenuConfigBD;
  */
 public class FactoryController {
 
-    public static WindowController getLoginController(LoginWindows WIN_LOGIN, MenuConfigBD DB_CONFIG_MENU) {
-        return new LoginController(WIN_LOGIN, DB_CONFIG_MENU);
+    public static WindowController getLoginController(LoginWindows view, ConfigWindow view_config) {
+        return new LoginController(view, view_config);
+    }
+
+    public static WindowController getLoginController(WMainMenu view) {
+        return new MainController(view);
     }
 
     public static Controller getShopCartController(ShopCartView view) {
@@ -39,6 +51,14 @@ public class FactoryController {
 
     public static Controller getStreetsController(StreetsView view) {
         return new StreetsController(view);
+    }
+
+    public static Controller getUserController(UserView view) {
+        return new UserController(view);
+    }
+
+    public static Controller getWaterIntakesController(WaterIntakesView view) {
+        return new WaterIntakesController(view);
     }
 
 }

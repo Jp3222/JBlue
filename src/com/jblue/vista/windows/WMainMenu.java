@@ -20,9 +20,9 @@ import com.jblue.vista.components.CVisorUsuario;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
 import com.jblue.vista.views.StreetsView;
 import com.jblue.vista.views.OtherOptions;
-import com.jblue.vista.views.NewTipoDePagos;
-import com.jblue.vista.views.NewTipoDeTomas;
-import com.jblue.vista.views.NewUsuarios;
+import com.jblue.vista.views.PaymentTypes;
+import com.jblue.vista.views.WaterIntakesView;
+import com.jblue.vista.views.UserView;
 import com.jblue.vista.views.ShopCartView;
 import com.jblue.vista.views.Tools;
 import java.awt.CardLayout;
@@ -37,10 +37,10 @@ public final class WMainMenu extends VentanaSimple {
 
     private final ShopCartView caja;
     private final OtherOptions menu_type;
-    private final NewUsuarios usuarios;
+    private final UserView usuarios;
     private final StreetsView calles;
-    private final NewTipoDeTomas tipo_de_tomas;
-    private final NewTipoDePagos tipo_de_pagos;
+    private final WaterIntakesView tipo_de_tomas;
+    private final PaymentTypes tipo_de_pagos;
     private final CardLayout ly;
     private final Tools tools;
     private final LoginWindows LOGIN;
@@ -56,11 +56,11 @@ public final class WMainMenu extends VentanaSimple {
         this.LOGIN = LOGIN;
 
         caja = new ShopCartView();
-        usuarios = new NewUsuarios();
+        usuarios = new UserView();
         menu_type = new OtherOptions(this);
         calles = new StreetsView();
-        tipo_de_tomas = new NewTipoDeTomas();
-        tipo_de_pagos = new NewTipoDePagos();
+        tipo_de_tomas = new WaterIntakesView();
+        tipo_de_pagos = new PaymentTypes();
         tools = new Tools();
         ly = (CardLayout) views_panel.getLayout();
 
@@ -101,6 +101,7 @@ public final class WMainMenu extends VentanaSimple {
 
     @Override
     public void initialState() {
+        setView(1);
     }
 
     @Override
@@ -210,7 +211,7 @@ public final class WMainMenu extends VentanaSimple {
         jPanel3.setLayout(new java.awt.BorderLayout());
 
         tools_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/img4.png"))); // NOI18N
-        tools_button.setToolTipText("Buscar usuario");
+        tools_button.setToolTipText("Herramientas");
         tools_button.setPreferredSize(new java.awt.Dimension(50, 50));
         jPanel3.add(tools_button, java.awt.BorderLayout.LINE_START);
 

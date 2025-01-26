@@ -16,29 +16,30 @@
  */
 package com.jblue.vista.views;
 
-import com.jblue.controlador.objc.StreetsController;
+import com.jblue.controlador.FactoryController;
+import com.jblue.controlador.compc.TableController;
 import com.jblue.modelo.ConstGs;
-import com.jblue.util.cache.MemoListCache;
-import com.jblue.modelo.fabricas.FabricaCache;
+import com.jblue.modelo.fabricas.FactoryCache;
 import com.jblue.modelo.objetos.OCalles;
+import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
 import com.jblue.util.FormatoBD;
 import com.jblue.vista.marco.DBValues;
-import com.jblue.vista.marco.vistas.SimpleView;
+import com.jblue.vista.marco.vistas.DBView;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 
 /**
  *
  * @author juan-campos
  */
-public final class StreetsView extends SimpleView implements DBValues {
 
-    private StreetsController controlador;
-    private OCalles search_object;
+public final class StreetsView extends DBView implements DBValues {
 
+    private OCalles object_search;
     private final CardLayout ly;
 
     /**
@@ -46,65 +47,60 @@ public final class StreetsView extends SimpleView implements DBValues {
      */
     public StreetsView() {
         initComponents();
-        MEMO_CACHE = FabricaCache.CALLES;
-        table.setComponentPopupMenu(table_pop_up);
-        table_pop_up.add("Eliminar");
-        table_pop_up.add("ditar");
-        JMenuItem com = (JMenuItem) table_pop_up.getComponent(1);
-        com.addActionListener(e -> itemEdit());
         model = new JTableModel(ConstGs.TABLA_CALLES, 0);
-        table.setModel(model);
+        objects_table.setModel(model);
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
-        controlador = new StreetsController(this);
+        //
+        controller = FactoryController.getStreetsController(this);
+        table_controller = new TableController(this, FactoryCache.CALLES);
         build();
     }
 
     @Override
-    public final void build() {
+    public void build() {
         components();
         events();
-        initialState();
         finalState();
-
+        initialState();
     }
 
     @Override
     public void components() {
-        campo_nombre.setText(null);
-        campo_numero.setText(null);
-        search_object = null;
+        streed_name_field.setText(null);
+        object_search = null;
+        pop_menu.add(edit_item);
+        pop_menu.add(delete_item);
+        objects_table.setComponentPopupMenu(pop_menu);
     }
 
     @Override
     public void events() {
-        register_button.addActionListener(e -> setView(0));
-        search_button.addActionListener(e -> setView(1));
+        back_button.addActionListener(table_controller);
+        next_button.addActionListener(table_controller);
+        reload_button.addActionListener(table_controller);
+        register_button.addActionListener(table_controller);
+        search_button.addActionListener(table_controller);
         //
-        save_button.addActionListener(controlador);
-        update_button.addActionListener(controlador);
-        delete_button.addActionListener(controlador);
-        cancel_button.addActionListener(controlador);
-        maps_button.addActionListener(controlador);
+        save_button.addActionListener(controller);
+        update_button.addActionListener(controller);
+        delete_button.addActionListener(controller);
+        cancel_button.addActionListener(controller);
+        maps_button.addActionListener(controller);
+        //
+        objects_table.addMouseListener(table_controller);
     }
 
     @Override
     public void initialState() {
+        object_search = null;
+        streed_name_field.setText(null);
+        streed_location_field.setText(null);
+        view_show = 1;
     }
 
     @Override
     public void finalState() {
-    }
-
-    private void setView(int option) {
-        String op = switch (option) {
-            case 1:
-                yield search_panel.getName();
-            default:
-                yield register_panel.getName();
-        };
-        ly.show(root_panel, op);
-
     }
 
     /**
@@ -116,7 +112,9 @@ public final class StreetsView extends SimpleView implements DBValues {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        table_pop_up = new javax.swing.JPopupMenu();
+        pop_menu = new javax.swing.JPopupMenu();
+        edit_item = new javax.swing.JMenuItem();
+        delete_item = new javax.swing.JMenuItem();
         tools_panel = new javax.swing.JPanel();
         jToggleButton2 = new javax.swing.JToggleButton();
         jPanel15 = new javax.swing.JPanel();
@@ -129,41 +127,50 @@ public final class StreetsView extends SimpleView implements DBValues {
         jLabel4 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        campo_nombre = new javax.swing.JTextField();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        campo_numero = new javax.swing.JTextField();
+        streed_name_field = new javax.swing.JTextField();
         jPanel13 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        campo_maps = new javax.swing.JTextField();
+        streed_location_field = new javax.swing.JTextField();
         maps_button = new javax.swing.JButton();
-        jPanel7 = new javax.swing.JPanel();
+        option_panel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         save_button = new javax.swing.JButton();
         update_button = new javax.swing.JButton();
         delete_button = new javax.swing.JButton();
         cancel_button = new javax.swing.JButton();
-        jPanel10 = new javax.swing.JPanel();
-        jPanel12 = new javax.swing.JPanel();
         search_panel = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        btn_recargar = new javax.swing.JButton();
+        reload_button = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jtf_buscador = new javax.swing.JTextField();
+        search_field = new javax.swing.JTextField();
         jPanel11 = new javax.swing.JPanel();
-        btn_ant = new javax.swing.JButton();
-        btn_sig = new javax.swing.JButton();
+        back_button = new javax.swing.JButton();
+        next_button = new javax.swing.JButton();
         panel_izq = new javax.swing.JPanel();
         tabla_usuarios = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
+        objects_table = new javax.swing.JTable();
+        status_bar_panel = new javax.swing.JPanel();
+        jPanel32 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        count = new javax.swing.JLabel();
+        range = new javax.swing.JLabel();
+        jPanel29 = new javax.swing.JPanel();
+        jLabel17 = new javax.swing.JLabel();
+        total = new javax.swing.JLabel();
+
+        edit_item.setText("Editar");
+        pop_menu.add(edit_item);
+
+        delete_item.setText("Eliminar");
+        pop_menu.add(delete_item);
 
         setName("Calles"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
 
         tools_panel.setPreferredSize(new java.awt.Dimension(900, 30));
-        tools_panel.setLayout(new java.awt.BorderLayout(10, 10));
+        tools_panel.setLayout(new java.awt.BorderLayout(5, 5));
 
         jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
         jToggleButton2.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -174,10 +181,12 @@ public final class StreetsView extends SimpleView implements DBValues {
 
         register_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         register_button.setText("Registrar Calle");
+        register_button.setActionCommand("register_view");
         jPanel15.add(register_button);
 
         search_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         search_button.setText("Consultar Calles");
+        search_button.setActionCommand("search_view");
         jPanel15.add(search_button);
 
         tools_panel.add(jPanel15, java.awt.BorderLayout.CENTER);
@@ -190,11 +199,11 @@ public final class StreetsView extends SimpleView implements DBValues {
 
         root_panel.setLayout(new java.awt.CardLayout());
 
-        register_panel.setName("registros"); // NOI18N
-        register_panel.setLayout(new java.awt.BorderLayout(10, 10));
+        register_panel.setName("register"); // NOI18N
+        register_panel.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 620));
-        jPanel1.setLayout(new java.awt.GridLayout(10, 0, 0, 5));
+        jPanel1.setLayout(new java.awt.GridLayout(13, 1, 0, 10));
 
         jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -210,25 +219,11 @@ public final class StreetsView extends SimpleView implements DBValues {
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel8.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        campo_nombre.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        campo_nombre.setName("Nombre"); // NOI18N
-        jPanel8.add(campo_nombre, java.awt.BorderLayout.CENTER);
+        streed_name_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        streed_name_field.setName("Nombre"); // NOI18N
+        jPanel8.add(streed_name_field, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel8);
-
-        jPanel9.setLayout(new java.awt.BorderLayout());
-
-        jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel3.setText("Numero:");
-        jLabel3.setOpaque(true);
-        jLabel3.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel9.add(jLabel3, java.awt.BorderLayout.WEST);
-
-        campo_numero.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        campo_numero.setName("Numero"); // NOI18N
-        jPanel9.add(campo_numero, java.awt.BorderLayout.CENTER);
-
-        jPanel1.add(jPanel9);
 
         jPanel13.setLayout(new java.awt.BorderLayout());
 
@@ -238,9 +233,9 @@ public final class StreetsView extends SimpleView implements DBValues {
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel13.add(jLabel5, java.awt.BorderLayout.WEST);
 
-        campo_maps.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        campo_maps.setName("Numero"); // NOI18N
-        jPanel13.add(campo_maps, java.awt.BorderLayout.CENTER);
+        streed_location_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        streed_location_field.setName("Numero"); // NOI18N
+        jPanel13.add(streed_location_field, java.awt.BorderLayout.CENTER);
 
         maps_button.setText("maps");
         maps_button.setActionCommand("google-maps");
@@ -250,73 +245,74 @@ public final class StreetsView extends SimpleView implements DBValues {
 
         register_panel.add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        jPanel7.setPreferredSize(new java.awt.Dimension(500, 80));
-        jPanel7.setLayout(new java.awt.GridLayout(2, 0));
+        option_panel.setPreferredSize(new java.awt.Dimension(500, 80));
+        option_panel.setLayout(new java.awt.GridLayout(2, 0));
 
         jPanel2.setLayout(new java.awt.GridLayout(1, 3));
 
         save_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         save_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
         save_button.setText("Guardar");
+        save_button.setActionCommand("save");
         jPanel2.add(save_button);
 
         update_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         update_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/sincronizar.png"))); // NOI18N
         update_button.setText("Actualizar");
+        update_button.setActionCommand("update");
         jPanel2.add(update_button);
 
         delete_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         delete_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/eliminar.png"))); // NOI18N
         delete_button.setText("Eliminar");
+        delete_button.setActionCommand("delete");
         jPanel2.add(delete_button);
 
-        jPanel7.add(jPanel2);
+        option_panel.add(jPanel2);
 
         cancel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         cancel_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
         cancel_button.setText("Cancelar");
-        jPanel7.add(cancel_button);
+        cancel_button.setActionCommand("cancel");
+        option_panel.add(cancel_button);
 
-        register_panel.add(jPanel7, java.awt.BorderLayout.SOUTH);
+        register_panel.add(option_panel, java.awt.BorderLayout.SOUTH);
 
-        jPanel10.setPreferredSize(new java.awt.Dimension(30, 100));
-        register_panel.add(jPanel10, java.awt.BorderLayout.WEST);
+        root_panel.add(register_panel, "register");
 
-        jPanel12.setPreferredSize(new java.awt.Dimension(30, 100));
-        register_panel.add(jPanel12, java.awt.BorderLayout.EAST);
+        search_panel.setName("consult"); // NOI18N
+        search_panel.setLayout(new java.awt.BorderLayout(5, 5));
 
-        root_panel.add(register_panel, "registros");
-
-        search_panel.setName("consultas"); // NOI18N
-        search_panel.setLayout(new java.awt.BorderLayout());
-
-        jPanel5.setMinimumSize(new java.awt.Dimension(100, 30));
-        jPanel5.setPreferredSize(new java.awt.Dimension(500, 40));
+        jPanel5.setMinimumSize(new java.awt.Dimension(500, 30));
+        jPanel5.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel5.setLayout(new java.awt.BorderLayout(10, 10));
 
-        btn_recargar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
-        btn_recargar.setPreferredSize(new java.awt.Dimension(200, 30));
-        jPanel5.add(btn_recargar, java.awt.BorderLayout.WEST);
+        reload_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
+        reload_button.setActionCommand("reload");
+        reload_button.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel5.add(reload_button, java.awt.BorderLayout.WEST);
 
-        jPanel6.setLayout(new java.awt.BorderLayout());
+        jPanel6.setLayout(new java.awt.BorderLayout(5, 5));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
         jLabel1.setPreferredSize(new java.awt.Dimension(30, 30));
         jPanel6.add(jLabel1, java.awt.BorderLayout.WEST);
-        jPanel6.add(jtf_buscador, java.awt.BorderLayout.CENTER);
+        jPanel6.add(search_field, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel6, java.awt.BorderLayout.CENTER);
 
-        jPanel11.setLayout(new java.awt.GridLayout(1, 2));
+        jPanel11.setLayout(new java.awt.GridLayout(1, 2, 5, 5));
 
-        btn_ant.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
-        btn_ant.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel11.add(btn_ant);
+        back_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
+        back_button.setActionCommand("back");
+        back_button.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel11.add(back_button);
 
-        btn_sig.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
-        btn_sig.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel11.add(btn_sig);
+        next_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
+        next_button.setActionCommand("next");
+        next_button.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel11.add(next_button);
 
         jPanel5.add(jPanel11, java.awt.BorderLayout.EAST);
 
@@ -325,8 +321,8 @@ public final class StreetsView extends SimpleView implements DBValues {
         panel_izq.setPreferredSize(new java.awt.Dimension(500, 700));
         panel_izq.setLayout(new java.awt.BorderLayout(10, 10));
 
-        table.setAutoCreateRowSorter(true);
-        table.setModel(new javax.swing.table.DefaultTableModel(
+        objects_table.setAutoCreateRowSorter(true);
+        objects_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -334,102 +330,190 @@ public final class StreetsView extends SimpleView implements DBValues {
 
             }
         ));
-        table.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        table.setShowGrid(true);
-        table.getTableHeader().setReorderingAllowed(false);
-        tabla_usuarios.setViewportView(table);
+        objects_table.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        objects_table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        objects_table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        objects_table.setShowGrid(true);
+        objects_table.getTableHeader().setReorderingAllowed(false);
+        tabla_usuarios.setViewportView(objects_table);
 
         panel_izq.add(tabla_usuarios, java.awt.BorderLayout.CENTER);
 
         search_panel.add(panel_izq, java.awt.BorderLayout.CENTER);
 
-        root_panel.add(search_panel, "consultas");
+        status_bar_panel.setPreferredSize(new java.awt.Dimension(100, 30));
+        status_bar_panel.setLayout(new java.awt.BorderLayout());
+
+        jPanel32.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel32.setLayout(new java.awt.BorderLayout());
+
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel18.setText("No.");
+        jPanel32.add(jLabel18, java.awt.BorderLayout.CENTER);
+
+        count.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        count.setText("0");
+        count.setToolTipText("Numero de pagos hechos.");
+        count.setPreferredSize(new java.awt.Dimension(50, 16));
+        jPanel32.add(count, java.awt.BorderLayout.LINE_END);
+
+        status_bar_panel.add(jPanel32, java.awt.BorderLayout.WEST);
+
+        range.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        range.setText("0 - 0");
+        range.setToolTipText("");
+        status_bar_panel.add(range, java.awt.BorderLayout.CENTER);
+
+        jPanel29.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel29.setLayout(new java.awt.BorderLayout());
+
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel17.setText("Total:");
+        jPanel29.add(jLabel17, java.awt.BorderLayout.CENTER);
+
+        total.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total.setText("0");
+        total.setToolTipText("Numero de pagos hechos.");
+        total.setPreferredSize(new java.awt.Dimension(50, 16));
+        jPanel29.add(total, java.awt.BorderLayout.LINE_END);
+
+        status_bar_panel.add(jPanel29, java.awt.BorderLayout.EAST);
+
+        search_panel.add(status_bar_panel, java.awt.BorderLayout.SOUTH);
+
+        root_panel.add(search_panel, "consult");
 
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    @Override
-    public void setVisible(boolean aFlag) {
-        super.setVisible(aFlag); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        if (aFlag) {
-        } else {
-        }
-    }
-
     private void itemEdit() {
-        int index = table.getSelectedRow();
+        int index = objects_table.getSelectedRow();
         if (index < 0) {
             JOptionPane.showMessageDialog(this, "No se ha seleccionado un elemento", "Editar", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        search_object = new OCalles((String[]) model.getRow(index));
-
-        campo_nombre.setText(search_object.getNombre());
-        campo_numero.setText(search_object.getNumero());
-        setView(0);
+        object_search = new OCalles((String[]) model.getRow(index));
+        streed_name_field.setText(object_search.getNombre());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_ant;
-    private javax.swing.JButton btn_recargar;
-    private javax.swing.JButton btn_sig;
-    private javax.swing.JTextField campo_maps;
-    private javax.swing.JTextField campo_nombre;
-    private javax.swing.JTextField campo_numero;
+    private javax.swing.JButton back_button;
     private javax.swing.JButton cancel_button;
+    private javax.swing.JLabel count;
     private javax.swing.JButton delete_button;
+    private javax.swing.JMenuItem delete_item;
+    private javax.swing.JMenuItem edit_item;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel29;
+    private javax.swing.JPanel jPanel32;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JToggleButton jToggleButton2;
-    private javax.swing.JTextField jtf_buscador;
     private javax.swing.JButton maps_button;
+    private javax.swing.JButton next_button;
+    private javax.swing.JTable objects_table;
+    private javax.swing.JPanel option_panel;
     private javax.swing.JPanel panel_izq;
+    private javax.swing.JPopupMenu pop_menu;
+    private javax.swing.JLabel range;
     private javax.swing.JButton register_button;
     private javax.swing.JPanel register_panel;
+    private javax.swing.JButton reload_button;
     private javax.swing.JPanel root_panel;
     private javax.swing.JButton save_button;
     private javax.swing.JButton search_button;
+    private javax.swing.JTextField search_field;
     private javax.swing.JPanel search_panel;
+    private javax.swing.JPanel status_bar_panel;
+    private javax.swing.JTextField streed_location_field;
+    private javax.swing.JTextField streed_name_field;
     private javax.swing.JScrollPane tabla_usuarios;
-    private javax.swing.JTable table;
-    private javax.swing.JPopupMenu table_pop_up;
     private javax.swing.JPanel tools_panel;
+    private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
     private final JTableModel model;
-    private final MemoListCache<OCalles> MEMO_CACHE;
 
     @Override
     public boolean isValuesOk() {
-        return !Filtros.isNullOrBlank(campo_nombre.getText());
+        return !Filtros.isNullOrBlank(streed_name_field.getText());
     }
 
     @Override
     public String[] getDbValues() {
-        String[] values = new String[3];
-        values[0] = campo_nombre.getText();
-        values[1] = campo_numero.getText();
-        values[2] = campo_maps.getText();
-        values = FormatoBD.inputFormat(values);
-        return values;
+        String _name = streed_name_field.getText();
+        return new String[]{
+            _name
+        };
     }
 
+    public Objeto getObject() {
+        return object_search;
+    }
+
+    @Override
+    public JTextField getTextComponenteTable() {
+        return search_field;
+    }
+
+    @Override
+    public String getTextSearchTable() {
+        return Filtros.limpiar(search_field.getText());
+    }
+
+    @Override
+    public JTable getTable() {
+        return objects_table;
+    }
+
+    @Override
+    public JTableModel getModel() {
+        return model;
+    }
+
+    @Override
+    public void setViewShow(int view_show) {
+        this.view_show = view_show;
+        String op = switch (view_show) {
+            case 2:
+                yield search_panel.getName();
+            default:
+                yield register_panel.getName();
+        };
+        ly.show(root_panel, op);
+    }
+
+    @Override
+    public int getViewShow() {
+        return view_show;
+    }
+
+    @Override
+    public OCalles getObjectSearch() {
+        return object_search;
+    }
+
+    @Override
+    public void setObjectSearch(Objeto o) {
+        object_search = (OCalles) o;
+    }
+
+    @Override
+    public void setRowsData(String... info) {
+        count.setText(info[0]);
+        range.setText(info[1]);
+        total.setText(info[2]);
+    }
 }

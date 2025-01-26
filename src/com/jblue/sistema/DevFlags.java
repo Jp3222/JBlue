@@ -38,7 +38,7 @@ public class DevFlags {
     
      */
     /**
-     * Mensajes de error en desarrollo
+     * Bandera para encerrar todas las opciones de desarrollo futuras.
      */
     public static boolean FUTURE_VIEW = true;
     /**

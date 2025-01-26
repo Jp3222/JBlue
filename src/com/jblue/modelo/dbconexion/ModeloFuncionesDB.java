@@ -17,6 +17,7 @@
 package com.jblue.modelo.dbconexion;
 
 import com.jblue.modelo.objetos.Objeto;
+import com.jutil.dbcon.connection.JConnection;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -31,10 +32,10 @@ public interface ModeloFuncionesDB<T extends Objeto> {
      * Este metodo inserta valores en la base de datos ignorando el primer valor
      * del array suponiendo que pertenece al campo "ID"
      *
-     * @param valores - conjunto de valores que se guardaran en la base de datos
+     * @param values - conjunto de valores que se guardaran en la base de datos
      * @return true si la inserccion se hizo correctamente en otro clase false
      */
-    boolean insert(String[] valores);
+    boolean insert(String[] values);
 
     /**
      *
@@ -51,22 +52,22 @@ public interface ModeloFuncionesDB<T extends Objeto> {
     /**
      * Este metodo actualiza un solo campo a la vez
      *
-     * @param campo - campo que se actualizara
-     * @param valor - nuevo valor
+     * @param field - campo que se actualizara
+     * @param value - nuevo valor
      * @param where - condicion para actualizar ese campo
      * @return true si la operacion se hizo correctamente en otro caso false
      */
-    boolean update(String campo, String valor, String where);
+    boolean update(String field, String value, String where);
 
     /**
      * Este metodo actualiza multiples campos a la vez
      *
-     * @param campos - campos que se actualizaran
-     * @param newData - nuevos valores para los campos
+     * @param oldValue - campos que se actualizaran
+     * @param newValue - nuevos valores para los campos
      * @param where - condicion para actualizar
      * @return true si la operacion se hizo correctamente en otro caso false
      */
-    boolean update(String campos[], String newData[], String where);
+    boolean update(String oldValue[], String newValue[], String where);
 
     /**
      * Este metodo recupera una lista de datos de la base de datos y trata las
@@ -75,7 +76,7 @@ public interface ModeloFuncionesDB<T extends Objeto> {
      * <br>
      *
      *
-     * @param campos - campos selolicitados a la base de datos; en caso de
+     * @param field - campos selolicitados a la base de datos; en caso de
      * colocar un "null","","*" la funcion solicitara todos lo campos de la
      * tabla solicitada
      * @param where - condicion bajo la cual se seleccionaran los datos
@@ -83,7 +84,7 @@ public interface ModeloFuncionesDB<T extends Objeto> {
      * valores solicitados por la condicion where en caso de un "SQLExcption"
      * retornara un objeto vacio
      */
-    Optional<ArrayList<T>> select(String campos, String where);
+    ArrayList<T> select(String field, String where);
 
     /**
      ** Este metodo recupera un conjunto datos de la base de datos y trata las
@@ -92,7 +93,7 @@ public interface ModeloFuncionesDB<T extends Objeto> {
      * <br>
      *
      *
-     * @param campos - campos selolicitados a la base de datos; en caso de
+     * @param field - campos selolicitados a la base de datos; en caso de
      * colocar un "null","","*" la funcion solicitara todos lo campos de la
      * tabla solicitada
      * @param where - condicion bajo la cual se seleccionaran los datos
@@ -101,5 +102,12 @@ public interface ModeloFuncionesDB<T extends Objeto> {
      * retornara un objeto vacio
      *
      */
-    Optional<T> get(String campos, String where);
+    Optional<T> get(String field, String where);
+
+    String getTable();
+
+    String[] getFields();
+
+    JConnection getConnection();
+
 }

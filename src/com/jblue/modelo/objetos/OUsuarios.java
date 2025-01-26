@@ -4,8 +4,8 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.modelo.fabricas.FabricaCache;
 import com.jblue.util.objetos.ObjetoFK;
+import com.jblue.util.tools.ObjectUtils;
 
 /**
  *
@@ -68,19 +68,24 @@ public class OUsuarios extends Objeto implements ObjetoFK {
 
     /**
      *
-     * @return una cadena con la fecha de registro de este usuario
-     */
-    public String getRegistro() {
-        return info[7];
-    }
-
-    /**
-     *
      * @return un entero: 1 si el usuario esta activo -1 si el usuario esta
      * inactivo
      */
     public int getEstado() {
-        return Integer.parseInt(info[8]);
+        return Integer.parseInt(info[7]);
+    }
+
+    public String getEstadoStr() {
+        return switch (getEstado()) {
+            case 1:
+                yield "Activo";
+            case 2:
+                yield "Inactivo";
+            case 3:
+                yield "Baja";
+            default:
+                throw new AssertionError();
+        };
     }
 
     public boolean isActivo() {
@@ -93,11 +98,11 @@ public class OUsuarios extends Objeto implements ObjetoFK {
      * del usuario al cual esta asociado
      */
     public String getTipo() {
-        return info[9];
+        return info[8];
     }
 
     public String getTipoStr() {
-        return switch (info[9]) {
+        return switch (info[8]) {
             case "1":
                 yield "Titular";
             default:
@@ -106,11 +111,7 @@ public class OUsuarios extends Objeto implements ObjetoFK {
     }
 
     public boolean isTitular() {
-        return Integer.parseInt(info[9]) < 0;
-    }
-
-    public String getCodigo() {
-        return info[10];
+        return Integer.parseInt(info[8]) < 0;
     }
 
     /**
@@ -152,7 +153,11 @@ public class OUsuarios extends Objeto implements ObjetoFK {
     @Override
     public String[] getInfoSinFK() {
         String[] _info = this.info.clone();
-        _info[4] = FabricaCache.CALLES.getList((t) -> t.getId().equals(getCalle())).get(0).getNombre();
+        _info[4] = ObjectUtils.getStreed(getCalle());
+        _info[6] = ObjectUtils.getWaterIntakes(getToma());
+        _info[7] = getEstadoStr();
+        _info[8] = getTipoStr();
+
         return _info;
     }
 

@@ -29,6 +29,10 @@ import java.util.logging.Logger;
  */
 public class FuncionesBD<T extends Objeto> extends AbstraccionFunciones<T> {
 
+    public static FuncionesBD<Objeto> getObjects(String table, String[] fields) {
+        return new FuncionesBD(table, fields);
+    }
+
     public FuncionesBD(String TABLA, String[] CAMPOS) {
         super(TABLA, CAMPOS);
     }
@@ -64,6 +68,16 @@ public class FuncionesBD<T extends Objeto> extends AbstraccionFunciones<T> {
                 Arrays.copyOfRange(campos, 1, campos.length),
                 valores,
                 where);
+    }
+
+    @Override
+    public String getTable() {
+        return tabla;
+    }
+
+    @Override
+    public String[] getFields() {
+        return campos;
     }
 
 }

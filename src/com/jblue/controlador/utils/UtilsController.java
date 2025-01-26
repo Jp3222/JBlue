@@ -31,11 +31,10 @@ public class UtilsController extends Controller {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
-            case "late_payments":
-                    view.setView(1);
-                break;
-            default:
-                throw new AssertionError();
+            case "late_payments" ->
+                view.setView(1);
+            default ->
+                defaultCase(e.getActionCommand(), null, -1);
         }
     }
 

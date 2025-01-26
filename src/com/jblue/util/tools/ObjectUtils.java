@@ -17,12 +17,14 @@
 package com.jblue.util.tools;
 
 import com.jblue.modelo.ConstBD;
-import com.jblue.modelo.fabricas.FabricaCache;
+import com.jblue.modelo.fabricas.FactoryCache;
 import com.jblue.modelo.objetos.*;
 import com.jblue.util.cache.MemoListCache;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -47,13 +49,18 @@ public class ObjectUtils {
     }
 
     public static Objeto getObjeto(String tabla, String[] info) {
-        Objeto clone = mapa.get(tabla).clone();
+        Objeto clone = new Objeto();
+        try {
+            clone = mapa.get(tabla).clone();
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(ObjectUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
         clone.setInfo(info);
         return clone;
     }
 
     public static OTipoTomas getTipoToma(String id) {
-        return getObjetoById(FabricaCache.TIPO_DE_TOMAS, id);
+        return getObjetoById(FactoryCache.TIPO_DE_TOMAS, id);
     }
 
     private static <T extends Objeto> T getObjetoById(MemoListCache<T> cache, String id) {
@@ -84,4 +91,15 @@ public class ObjectUtils {
         return usuario.getCargo().equals("5");
     }
 
+    public static String getStreed(String calle) {
+        return searchInCache(FactoryCache.CALLES, calle);
+    }
+
+    public static String getWaterIntakes(String toma) {
+        return searchInCache(FactoryCache.TIPO_DE_TOMAS, toma);
+    }
+
+    private static <T extends Objeto> String searchInCache(MemoListCache<T> cache, String id) {
+        return cache.get(o -> o.getId().equals(id)).toString();
+    }
 }

@@ -32,11 +32,12 @@ public abstract class ConstGs {
     private static final String USUARIO = "Usuario";
     private static final String PERSONAL = "Personal";
     private static final String MONTO = "Monto";
-    private static final String REGISTRO = "Registro";
+    //private static final String REGISTRO = "Registro";
     private static final String DIA = "Dia";
     private static final String MES = "Mes";
     private static final String ANIO = "Año";
     private static final String MES_PAGADO = "Mes Pagado";
+    private static final String REGISTER = "F. Registro";
 
     /**
      * <br> 1 id
@@ -50,7 +51,9 @@ public abstract class ConstGs {
      * <br> 9 titular
      */
     public static final String[] TABLA_USUARIOS = {
-        ID, NOMBRE, AP, AM, "Calle", "No de Casa", "T. Toma", REGISTRO, "Estado", "Titular", "Codigo"
+        ID, NOMBRE, AP, AM,
+        "Calle", "No de Casa", "T. Toma",
+        "Estado", "Tipo", REGISTER
     };
 
     /**
@@ -71,7 +74,7 @@ public abstract class ConstGs {
      * <br> 3 numero
      */
     public static final String[] TABLA_CALLES = {
-        ID, NOMBRE, "numero"
+        ID, NOMBRE
     };
 
     /**
@@ -87,7 +90,7 @@ public abstract class ConstGs {
      * <br> 9 permisos
      */
     public static final String[] TABLA_PERSONAL = {
-        ID, NOMBRE, "apellidos", "cargo", USUARIO, "contra", REGISTRO, "estado", "permisos", "Fecha de Inicio", "Fecha de Fin"
+        ID, NOMBRE, "apellidos", "cargo", USUARIO, "contra", "estado", "permisos", "Fecha de Inicio", "Fecha de Fin"
     };
 
     /**

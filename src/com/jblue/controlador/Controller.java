@@ -16,8 +16,6 @@
  */
 package com.jblue.controlador;
 
-import com.jblue.modelo.objetos.Objeto;
-import com.jblue.util.cache.MemoListCache;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -28,9 +26,8 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author juan-campos
- * @param <T>
  */
-public abstract class Controller<T extends Objeto> implements ActionListener, KeyListener, MouseListener {
+public abstract class Controller implements ActionListener, KeyListener, MouseListener {
 
     @Override
     public void keyPressed(KeyEvent ke) {

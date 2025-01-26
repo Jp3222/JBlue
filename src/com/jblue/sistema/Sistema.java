@@ -4,27 +4,25 @@
  */
 package com.jblue.sistema;
 
+import com.jutil.framework.MainSystem;
 import com.jblue.sistema.app.AppFiles;
-import com.jblue.modelo.fabricas.FabricaCache;
-import com.jblue.vista.components.NewMenuConfigBD;
+import com.jblue.modelo.fabricas.FactoryCache;
+import com.jblue.sistema.app.AppConfig;
+import com.jblue.vista.windows.ConfigWindow;
 import com.jblue.vista.windows.LoginWindows;
+import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.jbd.conexion.Conexion;
-import com.jutil.jexception.Excp;
+import com.jutil.platf.JVMInfo;
 import com.jutil.platf.So;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  * Sistema
@@ -32,269 +30,159 @@ import javax.swing.JOptionPane;
  *
  * @author jp
  */
-public class Sistema {
+public class Sistema implements MainSystem {
 
-    private static Sistema instancia;
-
-    public synchronized static Sistema getInstancia() {
-        if (instancia == null) {
-            try {
-                instancia = new Sistema();
-            } catch (IOException ex) {
-                Excp.impTerminal(ex, Sistema.class, true);
-            }
-        }
-        return instancia;
-    }
+    private static final Logger LOG = Logger.getLogger(Sistema.class.getName());
 
     /**
      *
      */
+    private final Map<String, Object> resources;
     private final Properties propiedades;
-    private boolean reinicio;
     private Conexion conexion;
-    public FileReader lector_propiedades;
-    public FileWriter escritor_propiedades;
+    private DBConnection connection;
 
-    private Sistema() throws IOException {
+    public Sistema() {
         propiedades = new Properties(20);
-        this.reinicio = false;
+        //
+        resources = new HashMap<>(5);
+        resources.put("propierties", propiedades);
         So.setDefaultLookAndFeel();
-    }
-
-    public boolean _CargarArchivos() {
-        try {
-            File file;
-            String formato = "%s = %s";
-            String mensaje;
-            List<String> list = new ArrayList<>();
-            list.addAll(Arrays.asList(AppFiles.ARR_DIR_PROG));
-            list.addAll(Arrays.asList(AppFiles.ARR_DIR_USER));
-            for (String i : list) {
-                file = new File(i);
-                if (file.exists()) {
-                    mensaje = "OK";
-                } else {
-                    file.mkdir();
-                    mensaje = "NEW";
-                }
-                System.out.println(
-                        String.format(formato, file.getAbsolutePath(), mensaje)
-                );
-            }
-
-            for (String i : AppFiles.ARR_PROG_ARC) {
-                file = new File(i);
-                if (file.exists()) {
-                    mensaje = "OK";
-                } else {
-                    file.createNewFile();
-                    mensaje = "NEW";
-
-                }
-                System.out.println(
-                        String.format(formato, file.getAbsolutePath(), mensaje)
-                );
-            }
-            return true;
-        } catch (IOException ex) {
-            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
-
-    public boolean _ConexionBD() {
-        leerPropiedades();
-        boolean conexionNull = propiedades.get("bd-url") == null;
-        //obteniendo credenciales
-        if (conexionNull) {
-            String[] o = null;
-            try {
-                o = NewMenuConfigBD.getConexion();
-            } catch (SQLException ex) {
-                Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            propiedades.put("bd-usuario", o[0]);
-            propiedades.put("bd-contraseña", o[1]);
-            propiedades.put("bd-url", o[2]);
-            escribirPropiedades();
-        }
-        //estableciendo conexion
-        try {
-            conexion = Conexion.getInstancia(propiedades.getProperty("bd-usuario"),
-                    propiedades.getProperty("bd-contraseña"),
-                    propiedades.getProperty("bd-url"));
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, getErrMessage(e.getErrorCode()), "Error de conexion", JOptionPane.ERROR_MESSAGE);
-            switch (e.getErrorCode()) {
-                case 1698, 1045 ->
-                    reiniciarCredenciales();
-                default -> {
-
-                }
-            }
-            System.exit(0);
-        }
-
-        return true;
-    }
-
-    private String getErrMessage(int code) {
-        return switch (code) {
-            case 0:
-                yield "La conexion no se puede establcer";
-            case 1698, 1045:
-                yield "Credenciales no validad";
-            default:
-                yield "Error no registrado";
-        };
-
-    }
-
-    public void reiniciarCredenciales() {
-        int in = JOptionPane.showConfirmDialog(null, "Hay un problema con las credenciales, dese reiniciarlas?");
-        if (in == JOptionPane.YES_OPTION) {
-            propiedades.remove("bd-usuario");
-            propiedades.remove("bd-contraseña");
-            propiedades.remove("bd-url");
-            escribirPropiedades();
-        }
-
-    }
-
-    public void leerPropiedades() {
-        try {
-            lector_propiedades = new FileReader(AppFiles.FIL_ARC_CONFIG, Charset.defaultCharset());
-            propiedades.load(lector_propiedades);
-            lector_propiedades.close();
-            System.out.println(propiedades);
-        } catch (FileNotFoundException ex) {
-            Excp.impTerminal(ex, getClass(), false);
-        } catch (IOException ex) {
-            Excp.impTerminal(ex, getClass(), false);
-        }
-    }
-
-    public void escribirPropiedades() {
-        try {
-            if (!propiedades.isEmpty()) {
-                leerPropiedades();
-            }
-            escritor_propiedades = new FileWriter(AppFiles.FIL_ARC_CONFIG, Charset.defaultCharset(), false);
-            propiedades.store(escritor_propiedades, "Propiedades del programa");
-            escritor_propiedades.close();
-        } catch (FileNotFoundException ex1) {
-            Excp.impTerminal(ex1, getClass(), false);
-        } catch (IOException ex1) {
-            Excp.impTerminal(ex1, getClass(), false);
-        }
-    }
-
-    public boolean conexionCerrada() {
-        boolean isClose = false;
-        try {
-            isClose = conexion.getConexion().isClosed();
-        } catch (SQLException ex) {
-            Excp.imp(ex, getClass(), true, true);
-        } finally {
-            System.out.println(isClose);
-        }
-        return isClose;
-    }
-
-    public boolean conexionNoValida() {
-        boolean isClose = false;
-        try {
-            isClose = conexion.getConexion().isReadOnly();
-        } catch (SQLException ex) {
-            Excp.imp(ex, getClass(), true, true);
-        }
-        return isClose;
-    }
-
-    public boolean _CargarCache() {
-        if (FabricaCache.cache_list) {
-            return true;
-        }
-        return FabricaCache.loadCaches();
-    }
-
-    public boolean _Run() {
-        this.reinicio = false;
-        LoginWindows log = new LoginWindows();
-        log.setVisible(true);
-        return log.isVisible();
-    }
-
-    public void _Stop() {
-        System.exit(0);
-    }
-
-    public void sleep() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void cerrarTodo() {
-        cerrarBD();
-        cerrarPropiedades();
-    }
-
-    public void cerrarBD() {
-        try {
-            if (conexion == null || !conexion.isConectado()) {
-                return;
-            }
-            conexion.getConexion().close();
-        } catch (SQLException ex) {
-            Excp.impTerminal(ex, getClass(), true);
-        }
-    }
-
-    public void cerrarPropiedades() {
-        try {
-            if (escritor_propiedades != null) {
-                escritor_propiedades.close();
-            }
-            if (lector_propiedades != null) {
-                lector_propiedades.close();
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
-    public boolean _ComprobarVersion() {
-        String version = System.getProperty("java.version");
-        CharSequence subsecuencia = version.subSequence(0, 2);
-
-        int versionInt = Integer.parseInt(subsecuencia.toString());
-
-        if (versionInt < 16) {
-            JOptionPane.showMessageDialog(null, "Version de java no valida");
-            return false;
-        }
-        return true;
-    }
-
-    public boolean isReinicio() {
-        if (reinicio) {
-            System.out.println("REINICIANDO SISTEMA");
-        }
-        return reinicio;
     }
 
     public Properties getPropiedades() {
         return propiedades;
     }
 
-    @Deprecated
-    public Conexion getConexion() {
-        return conexion;
+    @Override
+    public boolean conectionDB() {
+        boolean null_connection = propiedades.getProperty(AppConfig.DB_URL) == null
+                || propiedades.getProperty(AppConfig.DB_USER) == null
+                || propiedades.getProperty(AppConfig.DB_PASSWORD) == null;
+
+        if (null_connection) {
+            try {
+                ConfigWindow o = new ConfigWindow();
+                synchronized (o) {
+                    o.setVisible(true);
+                    o.wait();
+                }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        try {
+            conexion = Conexion.getInstancia(
+                    propiedades.getProperty(AppConfig.DB_USER),
+                    propiedades.getProperty(AppConfig.DB_PASSWORD),
+                    propiedades.getProperty(AppConfig.DB_URL)
+            );
+        } catch (SQLException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
+
+        try {
+            connection = DBConnection.getInstance(
+                    propiedades.getProperty(AppConfig.DB_URL),
+                    propiedades.getProperty(AppConfig.DB_USER),
+                    propiedades.getProperty(AppConfig.DB_PASSWORD)
+            );
+            connection.setShowQuery(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        LOG.log(Level.INFO, "DATA BASE CONNECTION");
+        return true;
+    }
+
+    @Override
+    public boolean appFiles() {
+        File aux;
+        for (String i : AppFiles.S_ALL_DIR_PROG) {
+            aux = new File(i);
+            if (aux.exists()) {
+                LOG.log(Level.INFO, log_messages.formatted(i, "FUE LEIDO CORRECTAMENTE"));
+            } else {
+                aux.mkdir();
+                LOG.log(Level.INFO, log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
+            }
+        }
+
+        for (String i : AppFiles.S_ARR_DIR_USER) {
+            aux = new File(i);
+            if (aux.exists()) {
+                LOG.log(Level.INFO, log_messages.formatted(i, "FUE LEIDO CORRECTAMENTE"));
+            } else {
+                aux.mkdir();
+                LOG.log(Level.INFO, log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
+            }
+        }
+
+        for (String i : AppFiles.S_ARR_PROG_ARC) {
+            aux = new File(i);
+            if (aux.exists()) {
+                LOG.log(Level.INFO, log_messages.formatted(i, "FUE LEIDO CORRECTAMENTE"));
+            } else {
+                try {
+                    aux.createNewFile();
+                    LOG.log(Level.INFO, log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
+                } catch (IOException ex) {
+                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean cache() {
+        return FactoryCache.cache_list || FactoryCache.loadCaches();
+    }
+
+    @Override
+    public boolean run() {
+        LoginWindows log = new LoginWindows();
+        log.setVisible(true);
+        return log.isVisible();
+    }
+
+    @Override
+    public boolean openSys() {
+        String JV = JVMInfo.JAVA_VERSION;
+        try (FileInputStream input = new FileInputStream(AppFiles.FIL_ARC_CONFIG)) {
+            propiedades.loadFromXML(input);
+
+        } catch (IOException ex) {
+            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        LOG.log(Level.INFO, "OPEN SYSTEM");
+        return true;
+    }
+
+    @Override
+    public boolean closeSys() {
+        try {
+            conexion.closeRS();
+            conexion.closeST();
+            connection.close();
+            LOG.log(Level.INFO, "CLOSE SYSTEM");
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        LOG.log(Level.INFO, "EXIT");
+        System.exit(0);
+
+        return true;
+    }
+    private final String log_messages = "EL DIRECTORIO: %s %s";
+
+    @Override
+    public Object getResources(String key) {
+        return resources.get(key);
     }
 
 }

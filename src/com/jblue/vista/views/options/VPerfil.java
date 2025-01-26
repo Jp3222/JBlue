@@ -21,7 +21,7 @@ import com.jblue.sistema.Sesion;
 import com.jblue.vista.marco.OptionMenu;
 import com.jblue.vista.marco.contruccion.EvtSetInfoGrafica;
 import com.jblue.vista.marco.vistas.SimpleView;
-import com.jblue.vista.marco.vistas.VistaExtendida;
+import com.jblue.vista.marco.vistas.DBView;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;

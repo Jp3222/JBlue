@@ -4,11 +4,14 @@
  */
 package com.jblue.vista.windows;
 
-import com.jblue.controlador.LoginController;
+import com.jblue.controlador.winc.LoginController;
+import com.jblue.sistema.app.AppConfig;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
+import com.jutil.framework.LaunchApp;
 import com.jutil.jbd.conexion.Conexion;
 import com.jutil.swingw.wrappers.TextFieldWrapper;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -23,7 +26,7 @@ import javax.swing.JTextField;
  */
 public class LoginWindows extends VentanaSimple {
 
-    private final MenuConfigBD MENU_CONFIG_BD;
+    private final ConfigWindow MENU_CONFIG_BD;
     private final TextFieldWrapper FIELDS[];
 
     /**
@@ -31,7 +34,7 @@ public class LoginWindows extends VentanaSimple {
      *
      */
     public LoginWindows() {
-        this.MENU_CONFIG_BD = new MenuConfigBD();
+        this.MENU_CONFIG_BD = new ConfigWindow();
         initComponents();
         FIELDS = new TextFieldWrapper[2];
         FIELDS[0] = new TextFieldWrapper(user, "ejem: david123");
@@ -83,6 +86,11 @@ public class LoginWindows extends VentanaSimple {
     @Override
     public void finalState() {
         try {
+            Properties p = (Properties) LaunchApp.getInstance().getResources("propierties");
+            title1_field.setText(p.getProperty(AppConfig.TITLE1));
+            title2_field.setText(p.getProperty(AppConfig.TITLE2));
+            
+            //
             Conexion instancia = Conexion.getInstancia();
             String estado = "Estado ";
             estado = estado.concat(instancia.isConectado() ? "Conectado" : "Desconectado");
@@ -103,7 +111,7 @@ public class LoginWindows extends VentanaSimple {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        title2_field = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
@@ -124,30 +132,30 @@ public class LoginWindows extends VentanaSimple {
         jPanel1.setPreferredSize(new java.awt.Dimension(400, 400));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        image_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        image_label.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/img1.png"))); // NOI18N
-        image_label.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        image_label.setIconTextGap(30);
-        image_label.setPreferredSize(new java.awt.Dimension(350, 150));
-        image_label.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel1.add(image_label, java.awt.BorderLayout.CENTER);
+        icon_image.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        icon_image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/img1.png"))); // NOI18N
+        icon_image.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        icon_image.setIconTextGap(30);
+        icon_image.setPreferredSize(new java.awt.Dimension(350, 150));
+        icon_image.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jPanel1.add(icon_image, java.awt.BorderLayout.CENTER);
 
         jPanel3.setPreferredSize(new java.awt.Dimension(100, 60));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        name.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
-        name.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        name.setText("Comite de agua potable de la");
-        name.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        name.setIconTextGap(30);
-        name.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel3.add(name, java.awt.BorderLayout.CENTER);
+        title1_field.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
+        title1_field.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        title1_field.setText("TITULO 1");
+        title1_field.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        title1_field.setIconTextGap(30);
+        title1_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel3.add(title1_field, java.awt.BorderLayout.CENTER);
 
-        jLabel2.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Colonia Cuauhtémoc");
-        jLabel2.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel3.add(jLabel2, java.awt.BorderLayout.PAGE_END);
+        title2_field.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
+        title2_field.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        title2_field.setText("TITULO 2");
+        title2_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel3.add(title2_field, java.awt.BorderLayout.PAGE_END);
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.NORTH);
 
@@ -242,9 +250,8 @@ public class LoginWindows extends VentanaSimple {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private final javax.swing.JButton config_button = new javax.swing.JButton();
     private final javax.swing.JLabel db_status = new javax.swing.JLabel();
-    private final javax.swing.JLabel image_label = new javax.swing.JLabel();
+    private final javax.swing.JLabel icon_image = new javax.swing.JLabel();
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private final javax.swing.JLabel jLabel5 = new javax.swing.JLabel();
     private final javax.swing.JLabel jLabel6 = new javax.swing.JLabel();
     private javax.swing.JLabel jLabel7;
@@ -261,8 +268,9 @@ public class LoginWindows extends VentanaSimple {
     private javax.swing.JPanel jPanel9;
     private final javax.swing.JButton login_button = new javax.swing.JButton();
     private final javax.swing.JCheckBox mostrar = new javax.swing.JCheckBox();
-    private final javax.swing.JLabel name = new javax.swing.JLabel();
     private final javax.swing.JPasswordField password = new javax.swing.JPasswordField();
+    private final javax.swing.JLabel title1_field = new javax.swing.JLabel();
+    private javax.swing.JLabel title2_field;
     private final javax.swing.JTextField user = new javax.swing.JTextField();
     // End of variables declaration//GEN-END:variables
     private boolean sesion_active = false;

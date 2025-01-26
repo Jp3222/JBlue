@@ -16,15 +16,21 @@
  */
 package com.jblue.vista.views;
 
-import com.jblue.controlador.CCobros;
-import com.jblue.controlador.Controller;
 import com.jblue.controlador.FactoryController;
-import com.jblue.modelo.fabricas.FabricaCache;
+import com.jblue.controlador.compc.ListController;
+import com.jblue.controlador.compc.TableController;
+import com.jblue.modelo.ConstBD;
+import com.jblue.modelo.dbconexion.FuncionesBD;
+import com.jblue.modelo.fabricas.FactoryCache;
 import com.jblue.modelo.objetos.OTipoTomas;
 import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.modelo.objetos.Objeto;
+import com.jblue.util.Filtros;
+import com.jblue.util.cache.MemoListCache;
+import com.jblue.vista.marco.ListSearchView;
+import com.jblue.vista.marco.vistas.DBView;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
-import com.jutil.framework.ViewStates;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -33,41 +39,54 @@ import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JList;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author juan-campos
  */
-public class ShopCartView extends javax.swing.JPanel implements ViewStates {
+public class ShopCartView extends DBView implements ListSearchView {
 
     private final CardLayout ly;
     private final JTableModel table_model;
     private final DefaultListModel<OUsuarios> list_model;
     private OUsuarios object_search;
     ArrayList<JCheckBox> month_paid_list;
+    private final ListController<OUsuarios> list_controller;
+    private int count_elements;
 
     /**
      * Creates new form VCaja
      */
     public ShopCartView() {
         initComponents();
+
         list_model = new DefaultListModel();
         table_model = new JTableModel(new String[]{
             "No.", "Usuario", "Mes Pagado"
         }, 0);
         month_paid_list = new ArrayList<>(12);
-        
+
         month_paid_list.addAll(Arrays.asList(
                 ene, feb, mar,
                 abr, may, jun,
                 jul, ago, sep,
                 oct, nov, dic
         ));
-        
-        table_history_paids.setModel(table_model);
-        user_list.setModel(list_model);
+        objects_table.setModel(table_model);
+        users_list.setModel(list_model);
         ly = (CardLayout) root_panel.getLayout();
+
+        controller = FactoryController.getShopCartController(this);
+        table_controller = new TableController(this, new MemoListCache(
+                FuncionesBD.getObjects(ConstBD.TABLAS[6],
+                        new String[]{
+                            "id", "usuario", "mes"
+                        }
+                )));
+        list_controller = new ListController(this, FactoryCache.USUARIOS);
         build();
     }
 
@@ -81,7 +100,7 @@ public class ShopCartView extends javax.swing.JPanel implements ViewStates {
 
     @Override
     public void events() {
-        Controller controller = FactoryController.getShopCartController(this);
+
         pay_button.addActionListener(controller);
         cancel_button.addActionListener(controller);
         clear_button.addActionListener(controller);
@@ -95,17 +114,18 @@ public class ShopCartView extends javax.swing.JPanel implements ViewStates {
         //
         all_months_buttons.addActionListener(controller);
         //
-        search_field.addKeyListener((KeyListener) controller);
+        search_field_list.addKeyListener((KeyListener) controller);
         //
-        user_list.addMouseListener((MouseListener) controller);
-        register_button.addActionListener((ae) -> {
-            ly.show(root_panel, pay_view.getName());
-        });
+        users_list.addMouseListener((MouseListener) controller);
+        //
 
-        history_button.addActionListener((ae) -> {
-            CCobros.printPaidsOfDay(table_model);
-            ly.show(root_panel, history_view.getName());
-        });
+        register_button.addActionListener(table_controller);
+        search_button.addActionListener(table_controller);
+        reload_button.addActionListener(table_controller);
+        back_button.addActionListener(table_controller);
+        next_button.addActionListener(table_controller);
+        //objects_table.addMouseListener(table_controller);
+        //
     }
 
     @Override
@@ -127,26 +147,6 @@ public class ShopCartView extends javax.swing.JPanel implements ViewStates {
 
     }
 
-    public JTextField getSearchField() {
-        return search_field;
-    }
-
-    public DefaultListModel<OUsuarios> getListModel() {
-        return list_model;
-    }
-
-    public JList<OUsuarios> getUserList() {
-        return user_list;
-    }
-
-    public OUsuarios getObjectSearch() {
-        return object_search;
-    }
-
-    public void setObjectSearch(OUsuarios object_search) {
-        this.object_search = object_search;
-    }
-
     public JComponent getRootPanel() {
         return root_panel;
     }
@@ -159,17 +159,9 @@ public class ShopCartView extends javax.swing.JPanel implements ViewStates {
         String user_type = object_search.isTitular() ? "Titular" : "Consumidor";
         user_type_field.setText(user_type);
         name_user_field.setText(object_search.getNombre());
-        OTipoTomas get = FabricaCache.TIPO_DE_TOMAS.get(e -> e.getId().equals(object_search.getToma()));
+        OTipoTomas get = FactoryCache.TIPO_DE_TOMAS.get(e -> e.getId().equals(object_search.getToma()));
         type_toma_field.setText(get.getTipo());
         cost_field.setText(String.valueOf(get.getCosto()));
-    }
-
-    public void clear() {
-
-    }
-
-    public void setAllMonths(boolean b) {
-
     }
 
     /**
@@ -185,16 +177,17 @@ public class ShopCartView extends javax.swing.JPanel implements ViewStates {
         lock_button = new javax.swing.JToggleButton();
         jPanel15 = new javax.swing.JPanel();
         register_button = new javax.swing.JButton();
-        history_button = new javax.swing.JButton();
+        search_button = new javax.swing.JButton();
         search_user_button = new javax.swing.JButton();
         root_panel = new javax.swing.JPanel();
-        pay_view = new javax.swing.JPanel();
+        register_panel = new javax.swing.JPanel();
         panel_busquedas = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        search_field = new javax.swing.JTextField();
+        search_field_list = new javax.swing.JTextField();
+        count_elements_label = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        user_list = new javax.swing.JList<>();
+        users_list = new javax.swing.JList<>();
         panel_info = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
@@ -249,21 +242,31 @@ public class ShopCartView extends javax.swing.JPanel implements ViewStates {
         other_pay_button = new javax.swing.JButton();
         pay_last_button = new javax.swing.JButton();
         util_button = new javax.swing.JButton();
-        history_view = new javax.swing.JPanel();
+        search_panel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel16 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        search_field_table = new javax.swing.JTextField();
+        reload_button = new javax.swing.JButton();
+        jPanel17 = new javax.swing.JPanel();
+        back_button = new javax.swing.JButton();
+        next_button = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table_history_paids = new javax.swing.JTable();
-        jPanel18 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        saldo_del_dia = new javax.swing.JLabel();
-        jPanel23 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        no_pagos = new javax.swing.JLabel();
+        objects_table = new javax.swing.JTable();
+        status_bar_panel = new javax.swing.JPanel();
+        jPanel32 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        count = new javax.swing.JLabel();
+        range = new javax.swing.JLabel();
+        jPanel29 = new javax.swing.JPanel();
+        jLabel17 = new javax.swing.JLabel();
+        total = new javax.swing.JLabel();
 
         setName("Inicio"); // NOI18N
         setLayout(new java.awt.BorderLayout());
 
         tools_bar_panel.setPreferredSize(new java.awt.Dimension(900, 30));
-        tools_bar_panel.setLayout(new java.awt.BorderLayout());
+        tools_bar_panel.setLayout(new java.awt.BorderLayout(5, 5));
 
         lock_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/lock.png"))); // NOI18N
         lock_button.setActionCommand("lock");
@@ -275,11 +278,13 @@ public class ShopCartView extends javax.swing.JPanel implements ViewStates {
 
         register_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         register_button.setText("Cobros");
+        register_button.setActionCommand("register_view");
         jPanel15.add(register_button);
 
-        history_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        history_button.setText("Pagos del dia");
-        jPanel15.add(history_button);
+        search_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        search_button.setText("Pagos del dia");
+        search_button.setActionCommand("search_view");
+        jPanel15.add(search_button);
 
         tools_bar_panel.add(jPanel15, java.awt.BorderLayout.CENTER);
 
@@ -290,40 +295,45 @@ public class ShopCartView extends javax.swing.JPanel implements ViewStates {
 
         add(tools_bar_panel, java.awt.BorderLayout.NORTH);
 
-        root_panel.setLayout(new java.awt.CardLayout());
+        root_panel.setLayout(new java.awt.CardLayout(5, 5));
 
-        pay_view.setName("pagos"); // NOI18N
-        pay_view.setLayout(new javax.swing.BoxLayout(pay_view, javax.swing.BoxLayout.PAGE_AXIS));
+        register_panel.setName("register"); // NOI18N
+        register_panel.setLayout(new javax.swing.BoxLayout(register_panel, javax.swing.BoxLayout.PAGE_AXIS));
 
         panel_busquedas.setOpaque(false);
         panel_busquedas.setPreferredSize(new java.awt.Dimension(700, 150));
-        panel_busquedas.setLayout(new java.awt.BorderLayout(0, 5));
+        panel_busquedas.setLayout(new java.awt.BorderLayout(5, 5));
 
         jPanel6.setOpaque(false);
-        jPanel6.setPreferredSize(new java.awt.Dimension(680, 40));
+        jPanel6.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel6.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel1.setText("Buscador");
-        jLabel1.setPreferredSize(new java.awt.Dimension(100, 19));
+        jLabel1.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel6.add(jLabel1, java.awt.BorderLayout.LINE_START);
 
-        search_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jPanel6.add(search_field, java.awt.BorderLayout.CENTER);
+        search_field_list.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jPanel6.add(search_field_list, java.awt.BorderLayout.CENTER);
+
+        count_elements_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        count_elements_label.setText("0");
+        count_elements_label.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel6.add(count_elements_label, java.awt.BorderLayout.EAST);
 
         panel_busquedas.add(jPanel6, java.awt.BorderLayout.NORTH);
 
-        user_list.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        user_list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        jScrollPane2.setViewportView(user_list);
+        users_list.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        users_list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane2.setViewportView(users_list);
 
         panel_busquedas.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
-        pay_view.add(panel_busquedas);
+        register_panel.add(panel_busquedas);
 
         panel_info.setOpaque(false);
         panel_info.setPreferredSize(new java.awt.Dimension(700, 400));
-        panel_info.setLayout(new java.awt.BorderLayout());
+        panel_info.setLayout(new java.awt.BorderLayout(5, 5));
 
         jPanel19.setOpaque(false);
         jPanel19.setLayout(new java.awt.BorderLayout());
@@ -597,11 +607,11 @@ public class ShopCartView extends javax.swing.JPanel implements ViewStates {
 
         panel_info.add(jPanel20, java.awt.BorderLayout.SOUTH);
 
-        pay_view.add(panel_info);
+        register_panel.add(panel_info);
 
         panel_operaciones.setOpaque(false);
         panel_operaciones.setPreferredSize(new java.awt.Dimension(680, 80));
-        panel_operaciones.setLayout(new java.awt.GridLayout(2, 3));
+        panel_operaciones.setLayout(new java.awt.GridLayout(2, 3, 5, 5));
 
         jPanel7.setLayout(new java.awt.GridLayout(1, 0));
 
@@ -629,14 +639,17 @@ public class ShopCartView extends javax.swing.JPanel implements ViewStates {
 
         recargos_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         recargos_button.setText("Recargos");
+        recargos_button.setActionCommand("surcharges");
         jPanel8.add(recargos_button);
 
         other_pay_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         other_pay_button.setText("Otros Pagos");
+        other_pay_button.setActionCommand("other_payments");
         jPanel8.add(other_pay_button);
 
         pay_last_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         pay_last_button.setText("Pagos atrasados");
+        pay_last_button.setActionCommand("late_payments");
         jPanel8.add(pay_last_button);
 
         util_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
@@ -645,14 +658,48 @@ public class ShopCartView extends javax.swing.JPanel implements ViewStates {
 
         panel_operaciones.add(jPanel8);
 
-        pay_view.add(panel_operaciones);
+        register_panel.add(panel_operaciones);
 
-        root_panel.add(pay_view, "pagos");
+        root_panel.add(register_panel, "register");
 
-        history_view.setName("Historial"); // NOI18N
-        history_view.setLayout(new java.awt.BorderLayout());
+        search_panel.setName("consult"); // NOI18N
+        search_panel.setLayout(new java.awt.BorderLayout(5, 5));
 
-        table_history_paids.setModel(new javax.swing.table.DefaultTableModel(
+        jPanel1.setPreferredSize(new java.awt.Dimension(500, 30));
+        jPanel1.setLayout(new java.awt.BorderLayout(5, 5));
+
+        jPanel16.setLayout(new java.awt.BorderLayout(5, 5));
+
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
+        jLabel11.setPreferredSize(new java.awt.Dimension(30, 30));
+        jPanel16.add(jLabel11, java.awt.BorderLayout.WEST);
+        jPanel16.add(search_field_table, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel16, java.awt.BorderLayout.CENTER);
+
+        reload_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
+        reload_button.setActionCommand("reload");
+        reload_button.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel1.add(reload_button, java.awt.BorderLayout.WEST);
+
+        jPanel17.setLayout(new java.awt.GridLayout(1, 2, 5, 5));
+
+        back_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
+        back_button.setActionCommand("back");
+        back_button.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel17.add(back_button);
+
+        next_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
+        next_button.setActionCommand("next");
+        next_button.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel17.add(next_button);
+
+        jPanel1.add(jPanel17, java.awt.BorderLayout.EAST);
+
+        search_panel.add(jPanel1, java.awt.BorderLayout.NORTH);
+
+        objects_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -668,38 +715,52 @@ public class ShopCartView extends javax.swing.JPanel implements ViewStates {
                 return canEdit [columnIndex];
             }
         });
-        table_history_paids.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(table_history_paids);
+        objects_table.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(objects_table);
 
-        history_view.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        search_panel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel18.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel18.setLayout(new java.awt.BorderLayout());
+        status_bar_panel.setPreferredSize(new java.awt.Dimension(100, 30));
+        status_bar_panel.setLayout(new java.awt.BorderLayout());
 
-        jLabel4.setText("Total Acumulado:");
-        jPanel18.add(jLabel4, java.awt.BorderLayout.LINE_START);
+        jPanel32.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel32.setLayout(new java.awt.BorderLayout());
 
-        saldo_del_dia.setToolTipText("Total de pagos acumulados");
-        jPanel18.add(saldo_del_dia, java.awt.BorderLayout.CENTER);
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel18.setText("No.");
+        jPanel32.add(jLabel18, java.awt.BorderLayout.CENTER);
 
-        jPanel23.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel23.setLayout(new java.awt.BorderLayout());
+        count.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        count.setText("0");
+        count.setToolTipText("Numero de pagos hechos.");
+        count.setPreferredSize(new java.awt.Dimension(50, 16));
+        jPanel32.add(count, java.awt.BorderLayout.LINE_END);
 
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText("No.");
-        jPanel23.add(jLabel5, java.awt.BorderLayout.CENTER);
+        status_bar_panel.add(jPanel32, java.awt.BorderLayout.WEST);
 
-        no_pagos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        no_pagos.setText("0");
-        no_pagos.setToolTipText("Numero de pagos hechos.");
-        no_pagos.setPreferredSize(new java.awt.Dimension(50, 16));
-        jPanel23.add(no_pagos, java.awt.BorderLayout.LINE_END);
+        range.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        range.setText("0 - 0");
+        range.setToolTipText("");
+        status_bar_panel.add(range, java.awt.BorderLayout.CENTER);
 
-        jPanel18.add(jPanel23, java.awt.BorderLayout.EAST);
+        jPanel29.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel29.setLayout(new java.awt.BorderLayout());
 
-        history_view.add(jPanel18, java.awt.BorderLayout.SOUTH);
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel17.setText("Total:");
+        jPanel29.add(jLabel17, java.awt.BorderLayout.CENTER);
 
-        root_panel.add(history_view, "Historial");
+        total.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total.setText("0");
+        total.setToolTipText("Numero de pagos hechos.");
+        total.setPreferredSize(new java.awt.Dimension(50, 16));
+        jPanel29.add(total, java.awt.BorderLayout.LINE_END);
+
+        status_bar_panel.add(jPanel29, java.awt.BorderLayout.EAST);
+
+        search_panel.add(status_bar_panel, java.awt.BorderLayout.SOUTH);
+
+        root_panel.add(search_panel, "consult");
 
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -710,39 +771,44 @@ public class ShopCartView extends javax.swing.JPanel implements ViewStates {
     private javax.swing.JCheckBox abr;
     private javax.swing.JCheckBox ago;
     private javax.swing.JCheckBox all_months_buttons;
+    private javax.swing.JButton back_button;
     private javax.swing.JButton btn_movimientos;
     private javax.swing.JButton cancel_button;
     private javax.swing.JButton clear_button;
     private javax.swing.JTextField cost_field;
+    private javax.swing.JLabel count;
+    private javax.swing.JLabel count_elements_label;
     private javax.swing.JCheckBox dic;
     private javax.swing.JCheckBox ene;
     private javax.swing.JCheckBox feb;
-    private javax.swing.JButton history_button;
-    private javax.swing.JPanel history_view;
     private javax.swing.JButton info_button;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
-    private javax.swing.JPanel jPanel23;
+    private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel32;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
@@ -760,8 +826,9 @@ public class ShopCartView extends javax.swing.JPanel implements ViewStates {
     private javax.swing.JCheckBox may;
     private javax.swing.JTextField month_paid_field;
     private javax.swing.JTextField name_user_field;
-    private javax.swing.JLabel no_pagos;
+    private javax.swing.JButton next_button;
     private javax.swing.JCheckBox nov;
+    private javax.swing.JTable objects_table;
     private javax.swing.JCheckBox oct;
     private javax.swing.JButton other_pay_button;
     private javax.swing.JPanel panel_busquedas;
@@ -769,20 +836,127 @@ public class ShopCartView extends javax.swing.JPanel implements ViewStates {
     private javax.swing.JPanel panel_operaciones;
     private javax.swing.JButton pay_button;
     private javax.swing.JButton pay_last_button;
-    private javax.swing.JPanel pay_view;
+    private javax.swing.JLabel range;
     private javax.swing.JButton recargos_button;
     private javax.swing.JButton register_button;
+    private javax.swing.JPanel register_panel;
+    private javax.swing.JButton reload_button;
     private javax.swing.JPanel root_panel;
-    private javax.swing.JLabel saldo_del_dia;
-    private javax.swing.JTextField search_field;
+    private javax.swing.JButton search_button;
+    private javax.swing.JTextField search_field_list;
+    private javax.swing.JTextField search_field_table;
+    private javax.swing.JPanel search_panel;
     private javax.swing.JButton search_user_button;
     private javax.swing.JCheckBox sep;
-    private javax.swing.JTable table_history_paids;
+    private javax.swing.JPanel status_bar_panel;
     private javax.swing.JPanel tools_bar_panel;
+    private javax.swing.JLabel total;
     private javax.swing.JTextField type_toma_field;
-    private javax.swing.JList<OUsuarios> user_list;
     private javax.swing.JTextField user_type_field;
+    private javax.swing.JList<OUsuarios> users_list;
     private javax.swing.JButton util_button;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public JTextField getTextComponenteTable() {
+        return search_field_table;
+    }
+
+    @Override
+    public String getTextSearchTable() {
+        return Filtros.limpiar(search_field_table.getText());
+    }
+
+    @Override
+    public JTable getTable() {
+        return objects_table;
+    }
+
+    @Override
+    public DefaultTableModel getModel() {
+        return table_model;
+    }
+
+    @Override
+    public void setViewShow(int view_show) {
+        this.view_show = view_show;
+        String op = switch (view_show) {
+            case 2:
+                yield search_panel.getName();
+            default:
+                yield register_panel.getName();
+        };
+        ly.show(root_panel, op);
+    }
+
+    @Override
+    public int getViewShow() {
+        return view_show;
+    }
+
+    public ArrayList<String> getSelectMonths() {
+        ArrayList<String> months = new ArrayList<>(12);
+        for (JCheckBox i : month_paid_list) {
+            if (i.isEnabled() && i.isSelected()) {
+                months.add(i.getName());
+            }
+        }
+        return months;
+    }
+
+    @Override
+    public JList getList() {
+        return users_list;
+    }
+
+    @Override
+    public DefaultListModel<OUsuarios> getListModel() {
+        return list_model;
+    }
+
+    @Override
+    public JTextField getTextComponentList() {
+        return search_field_list;
+    }
+
+    @Override
+    public String getTextSearchList() {
+        return Filtros.limpiar(search_field_list.getText());
+    }
+
+    @Override
+    public void setCountElements(int i) {
+        count_elements = i;
+        users_list.setEnabled((i > 0));
+        users_list.setSelectedIndex(0);
+        count_elements_label.setText(String.valueOf(i));
+    }
+
+    @Override
+    public int getCountElements() {
+        return count_elements;
+    }
+
+    @Override
+    public OUsuarios getObjectSearch() {
+        return object_search;
+    }
+
+    @Override
+    public void setObjectSearch(Objeto o) {
+        object_search = (OUsuarios) o;
+    }
+
+    @Override
+    public void setScreenListInfo() {
+
+    }
+
+    @Override
+    public void setRowsData(String... info) {
+        count.setText(info[0]);
+        range.setText(info[1]);
+        total.setText(info[2]);
+    }
 
 }

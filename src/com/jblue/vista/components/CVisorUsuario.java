@@ -44,7 +44,7 @@ import javax.swing.SpinnerNumberModel;
  *
  * @author jp
  */
-public class CVisorUsuario extends JDialog implements ComponentStates {
+public final class CVisorUsuario extends JDialog implements ComponentStates {
 
     public static CVisorUsuario showVisor(OUsuarios obj) {
         CVisorUsuario o = new CVisorUsuario(null, true);
@@ -97,9 +97,9 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
         modelo_pagos_x_recargo = new JTableModel(ConstGs.TABLA_PAGOS_X_RECARGO, 0);
         modelo_pagos_x_otros = new JTableModel(ConstGs.TABLA_PAGOS_X_OTROS, 0);
         //
-        tabla_pxs.setModel(modelo_pagos_x_servicio);
-        tabla_pxr.setModel(modelo_pagos_x_recargo);
-        tabla_pxo.setModel(modelo_pagos_x_otros);
+        service_payments.setModel(modelo_pagos_x_servicio);
+        surcharge_payments.setModel(modelo_pagos_x_recargo);
+        other_payments.setModel(modelo_pagos_x_otros);
         //
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
@@ -114,26 +114,52 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
             }
         });
 
-        tab_info_pagos.addChangeListener(i -> {
-
-            if (panel_pxs.isVisible()) {
-                cargarPagosXServicio();
-            } else {
-                modelo_pagos_x_servicio.removeAllRows();
-            }
-
-        });
-
-        tab_info_pagos.addChangeListener(i -> {
-            if (panel_pxr.isVisible()) {
-                cargarPagosXRecargos();
-            } else {
-                modelo_pagos_x_recargo.removeAllRows();
-            }
-        });
-        CardLayout ly = (CardLayout) jPanel3.getLayout();
-        ly.show(jPanel3, tab_info_usuario.getName());
+        CardLayout ly = (CardLayout) center_panel.getLayout();
+        ly.show(center_panel, tab_info_usuario.getName());
         build();
+    }
+    private int returnStatus = RET_CANCEL;
+
+    @Override
+    public void build() {
+        components();
+        events();
+        finalState();
+        initialState();
+    }
+
+    @Override
+    public void events() {
+    }
+
+    @Override
+    public void components() {
+    }
+
+    @Override
+    public void initialState() {
+        for (JTextField i : campos) {
+            i.setText(null);
+        }
+        if (modelo_pagos_x_servicio.getRowCount() > 0) {
+            modelo_pagos_x_servicio.removeAllRows();
+        }
+        if (modelo_pagos_x_recargo.getRowCount() > 0) {
+            modelo_pagos_x_recargo.removeAllRows();
+        }
+        if (modelo_pagos_x_otros.getRowCount() > 0) {
+            modelo_pagos_x_recargo.removeAllRows();
+        }
+        tab_info_pagos.setSelectedIndex(0);
+        tab_info_usuario.setSelectedIndex(0);
+        loadServicePayments();
+        loadSurchargePayments();
+        CardLayout ly = (CardLayout) center_panel.getLayout();
+        ly.show(center_panel, tab_info_usuario.getName());
+    }
+
+    @Override
+    public void finalState() {
     }
 
     /**
@@ -152,17 +178,16 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
-        panel_central = new javax.swing.JPanel();
-        panel_lateral = new javax.swing.JPanel();
+        root_panel = new javax.swing.JPanel();
+        left_panel = new javax.swing.JPanel();
         pl_foto = new javax.swing.JLabel();
         pl_panel_central = new javax.swing.JPanel();
-        nombre1 = new javax.swing.JLabel();
-        apellidos2 = new javax.swing.JLabel();
+        first_name = new javax.swing.JLabel();
+        last_name = new javax.swing.JLabel();
         espacio1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        user_info = new javax.swing.JButton();
+        payments_info = new javax.swing.JButton();
+        center_panel = new javax.swing.JPanel();
         tab_info_pagos = new javax.swing.JTabbedPane();
         panel_pxs = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -170,10 +195,10 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
         jLabel2 = new javax.swing.JLabel();
         filtro_pxs_año = new javax.swing.JSpinner();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabla_pxs = new javax.swing.JTable();
+        service_payments = new javax.swing.JTable();
         panel_pxr = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tabla_pxr = new javax.swing.JTable();
+        surcharge_payments = new javax.swing.JTable();
         jPanel6 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
@@ -184,7 +209,7 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
         jLabel18 = new javax.swing.JLabel();
         filtro_pxo_año = new javax.swing.JSpinner();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tabla_pxo = new javax.swing.JTable();
+        other_payments = new javax.swing.JTable();
         tab_info_usuario = new javax.swing.JTabbedPane();
         panel_datos_usuario = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -232,7 +257,7 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
         panel_campo_tel2 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         dato_tel_2 = new javax.swing.JTextField();
-        panel_bottom = new javax.swing.JPanel();
+        bottom_panel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel24 = new javax.swing.JPanel();
         okButton = new javax.swing.JButton();
@@ -243,14 +268,11 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
             }
         });
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(1000, 600));
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        root_panel.setPreferredSize(new java.awt.Dimension(1000, 570));
+        root_panel.setLayout(new java.awt.BorderLayout());
 
-        panel_central.setPreferredSize(new java.awt.Dimension(1000, 570));
-        panel_central.setLayout(new java.awt.BorderLayout());
-
-        panel_lateral.setPreferredSize(new java.awt.Dimension(300, 700));
-        panel_lateral.setLayout(new java.awt.BorderLayout());
+        left_panel.setPreferredSize(new java.awt.Dimension(300, 700));
+        left_panel.setLayout(new java.awt.BorderLayout());
 
         pl_foto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pl_foto.setText("Sin foto");
@@ -260,45 +282,45 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
                 pl_fotoMouseClicked(evt);
             }
         });
-        panel_lateral.add(pl_foto, java.awt.BorderLayout.PAGE_START);
+        left_panel.add(pl_foto, java.awt.BorderLayout.PAGE_START);
 
         pl_panel_central.setLayout(new java.awt.GridLayout(8, 0));
 
-        nombre1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        nombre1.setText("jLabel2");
-        nombre1.setPreferredSize(new java.awt.Dimension(300, 20));
-        pl_panel_central.add(nombre1);
+        first_name.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        first_name.setText("Nombre");
+        first_name.setPreferredSize(new java.awt.Dimension(300, 20));
+        pl_panel_central.add(first_name);
 
-        apellidos2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        apellidos2.setText("jLabel3");
-        apellidos2.setPreferredSize(new java.awt.Dimension(300, 20));
-        pl_panel_central.add(apellidos2);
+        last_name.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        last_name.setText("Apellidos");
+        last_name.setPreferredSize(new java.awt.Dimension(300, 20));
+        pl_panel_central.add(last_name);
 
         espacio1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         espacio1.setPreferredSize(new java.awt.Dimension(300, 20));
         pl_panel_central.add(espacio1);
 
-        jButton1.setText("Datos de usuario");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        user_info.setText("Datos de usuario");
+        user_info.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                user_infoActionPerformed(evt);
             }
         });
-        pl_panel_central.add(jButton1);
+        pl_panel_central.add(user_info);
 
-        jButton2.setText("Informacion de pagos");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        payments_info.setText("Informacion de pagos");
+        payments_info.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                payments_infoActionPerformed(evt);
             }
         });
-        pl_panel_central.add(jButton2);
+        pl_panel_central.add(payments_info);
 
-        panel_lateral.add(pl_panel_central, java.awt.BorderLayout.CENTER);
+        left_panel.add(pl_panel_central, java.awt.BorderLayout.CENTER);
 
-        panel_central.add(panel_lateral, java.awt.BorderLayout.WEST);
+        root_panel.add(left_panel, java.awt.BorderLayout.WEST);
 
-        jPanel3.setLayout(new java.awt.CardLayout());
+        center_panel.setLayout(new java.awt.CardLayout());
 
         tab_info_pagos.setName("Tab Info De Pagos"); // NOI18N
 
@@ -321,7 +343,7 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
 
         panel_pxs.add(jPanel1, java.awt.BorderLayout.NORTH);
 
-        tabla_pxs.setModel(new javax.swing.table.DefaultTableModel(
+        service_payments.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -329,7 +351,7 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
 
             }
         ));
-        jScrollPane1.setViewportView(tabla_pxs);
+        jScrollPane1.setViewportView(service_payments);
 
         panel_pxs.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -337,7 +359,7 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
 
         panel_pxr.setLayout(new java.awt.BorderLayout());
 
-        tabla_pxr.setModel(new javax.swing.table.DefaultTableModel(
+        surcharge_payments.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -345,7 +367,7 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
 
             }
         ));
-        jScrollPane2.setViewportView(tabla_pxr);
+        jScrollPane2.setViewportView(surcharge_payments);
 
         panel_pxr.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
@@ -387,7 +409,7 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
 
         panel_pxo.add(jPanel7, java.awt.BorderLayout.NORTH);
 
-        tabla_pxo.setModel(new javax.swing.table.DefaultTableModel(
+        other_payments.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -395,13 +417,13 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
 
             }
         ));
-        jScrollPane3.setViewportView(tabla_pxo);
+        jScrollPane3.setViewportView(other_payments);
 
         panel_pxo.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
         tab_info_pagos.addTab("Pagos x Otros", panel_pxo);
 
-        jPanel3.add(tab_info_pagos, "Tab Info De Pagos");
+        center_panel.add(tab_info_pagos, "Tab Info De Pagos");
         tab_info_pagos.getAccessibleContext().setAccessibleName("");
 
         tab_info_usuario.setName("Tab Info De Usuario"); // NOI18N
@@ -583,15 +605,13 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
 
         tab_info_usuario.addTab("informacion de contacto", panel_datos_contacto);
 
-        jPanel3.add(tab_info_usuario, "Tab Info De Usuario");
+        center_panel.add(tab_info_usuario, "Tab Info De Usuario");
 
-        panel_central.add(jPanel3, java.awt.BorderLayout.CENTER);
+        root_panel.add(center_panel, java.awt.BorderLayout.CENTER);
 
-        jPanel2.add(panel_central, java.awt.BorderLayout.CENTER);
-
-        panel_bottom.setPreferredSize(new java.awt.Dimension(1000, 35));
-        panel_bottom.setLayout(new java.awt.BorderLayout());
-        panel_bottom.add(jLabel1, java.awt.BorderLayout.CENTER);
+        bottom_panel.setPreferredSize(new java.awt.Dimension(1000, 35));
+        bottom_panel.setLayout(new java.awt.BorderLayout());
+        bottom_panel.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         jPanel24.setPreferredSize(new java.awt.Dimension(200, 30));
         jPanel24.setLayout(new java.awt.GridLayout(1, 2, 5, 0));
@@ -605,11 +625,11 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
         jPanel24.add(okButton);
         getRootPane().setDefaultButton(okButton);
 
-        panel_bottom.add(jPanel24, java.awt.BorderLayout.EAST);
+        bottom_panel.add(jPanel24, java.awt.BorderLayout.EAST);
 
-        jPanel2.add(panel_bottom, java.awt.BorderLayout.SOUTH);
+        root_panel.add(bottom_panel, java.awt.BorderLayout.SOUTH);
 
-        getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
+        getContentPane().add(root_panel, java.awt.BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);
@@ -626,24 +646,23 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        CardLayout ly = (CardLayout) jPanel3.getLayout();
-        ly.show(jPanel3, tab_info_usuario.getName());
+    private void user_infoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_user_infoActionPerformed
+        CardLayout ly = (CardLayout) center_panel.getLayout();
+        ly.show(center_panel, tab_info_usuario.getName());
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_user_infoActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        CardLayout ly = (CardLayout) jPanel3.getLayout();
-        ly.show(jPanel3, tab_info_pagos.getName());
+    private void payments_infoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payments_infoActionPerformed
+        CardLayout ly = (CardLayout) center_panel.getLayout();
+        ly.show(center_panel, tab_info_pagos.getName());
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_payments_infoActionPerformed
 
     private void pl_fotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pl_fotoMouseClicked
 
         if (evt.getClickCount() == 2) {
             JOptionPane.showConfirmDialog(this, "Quiere agregar una foto a este usuario", "Foto de usuario", JOptionPane.CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         }
-
     }//GEN-LAST:event_pl_fotoMouseClicked
 
     private void doClose(int retStatus) {
@@ -663,15 +682,15 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
 
     private void cargar() {
         String[] arr = usuario.getInfo();
-        nombre1.setText(usuario.getNombre());
-        apellidos2.setText(String.format("%s %s", usuario.getAp(), usuario.getAm()));
+        first_name.setText(usuario.getNombre());
+        last_name.setText(String.format("%s %s", usuario.getAp(), usuario.getAm()));
 
         for (int i = 0; i < arr.length - 1; i++) {
             campos[i].setText(arr[i]);
         }
     }
 
-    private void cargarPagosXServicio() {
+    private void loadSurchargePayments() {
         var o = FabricaFuncionesBD.getPagosXServicio();
         ArrayList<OPagosServicio> lista = o.getList("*", "usuario = " + usuario.getId());
         if (lista.isEmpty()) {
@@ -690,7 +709,7 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
         collect.clear();
     }
 
-    private void cargarPagosXRecargos() {
+    private void loadServicePayments() {
         var o = FabricaFuncionesBD.getPagosXRecargos();
         ArrayList<OPagosRecargos> lista = o.getList("*", "usuario = " + usuario.getId());
         for (OPagosRecargos i : lista) {
@@ -698,15 +717,10 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
         }
     }
 
-    @Override
-    public void dispose() {
-        super.dispose(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        initialState();
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel apellidos2;
+    private javax.swing.JPanel bottom_panel;
+    private javax.swing.JPanel center_panel;
     private javax.swing.JTextField dato_am;
     private javax.swing.JTextField dato_ap;
     private javax.swing.JTextField dato_calle;
@@ -725,8 +739,7 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
     private javax.swing.JSpinner filtro_pxo_año;
     private javax.swing.JSpinner filtro_pxr_año;
     private javax.swing.JSpinner filtro_pxs_año;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel first_name;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
@@ -755,9 +768,7 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel24;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
@@ -767,70 +778,30 @@ public class CVisorUsuario extends JDialog implements ComponentStates {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JLabel nombre1;
+    private javax.swing.JLabel last_name;
+    private javax.swing.JPanel left_panel;
     private javax.swing.JButton okButton;
-    private javax.swing.JPanel panel_bottom;
+    private javax.swing.JTable other_payments;
     private javax.swing.JPanel panel_camp_id;
     private javax.swing.JPanel panel_camp_nombre;
     private javax.swing.JPanel panel_campo_correo;
     private javax.swing.JPanel panel_campo_tel1;
     private javax.swing.JPanel panel_campo_tel2;
-    private javax.swing.JPanel panel_central;
     private javax.swing.JPanel panel_datos_contacto;
     private javax.swing.JPanel panel_datos_usuario;
-    private javax.swing.JPanel panel_lateral;
     private javax.swing.JPanel panel_pxo;
     private javax.swing.JPanel panel_pxr;
     private javax.swing.JPanel panel_pxs;
+    private javax.swing.JButton payments_info;
     private javax.swing.JLabel pl_foto;
     private javax.swing.JPanel pl_panel_central;
     private javax.swing.JButton recargar_pxs;
+    private javax.swing.JPanel root_panel;
+    private javax.swing.JTable service_payments;
+    private javax.swing.JTable surcharge_payments;
     private javax.swing.JTabbedPane tab_info_pagos;
     private javax.swing.JTabbedPane tab_info_usuario;
-    private javax.swing.JTable tabla_pxo;
-    private javax.swing.JTable tabla_pxr;
-    private javax.swing.JTable tabla_pxs;
+    private javax.swing.JButton user_info;
     // End of variables declaration//GEN-END:variables
 
-    private int returnStatus = RET_CANCEL;
-
-    @Override
-    public void build() {
-        components();
-        events();
-        finalState();
-        initialState();
-    }
-
-    @Override
-    public void events() {
-    }
-
-    @Override
-    public void components() {
-    }
-
-    @Override
-    public void initialState() {
-        for (JTextField i : campos) {
-            i.setText(null);
-        }
-        if (modelo_pagos_x_servicio.getRowCount() > 0) {
-            modelo_pagos_x_servicio.removeAllRows();
-        }
-        if (modelo_pagos_x_recargo.getRowCount() > 0) {
-            modelo_pagos_x_recargo.removeAllRows();
-        }
-        if (modelo_pagos_x_otros.getRowCount() > 0) {
-            modelo_pagos_x_recargo.removeAllRows();
-        }
-        tab_info_pagos.setSelectedIndex(0);
-        tab_info_usuario.setSelectedIndex(0);
-        CardLayout ly = (CardLayout) jPanel3.getLayout();
-        ly.show(jPanel3, tab_info_usuario.getName());
-    }
-
-    @Override
-    public void finalState() {
-    }
 }

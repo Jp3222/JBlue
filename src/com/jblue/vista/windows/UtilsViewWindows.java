@@ -144,7 +144,7 @@ public final class UtilsViewWindows extends javax.swing.JDialog implements ViewS
         getContentPane().add(center_panel, java.awt.BorderLayout.CENTER);
 
         south_panel.setPreferredSize(new java.awt.Dimension(100, 30));
-        south_panel.setLayout(new java.awt.GridLayout());
+        south_panel.setLayout(new java.awt.GridLayout(1, 0));
 
         okButton.setText("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {

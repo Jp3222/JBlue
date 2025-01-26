@@ -23,6 +23,7 @@ public abstract class ConstBD {
     private static final String DIA = "dia";
     private static final String MES = "mes";
     private static final String AÑO = "año";
+    private static final String REGISTER = "register";
 
     /**
      * <br> 1 id
@@ -36,7 +37,9 @@ public abstract class ConstBD {
      * <br> 9 titular
      */
     public static final String[] TABLA_USUARIOS = {
-        ID, NOMBRE, AP, AM, "calle", "ncasa", "toma", REGISTRO, "estado", "titular", "codigo"
+        ID, NOMBRE, AP, AM,
+        "calle", "ncasa", "toma",
+        "estado", "tipo", REGISTER
     };
 
     /**
@@ -57,7 +60,7 @@ public abstract class ConstBD {
      * <br> 3 numero
      */
     public static final String[] TABLA_CALLES = {
-        ID, NOMBRE, "numero"
+        ID, NOMBRE
     };
 
     /**
@@ -202,7 +205,7 @@ public abstract class ConstBD {
      */
     public static final String[] TABLAS = {
         "personal",
-        "usuarios",
+        "user",
         "calles",
         "tipo_tomas",
         "historial_movimientos",
@@ -224,6 +227,9 @@ public abstract class ConstBD {
         TABLA_PAGOS_X_RECARGO,
         TABLA_PAGOS_X_OTROS,
         TABLA_VAR_SIS
+    };
+    public static final String[] TABLA_PAGOS_X_OTROS_TIPOS = {
+        "id"
     };
 
 }

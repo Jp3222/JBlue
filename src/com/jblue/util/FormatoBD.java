@@ -5,6 +5,7 @@
 package com.jblue.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 /**
@@ -13,14 +14,21 @@ import java.util.function.Predicate;
  */
 public class FormatoBD {
 
+    private static final String FT = "'%s'";
+
     public static String[] inputFormat(String... datos) {
         for (int i = 0; i < datos.length; i++) {
             if (Filtros.isNullOrBlank(datos[i])) {
                 continue;
             }
             datos[i] = datos[i].trim().toUpperCase().replace("[.,]", "").replace(" ", "_");
+            datos[i] = FT.formatted(datos[i]);
         }
         return datos;
+    }
+
+    public static String valuesFormat(String... values) {
+        return Arrays.toString(inputFormat(values)).replace('[', '(').replace(']', ')');
     }
 
     public static String[] getArray(String... campos) {

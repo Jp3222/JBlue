@@ -5,6 +5,7 @@
 package com.jblue.sistema;
 
 import com.jblue.modelo.objetos.OPersonal;
+import com.jutil.framework.LocalSession;
 
 /**
  * Esta clase define al personal de sesion actual, quien hace uso del programa,
@@ -12,7 +13,7 @@ import com.jblue.modelo.objetos.OPersonal;
  *
  * @author jp
  */
-public class Sesion {
+public class Sesion implements LocalSession {
 
     private static Sesion instancia;
 
@@ -43,6 +44,20 @@ public class Sesion {
 
     public void setUsuario(OPersonal personal) {
         this.personal = personal;
+    }
+
+    @Override
+    public boolean isOpen() {
+        return personal != null;
+    }
+
+    @Override
+    public void writer() {
+    }
+
+    @Override
+    public <T> void setUser(T user) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

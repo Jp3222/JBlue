@@ -21,7 +21,7 @@ public class AcercaDe extends VentanaSimple {
      */
     public AcercaDe() {
         initComponents();
-        
+
         StyledDocument doc = jTextPane1.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
@@ -234,7 +234,6 @@ public class AcercaDe extends VentanaSimple {
         date_update.setText("");
         prog_version.setText(AppInfo.VERSION_DEL_PROGRAMA);
         jvm_version.setText(System.getProperty("java.vm.version"));
-        System.getProperties().forEach((t, u) -> System.out.println(t + " = " + u));
     }
 
 

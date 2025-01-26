@@ -17,6 +17,7 @@
 package com.jblue.modelo.fabricas;
 
 import com.jblue.modelo.ConstBD;
+import com.jblue.modelo.dbconexion.DBConnection;
 import com.jblue.modelo.dbconexion.FuncionesBD;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OHisMovimientos;
@@ -43,8 +44,8 @@ public abstract class FabricaFuncionesBD {
         return new FuncionesBD(ConstBD.TABLAS[1], ConstBD.TABLA_USUARIOS);
     }
 
-    public static FuncionesBD<OCalles> getCalles() {
-        return new FuncionesBD(ConstBD.TABLAS[2], ConstBD.TABLA_CALLES);
+    public static DBConnection<OCalles> getCalles() {
+        return new DBConnection(ConstBD.TABLAS[2], ConstBD.TABLA_CALLES);
     }
 
     public static FuncionesBD<OTipoTomas> getTipoTomas() {

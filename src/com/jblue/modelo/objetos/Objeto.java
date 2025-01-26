@@ -49,9 +49,10 @@ public class Objeto extends AbstraccionObjeto implements ModeloObjeto {
     /**
      *
      * @return
+     * @throws java.lang.CloneNotSupportedException
      */
     @Override
-    public Objeto clone() {
+    public Objeto clone() throws CloneNotSupportedException {
         Objeto o = null;
         try {
             o = (Objeto) super.clone();

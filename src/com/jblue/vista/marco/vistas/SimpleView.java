@@ -4,16 +4,19 @@
  */
 package com.jblue.vista.marco.vistas;
 
+import com.jblue.controlador.Controller;
 import javax.swing.JPanel;
 import com.jutil.framework.ViewStates;
+
 /**
  *
  * @author jp
  */
-public abstract class SimpleView extends JPanel implements ViewStates{
+public abstract class SimpleView extends JPanel implements ViewStates {
+
+    protected Controller controller;
 
     public SimpleView() {
     }
 
-    
 }

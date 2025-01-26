@@ -17,8 +17,9 @@
 package com.jblue.util.cache;
 
 import com.jblue.util.tools.ObjectUtils;
-import com.jblue.modelo.dbconexion.FuncionesBD;
+import com.jblue.modelo.dbconexion.ModeloFuncionesDB;
 import com.jblue.modelo.objetos.Objeto;
+import com.jutil.dbcon.connection.SimpleQuerys;
 import com.jutil.jbd.conexion.Conexion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,12 +40,12 @@ public abstract class AbstractListCache<T extends Objeto> implements ModeloListC
 
     protected final ArrayList<T> cache;
     protected final Map<String, List<T>> buffer_cache;
-    protected final FuncionesBD<T> conexion;
+    protected final ModeloFuncionesDB<T> conexion;
     protected int index_min, index_max, steps;
     protected long count;
     protected int call_count;
-   
-    public AbstractListCache(int capacity, FuncionesBD conexion) {
+
+    public AbstractListCache(int capacity, ModeloFuncionesDB conexion) {
         this.cache = new ArrayList<>(capacity);
         this.buffer_cache = new HashMap<>(10);
         this.conexion = conexion;
@@ -54,29 +55,30 @@ public abstract class AbstractListCache<T extends Objeto> implements ModeloListC
 
     }
 
-    public AbstractListCache(FuncionesBD conexion) {
+    public AbstractListCache(ModeloFuncionesDB conexion) {
         this(MIN, conexion);
     }
 
     @Override
     public void loadData() {
+        System.out.println("load");
         String query = "SELECT * FROM %s WHERE id >= %s and id <= %s";
-        query = query.formatted(conexion.getTabla(), index_min, index_max);
+        query = query.formatted(conexion.getTable(), index_min, index_max);
         if (buffer_cache.containsKey(query)) {
             cache.addAll(buffer_cache.get(query));
             return;
         }
         System.out.println("leyendo base de datos...");
         try {
-            Conexion conn = conexion.getConexion();
-            ResultSet rs_data = conn.queryResult(query);
+            Conexion conn = Conexion.getInstancia();
+            ResultSet rs_data = conn.query(query);
             String[] info;
             while (rs_data.next()) {
-                info = new String[conexion.getCampos().length];
-                for (int i = 0; i < conexion.getCampos().length; i++) {
-                    info[i] = rs_data.getString(conexion.getCampos()[i]);
+                info = new String[conexion.getFields().length];
+                for (int i = 0; i < conexion.getFields().length; i++) {
+                    info[i] = rs_data.getString(conexion.getFields()[i]);
                 }
-                Objeto objeto = ObjectUtils.getObjeto(conexion.getTabla(), info);
+                Objeto objeto = ObjectUtils.getObjeto(conexion.getTable(), info);
                 cache.add((T) objeto);
             }
 
@@ -107,6 +109,7 @@ public abstract class AbstractListCache<T extends Objeto> implements ModeloListC
     @Override
     public void reLoadData() {
         dumpData();
+        dumpBuffer();
         loadData();
     }
 
@@ -140,11 +143,12 @@ public abstract class AbstractListCache<T extends Objeto> implements ModeloListC
 
     private long count_count() {
         String query = "SELECT count(id) FROM %s";
-        Conexion _conn = conexion.getConexion();
+        SimpleQuerys _conn = (SimpleQuerys) conexion.getConnection();
+
         ResultSet res_count;
         long aux_count = 0;
         try {
-            res_count = _conn.queryResult(query.formatted(conexion.getTabla()));
+            res_count = _conn.query(query.formatted(conexion.getTable()));
             if (res_count.next()) {
                 aux_count = res_count.getLong(1);
             }

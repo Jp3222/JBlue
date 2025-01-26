@@ -25,6 +25,10 @@ public class OCalles extends Objeto {
     public String getNumero() {
         return info[2];
     }
+    
+    public String getLocation(){
+        return "ToDo";
+    }
 
     @Override
     public String toString() {

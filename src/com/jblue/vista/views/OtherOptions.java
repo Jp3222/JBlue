@@ -16,11 +16,13 @@
  */
 package com.jblue.vista.views;
 
+import com.jblue.controlador.viewc.OtherOptionsController;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.sistema.DevFlags;
 import com.jblue.vista.windows.WMainMenu;
 import com.jblue.sistema.Sesion;
 import com.jblue.util.tools.ObjectUtils;
+import com.jblue.vista.marco.vistas.SimpleView;
 import com.jblue.vista.windows.AcercaDe;
 import com.jblue.vista.windows.MenuCargos;
 import javax.swing.JButton;
@@ -30,7 +32,7 @@ import javax.swing.JFrame;
  *
  * @author juan-campos
  */
-public class OtherOptions extends javax.swing.JPanel {
+public class OtherOptions extends SimpleView {
 
     private final WMainMenu father;
     private final JButton[] options;
@@ -48,15 +50,16 @@ public class OtherOptions extends javax.swing.JPanel {
         initComponents();
 
         this.profile = new MenuCargos();
-
+        controller = new OtherOptionsController(this, profile);
         this.arr_win_opt = new JFrame[]{
             profile
         };
 
         options = new JButton[]{
-            profile_button, jButton2, jButton3,
+            profile_button, config_button, tools_button,
             secretary_button, presidente_button, admin_button,
-            tesorero_button, jButton8, help_button,};
+            tesorero_button, new_button, help_button
+        };
 
         this.father = father;
 
@@ -68,15 +71,33 @@ public class OtherOptions extends javax.swing.JPanel {
 
         acerca = new AcercaDe();
 
-        profile_button.addActionListener(e -> setWIn(profile_button));
-        secretary_button.addActionListener(e -> setWIn(secretary_button));
-        tesorero_button.addActionListener(e -> setWIn(tesorero_button));
-        presidente_button.addActionListener(e -> setWIn(presidente_button));
-        admin_button.addActionListener(e -> setWIn(admin_button));
-
+        profile_button.addActionListener(controller);
+        secretary_button.addActionListener(controller);
+        tesorero_button.addActionListener(controller);
+        presidente_button.addActionListener(controller);
+        admin_button.addActionListener(controller);
         help_button.addActionListener(e -> acerca.setVisible(true));
-
         checkToUserType();
+    }
+
+    @Override
+    public void build() {
+    }
+
+    @Override
+    public void events() {
+    }
+
+    @Override
+    public void components() {
+    }
+
+    @Override
+    public void initialState() {
+    }
+
+    @Override
+    public void finalState() {
     }
 
     public void setWIn(JButton i) {
@@ -120,9 +141,9 @@ public class OtherOptions extends javax.swing.JPanel {
         tesorero_button = new javax.swing.JButton();
         presidente_button = new javax.swing.JButton();
         admin_button = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        config_button = new javax.swing.JButton();
+        tools_button = new javax.swing.JButton();
+        new_button = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(900, 700));
         setName("Menu"); // NOI18N
@@ -132,6 +153,7 @@ public class OtherOptions extends javax.swing.JPanel {
         help_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         help_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/help_x128.png"))); // NOI18N
         help_button.setText("Ayuda");
+        help_button.setActionCommand("help");
         help_button.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         help_button.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         add(help_button);
@@ -139,6 +161,7 @@ public class OtherOptions extends javax.swing.JPanel {
         profile_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         profile_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/usuario.png"))); // NOI18N
         profile_button.setText("Perfil");
+        profile_button.setActionCommand("profile");
         profile_button.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         profile_button.setName("Perfil"); // NOI18N
         profile_button.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -146,48 +169,56 @@ public class OtherOptions extends javax.swing.JPanel {
 
         secretary_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         secretary_button.setText("Secretario");
+        secretary_button.setActionCommand("secretary");
         secretary_button.setName("Secretario"); // NOI18N
         add(secretary_button);
 
         tesorero_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         tesorero_button.setText("Tesorero");
+        tesorero_button.setActionCommand("tesorero");
         tesorero_button.setName("Tesorero"); // NOI18N
         add(tesorero_button);
 
         presidente_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         presidente_button.setText("Presidente");
+        presidente_button.setActionCommand("presidente");
         presidente_button.setName("Presidente"); // NOI18N
         add(presidente_button);
 
         admin_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         admin_button.setText("Administrador");
+        admin_button.setActionCommand("admin");
         admin_button.setName("Administrador"); // NOI18N
         add(admin_button);
 
-        jButton2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jButton2.setText("Configuraciones");
-        add(jButton2);
+        config_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        config_button.setText("Configuraciones");
+        config_button.setActionCommand("config");
+        add(config_button);
 
-        jButton3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jButton3.setText("Herramientas del Software");
-        add(jButton3);
+        tools_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        tools_button.setText("Herramientas del Software");
+        tools_button.setActionCommand("tools");
+        add(tools_button);
 
-        jButton8.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jButton8.setText("Previos");
-        jButton8.setName(""); // NOI18N
-        add(jButton8);
+        new_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        new_button.setText("Previos");
+        new_button.setActionCommand("new");
+        new_button.setName(""); // NOI18N
+        add(new_button);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton admin_button;
+    private javax.swing.JButton config_button;
     private javax.swing.JButton help_button;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton8;
+    private javax.swing.JButton new_button;
     private javax.swing.JButton presidente_button;
     private javax.swing.JButton profile_button;
     private javax.swing.JButton secretary_button;
     private javax.swing.JButton tesorero_button;
+    private javax.swing.JButton tools_button;
     // End of variables declaration//GEN-END:variables
+
 }

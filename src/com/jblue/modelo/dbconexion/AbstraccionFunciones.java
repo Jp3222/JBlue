@@ -16,7 +16,6 @@
  */
 package com.jblue.modelo.dbconexion;
 
-import com.jblue.sistema.Sistema;
 import com.jblue.util.Filtros;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.tools.ObjectUtils;
@@ -44,7 +43,7 @@ public abstract class AbstraccionFunciones<T extends Objeto> implements ModeloFu
     public AbstraccionFunciones(String tabla, String[] campos) {
         this.tabla = tabla;
         this.campos = campos;
-        this.conexion = Sistema.getInstancia().getConexion();
+        this.conexion = Conexion.getInstancia();
     }
 
     @Override
@@ -118,16 +117,16 @@ public abstract class AbstraccionFunciones<T extends Objeto> implements ModeloFu
 
     @Override
     public Optional<T> get(String campos, String where) {
-        Optional<ArrayList<T>> select = select(campos, where);
-        if (!select.isEmpty() && !select.get().isEmpty()) {
-            return Optional.of(select.get().get(0));
+        ArrayList<T> select = select(campos, where);
+        if (!select.isEmpty()) {
+            return Optional.of(select.get(0));
         }
         return Optional.empty();
     }
 
     @Override
-    public Optional<ArrayList<T>> select(String campos, String where) {
-        return Optional.of(getList(campos, where));
+    public ArrayList<T> select(String campos, String where) {
+        return getList(campos, where);
 
     }
 
@@ -145,7 +144,6 @@ public abstract class AbstraccionFunciones<T extends Objeto> implements ModeloFu
      * @return un objeto de tipo "optional" el cual contiene una lista con los
      * valores solicitados por la condicion where en caso de un "SQLExcption"
      * retornara un objeto vacio
-     * @throws java.sql.SQLException
      */
     public ArrayList<T> getList(String campos, String where) {
         ArrayList<T> lista = new ArrayList<>();
@@ -184,7 +182,8 @@ public abstract class AbstraccionFunciones<T extends Objeto> implements ModeloFu
         return campos;
     }
 
-    public Conexion getConexion() {
+    @Override
+    public Conexion getConnection() {
         return conexion;
     }
 

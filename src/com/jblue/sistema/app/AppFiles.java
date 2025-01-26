@@ -22,13 +22,13 @@ public class AppFiles {
 
     public static final String DIR_PROG_MULTIMEDIA = constURL(DIR_PROG, "Multimedia");
 
-    public static final String DIR_PROG_ARC_CONFIG = constURL(DIR_PROG, "jblue.config");
+    public static final String DIR_PROG_ARC_CONFIG = constURL(DIR_PROG, "jblue.xml");
 
-    public static final String[] ARR_DIR_PROG = {
+    public static final String[] S_ALL_DIR_PROG = {
         DIR_PROG, DIR_PROG_USUARIOS, DIR_PROG_PERSONAL, DIR_PROG_MULTIMEDIA
     };
 
-    public static final String[] ARR_PROG_ARC = {
+    public static final String[] S_ARR_PROG_ARC = {
         DIR_PROG_ARC_CONFIG
     };
     
@@ -41,7 +41,7 @@ public class AppFiles {
 
     public static final String DIR_USER_PDFS = constURL(DIR_USER, "PDFs");
 
-    public static final String[] ARR_DIR_USER = {
+    public static final String[] S_ARR_DIR_USER = {
         DIR_USER, DIR_USER_PAGOS, DIR_USER_REPORTES, DIR_USER_PDFS
     };
 

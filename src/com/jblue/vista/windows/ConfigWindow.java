@@ -5,12 +5,14 @@
 package com.jblue.vista.windows;
 
 import com.jblue.controlador.winc.ConfigController;
+import com.jblue.sistema.app.AppConfig;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
+import com.jutil.framework.LaunchApp;
 import com.jutil.platf.So;
 import java.awt.CardLayout;
+import java.util.Properties;
 import javax.swing.JFileChooser;
 import javax.swing.JPasswordField;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -21,7 +23,7 @@ public final class ConfigWindow extends VentanaSimple {
 
     private final CardLayout ly;
     private final ConfigController controller;
-
+    private Properties properties;
     /**
      * Creates new form MenuConfigBD
      */
@@ -29,6 +31,7 @@ public final class ConfigWindow extends VentanaSimple {
         initComponents();
         ly = (CardLayout) root_panel.getLayout();
         controller = new ConfigController(this);
+        properties = (Properties) LaunchApp.getInstance().getResources("propierties");
         build();
     }
 
@@ -70,7 +73,15 @@ public final class ConfigWindow extends VentanaSimple {
 
     @Override
     public void initialState() {
-
+        if (!properties.isEmpty()) {
+            db_user.setText(properties.getProperty(AppConfig.DB_USER));
+            db_password.setText(properties.getProperty(AppConfig.DB_PASSWORD));
+            
+            //
+            title1_field.setText(properties.getProperty(AppConfig.TITLE1));
+            title2_field.setText(properties.getProperty(AppConfig.TITLE2));
+            icon_image_field.setText(properties.getProperty(AppConfig.LOGIN_ICON));
+        }
     }
 
     @Override
@@ -91,11 +102,11 @@ public final class ConfigWindow extends VentanaSimple {
         jLabel15 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        user = new javax.swing.JPasswordField();
+        db_user = new javax.swing.JPasswordField();
         show_user = new javax.swing.JCheckBox();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        password = new javax.swing.JPasswordField();
+        db_password = new javax.swing.JPasswordField();
         show_password = new javax.swing.JCheckBox();
         jPanel6 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -172,9 +183,9 @@ public final class ConfigWindow extends VentanaSimple {
         jLabel1.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel1.add(jLabel1, java.awt.BorderLayout.WEST);
 
-        user.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        user.setText("usuario");
-        jPanel1.add(user, java.awt.BorderLayout.CENTER);
+        db_user.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        db_user.setText("usuario");
+        jPanel1.add(db_user, java.awt.BorderLayout.CENTER);
 
         show_user.setActionCommand("show_user");
         show_user.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -194,10 +205,10 @@ public final class ConfigWindow extends VentanaSimple {
         jLabel2.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel4.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        password.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        password.setText("contraseña");
-        password.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel4.add(password, java.awt.BorderLayout.CENTER);
+        db_password.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        db_password.setText("contraseña");
+        db_password.setPreferredSize(new java.awt.Dimension(100, 50));
+        jPanel4.add(db_password, java.awt.BorderLayout.CENTER);
 
         show_password.setActionCommand("show_password");
         show_password.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -356,13 +367,13 @@ public final class ConfigWindow extends VentanaSimple {
 
         jLabel13.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel13.setText("Hora");
+        jLabel13.setText("Hora: ");
         jPanel10.add(jLabel13);
         jPanel10.add(jSpinner1);
 
         jLabel14.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel14.setText("Minuto");
+        jLabel14.setText("Minuto: ");
         jPanel10.add(jLabel14);
         jPanel10.add(jSpinner2);
 
@@ -387,13 +398,13 @@ public final class ConfigWindow extends VentanaSimple {
 
         jLabel25.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel25.setText("Hora");
+        jLabel25.setText("Hora: ");
         jPanel16.add(jLabel25);
         jPanel16.add(jSpinner3);
 
         jLabel26.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel26.setText("Minuto");
+        jLabel26.setText("Minuto: ");
         jPanel16.add(jLabel26);
         jPanel16.add(jSpinner4);
 
@@ -420,6 +431,8 @@ public final class ConfigWindow extends VentanaSimple {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPasswordField db_password;
+    private javax.swing.JPasswordField db_user;
     private javax.swing.JTextField host;
     private javax.swing.JTextField icon_image_field;
     private javax.swing.JLabel jLabel1;
@@ -471,7 +484,6 @@ public final class ConfigWindow extends VentanaSimple {
     private javax.swing.JComboBox<String> motor;
     private javax.swing.JTextField name_db;
     private javax.swing.JPanel option_panel;
-    private javax.swing.JPasswordField password;
     private javax.swing.JTextField port;
     private javax.swing.JPanel program_info_panel;
     private javax.swing.JPanel root_panel;
@@ -482,7 +494,6 @@ public final class ConfigWindow extends VentanaSimple {
     private javax.swing.JButton test_db_button;
     private javax.swing.JTextField title1_field;
     private javax.swing.JTextField title2_field;
-    private javax.swing.JPasswordField user;
     // End of variables declaration//GEN-END:variables
 
     public void nextView() {
@@ -494,19 +505,19 @@ public final class ConfigWindow extends VentanaSimple {
     }
 
     public JPasswordField getUser() {
-        return user;
+        return db_user;
     }
 
     public JPasswordField getPassword() {
-        return password;
+        return db_password;
     }
 
     public String getSUser() {
-        return String.valueOf(user.getPassword());
+        return String.valueOf(db_user.getPassword());
     }
 
     public String getSPassword() {
-        return String.valueOf(password.getPassword());
+        return String.valueOf(db_password.getPassword());
     }
 
     public String getSUrl() {

@@ -20,8 +20,7 @@ public class JBlue {
      * @throws java.lang.InterruptedException
      */
     public static void main(String... args) throws InterruptedException {
-        
         LaunchApp.getInstance(new Sistema()).doWhileRun();
-    
+
     }
 }

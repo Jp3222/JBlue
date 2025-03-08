@@ -16,8 +16,8 @@
  */
 package com.jblue.modelo.fabricas;
 
-import com.jblue.modelo.ConstBD;
-import com.jblue.modelo.dbconexion.DBConnection;
+import com.jblue.modelo.constdb.Const;
+import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTipoTomas;
@@ -29,20 +29,20 @@ import com.jblue.modelo.objetos.OUsuarios;
  */
 public class FactoryConnection {
 
-    public static DBConnection<OPersonal> getEmployees() {
-        return new DBConnection(ConstBD.TABLAS[0], ConstBD.TABLA_PERSONAL);
+    public static JDBConnection<OPersonal> getEmployees() {
+        return new JDBConnection(Const.EMPLOYEES);
     }
 
-    public static DBConnection<OUsuarios> getUser() {
-        return new DBConnection(ConstBD.TABLAS[1], ConstBD.TABLA_USUARIOS);
+    public static JDBConnection<OUsuarios> getUser() {
+        return new JDBConnection(Const.USER);
     }
 
-    public static DBConnection<OCalles> getStreets() {
-        return new DBConnection(ConstBD.TABLAS[2], ConstBD.TABLA_CALLES);
+    public static JDBConnection<OCalles> getStreets() {
+        return new JDBConnection(Const.STREETS);
     }
 
-    public static DBConnection<OTipoTomas> getWaterIntakes() {
-        return new DBConnection(ConstBD.TABLAS[3], ConstBD.TABLA_TIPOS_DE_TOMAS);
+    public static JDBConnection<OTipoTomas> getWaterIntakes() {
+        return new JDBConnection(Const.WATER_INTAKES);
     }
 
 }

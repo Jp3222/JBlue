@@ -16,15 +16,22 @@
  */
 package com.jblue.controlador.viewc;
 
+import com.jblue.controlador.CPagos;
 import com.jblue.controlador.Controller;
+import com.jblue.controlador.compc.ComponentController;
 import com.jblue.modelo.fabricas.FactoryCache;
+import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.sistema.Sesion;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.util.tools.GraphicsUtils;
 import com.jblue.vista.components.CVisorUsuario;
 import com.jblue.vista.views.ShopCartView;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -60,7 +67,7 @@ public class ShopCartController extends Controller {
             case "info" ->
                 info();
             case "all_months" ->
-                allMonths();
+                allMonths((JCheckBox) e.getSource());
             default ->
                 defaultCase(e.getActionCommand(), null, -1);
         }
@@ -79,7 +86,24 @@ public class ShopCartController extends Controller {
     }
 
     void payments() {
+        if (view.getObjectSearch()==null) {
+            JOptionPane.showMessageDialog(view, "Usuario no valido", "Operacion Erronea", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        String in = JOptionPane.showInputDialog(view, "Dinero Ingresado", "Dinero ingresado", JOptionPane.INFORMATION_MESSAGE);
+        double dinero_in = Double.parseDouble(in);
 
+        double deuda = 0;
+        
+        if (dinero_in < deuda) {
+            return;
+        }
+        
+        OPersonal personal = Sesion.getInstancia().getUsuario();
+        OUsuarios usuario = view.getObjectSearch();
+        String[] meses = view.getSelectMonth();
+        CPagos.getInstancia().regPagoXServicio(personal, usuario, meses, 0);
     }
 
     void cancel() {
@@ -99,19 +123,23 @@ public class ShopCartController extends Controller {
     }
 
     private void surcharges() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     private void latePayments() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     private void otherPayments() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    private void allMonths() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private void allMonths(JCheckBox all) {
+
+        SwingUtilities.invokeLater(() -> {
+            for (Component i : view.getMonthPaidList()) {
+                if (i instanceof JCheckBox o) {
+                    o.setSelected(o.isEnabled() && all.isSelected());
+                }
+            }
+        });
     }
 
 }

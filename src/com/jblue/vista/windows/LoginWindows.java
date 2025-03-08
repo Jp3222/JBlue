@@ -7,13 +7,15 @@ package com.jblue.vista.windows;
 import com.jblue.controlador.winc.LoginController;
 import com.jblue.sistema.app.AppConfig;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
+import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
-import com.jutil.jbd.conexion.Conexion;
 import com.jutil.swingw.wrappers.TextFieldWrapper;
+import java.awt.Image;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 import javax.swing.JCheckBox;
@@ -60,7 +62,7 @@ public class LoginWindows extends VentanaSimple {
         this.addWindowListener(controller);
         user.addKeyListener(controller);
         password.addKeyListener(controller);
-        
+
         for (TextFieldWrapper envjtf : FIELDS) {
             envjtf.borrarAlClick();
             envjtf.borrarAlEscribir();
@@ -89,11 +91,21 @@ public class LoginWindows extends VentanaSimple {
             Properties p = (Properties) LaunchApp.getInstance().getResources("propierties");
             title1_field.setText(p.getProperty(AppConfig.TITLE1));
             title2_field.setText(p.getProperty(AppConfig.TITLE2));
-            
+            String icon_path = p.getProperty(AppConfig.LOGIN_ICON);
+            if (!icon_path.isBlank()) {
+                ImageIcon i = new ImageIcon(icon_path);
+                Image icon = i.getImage().getScaledInstance(
+                        icon_image.getPreferredSize().width,
+                        icon_image.getPreferredSize().height,
+                        Image.SCALE_DEFAULT
+                );
+                i.setImage(icon);
+                icon_image.setIcon(i);
+            }
             //
-            Conexion instancia = Conexion.getInstancia();
+            DBConnection instancia = DBConnection.getInstance();
             String estado = "Estado ";
-            estado = estado.concat(instancia.isConectado() ? "Conectado" : "Desconectado");
+            estado = estado.concat(!instancia.getConnection().isClosed() ? "Conectado" : "Desconectado");
             db_status.setText(estado);
         } catch (SQLException ex) {
             Logger.getLogger(LoginWindows.class.getName()).log(Level.SEVERE, null, ex);

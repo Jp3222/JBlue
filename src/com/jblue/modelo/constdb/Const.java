@@ -24,22 +24,26 @@ public class Const {
 
     private static final String ID = "id";
 
-    public static final Table USER = new Table("user",
+    public static final Table USER = new Table("users",
             ID, "first_name", "last_name1", "last_name2",
-            "street", "number_house", "water_intakes", "user_type",
+        "street", "house_number", "water_intakes", "user_type",
             "status", "date_register"
     );
 
-    public static final Table STREETS = new Table("streeds",
-            ID, "street_name"
+    public static final Table STREETS = new Table("street",
+            ID, "name"
     );
 
     public static final Table WATER_INTAKES = new Table("water_intakes",
-            ID, "type", "price", "surcharges", "date_update"
+            ID, "type", "price", "surcharge", "date_update"
     );
 
     public static final Table EMPLOYEES = new Table("employees", new String[]{
         ID, "first_name", "last_names", "employee_type",
         "status", "user", "password", "date_register", "end_date"
+    });
+    
+    public static final Table SERVICE_PAYMENTS = new Table("service_payments", new String[]{
+        "id", "employee", "user", "month", "status", "date_register"
     });
 }

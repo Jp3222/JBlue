@@ -16,10 +16,11 @@
  */
 package com.jblue.util.objetos.pagos;
 
-import com.jblue.modelo.dbconexion.FuncionesBD;
+import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.modelo.fabricas.FabricaFuncionesBD;
+import com.jutil.framework.LaunchApp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,12 +40,12 @@ public abstract class AbstraccionCPagos implements ModeloCPagos {
     protected String[] meses_pagados;
     protected double dinero_ingresado;
     protected double dinero_sobrante;
-    protected FuncionesBD conexion;
+    protected JDBConnection conexion;
 
     public AbstraccionCPagos(int tipo_pago) {
-        conexion = switch (tipo_pago) {
+        conexion = (JDBConnection) switch (tipo_pago) {
             case 1:
-                yield FabricaFuncionesBD.getPagosXRecargos();
+                yield LaunchApp.getInstance().getResources("connnection");
             case 2:
                 yield FabricaFuncionesBD.getPagosXOtros();
             default:

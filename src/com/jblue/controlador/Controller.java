@@ -16,6 +16,7 @@
  */
 package com.jblue.controlador;
 
+import com.jblue.controlador.compc.ComponentController;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

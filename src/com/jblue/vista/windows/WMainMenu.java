@@ -157,7 +157,7 @@ public final class WMainMenu extends VentanaSimple {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
-        jPanel1 = new javax.swing.JPanel();
+        left_panel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         tools_button = new javax.swing.JButton();
         label_title = new javax.swing.JLabel();
@@ -204,8 +204,8 @@ public final class WMainMenu extends VentanaSimple {
         setMinimumSize(new java.awt.Dimension(1000, 500));
         getContentPane().setLayout(new java.awt.BorderLayout(5, 5));
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(300, 700));
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        left_panel.setPreferredSize(new java.awt.Dimension(300, 700));
+        left_panel.setLayout(new java.awt.BorderLayout());
 
         jPanel3.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel3.setLayout(new java.awt.BorderLayout());
@@ -224,7 +224,7 @@ public final class WMainMenu extends VentanaSimple {
         menu_button.setPreferredSize(new java.awt.Dimension(50, 50));
         jPanel3.add(menu_button, java.awt.BorderLayout.LINE_END);
 
-        jPanel1.add(jPanel3, java.awt.BorderLayout.PAGE_START);
+        left_panel.add(jPanel3, java.awt.BorderLayout.PAGE_START);
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
@@ -322,16 +322,16 @@ public final class WMainMenu extends VentanaSimple {
 
         jPanel4.add(jPanel5, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel4, java.awt.BorderLayout.CENTER);
+        left_panel.add(jPanel4, java.awt.BorderLayout.CENTER);
 
         exit_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerrar-sesion.png"))); // NOI18N
         exit_button.setText("Salir");
         exit_button.setToolTipText("Salir");
         exit_button.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         exit_button.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel1.add(exit_button, java.awt.BorderLayout.SOUTH);
+        left_panel.add(exit_button, java.awt.BorderLayout.SOUTH);
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_START);
+        getContentPane().add(left_panel, java.awt.BorderLayout.LINE_START);
 
         center_panel.setLayout(new java.awt.BorderLayout());
 
@@ -365,7 +365,6 @@ public final class WMainMenu extends VentanaSimple {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
@@ -379,6 +378,7 @@ public final class WMainMenu extends VentanaSimple {
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel label_title;
+    private javax.swing.JPanel left_panel;
     private javax.swing.JButton menu_button;
     private javax.swing.JButton tools_button;
     private javax.swing.JPanel views_panel;

@@ -111,7 +111,7 @@ public class AbstractDBConnection<T extends Objeto> implements ModeloFuncionesDB
             if (_fields.length == 0) {
                 return list;
             }
-            ResultSet select = connection.select(table, campos, where);
+            ResultSet select = connection.select(campos, table, where);
             String[] a = new String[fields.length];
             while (select.next()) {
                 for (int i = 0; i < _fields.length; i++) {
@@ -128,11 +128,12 @@ public class AbstractDBConnection<T extends Objeto> implements ModeloFuncionesDB
     @Override
     public Optional<T> get(String campos, String where) {
         try {
-            ResultSet select = connection.select(table, campos, where);
+            ResultSet select = connection.select(campos, table, where);
             String[] a = new String[fields.length];
             if (select.next()) {
-                for (int i = 0; i < fields.length; i++) {
-                    a[i] = select.getNString(i);
+                for (int i = 1; i < fields.length; i++) {
+                    a[i] = select.getString(i);
+                    System.out.println(a[i]);
                 }
                 return Optional.of((T) ObjectUtils.getObjeto(table, a.clone()));
             }

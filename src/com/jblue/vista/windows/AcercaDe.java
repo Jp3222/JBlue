@@ -14,46 +14,46 @@ import javax.swing.text.StyledDocument;
  *
  * @author jp
  */
-public class AcercaDe extends VentanaSimple {
+public final class AcercaDe extends VentanaSimple {
 
     /**
      * Creates new form AcercaDE
      */
     public AcercaDe() {
         initComponents();
+        build();
 
-        StyledDocument doc = jTextPane1.getStyledDocument();
-        SimpleAttributeSet center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-        doc.setParagraphAttributes(0, doc.getLength(), center, false);
-        //jTextPane1.set
-        //
-        progInformation();
     }
 
     @Override
     public void build() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        components();
+        events();
+        initComponents();
+        finalState();
     }
 
     @Override
     public void events() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void components() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        StyledDocument doc = jTextPane1.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
     }
 
     @Override
     public void initialState() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void finalState() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        date_update.setText("");
+        prog_version.setText(AppInfo.VERSION_DEL_PROGRAMA);
+        jvm_version.setText(System.getProperty("java.vm.version"));
     }
 
     /**
@@ -150,7 +150,7 @@ public class AcercaDe extends VentanaSimple {
 
         jTabbedPane1.addTab("JBlue", panel_jblue);
 
-        panel_creditos.setLayout(new java.awt.GridLayout(7, 1));
+        panel_creditos.setLayout(new java.awt.GridLayout(12, 1));
 
         jPanel10.setLayout(new java.awt.BorderLayout(5, 5));
 
@@ -187,7 +187,7 @@ public class AcercaDe extends VentanaSimple {
 
         jTabbedPane1.addTab("Creditos", panel_creditos);
 
-        panel_app_info.setLayout(new java.awt.GridLayout(6, 0));
+        panel_app_info.setLayout(new java.awt.GridLayout(12, 0));
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -229,12 +229,6 @@ public class AcercaDe extends VentanaSimple {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    public void progInformation() {
-        date_update.setText("");
-        prog_version.setText(AppInfo.VERSION_DEL_PROGRAMA);
-        jvm_version.setText(System.getProperty("java.vm.version"));
-    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

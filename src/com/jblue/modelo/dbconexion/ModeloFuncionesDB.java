@@ -17,7 +17,7 @@
 package com.jblue.modelo.dbconexion;
 
 import com.jblue.modelo.objetos.Objeto;
-import com.jutil.dbcon.connection.JConnection;
+import com.jutil.dbcon.cn.JConnection;
 import java.util.ArrayList;
 import java.util.Optional;
 

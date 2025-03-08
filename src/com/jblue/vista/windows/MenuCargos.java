@@ -18,7 +18,6 @@ package com.jblue.vista.windows;
 
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.sistema.Sesion;
-import com.jblue.util.MediaUtils;
 import com.jblue.vista.marco.OptionMenu;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
 import com.jblue.vista.views.options.VContabilidad;
@@ -28,15 +27,15 @@ import com.jblue.vista.views.options.VPerfil;
 import com.jblue.vista.views.options.VPersonal;
 import com.jblue.vista.views.options.VSuministros;
 import java.awt.CardLayout;
-import java.io.File;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 /**
  *
  * @author jp
  */
-public class MenuCargos extends VentanaSimple {
+public final class MenuCargos extends VentanaSimple {
 
     /**
      * Creates new form MenuCargos
@@ -49,7 +48,7 @@ public class MenuCargos extends VentanaSimple {
         view_perfil = new VPerfil();
         view_personal = new VPersonal();
         view_su = new VSuministros();
-        ly = (CardLayout) panel_central.getLayout();
+        ly = (CardLayout) root_panel.getLayout();
 
         default_icon = user_photo.getIcon();
 
@@ -88,12 +87,12 @@ public class MenuCargos extends VentanaSimple {
 
     @Override
     public void components() {
-        panel_central.add(view_contabilidad, view_contabilidad.getName());
-        panel_central.add(view_docs, view_docs.getName());
-        panel_central.add(view_payments, view_payments.getName());
-        panel_central.add(view_perfil, view_perfil.getName());
-        panel_central.add(view_personal, view_personal.getName());
-        panel_central.add(view_su, view_su.getName());
+        root_panel.add(view_contabilidad, view_contabilidad.getName());
+        root_panel.add(view_docs, view_docs.getName());
+        root_panel.add(view_payments, view_payments.getName());
+        root_panel.add(view_perfil, view_perfil.getName());
+        root_panel.add(view_personal, view_personal.getName());
+        root_panel.add(view_su, view_su.getName());
     }
 
     @Override
@@ -113,10 +112,10 @@ public class MenuCargos extends VentanaSimple {
     public void finalState() {
         OPersonal usuario = Sesion.getInstancia().getUsuario();
         name_user.setText(usuario.toString());
-        File userPhoto = MediaUtils.getUserPhoto(usuario.getId(), usuario.toString().concat("jpg"));
-        if (userPhoto != null) {
-            user_photo.setIcon(new ImageIcon(userPhoto.getAbsolutePath()));
-        }
+       // File userPhoto = MediaUtils.getUserPhoto(usuario.getId(), usuario.toString().concat("jpg"));
+//        if (userPhoto != null) {
+//            user_photo.setIcon(new ImageIcon(userPhoto.getAbsolutePath()));
+//        }
 
     }
 
@@ -124,13 +123,13 @@ public class MenuCargos extends VentanaSimple {
         int r = 0;
         switch (menu) {
             case "Perfil" ->
-                showPerfil();
+                addOptions(root_panel, Perfil);
             case "Presidente" ->
-                showPresidente();
+                addOptions(root_panel, Presidente);
             case "Tesorero" ->
-                showTesorero();
+                addOptions(root_panel, Tesorero);
             case "Administrador" ->
-                showAdministrador();
+                addOptions(root_panel, Administrador);
             default ->
                 r = -1;
         }
@@ -138,33 +137,37 @@ public class MenuCargos extends VentanaSimple {
         return r;
     }
 
-    private void showTesorero() {
+    public void addOptions(JPanel panel, OptionMenu... options) {
         initialState();
-        for (OptionMenu i : Tesorero) {
+        for (OptionMenu i : options) {
             i.setEvenOption((e) -> {
-                ly.show(panel_central, i.getOption().getName());
+                ly.show(panel, i.getOption().getName());
             });
             panel_option.add(i.getOption());
         }
+        ly.show(panel, ((JPanel) options[0]).getName());
+    }
+
+    private void showTesorero() {
     }
 
     private void showPerfil() {
         initialState();
         for (OptionMenu i : Perfil) {
             i.setEvenOption((e) -> {
-                ly.show(panel_central, i.getOption().getName());
+                ly.show(center_panel, i.getOption().getName());
             });
             panel_option.add(i.getOption());
         }
+        ly.addLayoutComponent(center_panel, ((JComponent) Perfil[0]).getName());
     }
 
     private void showPresidente() {
         initialState();
         for (OptionMenu i : Presidente) {
             i.setEvenOption((e) -> {
-                ly.show(panel_central, i.getOption().getName());
+                ly.show(center_panel, i.getOption().getName());
             });
-            panel_option.add(i.getOption());
             panel_option.add(i.getOption());
         }
     }
@@ -173,7 +176,7 @@ public class MenuCargos extends VentanaSimple {
         initialState();
         for (OptionMenu i : Administrador) {
             i.setEvenOption((e) -> {
-                ly.show(panel_central, i.getOption().getName());
+                ly.show(center_panel, i.getOption().getName());
             });
             panel_option.add(i.getOption());
             panel_option.add(i.getOption());
@@ -189,34 +192,44 @@ public class MenuCargos extends VentanaSimple {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        left_pane = new javax.swing.JPanel();
         name_user = new javax.swing.JLabel();
         user_photo = new javax.swing.JLabel();
         panel_option = new javax.swing.JPanel();
-        panel_central = new javax.swing.JPanel();
+        center_panel = new javax.swing.JPanel();
+        jSeparator1 = new javax.swing.JSeparator();
+        root_panel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 500));
         setPreferredSize(new java.awt.Dimension(1000, 700));
 
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        left_pane.setLayout(new java.awt.BorderLayout());
 
         name_user.setPreferredSize(new java.awt.Dimension(41, 60));
-        jPanel1.add(name_user, java.awt.BorderLayout.PAGE_START);
+        left_pane.add(name_user, java.awt.BorderLayout.PAGE_START);
 
         user_photo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         user_photo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/img2.png"))); // NOI18N
         user_photo.setPreferredSize(new java.awt.Dimension(250, 200));
-        jPanel1.add(user_photo, java.awt.BorderLayout.CENTER);
+        left_pane.add(user_photo, java.awt.BorderLayout.CENTER);
 
         panel_option.setPreferredSize(new java.awt.Dimension(250, 400));
         panel_option.setLayout(new java.awt.GridLayout(8, 0));
-        jPanel1.add(panel_option, java.awt.BorderLayout.SOUTH);
+        left_pane.add(panel_option, java.awt.BorderLayout.SOUTH);
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_START);
+        getContentPane().add(left_pane, java.awt.BorderLayout.LINE_START);
 
-        panel_central.setLayout(new java.awt.CardLayout());
-        getContentPane().add(panel_central, java.awt.BorderLayout.CENTER);
+        center_panel.setLayout(new java.awt.BorderLayout());
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator1.setPreferredSize(new java.awt.Dimension(10, 10));
+        center_panel.add(jSeparator1, java.awt.BorderLayout.WEST);
+
+        root_panel.setLayout(new java.awt.CardLayout());
+        center_panel.add(root_panel, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(center_panel, java.awt.BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);
@@ -224,10 +237,12 @@ public class MenuCargos extends VentanaSimple {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel center_panel;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPanel left_pane;
     private javax.swing.JLabel name_user;
-    private javax.swing.JPanel panel_central;
     private javax.swing.JPanel panel_option;
+    private javax.swing.JPanel root_panel;
     private javax.swing.JLabel user_photo;
     // End of variables declaration//GEN-END:variables
     //Views

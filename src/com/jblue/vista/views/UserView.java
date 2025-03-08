@@ -89,8 +89,13 @@ public final class UserView extends DBView implements DBValues {
         search_button.addActionListener(table_controller);
         ComboBoxController<OTipoTomas> c1 = new ComboBoxController(water_intakes, FactoryCache.TIPO_DE_TOMAS);
         ComboBoxController<OTipoTomas> c2 = new ComboBoxController(street, FactoryCache.CALLES);
+        ComboBoxController<OTipoTomas> c3 = new ComboBoxController(water_intakes_filter, FactoryCache.TIPO_DE_TOMAS);
+        ComboBoxController<OTipoTomas> c4 = new ComboBoxController(street_filter, FactoryCache.CALLES);
+
         c1.loadData();
         c2.loadData();
+        c3.loadData();
+        c4.loadData();
     }
 
     @Override
@@ -179,7 +184,7 @@ public final class UserView extends DBView implements DBValues {
         street_filter = new javax.swing.JComboBox<>();
         jPanel26 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
-        filtro_toma = new javax.swing.JComboBox<>();
+        water_intakes_filter = new javax.swing.JComboBox<>();
         jPanel28 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         filtro_estado = new javax.swing.JComboBox<>();
@@ -214,9 +219,9 @@ public final class UserView extends DBView implements DBValues {
         setLayout(new java.awt.BorderLayout(5, 5));
 
         north_panel.setPreferredSize(new java.awt.Dimension(900, 30));
-        north_panel.setLayout(new java.awt.BorderLayout(5, 5));
+        north_panel.setLayout(new java.awt.BorderLayout(10, 10));
 
-        np_cp_center.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
+        np_cp_center.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
 
         register_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         register_button.setText("Registar");
@@ -249,7 +254,7 @@ public final class UserView extends DBView implements DBValues {
 
         add(north_panel, java.awt.BorderLayout.NORTH);
 
-        root_panel.setLayout(new java.awt.CardLayout());
+        root_panel.setLayout(new java.awt.CardLayout(10, 10));
 
         register_panel.setName("register"); // NOI18N
         register_panel.setLayout(new java.awt.BorderLayout());
@@ -439,10 +444,10 @@ public final class UserView extends DBView implements DBValues {
 
         register_panel.add(center_panel, java.awt.BorderLayout.CENTER);
 
-        option_panel.setLayout(new java.awt.GridLayout(2, 0));
+        option_panel.setLayout(new java.awt.GridLayout(2, 0, 10, 10));
 
         jPanel13.setPreferredSize(new java.awt.Dimension(500, 40));
-        jPanel13.setLayout(new java.awt.GridLayout(1, 3));
+        jPanel13.setLayout(new java.awt.GridLayout(1, 3, 10, 10));
 
         save_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         save_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
@@ -517,8 +522,8 @@ public final class UserView extends DBView implements DBValues {
         jLabel13.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel26.add(jLabel13, java.awt.BorderLayout.WEST);
 
-        filtro_toma.setName("ttoma"); // NOI18N
-        jPanel26.add(filtro_toma, java.awt.BorderLayout.CENTER);
+        water_intakes_filter.setName("ttoma"); // NOI18N
+        jPanel26.add(water_intakes_filter, java.awt.BorderLayout.CENTER);
 
         jPanel22.add(jPanel26);
 
@@ -677,7 +682,6 @@ public final class UserView extends DBView implements DBValues {
     private javax.swing.JCheckBox filtro_is_consumidor;
     private javax.swing.JCheckBox filtro_is_titular;
     private javax.swing.JButton filtro_quitar;
-    private javax.swing.JComboBox<OTipoTomas> filtro_toma;
     private javax.swing.JCheckBox filtros;
     private javax.swing.JTextField house_numer;
     private javax.swing.JButton jButton1;
@@ -758,6 +762,7 @@ public final class UserView extends DBView implements DBValues {
     private javax.swing.JButton update_button;
     private javax.swing.JComboBox<String> user_state;
     private javax.swing.JComboBox<OTipoTomas> water_intakes;
+    private javax.swing.JComboBox<OTipoTomas> water_intakes_filter;
     // End of variables declaration//GEN-END:variables
 
     public OUsuarios getObject() {

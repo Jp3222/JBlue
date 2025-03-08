@@ -35,8 +35,8 @@
       </Constraints>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout">
-        <Property name="horizontalGap" type="int" value="5"/>
-        <Property name="verticalGap" type="int" value="5"/>
+        <Property name="horizontalGap" type="int" value="10"/>
+        <Property name="verticalGap" type="int" value="10"/>
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JToggleButton" name="jToggleButton2">
@@ -66,7 +66,9 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
             <Property name="columns" type="int" value="0"/>
+            <Property name="horizontalGap" type="int" value="10"/>
             <Property name="rows" type="int" value="1"/>
+            <Property name="verticalGap" type="int" value="10"/>
           </Layout>
           <SubComponents>
             <Component class="javax.swing.JButton" name="register_button">
@@ -281,14 +283,18 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                 <Property name="columns" type="int" value="0"/>
+                <Property name="horizontalGap" type="int" value="10"/>
                 <Property name="rows" type="int" value="2"/>
+                <Property name="verticalGap" type="int" value="10"/>
               </Layout>
               <SubComponents>
                 <Container class="javax.swing.JPanel" name="jPanel3">
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                     <Property name="columns" type="int" value="3"/>
+                    <Property name="horizontalGap" type="int" value="10"/>
                     <Property name="rows" type="int" value="1"/>
+                    <Property name="verticalGap" type="int" value="10"/>
                   </Layout>
                   <SubComponents>
                     <Component class="javax.swing.JButton" name="save_button">

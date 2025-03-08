@@ -28,15 +28,15 @@ import java.util.logging.Logger;
  * @author juan-campos
  * @param <T>
  */
-public class DBConnection<T extends Objeto> extends AbstractDBConnection<T> {
+public class JDBConnection<T extends Objeto> extends AbstractDBConnection<T> {
 
     private Table object_table;
 
-    public DBConnection(String table, String[] fields) {
+    public JDBConnection(String table, String[] fields) {
         super(table, fields);
     }
 
-    public DBConnection(Table table) {
+    public JDBConnection(Table table) {
         super(table.getTable(), table.getFields());
     }
 
@@ -45,7 +45,7 @@ public class DBConnection<T extends Objeto> extends AbstractDBConnection<T> {
         try {
             out = connection.insert(table, fields, FormatoBD.valuesFormat(values));
         } catch (SQLException ex) {
-            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JDBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
         return out;
     }

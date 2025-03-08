@@ -72,7 +72,7 @@ class PagosXServicio extends AbstraccionCPagos {
         sb.append(getResgitro(meses_pagados[i], String.valueOf(toma.getCosto())));
         movimientos.put(DATOS, sb.toString());
         movimientos.put(ESTADO, VALOR_CORRECTO);
-        conexion.insertCol(sb);
+        //conexion.insertCol(sb);
         return movimientos;
     }
 }

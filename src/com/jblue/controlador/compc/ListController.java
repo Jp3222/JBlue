@@ -79,7 +79,7 @@ public class ListController<T extends Objeto> extends ComponentController<T> {
         }
 
         List<T> list = memo_cache.getList(o -> {
-            return Filtros
+            return o.getId().equals(search_text) || Filtros
                     .limpiar(o.toString())
                     .contains(search_text);
         });
@@ -101,5 +101,4 @@ public class ListController<T extends Objeto> extends ComponentController<T> {
             view.setScreenListInfo();
         }
     }
-
 }

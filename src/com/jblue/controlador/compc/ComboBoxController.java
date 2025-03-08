@@ -67,5 +67,4 @@ public class ComboBoxController<T extends Objeto> extends ComponentController<T>
     public void actionPerformed(ActionEvent ae) {
 
     }
-
 }

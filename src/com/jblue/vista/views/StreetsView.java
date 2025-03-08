@@ -23,7 +23,6 @@ import com.jblue.modelo.fabricas.FactoryCache;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
-import com.jblue.util.FormatoBD;
 import com.jblue.vista.marco.DBValues;
 import com.jblue.vista.marco.vistas.DBView;
 import com.jutil.swingw.modelos.JTableModel;
@@ -36,7 +35,6 @@ import javax.swing.JTextField;
  *
  * @author juan-campos
  */
-
 public final class StreetsView extends DBView implements DBValues {
 
     private OCalles object_search;
@@ -89,6 +87,8 @@ public final class StreetsView extends DBView implements DBValues {
         maps_button.addActionListener(controller);
         //
         objects_table.addMouseListener(table_controller);
+        //
+
     }
 
     @Override
@@ -170,14 +170,14 @@ public final class StreetsView extends DBView implements DBValues {
         setLayout(new java.awt.BorderLayout());
 
         tools_panel.setPreferredSize(new java.awt.Dimension(900, 30));
-        tools_panel.setLayout(new java.awt.BorderLayout(5, 5));
+        tools_panel.setLayout(new java.awt.BorderLayout(10, 10));
 
         jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
         jToggleButton2.setPreferredSize(new java.awt.Dimension(100, 30));
         jToggleButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/desbloquear.png"))); // NOI18N
         tools_panel.add(jToggleButton2, java.awt.BorderLayout.WEST);
 
-        jPanel15.setLayout(new java.awt.GridLayout(1, 0));
+        jPanel15.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
 
         register_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         register_button.setText("Registrar Calle");
@@ -197,7 +197,7 @@ public final class StreetsView extends DBView implements DBValues {
 
         add(tools_panel, java.awt.BorderLayout.NORTH);
 
-        root_panel.setLayout(new java.awt.CardLayout());
+        root_panel.setLayout(new java.awt.CardLayout(10, 10));
 
         register_panel.setName("register"); // NOI18N
         register_panel.setLayout(new java.awt.BorderLayout());
@@ -246,9 +246,9 @@ public final class StreetsView extends DBView implements DBValues {
         register_panel.add(jPanel1, java.awt.BorderLayout.CENTER);
 
         option_panel.setPreferredSize(new java.awt.Dimension(500, 80));
-        option_panel.setLayout(new java.awt.GridLayout(2, 0));
+        option_panel.setLayout(new java.awt.GridLayout(2, 0, 10, 10));
 
-        jPanel2.setLayout(new java.awt.GridLayout(1, 3));
+        jPanel2.setLayout(new java.awt.GridLayout(1, 3, 10, 10));
 
         save_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         save_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
@@ -448,7 +448,12 @@ public final class StreetsView extends DBView implements DBValues {
 
     @Override
     public boolean isValuesOk() {
-        return !Filtros.isNullOrBlank(streed_name_field.getText());
+        boolean rt = Filtros.isNullOrBlank(streed_name_field.getText());
+        String mess = "El campo %s no es valido";
+        if (rt) {
+            JOptionPane.showMessageDialog(this, mess, "Campos Validos", JOptionPane.ERROR_MESSAGE);
+        }
+        return !rt;
     }
 
     @Override
@@ -457,10 +462,6 @@ public final class StreetsView extends DBView implements DBValues {
         return new String[]{
             _name
         };
-    }
-
-    public Objeto getObject() {
-        return object_search;
     }
 
     @Override

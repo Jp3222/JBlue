@@ -16,13 +16,11 @@
  */
 package com.jblue.controlador;
 
-import com.jblue.modelo.ConstBD;
-import com.jblue.sistema.Sistema;
+import com.jblue.modelo.constdb.Const;
 import com.jblue.util.tiempo.Fecha;
-import com.jutil.jbd.conexion.Conexion;
+import com.jutil.dbcon.connection.DBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,31 +47,32 @@ public class Contabilidad {
     }
 
     public static double getSaldo(int dia, int mes, int año) {
-        StringBuilder query = new StringBuilder(20);
-        if (dia > 0) {
-            query.append("dia = ").append(dia);
-        }
-
-        if (mes > 0) {
-            if (dia > 0) {
-                query.append(" and ");
-            }
-            query.append("mes = '").append(mes).append("'");
-        }
-
-        if (año > 0) {
-            if (mes > 0) {
-                query.append(" and ");
-            }
-            query.append("año = ").append(año);
-        }
-        return getSaldo(query.toString());
+//        StringBuilder query = new StringBuilder(20);
+//        if (dia > 0) {
+//            query.append("dia = ").append(dia);
+//        }
+//
+//        if (mes > 0) {
+//            if (dia > 0) {
+//                query.append(" and ");
+//            }
+//            query.append("mes = '").append(mes).append("'");
+//        }
+//
+//        if (año > 0) {
+//            if (mes > 0) {
+//                query.append(" and ");
+//            }
+//            query.append("año = ").append(año);
+//        }
+//        return getSaldo(query.toString());
+        return 0;
     }
 
     private static double getSaldo(String where) {
-        Conexion conexion = Conexion.getInstancia();
+        DBConnection conexion = DBConnection.getInstance();
         double saldo = -1;
-        try (ResultSet select = conexion.select(ConstBD.TABLAS[6], "monto", where)) {
+        try (ResultSet select = conexion.select(Const.SERVICE_PAYMENTS.getTable(), "price", where)) {
             saldo = 0;
             while (select.next()) {
                 saldo = Double.sum(saldo, select.getDouble(1));

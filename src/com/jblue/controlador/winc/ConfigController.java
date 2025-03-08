@@ -16,6 +16,7 @@
  */
 package com.jblue.controlador.winc;
 
+import com.jblue.controlador.compc.ComponentController;
 import com.jblue.sistema.Sesion;
 import com.jblue.sistema.app.AppConfig;
 import com.jblue.sistema.app.AppFiles;

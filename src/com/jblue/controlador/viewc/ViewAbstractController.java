@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2025 juan-campos
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,28 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador.utils;
-
-import com.jblue.controlador.Controller;
-import com.jblue.controlador.compc.ComponentController;
-import com.jblue.vista.windows.UtilsViewWindows;
-import java.awt.event.ActionEvent;
+package com.jblue.controlador.viewc;
 
 /**
  *
  * @author juan-campos
  */
-public class UtilsController extends Controller {
-
-    UtilsViewWindows view;
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        switch (e.getActionCommand()) {
-            case "late_payments" ->
-                view.setView(1);
-            default ->
-                defaultCase(e.getActionCommand(), null, -1);
-        }
-    }
+public class ViewAbstractController {
+    
 }

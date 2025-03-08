@@ -17,6 +17,7 @@
 package com.jblue.util.tools;
 
 import com.jblue.modelo.ConstBD;
+import com.jblue.modelo.constdb.Const;
 import com.jblue.modelo.fabricas.FactoryCache;
 import com.jblue.modelo.objetos.*;
 import com.jblue.util.cache.MemoListCache;
@@ -37,12 +38,17 @@ public class ObjectUtils {
     static {
         mapa = new HashMap<>(10);
         mapa.put(ConstBD.TABLAS[0], new OPersonal());
+        mapa.put(Const.EMPLOYEES.getTable(), new OPersonal());
         mapa.put(ConstBD.TABLAS[1], new OUsuarios());
+        mapa.put(Const.USER.getTable(), new OUsuarios());
         mapa.put(ConstBD.TABLAS[2], new OCalles());
+        mapa.put(Const.STREETS.getTable(), new OCalles());
         mapa.put(ConstBD.TABLAS[3], new OTipoTomas());
+        mapa.put(Const.WATER_INTAKES.getTable(), new OTipoTomas());
         mapa.put(ConstBD.TABLAS[4], new OHisMovimientos());
         mapa.put(ConstBD.TABLAS[5], new OMovimientos());
         mapa.put(ConstBD.TABLAS[6], new OPagosServicio());
+        //mapa.put(Const., new OPagosServicio());
         mapa.put(ConstBD.TABLAS[7], new OPagosRecargos());
         mapa.put(ConstBD.TABLAS[8], new OPagosOtros());
         mapa.put(ConstBD.TABLAS[9], new OValores());
@@ -72,23 +78,23 @@ public class ObjectUtils {
     }
 
     public static boolean isPasante(OPersonal usuario) {
-        return usuario.getCargo().equals("1");
+        return usuario.getType().equals("1");
     }
 
     public static boolean isSecretario(OPersonal usuario) {
-        return usuario.getCargo().equals("2");
+        return usuario.getType().equals("2");
     }
 
     public static boolean isTesorero(OPersonal usuario) {
-        return usuario.getCargo().equals("3");
+        return usuario.getType().equals("3");
     }
 
     public static boolean isPresidente(OPersonal usuario) {
-        return usuario.getCargo().equals("4");
+        return usuario.getType().equals("4");
     }
 
     public static boolean isAdministrador(OPersonal usuario) {
-        return usuario.getCargo().equals("5");
+        return usuario.getType().equals("5");
     }
 
     public static String getStreed(String calle) {

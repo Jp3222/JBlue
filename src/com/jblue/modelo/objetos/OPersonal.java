@@ -32,7 +32,7 @@ public class OPersonal extends Objeto {
     /**
      * @return el nombre del personal
      */
-    public String getNombre() {
+    public String getName() {
         return info[1];
     }
 
@@ -40,7 +40,7 @@ public class OPersonal extends Objeto {
      *
      * @return los apellidos del personal
      */
-    public String getApellidos() {
+    public String getLastNames() {
         return info[2];
     }
 
@@ -53,12 +53,12 @@ public class OPersonal extends Objeto {
      *
      * @return un entero con el cargo del personal
      */
-    public String getCargo() {
+    public String getType() {
         return info[3];
     }
 
     public String getCargoString() {
-        return switch (getCargo()) {
+        return switch (getType()) {
             case "1":
                 yield "Pasante";
             case "2":
@@ -79,11 +79,7 @@ public class OPersonal extends Objeto {
      * @return el nombre usuario encriptado del usuario
      */
     public String getUsuario() {
-        return info[4];
-    }
-
-    public void setUsuario(String usuario) {
-        info[4] = usuario;
+        return info[5];
     }
 
     /**
@@ -91,11 +87,7 @@ public class OPersonal extends Objeto {
      * @return la contraseña encriptada del usuario
      */
     public String getContra() {
-        return info[5];
-    }
-
-    public void setContra(String contraseña) {
-        info[5] = contraseña;
+        return info[6];
     }
 
     /**
@@ -103,7 +95,7 @@ public class OPersonal extends Objeto {
      * @return la fecha en que se registro el usuario
      */
     public String getFechaRegistro() {
-        return info[6];
+        return info[7];
     }
 
     /**
@@ -114,50 +106,17 @@ public class OPersonal extends Objeto {
      *
      * @return un entero con el estado del usuario
      */
-    public int getEstado() {
-        return Integer.parseInt(info[7]);
-    }
-
-    /**
-     * Metodo que devuelve una cadena de 5 caracteres con el tipo de operaciones
-     * que puede hacer el usuario
-     * <br> el primer espacion contiene 1 en caso de tener todos los permisos o
-     * un numero menor a 4 segun los permisos
-     * <br>
-     * <br> 1 todos los permisos
-     * <br> C permiso de creacion de registros
-     * <br> R permiso de Lectura de registros
-     * <br> U permiso de Modifiacion de registros
-     * <br> D permiso de Eliminacion de registros
-     *
-     * @return
-     */
-    public String getPermisos() {
-        return info[8];
+    public int getStatus() {
+        return Integer.parseInt(info[4]);
     }
 
     public String getPeriodoString() {
-        return info[9];
-    }
-
-    public boolean isPeriodoValido() {
-        return !info[9].equals("IND");
-    }
-
-    /**
-     * metodo que verifica si el usuario tiene todos los permisos
-     *
-     * @return true si y solo si el usuario tiene todos los permisos
-     */
-    public boolean allPermisos() {
-        char[] p = info[8].toCharArray();
-        int n = (char) p[0];
-        return n == 1;
+        return info[8];
     }
 
     @Override
     public String toString() {
-        return getNombre().concat(" ").concat(getApellidos());
+        return getName().concat(" ").concat(getLastNames());
     }
 
 }

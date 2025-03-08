@@ -17,6 +17,7 @@
 package com.jblue.controlador.viewc;
 
 import com.jblue.controlador.Controller;
+import com.jblue.controlador.compc.ComponentController;
 import com.jblue.vista.views.OtherOptions;
 import com.jblue.vista.windows.MenuCargos;
 import java.awt.event.ActionEvent;

@@ -29,8 +29,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import com.jblue.controlador.DBController;
+import com.jblue.controlador.compc.ComponentController;
 import com.jblue.modelo.ConstBD;
-import com.jblue.modelo.dbconexion.DBConnection;
+import com.jblue.modelo.dbconexion.JDBConnection;
+import java.util.ArrayList;
 
 /**
  *
@@ -40,10 +42,13 @@ public class StreetsController extends Controller implements DBController {
 
     private final MemoListCache<OCalles> memo_cache;
     private final StreetsView view;
+    private final ArrayList<ComponentController> components_controllers;
 
     public StreetsController(StreetsView view) {
         this.view = view;
+        this.components_controllers = new ArrayList(5);
         memo_cache = FactoryCache.CALLES;
+
     }
 
     @Override
@@ -71,24 +76,34 @@ public class StreetsController extends Controller implements DBController {
 
     @Override
     public void save() {
-        boolean insert = memo_cache.getConnection().insert(view.getDbValues());
+        if (!view.isValuesOk()) {
+            return;
+        }
+        String[] arr = view.getDbValues();
+        boolean insert = memo_cache.getConnection().insert(arr);
         memo_cache.reLoadData();
         messages(view, insert);
     }
 
     @Override
     public void delete() {
-        boolean delete = memo_cache.getConnection().delete("id = %s".formatted(view.getObject().getId()));
+        if (view.getObjectSearch() != null) {
+            return;
+        }
+        boolean delete = memo_cache.getConnection().delete("id = %s".formatted(view.getObjectSearch().getId()));
         messages(view, delete);
     }
 
     @Override
     public void update() {
-        DBConnection connection = (DBConnection) memo_cache.getConnection();
+        if (view.getObjectSearch() != null && !view.isValuesOk()) {
+            return;
+        }
+        JDBConnection connection = (JDBConnection) memo_cache.getConnection();
         boolean update = connection.update(
                 ConstBD.TABLA_CALLES,
                 view.getDbValues(),
-                "id = %s".formatted(view.getObject().getId())
+                "id = %s".formatted(view.getObjectSearch().getId())
         );
         messages(view, update);
     }
@@ -100,6 +115,7 @@ public class StreetsController extends Controller implements DBController {
         if (option) {
             view.initialState();
         }
-    }
 
+    }
+    
 }

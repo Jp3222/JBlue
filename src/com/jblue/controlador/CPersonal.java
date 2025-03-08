@@ -16,6 +16,7 @@
  */
 package com.jblue.controlador;
 
+import com.jblue.controlador.compc.ComponentController;
 import java.awt.event.ActionEvent;
 
 /**
@@ -26,7 +27,7 @@ public class CPersonal extends Controller {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        
+
     }
 
 }

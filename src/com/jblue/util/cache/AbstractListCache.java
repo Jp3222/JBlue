@@ -19,8 +19,8 @@ package com.jblue.util.cache;
 import com.jblue.util.tools.ObjectUtils;
 import com.jblue.modelo.dbconexion.ModeloFuncionesDB;
 import com.jblue.modelo.objetos.Objeto;
-import com.jutil.dbcon.connection.SimpleQuerys;
-import com.jutil.jbd.conexion.Conexion;
+import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.cn.SimpleQuerys;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public abstract class AbstractListCache<T extends Objeto> implements ModeloListC
         }
         System.out.println("leyendo base de datos...");
         try {
-            Conexion conn = Conexion.getInstancia();
+            DBConnection conn = DBConnection.getInstance();
             ResultSet rs_data = conn.query(query);
             String[] info;
             while (rs_data.next()) {

@@ -32,5 +32,5 @@ public class MainController extends WindowController {
     public void actionPerformed(ActionEvent ae) {
     
     }
-    
+
 }

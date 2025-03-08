@@ -22,17 +22,13 @@ public class OCalles extends Objeto {
         return info[1];
     }
 
-    public String getNumero() {
-        return info[2];
-    }
-    
-    public String getLocation(){
+    public String getLocation() {
         return "ToDo";
     }
 
     @Override
     public String toString() {
-        return getNombre().concat(" ").concat(getNumero());
+        return getNombre();
     }
 
 }

@@ -207,10 +207,10 @@ private final JButton option;
         if (!isInfoValid()) {
             return;
         }
-        campo_nombre.setText(personal.getNombre());
-        campo_apellidos.setText(personal.getApellidos());
+        campo_nombre.setText(personal.getName());
+        campo_apellidos.setText(personal.getLastNames());
         campo_cargo.setText(personal.getCargoString());
-        campo_estado.setText(personal.getEstado() + "");
+        campo_estado.setText(personal.getStatus() + "");
         campo_usuario.setText(personal.getUsuario());
         campo_contra.setText(personal.getContra());
         campo_fecha_registro.setText(personal.getFechaRegistro());

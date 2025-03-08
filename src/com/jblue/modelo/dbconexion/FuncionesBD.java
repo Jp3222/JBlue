@@ -27,6 +27,7 @@ import java.util.logging.Logger;
  * @author juan-campos
  * @param <T>
  */
+@Deprecated
 public class FuncionesBD<T extends Objeto> extends AbstraccionFunciones<T> {
 
     public static FuncionesBD<Objeto> getObjects(String table, String[] fields) {

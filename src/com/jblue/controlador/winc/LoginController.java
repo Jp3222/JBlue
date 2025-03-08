@@ -16,11 +16,14 @@
  */
 package com.jblue.controlador.winc;
 
+import com.jblue.controlador.compc.ComponentController;
+import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.dbconexion.FuncionesBD;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.util.Filtros;
 import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.modelo.fabricas.FabricaFuncionesBD;
+import com.jblue.modelo.fabricas.FactoryConnection;
 import com.jblue.sistema.ConstSisMen;
 import com.jblue.sistema.Sesion;
 import com.jblue.vista.windows.LoginWindows;
@@ -71,7 +74,7 @@ public class LoginController extends WindowController {
         }
     }
 
-    private final String WHERE = "usuario = '%s' and contra = '%s'";
+    private final String WHERE = "user = '%s' and password = '%s'";
 
     public synchronized void login() {
         if (view.isSesionActive()) {
@@ -141,9 +144,9 @@ public class LoginController extends WindowController {
         if (Filtros.isNullOrBlank(user, password)) {
             return res;
         }
-        FuncionesBD<OPersonal> op = FabricaFuncionesBD.getPersonal();
+        JDBConnection<OPersonal> op = FactoryConnection.getEmployees();
         try {
-            res = op.get(null, WHERE.formatted(
+            res = op.get("*", WHERE.formatted(
                     EncriptadoAES.encriptar(user, password),
                     EncriptadoAES.encriptar(password, user)
             ));

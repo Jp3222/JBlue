@@ -154,6 +154,7 @@ public final class PaymentTypes extends DBView implements DBValues {
 
         setMinimumSize(new java.awt.Dimension(900, 500));
         setName("Tipo de pagos"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
 
         tools_panel.setPreferredSize(new java.awt.Dimension(900, 30));
@@ -164,7 +165,7 @@ public final class PaymentTypes extends DBView implements DBValues {
         jToggleButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/desbloquear.png"))); // NOI18N
         tools_panel.add(jToggleButton2, java.awt.BorderLayout.WEST);
 
-        jPanel15.setLayout(new java.awt.GridLayout(1, 0));
+        jPanel15.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
 
         register_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         register_button.setText("Registrar Tipo de Tomas");
@@ -294,9 +295,9 @@ public final class PaymentTypes extends DBView implements DBValues {
         register_panel.add(panel_campos, java.awt.BorderLayout.CENTER);
 
         options_panel.setPreferredSize(new java.awt.Dimension(500, 80));
-        options_panel.setLayout(new java.awt.GridLayout(2, 0));
+        options_panel.setLayout(new java.awt.GridLayout(2, 0, 10, 10));
 
-        jPanel3.setLayout(new java.awt.GridLayout(1, 3));
+        jPanel3.setLayout(new java.awt.GridLayout(1, 3, 10, 10));
 
         save_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
         save_button.setText("Guardar");

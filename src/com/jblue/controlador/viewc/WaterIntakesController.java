@@ -18,6 +18,7 @@ package com.jblue.controlador.viewc;
 
 import com.jblue.controlador.Controller;
 import com.jblue.controlador.DBController;
+import com.jblue.controlador.compc.ComponentController;
 import com.jblue.modelo.dbconexion.FuncionesBD;
 import com.jblue.modelo.fabricas.FactoryCache;
 import com.jblue.modelo.objetos.OTipoTomas;

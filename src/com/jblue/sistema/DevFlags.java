@@ -41,9 +41,15 @@ public class DevFlags {
      * Bandera para encerrar todas las opciones de desarrollo futuras.
      */
     public static boolean FUTURE_VIEW = true;
+
     /**
      * Mensaje de error para el usuario
      */
     public static boolean DEV_MSN = true;
 
+    /**
+     * *
+     *
+     */
+    public static boolean DEV_CONFIG = true;
 }

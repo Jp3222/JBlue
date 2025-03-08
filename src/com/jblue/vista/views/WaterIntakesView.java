@@ -152,14 +152,14 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
         setLayout(new java.awt.BorderLayout());
 
         tools_panel.setPreferredSize(new java.awt.Dimension(900, 30));
-        tools_panel.setLayout(new java.awt.BorderLayout(5, 5));
+        tools_panel.setLayout(new java.awt.BorderLayout(10, 10));
 
         jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
         jToggleButton2.setPreferredSize(new java.awt.Dimension(100, 30));
         jToggleButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/desbloquear.png"))); // NOI18N
         tools_panel.add(jToggleButton2, java.awt.BorderLayout.WEST);
 
-        jPanel15.setLayout(new java.awt.GridLayout(1, 0));
+        jPanel15.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
 
         register_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         register_button.setText("Registrar Tipo de Tomas");
@@ -235,9 +235,9 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
         register_panel.add(panel_campos, java.awt.BorderLayout.CENTER);
 
         options_panel.setPreferredSize(new java.awt.Dimension(500, 80));
-        options_panel.setLayout(new java.awt.GridLayout(2, 0));
+        options_panel.setLayout(new java.awt.GridLayout(2, 0, 10, 10));
 
-        jPanel3.setLayout(new java.awt.GridLayout(1, 3));
+        jPanel3.setLayout(new java.awt.GridLayout(1, 3, 10, 10));
 
         save_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         save_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N

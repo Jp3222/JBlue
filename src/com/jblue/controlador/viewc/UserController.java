@@ -20,7 +20,8 @@ import com.jblue.controlador.DBController;
 import static com.jblue.controlador.DBController.DELETE_COMMAND;
 import static com.jblue.controlador.DBController.SAVE_COMMAND;
 import static com.jblue.controlador.DBController.UPDATE_COMMAND;
-import com.jblue.modelo.dbconexion.DBConnection;
+import com.jblue.controlador.compc.ComponentController;
+import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.fabricas.FactoryCache;
 import com.jblue.modelo.objetos.OUsuarios;
 import com.jblue.vista.components.CVisorUsuario;
@@ -65,7 +66,7 @@ public class UserController extends DBViewController<OUsuarios> implements DBCon
         if (isOK()) {
             return;
         }
-        DBConnection<OUsuarios> connection = (DBConnection<OUsuarios>) memo_cache.getConnection();
+        JDBConnection<OUsuarios> connection = (JDBConnection<OUsuarios>) memo_cache.getConnection();
         String field = "nombre, ap, am, calle, ncasa, toma, estado, tipo";
         boolean insert = connection.insert(field, view.getDbValues());
         rmessage(insert);
@@ -76,7 +77,7 @@ public class UserController extends DBViewController<OUsuarios> implements DBCon
         if (isOK()) {
             return;
         }
-        DBConnection<OUsuarios> connection = (DBConnection<OUsuarios>) memo_cache.getConnection();
+        JDBConnection<OUsuarios> connection = (JDBConnection<OUsuarios>) memo_cache.getConnection();
         boolean delete = connection.delete("id = %s".formatted(view.getObjectSearch().getId()));
         rmessage(delete);
     }
@@ -86,7 +87,7 @@ public class UserController extends DBViewController<OUsuarios> implements DBCon
         if (isOK()) {
             return;
         }
-        DBConnection<OUsuarios> connection = (DBConnection<OUsuarios>) memo_cache.getConnection();
+        JDBConnection<OUsuarios> connection = (JDBConnection<OUsuarios>) memo_cache.getConnection();
         String[] field = {"nombre", " ap", "am", "calle", "ncasa", "toma", "estado", "tipo"};
         boolean update = connection.update(field,
                 view.getDbValues(),

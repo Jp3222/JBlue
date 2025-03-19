@@ -21,6 +21,5 @@ public class JBlue {
      */
     public static void main(String... args) throws InterruptedException {
         LaunchApp.getInstance(new Sistema()).doWhileRun();
-
     }
 }

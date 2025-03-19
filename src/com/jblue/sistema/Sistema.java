@@ -141,8 +141,10 @@ public class Sistema implements MainSystem {
         }
 
         for (String i : AppFiles.S_ARR_PROG_ARC) {
+            System.out.println(i);
             aux = new File(i);
             if (aux.exists()) {
+                System.out.println(aux.getAbsolutePath());
                 LOG.log(Level.INFO, log_messages.formatted(i, "FUE LEIDO CORRECTAMENTE"));
             } else {
                 try {

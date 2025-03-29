@@ -143,7 +143,7 @@ public abstract class AbstractListCache<T extends Objeto> implements ModeloListC
 
     private long count_count() {
         String query = "SELECT count(id) FROM %s";
-        SimpleQuerys _conn = (SimpleQuerys) conexion.getConnection();
+        DBConnection _conn = (DBConnection) conexion.getConnection();
 
         ResultSet res_count;
         long aux_count = 0;

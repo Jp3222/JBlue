@@ -16,13 +16,12 @@
  */
 package com.jblue.controlador.viewc;
 
-import com.jblue.controlador.CPagos;
 import com.jblue.controlador.Controller;
-import com.jblue.controlador.compc.ComponentController;
+import com.jblue.controlador.logic.PaymentFactory;
+import com.jblue.controlador.logic.PaymentModel;
+import com.jblue.controlador.logic.ServicePaymentLogic;
 import com.jblue.modelo.fabricas.FactoryCache;
-import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OUsuarios;
-import com.jblue.sistema.Sesion;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.util.tools.GraphicsUtils;
 import com.jblue.vista.components.CVisorUsuario;
@@ -86,24 +85,26 @@ public class ShopCartController extends Controller {
     }
 
     void payments() {
-        if (view.getObjectSearch()==null) {
+        if (view.getObjectSearch() == null) {
             JOptionPane.showMessageDialog(view, "Usuario no valido", "Operacion Erronea", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         String in = JOptionPane.showInputDialog(view, "Dinero Ingresado", "Dinero ingresado", JOptionPane.INFORMATION_MESSAGE);
         double dinero_in = Double.parseDouble(in);
 
-        double deuda = 0;
-        
-        if (dinero_in < deuda) {
-            return;
+        PaymentModel o = PaymentFactory.getServicePayment();
+
+        o.setUsuario(view.getObjectSearch());
+        o.setDineroIngresado(dinero_in);
+
+        if (o.execPayment()) {
+            JOptionPane.showMessageDialog(view, "OPERACCION EXITOSA");
+            JOptionPane.showMessageDialog(view, o.getMov().get(ServicePaymentLogic.KEY_MOVS));
+        } else {
+            JOptionPane.showMessageDialog(view, "OPERACCION ERRONEA");
+            JOptionPane.showMessageDialog(view, o.getMov().get(ServicePaymentLogic.KEY_ERROR));
         }
-        
-        OPersonal personal = Sesion.getInstancia().getUsuario();
-        OUsuarios usuario = view.getObjectSearch();
-        String[] meses = view.getSelectMonth();
-        CPagos.getInstancia().regPagoXServicio(personal, usuario, meses, 0);
     }
 
     void cancel() {

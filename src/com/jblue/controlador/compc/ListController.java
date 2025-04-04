@@ -22,7 +22,10 @@ import com.jblue.util.cache.MemoListCache;
 import com.jblue.vista.marco.ListSearchView;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.List;
 import javax.swing.DefaultListModel;
 
@@ -41,7 +44,8 @@ public class ListController<T extends Objeto> extends ComponentController<T> {
         super(view.getList(), memo_cache);
         this.view = view;
         model = view.getListModel();
-        view.getTextComponentList().addKeyListener(this);
+        view.getTextComponentList().addKeyListener((KeyListener) this);
+        view.getTextComponentList().addMouseListener((MouseListener) this);
     }
 
     @Override
@@ -97,8 +101,13 @@ public class ListController<T extends Objeto> extends ComponentController<T> {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getComponent() == view.getList() && e.getClickCount() > 0) {
-            view.setScreenListInfo();
+        if (e.getClickCount() != 2) {
+            return;
         }
+        int index = view.getList().getSelectedIndex();
+        if (index < 0 || index >= view.getList().getModel().getSize()) {
+            return;
+        }
+        view.setScreenListInfo();
     }
 }

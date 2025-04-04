@@ -4,6 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
+import com.jblue.modelo.fabricas.FactoryCache;
 import com.jblue.util.objetos.ObjetoFK;
 import com.jblue.util.tools.ObjectUtils;
 
@@ -53,6 +54,10 @@ public class OUsuarios extends Objeto implements ObjetoFK {
     public String getCalle() {
         return info[4];
     }
+    
+    public OCalles getStreet(){
+        return FactoryCache.CALLES.get((t) -> t.getId().equals(getCalle()));
+    }
 
     public String getNumeroCasa() {
         return info[5];
@@ -64,6 +69,10 @@ public class OUsuarios extends Objeto implements ObjetoFK {
      */
     public String getToma() {
         return info[6];
+    }
+
+    public OTipoTomas getTypeWaterIntakes() {
+        return FactoryCache.TIPO_DE_TOMAS.get((t) -> t.getId().equals(getToma()));
     }
 
     /**

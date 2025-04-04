@@ -87,6 +87,7 @@ public class ShopCartView extends DBView implements ListSearchView {
                         }
                 )));
         list_controller = new ListController(this, FactoryCache.USUARIOS);
+        
         build();
     }
 
@@ -125,7 +126,7 @@ public class ShopCartView extends DBView implements ListSearchView {
         back_button.addActionListener(table_controller);
         next_button.addActionListener(table_controller);
         //objects_table.addMouseListener(table_controller);
-        //
+        users_list.addMouseListener(list_controller);
     }
 
     @Override
@@ -943,7 +944,11 @@ public class ShopCartView extends DBView implements ListSearchView {
 
     @Override
     public void setScreenListInfo() {
-
+        int index = users_list.getSelectedIndex();
+        object_search = list_model.get(index);
+        user_type_field.setText(object_search.getTipo().equals("1") ? "Titular":"Consumidor");
+        name_user_field.setText(object_search.toString());
+        type_toma_field.setText(object_search.getTypeWaterIntakes().getTipo());
     }
 
     @Override

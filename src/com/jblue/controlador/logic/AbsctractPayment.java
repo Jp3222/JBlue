@@ -76,6 +76,12 @@ public abstract class AbsctractPayment implements PaymentModel {
         this.dinero_ingresado = dinero_ingresado;
     }
 
+    public void setMesesPagados(ArrayList<String> meses_pagados) {
+        this.meses_pagados = meses_pagados;
+    }
+    
+    
+
     @Override
     public Map<String, String> getMov() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

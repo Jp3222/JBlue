@@ -5,16 +5,18 @@
 package com.jblue.sistema.app;
 
 import com.jblue.util.SoInfo;
+import com.jblue.util.plataformas.OsConfig;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  *
  * @author jp
  */
 public class AppFiles {
-
+    private static final OsConfig os = OsConfig.getDefaultOsConfig();
     //-- directorios programa usuario--//
-    public static final String DIR_PROG = constURL(SoInfo.RUTA_DOCUMENTOS, ".jblue");
+    public static final String DIR_PROG = constURL(os.getDocumentos(), ".jblue");
 
     public static final String DIR_PROG_USUARIOS = constURL(DIR_PROG, "Usuarios");
 
@@ -33,7 +35,7 @@ public class AppFiles {
     };
     
     //-- directorios del usuario--//
-    public static final String DIR_USER = constURL(SoInfo.RUTA_DOCUMENTOS, "JBlue");
+    public static final String DIR_USER = constURL(os.getDocumentos(), "JBlue");
 
     public static final String DIR_USER_PAGOS = constURL(DIR_USER, "Pagos");
 
@@ -65,6 +67,7 @@ public class AppFiles {
         StringBuilder sb = new StringBuilder(100);
         int size = str.length;
         for (int i = 0; i < size - 1; i++) {
+            
             sb.append(str[i]).append(File.separator);
         }
         sb.append(str[size - 1]);

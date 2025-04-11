@@ -28,6 +28,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
 
 /**
  *
@@ -70,7 +71,7 @@ public class ListController<T extends Objeto> extends ComponentController<T> {
     }
 
     @Override
-    public void actionPerformed(ActionEvent ae) {
+    public void actionPerformed(ActionEvent e) {
     }
 
     @Override

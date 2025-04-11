@@ -67,6 +67,9 @@ public class ShopCartController extends Controller {
                 info();
             case "all_months" ->
                 allMonths((JCheckBox) e.getSource());
+            case "month" ->
+                total();
+
             default ->
                 defaultCase(e.getActionCommand(), null, -1);
         }
@@ -96,6 +99,7 @@ public class ShopCartController extends Controller {
         PaymentModel o = PaymentFactory.getServicePayment();
 
         o.setUsuario(view.getObjectSearch());
+        o.setMesesPagados(view.getMonthPaidList());
         o.setDineroIngresado(dinero_in);
 
         if (o.execPayment()) {
@@ -135,12 +139,21 @@ public class ShopCartController extends Controller {
     private void allMonths(JCheckBox all) {
 
         SwingUtilities.invokeLater(() -> {
-            for (Component i : view.getMonthPaidList()) {
+            for (Component i : view.getMonthList()) {
                 if (i instanceof JCheckBox o) {
                     o.setSelected(o.isEnabled() && all.isSelected());
                 }
             }
+            total();
         });
     }
 
+    private void total() {
+        SwingUtilities.invokeLater(() -> {
+            double total
+                    = view.getObjectSearch().getTypeWaterIntakes().getCosto()
+                    * view.getMonthPaidList().size();
+            view.setTotalField(total);
+        });
+    }
 }

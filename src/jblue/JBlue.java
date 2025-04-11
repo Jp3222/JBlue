@@ -5,7 +5,9 @@
 package jblue;
 
 import com.jblue.sistema.Sistema;
+import com.jblue.util.plataformas.OsConfig;
 import com.jutil.framework.LaunchApp;
+import com.jutil.platf.So;
 
 /**
  * java

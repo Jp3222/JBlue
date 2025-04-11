@@ -24,33 +24,9 @@ import java.io.FileNotFoundException;
  *
  * @author juan-campos
  */
-public class Linux extends SuperOS {
+public class Linux extends OsConfig {
 
-    public Linux(String[] diccionario) {
-        super(diccionario);
-    }
-
-    @Override
-    public String getPathInstalacion() {
-        return null;
-    }
-
-    @Override
-    public String getPathDocumentos() throws FileNotFoundException {
-        StringBuilder sb = new StringBuilder();
-        sb.append(So.USER_HOME).append(File.separator);
-        sb.append(diccionario[0]);
-        if (!(new File(sb.toString()).exists())) {
-            throw new FileNotFoundException();
-        }
-
-        return sb.toString();
-
-    }
-
-    @Override
-    public String getPathEscritorio() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Linux() {
     }
 
 }

@@ -35,9 +35,11 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -87,7 +89,7 @@ public class ShopCartView extends DBView implements ListSearchView {
                         }
                 )));
         list_controller = new ListController(this, FactoryCache.USUARIOS);
-        
+
         build();
     }
 
@@ -127,6 +129,10 @@ public class ShopCartView extends DBView implements ListSearchView {
         next_button.addActionListener(table_controller);
         //objects_table.addMouseListener(table_controller);
         users_list.addMouseListener(list_controller);
+        //
+        for (JCheckBox i : month_paid_list) {
+            i.addActionListener(controller);
+        }
     }
 
     @Override
@@ -226,11 +232,11 @@ public class ShopCartView extends DBView implements ListSearchView {
         money_panel = new javax.swing.JPanel();
         jPanel21 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        lbl_total = new javax.swing.JLabel();
+        total_field = new javax.swing.JLabel();
         btn_movimientos = new javax.swing.JButton();
         jPanel22 = new javax.swing.JPanel();
         Jlabel1 = new javax.swing.JLabel();
-        lbl_cambio = new javax.swing.JLabel();
+        cambio_field = new javax.swing.JLabel();
         option_panel = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         pay_button = new javax.swing.JButton();
@@ -259,7 +265,7 @@ public class ShopCartView extends DBView implements ListSearchView {
         range = new javax.swing.JLabel();
         jPanel29 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
-        total = new javax.swing.JLabel();
+        total_register_field = new javax.swing.JLabel();
 
         setName("Inicio"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
@@ -440,6 +446,7 @@ public class ShopCartView extends DBView implements ListSearchView {
 
         ene.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         ene.setText("ENE");
+        ene.setActionCommand("month");
         ene.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ene.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ene.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
@@ -450,6 +457,7 @@ public class ShopCartView extends DBView implements ListSearchView {
 
         feb.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         feb.setText("FEB");
+        feb.setActionCommand("month");
         feb.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         feb.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         feb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
@@ -460,6 +468,7 @@ public class ShopCartView extends DBView implements ListSearchView {
 
         mar.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         mar.setText("MAR");
+        mar.setActionCommand("month");
         mar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         mar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
@@ -470,6 +479,7 @@ public class ShopCartView extends DBView implements ListSearchView {
 
         abr.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         abr.setText("ABR");
+        abr.setActionCommand("month");
         abr.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         abr.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         abr.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
@@ -480,6 +490,7 @@ public class ShopCartView extends DBView implements ListSearchView {
 
         may.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         may.setText("MAY");
+        may.setActionCommand("month");
         may.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         may.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         may.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
@@ -490,6 +501,7 @@ public class ShopCartView extends DBView implements ListSearchView {
 
         jun.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jun.setText("JUN");
+        jun.setActionCommand("month");
         jun.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jun.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jun.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
@@ -500,6 +512,7 @@ public class ShopCartView extends DBView implements ListSearchView {
 
         jul.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jul.setText("JUL");
+        jul.setActionCommand("month");
         jul.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jul.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
@@ -510,6 +523,7 @@ public class ShopCartView extends DBView implements ListSearchView {
 
         ago.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         ago.setText("AGO");
+        ago.setActionCommand("month");
         ago.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ago.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ago.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
@@ -520,6 +534,7 @@ public class ShopCartView extends DBView implements ListSearchView {
 
         sep.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         sep.setText("SEP");
+        sep.setActionCommand("month");
         sep.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         sep.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         sep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
@@ -530,6 +545,7 @@ public class ShopCartView extends DBView implements ListSearchView {
 
         oct.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         oct.setText("OCT");
+        oct.setActionCommand("month");
         oct.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         oct.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         oct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
@@ -540,6 +556,7 @@ public class ShopCartView extends DBView implements ListSearchView {
 
         nov.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         nov.setText("NOV");
+        nov.setActionCommand("month");
         nov.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nov.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         nov.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
@@ -550,12 +567,18 @@ public class ShopCartView extends DBView implements ListSearchView {
 
         dic.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         dic.setText("DIC");
+        dic.setActionCommand("month");
         dic.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         dic.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         dic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
         dic.setPreferredSize(new java.awt.Dimension(10, 47));
         dic.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         dic.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        dic.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dicActionPerformed(evt);
+            }
+        });
         months_panel.add(dic);
 
         payment_info_panel.add(months_panel);
@@ -575,9 +598,9 @@ public class ShopCartView extends DBView implements ListSearchView {
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel21.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        lbl_total.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
-        lbl_total.setText("0.0");
-        jPanel21.add(lbl_total, java.awt.BorderLayout.CENTER);
+        total_field.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
+        total_field.setText("0.0");
+        jPanel21.add(total_field, java.awt.BorderLayout.CENTER);
 
         btn_movimientos.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         btn_movimientos.setText("Movimientos");
@@ -596,9 +619,9 @@ public class ShopCartView extends DBView implements ListSearchView {
         Jlabel1.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel22.add(Jlabel1, java.awt.BorderLayout.LINE_START);
 
-        lbl_cambio.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
-        lbl_cambio.setText("0.0");
-        jPanel22.add(lbl_cambio, java.awt.BorderLayout.CENTER);
+        cambio_field.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
+        cambio_field.setText("0.0");
+        jPanel22.add(cambio_field, java.awt.BorderLayout.CENTER);
 
         money_panel.add(jPanel22);
 
@@ -747,11 +770,11 @@ public class ShopCartView extends DBView implements ListSearchView {
         jLabel17.setText("Total:");
         jPanel29.add(jLabel17, java.awt.BorderLayout.CENTER);
 
-        total.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        total.setText("0");
-        total.setToolTipText("Numero de pagos hechos.");
-        total.setPreferredSize(new java.awt.Dimension(50, 16));
-        jPanel29.add(total, java.awt.BorderLayout.LINE_END);
+        total_register_field.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total_register_field.setText("0");
+        total_register_field.setToolTipText("Numero de pagos hechos.");
+        total_register_field.setPreferredSize(new java.awt.Dimension(50, 16));
+        jPanel29.add(total_register_field, java.awt.BorderLayout.LINE_END);
 
         status_bar_panel.add(jPanel29, java.awt.BorderLayout.EAST);
 
@@ -762,6 +785,10 @@ public class ShopCartView extends DBView implements ListSearchView {
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void dicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dicActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dicActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Jlabel1;
@@ -770,6 +797,7 @@ public class ShopCartView extends DBView implements ListSearchView {
     private javax.swing.JCheckBox all_months_buttons;
     private javax.swing.JButton back_button;
     private javax.swing.JButton btn_movimientos;
+    private javax.swing.JLabel cambio_field;
     private javax.swing.JButton cancel_button;
     private javax.swing.JButton clear_button;
     private javax.swing.JTextField cost_field;
@@ -811,8 +839,6 @@ public class ShopCartView extends DBView implements ListSearchView {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JCheckBox jul;
     private javax.swing.JCheckBox jun;
-    private javax.swing.JLabel lbl_cambio;
-    private javax.swing.JLabel lbl_total;
     private javax.swing.JToggleButton lock_button;
     private javax.swing.JCheckBox mar;
     private javax.swing.JCheckBox may;
@@ -844,7 +870,8 @@ public class ShopCartView extends DBView implements ListSearchView {
     private javax.swing.JCheckBox sep;
     private javax.swing.JPanel status_bar_panel;
     private javax.swing.JPanel tools_bar_panel;
-    private javax.swing.JLabel total;
+    private javax.swing.JLabel total_field;
+    private javax.swing.JLabel total_register_field;
     private javax.swing.JTextField type_toma_field;
     private javax.swing.JPanel user_info_panel;
     private javax.swing.JTextField user_type_field;
@@ -946,29 +973,39 @@ public class ShopCartView extends DBView implements ListSearchView {
     public void setScreenListInfo() {
         int index = users_list.getSelectedIndex();
         object_search = list_model.get(index);
-        user_type_field.setText(object_search.getTipo().equals("1") ? "Titular":"Consumidor");
+        user_type_field.setText(object_search.getTipo().equals("1") ? "Titular" : "Consumidor");
         name_user_field.setText(object_search.toString());
         type_toma_field.setText(object_search.getTypeWaterIntakes().getTipo());
+        cost_field.setText(String.valueOf(object_search.getTypeWaterIntakes().getCosto()));
     }
 
     @Override
     public void setRowsData(String... info) {
         count.setText(info[0]);
         range.setText(info[1]);
-        total.setText(info[2]);
+        total_register_field.setText(info[2]);
     }
 
-    public ArrayList<JCheckBox> getMonthPaidList() {
+    public ArrayList<JCheckBox> getMonthList() {
         return month_paid_list;
     }
-
-    public String[] getSelectMonth() {
-        ArrayList<String> list = new ArrayList(12);
+    
+    public ArrayList<String> getMonthPaidList(){
+        List<String> lista = new ArrayList<>(12);
         for (JCheckBox i : month_paid_list) {
-            if (i.isEnabled() && i.isSelected()) {
-                list.add(i.getName());
+            if (i.isSelected() && i.isEnabled()) {
+                lista.add(i.getText());
             }
         }
-        return list.toArray(String[]::new);
+        return (ArrayList<String>) lista;
     }
+
+    public void setTotalField(double total_field) {
+        this.total_field.setText(String.valueOf(total_field));
+    }
+
+    
+    
+    
+
 }

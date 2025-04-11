@@ -17,62 +17,101 @@
 package com.jblue.util.plataformas;
 
 import com.jutil.platf.So;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * inteface que busca construir los recursos basicos del sistema operativo para
- * que el programa funcione, principalmente rutas de instalacion
- *
- * <br>
- * los diccionarios son los nombres que maneja el sistema operativo para las
- * carpetas del mismo
  *
  * @author juan-campos
  */
-public interface OsConfig {
+public abstract class OsConfig implements OsConfigModel {
 
-    public String[] DICCIONARIO_EN = {
-        "Desktop", "Documents"
-    };
-
-    public String[] DICCIONARIO_ES = {
-        "Escritorio", "Documentos"
-    };
-
-    public String getPathInstalacion() throws FileNotFoundException;
-
-    public String getPathDocumentos() throws FileNotFoundException;
-
-    public String getPathEscritorio() throws FileNotFoundException;
-
-    /**
-     * 1 - EN<br>
-     * 2 - ES<br>
-     *
-     * en caso de usar windows se es preferible usar el diccionario en ingles ya
-     * que aunque el idioma de windows sea español, las rutas las maneja en
-     * ingles<br>
-     *
-     * en caso de usar linux se recomienda usar el diccionario seleccionado
-     *
-     * @return retorna el diccionario adecuado para el sistema operativo segun
-     * el idioma del mismo
-     *
-     * <br>
-     * nota perosnal 1: desconozco como funcione el sistema en MacOs por lo que
-     * no hay una recomendacion concreta nota personal 2: desconozco si lo dicho
-     * de windows se pueda aplicar en linux de alguna forma por lo que si se
-     * puede mejorar este apartado, adelante.
-     */
-    public default String[] getDiccionario() {
-        return switch (So.USER_LANGUAGE) {
-            case "en":
-                yield DICCIONARIO_EN;
-            case "es":
-                yield DICCIONARIO_ES;
-            default:
-                yield DICCIONARIO_ES;
-        };
+    public static final OsConfig getDefaultOsConfig() {
+        if (So.isLinux()) {
+            return getLinuxConfing();
+        }
+        if (So.isMac()) {
+            return getMacConfing();
+        }
+        return getWindowsConfing();
     }
 
+    public static final OsConfig getWindowsConfing() {
+        return new Windows();
+    }
+
+    public static final OsConfig getLinuxConfing() {
+        return new Windows();
+    }
+
+    public static final OsConfig getMacConfing() {
+        return new Windows();
+    }
+    protected final String documents_path[],
+            desktop_path[];
+
+    public OsConfig() {
+        documents_path = new String[]{
+            So.USER_HOME + "\\OneDrive\\Documents",
+            So.USER_HOME + "\\OneDrive\\Documentos",
+            So.USER_HOME + "\\Documents",
+            So.USER_HOME + "\\Documentos"
+        };
+        desktop_path = new String[]{
+            So.USER_HOME + "\\OneDrive\\Desktop",
+            So.USER_HOME + "\\OneDrive\\Escritorio",
+            So.USER_HOME + "\\Desktop",
+            So.USER_HOME + "\\Escritorio"
+        };
+
+    }
+
+    @Override
+    public String getPathInstalacion() throws FileNotFoundException {
+        File file;
+        System.out.println(So.USER_HOME);
+        for (String i : documents_path) {
+            file = new File(i);
+            if (file.exists()) {
+                return file.getAbsolutePath();
+            }
+        }
+        return So.USER_HOME;
+    }
+
+    @Override
+    public String getPathDocumentos() throws FileNotFoundException {
+        File file;
+        for (String i : documents_path) {
+            file = new File(i);
+            System.out.println(file.getPath() + " : " + file.exists());
+            if (file.exists()) {
+                return i;
+            }
+        }
+        return So.USER_HOME;
+    }
+
+    @Override
+    public String getPathEscritorio() throws FileNotFoundException {
+        File file;
+        for (String i : desktop_path) {
+            file = new File(i);
+            if (file.exists()) {
+                return i;
+            }
+        }
+        return So.USER_HOME;
+    }
+
+    public String getDocumentos() {
+        try {
+            return getPathDocumentos();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(OsConfig.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }

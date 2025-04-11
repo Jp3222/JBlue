@@ -17,6 +17,7 @@
 package com.jblue.controlador.logic;
 
 import com.jblue.modelo.objetos.OUsuarios;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -32,9 +33,10 @@ public interface PaymentModel {
     boolean gameRulers();
 
     Map<String, String> getMov();
-    
+
     void setUsuario(OUsuarios o);
-    
+
     void setDineroIngresado(double d);
 
+    public void setMesesPagados(ArrayList<String> meses_pagados);
 }

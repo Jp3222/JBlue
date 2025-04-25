@@ -16,10 +16,10 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.modelo.dbconexion.ModeloFuncionesDB;
 import com.jblue.modelo.objetos.Objeto;
 import java.util.List;
 import java.util.function.Predicate;
+import com.jblue.modelo.dbconexion.JDBConnectionModel;
 
 /**
  *
@@ -30,17 +30,17 @@ public class MemoListCache<T extends Objeto> extends AbstractListCache<T> implem
 
     private int page;
 
-    public MemoListCache(int capacity, ModeloFuncionesDB conexion) {
+    public MemoListCache(int capacity, JDBConnectionModel conexion) {
         super(capacity, conexion);
     }
 
-    public MemoListCache(ModeloFuncionesDB conexion) {
+    public MemoListCache(JDBConnectionModel conexion) {
         super(conexion);
     }
 
     public T get(Predicate<T> filter) {
         List<T> list = getList(filter);
-        return list.getFirst();
+        return list.get(0);
     }
 
     @Override
@@ -81,7 +81,6 @@ public class MemoListCache<T extends Objeto> extends AbstractListCache<T> implem
 
     @Override
     public boolean movBuffer(int page) {
-        
         return true;
     }
 
@@ -95,10 +94,8 @@ public class MemoListCache<T extends Objeto> extends AbstractListCache<T> implem
 
     private int buffer_direc;
 
-    public ModeloFuncionesDB<T> getConnection() {
+    public JDBConnectionModel<T> getConnection() {
         return conexion;
     }
-    
-    
 
 }

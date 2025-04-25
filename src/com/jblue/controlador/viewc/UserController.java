@@ -20,25 +20,29 @@ import com.jblue.controlador.DBController;
 import static com.jblue.controlador.DBController.DELETE_COMMAND;
 import static com.jblue.controlador.DBController.SAVE_COMMAND;
 import static com.jblue.controlador.DBController.UPDATE_COMMAND;
-import com.jblue.controlador.compc.ComponentController;
 import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.fabricas.FactoryCache;
-import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.modelo.objetos.OUser;
+import com.jblue.sistema.DevFlags;
 import com.jblue.vista.components.CVisorUsuario;
 import com.jblue.vista.views.UserView;
+import com.jutil.jexception.Excp;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author juan-campos
  */
-public class UserController extends DBViewController<OUsuarios> implements DBController {
+public class UserController extends DBViewController<OUser> implements DBController {
 
     private final UserView view;
+    private final JDBConnection<OUser> connection;
 
     public UserController(UserView view) {
         super(FactoryCache.USUARIOS);
+        this.connection = (JDBConnection<OUser>) memo_cache.getConnection();
         this.view = view;
     }
 
@@ -63,33 +67,47 @@ public class UserController extends DBViewController<OUsuarios> implements DBCon
 
     @Override
     public void save() {
-        if (isOK()) {
+        if (!view.isValuesOk()) {
             return;
         }
-        JDBConnection<OUsuarios> connection = (JDBConnection<OUsuarios>) memo_cache.getConnection();
-        String field = "nombre, ap, am, calle, ncasa, toma, estado, tipo";
+        String field = "first_name, last_name1, last_name2, street, house_number, water_intakes, user_type, status";
         boolean insert = connection.insert(field, view.getDbValues());
+        System.out.println(insert);
         rmessage(insert);
     }
 
     @Override
     public void delete() {
-        if (isOK()) {
+        if (!view.isValuesOk()) {
             return;
         }
-        JDBConnection<OUsuarios> connection = (JDBConnection<OUsuarios>) memo_cache.getConnection();
-        boolean delete = connection.delete("id = %s".formatted(view.getObjectSearch().getId()));
+        //boolean delete = connection.delete("id = %s".formatted(view.getObjectSearch().getId()));
+        String id = view.getObjectSearch().getId();
+        boolean delete = connection.update("status", "3", "id = %s".formatted(id));
+        int hidden_payments = JOptionPane.showConfirmDialog(view, "¿Desea eliminar los pagos hechos por esta persona?");
+        if (DevFlags.TST_EXE_FUNCION) {
+            if (hidden_payments == JOptionPane.YES_OPTION) {
+                try {
+                    connection.getConnection().update("service_payments", "status=3", "id = %s".formatted(id));
+                } catch (SQLException ex) {
+                    Excp.imp(ex, getClass(), true, true);
+                }
+            }
+        }
+
         rmessage(delete);
     }
 
     @Override
     public void update() {
-        if (isOK()) {
+        if (!view.isValuesOk()) {
             return;
         }
-        JDBConnection<OUsuarios> connection = (JDBConnection<OUsuarios>) memo_cache.getConnection();
-        String[] field = {"nombre", " ap", "am", "calle", "ncasa", "toma", "estado", "tipo"};
-        boolean update = connection.update(field,
+        String field = "first_name, last_name1, last_name2, "
+                + "street, house_number, water_intakes, "
+                + "user_type, status";
+
+        boolean update = connection.update(field.replace(" ", "").split(","),
                 view.getDbValues(),
                 "id = %s".formatted(view.getObjectSearch().getId())
         );
@@ -104,7 +122,6 @@ public class UserController extends DBViewController<OUsuarios> implements DBCon
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE
         );
-
         if (in == JOptionPane.YES_OPTION) {
             view.initialState();
         }
@@ -122,6 +139,7 @@ public class UserController extends DBViewController<OUsuarios> implements DBCon
                 "Operacion %s".formatted(status),
                 "Estado de la operacion",
                 JOptionPane.INFORMATION_MESSAGE);
+        System.out.println(ok);
         return ok;
     }
 

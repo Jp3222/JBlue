@@ -4,21 +4,21 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.modelo.fabricas.FactoryCache;
-import com.jblue.util.objetos.ObjetoFK;
 import com.jblue.util.tools.ObjectUtils;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
  * @author jp
  */
-public class OUsuarios extends Objeto implements ObjetoFK {
+public class OUser extends Objeto {
 
-    public OUsuarios(String[] info) {
+    public OUser(String[] info) {
         super(info);
     }
 
-    public OUsuarios() {
+    public OUser() {
         super();
     }
 
@@ -27,7 +27,7 @@ public class OUsuarios extends Objeto implements ObjetoFK {
      *
      * @return una cadena con el nombre del usuario
      */
-    public String getNombre() {
+    public String getName() {
         return info[1];
     }
 
@@ -35,7 +35,7 @@ public class OUsuarios extends Objeto implements ObjetoFK {
      *
      * @return una cadena con el apellido paterno del usuario
      */
-    public String getAp() {
+    public String getLastName1() {
         return info[2];
     }
 
@@ -43,7 +43,7 @@ public class OUsuarios extends Objeto implements ObjetoFK {
      *
      * @return una cadena con el apellido materno del usuario
      */
-    public String getAm() {
+    public String getLastName2() {
         return info[3];
     }
 
@@ -51,15 +51,15 @@ public class OUsuarios extends Objeto implements ObjetoFK {
      *
      * @return una cadena con el ID de la calle asociada a este usuario
      */
-    public String getCalle() {
+    public String getStreet() {
         return info[4];
     }
-    
-    public OCalles getStreet(){
-        return FactoryCache.CALLES.get((t) -> t.getId().equals(getCalle()));
+
+    public OCalles getStreetObject() {
+        return ObjectUtils.getStreedObject(getStreet());
     }
 
-    public String getNumeroCasa() {
+    public String getHouseNumber() {
         return info[5];
     }
 
@@ -67,12 +67,34 @@ public class OUsuarios extends Objeto implements ObjetoFK {
      *
      * @return una cadena con el ID del tipo de toma asociada a este usuario
      */
-    public String getToma() {
+    public String getWaterIntakes() {
         return info[6];
     }
 
-    public OTipoTomas getTypeWaterIntakes() {
-        return FactoryCache.TIPO_DE_TOMAS.get((t) -> t.getId().equals(getToma()));
+    public OTipoTomas getWaterIntakesObject() {
+        return ObjectUtils.getWaterIntakesObject(getWaterIntakes());
+    }
+
+    /**
+     *
+     * @return 1 si el usuario es titular en cualquier otro caso devuelve el id
+     * del usuario al cual esta asociado
+     */
+    public int getUserType() {
+        return Integer.parseInt(info[7]);
+    }
+
+    public String getUserTypeString() {
+        return switch (getUserType()) {
+            case 1:
+                yield "Titular";
+            default:
+                yield "Consumidor";
+        };
+    }
+
+    public boolean isTitular() {
+        return getUserType() == 1;
     }
 
     /**
@@ -80,12 +102,12 @@ public class OUsuarios extends Objeto implements ObjetoFK {
      * @return un entero: 1 si el usuario esta activo -1 si el usuario esta
      * inactivo
      */
-    public int getEstado() {
-        return Integer.parseInt(info[7]);
+    public int getStatus() {
+        return Integer.parseInt(info[8]);
     }
 
-    public String getEstadoStr() {
-        return switch (getEstado()) {
+    public String getStatusString() {
+        return switch (getStatus()) {
             case 1:
                 yield "Activo";
             case 2:
@@ -97,42 +119,25 @@ public class OUsuarios extends Objeto implements ObjetoFK {
         };
     }
 
-    public boolean isActivo() {
-        return getEstado() > 0;
+    public boolean isActive() {
+        return getStatus() == 1;
+    }
+
+    public LocalDateTime getDateRegister() {
+        return LocalDateTime.parse(info[9], DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
 
     /**
-     *
-     * @return -1 si el usuario es titular en cualquier otro caso devuelve el id
-     * del usuario al cual esta asociado
-     */
-    public String getTipo() {
-        return info[8];
-    }
-
-    public String getTipoStr() {
-        return switch (info[8]) {
-            case "1":
-                yield "Titular";
-            default:
-                yield "Consumidor";
-        };
-    }
-
-    public boolean isTitular() {
-        return Integer.parseInt(info[8]) < 0;
-    }
-
-    /**
-     * <br> 1 id
-     * <br> 2 nombre
-     * <br> 3 ap
-     * <br> 4 am
-     * <br> 5 calle
-     * <br> 6 toma
-     * <br> 7 registro
+     * <br> 0 id
+     * <br> 1 nombre
+     * <br> 2 apellido paterno
+     * <br> 3 apellido materno
+     * <br> 4 calle
+     * <br> 5 numero de casa
+     * <br> 6 tipo de toma
+     * <br> 7 tipo de usuario
      * <br> 8 estado
-     * <br> 9 titular
+     * <br> 9 fecha de registro
      *
      * @param info array que contiene la informacion en el orden mostrado arriba
      */
@@ -160,22 +165,11 @@ public class OUsuarios extends Objeto implements ObjetoFK {
     }
 
     @Override
-    public String[] getInfoSinFK() {
-        String[] _info = this.info.clone();
-        _info[4] = ObjectUtils.getStreed(getCalle());
-        _info[6] = ObjectUtils.getWaterIntakes(getToma());
-        _info[7] = getEstadoStr();
-        _info[8] = getTipoStr();
-
-        return _info;
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(getNombre()).append(" ");
-        sb.append(getAp()).append(" ");
-        sb.append(getAm());
+        sb.append(getName()).append(" ");
+        sb.append(getLastName1()).append(" ");
+        sb.append(getLastName2());
         return sb.toString();
     }
 

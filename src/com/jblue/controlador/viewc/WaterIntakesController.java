@@ -16,27 +16,28 @@
  */
 package com.jblue.controlador.viewc;
 
-import com.jblue.controlador.Controller;
 import com.jblue.controlador.DBController;
-import com.jblue.controlador.compc.ComponentController;
-import com.jblue.modelo.dbconexion.FuncionesBD;
+import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.fabricas.FactoryCache;
 import com.jblue.modelo.objetos.OTipoTomas;
-import com.jblue.util.cache.MemoListCache;
 import com.jblue.vista.views.WaterIntakesView;
 import java.awt.event.ActionEvent;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author juan-campos
  */
-public class WaterIntakesController extends Controller implements DBController {
+public class WaterIntakesController extends DBViewController<OTipoTomas> implements DBController {
 
     private WaterIntakesView view;
-    private final MemoListCache<OTipoTomas> memo_cache;
+    private final JDBConnection<OTipoTomas> connection;
+
     public WaterIntakesController(WaterIntakesView view) {
+        super(FactoryCache.TIPO_DE_TOMAS);
         this.view = view;
-        memo_cache = FactoryCache.TIPO_DE_TOMAS;
+        connection = (JDBConnection<OTipoTomas>) memo_cache.getConnection();
+
     }
 
     @Override
@@ -57,23 +58,70 @@ public class WaterIntakesController extends Controller implements DBController {
 
     @Override
     public void save() {
-        if (view.isValuesOk()) {
-            String[] values = view.getDbValues();
-            FuncionesBD<OTipoTomas> conexion = (FuncionesBD<OTipoTomas>) memo_cache.getConnection();
-            conexion.insert(values);
+        if (isOK()) {
+            return;
         }
+        String field = "type, price, surcharge";
+        boolean insert = connection.insert(field, view.getDbValues());
+        rmessage(insert);
     }
 
     @Override
     public void delete() {
+        if (isOK()) {
+            return;
+        }
+        //boolean delete = connection.delete("id = %s".formatted(view.getObjectSearch().getId()));
+        boolean delete = connection.update("status", "3", "id = %s".formatted(view.getObjectSearch().getId()));
+        rmessage(delete);
     }
 
     @Override
     public void update() {
+        if (isOK()) {
+            return;
+        }
+        String field = "type, previus_price, price, surcharge, date_update";
+        boolean update = connection.update(field.replace(" ", "").split(","),
+                view.getDbValues(),
+                "id = %s".formatted(view.getObjectSearch().getId())
+        );
+        rmessage(update);
     }
 
     @Override
     public void cancel() {
+        int in = JOptionPane.showConfirmDialog(view,
+                "¿Estas seguro de cancelar esta operacion?",
+                "Cancelar Operacion",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (in == JOptionPane.YES_OPTION) {
+            view.initialState();
+        }
     }
 
+    public boolean isOK() {
+        boolean ok = view.isValuesOk();
+        String status = ok ? "Exitoso" : "Erroneo";
+        JOptionPane.showMessageDialog(view,
+                "Operacion %s".formatted(status),
+                "Estado de la operacion",
+                JOptionPane.INFORMATION_MESSAGE);
+        return ok;
+    }
+
+    public void rmessage(boolean op) {
+        String status = op ? "Exitoso" : "Erroneo";
+        JOptionPane.showMessageDialog(view,
+                "Operacion %s".formatted(status),
+                "Estado de la operacion",
+                JOptionPane.INFORMATION_MESSAGE);
+        if (op) {
+            memo_cache.reLoadData();
+            view.initialState();
+        }
+    }
 }

@@ -475,11 +475,12 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
     @Override
     public String[] getDbValues() {
         String _type = campo_tipo.getText();
+        String _previus_price = String.valueOf(object_search.getCosto());
         String _cost = campo_costo.getText();
         String _fine = campo_recargo.getText();
-
         return new String[]{
             _type,
+            _previus_price,
             _cost,
             _fine
         };
@@ -490,6 +491,11 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
         count.setText(info[0]);
         range.setText(info[1]);
         total.setText(info[2]);
+    }
+
+    @Override
+    public void setScreenListInfo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

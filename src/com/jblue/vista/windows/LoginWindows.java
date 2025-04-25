@@ -36,6 +36,7 @@ public class LoginWindows extends VentanaSimple {
      *
      */
     public LoginWindows() {
+        updateTitle("Inicio de Sesion");
         this.MENU_CONFIG_BD = new ConfigWindow();
         initComponents();
         FIELDS = new TextFieldWrapper[2];
@@ -87,29 +88,30 @@ public class LoginWindows extends VentanaSimple {
 
     @Override
     public void finalState() {
+        Properties p = (Properties) LaunchApp.getInstance().getResources("propierties");
+        title1_field.setText(p.getProperty(AppConfig.TITLE1));
+        title2_field.setText(p.getProperty(AppConfig.TITLE2));
+        String icon_path = p.getProperty(AppConfig.LOGIN_ICON);
+        if (!icon_path.isBlank()) {
+            ImageIcon i = new ImageIcon(icon_path);
+            Image icon = i.getImage().getScaledInstance(
+                    icon_image.getPreferredSize().width,
+                    icon_image.getPreferredSize().height,
+                    Image.SCALE_DEFAULT
+            );
+            i.setImage(icon);
+            icon_image.setIcon(i);
+        }
+        //
+        DBConnection conn = (DBConnection) LaunchApp.getInstance().getResources("connection");
+        String status_db;
         try {
-            Properties p = (Properties) LaunchApp.getInstance().getResources("propierties");
-            title1_field.setText(p.getProperty(AppConfig.TITLE1));
-            title2_field.setText(p.getProperty(AppConfig.TITLE2));
-            String icon_path = p.getProperty(AppConfig.LOGIN_ICON);
-            if (!icon_path.isBlank()) {
-                ImageIcon i = new ImageIcon(icon_path);
-                Image icon = i.getImage().getScaledInstance(
-                        icon_image.getPreferredSize().width,
-                        icon_image.getPreferredSize().height,
-                        Image.SCALE_DEFAULT
-                );
-                i.setImage(icon);
-                icon_image.setIcon(i);
-            }
-            //
-            DBConnection instancia = DBConnection.getInstance();
-            String estado = "Estado ";
-            estado = estado.concat(!instancia.getConnection().isClosed() ? "Conectado" : "Desconectado");
-            db_status.setText(estado);
+            status_db = conn.getConnection().isClosed() ? "Desconectado" : "Conectado";
+            db_status_field.setText(status_db);
         } catch (SQLException ex) {
             Logger.getLogger(LoginWindows.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     /**
@@ -239,9 +241,9 @@ public class LoginWindows extends VentanaSimple {
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        db_status.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        db_status.setPreferredSize(new java.awt.Dimension(20, 20));
-        jPanel2.add(db_status, java.awt.BorderLayout.NORTH);
+        db_status_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        db_status_field.setPreferredSize(new java.awt.Dimension(20, 20));
+        jPanel2.add(db_status_field, java.awt.BorderLayout.NORTH);
 
         config_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/img4.png"))); // NOI18N
         config_button.setActionCommand("config");
@@ -261,7 +263,7 @@ public class LoginWindows extends VentanaSimple {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private final javax.swing.JButton config_button = new javax.swing.JButton();
-    private final javax.swing.JLabel db_status = new javax.swing.JLabel();
+    private final javax.swing.JLabel db_status_field = new javax.swing.JLabel();
     private final javax.swing.JLabel icon_image = new javax.swing.JLabel();
     private javax.swing.JLabel jLabel1;
     private final javax.swing.JLabel jLabel5 = new javax.swing.JLabel();

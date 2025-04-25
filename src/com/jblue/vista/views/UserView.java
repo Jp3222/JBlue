@@ -23,7 +23,7 @@ import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.fabricas.FactoryCache;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OTipoTomas;
-import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
 import com.jblue.vista.marco.DBValues;
@@ -32,6 +32,7 @@ import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -43,7 +44,7 @@ public final class UserView extends DBView implements DBValues {
 
     private CardLayout ly;
     private final JTableModel model;
-    private OUsuarios object_search;
+    private OUser object_search;
 
     /**
      * Creates new form NewUsuarios
@@ -88,9 +89,9 @@ public final class UserView extends DBView implements DBValues {
         register_button.addActionListener(table_controller);
         search_button.addActionListener(table_controller);
         ComboBoxController<OTipoTomas> c1 = new ComboBoxController(water_intakes, FactoryCache.TIPO_DE_TOMAS);
-        ComboBoxController<OTipoTomas> c2 = new ComboBoxController(street, FactoryCache.CALLES);
+        ComboBoxController<OCalles> c2 = new ComboBoxController(street, FactoryCache.CALLES);
         ComboBoxController<OTipoTomas> c3 = new ComboBoxController(water_intakes_filter, FactoryCache.TIPO_DE_TOMAS);
-        ComboBoxController<OTipoTomas> c4 = new ComboBoxController(street_filter, FactoryCache.CALLES);
+        ComboBoxController<OCalles> c4 = new ComboBoxController(street_filter, FactoryCache.CALLES);
 
         c1.loadData();
         c2.loadData();
@@ -104,6 +105,17 @@ public final class UserView extends DBView implements DBValues {
 
     @Override
     public void initialState() {
+        first_name.setText(null);
+        last_name_1.setText(null);
+        last_name_2.setText(null);
+        house_numer.setText(null);
+        street.setSelectedIndex(0);
+        water_intakes.setSelectedIndex(0);
+        user_state.setSelectedIndex(0);
+        man_tipo_toma.setSelected(false);
+        man_calle.setSelected(false);
+        man_estado.setSelected(false);
+        buttonGroup1.setSelected(jRadioButton1.getModel(), true);
     }
 
     @Override
@@ -137,7 +149,7 @@ public final class UserView extends DBView implements DBValues {
         jRadioButton2 = new javax.swing.JRadioButton();
         pc_nombre = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        name = new javax.swing.JTextField();
+        first_name = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         pc_ap = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -290,11 +302,11 @@ public final class UserView extends DBView implements DBValues {
         jLabel2.setPreferredSize(new java.awt.Dimension(100, 25));
         pc_nombre.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        name.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        name.setToolTipText("<html>\nCampo: Nombre\n<br>valores admitidos: Solo texto\n<br>tamaño maximo: 32 Caracteres");
-        name.setName("Nombre"); // NOI18N
-        name.setPreferredSize(new java.awt.Dimension(100, 30));
-        pc_nombre.add(name, java.awt.BorderLayout.CENTER);
+        first_name.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        first_name.setToolTipText("<html>\nCampo: Nombre\n<br>valores admitidos: Solo texto\n<br>tamaño maximo: 32 Caracteres");
+        first_name.setName("Nombre"); // NOI18N
+        first_name.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_nombre.add(first_name, java.awt.BorderLayout.CENTER);
 
         jLabel7.setPreferredSize(new java.awt.Dimension(60, 30));
         pc_nombre.add(jLabel7, java.awt.BorderLayout.LINE_END);
@@ -683,6 +695,7 @@ public final class UserView extends DBView implements DBValues {
     private javax.swing.JCheckBox filtro_is_titular;
     private javax.swing.JButton filtro_quitar;
     private javax.swing.JCheckBox filtros;
+    private javax.swing.JTextField first_name;
     private javax.swing.JTextField house_numer;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
@@ -724,7 +737,6 @@ public final class UserView extends DBView implements DBValues {
     private javax.swing.JCheckBox man_calle;
     private javax.swing.JCheckBox man_estado;
     private javax.swing.JCheckBox man_tipo_toma;
-    private javax.swing.JTextField name;
     private javax.swing.JButton next_button;
     private javax.swing.JPanel north_panel;
     private javax.swing.JPanel np_cp_center;
@@ -765,7 +777,7 @@ public final class UserView extends DBView implements DBValues {
     private javax.swing.JComboBox<OTipoTomas> water_intakes_filter;
     // End of variables declaration//GEN-END:variables
 
-    public OUsuarios getObject() {
+    public OUser getObject() {
         return object_search;
     }
 
@@ -811,7 +823,7 @@ public final class UserView extends DBView implements DBValues {
         boolean ok = true;
         String messages = "El campo: %s no es valido";
         JTextField[] text_fields = {
-            name, last_name_1, last_name_2
+            first_name, last_name_1, last_name_2
         };
         for (JTextField i : text_fields) {
             if (Filtros.isNullOrBlank(i.getText())) {
@@ -839,7 +851,7 @@ public final class UserView extends DBView implements DBValues {
 
     @Override
     public String[] getDbValues() {
-        String _first_name = name.getText();
+        String _first_name = first_name.getText();
         String _last_name1 = last_name_1.getText();
         String _last_name2 = last_name_2.getText();
         String _street = street.getItemAt(street.getSelectedIndex()).getId();
@@ -860,13 +872,13 @@ public final class UserView extends DBView implements DBValues {
     }
 
     @Override
-    public OUsuarios getObjectSearch() {
+    public OUser getObjectSearch() {
         return object_search;
     }
 
     @Override
     public void setObjectSearch(Objeto o) {
-        object_search = (OUsuarios) o;
+        object_search = (OUser) o;
     }
 
     @Override
@@ -874,6 +886,22 @@ public final class UserView extends DBView implements DBValues {
         count.setText(info[0]);
         range.setText(info[1]);
         total.setText(info[2]);
+    }
+
+    @Override
+    public void setScreenListInfo() {
+        first_name.setText(object_search.getName());
+        last_name_1.setText(object_search.getLastName1());
+        last_name_2.setText(object_search.getLastName2());
+        house_numer.setText(object_search.getHouseNumber());
+        street.setSelectedItem(object_search.getStreetObject());
+        water_intakes.setSelectedItem(object_search.getWaterIntakesObject());
+        user_state.setSelectedIndex(object_search.getStatus());
+        man_tipo_toma.setSelected(false);
+        man_calle.setSelected(false);
+        man_estado.setSelected(false);
+        JRadioButton o = object_search.isTitular() ? jRadioButton1 : jRadioButton2;
+        buttonGroup1.setSelected(o.getModel(), true);
     }
 
 }

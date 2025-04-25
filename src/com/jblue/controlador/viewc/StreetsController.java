@@ -32,22 +32,24 @@ import com.jblue.controlador.DBController;
 import com.jblue.controlador.compc.ComponentController;
 import com.jblue.modelo.ConstBD;
 import com.jblue.modelo.dbconexion.JDBConnection;
+import com.jblue.modelo.objetos.OUser;
 import java.util.ArrayList;
 
 /**
  *
  * @author juan-campos
  */
-public class StreetsController extends Controller implements DBController {
+public class StreetsController extends DBViewController<OCalles> implements DBController {
 
-    private final MemoListCache<OCalles> memo_cache;
+    private final JDBConnection<OCalles> connection;
     private final StreetsView view;
     private final ArrayList<ComponentController> components_controllers;
 
     public StreetsController(StreetsView view) {
+        super(FactoryCache.CALLES);
+        this.connection = (JDBConnection<OCalles>) memo_cache.getConnection();
         this.view = view;
         this.components_controllers = new ArrayList(5);
-        memo_cache = FactoryCache.CALLES;
 
     }
 
@@ -76,46 +78,70 @@ public class StreetsController extends Controller implements DBController {
 
     @Override
     public void save() {
-        if (!view.isValuesOk()) {
+        if (isOK()) {
             return;
         }
-        String[] arr = view.getDbValues();
-        boolean insert = memo_cache.getConnection().insert(arr);
-        memo_cache.reLoadData();
-        messages(view, insert);
+        String field = "name";
+        boolean insert = connection.insert(field, view.getDbValues());
+        rmessage(insert);
     }
 
     @Override
     public void delete() {
-        if (view.getObjectSearch() != null) {
+        if (isOK()) {
             return;
         }
-        boolean delete = memo_cache.getConnection().delete("id = %s".formatted(view.getObjectSearch().getId()));
-        messages(view, delete);
+        //boolean delete = connection.delete("id = %s".formatted(view.getObjectSearch().getId()));
+        boolean delete = connection.update("status", "3", "id = %s".formatted(view.getObjectSearch().getId()));
+        rmessage(delete);
     }
 
     @Override
     public void update() {
-        if (view.getObjectSearch() != null && !view.isValuesOk()) {
+        if (isOK()) {
             return;
         }
-        JDBConnection connection = (JDBConnection) memo_cache.getConnection();
-        boolean update = connection.update(
-                ConstBD.TABLA_CALLES,
+        String field = "name";
+        boolean update = connection.update(field.replace(" ", "").split(","),
                 view.getDbValues(),
                 "id = %s".formatted(view.getObjectSearch().getId())
         );
-        messages(view, update);
+        rmessage(update);
     }
 
     @Override
     public void cancel() {
-        int input = JOptionPane.showConfirmDialog(view, "¿Seguro que desea cancelar esta operacion?", "Cancelar operacion", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-        boolean option = input == JOptionPane.YES_OPTION;
-        if (option) {
+        int in = JOptionPane.showConfirmDialog(view,
+                "¿Estas seguro de cancelar esta operacion?",
+                "Cancelar Operacion",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (in == JOptionPane.YES_OPTION) {
             view.initialState();
         }
-
     }
-    
+
+    public boolean isOK() {
+        boolean ok = view.isValuesOk();
+        String status = ok ? "Exitoso" : "Erroneo";
+        JOptionPane.showMessageDialog(view,
+                "Operacion %s".formatted(status),
+                "Estado de la operacion",
+                JOptionPane.INFORMATION_MESSAGE);
+        return ok;
+    }
+
+    public void rmessage(boolean op) {
+        String status = op ? "Exitoso" : "Erroneo";
+        JOptionPane.showMessageDialog(view,
+                "Operacion %s".formatted(status),
+                "Estado de la operacion",
+                JOptionPane.INFORMATION_MESSAGE);
+        if (op) {
+            memo_cache.reLoadData();
+            view.initialState();
+        }
+    }
 }

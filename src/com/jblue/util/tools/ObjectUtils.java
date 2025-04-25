@@ -39,18 +39,25 @@ public class ObjectUtils {
         mapa = new HashMap<>(10);
         mapa.put(ConstBD.TABLAS[0], new OPersonal());
         mapa.put(Const.EMPLOYEES.getTable(), new OPersonal());
-        mapa.put(ConstBD.TABLAS[1], new OUsuarios());
-        mapa.put(Const.USER.getTable(), new OUsuarios());
+        mapa.put(ConstBD.TABLAS[1], new OUser());
+        mapa.put(Const.USER.getTable(), new OUser());
         mapa.put(ConstBD.TABLAS[2], new OCalles());
         mapa.put(Const.STREETS.getTable(), new OCalles());
         mapa.put(ConstBD.TABLAS[3], new OTipoTomas());
         mapa.put(Const.WATER_INTAKES.getTable(), new OTipoTomas());
         mapa.put(ConstBD.TABLAS[4], new OHisMovimientos());
         mapa.put(ConstBD.TABLAS[5], new OMovimientos());
+        
+        //Tipos de pagos
+        mapa.put(Const.SERVICE_PAYMENTS.getTable(), new OPagosServicio());
         mapa.put(ConstBD.TABLAS[6], new OPagosServicio());
-        //mapa.put(Const., new OPagosServicio());
+        
+        mapa.put(Const.SURCHARGE_PAYMENTS.getTable(), new OPagosRecargos());
         mapa.put(ConstBD.TABLAS[7], new OPagosRecargos());
+        
+        mapa.put(Const.OTHER_PAYMENTS.getTable(), new OPagosOtros());
         mapa.put(ConstBD.TABLAS[8], new OPagosOtros());
+        
         mapa.put(ConstBD.TABLAS[9], new OValores());
     }
 
@@ -97,16 +104,28 @@ public class ObjectUtils {
         return usuario.getType().equals("5");
     }
 
-    public static String getStreed(String calle) {
-        return searchInCache(FactoryCache.CALLES, calle);
+    public static String getStreed(String street_id) {
+        return searchInCache(FactoryCache.CALLES, street_id);
     }
 
-    public static String getWaterIntakes(String toma) {
-        return searchInCache(FactoryCache.TIPO_DE_TOMAS, toma);
+    public static OCalles getStreedObject(String street_id) {
+        return searchInCacheObject(FactoryCache.CALLES, street_id);
+    }
+
+    public static String getWaterIntakes(String water_intakes_id) {
+        return searchInCache(FactoryCache.TIPO_DE_TOMAS, water_intakes_id);
+    }
+
+    public static OTipoTomas getWaterIntakesObject(String water_intakes_id) {
+        return searchInCacheObject(FactoryCache.TIPO_DE_TOMAS, water_intakes_id);
     }
 
     private static <T extends Objeto> String searchInCache(MemoListCache<T> cache, String id) {
         return cache.get(o -> o.getId().equals(id)).toString();
+    }
+
+    private static <T extends Objeto> T searchInCacheObject(MemoListCache<T> cache, String id) {
+        return cache.get((t) -> t.getId().equals(id));
     }
 
 }

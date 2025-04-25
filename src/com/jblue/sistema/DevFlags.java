@@ -17,39 +17,87 @@
 package com.jblue.sistema;
 
 /**
- * En esta clase se pueden poner variables booleanas para comportamientos en
- * desarrollo
+ * Esta clase esta dedicada a la declaracion de banderas con el proposito de
+ * probar, habilitar o desactivar funciones que puedan tener un efecto negativo,
+ * asi mismo se espera tener un control de todos los mensajes de alerta para
+ * evitar revelar informacion sensible
+ * <br>
+ * Todas puedes activar o desactivar todas las banderas con usar la bandera
+ * "ALL_FLAGS" o darle un valor a cada una de ellas segun las necesidades
  *
  *
  * @author juan-campos
  */
 public class DevFlags {
 
-    /*
-    ejemplo:
-    
-    try{
-        codigo...
-    }catch{
-        if(MNS_ERR){
-            System.out.println("Mensaje de desarrollador");
-        }
-    }
-    
-     */
     /**
-     * Bandera para encerrar todas las opciones de desarrollo futuras.
-     */
-    public static boolean FUTURE_VIEW = true;
-
-    /**
-     * Mensaje de error para el usuario
-     */
-    public static boolean DEV_MSN = true;
-
-    /**
-     * *
+     * **Reglas de Juego**
+     * Estructura del nombre de una bandera:
+     * 
+     * PREFIJO_TIPO_NOMBRE
+     * ** RELGLAS DE ESCRITURA:**
+     * Los prefijos y los tipos deben escribirse con solo 3 caracteres.
+     * Los nombres de las banderas pueden escribirse de cualquier tamaño.
+     * 
+     * |---------------------|
+     * |prefijo | Significado|
+     * |---------------------|
+     * |DEV | en desarrollo  |
+     * |TST | a prueba       |
+     * |CAN | candidata      |
+     * |---------------------|
+     * 
+     * Recuerda que cuando una funcion ya paso los prefijos "DEV", "TST" y "CAN" }
+     * puedes quitar la bandera
+     * 
+     * |---------------------|
+     * |Tipos | Significado  |
+     * |---------------------|
+     * |MSG | Mensaje        |
+     * |FUN | Funcion        |
+     * |PRP | Propiedad      |
+     * |VEW | VISTA          |
+     * |CFG | Configuracion  |
+     * |EXE | Ejecutar       |
+     * |---------------------|
+     *
      *
      */
-    public static boolean DEV_CONFIG = true;
+//-----------------------BANDERAS GENERICAS-----------------------------------//
+    
+    /**
+     * Bandera que le da un valor inicial a todas las banderas
+     */
+    public static boolean ALL_FLAGS = true;
+    
+    /**
+     * Banderaa para todas las vistas nuevas
+     */
+    public static boolean DEV_VEW_NEWS = ALL_FLAGS;
+
+    /**
+     * Bandera para todos los mensajes puestos en condigo sobre el codigo
+     */
+    public static boolean DEV_MSG_CODE = ALL_FLAGS;
+    
+    /**
+     * Bandera para todos los mensajes puestos en el codigo sobre la base de datos
+     */
+    public static boolean DEV_MSG_DATA_BASE = ALL_FLAGS;
+    
+    /**
+     * Bandera para ejecutar funciones en desarrollo
+     */
+    public static boolean DEV_EXE_FUNCION = ALL_FLAGS;
+    
+    /**
+     * Bandera para ejecutar funciones a prueba
+     */
+    public static boolean TST_EXE_FUNCION = ALL_FLAGS;
+    
+    /**
+     * Bandera para ejecutar funciones candidatas
+     */
+    public static boolean CAN_EXE_FUNCION = ALL_FLAGS;
+
 }

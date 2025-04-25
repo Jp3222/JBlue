@@ -230,30 +230,30 @@ public final class CSVImport extends javax.swing.JPanel implements ViewStates {
     }
 
     private void csvProcessInput() {
-        DBConnection con = DBConnection.getInstance();
-        String name = table_name_field.getText();
-        String fields = fields_input_field.getText();
-        StringBuilder aux = new StringBuilder();
-        int i = 0;
-        JTableModel model = (JTableModel) jTable1.getModel();
-        while (i < jTable1.getRowCount() - 1) {
-            aux.append(getFormatt(model.getRow(i))).append(",\n");
-            //System.out.println(Arrays.toString(model.getRow(i)));
-            i++;
-        }
-        aux.append(getFormatt(model.getRow(i)));
-        try {
-            //JOptionPane.showMessageDialog(this, DBConnection.INSERT_COL.formatted(name, fields, aux.toString()));
-            //System.out.println(DBConnection.INSERT_COL.formatted(name, fields, aux.toString()));
-            fields = fields.replace("\"", "");
-            String aux2 = aux.toString().replace("\"", "");
-            boolean insert = con.insert(name, fields, aux);
-            if (insert) {
-                JOptionPane.showMessageDialog(this, DBConnection.INSERT_COL.formatted(name, fields, aux.toString()));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(CSVImport.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        DBConnection con = DBConnection.getInstance();
+//        String name = table_name_field.getText();
+//        String fields = fields_input_field.getText();
+//        StringBuilder aux = new StringBuilder();
+//        int i = 0;
+//        JTableModel model = (JTableModel) jTable1.getModel();
+//        while (i < jTable1.getRowCount() - 1) {
+//            aux.append(getFormatt(model.getRow(i))).append(",\n");
+//            //System.out.println(Arrays.toString(model.getRow(i)));
+//            i++;
+//        }
+//        aux.append(getFormatt(model.getRow(i)));
+//        try {
+//            //JOptionPane.showMessageDialog(this, DBConnection.INSERT_COL.formatted(name, fields, aux.toString()));
+//            //System.out.println(DBConnection.INSERT_COL.formatted(name, fields, aux.toString()));
+//            fields = fields.replace("\"", "");
+//            String aux2 = aux.toString().replace("\"", "");
+//            boolean insert = con.insert(name, fields, aux);
+//            if (insert) {
+//                JOptionPane.showMessageDialog(this, DBConnection.INSERT_COL.formatted(name, fields, aux.toString()));
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(CSVImport.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     private String getFormatt(String[] arr) {

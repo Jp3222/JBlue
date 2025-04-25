@@ -16,14 +16,13 @@
  */
 package com.jblue.controlador.winc;
 
-import com.jblue.controlador.compc.ComponentController;
 import com.jblue.sistema.Sesion;
 import com.jblue.sistema.app.AppConfig;
 import com.jblue.sistema.app.AppFiles;
+import com.jblue.vista.views.ConfigurationPanel;
 import com.jblue.vista.windows.ConfigWindow;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
-import com.jutil.jbd.conexion.Conexion;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.io.FileOutputStream;
@@ -42,14 +41,15 @@ import javax.swing.JPasswordField;
  */
 public class ConfigController extends WindowController {
 
-    private final ConfigWindow view;
+    private final ConfigurationPanel view;
     private final Properties properties;
 
-    public ConfigController(ConfigWindow view) {
+    public ConfigController(ConfigurationPanel view, ConfigWindow window) {
         this.view = view;
         properties = (Properties) LaunchApp.getInstance().getResources("propierties");
     }
 
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
@@ -72,7 +72,7 @@ public class ConfigController extends WindowController {
             }
             case "show_password" -> {
                 JCheckBox o = (JCheckBox) e.getSource();
-                JPasswordField pass = view.getUser();
+                JPasswordField pass = view.getPassword();
                 pass.setEchoChar(o.isSelected() ? ((char) 0) : '*');
             }
             case "save db" ->
@@ -83,26 +83,17 @@ public class ConfigController extends WindowController {
                 defaultCase(e.getActionCommand(), null, -1);
         }
     }
+
     //
     void saveDB() {
-        DBConnection connection = null;
-        Conexion conexion = null;
-        try {
-            connection = DBConnection.getInstance(
-                    view.getSUrl(), view.getSUser(), view.getSPassword()
-            );
-
-            conexion = Conexion.getInstancia(
-                    view.getSUser(), view.getSPassword(), view.getSUrl()
-            );
-
-        } catch (SQLException ex) {
-            Logger.getLogger(ConfigController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        //
-        properties.setProperty(AppConfig.DB_URL, view.getSUrl());
         properties.setProperty(AppConfig.DB_USER, view.getSUser());
         properties.setProperty(AppConfig.DB_PASSWORD, view.getSPassword());
+        //properties.setProperty(AppConfig.DB_URL, view.getSUrl());
+        properties.setProperty(AppConfig.DB_MOTOR, view.getMotor());
+        properties.setProperty(AppConfig.DB_PORT, view.getPort());
+        properties.setProperty(AppConfig.DB_HOST, view.getHost());
+        properties.setProperty(AppConfig.DB_NAME, view.getDataBaseName());
+
         //
         properties.setProperty(AppConfig.TITLE1, view.getTitle1());
         properties.setProperty(AppConfig.TITLE2, view.getTitle2());
@@ -114,20 +105,21 @@ public class ConfigController extends WindowController {
     }
 
     void testDB() {
-        try {
-            DBConnection connection = DBConnection.getNewInstance(
-                    view.getSUrl(), view.getSUser(), view.getSPassword()
-            );
+        try (DBConnection connection = DBConnection.getNewInstance(
+                view.getURL(), view.getSUser(), view.getSPassword())) {
+            System.out.println(view.getURL());
+            System.out.println(view.getSUser());
+            System.out.println(view.getSPassword());
 
             boolean valid = connection.getConnection().isValid(1000);
+            System.out.println(valid);
             if (!valid) {
                 JOptionPane.showMessageDialog(view, "Connexion no establecida");
                 return;
             }
 
-            connection.close();
             JOptionPane.showMessageDialog(view, "Connexion valida");
-            properties.setProperty(AppConfig.DB_URL, view.getSUrl());
+            properties.setProperty(AppConfig.DB_URL, view.getURL());
             properties.setProperty(AppConfig.DB_USER, view.getSUser());
             properties.setProperty(AppConfig.DB_PASSWORD, view.getSPassword());
         } catch (SQLException ex) {

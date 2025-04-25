@@ -17,12 +17,17 @@
 package com.jblue.util.cache;
 
 import com.jblue.modelo.objetos.Objeto;
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public interface ModeloListCache<T extends Objeto> extends ModeloCache<T>, ListCache<T> {
+public interface ListCacheModel<T extends Objeto> {
 
+    List<T> getList();
+
+    List<T> getList(Predicate<T> filter);
 }

@@ -564,4 +564,9 @@ public class VPersonal extends DBView implements OptionMenu {
         total.setText(info[2]);
     }
 
+    @Override
+    public void setScreenListInfo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

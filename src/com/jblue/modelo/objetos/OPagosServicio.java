@@ -4,7 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.objetos.pagos.AbstraccionOPago;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -24,5 +24,7 @@ public class OPagosServicio extends AbstraccionOPago {
     public String toString() {
         return getUsuario();
     }
+
+    
 
 }

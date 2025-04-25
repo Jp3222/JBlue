@@ -16,10 +16,10 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.modelo.dbconexion.FuncionesBD;
+import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.tools.ObjectUtils;
-import com.jutil.jbd.conexion.Conexion;
+import com.jutil.dbcon.connection.DBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
@@ -37,12 +37,12 @@ import java.util.logging.Logger;
 public abstract class AbstractSetCache<T extends Objeto> implements SetCacheModel<T> {
 
     protected final Set<T> cache;
-    protected final FuncionesBD<T> conexion;
+    protected final JDBConnection<T> conexion;
     protected int index_min, index_max, steps;
     protected long count;
     protected int call_count;
 
-    public AbstractSetCache(int capacity, FuncionesBD conexion) {
+    public AbstractSetCache(int capacity, JDBConnection conexion) {
         this.cache = new HashSet<>(MIN);
         this.conexion = conexion;
         this.index_min = 1;
@@ -58,18 +58,19 @@ public abstract class AbstractSetCache<T extends Objeto> implements SetCacheMode
     @Override
     public void loadData() {
         String query = "SELECT * FROM %s WHERE id >= %s and id <= %s";
-        query = query.formatted(conexion.getTabla(), index_min, index_max);
+        query = query.formatted(conexion.getTable(), index_min, index_max);
         System.out.println("leyendo base de datos...");
         try {
-            Conexion conn = conexion.getConnection();
-            ResultSet rs_data = conn.query(query);
+            DBConnection conn = conexion.getConnection();
+            ResultSet rs_data;
+            rs_data = conn.query(query);
             String[] info;
             while (rs_data.next()) {
-                info = new String[conexion.getCampos().length];
-                for (int i = 0; i < conexion.getCampos().length; i++) {
-                    info[i] = rs_data.getString(conexion.getCampos()[i]);
+                info = new String[conexion.getFields().length];
+                for (int i = 0; i < conexion.getFields().length; i++) {
+                    info[i] = rs_data.getString(conexion.getFields()[i]);
                 }
-                Objeto objeto = ObjectUtils.getObjeto(conexion.getTabla(), info);
+                Objeto objeto = ObjectUtils.getObjeto(conexion.getTable(), info);
                 cache.add((T) objeto);
             }
         } catch (SQLException ex) {

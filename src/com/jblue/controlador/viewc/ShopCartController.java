@@ -19,15 +19,16 @@ package com.jblue.controlador.viewc;
 import com.jblue.controlador.Controller;
 import com.jblue.controlador.logic.PaymentFactory;
 import com.jblue.controlador.logic.PaymentModel;
-import com.jblue.controlador.logic.ServicePaymentLogic;
 import com.jblue.modelo.fabricas.FactoryCache;
-import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.modelo.objetos.OPagosServicio;
+import com.jblue.modelo.objetos.OUser;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.util.tools.GraphicsUtils;
 import com.jblue.vista.components.CVisorUsuario;
 import com.jblue.vista.views.ShopCartView;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -38,12 +39,14 @@ import javax.swing.SwingUtilities;
  */
 public class ShopCartController extends Controller {
 
-    private final MemoListCache<OUsuarios> memo_cache;
+    private final MemoListCache<OUser> memo_cache;
     private final ShopCartView view;
+    private final PaymentModel o;
 
     public ShopCartController(ShopCartView view) {
         this.view = view;
         memo_cache = FactoryCache.USUARIOS;
+        this.o = PaymentFactory.getServicePayment();
     }
 
     @Override
@@ -69,7 +72,6 @@ public class ShopCartController extends Controller {
                 allMonths((JCheckBox) e.getSource());
             case "month" ->
                 total();
-
             default ->
                 defaultCase(e.getActionCommand(), null, -1);
         }
@@ -92,23 +94,14 @@ public class ShopCartController extends Controller {
             JOptionPane.showMessageDialog(view, "Usuario no valido", "Operacion Erronea", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
         String in = JOptionPane.showInputDialog(view, "Dinero Ingresado", "Dinero ingresado", JOptionPane.INFORMATION_MESSAGE);
-        double dinero_in = Double.parseDouble(in);
-
-        PaymentModel o = PaymentFactory.getServicePayment();
+        float dinero_in = Float.parseFloat(in.concat(".00"));
 
         o.setUsuario(view.getObjectSearch());
         o.setMesesPagados(view.getMonthPaidList());
         o.setDineroIngresado(dinero_in);
-
-        if (o.execPayment()) {
-            JOptionPane.showMessageDialog(view, "OPERACCION EXITOSA");
-            JOptionPane.showMessageDialog(view, o.getMov().get(ServicePaymentLogic.KEY_MOVS));
-        } else {
-            JOptionPane.showMessageDialog(view, "OPERACCION ERRONEA");
-            JOptionPane.showMessageDialog(view, o.getMov().get(ServicePaymentLogic.KEY_ERROR));
-        }
+        boolean execPayment = o.execPayment();
+        rmessage(execPayment);
     }
 
     void cancel() {
@@ -137,7 +130,6 @@ public class ShopCartController extends Controller {
     }
 
     private void allMonths(JCheckBox all) {
-
         SwingUtilities.invokeLater(() -> {
             for (Component i : view.getMonthList()) {
                 if (i instanceof JCheckBox o) {
@@ -149,11 +141,32 @@ public class ShopCartController extends Controller {
     }
 
     private void total() {
-        SwingUtilities.invokeLater(() -> {
-            double total
-                    = view.getObjectSearch().getTypeWaterIntakes().getCosto()
-                    * view.getMonthPaidList().size();
-            view.setTotalField(total);
-        });
+        double price = view.getObjectSearch().getWaterIntakesObject().getCosto();
+        double months_paids = view.getMonthPaidList().size();
+        double total = price * months_paids;
+        view.setTotalField(total);
+
+    }
+
+    public void rmessage(boolean op) {
+        String status = op ? "Exitoso" : "Erroneo";
+        JOptionPane.showMessageDialog(view,
+                "Operacion %s".formatted(status),
+                "Estado de la operacion",
+                JOptionPane.INFORMATION_MESSAGE);
+        if (op) {
+            memo_cache.reLoadData();
+            view.initialState();
+        }
+    }
+
+    public void setPaymentsInfo(OUser user) {
+        String query = "user = '175' AND YEAR(NOW()) = '2025";
+        ArrayList<OPagosServicio> list = FactoryCache.SERVICE_PAYMENTS.getConnection().select("*", query.formatted(user.getId()));
+        for (JCheckBox i : view.getMonthList()) {
+            if (i.) {
+                
+            }
+        }
     }
 }

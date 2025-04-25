@@ -5,9 +5,12 @@
 package com.jblue.modelo.fabricas;
 
 import com.jblue.modelo.objetos.OCalles;
+import com.jblue.modelo.objetos.OPagosOtros;
+import com.jblue.modelo.objetos.OPagosRecargos;
+import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTipoTomas;
-import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.modelo.objetos.OUser;
 import com.jblue.util.cache.MemoListCache;
 
 /**
@@ -19,11 +22,12 @@ public abstract class FactoryCache {
     public static boolean cache_list;
 
     public static final MemoListCache<OPersonal> PERSONAL = new MemoListCache(FactoryConnection.getEmployees());
-    public static final MemoListCache<OUsuarios> USUARIOS = new MemoListCache(FactoryConnection.getUser());
+    public static final MemoListCache<OUser> USUARIOS = new MemoListCache(FactoryConnection.getUser());
     public static final MemoListCache<OTipoTomas> TIPO_DE_TOMAS = new MemoListCache(FactoryConnection.getWaterIntakes());
     public static final MemoListCache<OCalles> CALLES = new MemoListCache(FactoryConnection.getStreets());
-    //
-
+    public static final MemoListCache<OPagosServicio> SERVICE_PAYMENTS = new MemoListCache(FactoryConnection.getServicePayments());
+    public static final MemoListCache<OPagosRecargos> SURCHARGE_PAYMENTS = new MemoListCache(FactoryConnection.getSurchargePayments());
+    public static final MemoListCache<OPagosOtros> OTHER_PAYMENTS = new MemoListCache(FactoryConnection.getOtherPayments());
     public static final MemoListCache[] CACHES = {
         PERSONAL, USUARIOS, TIPO_DE_TOMAS, CALLES
     };

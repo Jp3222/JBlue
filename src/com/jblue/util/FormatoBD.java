@@ -27,8 +27,12 @@ public class FormatoBD {
         return datos;
     }
 
-    public static String valuesFormat(String... values) {
+    public static String valuesFormatCol(String... values) {
         return Arrays.toString(inputFormat(values)).replace('[', '(').replace(']', ')');
+    }
+
+    public static String valuesFormat(String... values) {
+        return Arrays.toString(inputFormat(values)).replace("[", "").replace("]", "");
     }
 
     public static String[] getArray(String... campos) {

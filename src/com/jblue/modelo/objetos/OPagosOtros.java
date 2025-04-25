@@ -4,8 +4,6 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.objetos.pagos.AbstraccionOPago;
-
 /**
  *
  * @author jp

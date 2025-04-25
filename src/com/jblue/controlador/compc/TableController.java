@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import com.jblue.vista.marco.TableSearchView;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -80,7 +81,7 @@ public class TableController<T extends Objeto & ObjetoFK> extends ComponentContr
         if (id_filter) {
             String replace = search_text.replace("ID:", "");
             list = memo_cache.getList(i -> {
-                System.out.println(i.getId() + "=" + replace);
+                //System.out.println(i.getId() + "=" + replace);
                 return i.getId().equals(replace);
             });
         } else {
@@ -107,7 +108,6 @@ public class TableController<T extends Objeto & ObjetoFK> extends ComponentContr
         view.setRowsData(String.valueOf(list.size()),
                 String.valueOf("%d - %d").formatted(memo_cache.getIndexMin(), memo_cache.getIndexMin()),
                 String.valueOf(memo_cache.count())
-                
         );
 //        view.getTable().updateUI();
     }
@@ -144,7 +144,6 @@ public class TableController<T extends Objeto & ObjetoFK> extends ComponentContr
     }
 
     void searchView() {
-        System.out.println("search");
         if (view.getViewShow() == TableSearchView.CONSULT_VIEW) {
             return;
         }
@@ -153,7 +152,6 @@ public class TableController<T extends Objeto & ObjetoFK> extends ComponentContr
     }
 
     void registerView() {
-        System.out.println("register");
         if (view.getViewShow() == TableSearchView.REGISTER_VIEW) {
             return;
         }
@@ -171,8 +169,19 @@ public class TableController<T extends Objeto & ObjetoFK> extends ComponentContr
         if (selected_index < 1 || selected_index >= view.getTable().getRowCount()) {
             return;
         }
-        view.setObjectSearch(memo_cache.get((t) -> t.getId().equals(view.getTable().getValueAt(selected_index, 0))));
+        JTableModel model = (JTableModel) view.getModel();
+        String[] row = model.getRow(selected_index);
+        T get = memo_cache.get((t) -> t.getId().equals(row[0]));
+        System.out.println(get);
+        System.out.println(row[0]);
+        if (get == null) {
+            return;
+        }
+
+        view.setObjectSearch(get);
+        view.setScreenListInfo();
         view.setViewShow(TableSearchView.REGISTER_VIEW);
+
     }
 
 }

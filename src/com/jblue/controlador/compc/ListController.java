@@ -110,5 +110,7 @@ public class ListController<T extends Objeto> extends ComponentController<T> {
             return;
         }
         view.setScreenListInfo();
+        view.getListModel().removeAllElements();
+        view.getTextComponentList().setText(null);
     }
 }

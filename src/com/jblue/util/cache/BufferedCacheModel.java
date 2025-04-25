@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2025 juanp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,18 +16,19 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.modelo.objetos.Objeto;
-import java.util.List;
-import java.util.function.Predicate;
-
 /**
  *
- * @author juan-campos
- * @param <T>
+ * @author juanp
  */
-public interface ListCache<T extends Objeto> {
+public interface BufferedCacheModel {
 
-    List<T> getList();
+    void loadBuffer();
 
-    List<T> getList(Predicate<T> filter);
+    void dumpBuffer();
+
+    void reLoadBuffer();
+
+    boolean movBuffer(int mov);
+
+    boolean movData(int mov);
 }

@@ -5,15 +5,9 @@
 package com.jblue.vista.windows;
 
 import com.jblue.controlador.winc.ConfigController;
-import com.jblue.sistema.app.AppConfig;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
-import com.jutil.framework.LaunchApp;
-import com.jutil.platf.So;
-import java.awt.CardLayout;
-import java.util.Properties;
-import javax.swing.JFileChooser;
-import javax.swing.JPasswordField;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import com.jblue.vista.views.ConfigurationPanel;
+import java.awt.BorderLayout;
 
 /**
  *
@@ -21,71 +15,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public final class ConfigWindow extends VentanaSimple {
 
-    private final CardLayout ly;
-    private final ConfigController controller;
-    private Properties properties;
+    private final ConfigurationPanel config;
+
     /**
      * Creates new form MenuConfigBD
      */
     public ConfigWindow() {
+        super();
         initComponents();
-        ly = (CardLayout) root_panel.getLayout();
-        controller = new ConfigController(this);
-        properties = (Properties) LaunchApp.getInstance().getResources("propierties");
-        build();
-    }
+        this.config = new ConfigurationPanel(this);
+        getContentPane().add(config, BorderLayout.CENTER);
 
-    @Override
-    public void build() {
-        components();
-        events();
-        initialState();
-        finalState();
-    }
-
-    @Override
-    public void events() {
-        addWindowListener(controller);
-
-        show_user.addActionListener(controller);
-        show_password.addActionListener(controller);
-        //
-        save_db_button.addActionListener(controller);
-        test_db_button.addActionListener(controller);
-        //
-        search_icon.addActionListener(e -> {
-            JFileChooser o = new JFileChooser(So.USER_HOME);
-            o.setMultiSelectionEnabled(false);
-            o.setDialogTitle("Icono del programa");
-            o.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            o.addChoosableFileFilter(new FileNameExtensionFilter("JPG", ".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi"));
-            o.addChoosableFileFilter(new FileNameExtensionFilter("PNG", "png"));
-            o.showSaveDialog(this);
-            if (o.getSelectedFile() != null) {
-                icon_image_field.setText(o.getSelectedFile().getAbsolutePath());
-            }
-        });
-    }
-
-    @Override
-    public void components() {
-    }
-
-    @Override
-    public void initialState() {
-        if (!properties.isEmpty()) {
-            db_user.setText(properties.getProperty(AppConfig.DB_USER));
-            db_password.setText(properties.getProperty(AppConfig.DB_PASSWORD));
-            
-            //
-            title1_field.setText(properties.getProperty(AppConfig.TITLE1));
-            title2_field.setText(properties.getProperty(AppConfig.TITLE2));
-            icon_image_field.setText(properties.getProperty(AppConfig.LOGIN_ICON));
-        }
-    }
-
-    @Override
-    public void finalState() {
     }
 
     /**
@@ -97,447 +37,40 @@ public final class ConfigWindow extends VentanaSimple {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        root_panel = new javax.swing.JPanel();
-        program_info_panel = new javax.swing.JPanel();
-        jLabel15 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        db_user = new javax.swing.JPasswordField();
-        show_user = new javax.swing.JCheckBox();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        db_password = new javax.swing.JPasswordField();
-        show_password = new javax.swing.JCheckBox();
-        jPanel6 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        motor = new javax.swing.JComboBox<>();
-        jPanel12 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        host = new javax.swing.JTextField();
-        jLabel18 = new javax.swing.JLabel();
-        jPanel17 = new javax.swing.JPanel();
-        jPanel13 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        port = new javax.swing.JTextField();
-        jPanel14 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        name_db = new javax.swing.JTextField();
-        jLabel19 = new javax.swing.JLabel();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        test_db_button = new javax.swing.JButton();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        title1_field = new javax.swing.JTextField();
-        jLabel21 = new javax.swing.JLabel();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        title2_field = new javax.swing.JTextField();
-        jLabel22 = new javax.swing.JLabel();
-        jPanel18 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        icon_image_field = new javax.swing.JTextField();
-        search_icon = new javax.swing.JButton();
-        jLabel17 = new javax.swing.JLabel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jPanel10 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
-        jLabel14 = new javax.swing.JLabel();
-        jSpinner2 = new javax.swing.JSpinner();
-        jLabel23 = new javax.swing.JLabel();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
-        jPanel16 = new javax.swing.JPanel();
-        jLabel25 = new javax.swing.JLabel();
-        jSpinner3 = new javax.swing.JSpinner();
-        jLabel26 = new javax.swing.JLabel();
-        jSpinner4 = new javax.swing.JSpinner();
-        option_panel = new javax.swing.JPanel();
-        save_db_button = new javax.swing.JButton();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 500));
         setResizable(false);
-
-        root_panel.setPreferredSize(new java.awt.Dimension(800, 500));
-        root_panel.setLayout(new java.awt.CardLayout());
-
-        program_info_panel.setLayout(new java.awt.GridLayout(15, 0));
-
-        jLabel15.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
-        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel15.setText("Base de datos");
-        program_info_panel.add(jLabel15);
-
-        jPanel1.setPreferredSize(new java.awt.Dimension(800, 50));
-        jPanel1.setLayout(new java.awt.BorderLayout());
-
-        jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel1.setText("Usuario");
-        jLabel1.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel1.add(jLabel1, java.awt.BorderLayout.WEST);
-
-        db_user.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        db_user.setText("usuario");
-        jPanel1.add(db_user, java.awt.BorderLayout.CENTER);
-
-        show_user.setActionCommand("show_user");
-        show_user.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        show_user.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        show_user.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
-        show_user.setPreferredSize(new java.awt.Dimension(50, 30));
-        show_user.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img3.png"))); // NOI18N
-        jPanel1.add(show_user, java.awt.BorderLayout.EAST);
-
-        program_info_panel.add(jPanel1);
-
-        jPanel4.setPreferredSize(new java.awt.Dimension(800, 50));
-        jPanel4.setLayout(new java.awt.BorderLayout());
-
-        jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel2.setText("Contraeña");
-        jLabel2.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel4.add(jLabel2, java.awt.BorderLayout.WEST);
-
-        db_password.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        db_password.setText("contraseña");
-        db_password.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel4.add(db_password, java.awt.BorderLayout.CENTER);
-
-        show_password.setActionCommand("show_password");
-        show_password.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        show_password.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        show_password.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
-        show_password.setPreferredSize(new java.awt.Dimension(50, 30));
-        show_password.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img3.png"))); // NOI18N
-        jPanel4.add(show_password, java.awt.BorderLayout.EAST);
-
-        program_info_panel.add(jPanel4);
-
-        jPanel6.setPreferredSize(new java.awt.Dimension(800, 80));
-        jPanel6.setLayout(new java.awt.GridLayout(1, 2));
-
-        jPanel5.setLayout(new java.awt.BorderLayout());
-
-        jLabel9.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel9.setText("Motor");
-        jLabel9.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel5.add(jLabel9, java.awt.BorderLayout.WEST);
-
-        motor.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        motor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "mysql" }));
-        motor.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel5.add(motor, java.awt.BorderLayout.CENTER);
-
-        jPanel6.add(jPanel5);
-
-        jPanel12.setLayout(new java.awt.BorderLayout());
-
-        jLabel10.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel10.setText("Host");
-        jLabel10.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel12.add(jLabel10, java.awt.BorderLayout.WEST);
-
-        host.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        host.setText("localhost");
-        host.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel12.add(host, java.awt.BorderLayout.CENTER);
-
-        jLabel18.setPreferredSize(new java.awt.Dimension(50, 30));
-        jPanel12.add(jLabel18, java.awt.BorderLayout.LINE_END);
-
-        jPanel6.add(jPanel12);
-
-        program_info_panel.add(jPanel6);
-
-        jPanel17.setLayout(new java.awt.GridLayout(1, 2));
-
-        jPanel13.setLayout(new java.awt.BorderLayout());
-
-        jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel3.setText("Puerto");
-        jLabel3.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel13.add(jLabel3, java.awt.BorderLayout.WEST);
-
-        port.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        port.setText("3306");
-        port.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel13.add(port, java.awt.BorderLayout.CENTER);
-
-        jPanel17.add(jPanel13);
-
-        jPanel14.setLayout(new java.awt.BorderLayout());
-
-        jLabel11.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel11.setText("nombre");
-        jLabel11.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel14.add(jLabel11, java.awt.BorderLayout.WEST);
-
-        name_db.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        name_db.setText("jblue");
-        name_db.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel14.add(name_db, java.awt.BorderLayout.CENTER);
-
-        jLabel19.setPreferredSize(new java.awt.Dimension(50, 30));
-        jPanel14.add(jLabel19, java.awt.BorderLayout.LINE_END);
-
-        jPanel17.add(jPanel14);
-
-        program_info_panel.add(jPanel17);
-
-        jPanel7.setPreferredSize(new java.awt.Dimension(800, 50));
-        jPanel7.setLayout(new java.awt.BorderLayout());
-
-        jLabel7.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel7.add(jLabel7, java.awt.BorderLayout.WEST);
-
-        test_db_button.setText("Probar conexion");
-        test_db_button.setActionCommand("test db");
-        jPanel7.add(test_db_button, java.awt.BorderLayout.CENTER);
-
-        jLabel20.setPreferredSize(new java.awt.Dimension(50, 30));
-        jPanel7.add(jLabel20, java.awt.BorderLayout.LINE_END);
-
-        program_info_panel.add(jPanel7);
-
-        jLabel16.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
-        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel16.setText("Pantalla de inicio");
-        program_info_panel.add(jLabel16);
-
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel4.setText("Titulo 1: ");
-        jLabel4.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel2.add(jLabel4, java.awt.BorderLayout.WEST);
-        jPanel2.add(title1_field, java.awt.BorderLayout.CENTER);
-
-        jLabel21.setPreferredSize(new java.awt.Dimension(50, 30));
-        jPanel2.add(jLabel21, java.awt.BorderLayout.LINE_END);
-
-        program_info_panel.add(jPanel2);
-
-        jPanel11.setLayout(new java.awt.BorderLayout());
-
-        jLabel5.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel5.setText("Titulo 2: ");
-        jLabel5.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel11.add(jLabel5, java.awt.BorderLayout.WEST);
-        jPanel11.add(title2_field, java.awt.BorderLayout.CENTER);
-
-        jLabel22.setPreferredSize(new java.awt.Dimension(50, 30));
-        jPanel11.add(jLabel22, java.awt.BorderLayout.LINE_END);
-
-        program_info_panel.add(jPanel11);
-
-        jPanel18.setLayout(new java.awt.BorderLayout());
-
-        jLabel6.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel6.setText("Icon image");
-        jLabel6.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel18.add(jLabel6, java.awt.BorderLayout.WEST);
-        jPanel18.add(icon_image_field, java.awt.BorderLayout.CENTER);
-
-        search_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        search_icon.setPreferredSize(new java.awt.Dimension(50, 30));
-        jPanel18.add(search_icon, java.awt.BorderLayout.LINE_END);
-
-        program_info_panel.add(jPanel18);
-
-        jLabel17.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
-        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel17.setText("Programacion de apertura");
-        program_info_panel.add(jLabel17);
-
-        jPanel8.setLayout(new java.awt.BorderLayout());
-
-        jLabel8.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel8.setText("H. de apertura");
-        jLabel8.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel8.add(jLabel8, java.awt.BorderLayout.WEST);
-
-        jPanel10.setLayout(new java.awt.GridLayout(1, 0));
-
-        jLabel13.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel13.setText("Hora: ");
-        jPanel10.add(jLabel13);
-        jPanel10.add(jSpinner1);
-
-        jLabel14.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel14.setText("Minuto: ");
-        jPanel10.add(jLabel14);
-        jPanel10.add(jSpinner2);
-
-        jPanel8.add(jPanel10, java.awt.BorderLayout.CENTER);
-
-        jLabel23.setPreferredSize(new java.awt.Dimension(50, 30));
-        jPanel8.add(jLabel23, java.awt.BorderLayout.EAST);
-
-        program_info_panel.add(jPanel8);
-
-        jPanel9.setLayout(new java.awt.BorderLayout());
-
-        jLabel12.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel12.setText("H. de cierre");
-        jLabel12.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel9.add(jLabel12, java.awt.BorderLayout.WEST);
-
-        jLabel24.setPreferredSize(new java.awt.Dimension(50, 30));
-        jPanel9.add(jLabel24, java.awt.BorderLayout.EAST);
-
-        jPanel16.setLayout(new java.awt.GridLayout(1, 0));
-
-        jLabel25.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel25.setText("Hora: ");
-        jPanel16.add(jLabel25);
-        jPanel16.add(jSpinner3);
-
-        jLabel26.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel26.setText("Minuto: ");
-        jPanel16.add(jLabel26);
-        jPanel16.add(jSpinner4);
-
-        jPanel9.add(jPanel16, java.awt.BorderLayout.CENTER);
-
-        program_info_panel.add(jPanel9);
-
-        root_panel.add(program_info_panel, "card3");
-
-        getContentPane().add(root_panel, java.awt.BorderLayout.CENTER);
-
-        option_panel.setPreferredSize(new java.awt.Dimension(100, 30));
-        option_panel.setLayout(new java.awt.GridLayout(1, 0));
-
-        save_db_button.setText("Guardar");
-        save_db_button.setActionCommand("save db");
-        option_panel.add(save_db_button);
-
-        getContentPane().add(option_panel, java.awt.BorderLayout.SOUTH);
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    @Override
+    public void build() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void events() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void components() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void initialState() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void finalState() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPasswordField db_password;
-    private javax.swing.JPasswordField db_user;
-    private javax.swing.JTextField host;
-    private javax.swing.JTextField icon_image_field;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
-    private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel17;
-    private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
-    private javax.swing.JSpinner jSpinner3;
-    private javax.swing.JSpinner jSpinner4;
-    private javax.swing.JComboBox<String> motor;
-    private javax.swing.JTextField name_db;
-    private javax.swing.JPanel option_panel;
-    private javax.swing.JTextField port;
-    private javax.swing.JPanel program_info_panel;
-    private javax.swing.JPanel root_panel;
-    private javax.swing.JButton save_db_button;
-    private javax.swing.JButton search_icon;
-    private javax.swing.JCheckBox show_password;
-    private javax.swing.JCheckBox show_user;
-    private javax.swing.JButton test_db_button;
-    private javax.swing.JTextField title1_field;
-    private javax.swing.JTextField title2_field;
     // End of variables declaration//GEN-END:variables
-
-    public void nextView() {
-        ly.next(root_panel);
-    }
-
-    public void backView() {
-        ly.last(root_panel);
-    }
-
-    public JPasswordField getUser() {
-        return db_user;
-    }
-
-    public JPasswordField getPassword() {
-        return db_password;
-    }
-
-    public String getSUser() {
-        return String.valueOf(db_user.getPassword());
-    }
-
-    public String getSPassword() {
-        return String.valueOf(db_password.getPassword());
-    }
-
-    public String getSUrl() {
-        return String.format("jdbc:%s://%s:%s/%s",
-                motor.getItemAt(motor.getSelectedIndex()),
-                host.getText(),
-                port.getText(),
-                name_db.getText()
-        );
-    }
-
-    public String getTitle1() {
-        return title1_field.getText();
-    }
-
-    public String getTitle2() {
-        return title2_field.getText();
-    }
-
-    public String getIconPath() {
-        return icon_image_field.getText();
-    }
 }

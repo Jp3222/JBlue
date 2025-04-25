@@ -16,13 +16,10 @@
  */
 package com.jblue.controlador.winc;
 
-import com.jblue.controlador.compc.ComponentController;
 import com.jblue.modelo.dbconexion.JDBConnection;
-import com.jblue.modelo.dbconexion.FuncionesBD;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.util.Filtros;
 import com.jblue.util.crypto.EncriptadoAES;
-import com.jblue.modelo.fabricas.FabricaFuncionesBD;
 import com.jblue.modelo.fabricas.FactoryConnection;
 import com.jblue.sistema.ConstSisMen;
 import com.jblue.sistema.Sesion;
@@ -93,7 +90,7 @@ public class LoginController extends WindowController {
         System.out.println(ConstSisMen.MEN_CACHE_OK);
 
         view.dispose();
-
+       
         //Nuevo menu estandarizado a las aplicaciones 
         WIN_MAIN_MENU = new WMainMenu(view);
         WIN_MAIN_MENU.setVisible(true);
@@ -124,7 +121,7 @@ public class LoginController extends WindowController {
         Optional<OPersonal> res = query(view.getUser().getText(),
                 String.valueOf(view.getPassword().getPassword())
         );
-
+        System.out.println(res.get().getName());
         if (res.isEmpty()) {
             return false;
         }
@@ -150,6 +147,7 @@ public class LoginController extends WindowController {
                     EncriptadoAES.encriptar(user, password),
                     EncriptadoAES.encriptar(password, user)
             ));
+            
         } catch (UnsupportedEncodingException
                 | NoSuchAlgorithmException
                 | InvalidKeyException

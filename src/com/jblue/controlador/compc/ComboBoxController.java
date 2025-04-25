@@ -30,19 +30,17 @@ import javax.swing.JComboBox;
 public class ComboBoxController<T extends Objeto> extends ComponentController<T> {
 
     public ComboBoxController(JComboBox<T> component, MemoListCache<T> memo_cache) {
-       super(component, memo_cache);
+        super(component, memo_cache);
     }
 
     @Override
     public void loadData() {
         JComboBox<T> box = getComponent();
         box.addItem((T) new Objeto() {
-            
             @Override
             public String toString() {
                 return "Seleccione elemento";
             }
-
         });
         memo_cache.getList().forEach((t) -> box.addItem(t));
     }

@@ -22,6 +22,6 @@ import com.jblue.modelo.objetos.Objeto;
  *
  * @author juan-campos
  */
-public interface SetCacheModel<T extends Objeto> extends ModeloCache<T>, SetCache<T> {
+public interface SetCacheModel<T extends Objeto> extends CacheModel<T>, SetCache<T> {
     
 }

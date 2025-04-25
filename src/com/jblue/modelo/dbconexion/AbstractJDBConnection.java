@@ -19,20 +19,19 @@ package com.jblue.modelo.dbconexion;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.tools.ObjectUtils;
 import com.jutil.dbcon.connection.DBConnection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public class AbstractDBConnection<T extends Objeto> implements ModeloFuncionesDB<T> {
+public abstract class AbstractJDBConnection<T extends Objeto> implements JDBConnectionModel{
 
     public static final int FIELDS = 1;
     public static final int VALUES = 2;
@@ -44,7 +43,7 @@ public class AbstractDBConnection<T extends Objeto> implements ModeloFuncionesDB
     private final String format_insert = "'%s'";
     private final String format_update_col = "%s = '%s'";
 
-    public AbstractDBConnection(String table, String[] fields) {
+    public AbstractJDBConnection(String table, String[] fields) {
         this.connection = DBConnection.getInstance();
         this.table = table;
         this.fields = fields;
@@ -59,7 +58,6 @@ public class AbstractDBConnection<T extends Objeto> implements ModeloFuncionesDB
                     format(FIELDS, null, _fields),
                     format(VALUES, null, valores));
         } catch (SQLException ex) {
-            Logger.getLogger(AbstractDBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
         return out;
     }
@@ -70,7 +68,7 @@ public class AbstractDBConnection<T extends Objeto> implements ModeloFuncionesDB
         try {
             out = connection.delete(table, where);
         } catch (SQLException ex) {
-            Logger.getLogger(AbstractDBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         return out;
     }
@@ -81,7 +79,7 @@ public class AbstractDBConnection<T extends Objeto> implements ModeloFuncionesDB
         try {
             out = connection.update(table, campo, valor, where);
         } catch (SQLException ex) {
-            Logger.getLogger(AbstractDBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         return out;
     }
@@ -95,7 +93,7 @@ public class AbstractDBConnection<T extends Objeto> implements ModeloFuncionesDB
                     format(FIELDS, null, _fields),
                     format(VALUES, null, newData));
         } catch (SQLException ex) {
-            Logger.getLogger(AbstractDBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         return out;
     }
@@ -104,43 +102,39 @@ public class AbstractDBConnection<T extends Objeto> implements ModeloFuncionesDB
     public ArrayList<T> select(String campos, String where) {
         ArrayList<T> list = new ArrayList(100);
         try {
-            String[] _fields = campos.replace(" ", "").split(",");
             if (campos.isBlank()) {
                 return list;
             }
-            if (_fields.length == 0) {
-                return list;
+            String[] _fields = campos.replace(" ", "").split(",");
+            if (!campos.contains("*")) {
+                if (_fields.length == 0) {
+                    return list;
+                }
             }
+
             ResultSet select = connection.select(campos, table, where);
             String[] a = new String[fields.length];
             while (select.next()) {
-                for (int i = 0; i < _fields.length; i++) {
-                    a[i] = select.getNString(i);
+                System.out.println(select);
+                for (int i = 0; i < a.length; i++) {
+                    a[i] = select.getString(i+1);
+                    System.out.println(fields[i]+"="+a[i]);
                 }
                 list.add((T) ObjectUtils.getObjeto(table, a.clone()));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(AbstractDBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         return list;
     }
 
     @Override
     public Optional<T> get(String campos, String where) {
-        try {
-            ResultSet select = connection.select(campos, table, where);
-            String[] a = new String[fields.length];
-            if (select.next()) {
-                for (int i = 1; i < fields.length; i++) {
-                    a[i] = select.getString(i);
-                    System.out.println(a[i]);
-                }
-                return Optional.of((T) ObjectUtils.getObjeto(table, a.clone()));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(AbstractDBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        ArrayList<T> select = select(campos, where);
+        if (select.isEmpty()) {
+            return Optional.empty();
         }
-        return Optional.empty();
+        return Optional.of(select.getFirst());
     }
 
     public String format(int type, String[] fields, String... data) {

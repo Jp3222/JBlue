@@ -117,12 +117,10 @@ public class OtherOptions extends SimpleView {
 
     private void checkToUserType() {
         OPersonal usuario = Sesion.getInstancia().getUsuario();
-        if (!DevFlags.FUTURE_VIEW) {
-            secretary_button.setEnabled(ObjectUtils.isSecretario(usuario));
-            tesorero_button.setEnabled(ObjectUtils.isTesorero(usuario));
-            presidente_button.setEnabled(ObjectUtils.isPresidente(usuario));
-            admin_button.setEnabled(ObjectUtils.isAdministrador(usuario));
-        }
+        secretary_button.setEnabled(ObjectUtils.isSecretario(usuario));
+        tesorero_button.setEnabled(ObjectUtils.isTesorero(usuario));
+        presidente_button.setEnabled(ObjectUtils.isPresidente(usuario));
+        admin_button.setEnabled(ObjectUtils.isAdministrador(usuario));
 
     }
 

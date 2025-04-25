@@ -18,9 +18,8 @@ package com.jblue.controlador.logic;
 
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTipoTomas;
-import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.modelo.objetos.OUser;
 import com.jblue.sistema.Sesion;
-import com.jblue.util.tools.ObjectUtils;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
 import java.util.ArrayList;
@@ -41,8 +40,8 @@ public abstract class AbsctractPayment implements PaymentModel {
 
     protected final Map<String, String> mov;
     protected final OPersonal personal;
+    protected OUser usuario;
     protected OTipoTomas toma;
-    protected OUsuarios usuario;
     protected double dinero_ingresado;
     protected double deuda;
     protected double dinero_sobrante;
@@ -52,6 +51,7 @@ public abstract class AbsctractPayment implements PaymentModel {
     public AbsctractPayment() {
         this.mov = new HashMap<>();
         this.personal = Sesion.getInstancia().getUsuario();
+        System.out.println(personal);
         this.connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
     }
 
@@ -67,15 +67,18 @@ public abstract class AbsctractPayment implements PaymentModel {
         return dinero_ingresado < deuda;
     }
 
-    public void setUsuario(OUsuarios usuario) {
+    @Override
+    public void setUsuario(OUser usuario) {
         this.usuario = usuario;
-        this.toma = ObjectUtils.getTipoToma(usuario.getTipo());
+        this.toma = usuario.getWaterIntakesObject();
     }
 
+    @Override
     public void setDineroIngresado(double dinero_ingresado) {
         this.dinero_ingresado = dinero_ingresado;
     }
 
+    @Override
     public void setMesesPagados(ArrayList<String> meses_pagados) {
         this.meses_pagados = meses_pagados;
     }
@@ -84,7 +87,7 @@ public abstract class AbsctractPayment implements PaymentModel {
 
     @Override
     public Map<String, String> getMov() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return mov;
     }
 
 }

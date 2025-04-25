@@ -26,7 +26,7 @@ public class Const {
 
     public static final Table USER = new Table("users",
             ID, "first_name", "last_name1", "last_name2",
-        "street", "house_number", "water_intakes", "user_type",
+            "street", "house_number", "water_intakes", "user_type",
             "status", "date_register"
     );
 
@@ -42,8 +42,16 @@ public class Const {
         ID, "first_name", "last_names", "employee_type",
         "status", "user", "password", "date_register", "end_date"
     });
-    
+
     public static final Table SERVICE_PAYMENTS = new Table("service_payments", new String[]{
-        "id", "employee", "user", "month", "status", "date_register"
+        "id", "employee", "user", "price", "month", "status", "date_register"
+    });
+
+    public static final Table SURCHARGE_PAYMENTS = new Table("surcharge_payments", new String[]{
+        "id", "employee", "user", "price", "month", "status", "date_register"
+    });
+
+    public static final Table OTHER_PAYMENTS = new Table("other_payments", new String[]{
+        "id", "employee", "user", "price", "month", "status", "date_register"
     });
 }

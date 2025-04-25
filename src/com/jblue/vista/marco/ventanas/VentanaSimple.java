@@ -16,6 +16,7 @@ import java.awt.HeadlessException;
 public abstract class VentanaSimple extends JFrame implements AppInfo, WindowStates {
 
     public VentanaSimple() {
+        
     }
 
     protected final void updateTitle(String title) {

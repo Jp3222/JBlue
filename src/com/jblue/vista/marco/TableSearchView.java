@@ -48,5 +48,7 @@ public interface TableSearchView {
     <T extends Objeto> T getObjectSearch();
     
     public void setRowsData(String... info);
+    
+    void setScreenListInfo();
 
 }

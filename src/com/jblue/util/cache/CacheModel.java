@@ -23,7 +23,7 @@ import com.jblue.modelo.objetos.Objeto;
  * @author jp
  * @param <T>
  */
-public interface ModeloCache<T extends Objeto> {
+public interface CacheModel<T extends Objeto> {
 
     static final int MIN = 1000;
     static final int MID = 2000;
@@ -42,7 +42,7 @@ public interface ModeloCache<T extends Objeto> {
 
     /**
      * Este metodo obtiene lo datos de la base de datos y los guarda en la
-     * estructura especificada por el tipo de cache
+     * estructura especificada por el tipo de cache.
      */
     void loadData();
 
@@ -56,7 +56,7 @@ public interface ModeloCache<T extends Objeto> {
      * estructura y despues "loadData" para volver a leer los datos, el metodo
      * puede variar segun la implementacion o la coleccion utilizada por lo que
      * no se recomienda hacer llamadas muy frecuentes o al menos no en el hilo
-     * principal de ejecucion
+     * principal de ejecucion.
      */
     void reLoadData();
 

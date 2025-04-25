@@ -17,10 +17,9 @@
 package com.jblue.util.cache;
 
 import com.jblue.util.tools.ObjectUtils;
-import com.jblue.modelo.dbconexion.ModeloFuncionesDB;
 import com.jblue.modelo.objetos.Objeto;
+import com.jblue.sistema.DevFlags;
 import com.jutil.dbcon.connection.DBConnection;
-import com.jutil.dbcon.cn.SimpleQuerys;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -30,22 +29,23 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.jblue.modelo.dbconexion.JDBConnectionModel;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public abstract class AbstractListCache<T extends Objeto> implements ModeloListCache<T> {
+public abstract class AbstractListCache<T extends Objeto> implements CacheModel<T>, ListCacheModel<T> {
 
     protected final ArrayList<T> cache;
     protected final Map<String, List<T>> buffer_cache;
-    protected final ModeloFuncionesDB<T> conexion;
+    protected final JDBConnectionModel<T> conexion;
     protected int index_min, index_max, steps;
     protected long count;
     protected int call_count;
 
-    public AbstractListCache(int capacity, ModeloFuncionesDB conexion) {
+    public AbstractListCache(int capacity, JDBConnectionModel conexion) {
         this.cache = new ArrayList<>(capacity);
         this.buffer_cache = new HashMap<>(10);
         this.conexion = conexion;
@@ -55,22 +55,26 @@ public abstract class AbstractListCache<T extends Objeto> implements ModeloListC
 
     }
 
-    public AbstractListCache(ModeloFuncionesDB conexion) {
+    public AbstractListCache(JDBConnectionModel conexion) {
         this(MIN, conexion);
     }
 
     @Override
     public void loadData() {
-        System.out.println("load");
-        String query = "SELECT * FROM %s WHERE id >= %s and id <= %s";
+        if (DevFlags.DEV_MSG_CODE) {
+            System.out.println("load");
+        }
+        String query = "SELECT * FROM %s WHERE id >= %s and id <= %s and status != 3";
         query = query.formatted(conexion.getTable(), index_min, index_max);
         if (buffer_cache.containsKey(query)) {
             cache.addAll(buffer_cache.get(query));
             return;
         }
-        System.out.println("leyendo base de datos...");
+        if (DevFlags.DEV_MSG_CODE) {
+            System.out.println("leyendo base de datos...");
+        }
         try {
-            DBConnection conn = DBConnection.getInstance();
+            DBConnection conn = conexion.getConnection();
             ResultSet rs_data = conn.query(query);
             String[] info;
             while (rs_data.next()) {
@@ -82,7 +86,7 @@ public abstract class AbstractListCache<T extends Objeto> implements ModeloListC
                 cache.add((T) objeto);
             }
 
-            buffer_cache.put(query, (List<T>) cache.clone());
+            buffer_cache.put(query, List.copyOf(cache));
         } catch (SQLException ex) {
             Logger.getLogger(AbstractListCache.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -129,21 +133,12 @@ public abstract class AbstractListCache<T extends Objeto> implements ModeloListC
 
     @Override
     public long count() {
-//        switch (call_count) {
-//            case 0 ->
-//                count = count_count();
-//            case 5 ->
-//                call_count = 0;
-//            default ->
-//                call_count++;
-//        }
-//        return count;
         return count_count();
     }
 
     private long count_count() {
         String query = "SELECT count(id) FROM %s";
-        DBConnection _conn = (DBConnection) conexion.getConnection();
+        DBConnection _conn = conexion.getConnection();
 
         ResultSet res_count;
         long aux_count = 0;

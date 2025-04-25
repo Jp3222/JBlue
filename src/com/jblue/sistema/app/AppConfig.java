@@ -21,11 +21,18 @@ package com.jblue.sistema.app;
  * @author jp
  */
 public interface AppConfig {
-    
+
     //
     public static final String DB_USER = "DB USER";
     public static final String DB_PASSWORD = "DB PASSWORD";
     public static final String DB_URL = "DB URL";
+    public static final String DB_MOTOR = "DB MOTOR";
+    public static final String DB_PORT = "DB PORT";
+    public static final String DB_HOST = "DB HOST";
+    public static final String DB_NAME = "DB NAME";
+    public static final String[] DB_KEYS = {
+        DB_USER, DB_PASSWORD, DB_HOST, DB_MOTOR, DB_NAME, DB_PORT
+    };
     //
     public static final String TITLE1 = "TITLE 1";
     public static final String TITLE2 = "TITLE 2";
@@ -33,6 +40,5 @@ public interface AppConfig {
     //
     public static final String HOUR_OPEN = "HOUR OPEN";
     public static final String HOUR_CLOSE = "HOUR CLOSE";
-    
-    
+
 }

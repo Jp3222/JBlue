@@ -18,7 +18,7 @@ package com.jblue.vista.components;
 
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OTipoTomas;
-import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
 import com.jblue.modelo.fabricas.FactoryCache;
@@ -49,33 +49,33 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
         return (OCalles) o.getObjeto();
     }
 
-    public static OUsuarios selectorUsuarios(JFrame padre) {
+    public static OUser selectorUsuarios(JFrame padre) {
         CSelectorObjeto o = new CSelectorObjeto(padre, true, FactoryCache.USUARIOS.getList());
         o.setVisible(true);
         if (o.getReturnStatus() == CSelectorObjeto.RET_CANCEL) {
             return null;
         }
-        return (OUsuarios) o.getObjeto();
+        return (OUser) o.getObjeto();
     }
 
-    public static OUsuarios selectorSoloTitulares(JFrame padre) {
-        ArrayList<OUsuarios> list = (ArrayList<OUsuarios>) FactoryCache.USUARIOS.getList(o -> o.isTitular());
+    public static OUser selectorSoloTitulares(JFrame padre) {
+        ArrayList<OUser> list = (ArrayList<OUser>) FactoryCache.USUARIOS.getList(o -> o.isTitular());
         CSelectorObjeto o = new CSelectorObjeto(padre, true, list);
         o.setVisible(true);
         if (o.getReturnStatus() == CSelectorObjeto.RET_CANCEL) {
             return null;
         }
-        return (OUsuarios) o.getObjeto();
+        return (OUser) o.getObjeto();
     }
 
-    public static OUsuarios selectorSoloUsuarios(JFrame padre) {
-        ArrayList<OUsuarios> list = (ArrayList<OUsuarios>) FactoryCache.USUARIOS.getList(o -> !o.isTitular());
+    public static OUser selectorSoloUsuarios(JFrame padre) {
+        ArrayList<OUser> list = (ArrayList<OUser>) FactoryCache.USUARIOS.getList(o -> !o.isTitular());
         CSelectorObjeto o = new CSelectorObjeto(padre, true, list);
         o.setVisible(true);
         if (o.getReturnStatus() == CSelectorObjeto.RET_CANCEL) {
             return null;
         }
-        return (OUsuarios) o.getObjeto();
+        return (OUser) o.getObjeto();
     }
 
     public static OTipoTomas selectorTipoDeToma(JFrame padre) {

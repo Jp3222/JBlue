@@ -16,7 +16,7 @@
  */
 package com.jblue.controlador.logic;
 
-import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.modelo.objetos.OUser;
 import java.util.Map;
 
 /**

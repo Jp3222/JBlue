@@ -17,18 +17,18 @@
 package com.jblue.vista.components;
 
 import com.jblue.modelo.ConstGs;
-import com.jblue.modelo.fabricas.FabricaFuncionesBD;
-import com.jblue.modelo.objetos.OPagosRecargos;
-import com.jblue.modelo.objetos.OPagosServicio;
-import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.modelo.constdb.Const;
+import com.jblue.modelo.fabricas.FactoryCache;
+import com.jblue.modelo.objetos.OUser;
+import com.jblue.modelo.objetos.Objeto;
+import com.jblue.util.cache.MemoListCache;
 import com.jutil.framework.ComponentStates;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -38,7 +38,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.SpinnerNumberModel;
 
 /**
  *
@@ -46,7 +45,7 @@ import javax.swing.SpinnerNumberModel;
  */
 public final class CVisorUsuario extends JDialog implements ComponentStates {
 
-    public static CVisorUsuario showVisor(OUsuarios obj) {
+    public static CVisorUsuario showVisor(OUser obj) {
         CVisorUsuario o = new CVisorUsuario(null, true);
         o.setUsuario(obj);
         o.setTitle(obj.toString());
@@ -54,7 +53,7 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         return o;
     }
 
-    private OUsuarios usuario;
+    private OUser usuario;
 
     private final JTextField[] campos;
     private final JTableModel modelo_pagos_x_servicio;
@@ -80,22 +79,22 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         super(parent, modal);
         initComponents();
         campos = new JTextField[]{
-            dato_id,
-            dato_nombre,
-            dato_ap,
-            dato_am,
-            dato_calle,
-            dato_numero_casa,
-            dato_tipo_toma,
-            dato_fecha_registro,
-            dato_estado,
-            dato_titular,
+            id_field,
+            name_field,
+            last_name1_field,
+            last_name2_field,
+            street_field,
+            house_number_field,
+            water_intake_type_field,
+            date_register_field,
+            status_field,
+            user_type_field,
             dato_codigo
         };
         //
-        modelo_pagos_x_servicio = new JTableModel(ConstGs.TABLA_PAGOS_X_SERVICIO, 0);
-        modelo_pagos_x_recargo = new JTableModel(ConstGs.TABLA_PAGOS_X_RECARGO, 0);
-        modelo_pagos_x_otros = new JTableModel(ConstGs.TABLA_PAGOS_X_OTROS, 0);
+        modelo_pagos_x_servicio = new JTableModel(Const.SERVICE_PAYMENTS.getFields(), 0);
+        modelo_pagos_x_recargo = new JTableModel(Const.SURCHARGE_PAYMENTS.getFields(), 0);
+        modelo_pagos_x_otros = new JTableModel(Const.OTHER_PAYMENTS.getFields(), 0);
         //
         service_payments.setModel(modelo_pagos_x_servicio);
         surcharge_payments.setModel(modelo_pagos_x_recargo);
@@ -114,8 +113,8 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
             }
         });
 
-        CardLayout ly = (CardLayout) center_panel.getLayout();
-        ly.show(center_panel, tab_info_usuario.getName());
+        CardLayout ly = (CardLayout) card_panel.getLayout();
+        ly.show(card_panel, tab_info_usuario.getName());
         build();
     }
     private int returnStatus = RET_CANCEL;
@@ -152,10 +151,9 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         }
         tab_info_pagos.setSelectedIndex(0);
         tab_info_usuario.setSelectedIndex(0);
-        loadServicePayments();
-        loadSurchargePayments();
-        CardLayout ly = (CardLayout) center_panel.getLayout();
-        ly.show(center_panel, tab_info_usuario.getName());
+
+        CardLayout ly = (CardLayout) card_panel.getLayout();
+        ly.show(card_panel, tab_info_usuario.getName());
     }
 
     @Override
@@ -182,12 +180,14 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         left_panel = new javax.swing.JPanel();
         pl_foto = new javax.swing.JLabel();
         pl_panel_central = new javax.swing.JPanel();
-        first_name = new javax.swing.JLabel();
-        last_name = new javax.swing.JLabel();
+        first_name_lat = new javax.swing.JLabel();
+        last_name_lat = new javax.swing.JLabel();
         espacio1 = new javax.swing.JLabel();
         user_info = new javax.swing.JButton();
         payments_info = new javax.swing.JButton();
         center_panel = new javax.swing.JPanel();
+        jSeparator1 = new javax.swing.JSeparator();
+        card_panel = new javax.swing.JPanel();
         tab_info_pagos = new javax.swing.JTabbedPane();
         panel_pxs = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -215,34 +215,34 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         jPanel4 = new javax.swing.JPanel();
         panel_camp_id = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
-        dato_id = new javax.swing.JTextField();
+        id_field = new javax.swing.JTextField();
         panel_camp_nombre = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        dato_nombre = new javax.swing.JTextField();
+        name_field = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        dato_ap = new javax.swing.JTextField();
+        last_name1_field = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        dato_am = new javax.swing.JTextField();
+        last_name2_field = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        dato_calle = new javax.swing.JTextField();
+        street_field = new javax.swing.JTextField();
         jPanel11 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        dato_numero_casa = new javax.swing.JTextField();
+        house_number_field = new javax.swing.JTextField();
         jPanel12 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        dato_tipo_toma = new javax.swing.JTextField();
+        water_intake_type_field = new javax.swing.JTextField();
         jPanel13 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        dato_fecha_registro = new javax.swing.JTextField();
+        date_register_field = new javax.swing.JTextField();
         jPanel14 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        dato_estado = new javax.swing.JTextField();
+        status_field = new javax.swing.JTextField();
         jPanel15 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        dato_titular = new javax.swing.JTextField();
+        user_type_field = new javax.swing.JTextField();
         jPanel16 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         dato_codigo = new javax.swing.JTextField();
@@ -286,15 +286,15 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
 
         pl_panel_central.setLayout(new java.awt.GridLayout(8, 0));
 
-        first_name.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        first_name.setText("Nombre");
-        first_name.setPreferredSize(new java.awt.Dimension(300, 20));
-        pl_panel_central.add(first_name);
+        first_name_lat.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        first_name_lat.setText("Nombre");
+        first_name_lat.setPreferredSize(new java.awt.Dimension(300, 20));
+        pl_panel_central.add(first_name_lat);
 
-        last_name.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        last_name.setText("Apellidos");
-        last_name.setPreferredSize(new java.awt.Dimension(300, 20));
-        pl_panel_central.add(last_name);
+        last_name_lat.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        last_name_lat.setText("Apellidos");
+        last_name_lat.setPreferredSize(new java.awt.Dimension(300, 20));
+        pl_panel_central.add(last_name_lat);
 
         espacio1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         espacio1.setPreferredSize(new java.awt.Dimension(300, 20));
@@ -320,7 +320,13 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
 
         root_panel.add(left_panel, java.awt.BorderLayout.WEST);
 
-        center_panel.setLayout(new java.awt.CardLayout());
+        center_panel.setLayout(new java.awt.BorderLayout());
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator1.setPreferredSize(new java.awt.Dimension(10, 5));
+        center_panel.add(jSeparator1, java.awt.BorderLayout.WEST);
+
+        card_panel.setLayout(new java.awt.CardLayout());
 
         tab_info_pagos.setName("Tab Info De Pagos"); // NOI18N
 
@@ -421,9 +427,9 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
 
         panel_pxo.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
-        tab_info_pagos.addTab("Pagos x Otros", panel_pxo);
+        tab_info_pagos.addTab("Otros Pagos", panel_pxo);
 
-        center_panel.add(tab_info_pagos, "Tab Info De Pagos");
+        card_panel.add(tab_info_pagos, "Tab Info De Pagos");
         tab_info_pagos.getAccessibleContext().setAccessibleName("");
 
         tab_info_usuario.setName("Tab Info De Usuario"); // NOI18N
@@ -439,8 +445,8 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         jLabel13.setPreferredSize(new java.awt.Dimension(150, 30));
         panel_camp_id.add(jLabel13, java.awt.BorderLayout.WEST);
 
-        dato_id.setEditable(false);
-        panel_camp_id.add(dato_id, java.awt.BorderLayout.CENTER);
+        id_field.setEditable(false);
+        panel_camp_id.add(id_field, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(panel_camp_id);
 
@@ -450,8 +456,8 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         jLabel3.setPreferredSize(new java.awt.Dimension(150, 30));
         panel_camp_nombre.add(jLabel3, java.awt.BorderLayout.WEST);
 
-        dato_nombre.setEditable(false);
-        panel_camp_nombre.add(dato_nombre, java.awt.BorderLayout.CENTER);
+        name_field.setEditable(false);
+        panel_camp_nombre.add(name_field, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(panel_camp_nombre);
 
@@ -461,8 +467,8 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         jLabel4.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel8.add(jLabel4, java.awt.BorderLayout.WEST);
 
-        dato_ap.setEditable(false);
-        jPanel8.add(dato_ap, java.awt.BorderLayout.CENTER);
+        last_name1_field.setEditable(false);
+        jPanel8.add(last_name1_field, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel8);
 
@@ -472,8 +478,8 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel9.add(jLabel5, java.awt.BorderLayout.WEST);
 
-        dato_am.setEditable(false);
-        jPanel9.add(dato_am, java.awt.BorderLayout.CENTER);
+        last_name2_field.setEditable(false);
+        jPanel9.add(last_name2_field, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel9);
 
@@ -483,8 +489,8 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel10.add(jLabel6, java.awt.BorderLayout.WEST);
 
-        dato_calle.setEditable(false);
-        jPanel10.add(dato_calle, java.awt.BorderLayout.CENTER);
+        street_field.setEditable(false);
+        jPanel10.add(street_field, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel10);
 
@@ -494,8 +500,8 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         jLabel7.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel11.add(jLabel7, java.awt.BorderLayout.WEST);
 
-        dato_numero_casa.setEditable(false);
-        jPanel11.add(dato_numero_casa, java.awt.BorderLayout.CENTER);
+        house_number_field.setEditable(false);
+        jPanel11.add(house_number_field, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel11);
 
@@ -505,9 +511,9 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel12.add(jLabel8, java.awt.BorderLayout.WEST);
 
-        dato_tipo_toma.setEditable(false);
-        dato_tipo_toma.setPreferredSize(new java.awt.Dimension(23, 30));
-        jPanel12.add(dato_tipo_toma, java.awt.BorderLayout.CENTER);
+        water_intake_type_field.setEditable(false);
+        water_intake_type_field.setPreferredSize(new java.awt.Dimension(23, 30));
+        jPanel12.add(water_intake_type_field, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel12);
 
@@ -517,9 +523,9 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         jLabel9.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel13.add(jLabel9, java.awt.BorderLayout.WEST);
 
-        dato_fecha_registro.setEditable(false);
-        dato_fecha_registro.setPreferredSize(new java.awt.Dimension(23, 30));
-        jPanel13.add(dato_fecha_registro, java.awt.BorderLayout.CENTER);
+        date_register_field.setEditable(false);
+        date_register_field.setPreferredSize(new java.awt.Dimension(23, 30));
+        jPanel13.add(date_register_field, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel13);
 
@@ -529,9 +535,9 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         jLabel10.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel14.add(jLabel10, java.awt.BorderLayout.WEST);
 
-        dato_estado.setEditable(false);
-        dato_estado.setPreferredSize(new java.awt.Dimension(23, 30));
-        jPanel14.add(dato_estado, java.awt.BorderLayout.CENTER);
+        status_field.setEditable(false);
+        status_field.setPreferredSize(new java.awt.Dimension(23, 30));
+        jPanel14.add(status_field, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel14);
 
@@ -541,9 +547,9 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         jLabel11.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel15.add(jLabel11, java.awt.BorderLayout.WEST);
 
-        dato_titular.setEditable(false);
-        dato_titular.setPreferredSize(new java.awt.Dimension(23, 30));
-        jPanel15.add(dato_titular, java.awt.BorderLayout.CENTER);
+        user_type_field.setEditable(false);
+        user_type_field.setPreferredSize(new java.awt.Dimension(23, 30));
+        jPanel15.add(user_type_field, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel15);
 
@@ -605,7 +611,9 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
 
         tab_info_usuario.addTab("informacion de contacto", panel_datos_contacto);
 
-        center_panel.add(tab_info_usuario, "Tab Info De Usuario");
+        card_panel.add(tab_info_usuario, "Tab Info De Usuario");
+
+        center_panel.add(card_panel, java.awt.BorderLayout.CENTER);
 
         root_panel.add(center_panel, java.awt.BorderLayout.CENTER);
 
@@ -647,14 +655,14 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
     }//GEN-LAST:event_closeDialog
 
     private void user_infoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_user_infoActionPerformed
-        CardLayout ly = (CardLayout) center_panel.getLayout();
-        ly.show(center_panel, tab_info_usuario.getName());
+        CardLayout ly = (CardLayout) card_panel.getLayout();
+        ly.show(card_panel, tab_info_usuario.getName());
 
     }//GEN-LAST:event_user_infoActionPerformed
 
     private void payments_infoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payments_infoActionPerformed
-        CardLayout ly = (CardLayout) center_panel.getLayout();
-        ly.show(center_panel, tab_info_pagos.getName());
+        CardLayout ly = (CardLayout) card_panel.getLayout();
+        ly.show(card_panel, tab_info_pagos.getName());
 
     }//GEN-LAST:event_payments_infoActionPerformed
 
@@ -671,75 +679,69 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         dispose();
     }
 
-    public OUsuarios getUsuario() {
+    public OUser getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(OUsuarios usuario) {
+    public void setUsuario(OUser usuario) {
         this.usuario = usuario;
-        cargar();
+        loadUserInformation();
     }
 
-    private void cargar() {
-        String[] arr = usuario.getInfo();
-        first_name.setText(usuario.getNombre());
-        last_name.setText(String.format("%s %s", usuario.getAp(), usuario.getAm()));
-
-        for (int i = 0; i < arr.length - 1; i++) {
-            campos[i].setText(arr[i]);
-        }
+    private void loadUserInformation() {
+        id_field.setText(usuario.getId());
+        name_field.setText(usuario.getName());
+        last_name1_field.setText(usuario.getLastName1());
+        last_name2_field.setText(usuario.getLastName2());
+        street_field.setText(usuario.getStreetObject().getNombre());
+        house_number_field.setText(usuario.getHouseNumber());
+        water_intake_type_field.setText(usuario.getWaterIntakesObject().getTipo());
+        date_register_field.setText(usuario.getLastName2());
+        status_field.setText(usuario.getStatusString());
+        user_type_field.setText(usuario.getUserTypeString());
+        loadUserPayments();
     }
 
-    private void loadSurchargePayments() {
-        var o = FabricaFuncionesBD.getPagosXServicio();
-        ArrayList<OPagosServicio> lista = o.getList("*", "usuario = " + usuario.getId());
-        if (lista.isEmpty()) {
-            return;
-        }
-        for (OPagosServicio i : lista) {
-            modelo_pagos_x_servicio.addRow(i.getInfo());
-        }
-
-        List<OPagosServicio> collect = lista.stream().sorted().collect(Collectors.toList());
-        SpinnerNumberModel modelo = (SpinnerNumberModel) filtro_pxs_año.getModel();
-
-        modelo.setMinimum(collect.get(0).getAño());
-        modelo.setValue(collect.get(0).getAño());
-        modelo.setMaximum(collect.get(collect.size() - 1).getAño());
-        collect.clear();
+    private void loadUserPayments() {
+        loadServicePayment();
+        loadSurchagePayment();
+        loadOtherPayment();
     }
 
-    private void loadServicePayments() {
-        var o = FabricaFuncionesBD.getPagosXRecargos();
-        ArrayList<OPagosRecargos> lista = o.getList("*", "usuario = " + usuario.getId());
-        for (OPagosRecargos i : lista) {
-            modelo_pagos_x_servicio.addRow(i.getInfo());
-        }
+    private void loadServicePayment() {
+        load(modelo_pagos_x_servicio, FactoryCache.SERVICE_PAYMENTS);
     }
 
+    private void loadOtherPayment() {
+        load(modelo_pagos_x_otros, FactoryCache.OTHER_PAYMENTS);
+    }
 
+    private void loadSurchagePayment() {
+        load(modelo_pagos_x_recargo, FactoryCache.SURCHARGE_PAYMENTS);
+    }
+
+    private <T extends Objeto> void load(JTableModel model, MemoListCache<T> cache) {
+        ArrayList<T> select = cache.getConnection().select("*", "user = %s".formatted(usuario.getId()));
+        for (T i : select) {
+            model.addRow(i.getInfo());
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottom_panel;
+    private javax.swing.JPanel card_panel;
     private javax.swing.JPanel center_panel;
-    private javax.swing.JTextField dato_am;
-    private javax.swing.JTextField dato_ap;
-    private javax.swing.JTextField dato_calle;
+    private javax.swing.JTextField date_register_field;
     private javax.swing.JTextField dato_codigo;
     private javax.swing.JTextField dato_correo;
-    private javax.swing.JTextField dato_estado;
-    private javax.swing.JTextField dato_fecha_registro;
-    private javax.swing.JTextField dato_id;
-    private javax.swing.JTextField dato_nombre;
-    private javax.swing.JTextField dato_numero_casa;
     private javax.swing.JTextField dato_tel_1;
     private javax.swing.JTextField dato_tel_2;
-    private javax.swing.JTextField dato_tipo_toma;
-    private javax.swing.JTextField dato_titular;
     private javax.swing.JLabel espacio1;
     private javax.swing.JSpinner filtro_pxo_año;
     private javax.swing.JSpinner filtro_pxr_año;
     private javax.swing.JSpinner filtro_pxs_año;
-    private javax.swing.JLabel first_name;
+    private javax.swing.JLabel first_name_lat;
+    private javax.swing.JTextField house_number_field;
+    private javax.swing.JTextField id_field;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
@@ -778,8 +780,12 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JLabel last_name;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField last_name1_field;
+    private javax.swing.JTextField last_name2_field;
+    private javax.swing.JLabel last_name_lat;
     private javax.swing.JPanel left_panel;
+    private javax.swing.JTextField name_field;
     private javax.swing.JButton okButton;
     private javax.swing.JTable other_payments;
     private javax.swing.JPanel panel_camp_id;
@@ -798,10 +804,14 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
     private javax.swing.JButton recargar_pxs;
     private javax.swing.JPanel root_panel;
     private javax.swing.JTable service_payments;
+    private javax.swing.JTextField status_field;
+    private javax.swing.JTextField street_field;
     private javax.swing.JTable surcharge_payments;
     private javax.swing.JTabbedPane tab_info_pagos;
     private javax.swing.JTabbedPane tab_info_usuario;
     private javax.swing.JButton user_info;
+    private javax.swing.JTextField user_type_field;
+    private javax.swing.JTextField water_intake_type_field;
     // End of variables declaration//GEN-END:variables
 
 }

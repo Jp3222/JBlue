@@ -17,11 +17,16 @@
 package com.jblue.controlador.logic;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ServicePaymentLogic extends AbsctractPayment {
+
+    public ServicePaymentLogic() {
+        super();
+    }
 
     @Override
     public String getQuery(String args) {
@@ -32,6 +37,10 @@ public class ServicePaymentLogic extends AbsctractPayment {
     @Override
     public boolean gameRulers() {
         mov.put(KEY_STATUS_OP, STATUS_OK);
+        if (meses_pagados.isEmpty()) {
+            mov.put(KEY_ERROR, "NO HAY MESES SELECCIONADOS");
+            mov.put(KEY_STATUS_OP, STATUS_ERR);
+        }
         if (isPersonalNull()) {
             mov.put(KEY_ERROR, "ERROR INTERNO");
             mov.put(KEY_STATUS_OP, STATUS_ERR);
@@ -54,11 +63,11 @@ public class ServicePaymentLogic extends AbsctractPayment {
         if (!gameRulers()) {
             return false;
         }
-
+        System.out.println(Arrays.toString(personal.getInfo()));
         StringBuilder values = new StringBuilder();
         int i = 0;
         String col = "";
-        while (i < meses_pagados.size()) {
+        while (i < meses_pagados.size() - 1) {
             col = "('" + personal.getId()
                     + "','"
                     + usuario.getId() + "','"
@@ -67,12 +76,18 @@ public class ServicePaymentLogic extends AbsctractPayment {
             i++;
             values.append(col).append(",");
         }
+        col = "('" + personal.getId()
+                + "','"
+                + usuario.getId() + "','"
+                + toma.getCosto() + "','"
+                + meses_pagados.get(i) + "')";
+        i++;
         values.append(col);
         mov.put(KEY_MOVS, values.toString());
         try {
-            //connection.query(getQuery(values.toString()));
+            connection.execute(getQuery(values.toString()));
             mov.put(KEY_STATUS_OP, STATUS_OK);
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             mov.put(KEY_STATUS_OP, STATUS_ERR);
             mov.put(KEY_ERROR, ex.getMessage());
             Logger.getLogger(ServicePaymentLogic.class.getName()).log(Level.SEVERE, null, ex);

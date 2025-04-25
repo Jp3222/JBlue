@@ -16,7 +16,7 @@
  */
 package com.jblue.util;
 
-import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.Component;
@@ -118,7 +118,7 @@ public abstract class FuncJBlue {
         return aux;
     }
 
-    public static void hash(OUsuarios o) {
+    public static void hash(OUser o) {
         StringBuilder sb = new StringBuilder(20);
         for (String string : o.getInfo()) {
             sb.append(string.charAt(0));

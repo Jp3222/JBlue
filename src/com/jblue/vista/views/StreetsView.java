@@ -517,4 +517,9 @@ public final class StreetsView extends DBView implements DBValues {
         range.setText(info[1]);
         total.setText(info[2]);
     }
+
+    @Override
+    public void setScreenListInfo() {
+        streed_name_field.setText(object_search.getNombre());
+    }
 }

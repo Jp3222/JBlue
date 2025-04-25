@@ -72,7 +72,7 @@
             <Property name="verticalGap" type="int" value="10"/>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="register_button">
+            <Component class="javax.swing.JButton" name="register_payment_button">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Liberation Sans" size="14" style="0"/>
@@ -81,7 +81,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="register_view"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="search_button">
+            <Component class="javax.swing.JButton" name="search_payment_buttons">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Liberation Sans" size="14" style="0"/>
@@ -236,7 +236,7 @@
                         <Property name="selectionMode" type="int" value="0"/>
                       </Properties>
                       <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;OUsuarios&gt;"/>
+                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.jblue.modelo.objetos.OUser&gt;"/>
                       </AuxValues>
                     </Component>
                   </SubComponents>

@@ -17,7 +17,7 @@
 package com.jblue.modelo.dbconexion;
 
 import com.jblue.modelo.objetos.Objeto;
-import com.jutil.dbcon.cn.JConnection;
+import com.jutil.dbcon.connection.DBConnection;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -26,7 +26,7 @@ import java.util.Optional;
  * @author juan-campos
  * @param <T>
  */
-public interface ModeloFuncionesDB<T extends Objeto> {
+public interface JDBConnectionModel<T extends Objeto> {
 
     /**
      * Este metodo inserta valores en la base de datos ignorando el primer valor
@@ -108,6 +108,6 @@ public interface ModeloFuncionesDB<T extends Objeto> {
 
     String[] getFields();
 
-    JConnection getConnection();
+    DBConnection getConnection();
 
 }

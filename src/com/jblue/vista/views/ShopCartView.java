@@ -19,14 +19,11 @@ package com.jblue.vista.views;
 import com.jblue.controlador.FactoryController;
 import com.jblue.controlador.compc.ListController;
 import com.jblue.controlador.compc.TableController;
-import com.jblue.modelo.ConstBD;
-import com.jblue.modelo.dbconexion.FuncionesBD;
 import com.jblue.modelo.fabricas.FactoryCache;
 import com.jblue.modelo.objetos.OTipoTomas;
-import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
-import com.jblue.util.cache.MemoListCache;
 import com.jblue.vista.marco.ListSearchView;
 import com.jblue.vista.marco.vistas.DBView;
 import com.jutil.swingw.modelos.JTableModel;
@@ -39,7 +36,6 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -53,10 +49,10 @@ public class ShopCartView extends DBView implements ListSearchView {
 
     private final CardLayout ly;
     private final JTableModel table_model;
-    private final DefaultListModel<OUsuarios> list_model;
-    private OUsuarios object_search;
+    private final DefaultListModel<OUser> list_model;
+    private OUser object_search;
     ArrayList<JCheckBox> month_paid_list;
-    private final ListController<OUsuarios> list_controller;
+    private final ListController<OUser> list_controller;
     private int count_elements;
 
     /**
@@ -82,12 +78,7 @@ public class ShopCartView extends DBView implements ListSearchView {
         ly = (CardLayout) root_panel.getLayout();
 
         controller = FactoryController.getShopCartController(this);
-        table_controller = new TableController(this, new MemoListCache(
-                FuncionesBD.getObjects(ConstBD.TABLAS[6],
-                        new String[]{
-                            "id", "usuario", "mes"
-                        }
-                )));
+        table_controller = new TableController(this, FactoryCache.SERVICE_PAYMENTS);
         list_controller = new ListController(this, FactoryCache.USUARIOS);
 
         build();
@@ -122,8 +113,8 @@ public class ShopCartView extends DBView implements ListSearchView {
         users_list.addMouseListener((MouseListener) controller);
         //
 
-        register_button.addActionListener(table_controller);
-        search_button.addActionListener(table_controller);
+        register_payment_button.addActionListener(table_controller);
+        search_payment_buttons.addActionListener(table_controller);
         reload_button.addActionListener(table_controller);
         back_button.addActionListener(table_controller);
         next_button.addActionListener(table_controller);
@@ -147,6 +138,11 @@ public class ShopCartView extends DBView implements ListSearchView {
         type_toma_field.setText(null);
         cost_field.setText(null);
         month_paid_field.setText(null);
+        total_field.setText(null);
+        cambio_field.setText(null);
+        for (JCheckBox i : month_paid_list) {
+            i.setSelected(false);
+        }
     }
 
     @Override
@@ -165,8 +161,8 @@ public class ShopCartView extends DBView implements ListSearchView {
     public void updateScreenInfo() {
         String user_type = object_search.isTitular() ? "Titular" : "Consumidor";
         user_type_field.setText(user_type);
-        name_user_field.setText(object_search.getNombre());
-        OTipoTomas get = FactoryCache.TIPO_DE_TOMAS.get(e -> e.getId().equals(object_search.getToma()));
+        name_user_field.setText(object_search.getName());
+        OTipoTomas get = FactoryCache.TIPO_DE_TOMAS.get(e -> e.getId().equals(object_search.getWaterIntakes()));
         type_toma_field.setText(get.getTipo());
         cost_field.setText(String.valueOf(get.getCosto()));
     }
@@ -183,8 +179,8 @@ public class ShopCartView extends DBView implements ListSearchView {
         tools_bar_panel = new javax.swing.JPanel();
         lock_button = new javax.swing.JToggleButton();
         jPanel15 = new javax.swing.JPanel();
-        register_button = new javax.swing.JButton();
-        search_button = new javax.swing.JButton();
+        register_payment_button = new javax.swing.JButton();
+        search_payment_buttons = new javax.swing.JButton();
         search_user_button = new javax.swing.JButton();
         root_panel = new javax.swing.JPanel();
         register_panel = new javax.swing.JPanel();
@@ -282,15 +278,15 @@ public class ShopCartView extends DBView implements ListSearchView {
 
         jPanel15.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
 
-        register_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        register_button.setText("Cobros");
-        register_button.setActionCommand("register_view");
-        jPanel15.add(register_button);
+        register_payment_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        register_payment_button.setText("Cobros");
+        register_payment_button.setActionCommand("register_view");
+        jPanel15.add(register_payment_button);
 
-        search_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        search_button.setText("Pagos del dia");
-        search_button.setActionCommand("search_view");
-        jPanel15.add(search_button);
+        search_payment_buttons.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        search_payment_buttons.setText("Pagos del dia");
+        search_payment_buttons.setActionCommand("search_view");
+        jPanel15.add(search_payment_buttons);
 
         tools_bar_panel.add(jPanel15, java.awt.BorderLayout.CENTER);
 
@@ -857,14 +853,14 @@ public class ShopCartView extends DBView implements ListSearchView {
     private javax.swing.JPanel payment_info_panel;
     private javax.swing.JLabel range;
     private javax.swing.JButton recargos_button;
-    private javax.swing.JButton register_button;
     private javax.swing.JPanel register_panel;
+    private javax.swing.JButton register_payment_button;
     private javax.swing.JButton reload_button;
     private javax.swing.JPanel root_panel;
-    private javax.swing.JButton search_button;
     private javax.swing.JTextField search_field_list;
     private javax.swing.JTextField search_field_table;
     private javax.swing.JPanel search_panel;
+    private javax.swing.JButton search_payment_buttons;
     private javax.swing.JPanel search_register_panel;
     private javax.swing.JButton search_user_button;
     private javax.swing.JCheckBox sep;
@@ -875,7 +871,7 @@ public class ShopCartView extends DBView implements ListSearchView {
     private javax.swing.JTextField type_toma_field;
     private javax.swing.JPanel user_info_panel;
     private javax.swing.JTextField user_type_field;
-    private javax.swing.JList<OUsuarios> users_list;
+    private javax.swing.JList<com.jblue.modelo.objetos.OUser> users_list;
     private javax.swing.JButton util_button;
     // End of variables declaration//GEN-END:variables
 
@@ -932,7 +928,7 @@ public class ShopCartView extends DBView implements ListSearchView {
     }
 
     @Override
-    public DefaultListModel<OUsuarios> getListModel() {
+    public DefaultListModel<OUser> getListModel() {
         return list_model;
     }
 
@@ -960,23 +956,23 @@ public class ShopCartView extends DBView implements ListSearchView {
     }
 
     @Override
-    public OUsuarios getObjectSearch() {
+    public OUser getObjectSearch() {
         return object_search;
     }
 
     @Override
     public void setObjectSearch(Objeto o) {
-        object_search = (OUsuarios) o;
+        object_search = (OUser) o;
     }
 
     @Override
     public void setScreenListInfo() {
         int index = users_list.getSelectedIndex();
         object_search = list_model.get(index);
-        user_type_field.setText(object_search.getTipo().equals("1") ? "Titular" : "Consumidor");
+        user_type_field.setText(object_search.getUserTypeString());
         name_user_field.setText(object_search.toString());
-        type_toma_field.setText(object_search.getTypeWaterIntakes().getTipo());
-        cost_field.setText(String.valueOf(object_search.getTypeWaterIntakes().getCosto()));
+        type_toma_field.setText(object_search.getWaterIntakesObject().getTipo());
+        cost_field.setText(String.valueOf(object_search.getWaterIntakesObject().getCosto()));
     }
 
     @Override
@@ -989,8 +985,8 @@ public class ShopCartView extends DBView implements ListSearchView {
     public ArrayList<JCheckBox> getMonthList() {
         return month_paid_list;
     }
-    
-    public ArrayList<String> getMonthPaidList(){
+
+    public ArrayList<String> getMonthPaidList() {
         List<String> lista = new ArrayList<>(12);
         for (JCheckBox i : month_paid_list) {
             if (i.isSelected() && i.isEnabled()) {
@@ -1003,9 +999,5 @@ public class ShopCartView extends DBView implements ListSearchView {
     public void setTotalField(double total_field) {
         this.total_field.setText(String.valueOf(total_field));
     }
-
-    
-    
-    
 
 }

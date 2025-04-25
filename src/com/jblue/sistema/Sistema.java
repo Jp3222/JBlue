@@ -60,9 +60,12 @@ public class Sistema implements MainSystem {
 
     @Override
     public boolean conectionDB() {
-        boolean null_connection = propiedades.getProperty(AppConfig.DB_URL) == null
-                || propiedades.getProperty(AppConfig.DB_USER) == null
-                || propiedades.getProperty(AppConfig.DB_PASSWORD) == null;
+        boolean null_connection = false;
+        for (String i : AppConfig.DB_KEYS) {
+            if (propiedades.getProperty(i) == null) {
+                null_connection = true;
+            }
+        }
 
         if (null_connection) {
             try {
@@ -76,12 +79,18 @@ public class Sistema implements MainSystem {
             }
         }
         try {
+            String database_url = "jdbc:%s://%s:%s/%s";
             connection = DBConnection.getInstance(
-                    propiedades.getProperty(AppConfig.DB_URL),
+                    database_url.formatted(
+                            propiedades.getProperty(AppConfig.DB_MOTOR),
+                            propiedades.getProperty(AppConfig.DB_HOST),
+                            propiedades.getProperty(AppConfig.DB_PORT),
+                            propiedades.getProperty(AppConfig.DB_NAME)
+                    ),
                     propiedades.getProperty(AppConfig.DB_USER),
                     propiedades.getProperty(AppConfig.DB_PASSWORD)
             );
-            connection.setShowQuery(true);
+            connection.setShowQuery(DevFlags.DEV_MSG_CODE);
             resources.put("connection", connection);
         } catch (SQLException e) {
             showMessage(e.getErrorCode());
@@ -106,7 +115,10 @@ public class Sistema implements MainSystem {
     void showRMP() {
         int in = JOptionPane.showConfirmDialog(null, "Desea reiniciar las credenciales");
         if (in == JOptionPane.YES_OPTION) {
-            propiedades.remove(AppConfig.DB_URL);
+            propiedades.remove(AppConfig.DB_MOTOR);
+            propiedades.remove(AppConfig.DB_HOST);
+            propiedades.remove(AppConfig.DB_PORT);
+            propiedades.remove(AppConfig.DB_NAME);
             propiedades.remove(AppConfig.DB_USER);
             propiedades.remove(AppConfig.DB_PASSWORD);
             try (FileOutputStream out = new FileOutputStream(AppFiles.FIL_ARC_CONFIG);) {

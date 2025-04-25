@@ -19,16 +19,16 @@ package com.jblue.modelo.dbconexion;
 import com.jblue.modelo.constdb.Table;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.FormatoBD;
+import com.jutil.jexception.Excp;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public class JDBConnection<T extends Objeto> extends AbstractDBConnection<T> {
+public class JDBConnection<T extends Objeto> extends AbstractJDBConnection<T>{
 
     private Table object_table;
 
@@ -45,7 +45,7 @@ public class JDBConnection<T extends Objeto> extends AbstractDBConnection<T> {
         try {
             out = connection.insert(table, fields, FormatoBD.valuesFormat(values));
         } catch (SQLException ex) {
-            Logger.getLogger(JDBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            Excp.imp(ex, getClass(), true, true);
         }
         return out;
     }

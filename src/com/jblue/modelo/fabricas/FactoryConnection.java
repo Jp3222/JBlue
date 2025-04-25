@@ -19,9 +19,11 @@ package com.jblue.modelo.fabricas;
 import com.jblue.modelo.constdb.Const;
 import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.objetos.OCalles;
+import com.jblue.modelo.objetos.OPagosOtros;
+import com.jblue.modelo.objetos.OPagosServicio;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.modelo.objetos.OTipoTomas;
-import com.jblue.modelo.objetos.OUsuarios;
+import com.jblue.modelo.objetos.OUser;
 
 /**
  *
@@ -33,7 +35,7 @@ public class FactoryConnection {
         return new JDBConnection(Const.EMPLOYEES);
     }
 
-    public static JDBConnection<OUsuarios> getUser() {
+    public static JDBConnection<OUser> getUser() {
         return new JDBConnection(Const.USER);
     }
 
@@ -43,6 +45,18 @@ public class FactoryConnection {
 
     public static JDBConnection<OTipoTomas> getWaterIntakes() {
         return new JDBConnection(Const.WATER_INTAKES);
+    }
+
+    public static JDBConnection<OPagosServicio> getServicePayments() {
+        return new JDBConnection(Const.SERVICE_PAYMENTS);
+    }
+
+    public static JDBConnection<OPagosServicio> getSurchargePayments() {
+        return new JDBConnection(Const.SURCHARGE_PAYMENTS);
+    }
+
+    public static JDBConnection<OPagosOtros> getOtherPayments() {
+        return new JDBConnection(Const.OTHER_PAYMENTS);
     }
 
 }

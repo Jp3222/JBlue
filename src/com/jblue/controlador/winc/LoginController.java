@@ -27,6 +27,7 @@ import com.jblue.vista.windows.LoginWindows;
 import com.jblue.vista.windows.ConfigWindow;
 import com.jblue.vista.windows.WMainMenu;
 import com.jutil.framework.LaunchApp;
+import com.jutil.jexception.Excp;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
@@ -121,7 +122,6 @@ public class LoginController extends WindowController {
         Optional<OPersonal> res = query(view.getUser().getText(),
                 String.valueOf(view.getPassword().getPassword())
         );
-        System.out.println(res.get().getName());
         if (res.isEmpty()) {
             return false;
         }
@@ -154,7 +154,7 @@ public class LoginController extends WindowController {
                 | NoSuchPaddingException
                 | IllegalBlockSizeException
                 | BadPaddingException ex) {
-            Logger.getLogger(LoginWindows.class.getName()).log(Level.SEVERE, null, ex);
+            Excp.impTerminal(ex, getClass(), true);
         }
         if (res.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Usuario y/o contraseña incorrectos");

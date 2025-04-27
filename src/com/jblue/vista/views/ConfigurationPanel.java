@@ -40,6 +40,7 @@ public final class ConfigurationPanel extends SimpleView {
     private final CardLayout ly;
     private final ConfigController controller;
     private Properties properties;
+    private final ConfigWindow root;
 
     /**
      * Creates new form ConfigurationPanel
@@ -52,7 +53,15 @@ public final class ConfigurationPanel extends SimpleView {
         controller = new ConfigController(this, root);
         properties = (Properties) LaunchApp.getInstance().getResources("propierties");
         build();
-        root.addWindowListener(controller);
+        this.root = root;
+        this.root.addWindowListener(controller);
+    }
+
+    public void disposeWin() {
+        synchronized (root) {
+            root.dispose();
+            root.notify();
+        }
     }
 
     @Override
@@ -96,6 +105,7 @@ public final class ConfigurationPanel extends SimpleView {
         if (!properties.isEmpty()) {
             db_user.setText(properties.getProperty(AppConfig.DB_USER));
             db_password.setText(properties.getProperty(AppConfig.DB_PASSWORD));
+            name_db.setText(properties.getProperty(AppConfig.DB_NAME));
 
             //
             title1_field.setText(properties.getProperty(AppConfig.TITLE1));
@@ -587,17 +597,17 @@ public final class ConfigurationPanel extends SimpleView {
         SpinnerNumberModel model_minute = (SpinnerNumberModel) open_minute_field.getModel();
         if (model_hour.getNumber().intValue() > 0) {
             int hour = model_hour.getNumber().intValue(), minute = model_minute.getNumber().intValue();
-            return LocalTime.of(hour-1, minute);        
+            return LocalTime.of(hour - 1, minute);
         }
         return null;
     }
-    
+
     public LocalTime getCloseHour() {
         SpinnerNumberModel model_hour = (SpinnerNumberModel) close_hour_field.getModel();
         SpinnerNumberModel model_minute = (SpinnerNumberModel) close_minute_field.getModel();
         if (model_hour.getNumber().intValue() > 0) {
             int hour = model_hour.getNumber().intValue(), minute = model_minute.getNumber().intValue();
-            return LocalTime.of(hour-1, minute);        
+            return LocalTime.of(hour - 1, minute);
         }
         return null;
     }

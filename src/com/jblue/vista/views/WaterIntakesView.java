@@ -196,6 +196,7 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
         jLabel4.setPreferredSize(new java.awt.Dimension(500, 100));
         panel_campos.add(jLabel4);
 
+        jPanel8.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanel8.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
@@ -209,6 +210,7 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
 
         panel_campos.add(jPanel8);
 
+        jPanel9.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanel9.setLayout(new java.awt.BorderLayout());
 
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
@@ -223,6 +225,7 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
 
         panel_campos.add(jPanel9);
 
+        jPanel12.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanel12.setLayout(new java.awt.BorderLayout());
 
         jLabel6.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
@@ -236,6 +239,7 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
 
         panel_campos.add(jPanel12);
 
+        jPanel10.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanel10.setLayout(new java.awt.BorderLayout());
 
         jLabel5.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N

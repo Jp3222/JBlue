@@ -294,6 +294,7 @@ public class LoginWindows extends VentanaSimple {
     public void dispose() {
         super.dispose();
         SwingUtilities.invokeLater(() -> initialState());
+        
     }
 
     public JPasswordField getPassword() {

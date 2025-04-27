@@ -108,17 +108,14 @@ public class ConfigController extends WindowController {
             properties.setProperty(AppConfig.HOUR_CLOSE, view.getCloseHour().format(DateTimeFormatter.ISO_DATE));
         }
         //
+        view.disposeWin();
     }
 
     void testDB() {
         try (DBConnection connection = DBConnection.getNewInstance(
                 view.getURL(), view.getSUser(), view.getSPassword())) {
-            System.out.println(view.getURL());
-            System.out.println(view.getSUser());
-            System.out.println(view.getSPassword());
 
             boolean valid = connection.getConnection().isValid(1000);
-            System.out.println(valid);
             if (!valid) {
                 JOptionPane.showMessageDialog(view, "Connexion no establecida");
                 return;
@@ -129,7 +126,6 @@ public class ConfigController extends WindowController {
             properties.setProperty(AppConfig.DB_USER, view.getSUser());
             properties.setProperty(AppConfig.DB_PASSWORD, view.getSPassword());
         } catch (SQLException ex) {
-            System.out.println(ex.getErrorCode());
             JOptionPane.showMessageDialog(view, ex.getMessage());
         }
     }

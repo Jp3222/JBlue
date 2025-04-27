@@ -191,8 +191,6 @@ public class VPersonal extends DBView implements OptionMenu {
         jLabel16.setText("Nombre: ");
         jLabel16.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel6.add(jLabel16, java.awt.BorderLayout.LINE_START);
-
-        jTextField1.setText("jTextField1");
         jPanel6.add(jTextField1, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel6);
@@ -202,8 +200,6 @@ public class VPersonal extends DBView implements OptionMenu {
         jLabel18.setText("Apellidos: ");
         jLabel18.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel7.add(jLabel18, java.awt.BorderLayout.LINE_START);
-
-        jTextField2.setText("jTextField2");
         jPanel7.add(jTextField2, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel7);
@@ -214,7 +210,7 @@ public class VPersonal extends DBView implements OptionMenu {
         jLabel19.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel8.add(jLabel19, java.awt.BorderLayout.LINE_START);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECCIONE UNA OPCION", "PRESIDENTE", "SECRETARIO", "TESORERO", "PASANTE", "ADMINISTRADOR" }));
         jPanel8.add(jComboBox1, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel8);
@@ -225,7 +221,7 @@ public class VPersonal extends DBView implements OptionMenu {
         jLabel20.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel14.add(jLabel20, java.awt.BorderLayout.LINE_START);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACTIVO.", "INACTIVO.", "BAJA." }));
         jPanel14.add(jComboBox2, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel14);
@@ -235,8 +231,6 @@ public class VPersonal extends DBView implements OptionMenu {
         jLabel21.setText("Usuario: ");
         jLabel21.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel15.add(jLabel21, java.awt.BorderLayout.LINE_START);
-
-        jPasswordField1.setText("jPasswordField1");
         jPanel15.add(jPasswordField1, java.awt.BorderLayout.CENTER);
 
         jCheckBox1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -252,8 +246,6 @@ public class VPersonal extends DBView implements OptionMenu {
         jLabel22.setText("Contraseña: ");
         jLabel22.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel20.add(jLabel22, java.awt.BorderLayout.LINE_START);
-
-        jPasswordField2.setText("jPasswordField2");
         jPanel20.add(jPasswordField2, java.awt.BorderLayout.CENTER);
 
         jCheckBox2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -565,8 +557,7 @@ public class VPersonal extends DBView implements OptionMenu {
     }
 
     @Override
-    public void setScreenListInfo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void setScreenTableInfo() {
     }
 
 }

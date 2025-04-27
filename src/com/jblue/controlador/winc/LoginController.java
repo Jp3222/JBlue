@@ -20,7 +20,7 @@ import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.objetos.OPersonal;
 import com.jblue.util.Filtros;
 import com.jblue.util.crypto.EncriptadoAES;
-import com.jblue.modelo.fabricas.FactoryConnection;
+import com.jblue.modelo.fabricas.ConnectionFactory;
 import com.jblue.sistema.ConstSisMen;
 import com.jblue.sistema.Sesion;
 import com.jblue.vista.windows.LoginWindows;
@@ -141,7 +141,7 @@ public class LoginController extends WindowController {
         if (Filtros.isNullOrBlank(user, password)) {
             return res;
         }
-        JDBConnection<OPersonal> op = FactoryConnection.getEmployees();
+        JDBConnection<OPersonal> op = ConnectionFactory.getEmployees();
         try {
             res = op.get("*", WHERE.formatted(
                     EncriptadoAES.encriptar(user, password),

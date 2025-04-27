@@ -58,7 +58,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
 
     @Override
     public boolean execPayment() {
-        deuda = meses_pagados.size() * toma.getCosto();
+        deuda = meses_pagados.size() * toma.getPrice();
 
         if (!gameRulers()) {
             return false;
@@ -71,7 +71,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
             col = "('" + personal.getId()
                     + "','"
                     + usuario.getId() + "','"
-                    + toma.getCosto() + "','"
+                    + toma.getPrice()+ "','"
                     + meses_pagados.get(i) + "')";
             i++;
             values.append(col).append(",");
@@ -79,7 +79,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
         col = "('" + personal.getId()
                 + "','"
                 + usuario.getId() + "','"
-                + toma.getCosto() + "','"
+                + toma.getPrice()+ "','"
                 + meses_pagados.get(i) + "')";
         i++;
         values.append(col);

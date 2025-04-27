@@ -4,6 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
+import com.jblue.util.objetos.ObjetoFK;
 import com.jblue.util.tools.ObjectUtils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,10 +13,14 @@ import java.time.format.DateTimeFormatter;
  *
  * @author jp
  */
-public class OUser extends Objeto {
+public class OUser extends Objeto implements ObjetoFK {
+
+    private String[] infoFK;
 
     public OUser(String[] info) {
         super(info);
+        infoFK = info.clone();
+
     }
 
     public OUser() {
@@ -71,7 +76,7 @@ public class OUser extends Objeto {
         return info[6];
     }
 
-    public OTipoTomas getWaterIntakesObject() {
+    public OWaterIntake getWaterIntakesObject() {
         return ObjectUtils.getWaterIntakesObject(getWaterIntakes());
     }
 
@@ -144,6 +149,7 @@ public class OUser extends Objeto {
     @Override
     public void setInfo(String[] info) {
         super.setInfo(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        infoFK = info.clone();
     }
 
     /**
@@ -162,6 +168,7 @@ public class OUser extends Objeto {
     @Override
     public String[] getInfo() {
         return super.getInfo(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+
     }
 
     @Override
@@ -171,6 +178,16 @@ public class OUser extends Objeto {
         sb.append(getLastName1()).append(" ");
         sb.append(getLastName2());
         return sb.toString();
+    }
+
+    @Override
+    public String[] getInfoSinFK() {
+        infoFK[4] = getStreetObject().getNombre();
+        infoFK[6] = getWaterIntakesObject().getType();
+        infoFK[7] = getUserTypeString();
+        infoFK[8] = getStatusString();
+
+        return infoFK;
     }
 
 }

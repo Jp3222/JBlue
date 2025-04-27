@@ -17,11 +17,11 @@
 package com.jblue.vista.components;
 
 import com.jblue.modelo.objetos.OCalles;
-import com.jblue.modelo.objetos.OTipoTomas;
+import com.jblue.modelo.objetos.OWaterIntake;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
-import com.jblue.modelo.fabricas.FactoryCache;
+import com.jblue.modelo.fabricas.CacheFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ import javax.swing.KeyStroke;
 public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
 
     public static OCalles selectorCalle(JFrame padre) {
-        CSelectorObjeto o = new CSelectorObjeto(padre, true, FactoryCache.CALLES.getList());
+        CSelectorObjeto o = new CSelectorObjeto(padre, true, CacheFactory.CALLES.getList());
         o.setVisible(true);
         if (o.getReturnStatus() == CSelectorObjeto.RET_CANCEL) {
             return null;
@@ -50,7 +50,7 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
     }
 
     public static OUser selectorUsuarios(JFrame padre) {
-        CSelectorObjeto o = new CSelectorObjeto(padre, true, FactoryCache.USUARIOS.getList());
+        CSelectorObjeto o = new CSelectorObjeto(padre, true, CacheFactory.USUARIOS.getList());
         o.setVisible(true);
         if (o.getReturnStatus() == CSelectorObjeto.RET_CANCEL) {
             return null;
@@ -59,7 +59,7 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
     }
 
     public static OUser selectorSoloTitulares(JFrame padre) {
-        ArrayList<OUser> list = (ArrayList<OUser>) FactoryCache.USUARIOS.getList(o -> o.isTitular());
+        ArrayList<OUser> list = (ArrayList<OUser>) CacheFactory.USUARIOS.getList(o -> o.isTitular());
         CSelectorObjeto o = new CSelectorObjeto(padre, true, list);
         o.setVisible(true);
         if (o.getReturnStatus() == CSelectorObjeto.RET_CANCEL) {
@@ -69,7 +69,7 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
     }
 
     public static OUser selectorSoloUsuarios(JFrame padre) {
-        ArrayList<OUser> list = (ArrayList<OUser>) FactoryCache.USUARIOS.getList(o -> !o.isTitular());
+        ArrayList<OUser> list = (ArrayList<OUser>) CacheFactory.USUARIOS.getList(o -> !o.isTitular());
         CSelectorObjeto o = new CSelectorObjeto(padre, true, list);
         o.setVisible(true);
         if (o.getReturnStatus() == CSelectorObjeto.RET_CANCEL) {
@@ -78,13 +78,13 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
         return (OUser) o.getObjeto();
     }
 
-    public static OTipoTomas selectorTipoDeToma(JFrame padre) {
-        CSelectorObjeto o = new CSelectorObjeto(padre, true, FactoryCache.TIPO_DE_TOMAS.getList());
+    public static OWaterIntake selectorTipoDeToma(JFrame padre) {
+        CSelectorObjeto o = new CSelectorObjeto(padre, true, CacheFactory.TIPO_DE_TOMAS.getList());
         o.setVisible(true);
         if (o.getReturnStatus() == CSelectorObjeto.RET_CANCEL) {
             return null;
         }
-        return (OTipoTomas) o.getObjeto();
+        return (OWaterIntake) o.getObjeto();
     }
 
     private final DefaultListModel<String> modelo_lista;

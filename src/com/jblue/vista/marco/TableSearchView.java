@@ -49,6 +49,6 @@ public interface TableSearchView {
     
     public void setRowsData(String... info);
     
-    void setScreenListInfo();
+    void setScreenTableInfo();
 
 }

@@ -18,7 +18,7 @@ package com.jblue.vista.components;
 
 import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.constdb.Const;
-import com.jblue.modelo.fabricas.FactoryCache;
+import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.cache.MemoListCache;
@@ -46,6 +46,9 @@ import javax.swing.KeyStroke;
 public final class CVisorUsuario extends JDialog implements ComponentStates {
 
     public static CVisorUsuario showVisor(OUser obj) {
+        if (obj == null) {
+            return null;
+        }
         CVisorUsuario o = new CVisorUsuario(null, true);
         o.setUsuario(obj);
         o.setTitle(obj.toString());
@@ -695,7 +698,7 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
         last_name2_field.setText(usuario.getLastName2());
         street_field.setText(usuario.getStreetObject().getNombre());
         house_number_field.setText(usuario.getHouseNumber());
-        water_intake_type_field.setText(usuario.getWaterIntakesObject().getTipo());
+        water_intake_type_field.setText(usuario.getWaterIntakesObject().getType());
         date_register_field.setText(usuario.getLastName2());
         status_field.setText(usuario.getStatusString());
         user_type_field.setText(usuario.getUserTypeString());
@@ -709,15 +712,15 @@ public final class CVisorUsuario extends JDialog implements ComponentStates {
     }
 
     private void loadServicePayment() {
-        load(modelo_pagos_x_servicio, FactoryCache.SERVICE_PAYMENTS);
+        load(modelo_pagos_x_servicio, CacheFactory.SERVICE_PAYMENTS);
     }
 
     private void loadOtherPayment() {
-        load(modelo_pagos_x_otros, FactoryCache.OTHER_PAYMENTS);
+        load(modelo_pagos_x_otros, CacheFactory.OTHER_PAYMENTS);
     }
 
     private void loadSurchagePayment() {
-        load(modelo_pagos_x_recargo, FactoryCache.SURCHARGE_PAYMENTS);
+        load(modelo_pagos_x_recargo, CacheFactory.SURCHARGE_PAYMENTS);
     }
 
     private <T extends Objeto> void load(JTableModel model, MemoListCache<T> cache) {

@@ -8,7 +8,7 @@ import com.jblue.controlador.winc.ConfigController;
 import com.jblue.modelo.constdb.Const;
 import com.jutil.framework.MainSystem;
 import com.jblue.sistema.app.AppFiles;
-import com.jblue.modelo.fabricas.FactoryCache;
+import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.sistema.app.AppConfig;
 import com.jblue.vista.windows.ConfigWindow;
 import com.jblue.vista.windows.LoginWindows;
@@ -173,7 +173,7 @@ public class Sistema implements MainSystem {
 
     @Override
     public boolean cache() {
-        return FactoryCache.cache_list || FactoryCache.loadCaches();
+        return CacheFactory.cache_list || CacheFactory.loadCaches();
     }
 
     @Override

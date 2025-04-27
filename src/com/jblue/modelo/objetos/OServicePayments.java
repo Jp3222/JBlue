@@ -4,25 +4,23 @@
  */
 package com.jblue.modelo.objetos;
 
-import java.time.LocalDateTime;
-
 /**
  *
  * @author jp
  */
-public class OPagosServicio extends AbstraccionOPago {
+public class OServicePayments extends AbstraccionOPago {
 
-    public OPagosServicio() {
+    public OServicePayments() {
         super();
     }
 
-    public OPagosServicio(String... info) {
+    public OServicePayments(String... info) {
         super(info);
     }
 
     @Override
     public String toString() {
-        return getUsuario();
+        return getMonth().concat(": ").concat(getStatusString());
     }
 
     

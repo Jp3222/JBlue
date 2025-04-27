@@ -24,9 +24,11 @@ import com.jutil.framework.LaunchApp;
 import com.jutil.platf.So;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import java.awt.CardLayout;
+import java.time.LocalTime;
 import java.util.Properties;
 import javax.swing.JFileChooser;
 import javax.swing.JPasswordField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -41,6 +43,7 @@ public final class ConfigurationPanel extends SimpleView {
 
     /**
      * Creates new form ConfigurationPanel
+     *
      * @param root
      */
     public ConfigurationPanel(ConfigWindow root) {
@@ -163,18 +166,18 @@ public final class ConfigurationPanel extends SimpleView {
         jLabel8 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        open_hour_field = new javax.swing.JSpinner();
         jLabel14 = new javax.swing.JLabel();
-        jSpinner2 = new javax.swing.JSpinner();
+        open_minute_field = new javax.swing.JSpinner();
         jLabel23 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jPanel16 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
-        jSpinner3 = new javax.swing.JSpinner();
+        close_hour_field = new javax.swing.JSpinner();
         jLabel26 = new javax.swing.JLabel();
-        jSpinner4 = new javax.swing.JSpinner();
+        close_minute_field = new javax.swing.JSpinner();
         option_panel = new javax.swing.JPanel();
         save_db_button = new javax.swing.JButton();
 
@@ -380,19 +383,23 @@ public final class ConfigurationPanel extends SimpleView {
         jLabel8.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel8.add(jLabel8, java.awt.BorderLayout.WEST);
 
-        jPanel10.setLayout(new java.awt.GridLayout());
+        jPanel10.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel13.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Hora: ");
         jPanel10.add(jLabel13);
-        jPanel10.add(jSpinner1);
+
+        open_hour_field.setModel(new javax.swing.SpinnerNumberModel(0, 0, 24, 1));
+        jPanel10.add(open_hour_field);
 
         jLabel14.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel14.setText("Minuto: ");
         jPanel10.add(jLabel14);
-        jPanel10.add(jSpinner2);
+
+        open_minute_field.setModel(new javax.swing.SpinnerNumberModel(0, 0, 59, 1));
+        jPanel10.add(open_minute_field);
 
         jPanel8.add(jPanel10, java.awt.BorderLayout.CENTER);
 
@@ -411,19 +418,23 @@ public final class ConfigurationPanel extends SimpleView {
         jLabel24.setPreferredSize(new java.awt.Dimension(50, 30));
         jPanel9.add(jLabel24, java.awt.BorderLayout.EAST);
 
-        jPanel16.setLayout(new java.awt.GridLayout());
+        jPanel16.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel25.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel25.setText("Hora: ");
         jPanel16.add(jLabel25);
-        jPanel16.add(jSpinner3);
+
+        close_hour_field.setModel(new javax.swing.SpinnerNumberModel(0, 0, 24, 1));
+        jPanel16.add(close_hour_field);
 
         jLabel26.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel26.setText("Minuto: ");
         jPanel16.add(jLabel26);
-        jPanel16.add(jSpinner4);
+
+        close_minute_field.setModel(new javax.swing.SpinnerNumberModel(0, 0, 59, 1));
+        jPanel16.add(close_minute_field);
 
         jPanel9.add(jPanel16, java.awt.BorderLayout.CENTER);
 
@@ -434,7 +445,7 @@ public final class ConfigurationPanel extends SimpleView {
         add(root_panel, java.awt.BorderLayout.CENTER);
 
         option_panel.setPreferredSize(new java.awt.Dimension(100, 30));
-        option_panel.setLayout(new java.awt.GridLayout());
+        option_panel.setLayout(new java.awt.GridLayout(1, 0));
 
         save_db_button.setText("Guardar");
         save_db_button.setActionCommand("save db");
@@ -445,6 +456,8 @@ public final class ConfigurationPanel extends SimpleView {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSpinner close_hour_field;
+    private javax.swing.JSpinner close_minute_field;
     private javax.swing.JPasswordField db_password;
     private javax.swing.JPasswordField db_user;
     private javax.swing.JTextField host;
@@ -491,12 +504,10 @@ public final class ConfigurationPanel extends SimpleView {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
-    private javax.swing.JSpinner jSpinner3;
-    private javax.swing.JSpinner jSpinner4;
     private javax.swing.JComboBox<String> motor;
     private javax.swing.JTextField name_db;
+    private javax.swing.JSpinner open_hour_field;
+    private javax.swing.JSpinner open_minute_field;
     private javax.swing.JPanel option_panel;
     private javax.swing.JTextField port;
     private javax.swing.JPanel program_info_panel;
@@ -566,8 +577,28 @@ public final class ConfigurationPanel extends SimpleView {
     public String getHost() {
         return host.getText();
     }
-    
-    public String getDataBaseName(){
+
+    public String getDataBaseName() {
         return name_db.getText();
+    }
+
+    public LocalTime getOpenHour() {
+        SpinnerNumberModel model_hour = (SpinnerNumberModel) open_hour_field.getModel();
+        SpinnerNumberModel model_minute = (SpinnerNumberModel) open_minute_field.getModel();
+        if (model_hour.getNumber().intValue() > 0) {
+            int hour = model_hour.getNumber().intValue(), minute = model_minute.getNumber().intValue();
+            return LocalTime.of(hour-1, minute);        
+        }
+        return null;
+    }
+    
+    public LocalTime getCloseHour() {
+        SpinnerNumberModel model_hour = (SpinnerNumberModel) close_hour_field.getModel();
+        SpinnerNumberModel model_minute = (SpinnerNumberModel) close_minute_field.getModel();
+        if (model_hour.getNumber().intValue() > 0) {
+            int hour = model_hour.getNumber().intValue(), minute = model_minute.getNumber().intValue();
+            return LocalTime.of(hour-1, minute);        
+        }
+        return null;
     }
 }

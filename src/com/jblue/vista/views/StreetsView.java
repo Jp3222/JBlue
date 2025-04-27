@@ -18,8 +18,8 @@ package com.jblue.vista.views;
 
 import com.jblue.controlador.FactoryController;
 import com.jblue.controlador.compc.TableController;
-import com.jblue.modelo.ConstGs;
-import com.jblue.modelo.fabricas.FactoryCache;
+import com.jblue.modelo.fabricas.CacheFactory;
+import com.jblue.modelo.fabricas.TableModelFactory;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
@@ -45,13 +45,13 @@ public final class StreetsView extends DBView implements DBValues {
      */
     public StreetsView() {
         initComponents();
-        model = new JTableModel(ConstGs.TABLA_CALLES, 0);
+        model = TableModelFactory.getStreetTableModel();
         objects_table.setModel(model);
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
         //
         controller = FactoryController.getStreetsController(this);
-        table_controller = new TableController(this, FactoryCache.CALLES);
+        table_controller = new TableController(this, CacheFactory.CALLES);
         build();
     }
 
@@ -519,7 +519,7 @@ public final class StreetsView extends DBView implements DBValues {
     }
 
     @Override
-    public void setScreenListInfo() {
+    public void setScreenTableInfo() {
         streed_name_field.setText(object_search.getNombre());
     }
 }

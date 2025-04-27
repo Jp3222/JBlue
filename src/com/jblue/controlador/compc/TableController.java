@@ -123,6 +123,7 @@ public class TableController<T extends Objeto & ObjetoFK> extends ComponentContr
 
     @Override
     public void updateData() {
+        memo_cache.reLoadData();
         dumpData();
         loadData();
     }
@@ -179,7 +180,8 @@ public class TableController<T extends Objeto & ObjetoFK> extends ComponentContr
         }
 
         view.setObjectSearch(get);
-        view.setScreenListInfo();
+        view.setScreenTableInfo();
+        dumpData();
         view.setViewShow(TableSearchView.REGISTER_VIEW);
 
     }

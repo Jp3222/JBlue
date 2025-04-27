@@ -16,13 +16,18 @@
  */
 package com.jblue.modelo.objetos;
 
+import com.jblue.util.objetos.ObjetoFK;
+import com.jblue.util.tools.ObjectUtils;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
  * @author juanp
  */
-public class AbstraccionOPago extends Objeto {
+public class AbstraccionOPago extends Objeto implements ObjetoFK {
+
+    private String[] info_fk;
 
     public AbstraccionOPago() {
     }
@@ -31,33 +36,63 @@ public class AbstraccionOPago extends Objeto {
         super(info);
     }
 
-    public String getEmpleado() {
+    public String getEmployee() {
         return info[1];
     }
 
-    public String getUsuario() {
+    public OPersonal getEmployeeObject() {
+        return ObjectUtils.getEmployee(getEmployee());
+    }
+
+    public String getUser() {
         return info[2];
     }
 
-    public String getCosto() {
-        return info[3];
+    public OUser getUserObject() {
+        return ObjectUtils.getUser(getUser());
     }
 
-    public String getMesPagado() {
+    public double getPrice() {
+        return Double.parseDouble(info[3]);
+    }
+
+    public String getMonth() {
         return info[4];
     }
 
-    public String getEstado() {
-        return info[5];
-    }
-
-    public String getDateRegister() {
-        return info[6];
+    public int getStatus() {
+        return Integer.parseInt(info[5]);
     }
     
-    public int getAño() {
-        LocalDateTime o = LocalDateTime.parse(info[6]);
-        return o.getYear();
+    public String getStatusString(){
+        return switch(getStatus()){
+            case 2: yield "PENDIENTE";
+            case 3: yield "ELIMINADO";
+            default: yield "PAGADO";
+        };
+    }
+
+    public LocalDateTime getRegister() {
+        return LocalDateTime.parse(info[6], DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+    }
+
+    @Override
+    public void setInfo(String[] info) {
+        super.setInfo(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        this.info_fk = info.clone();
+    }
+
+    @Override
+    public String[] getInfo() {
+        return super.getInfo(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    @Override
+    public String[] getInfoSinFK() {
+        info_fk[1] = getEmployeeObject().toString();
+        info_fk[2] = getUserObject().toString();
+        info_fk[5] = getStatusString();
+        return info_fk;
     }
 
 }

@@ -25,17 +25,17 @@ public class Table {
     private final String table;
     private final String[] fields;
     private String[] graphics_field;
-    private final int real_count_fields;
+    private int real_count_fields;
 
-    public Table(String table, String[] fields, String[] graphics_field, int real_count_fields) {
+    public Table(String table, String[] fields, String[] graphics_field) {
         this.table = table;
         this.fields = fields;
         this.graphics_field = graphics_field;
-        this.real_count_fields = real_count_fields;
+        this.real_count_fields = fields.length;
     }
 
     public Table(String table, String... fields) {
-        this(table, fields, fields, fields.length);
+        this(table, fields, fields);
     }
 
     public int getReal_count_fields() {

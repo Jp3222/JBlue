@@ -17,7 +17,7 @@
 package com.jblue.controlador.viewc;
 
 import com.jblue.controlador.Controller;
-import com.jblue.modelo.fabricas.FactoryCache;
+import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.vista.views.StreetsView;
@@ -46,7 +46,7 @@ public class StreetsController extends DBViewController<OCalles> implements DBCo
     private final ArrayList<ComponentController> components_controllers;
 
     public StreetsController(StreetsView view) {
-        super(FactoryCache.CALLES);
+        super(CacheFactory.CALLES);
         this.connection = (JDBConnection<OCalles>) memo_cache.getConnection();
         this.view = view;
         this.components_controllers = new ArrayList(5);

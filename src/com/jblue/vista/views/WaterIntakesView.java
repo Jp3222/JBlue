@@ -18,9 +18,9 @@ package com.jblue.vista.views;
 
 import com.jblue.controlador.FactoryController;
 import com.jblue.controlador.compc.TableController;
-import com.jblue.modelo.ConstGs;
-import com.jblue.modelo.fabricas.FactoryCache;
-import com.jblue.modelo.objetos.OTipoTomas;
+import com.jblue.modelo.fabricas.CacheFactory;
+import com.jblue.modelo.fabricas.TableModelFactory;
+import com.jblue.modelo.objetos.OWaterIntake;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
 import com.jblue.vista.marco.DBValues;
@@ -40,7 +40,7 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
 
     private final CardLayout ly;
     private final JTableModel model;
-    private OTipoTomas object_search;
+    private OWaterIntake object_search;
 
     /**
      * Creates new form NewTipoDeTomas
@@ -49,9 +49,9 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
         initComponents();
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
-        model = new JTableModel(ConstGs.TABLA_TIPOS_DE_TOMAS, 0);
+        model = TableModelFactory.getWaterIntakesTableModel();
         controller = FactoryController.getWaterIntakesController(this);
-        table_controller = new TableController(this, FactoryCache.TIPO_DE_TOMAS);
+        table_controller = new TableController(this, CacheFactory.TIPO_DE_TOMAS);
         build();
     }
 
@@ -83,13 +83,13 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
     }
 
     @Override
-    public OTipoTomas getObjectSearch() {
+    public OWaterIntake getObjectSearch() {
         return object_search;
     }
 
     @Override
     public void setObjectSearch(Objeto o) {
-        object_search = (OTipoTomas) o;
+        object_search = (OWaterIntake) o;
     }
 
     /**
@@ -117,6 +117,9 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
         jPanel9 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         campo_costo = new javax.swing.JTextField();
+        jPanel12 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        campo_costo1 = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         campo_recargo = new javax.swing.JTextField();
@@ -209,15 +212,29 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
         jPanel9.setLayout(new java.awt.BorderLayout());
 
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel3.setText("Costo:");
+        jLabel3.setText("Precio anterior.");
         jLabel3.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel9.add(jLabel3, java.awt.BorderLayout.WEST);
 
+        campo_costo.setEditable(false);
         campo_costo.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         campo_costo.setName("Costo"); // NOI18N
         jPanel9.add(campo_costo, java.awt.BorderLayout.CENTER);
 
         panel_campos.add(jPanel9);
+
+        jPanel12.setLayout(new java.awt.BorderLayout());
+
+        jLabel6.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel6.setText("Precio:");
+        jLabel6.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel12.add(jLabel6, java.awt.BorderLayout.WEST);
+
+        campo_costo1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        campo_costo1.setName("Costo"); // NOI18N
+        jPanel12.add(campo_costo1, java.awt.BorderLayout.CENTER);
+
+        panel_campos.add(jPanel12);
 
         jPanel10.setLayout(new java.awt.BorderLayout());
 
@@ -370,6 +387,7 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back_button;
     private javax.swing.JTextField campo_costo;
+    private javax.swing.JTextField campo_costo1;
     private javax.swing.JTextField campo_recargo;
     private javax.swing.JTextField campo_tipo;
     private javax.swing.JButton cancel_button;
@@ -383,8 +401,10 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
@@ -415,7 +435,7 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
     private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
 
-    public OTipoTomas getObject() {
+    public OWaterIntake getObject() {
         return object_search;
     }
 
@@ -475,7 +495,7 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
     @Override
     public String[] getDbValues() {
         String _type = campo_tipo.getText();
-        String _previus_price = String.valueOf(object_search.getCosto());
+        String _previus_price = String.valueOf(object_search.getPrice());
         String _cost = campo_costo.getText();
         String _fine = campo_recargo.getText();
         return new String[]{
@@ -494,8 +514,7 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
     }
 
     @Override
-    public void setScreenListInfo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void setScreenTableInfo() {
     }
 
 }

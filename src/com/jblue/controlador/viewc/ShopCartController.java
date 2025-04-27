@@ -19,8 +19,8 @@ package com.jblue.controlador.viewc;
 import com.jblue.controlador.Controller;
 import com.jblue.controlador.logic.PaymentFactory;
 import com.jblue.controlador.logic.PaymentModel;
-import com.jblue.modelo.fabricas.FactoryCache;
-import com.jblue.modelo.objetos.OPagosServicio;
+import com.jblue.modelo.fabricas.CacheFactory;
+import com.jblue.modelo.objetos.OServicePayments;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.util.tools.GraphicsUtils;
@@ -28,7 +28,9 @@ import com.jblue.vista.components.CVisorUsuario;
 import com.jblue.vista.views.ShopCartView;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -45,7 +47,7 @@ public class ShopCartController extends Controller {
 
     public ShopCartController(ShopCartView view) {
         this.view = view;
-        memo_cache = FactoryCache.USUARIOS;
+        memo_cache = CacheFactory.USUARIOS;
         this.o = PaymentFactory.getServicePayment();
     }
 
@@ -141,7 +143,7 @@ public class ShopCartController extends Controller {
     }
 
     private void total() {
-        double price = view.getObjectSearch().getWaterIntakesObject().getCosto();
+        double price = view.getObjectSearch().getWaterIntakesObject().getPrice();
         double months_paids = view.getMonthPaidList().size();
         double total = price * months_paids;
         view.setTotalField(total);
@@ -161,12 +163,23 @@ public class ShopCartController extends Controller {
     }
 
     public void setPaymentsInfo(OUser user) {
-        String query = "user = '175' AND YEAR(NOW()) = '2025";
-        ArrayList<OPagosServicio> list = FactoryCache.SERVICE_PAYMENTS.getConnection().select("*", query.formatted(user.getId()));
-        for (JCheckBox i : view.getMonthList()) {
-            if (i.) {
-                
-            }
+        LocalDate ld = LocalDate.now();
+
+        String query = "user = '%s' AND YEAR(NOW()) = '%s' AND status != 3"
+                .formatted(user.getId(), ld.getYear());
+
+        ArrayList<OServicePayments> list = CacheFactory.SERVICE_PAYMENTS
+                .getConnection().select("*", query.formatted(user.getId()));
+        System.out.println(list.toString());
+        ArrayList<JCheckBox> check_box = view.getMonthList();
+        List<String> month = view.getMonthListString();
+        int index = 0;
+        boolean payed = false;
+        for (OServicePayments i : list) {
+            payed = month.contains(i.getMonth());
+            check_box.get(index).setEnabled(!payed);
+            check_box.get(index).setSelected(payed);
+            index++;
         }
     }
 }

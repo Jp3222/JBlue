@@ -19,10 +19,10 @@ package com.jblue.vista.views;
 import com.jblue.controlador.FactoryController;
 import com.jblue.controlador.compc.ComboBoxController;
 import com.jblue.controlador.compc.TableController;
-import com.jblue.modelo.ConstGs;
-import com.jblue.modelo.fabricas.FactoryCache;
+import com.jblue.modelo.fabricas.CacheFactory;
+import com.jblue.modelo.fabricas.TableModelFactory;
 import com.jblue.modelo.objetos.OCalles;
-import com.jblue.modelo.objetos.OTipoTomas;
+import com.jblue.modelo.objetos.OWaterIntake;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
@@ -51,12 +51,12 @@ public final class UserView extends DBView implements DBValues {
      */
     public UserView() {
         initComponents();
-        model = new JTableModel(ConstGs.TABLA_USUARIOS, 0);
+        model = TableModelFactory.getUserTableModel();
         objects_table.setModel(model);
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
         controller = FactoryController.getUserController(this);
-        table_controller = new TableController(this, FactoryCache.USUARIOS);
+        table_controller = new TableController(this, CacheFactory.USUARIOS);
 
         build();
     }
@@ -88,10 +88,10 @@ public final class UserView extends DBView implements DBValues {
         //
         register_button.addActionListener(table_controller);
         search_button.addActionListener(table_controller);
-        ComboBoxController<OTipoTomas> c1 = new ComboBoxController(water_intakes, FactoryCache.TIPO_DE_TOMAS);
-        ComboBoxController<OCalles> c2 = new ComboBoxController(street, FactoryCache.CALLES);
-        ComboBoxController<OTipoTomas> c3 = new ComboBoxController(water_intakes_filter, FactoryCache.TIPO_DE_TOMAS);
-        ComboBoxController<OCalles> c4 = new ComboBoxController(street_filter, FactoryCache.CALLES);
+        ComboBoxController<OWaterIntake> c1 = new ComboBoxController(water_intakes, CacheFactory.TIPO_DE_TOMAS);
+        ComboBoxController<OCalles> c2 = new ComboBoxController(street, CacheFactory.CALLES);
+        ComboBoxController<OWaterIntake> c3 = new ComboBoxController(water_intakes_filter, CacheFactory.TIPO_DE_TOMAS);
+        ComboBoxController<OCalles> c4 = new ComboBoxController(street_filter, CacheFactory.CALLES);
 
         c1.loadData();
         c2.loadData();
@@ -773,8 +773,8 @@ public final class UserView extends DBView implements DBValues {
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     private javax.swing.JComboBox<String> user_state;
-    private javax.swing.JComboBox<OTipoTomas> water_intakes;
-    private javax.swing.JComboBox<OTipoTomas> water_intakes_filter;
+    private javax.swing.JComboBox<OWaterIntake> water_intakes;
+    private javax.swing.JComboBox<OWaterIntake> water_intakes_filter;
     // End of variables declaration//GEN-END:variables
 
     public OUser getObject() {
@@ -889,7 +889,7 @@ public final class UserView extends DBView implements DBValues {
     }
 
     @Override
-    public void setScreenListInfo() {
+    public void setScreenTableInfo() {
         first_name.setText(object_search.getName());
         last_name_1.setText(object_search.getLastName1());
         last_name_2.setText(object_search.getLastName2());

@@ -21,7 +21,7 @@ import static com.jblue.controlador.DBController.DELETE_COMMAND;
 import static com.jblue.controlador.DBController.SAVE_COMMAND;
 import static com.jblue.controlador.DBController.UPDATE_COMMAND;
 import com.jblue.modelo.dbconexion.JDBConnection;
-import com.jblue.modelo.fabricas.FactoryCache;
+import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.sistema.DevFlags;
 import com.jblue.vista.components.CVisorUsuario;
@@ -41,7 +41,7 @@ public class UserController extends DBViewController<OUser> implements DBControl
     private final JDBConnection<OUser> connection;
 
     public UserController(UserView view) {
-        super(FactoryCache.USUARIOS);
+        super(CacheFactory.USUARIOS);
         this.connection = (JDBConnection<OUser>) memo_cache.getConnection();
         this.view = view;
     }

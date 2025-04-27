@@ -16,6 +16,7 @@
  */
 package com.jblue.controlador.winc;
 
+import com.jblue.sistema.DevFlags;
 import com.jblue.sistema.Sesion;
 import com.jblue.sistema.app.AppConfig;
 import com.jblue.sistema.app.AppFiles;
@@ -28,6 +29,7 @@ import java.awt.event.WindowEvent;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,7 +51,6 @@ public class ConfigController extends WindowController {
         properties = (Properties) LaunchApp.getInstance().getResources("propierties");
     }
 
-    
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
@@ -99,8 +100,13 @@ public class ConfigController extends WindowController {
         properties.setProperty(AppConfig.TITLE2, view.getTitle2());
         properties.setProperty(AppConfig.LOGIN_ICON, view.getIconPath());
         //
-        properties.setProperty(AppConfig.HOUR_OPEN, "");
-        properties.setProperty(AppConfig.HOUR_CLOSE, "");
+        if (DevFlags.TST_EXE_FUNCION && view.getOpenHour() != null) {
+            properties.setProperty(AppConfig.HOUR_OPEN, view.getOpenHour().format(DateTimeFormatter.ISO_DATE));
+        }
+
+        if (DevFlags.TST_EXE_FUNCION && view.getCloseHour() != null) {
+            properties.setProperty(AppConfig.HOUR_CLOSE, view.getCloseHour().format(DateTimeFormatter.ISO_DATE));
+        }
         //
     }
 

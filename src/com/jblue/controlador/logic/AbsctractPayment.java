@@ -17,7 +17,7 @@
 package com.jblue.controlador.logic;
 
 import com.jblue.modelo.objetos.OPersonal;
-import com.jblue.modelo.objetos.OTipoTomas;
+import com.jblue.modelo.objetos.OWaterIntake;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.sistema.Sesion;
 import com.jutil.dbcon.connection.DBConnection;
@@ -41,7 +41,7 @@ public abstract class AbsctractPayment implements PaymentModel {
     protected final Map<String, String> mov;
     protected final OPersonal personal;
     protected OUser usuario;
-    protected OTipoTomas toma;
+    protected OWaterIntake toma;
     protected double dinero_ingresado;
     protected double deuda;
     protected double dinero_sobrante;

@@ -37,8 +37,8 @@ public class ObjectUtils {
 
     static {
         mapa = new HashMap<>(10);
-        mapa.put(ConstBD.TABLAS[0], new OPersonal());
-        mapa.put(Const.EMPLOYEES.getTable(), new OPersonal());
+        mapa.put(ConstBD.TABLAS[0], new OEmployee());
+        mapa.put(Const.EMPLOYEES.getTable(), new OEmployee());
         mapa.put(ConstBD.TABLAS[1], new OUser());
         mapa.put(Const.USER.getTable(), new OUser());
         mapa.put(ConstBD.TABLAS[2], new OCalles());
@@ -84,23 +84,23 @@ public class ObjectUtils {
         return cache.get(o -> o.getId().equals(id));
     }
 
-    public static boolean isPasante(OPersonal usuario) {
+    public static boolean isPasante(OEmployee usuario) {
         return usuario.getType().equals("1");
     }
 
-    public static boolean isSecretario(OPersonal usuario) {
+    public static boolean isSecretario(OEmployee usuario) {
         return usuario.getType().equals("2");
     }
 
-    public static boolean isTesorero(OPersonal usuario) {
+    public static boolean isTesorero(OEmployee usuario) {
         return usuario.getType().equals("3");
     }
 
-    public static boolean isPresidente(OPersonal usuario) {
+    public static boolean isPresidente(OEmployee usuario) {
         return usuario.getType().equals("4");
     }
 
-    public static boolean isAdministrador(OPersonal usuario) {
+    public static boolean isAdministrador(OEmployee usuario) {
         return usuario.getType().equals("5");
     }
 
@@ -120,7 +120,7 @@ public class ObjectUtils {
         return searchInCacheObject(CacheFactory.TIPO_DE_TOMAS, water_intakes_id);
     }
     
-    public static OPersonal getEmployee(String employee_id){
+    public static OEmployee getEmployee(String employee_id){
         return searchInCacheObject(CacheFactory.PERSONAL, employee_id);
     }
     

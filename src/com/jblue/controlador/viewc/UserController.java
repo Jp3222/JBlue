@@ -71,8 +71,7 @@ public class UserController extends DBViewController<OUser> implements DBControl
             return;
         }
         String field = "first_name, last_name1, last_name2, street, house_number, water_intakes, user_type, status";
-        boolean insert = connection.insert(field, view.getDbValues());
-        System.out.println(insert);
+        boolean insert = connection.insert(field, view.getDbValues(false));
         rmessage(insert);
     }
 
@@ -108,7 +107,7 @@ public class UserController extends DBViewController<OUser> implements DBControl
                 + "user_type, status";
 
         boolean update = connection.update(field.replace(" ", "").split(","),
-                view.getDbValues(),
+                view.getDbValues(true),
                 "id = %s".formatted(view.getObjectSearch().getId())
         );
         rmessage(update);

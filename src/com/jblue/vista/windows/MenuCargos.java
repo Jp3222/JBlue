@@ -16,7 +16,7 @@
  */
 package com.jblue.vista.windows;
 
-import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.modelo.objetos.OEmployee;
 import com.jblue.sistema.Sesion;
 import com.jblue.vista.marco.OptionMenu;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
@@ -24,7 +24,7 @@ import com.jblue.vista.views.options.VContabilidad;
 import com.jblue.vista.views.options.VDocumentos;
 import com.jblue.vista.views.options.VPayments;
 import com.jblue.vista.views.options.VPerfil;
-import com.jblue.vista.views.options.VPersonal;
+import com.jblue.vista.views.options.EmployeeView;
 import com.jblue.vista.views.options.VSuministros;
 import java.awt.CardLayout;
 import javax.swing.Icon;
@@ -46,7 +46,7 @@ public final class MenuCargos extends VentanaSimple {
         view_docs = new VDocumentos();
         view_payments = new VPayments();
         view_perfil = new VPerfil();
-        view_personal = new VPersonal();
+        view_personal = new EmployeeView();
         view_su = new VSuministros();
         ly = (CardLayout) root_panel.getLayout();
 
@@ -110,7 +110,7 @@ public final class MenuCargos extends VentanaSimple {
 
     @Override
     public void finalState() {
-        OPersonal usuario = Sesion.getInstancia().getUsuario();
+        OEmployee usuario = Sesion.getInstancia().getUsuario();
         name_user.setText(usuario.toString());
        // File userPhoto = MediaUtils.getUserPhoto(usuario.getId(), usuario.toString().concat("jpg"));
 //        if (userPhoto != null) {
@@ -250,7 +250,7 @@ public final class MenuCargos extends VentanaSimple {
     private final VDocumentos view_docs;
     private final VPayments view_payments;
     private final VPerfil view_perfil;
-    private final VPersonal view_personal;
+    private final EmployeeView view_personal;
     private final VSuministros view_su;
     //Menus
     private final OptionMenu[] Perfil;

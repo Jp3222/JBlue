@@ -16,10 +16,12 @@
  */
 package com.jblue.controlador.viewc;
 
+import com.jblue.controlador.Controller;
+
 /**
  *
  * @author juan-campos
  */
-public class ViewAbstractController {
+public abstract class AbstractViewController extends Controller{
     
 }

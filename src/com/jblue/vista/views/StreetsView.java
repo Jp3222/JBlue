@@ -457,7 +457,7 @@ public final class StreetsView extends DBView implements DBValues {
     }
 
     @Override
-    public String[] getDbValues() {
+    public String[] getDbValues(boolean update) {
         String _name = streed_name_field.getText();
         return new String[]{
             _name

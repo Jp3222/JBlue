@@ -17,7 +17,7 @@
 package com.jblue.controlador.winc;
 
 import com.jblue.modelo.dbconexion.JDBConnection;
-import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.modelo.objetos.OEmployee;
 import com.jblue.util.Filtros;
 import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.modelo.fabricas.ConnectionFactory;
@@ -119,7 +119,7 @@ public class LoginController extends WindowController {
     }
 
     public boolean start() {
-        Optional<OPersonal> res = query(view.getUser().getText(),
+        Optional<OEmployee> res = query(view.getUser().getText(),
                 String.valueOf(view.getPassword().getPassword())
         );
         if (res.isEmpty()) {
@@ -136,12 +136,12 @@ public class LoginController extends WindowController {
         return true;
     }
 
-    public Optional<OPersonal> query(String user, String password) {
-        Optional<OPersonal> res = Optional.empty();
+    public Optional<OEmployee> query(String user, String password) {
+        Optional<OEmployee> res = Optional.empty();
         if (Filtros.isNullOrBlank(user, password)) {
             return res;
         }
-        JDBConnection<OPersonal> op = ConnectionFactory.getEmployees();
+        JDBConnection<OEmployee> op = ConnectionFactory.getEmployees();
         try {
             res = op.get("*", WHERE.formatted(
                     EncriptadoAES.encriptar(user, password),

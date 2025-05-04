@@ -70,6 +70,7 @@ public class DevFlags {
      */
     public static boolean ALL_FLAGS = true;
     
+    
     /**
      * Banderaa para todas las vistas nuevas
      */

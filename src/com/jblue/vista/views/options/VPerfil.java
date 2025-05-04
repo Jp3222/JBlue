@@ -16,13 +16,14 @@
  */
 package com.jblue.vista.views.options;
 
-import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.modelo.constdb.Const;
+import com.jblue.modelo.objetos.OEmployee;
 import com.jblue.sistema.Sesion;
 import com.jblue.vista.marco.OptionMenu;
 import com.jblue.vista.marco.contruccion.EvtSetInfoGrafica;
 import com.jblue.vista.marco.vistas.SimpleView;
-import com.jblue.vista.marco.vistas.DBView;
 import java.awt.event.ActionListener;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
@@ -32,7 +33,7 @@ import javax.swing.JOptionPane;
  */
 public final class VPerfil extends SimpleView implements EvtSetInfoGrafica, OptionMenu {
 
-    private final OPersonal personal;
+    private final OEmployee personal;
 
     /**
      * Creates new form VPerfil
@@ -211,9 +212,9 @@ private final JButton option;
         campo_apellidos.setText(personal.getLastNames());
         campo_cargo.setText(personal.getCargoString());
         campo_estado.setText(personal.getStatus() + "");
-        campo_usuario.setText(personal.getUsuario());
-        campo_contra.setText(personal.getContra());
-        campo_fecha_registro.setText(personal.getFechaRegistro());
+        campo_usuario.setText(personal.getUser());
+        campo_contra.setText(personal.getPassword());
+        campo_fecha_registro.setText(personal.getDateRegister().format(DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT)));
     }
 
     @Override
@@ -231,7 +232,7 @@ private final JButton option;
         if (input != JOptionPane.YES_OPTION) {
             return;
         }
-        String usuario = personal.getUsuario();
+        String usuario = personal.getUser();
         String contraseña = JOptionPane.showInputDialog(this,
                 "Ingrese Contraseña Actual",
                 "Cambio de contraseña",

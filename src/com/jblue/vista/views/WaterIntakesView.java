@@ -497,7 +497,7 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
     }
 
     @Override
-    public String[] getDbValues() {
+    public String[] getDbValues(boolean update) {
         String _type = campo_tipo.getText();
         String _previus_price = String.valueOf(object_search.getPrice());
         String _cost = campo_costo.getText();

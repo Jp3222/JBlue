@@ -62,7 +62,7 @@ public class WaterIntakesController extends DBViewController<OWaterIntake> imple
             return;
         }
         String field = "type, price, surcharge";
-        boolean insert = connection.insert(field, view.getDbValues());
+        boolean insert = connection.insert(field, view.getDbValues(false));
         rmessage(insert);
     }
 
@@ -83,7 +83,7 @@ public class WaterIntakesController extends DBViewController<OWaterIntake> imple
         }
         String field = "type, previus_price, price, surcharge, date_update";
         boolean update = connection.update(field.replace(" ", "").split(","),
-                view.getDbValues(),
+                view.getDbValues(true),
                 "id = %s".formatted(view.getObjectSearch().getId())
         );
         rmessage(update);

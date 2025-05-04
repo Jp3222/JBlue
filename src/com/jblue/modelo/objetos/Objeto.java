@@ -43,13 +43,12 @@ public class Objeto extends AbstraccionObjeto implements ModeloObjeto {
 
     @Override
     public boolean isEmpty() {
-        return info == null;
+        return info == null || info.length == 0;
     }
 
     /**
      *
-     * @return
-     * @throws java.lang.CloneNotSupportedException
+     * @return @throws java.lang.CloneNotSupportedException
      */
     @Override
     public Objeto clone() throws CloneNotSupportedException {

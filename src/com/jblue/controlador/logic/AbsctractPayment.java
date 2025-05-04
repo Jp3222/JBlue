@@ -16,7 +16,7 @@
  */
 package com.jblue.controlador.logic;
 
-import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.modelo.objetos.OEmployee;
 import com.jblue.modelo.objetos.OWaterIntake;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.sistema.Sesion;
@@ -39,7 +39,7 @@ public abstract class AbsctractPayment implements PaymentModel {
     public static final String STATUS_ERR = "err";
 
     protected final Map<String, String> mov;
-    protected final OPersonal personal;
+    protected final OEmployee personal;
     protected OUser usuario;
     protected OWaterIntake toma;
     protected double dinero_ingresado;

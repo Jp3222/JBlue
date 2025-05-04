@@ -20,7 +20,6 @@ import com.jblue.controlador.Controller;
 import com.jblue.controlador.logic.PaymentFactory;
 import com.jblue.controlador.logic.PaymentModel;
 import com.jblue.modelo.fabricas.CacheFactory;
-import com.jblue.modelo.objetos.OServicePayments;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.util.tools.GraphicsUtils;
@@ -28,9 +27,12 @@ import com.jblue.vista.components.CVisorUsuario;
 import com.jblue.vista.views.ShopCartView;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -163,23 +165,35 @@ public class ShopCartController extends Controller {
     }
 
     public void setPaymentsInfo(OUser user) {
-        LocalDate ld = LocalDate.now();
+        try {
+            LocalDate ld = LocalDate.now();
 
-        String query = "user = '%s' AND YEAR(NOW()) = '%s' AND status != 3"
-                .formatted(user.getId(), ld.getYear());
+            String query = "SELECT MONTH FROM service_payments WHERE user = '%s' AND YEAR(NOW()) = '%s' AND status != 3"
+                    .formatted(user.getId(), ld.getYear());
 
-        ArrayList<OServicePayments> list = CacheFactory.SERVICE_PAYMENTS
-                .getConnection().select("*", query.formatted(user.getId()));
-        System.out.println(list.toString());
-        ArrayList<JCheckBox> check_box = view.getMonthList();
-        List<String> month = view.getMonthListString();
-        int index = 0;
-        boolean payed = false;
-        for (OServicePayments i : list) {
-            payed = month.contains(i.getMonth());
-            check_box.get(index).setEnabled(!payed);
-            check_box.get(index).setSelected(payed);
-            index++;
+            ResultSet res = CacheFactory.SERVICE_PAYMENTS
+                    .getConnection().getConnection().query(query);
+            ArrayList<String> list = new ArrayList<>();
+            while (res.next()) {
+                list.add(res.getString(1));
+            }
+
+            System.out.println(list.toString());
+
+            ArrayList<JCheckBox> check_box = view.getMonthList();
+
+            for (JCheckBox i : check_box) {
+                if (list.contains(i.getText())) {
+                    i.setEnabled(false);
+                    i.setSelected(true);
+                } else {
+                    i.setEnabled(true);
+                    i.setSelected(false);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ShopCartController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 }

@@ -4,6 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
+import com.jblue.modelo.constdb.Const;
 import com.jblue.util.objetos.ObjetoFK;
 import com.jblue.util.tools.ObjectUtils;
 import java.time.LocalDateTime;
@@ -82,13 +83,15 @@ public class OUser extends Objeto implements ObjetoFK {
 
     /**
      *
-     * @return 1 si el usuario es titular en cualquier otro caso devuelve el id
-     * del usuario al cual esta asociado
+     * @return 1 si el usuario es titular o 2 si el usuario es consumidor
      */
     public int getUserType() {
         return Integer.parseInt(info[7]);
     }
 
+    /**
+     * @return "Titular" o "Consumidor".
+     */
     public String getUserTypeString() {
         return switch (getUserType()) {
             case 1:
@@ -98,14 +101,18 @@ public class OUser extends Objeto implements ObjetoFK {
         };
     }
 
+    /**
+     *
+     * @return true si el usuario es titular, false si es consumidor
+     */
     public boolean isTitular() {
         return getUserType() == 1;
     }
 
     /**
      *
-     * @return un entero: 1 si el usuario esta activo -1 si el usuario esta
-     * inactivo
+     * @return 1 si el usuario esta "activo", 2 si el usuario esta "inactivo" o
+     * 3 si el usuario esta de "baja"
      */
     public int getStatus() {
         return Integer.parseInt(info[8]);
@@ -128,23 +135,26 @@ public class OUser extends Objeto implements ObjetoFK {
         return getStatus() == 1;
     }
 
+    public boolean isDelete() {
+        return getStatus() == 3;
+    }
+
     public LocalDateTime getDateRegister() {
-        return LocalDateTime.parse(info[9], DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+        return LocalDateTime.parse(info[9], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
     }
 
     /**
+     * @param info
      * <br> 0 id
-     * <br> 1 nombre
-     * <br> 2 apellido paterno
-     * <br> 3 apellido materno
-     * <br> 4 calle
-     * <br> 5 numero de casa
-     * <br> 6 tipo de toma
-     * <br> 7 tipo de usuario
-     * <br> 8 estado
-     * <br> 9 fecha de registro
-     *
-     * @param info array que contiene la informacion en el orden mostrado arriba
+     * <br> 1 first_name
+     * <br> 2 last_name1
+     * <br> 3 last_name2
+     * <br> 4 street
+     * <br> 5 house_number
+     * <br> 6 water_intakes
+     * <br> 7 user_type
+     * <br> 8 status
+     * <br> 9 date_register
      */
     @Override
     public void setInfo(String[] info) {
@@ -153,22 +163,22 @@ public class OUser extends Objeto implements ObjetoFK {
     }
 
     /**
-     * <br> 1 id
-     * <br> 2 nombre
-     * <br> 3 ap
-     * <br> 4 am
-     * <br> 5 calle
-     * <br> 6 toma
-     * <br> 7 registro
-     * <br> 8 estado
-     * <br> 9 titular
+     * <br> 0 id
+     * <br> 1 first_name
+     * <br> 2 last_name1
+     * <br> 3 last_name2
+     * <br> 4 street
+     * <br> 5 house_number
+     * <br> 6 water_intakes
+     * <br> 7 user_type
+     * <br> 8 status
+     * <br> 9 date_register
      *
      * @return un arreglo con la informacion en el orden mostrado
      */
     @Override
     public String[] getInfo() {
         return super.getInfo(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-
     }
 
     @Override
@@ -180,13 +190,26 @@ public class OUser extends Objeto implements ObjetoFK {
         return sb.toString();
     }
 
+    /**
+     * <br> 0 id
+     * <br> 1 first_name
+     * <br> 2 last_name1
+     * <br> 3 last_name2
+     * <br> 4 street
+     * <br> 5 house_number
+     * <br> 6 water_intakes
+     * <br> 7 user_type
+     * <br> 8 status
+     * <br> 9 date_register
+     *
+     * @return un arreglo con la informacion en el orden mostrado
+     */
     @Override
     public String[] getInfoSinFK() {
         infoFK[4] = getStreetObject().getNombre();
         infoFK[6] = getWaterIntakesObject().getType();
         infoFK[7] = getUserTypeString();
         infoFK[8] = getStatusString();
-
         return infoFK;
     }
 

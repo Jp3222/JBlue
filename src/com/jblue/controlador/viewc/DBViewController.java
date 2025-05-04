@@ -17,6 +17,7 @@
 package com.jblue.controlador.viewc;
 
 import com.jblue.controlador.Controller;
+import com.jblue.controlador.DBController;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.cache.MemoListCache;
 
@@ -25,7 +26,7 @@ import com.jblue.util.cache.MemoListCache;
  * @author juan-campos
  * @param <T>
  */
-public abstract class DBViewController<T extends Objeto> extends Controller {
+public abstract class DBViewController<T extends Objeto> extends AbstractViewController implements DBController {
 
     protected final MemoListCache<T> memo_cache;
 

@@ -850,7 +850,7 @@ public final class UserView extends DBView implements DBValues {
     }
 
     @Override
-    public String[] getDbValues() {
+    public String[] getDbValues(boolean update) {
         String _first_name = first_name.getText();
         String _last_name1 = last_name_1.getText();
         String _last_name2 = last_name_2.getText();

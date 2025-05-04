@@ -8,7 +8,7 @@ import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OPagosOtros;
 import com.jblue.modelo.objetos.OPagosRecargos;
 import com.jblue.modelo.objetos.OServicePayments;
-import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.modelo.objetos.OEmployee;
 import com.jblue.modelo.objetos.OWaterIntake;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.util.cache.MemoListCache;
@@ -21,7 +21,7 @@ public final class CacheFactory {
 
     public static boolean cache_list;
 
-    public static final MemoListCache<OPersonal> PERSONAL = new MemoListCache(ConnectionFactory.getEmployees());
+    public static final MemoListCache<OEmployee> PERSONAL = new MemoListCache(ConnectionFactory.getEmployees());
     public static final MemoListCache<OUser> USUARIOS = new MemoListCache(ConnectionFactory.getUser());
     public static final MemoListCache<OWaterIntake> TIPO_DE_TOMAS = new MemoListCache(ConnectionFactory.getWaterIntakes());
     public static final MemoListCache<OCalles> CALLES = new MemoListCache(ConnectionFactory.getStreets());

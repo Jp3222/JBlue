@@ -511,7 +511,7 @@ public final class PaymentTypes extends DBView implements DBValues {
     }
 
     @Override
-    public String[] getDbValues() {
+    public String[] getDbValues(boolean update) {
         return null;
     }
 

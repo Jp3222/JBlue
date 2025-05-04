@@ -17,15 +17,27 @@
 package com.jblue.vista.views.options;
 
 import com.jblue.modelo.ConstBD;
-import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.modelo.objetos.OEmployee;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
+import com.jblue.util.crypto.EncriptadoAES;
+import com.jblue.vista.marco.DBValues;
 import com.jblue.vista.marco.OptionMenu;
 import com.jblue.vista.marco.vistas.DBView;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 import java.awt.event.ActionListener;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -33,11 +45,11 @@ import javax.swing.JTextField;
  *
  * @author jp
  */
-public class VPersonal extends DBView implements OptionMenu {
+public class EmployeeView extends DBView implements OptionMenu, DBValues {
 
     private final JTableModel model;
     private final CardLayout ly;
-    private OPersonal object_search;
+    private OEmployee object_search;
     private final JButton option;
 
     /**
@@ -45,7 +57,7 @@ public class VPersonal extends DBView implements OptionMenu {
      *
      *
      */
-    public VPersonal() {
+    public EmployeeView() {
         initComponents();
         model = new JTableModel(ConstBD.TABLA_PERSONAL, 0);
         ly = (CardLayout) root_panel.getLayout();
@@ -81,23 +93,23 @@ public class VPersonal extends DBView implements OptionMenu {
         jLabel11 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        first_name = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        last_name = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        employee_type_field = new javax.swing.JComboBox<>();
         jPanel14 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        status_type_field = new javax.swing.JComboBox<>();
         jPanel15 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        user_field = new javax.swing.JPasswordField();
         jCheckBox1 = new javax.swing.JCheckBox();
         jPanel20 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
-        jPasswordField2 = new javax.swing.JPasswordField();
+        password_field = new javax.swing.JPasswordField();
         jCheckBox2 = new javax.swing.JCheckBox();
         jPanel25 = new javax.swing.JPanel();
         jCheckBox3 = new javax.swing.JCheckBox();
@@ -191,7 +203,9 @@ public class VPersonal extends DBView implements OptionMenu {
         jLabel16.setText("Nombre: ");
         jLabel16.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel6.add(jLabel16, java.awt.BorderLayout.LINE_START);
-        jPanel6.add(jTextField1, java.awt.BorderLayout.CENTER);
+
+        first_name.setName("Nombre"); // NOI18N
+        jPanel6.add(first_name, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel6);
 
@@ -200,7 +214,9 @@ public class VPersonal extends DBView implements OptionMenu {
         jLabel18.setText("Apellidos: ");
         jLabel18.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel7.add(jLabel18, java.awt.BorderLayout.LINE_START);
-        jPanel7.add(jTextField2, java.awt.BorderLayout.CENTER);
+
+        last_name.setName("Apellidos"); // NOI18N
+        jPanel7.add(last_name, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel7);
 
@@ -210,8 +226,9 @@ public class VPersonal extends DBView implements OptionMenu {
         jLabel19.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel8.add(jLabel19, java.awt.BorderLayout.LINE_START);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECCIONE UNA OPCION", "PRESIDENTE", "SECRETARIO", "TESORERO", "PASANTE", "ADMINISTRADOR" }));
-        jPanel8.add(jComboBox1, java.awt.BorderLayout.CENTER);
+        employee_type_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECCIONE UNA OPCION", "PRESIDENTE", "SECRETARIO", "TESORERO", "PASANTE", "ADMINISTRADOR" }));
+        employee_type_field.setName("Cargo"); // NOI18N
+        jPanel8.add(employee_type_field, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel8);
 
@@ -221,8 +238,9 @@ public class VPersonal extends DBView implements OptionMenu {
         jLabel20.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel14.add(jLabel20, java.awt.BorderLayout.LINE_START);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACTIVO.", "INACTIVO.", "BAJA." }));
-        jPanel14.add(jComboBox2, java.awt.BorderLayout.CENTER);
+        status_type_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACTIVO.", "INACTIVO.", "BAJA." }));
+        status_type_field.setName("Estatus"); // NOI18N
+        jPanel14.add(status_type_field, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel14);
 
@@ -231,7 +249,9 @@ public class VPersonal extends DBView implements OptionMenu {
         jLabel21.setText("Usuario: ");
         jLabel21.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel15.add(jLabel21, java.awt.BorderLayout.LINE_START);
-        jPanel15.add(jPasswordField1, java.awt.BorderLayout.CENTER);
+
+        user_field.setName("Usuario"); // NOI18N
+        jPanel15.add(user_field, java.awt.BorderLayout.CENTER);
 
         jCheckBox1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jCheckBox1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
@@ -246,7 +266,9 @@ public class VPersonal extends DBView implements OptionMenu {
         jLabel22.setText("Contraseña: ");
         jLabel22.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel20.add(jLabel22, java.awt.BorderLayout.LINE_START);
-        jPanel20.add(jPasswordField2, java.awt.BorderLayout.CENTER);
+
+        password_field.setName("Contraseña"); // NOI18N
+        jPanel20.add(password_field, java.awt.BorderLayout.CENTER);
 
         jCheckBox2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jCheckBox2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
@@ -428,12 +450,12 @@ public class VPersonal extends DBView implements OptionMenu {
     private javax.swing.JPanel center_panel;
     private javax.swing.JLabel count;
     private javax.swing.JButton delete_button;
+    private javax.swing.JComboBox<String> employee_type_field;
+    private javax.swing.JTextField first_name;
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JComboBox<String> jComboBox5;
@@ -461,11 +483,8 @@ public class VPersonal extends DBView implements OptionMenu {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField last_name;
     private javax.swing.JButton next_button;
     private javax.swing.JPanel north_panel;
     private javax.swing.JPanel np_cp_center;
@@ -474,6 +493,7 @@ public class VPersonal extends DBView implements OptionMenu {
     private javax.swing.JTable objects_table;
     private javax.swing.JPanel options_panel;
     private javax.swing.JPanel panel_tabla;
+    private javax.swing.JPasswordField password_field;
     private javax.swing.JLabel range;
     private javax.swing.JButton register_button;
     private javax.swing.JPanel register_panel;
@@ -485,8 +505,10 @@ public class VPersonal extends DBView implements OptionMenu {
     private javax.swing.JButton search_object;
     private javax.swing.JPanel search_panel;
     private javax.swing.JPanel status_bar_panel;
+    private javax.swing.JComboBox<String> status_type_field;
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
+    private javax.swing.JPasswordField user_field;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -528,11 +550,11 @@ public class VPersonal extends DBView implements OptionMenu {
 
     @Override
     public void setObjectSearch(Objeto o) {
-        this.object_search = (OPersonal) o;
+        this.object_search = (OEmployee) o;
     }
 
     @Override
-    public OPersonal getObjectSearch() {
+    public OEmployee getObjectSearch() {
         return object_search;
     }
 
@@ -558,6 +580,63 @@ public class VPersonal extends DBView implements OptionMenu {
 
     @Override
     public void setScreenTableInfo() {
+    }
+
+    @Override
+    public boolean isValuesOk() {
+        JTextField[] arr = {
+            first_name, last_name, user_field, password_field
+        };
+        for (JTextField i : arr) {
+            if (Filtros.isNullOrBlank(i.getText())) {
+                JOptionPane.showInternalMessageDialog(center_panel, "El campo: \"%s\" no es valido".formatted(i.getName()));
+                return false;
+            }
+        }
+        JComboBox[] arr2 = {
+            employee_type_field, status_type_field
+        };
+        for (JComboBox i : arr2) {
+            if (i.getSelectedIndex() > 0) {
+                JOptionPane.showInternalMessageDialog(center_panel, "El campo: \"%s\" no es valido".formatted(i.getName()));
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public String[] getDbValues(boolean update) {
+        String _first_name = first_name.getText();
+        String _last_name = first_name.getText();
+        String _user_type = String.valueOf(employee_type_field.getSelectedItem());
+        String _status = String.valueOf(status_type_field.getSelectedItem());
+        String[] credentials = credentials();
+        return new String[]{
+            _first_name, _last_name, _user_type,
+            _status, credentials[0], credentials[1]
+        };
+    }
+
+    private String[] credentials() {
+        String _user = null;
+        String _password = null;
+
+        try {
+            _user = EncriptadoAES.encriptar(String.valueOf(user_field.getPassword()),
+                    String.valueOf(password_field.getPassword()));
+            
+            _password = EncriptadoAES.encriptar(String.valueOf(password_field.getPassword()),
+                    String.valueOf(user_field.getPassword()));
+            
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException
+                | InvalidKeyException | NoSuchPaddingException
+                | IllegalBlockSizeException | BadPaddingException ex) {
+            Logger.getLogger(EmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new String[]{
+            _user, _password
+        };
     }
 
 }

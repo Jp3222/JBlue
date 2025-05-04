@@ -22,6 +22,7 @@ package com.jblue.modelo.constdb;
  */
 public class Const {
 
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String ID = "id";
 
     private static final String[] USER_FIELD = {

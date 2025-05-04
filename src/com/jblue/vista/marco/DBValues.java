@@ -24,5 +24,5 @@ public interface DBValues {
 
     boolean isValuesOk();
 
-    String[] getDbValues();
+    String[] getDbValues(boolean update);
 }

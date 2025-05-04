@@ -16,10 +16,8 @@
  */
 package com.jblue.controlador.viewc;
 
-import com.jblue.controlador.Controller;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.OCalles;
-import com.jblue.util.cache.MemoListCache;
 import com.jblue.vista.views.StreetsView;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
@@ -30,9 +28,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import com.jblue.controlador.DBController;
 import com.jblue.controlador.compc.ComponentController;
-import com.jblue.modelo.ConstBD;
 import com.jblue.modelo.dbconexion.JDBConnection;
-import com.jblue.modelo.objetos.OUser;
 import java.util.ArrayList;
 
 /**
@@ -82,7 +78,7 @@ public class StreetsController extends DBViewController<OCalles> implements DBCo
             return;
         }
         String field = "name";
-        boolean insert = connection.insert(field, view.getDbValues());
+        boolean insert = connection.insert(field, view.getDbValues(false));
         rmessage(insert);
     }
 
@@ -103,7 +99,7 @@ public class StreetsController extends DBViewController<OCalles> implements DBCo
         }
         String field = "name";
         boolean update = connection.update(field.replace(" ", "").split(","),
-                view.getDbValues(),
+                view.getDbValues(true),
                 "id = %s".formatted(view.getObjectSearch().getId())
         );
         rmessage(update);

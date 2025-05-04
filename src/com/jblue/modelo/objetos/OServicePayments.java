@@ -20,7 +20,7 @@ public class OServicePayments extends AbstraccionOPago {
 
     @Override
     public String toString() {
-        return getMonth().concat(": ").concat(getStatusString());
+        return getUserObject().toString().concat(" ").concat(getMonth().concat(": ").concat(getStatusString()));
     }
 
     

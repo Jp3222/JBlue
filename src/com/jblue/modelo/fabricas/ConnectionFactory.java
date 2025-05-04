@@ -21,7 +21,7 @@ import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OPagosOtros;
 import com.jblue.modelo.objetos.OServicePayments;
-import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.modelo.objetos.OEmployee;
 import com.jblue.modelo.objetos.OWaterIntake;
 import com.jblue.modelo.objetos.OUser;
 
@@ -31,7 +31,7 @@ import com.jblue.modelo.objetos.OUser;
  */
 public class ConnectionFactory {
 
-    public static JDBConnection<OPersonal> getEmployees() {
+    public static JDBConnection<OEmployee> getEmployees() {
         return new JDBConnection(Const.EMPLOYEES);
     }
 

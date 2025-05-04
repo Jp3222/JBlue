@@ -28,7 +28,6 @@ import javax.swing.JOptionPane;
 import com.jblue.vista.marco.TableSearchView;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  *
@@ -75,41 +74,37 @@ public class TableController<T extends Objeto & ObjetoFK> extends ComponentContr
             return;
         }
         dumpData();
-
-        boolean id_filter = search_text.contains("ID:");
         List<T> list;
-        if (id_filter) {
-            String replace = search_text.replace("ID:", "");
-            list = memo_cache.getList(i -> {
-                //System.out.println(i.getId() + "=" + replace);
-                return i.getId().equals(replace);
-            });
-        } else {
-            list = memo_cache.getList(i -> Filtros.limpiar(i.toString()).contains(view.getTextSearchTable()));
-        }
-        list.forEach(i -> view.getModel().addRow(i.getInfo()));
+        list = memo_cache.getList(i -> {
+            return Filtros.limpiarYChecar(i.toString(),view.getTextSearchTable());
+        });
+        load(list, (JTableModel) view.getModel());
     }
 
     @Override
     public void loadData() {
         ArrayList<T> list = memo_cache.getList();
-        if (list.isEmpty()) {
-            return;
-        }
-        if (list.getFirst() instanceof ObjetoFK) {
-            for (T i : memo_cache.getList()) {
-                view.getModel().addRow(i.getInfoSinFK());
-            }
-        } else {
-            for (T i : memo_cache.getList()) {
-                view.getModel().addRow(i.getInfo());
-            }
-        }
+        load(list, (JTableModel) view.getModel());
         view.setRowsData(String.valueOf(list.size()),
                 String.valueOf("%d - %d").formatted(memo_cache.getIndexMin(), memo_cache.getIndexMin()),
                 String.valueOf(memo_cache.count())
         );
 //        view.getTable().updateUI();
+    }
+
+    private void load(List<T> data, JTableModel model) {
+        if (data.isEmpty()) {
+            return;
+        }
+        if (data.getFirst() instanceof ObjetoFK) {
+            for (T i : data) {
+                model.addRow(i.getInfoSinFK());
+            }
+            return;
+        }
+        for (T i : data) {
+            model.addRow(i.getInfo());
+        }
     }
 
     @Override

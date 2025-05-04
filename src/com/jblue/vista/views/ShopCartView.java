@@ -22,7 +22,6 @@ import com.jblue.controlador.compc.TableController;
 import com.jblue.controlador.viewc.ShopCartController;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.fabricas.TableModelFactory;
-import com.jblue.modelo.objetos.OWaterIntake;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filtros;
@@ -141,7 +140,9 @@ public class ShopCartView extends DBView implements ListSearchView {
         cambio_field.setText(null);
         for (JCheckBox i : month_paid_list) {
             i.setSelected(false);
+            i.setEnabled(true);
         }
+        object_search = null;
     }
 
     @Override

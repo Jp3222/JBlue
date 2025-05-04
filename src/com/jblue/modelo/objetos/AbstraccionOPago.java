@@ -40,7 +40,7 @@ public class AbstraccionOPago extends Objeto implements ObjetoFK {
         return info[1];
     }
 
-    public OPersonal getEmployeeObject() {
+    public OEmployee getEmployeeObject() {
         return ObjectUtils.getEmployee(getEmployee());
     }
 

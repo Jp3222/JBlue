@@ -4,20 +4,24 @@
  */
 package com.jblue.modelo.objetos;
 
+import com.jblue.modelo.constdb.Const;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * OPersonal
  * <br>Clase que modelo objetos segun la tabla personals
  *
  * @author jp
  */
-public class OPersonal extends Objeto {
+public class OEmployee extends Objeto {
 
     /**
      * Construye un objeto OPersonal con la informacion dada en el array
      *
      * @param info informacion contenedora de filas de la tabla OPersonal
      */
-    public OPersonal(String[] info) {
+    public OEmployee(String[] info) {
         super(info);
     }
 
@@ -25,7 +29,7 @@ public class OPersonal extends Objeto {
      * Constuye un objeto OPersonal vacio el cual se puede llenar con el metodo
      * serInfo
      */
-    public OPersonal() {
+    public OEmployee() {
         super();
     }
 
@@ -46,10 +50,11 @@ public class OPersonal extends Objeto {
 
     /**
      * Metodo que contiene el cargo del personal
-     * <br>1 root
-     * <br>2 presidente
-     * <br>3 tesorero
-     * <br>4 pasante
+     * <br>1 Pasante
+     * <br>2 Secretario
+     * <br>3 Tesorero
+     * <br>4 Presidente
+     * <br>5 Administrador.
      *
      * @return un entero con el cargo del personal
      */
@@ -76,9 +81,39 @@ public class OPersonal extends Objeto {
 
     /**
      *
+     * @return 1 si el usuario esta "activo", 2 si el usuario esta "inactivo" o
+     * 3 si el usuario esta de "baja"
+     */
+    public int getStatus() {
+        return Integer.parseInt(info[4]);
+    }
+
+    public String getStatusString() {
+        return switch (getStatus()) {
+            case 1:
+                yield "Activo";
+            case 2:
+                yield "Inactivo";
+            case 3:
+                yield "Baja";
+            default:
+                throw new AssertionError();
+        };
+    }
+
+    public boolean isActive() {
+        return getStatus() == 1;
+    }
+
+    public boolean isDelete() {
+        return getStatus() == 3;
+    }
+
+    /**
+     *
      * @return el nombre usuario encriptado del usuario
      */
-    public String getUsuario() {
+    public String getUser() {
         return info[5];
     }
 
@@ -86,31 +121,15 @@ public class OPersonal extends Objeto {
      *
      * @return la contraseña encriptada del usuario
      */
-    public String getContra() {
+    public String getPassword() {
         return info[6];
     }
 
-    /**
-     *
-     * @return la fecha en que se registro el usuario
-     */
-    public String getFechaRegistro() {
-        return info[7];
+    public LocalDateTime getDateRegister() {
+        return LocalDateTime.parse(info[7], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
     }
 
-    /**
-     * metodo que un entero segun el estado del usuario
-     * <br> -1 inactivo
-     * <br> 0 no valido
-     * <br> 1 activo
-     *
-     * @return un entero con el estado del usuario
-     */
-    public int getStatus() {
-        return Integer.parseInt(info[4]);
-    }
-
-    public String getPeriodoString() {
+    public String getEndDate() {
         return info[8];
     }
 

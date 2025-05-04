@@ -4,7 +4,7 @@
  */
 package com.jblue.sistema;
 
-import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.modelo.objetos.OEmployee;
 import com.jutil.framework.LocalSession;
 
 /**
@@ -33,16 +33,16 @@ public class Sesion implements LocalSession {
      * Variable que guarda el personal que ha iniciado sesion
      *
      */
-    private OPersonal personal;
+    private OEmployee personal;
 
     private Sesion() {
     }
 
-    public OPersonal getUsuario() {
+    public OEmployee getUsuario() {
         return personal;
     }
 
-    public void setUsuario(OPersonal personal) {
+    public void setUsuario(OEmployee personal) {
         this.personal = personal;
     }
 

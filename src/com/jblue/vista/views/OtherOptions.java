@@ -17,7 +17,7 @@
 package com.jblue.vista.views;
 
 import com.jblue.controlador.viewc.OtherOptionsController;
-import com.jblue.modelo.objetos.OPersonal;
+import com.jblue.modelo.objetos.OEmployee;
 import com.jblue.sistema.DevFlags;
 import com.jblue.vista.windows.WMainMenu;
 import com.jblue.sistema.Sesion;
@@ -116,7 +116,7 @@ public class OtherOptions extends SimpleView {
     }
 
     private void checkToUserType() {
-        OPersonal usuario = Sesion.getInstancia().getUsuario();
+        OEmployee usuario = Sesion.getInstancia().getUsuario();
         secretary_button.setEnabled(ObjectUtils.isSecretario(usuario));
         tesorero_button.setEnabled(ObjectUtils.isTesorero(usuario));
         presidente_button.setEnabled(ObjectUtils.isPresidente(usuario));

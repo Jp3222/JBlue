@@ -203,7 +203,10 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField1">
+                    <Component class="javax.swing.JTextField" name="first_name">
+                      <Properties>
+                        <Property name="name" type="java.lang.String" value="Nombre" noResource="true"/>
+                      </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                           <BorderConstraints direction="Center"/>
@@ -229,7 +232,10 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField2">
+                    <Component class="javax.swing.JTextField" name="last_name">
+                      <Properties>
+                        <Property name="name" type="java.lang.String" value="Apellidos" noResource="true"/>
+                      </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                           <BorderConstraints direction="Center"/>
@@ -255,7 +261,7 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JComboBox" name="jComboBox1">
+                    <Component class="javax.swing.JComboBox" name="employee_type_field">
                       <Properties>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                           <StringArray count="6">
@@ -267,6 +273,7 @@
                             <StringItem index="5" value="ADMINISTRADOR"/>
                           </StringArray>
                         </Property>
+                        <Property name="name" type="java.lang.String" value="Cargo" noResource="true"/>
                       </Properties>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -296,7 +303,7 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JComboBox" name="jComboBox2">
+                    <Component class="javax.swing.JComboBox" name="status_type_field">
                       <Properties>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                           <StringArray count="3">
@@ -305,6 +312,7 @@
                             <StringItem index="2" value="BAJA."/>
                           </StringArray>
                         </Property>
+                        <Property name="name" type="java.lang.String" value="Estatus" noResource="true"/>
                       </Properties>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -334,7 +342,10 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JPasswordField" name="jPasswordField1">
+                    <Component class="javax.swing.JPasswordField" name="user_field">
+                      <Properties>
+                        <Property name="name" type="java.lang.String" value="Usuario" noResource="true"/>
+                      </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                           <BorderConstraints direction="Center"/>
@@ -379,7 +390,10 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JPasswordField" name="jPasswordField2">
+                    <Component class="javax.swing.JPasswordField" name="password_field">
+                      <Properties>
+                        <Property name="name" type="java.lang.String" value="Contrase&#xf1;a" noResource="true"/>
+                      </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                           <BorderConstraints direction="Center"/>

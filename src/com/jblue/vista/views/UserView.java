@@ -25,7 +25,7 @@ import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OWaterIntake;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
-import com.jblue.util.Filtros;
+import com.jblue.util.Filters;
 import com.jblue.vista.marco.DBValues;
 import com.jblue.vista.marco.vistas.DBView;
 import com.jutil.swingw.modelos.JTableModel;
@@ -112,10 +112,17 @@ public final class UserView extends DBView implements DBValues {
         street.setSelectedIndex(0);
         water_intakes.setSelectedIndex(0);
         user_state.setSelectedIndex(0);
+        view_show = 1;
+        object_search = null;
         man_tipo_toma.setSelected(false);
         man_calle.setSelected(false);
         man_estado.setSelected(false);
         buttonGroup1.setSelected(jRadioButton1.getModel(), true);
+        save_button.setEnabled(true);
+        update_button.setEnabled(false);
+        delete_button.setEnabled(false);
+        add_consumer_button.setEnabled(false);
+        show_consumer_list_button.setEnabled(false);
     }
 
     @Override
@@ -178,6 +185,8 @@ public final class UserView extends DBView implements DBValues {
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         Documento = new javax.swing.JButton();
+        add_consumer_button = new javax.swing.JButton();
+        show_consumer_list_button = new javax.swing.JButton();
         option_panel = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         save_button = new javax.swing.JButton();
@@ -454,6 +463,17 @@ public final class UserView extends DBView implements DBValues {
 
         center_panel.add(jPanel1);
 
+        add_consumer_button.setText("Añadir Consumidor");
+        add_consumer_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                add_consumer_buttonActionPerformed(evt);
+            }
+        });
+        center_panel.add(add_consumer_button);
+
+        show_consumer_list_button.setText("Consumidores");
+        center_panel.add(show_consumer_list_button);
+
         register_panel.add(center_panel, java.awt.BorderLayout.CENTER);
 
         option_panel.setLayout(new java.awt.GridLayout(2, 0, 10, 10));
@@ -680,9 +700,14 @@ public final class UserView extends DBView implements DBValues {
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void add_consumer_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_consumer_buttonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_add_consumer_buttonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Documento;
+    private javax.swing.JButton add_consumer_button;
     private javax.swing.JButton back_button;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton cancel_button;
@@ -766,6 +791,7 @@ public final class UserView extends DBView implements DBValues {
     private javax.swing.JTextField search_field;
     private javax.swing.JButton search_object;
     private javax.swing.JPanel search_panel;
+    private javax.swing.JButton show_consumer_list_button;
     private javax.swing.JCheckBox sn_numero;
     private javax.swing.JPanel status_bar_panel;
     private javax.swing.JComboBox<OCalles> street;
@@ -773,8 +799,8 @@ public final class UserView extends DBView implements DBValues {
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     private javax.swing.JComboBox<String> user_state;
-    private javax.swing.JComboBox<OWaterIntake> water_intakes;
-    private javax.swing.JComboBox<OWaterIntake> water_intakes_filter;
+    private javax.swing.JComboBox<com.jblue.modelo.objetos.OWaterIntake> water_intakes;
+    private javax.swing.JComboBox<com.jblue.modelo.objetos.OWaterIntake> water_intakes_filter;
     // End of variables declaration//GEN-END:variables
 
     public OUser getObject() {
@@ -788,7 +814,7 @@ public final class UserView extends DBView implements DBValues {
 
     @Override
     public String getTextSearchTable() {
-        return Filtros.limpiar(search_field.getText());
+        return Filters.clearText(search_field.getText());
     }
 
     @Override
@@ -826,7 +852,7 @@ public final class UserView extends DBView implements DBValues {
             first_name, last_name_1, last_name_2
         };
         for (JTextField i : text_fields) {
-            if (Filtros.isNullOrBlank(i.getText())) {
+            if (Filters.isNullOrBlank(i.getText())) {
                 messages = messages.formatted(i.getName());
                 ok = false;
                 break;
@@ -902,6 +928,11 @@ public final class UserView extends DBView implements DBValues {
         man_estado.setSelected(false);
         JRadioButton o = object_search.isTitular() ? jRadioButton1 : jRadioButton2;
         buttonGroup1.setSelected(o.getModel(), true);
+        save_button.setEnabled(false);
+        update_button.setEnabled(true);
+        delete_button.setEnabled(true);
+        add_consumer_button.setEnabled(false);
+        show_consumer_list_button.setEnabled(false);
     }
 
 }

@@ -18,17 +18,15 @@ package com.jblue.modelo.dbconexion;
 
 import com.jblue.modelo.constdb.Table;
 import com.jblue.modelo.objetos.Objeto;
-import com.jblue.util.FormatoBD;
 import com.jutil.jexception.Excp;
 import java.sql.SQLException;
-
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public class JDBConnection<T extends Objeto> extends AbstractJDBConnection<T>{
+public class JDBConnection<T extends Objeto> extends AbstractJDBConnection<T> {
 
     private Table object_table;
 
@@ -43,9 +41,19 @@ public class JDBConnection<T extends Objeto> extends AbstractJDBConnection<T>{
     public boolean insert(String fields, String... values) {
         boolean out = false;
         try {
-            out = connection.insert(table, fields, FormatoBD.valuesFormat(values));
+            out = connection.insert(table, fields, format(VALUES, null, values));
         } catch (SQLException ex) {
             Excp.imp(ex, getClass(), true, true);
+        }
+        return out;
+    }
+
+    public boolean update(String key_value, String where) {
+        boolean out = false;
+        try {
+            out = connection.update(table, key_value, where);
+        } catch (SQLException ex) {
+
         }
         return out;
     }

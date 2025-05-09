@@ -24,7 +24,7 @@ import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.fabricas.TableModelFactory;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
-import com.jblue.util.Filtros;
+import com.jblue.util.Filters;
 import com.jblue.vista.marco.ListSearchView;
 import com.jblue.vista.marco.vistas.DBView;
 import com.jutil.swingw.modelos.JTableModel;
@@ -873,7 +873,7 @@ public class ShopCartView extends DBView implements ListSearchView {
 
     @Override
     public String getTextSearchTable() {
-        return Filtros.limpiar(search_field_table.getText());
+        return Filters.clearText(search_field_table.getText());
     }
 
     @Override
@@ -930,7 +930,7 @@ public class ShopCartView extends DBView implements ListSearchView {
 
     @Override
     public String getTextSearchList() {
-        return Filtros.limpiar(search_field_list.getText());
+        return Filters.clearText(search_field_list.getText());
     }
 
     @Override

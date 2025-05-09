@@ -22,7 +22,7 @@ import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.fabricas.TableModelFactory;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.Objeto;
-import com.jblue.util.Filtros;
+import com.jblue.util.Filters;
 import com.jblue.vista.marco.DBValues;
 import com.jblue.vista.marco.vistas.DBView;
 import com.jutil.swingw.modelos.JTableModel;
@@ -97,6 +97,9 @@ public final class StreetsView extends DBView implements DBValues {
         streed_name_field.setText(null);
         streed_location_field.setText(null);
         view_show = 1;
+        save_button.setEnabled(true);
+        update_button.setEnabled(false);
+        delete_button.setEnabled(false);
     }
 
     @Override
@@ -448,7 +451,7 @@ public final class StreetsView extends DBView implements DBValues {
 
     @Override
     public boolean isValuesOk() {
-        boolean rt = Filtros.isNullOrBlank(streed_name_field.getText());
+        boolean rt = Filters.isNullOrBlank(streed_name_field.getText());
         String mess = "El campo %s no es valido";
         if (rt) {
             JOptionPane.showMessageDialog(this, mess, "Campos Validos", JOptionPane.ERROR_MESSAGE);
@@ -471,7 +474,7 @@ public final class StreetsView extends DBView implements DBValues {
 
     @Override
     public String getTextSearchTable() {
-        return Filtros.limpiar(search_field.getText());
+        return Filters.clearText(search_field.getText());
     }
 
     @Override
@@ -521,5 +524,9 @@ public final class StreetsView extends DBView implements DBValues {
     @Override
     public void setScreenTableInfo() {
         streed_name_field.setText(object_search.getNombre());
+
+        save_button.setEnabled(false);
+        update_button.setEnabled(true);
+        delete_button.setEnabled(true);
     }
 }

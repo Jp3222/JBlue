@@ -58,6 +58,8 @@ public class StreetsController extends DBViewController<OCalles> implements DBCo
                 update();
             case DELETE_COMMAND ->
                 delete();
+            case CANCEL_COMMAND ->
+                cancel();
             case "google-maps" -> {
                 try {
                     String uri = "https://www.google.com.mx/maps/place/Cuauhtemoc,+62757+Cuautla,+Mor./@18.8677895,-98.930224,16z/data=!3m1!4b1!4m6!3m5!1s0x85ce6ead484a42d1:0xe9451cff404f4b4c!8m2!3d18.8678174!4d-98.9259142!16s%2Fg%2F1tj9tnz6?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D";

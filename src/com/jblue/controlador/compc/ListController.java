@@ -17,7 +17,7 @@
 package com.jblue.controlador.compc;
 
 import com.jblue.modelo.objetos.Objeto;
-import com.jblue.util.Filtros;
+import com.jblue.util.Filters;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.vista.marco.ListSearchView;
 import java.awt.event.ActionEvent;
@@ -76,14 +76,14 @@ public class ListController<T extends Objeto> extends ComponentController<T> {
     public void keyReleased(KeyEvent e) {
         search_text = view.getTextSearchList();
         dumpData();
-        if (Filtros.isNullOrBlank(search_text)) {
+        if (Filters.isNullOrBlank(search_text)) {
             view.setCountElements(0);
             return;
         }
 
         List<T> list = memo_cache.getList(o -> {
-            return o.getId().equals(search_text) || Filtros
-                    .limpiar(o.toString())
+            return o.getId().equals(search_text) || Filters
+                    .clearText(o.toString())
                     .contains(search_text);
         });
         if (list.isEmpty()) {

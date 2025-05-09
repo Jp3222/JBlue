@@ -31,7 +31,7 @@ public class EncriptadoAES {
      * @throws UnsupportedEncodingException
      * @throws NoSuchAlgorithmException
      */
-    public static SecretKeySpec crearClave(String clave) throws
+    private static SecretKeySpec createKey(String clave) throws
             UnsupportedEncodingException, NoSuchAlgorithmException {
 
         byte[] claveEncriptacion = clave.getBytes("UTF-8");
@@ -59,12 +59,12 @@ public class EncriptadoAES {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
-    public static String encriptar(String datos, String claveSecreta) throws
+    public static String doEncrypt(String datos, String claveSecreta) throws
             UnsupportedEncodingException, NoSuchAlgorithmException,
             InvalidKeyException, NoSuchPaddingException,
             IllegalBlockSizeException, BadPaddingException {
 
-        SecretKeySpec secretKey = crearClave(claveSecreta);
+        SecretKeySpec secretKey = createKey(claveSecreta);
 
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -89,12 +89,12 @@ public class EncriptadoAES {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
-    public static String desencriptar(String dencp, String cscre) throws
+    public static String doDecrypt(String dencp, String cscre) throws
             UnsupportedEncodingException, NoSuchAlgorithmException,
             InvalidKeyException, NoSuchPaddingException,
             IllegalBlockSizeException, BadPaddingException {
 
-        SecretKeySpec secretKey = crearClave(cscre);
+        SecretKeySpec secretKey = createKey(cscre);
 
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
@@ -108,31 +108,26 @@ public class EncriptadoAES {
     }
 
     /**
-     * Compara si dos claves encriptadas son correctas
+     * Este metodo verifica si un par de datos descencriptados(Clave y Valor) es
+     * igual a un par de datos encriptados(Clave y valor), usando un array de 4
+     * posisciones donde la posicion 1 es igual a la clave encriptada, la
+     * posicion 2 es igual al valor encriptado la posicion 3 es igual a la clave
+     * descencriptada y la posicion 4 es igual al valor descencriptado
      *
-     * @param ken - key encriptada
-     * @param ven - value - encriptado
-     * @param kdes - key - descencriptada
-     * @param vdes - value - descencriptada
+     * @param args
      * @return
      */
-    public static boolean comparador(String ken, String ven, String kdes, String vdes) {
+    public static boolean equalsEncrypt(String... args) {
         try {
-            String k = kdes;
-            String v = vdes;
-            String a = encriptar(kdes, v);
-            String b = encriptar(vdes, k);
-            return ken.equals(a) && ven.equals(b);
-
-        } catch (UnsupportedEncodingException
-                | NoSuchAlgorithmException
-                | InvalidKeyException
-                | NoSuchPaddingException
-                | IllegalBlockSizeException
-                | BadPaddingException ex) {
-
+            String a = doEncrypt(args[2], args[3]);
+            String b = doEncrypt(args[3], args[2]);
+            return args[0].equals(a) && args[1].equals(b);
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException
+                | InvalidKeyException | NoSuchPaddingException
+                | IllegalBlockSizeException | BadPaddingException ex) {
             Excp.impTerminal(ex, EncriptadoAES.class, true);
         }
         return false;
     }
+
 }

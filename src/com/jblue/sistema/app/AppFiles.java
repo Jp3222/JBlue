@@ -4,10 +4,8 @@
  */
 package com.jblue.sistema.app;
 
-import com.jblue.util.SoInfo;
 import com.jblue.util.plataformas.OsConfig;
 import java.io.File;
-import java.io.FileNotFoundException;
 
 /**
  *

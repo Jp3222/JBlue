@@ -25,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author jp
  */
-public class Filtros {
+public class Filters {
 
 
 
@@ -36,27 +36,27 @@ public class Filtros {
     public static final String REGEX_SOLO_TEXTO = "( |[a-zA-Z]|[_ñÑáÁéÉíÍóÓúÚ])";
     public static final String RG_SOTEX = REGEX_SOLO_TEXTO + "{1,50}";
 
-    public static String limpiar(String txt) {
+    public static String clearText(String txt) {
         return txt.trim().replace(" ", "").replace("_", "").toUpperCase();
     }
 
-    public static boolean limpiarYChecar(String a, String b) {
-        return limpiar(a).contains(limpiar(b));
+    public static boolean clearAndCheck(String a, String b) {
+        return clearText(a).contains(clearText(b));
     }
 
-    public static boolean soloNumerosDecimales(String txt) {
+    public static boolean onlyFloat(String txt) {
         return txt.matches("([0-9]{1,10})(|(\\.([0-9]{1,10})))");
     }
 
-    public static boolean soloNumerosEnteros(String txt) {
+    public static boolean OnlyInteger(String txt) {
         return txt.matches("[0-9]{1,10}");
     }
 
-    public static boolean soloTexto(String txt) {
+    public static boolean onlyText(String txt) {
         return txt.matches(RG_SOTEX);
     }
 
-    public static boolean soloTexto(String txt, String rango) {
+    public static boolean onlyText(String txt, String rango) {
         StringBuilder defecto = new StringBuilder(REGEX_SOLO_TEXTO);
         defecto.append("{").append(rango).append("}");
         return txt.matches(defecto.toString());

@@ -47,17 +47,17 @@ public class ObjectUtils {
         mapa.put(Const.WATER_INTAKES.getTable(), new OWaterIntake());
         mapa.put(ConstBD.TABLAS[4], new OHisMovimientos());
         mapa.put(ConstBD.TABLAS[5], new OMovimientos());
-        
+
         //Tipos de pagos
         mapa.put(Const.SERVICE_PAYMENTS.getTable(), new OServicePayments());
         mapa.put(ConstBD.TABLAS[6], new OServicePayments());
-        
+
         mapa.put(Const.SURCHARGE_PAYMENTS.getTable(), new OPagosRecargos());
         mapa.put(ConstBD.TABLAS[7], new OPagosRecargos());
-        
+
         mapa.put(Const.OTHER_PAYMENTS.getTable(), new OPagosOtros());
         mapa.put(ConstBD.TABLAS[8], new OPagosOtros());
-        
+
         mapa.put(ConstBD.TABLAS[9], new OValores());
     }
 
@@ -119,12 +119,12 @@ public class ObjectUtils {
     public static OWaterIntake getWaterIntakesObject(String water_intakes_id) {
         return searchInCacheObject(CacheFactory.TIPO_DE_TOMAS, water_intakes_id);
     }
-    
-    public static OEmployee getEmployee(String employee_id){
+
+    public static OEmployee getEmployee(String employee_id) {
         return searchInCacheObject(CacheFactory.PERSONAL, employee_id);
     }
-    
-    public static OUser getUser(String user_id){
+
+    public static OUser getUser(String user_id) {
         return searchInCacheObject(CacheFactory.USUARIOS, user_id);
     }
 

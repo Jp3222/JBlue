@@ -17,7 +17,7 @@
 package com.jblue.controlador.compc;
 
 import com.jblue.modelo.objetos.Objeto;
-import com.jblue.util.Filtros;
+import com.jblue.util.Filters;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.util.objetos.ObjetoFK;
 import com.jutil.swingw.modelos.JTableModel;
@@ -67,7 +67,7 @@ public class TableController<T extends Objeto & ObjetoFK> extends ComponentContr
     @Override
     public void keyReleased(KeyEvent e) {
         String search_text = view.getTextSearchTable();
-        if (Filtros.isNullOrBlank(search_text)) {
+        if (Filters.isNullOrBlank(search_text)) {
             if (view.getModel().getRowCount() < memo_cache.size()) {
                 loadData();
             }
@@ -76,7 +76,7 @@ public class TableController<T extends Objeto & ObjetoFK> extends ComponentContr
         dumpData();
         List<T> list;
         list = memo_cache.getList(i -> {
-            return Filtros.limpiarYChecar(i.toString(),view.getTextSearchTable());
+            return Filters.clearAndCheck(i.toString(),view.getTextSearchTable());
         });
         load(list, (JTableModel) view.getModel());
     }

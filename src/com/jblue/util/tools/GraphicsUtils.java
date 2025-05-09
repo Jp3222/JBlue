@@ -27,13 +27,19 @@ import javax.swing.JPopupMenu;
  */
 public class GraphicsUtils {
 
-    public static void disableTreeLock(boolean lock, Component... root){
+    public static void disable(boolean lock, Component... col) {
+        for (Component i : col) {
+            i.setEnabled(lock);
+        }
+    }
+
+    public static void disableTreeLock(boolean lock, Component... root) {
         lock = !lock;
         for (Component i : root) {
             disableTreeLock(lock, i);
         }
     }
-    
+
     public static void disableTreeLock(boolean lock, Component root) {
         lock = !lock;
         if (root instanceof JComponent jcomponent) {
@@ -43,16 +49,19 @@ public class GraphicsUtils {
                 disableTreeLock(lock, root);
             }
         }
-        
         Component[] children = null;
         if (root instanceof Container container) {
             children = container.getComponents();
         }
-        
+
         if (children != null) {
             for (Component child : children) {
                 disableTreeLock(lock, child);
             }
         }
+    }
+
+    private GraphicsUtils() {
+        throw new InstantiationError("No debe instanciarse");
     }
 }

@@ -18,12 +18,12 @@ package com.jblue.vista.views;
 
 import com.jblue.controlador.viewc.OtherOptionsController;
 import com.jblue.modelo.objetos.OEmployee;
-import com.jblue.sistema.DevFlags;
 import com.jblue.vista.windows.WMainMenu;
 import com.jblue.sistema.Sesion;
 import com.jblue.util.tools.ObjectUtils;
 import com.jblue.vista.marco.vistas.SimpleView;
 import com.jblue.vista.windows.AcercaDe;
+import com.jblue.vista.windows.ConfigWindow;
 import com.jblue.vista.windows.MenuCargos;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -38,6 +38,7 @@ public class OtherOptions extends SimpleView {
     private final JButton[] options;
     private final MenuCargos profile;
     private final JFrame[] arr_win_opt;
+    private final ConfigWindow config_windows;
     //
     private final AcercaDe acerca;
 
@@ -54,7 +55,7 @@ public class OtherOptions extends SimpleView {
         this.arr_win_opt = new JFrame[]{
             profile
         };
-
+        config_windows = new ConfigWindow();
         options = new JButton[]{
             profile_button, config_button, tools_button,
             secretary_button, presidente_button, admin_button,
@@ -76,6 +77,9 @@ public class OtherOptions extends SimpleView {
         tesorero_button.addActionListener(controller);
         presidente_button.addActionListener(controller);
         admin_button.addActionListener(controller);
+        
+        config_button.addActionListener(e -> {config_windows.setVisible(true);});
+        
         help_button.addActionListener(e -> acerca.setVisible(true));
         checkToUserType();
     }

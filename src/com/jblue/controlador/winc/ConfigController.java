@@ -16,12 +16,10 @@
  */
 package com.jblue.controlador.winc;
 
-import com.jblue.sistema.DevFlags;
 import com.jblue.sistema.Sesion;
 import com.jblue.sistema.app.AppConfig;
 import com.jblue.sistema.app.AppFiles;
 import com.jblue.vista.views.ConfigurationPanel;
-import com.jblue.vista.windows.ConfigWindow;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
 import java.awt.event.ActionEvent;
@@ -46,7 +44,7 @@ public class ConfigController extends WindowController {
     private final ConfigurationPanel view;
     private final Properties properties;
 
-    public ConfigController(ConfigurationPanel view, ConfigWindow window) {
+    public ConfigController(ConfigurationPanel view) {
         this.view = view;
         properties = (Properties) LaunchApp.getInstance().getResources("propierties");
     }
@@ -77,7 +75,7 @@ public class ConfigController extends WindowController {
                 pass.setEchoChar(o.isSelected() ? ((char) 0) : '*');
             }
             case "save db" ->
-                saveDB();
+                save();
             case "test db" ->
                 testDB();
             default ->
@@ -86,7 +84,7 @@ public class ConfigController extends WindowController {
     }
 
     //
-    void saveDB() {
+    void save() {
         properties.setProperty(AppConfig.DB_USER, view.getSUser());
         properties.setProperty(AppConfig.DB_PASSWORD, view.getSPassword());
         //properties.setProperty(AppConfig.DB_URL, view.getSUrl());
@@ -100,12 +98,12 @@ public class ConfigController extends WindowController {
         properties.setProperty(AppConfig.TITLE2, view.getTitle2());
         properties.setProperty(AppConfig.LOGIN_ICON, view.getIconPath());
         //
-        if (DevFlags.TST_EXE_FUNCION && view.getOpenHour() != null) {
-            properties.setProperty(AppConfig.HOUR_OPEN, view.getOpenHour().format(DateTimeFormatter.ISO_DATE));
+        if (view.getOpenHour() != null) {
+            properties.setProperty(AppConfig.HOUR_OPEN, view.getOpenHour().format(DateTimeFormatter.ISO_TIME));
         }
 
-        if (DevFlags.TST_EXE_FUNCION && view.getCloseHour() != null) {
-            properties.setProperty(AppConfig.HOUR_CLOSE, view.getCloseHour().format(DateTimeFormatter.ISO_DATE));
+        if (view.getCloseHour() != null) {
+            properties.setProperty(AppConfig.HOUR_CLOSE, view.getCloseHour().format(DateTimeFormatter.ISO_TIME));
         }
         //
         view.disposeWin();

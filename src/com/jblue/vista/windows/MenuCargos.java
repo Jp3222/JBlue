@@ -20,6 +20,7 @@ import com.jblue.modelo.objetos.OEmployee;
 import com.jblue.sistema.Sesion;
 import com.jblue.vista.marco.OptionMenu;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
+import com.jblue.vista.views.ConfigurationPanel;
 import com.jblue.vista.views.options.VContabilidad;
 import com.jblue.vista.views.options.VDocumentos;
 import com.jblue.vista.views.options.VPayments;
@@ -28,7 +29,6 @@ import com.jblue.vista.views.options.EmployeeView;
 import com.jblue.vista.views.options.VSuministros;
 import java.awt.CardLayout;
 import javax.swing.Icon;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /**
@@ -48,6 +48,7 @@ public final class MenuCargos extends VentanaSimple {
         view_perfil = new VPerfil();
         view_personal = new EmployeeView();
         view_su = new VSuministros();
+        view_config = new ConfigurationPanel(null);
         ly = (CardLayout) root_panel.getLayout();
 
         default_icon = user_photo.getIcon();
@@ -68,7 +69,7 @@ public final class MenuCargos extends VentanaSimple {
             view_docs
         };
         Administrador = new OptionMenu[]{
-            view_contabilidad, view_docs, view_payments, view_perfil, view_personal, view_su
+            view_contabilidad, view_docs, view_payments, view_perfil, view_personal, view_su, view_config
         };
         build();
     }
@@ -93,6 +94,7 @@ public final class MenuCargos extends VentanaSimple {
         root_panel.add(view_perfil, view_perfil.getName());
         root_panel.add(view_personal, view_personal.getName());
         root_panel.add(view_su, view_su.getName());
+        rootPane.add(view_config, view_config.getName());
     }
 
     @Override
@@ -112,7 +114,7 @@ public final class MenuCargos extends VentanaSimple {
     public void finalState() {
         OEmployee usuario = Sesion.getInstancia().getUsuario();
         name_user.setText(usuario.toString());
-       // File userPhoto = MediaUtils.getUserPhoto(usuario.getId(), usuario.toString().concat("jpg"));
+        // File userPhoto = MediaUtils.getUserPhoto(usuario.getId(), usuario.toString().concat("jpg"));
 //        if (userPhoto != null) {
 //            user_photo.setIcon(new ImageIcon(userPhoto.getAbsolutePath()));
 //        }
@@ -146,41 +148,6 @@ public final class MenuCargos extends VentanaSimple {
             panel_option.add(i.getOption());
         }
         ly.show(panel, ((JPanel) options[0]).getName());
-    }
-
-    private void showTesorero() {
-    }
-
-    private void showPerfil() {
-        initialState();
-        for (OptionMenu i : Perfil) {
-            i.setEvenOption((e) -> {
-                ly.show(center_panel, i.getOption().getName());
-            });
-            panel_option.add(i.getOption());
-        }
-        ly.addLayoutComponent(center_panel, ((JComponent) Perfil[0]).getName());
-    }
-
-    private void showPresidente() {
-        initialState();
-        for (OptionMenu i : Presidente) {
-            i.setEvenOption((e) -> {
-                ly.show(center_panel, i.getOption().getName());
-            });
-            panel_option.add(i.getOption());
-        }
-    }
-
-    private void showAdministrador() {
-        initialState();
-        for (OptionMenu i : Administrador) {
-            i.setEvenOption((e) -> {
-                ly.show(center_panel, i.getOption().getName());
-            });
-            panel_option.add(i.getOption());
-            panel_option.add(i.getOption());
-        }
     }
 
     /**
@@ -252,6 +219,7 @@ public final class MenuCargos extends VentanaSimple {
     private final VPerfil view_perfil;
     private final EmployeeView view_personal;
     private final VSuministros view_su;
+    private final ConfigurationPanel view_config;
     //Menus
     private final OptionMenu[] Perfil;
     private final OptionMenu[] Presidente;

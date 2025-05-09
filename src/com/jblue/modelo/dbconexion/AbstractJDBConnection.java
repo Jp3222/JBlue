@@ -25,13 +25,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 
-
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public abstract class AbstractJDBConnection<T extends Objeto> implements JDBConnectionModel{
+public abstract class AbstractJDBConnection<T extends Objeto> implements JDBConnectionModel {
 
     public static final int FIELDS = 1;
     public static final int VALUES = 2;
@@ -68,7 +67,7 @@ public abstract class AbstractJDBConnection<T extends Objeto> implements JDBConn
         try {
             out = connection.delete(table, where);
         } catch (SQLException ex) {
-            
+
         }
         return out;
     }
@@ -79,7 +78,7 @@ public abstract class AbstractJDBConnection<T extends Objeto> implements JDBConn
         try {
             out = connection.update(table, campo, valor, where);
         } catch (SQLException ex) {
-            
+
         }
         return out;
     }
@@ -88,12 +87,9 @@ public abstract class AbstractJDBConnection<T extends Objeto> implements JDBConn
     public boolean update(String[] campos, String[] newData, String where) {
         boolean out = false;
         try {
-            String[] _fields = Arrays.copyOfRange(fields, 1, fields.length);
-            out = connection.update(table,
-                    format(FIELDS, null, _fields),
-                    format(VALUES, null, newData));
+            out = connection.update(table, format(KEY_VALUES, campos, newData), where);
         } catch (SQLException ex) {
-            
+
         }
         return out;
     }
@@ -117,13 +113,13 @@ public abstract class AbstractJDBConnection<T extends Objeto> implements JDBConn
             while (select.next()) {
                 System.out.println(select);
                 for (int i = 0; i < a.length; i++) {
-                    a[i] = select.getString(i+1);
-                    System.out.println(fields[i]+"="+a[i]);
+                    a[i] = select.getString(i + 1);
+                    System.out.println(fields[i] + "=" + a[i]);
                 }
                 list.add((T) ObjectUtils.getObjeto(table, a.clone()));
             }
         } catch (SQLException ex) {
-            
+
         }
         return list;
     }

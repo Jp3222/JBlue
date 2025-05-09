@@ -18,6 +18,7 @@ package com.jblue.vista.windows;
 
 import com.jblue.vista.components.CVisorUsuario;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
+import com.jblue.vista.views.ConfigurationPanel;
 import com.jblue.vista.views.StreetsView;
 import com.jblue.vista.views.OtherOptions;
 import com.jblue.vista.views.PaymentTypes;
@@ -97,6 +98,7 @@ public final class WMainMenu extends VentanaSimple {
         btn_tipo_pagos.addActionListener(e -> setView(5));
         menu_button.addActionListener(e -> setView(6));
         tools_button.addActionListener(e -> setView(7));
+
     }
 
     @Override

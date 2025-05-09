@@ -19,7 +19,7 @@ package com.jblue.vista.views.options;
 import com.jblue.modelo.ConstBD;
 import com.jblue.modelo.objetos.OEmployee;
 import com.jblue.modelo.objetos.Objeto;
-import com.jblue.util.Filtros;
+import com.jblue.util.Filters;
 import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.vista.marco.DBValues;
 import com.jblue.vista.marco.OptionMenu;
@@ -518,7 +518,7 @@ public class EmployeeView extends DBView implements OptionMenu, DBValues {
 
     @Override
     public String getTextSearchTable() {
-        return Filtros.limpiar(search_field.getText());
+        return Filters.clearText(search_field.getText());
     }
 
     @Override
@@ -568,7 +568,6 @@ public class EmployeeView extends DBView implements OptionMenu, DBValues {
         if (option.getActionListeners().length < 1) {
             option.addActionListener(e);
         }
-
     }
 
     @Override
@@ -588,7 +587,7 @@ public class EmployeeView extends DBView implements OptionMenu, DBValues {
             first_name, last_name, user_field, password_field
         };
         for (JTextField i : arr) {
-            if (Filtros.isNullOrBlank(i.getText())) {
+            if (Filters.isNullOrBlank(i.getText())) {
                 JOptionPane.showInternalMessageDialog(center_panel, "El campo: \"%s\" no es valido".formatted(i.getName()));
                 return false;
             }
@@ -623,10 +622,10 @@ public class EmployeeView extends DBView implements OptionMenu, DBValues {
         String _password = null;
 
         try {
-            _user = EncriptadoAES.encriptar(String.valueOf(user_field.getPassword()),
+            _user = EncriptadoAES.doEncrypt(String.valueOf(user_field.getPassword()),
                     String.valueOf(password_field.getPassword()));
             
-            _password = EncriptadoAES.encriptar(String.valueOf(password_field.getPassword()),
+            _password = EncriptadoAES.doEncrypt(String.valueOf(password_field.getPassword()),
                     String.valueOf(user_field.getPassword()));
             
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException

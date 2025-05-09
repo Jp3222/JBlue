@@ -18,14 +18,18 @@ package com.jblue.vista.views;
 
 import com.jblue.controlador.winc.ConfigController;
 import com.jblue.sistema.app.AppConfig;
+import com.jblue.vista.marco.DBValues;
+import com.jblue.vista.marco.OptionMenu;
 import com.jblue.vista.marco.vistas.SimpleView;
 import com.jblue.vista.windows.ConfigWindow;
 import com.jutil.framework.LaunchApp;
 import com.jutil.platf.So;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import java.awt.CardLayout;
+import java.awt.event.ActionListener;
 import java.time.LocalTime;
 import java.util.Properties;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPasswordField;
 import javax.swing.SpinnerNumberModel;
@@ -35,12 +39,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author juanp
  */
-public final class ConfigurationPanel extends SimpleView {
+public final class ConfigurationPanel extends SimpleView implements OptionMenu, DBValues {
 
+    private JButton option;
     private final CardLayout ly;
     private final ConfigController controller;
     private Properties properties;
-    private final ConfigWindow root;
+    private ConfigWindow root;
 
     /**
      * Creates new form ConfigurationPanel
@@ -50,17 +55,23 @@ public final class ConfigurationPanel extends SimpleView {
     public ConfigurationPanel(ConfigWindow root) {
         initComponents();
         ly = (CardLayout) root_panel.getLayout();
-        controller = new ConfigController(this, root);
+        controller = new ConfigController(this);
         properties = (Properties) LaunchApp.getInstance().getResources("propierties");
+        this.option = mkButton(getName(), null, null);
+        if (root != null) {
+            this.root = root;
+            this.root.addWindowListener(controller);
+        }
         build();
-        this.root = root;
-        this.root.addWindowListener(controller);
+
     }
 
     public void disposeWin() {
-        synchronized (root) {
-            root.dispose();
-            root.notify();
+        if (root != null) {
+            synchronized (root) {
+                root.dispose();
+                root.notify();
+            }
         }
     }
 
@@ -192,6 +203,7 @@ public final class ConfigurationPanel extends SimpleView {
         save_db_button = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(900, 700));
+        setName("Panel de Configuracion"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
 
@@ -595,9 +607,10 @@ public final class ConfigurationPanel extends SimpleView {
     public LocalTime getOpenHour() {
         SpinnerNumberModel model_hour = (SpinnerNumberModel) open_hour_field.getModel();
         SpinnerNumberModel model_minute = (SpinnerNumberModel) open_minute_field.getModel();
+        
         if (model_hour.getNumber().intValue() > 0) {
             int hour = model_hour.getNumber().intValue(), minute = model_minute.getNumber().intValue();
-            return LocalTime.of(hour - 1, minute);
+            return LocalTime.of((hour - 1), minute);
         }
         return null;
     }
@@ -607,8 +620,31 @@ public final class ConfigurationPanel extends SimpleView {
         SpinnerNumberModel model_minute = (SpinnerNumberModel) close_minute_field.getModel();
         if (model_hour.getNumber().intValue() > 0) {
             int hour = model_hour.getNumber().intValue(), minute = model_minute.getNumber().intValue();
-            return LocalTime.of(hour - 1, minute);
+            return LocalTime.of((hour - 1), minute);
         }
         return null;
+    }
+
+    @Override
+    public JButton getOption() {
+
+        return option;
+    }
+
+    @Override
+    public void setEvenOption(ActionListener e) {
+        if (option.getActionListeners().length < 1) {
+            option.addActionListener(e);
+        }
+    }
+
+    @Override
+    public boolean isValuesOk() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String[] getDbValues(boolean update) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

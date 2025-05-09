@@ -17,7 +17,6 @@
 package com.jblue.controlador.viewc;
 
 import com.jblue.controlador.Controller;
-import com.jblue.controlador.compc.ComponentController;
 import com.jblue.vista.views.OtherOptions;
 import com.jblue.vista.windows.MenuCargos;
 import java.awt.event.ActionEvent;
@@ -30,11 +29,11 @@ import javax.swing.JButton;
 public class OtherOptionsController extends Controller {
 
     private OtherOptions view;
-    private final MenuCargos view_2;
+    private final MenuCargos window;
 
     public OtherOptionsController(OtherOptions view, MenuCargos view_2) {
         this.view = view;
-        this.view_2 = view_2;
+        this.window = view_2;
     }
 
     @Override
@@ -56,9 +55,6 @@ public class OtherOptionsController extends Controller {
                 view.setWIn((JButton) e.getSource());
             }
             case "admin" -> {
-                view.setWIn((JButton) e.getSource());
-            }
-            case "config" -> {
                 view.setWIn((JButton) e.getSource());
             }
             case "tools" -> {

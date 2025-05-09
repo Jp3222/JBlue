@@ -18,7 +18,7 @@ package com.jblue.controlador.winc;
 
 import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.objetos.OEmployee;
-import com.jblue.util.Filtros;
+import com.jblue.util.Filters;
 import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.modelo.fabricas.ConnectionFactory;
 import com.jblue.sistema.ConstSisMen;
@@ -138,14 +138,14 @@ public class LoginController extends WindowController {
 
     public Optional<OEmployee> query(String user, String password) {
         Optional<OEmployee> res = Optional.empty();
-        if (Filtros.isNullOrBlank(user, password)) {
+        if (Filters.isNullOrBlank(user, password)) {
             return res;
         }
         JDBConnection<OEmployee> op = ConnectionFactory.getEmployees();
         try {
             res = op.get("*", WHERE.formatted(
-                    EncriptadoAES.encriptar(user, password),
-                    EncriptadoAES.encriptar(password, user)
+                    EncriptadoAES.doEncrypt(user, password),
+                    EncriptadoAES.doEncrypt(password, user)
             ));
             
         } catch (UnsupportedEncodingException

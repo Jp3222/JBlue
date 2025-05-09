@@ -4,7 +4,6 @@
  */
 package com.jblue.util.tiempo;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -28,45 +27,5 @@ public class Fecha {
     }
 
     public static final DateTimeFormatter FORMATO = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-    public static int getDiaDelMes() {
-        LocalDate l = LocalDate.now();
-        return l.getDayOfMonth();
-    }
-
-    public static int getDiaMaxDelMes() {
-        LocalDate l = LocalDate.now();
-        return l.getMonth().length(LocalDate.now().isLeapYear());
-    }
-
-    public static int getMesInt() {
-        LocalDate l = LocalDate.now();
-        return l.getMonthValue();
-    }
-
-    public static int getAñoActual() {
-        LocalDate l = LocalDate.now();
-        return l.getYear();
-    }
-
-    public static LocalDate getNewFechaActual() {
-        return LocalDate.now();
-    }
-
-    public static String getNewFechaActualString() {
-        LocalDate now = LocalDate.now();
-        return now.format(FORMATO);
-    }
-
-    public static String getMesActual() {
-        LocalDate now = LocalDate.now();
-        int index = now.getMonthValue();
-        return MESES[index - 1];
-    }
-
-    public static LocalDate getFechaObj(String o) {
-        LocalDate now = LocalDate.parse(o, FORMATO);
-        return now;
-    }
 
 }

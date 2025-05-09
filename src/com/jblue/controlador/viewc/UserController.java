@@ -26,9 +26,7 @@ import com.jblue.modelo.objetos.OUser;
 import com.jblue.sistema.DevFlags;
 import com.jblue.vista.components.CVisorUsuario;
 import com.jblue.vista.views.UserView;
-import com.jutil.jexception.Excp;
 import java.awt.event.ActionEvent;
-import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -80,21 +78,20 @@ public class UserController extends DBViewController<OUser> implements DBControl
         if (!view.isValuesOk()) {
             return;
         }
-        //boolean delete = connection.delete("id = %s".formatted(view.getObjectSearch().getId()));
         String id = view.getObjectSearch().getId();
         boolean delete = connection.update("status", "3", "id = %s".formatted(id));
-        int hidden_payments = JOptionPane.showConfirmDialog(view, "¿Desea eliminar los pagos hechos por esta persona?");
+        rmessage(delete);
+        //FUNCION EN DESARROLLO - Ocultar los resgitros de pago de un usuario
         if (DevFlags.TST_EXE_FUNCION) {
+            int hidden_payments = JOptionPane.showConfirmDialog(view, "¿Desea eliminar los pagos hechos por esta persona?");
             if (hidden_payments == JOptionPane.YES_OPTION) {
-                try {
-                    connection.getConnection().update("service_payments", "status=3", "id = %s".formatted(id));
-                } catch (SQLException ex) {
-                    Excp.imp(ex, getClass(), true, true);
-                }
+                boolean update = connection.update(
+                        "status=3",
+                        "id = %s".formatted(view.getObjectSearch().getId())
+                );
+                rmessage(update);
             }
         }
-
-        rmessage(delete);
     }
 
     @Override
@@ -106,10 +103,10 @@ public class UserController extends DBViewController<OUser> implements DBControl
                 + "street, house_number, water_intakes, "
                 + "user_type, status";
 
-        boolean update = connection.update(field.replace(" ", "").split(","),
+        boolean update = connection.update(
+                field.split(","),
                 view.getDbValues(true),
-                "id = %s".formatted(view.getObjectSearch().getId())
-        );
+                "id = %s".formatted(view.getObjectSearch().getId()));
         rmessage(update);
     }
 

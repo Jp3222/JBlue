@@ -20,7 +20,7 @@ import com.jblue.controlador.compc.ComboBoxItemsController;
 import com.jblue.controlador.compc.TableController;
 import com.jblue.modelo.objetos.OPaymentsTypes;
 import com.jblue.modelo.objetos.Objeto;
-import com.jblue.util.Filtros;
+import com.jblue.util.Filters;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.util.tools.GraphicsUtils;
 import com.jblue.vista.marco.DBValues;
@@ -526,7 +526,7 @@ public final class PaymentTypes extends DBView implements DBValues {
 
     @Override
     public String getTextSearchTable() {
-        return Filtros.limpiar(search_field.getText());
+        return Filters.clearText(search_field.getText());
     }
 
     @Override

@@ -20,7 +20,7 @@ import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OWaterIntake;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
-import com.jblue.util.Filtros;
+import com.jblue.util.Filters;
 import com.jblue.modelo.fabricas.CacheFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -272,7 +272,7 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
     }//GEN-LAST:event_lista_usuariosMouseClicked
 
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
-        if (Filtros.isNullOrBlank(jTextField1.getText())) {
+        if (Filters.isNullOrBlank(jTextField1.getText())) {
             buscado = false;
             cargar();
             return;
@@ -286,11 +286,11 @@ public class CSelectorObjeto<T extends Objeto> extends javax.swing.JDialog {
         modelo_lista.clear();
         cache_aux.clear();
 
-        txt = Filtros.limpiar(txt);
+        txt = Filters.clearText(txt);
 
         String aux;
         for (T i : cache) {
-            aux = Filtros.limpiar(i.toString());
+            aux = Filters.clearText(i.toString());
             if (!aux.contains(txt)) {
                 continue;
             }

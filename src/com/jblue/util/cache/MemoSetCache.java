@@ -1,5 +1,3 @@
-package com.jblue.controlador.logic;
-
 /*
  * Copyright (C) 2025 juan-campos
  *
@@ -16,25 +14,12 @@ package com.jblue.controlador.logic;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package com.jblue.util.cache;
+
 /**
  *
  * @author juan-campos
  */
-public class surchargepaymentsLogic extends AbsctractPayment {
-
-    @Override
-    public String getQuery(String args) {
-        return null;
-    }
-
-    @Override
-    public boolean execPayment() {
-        return true;
-    }
-
-    @Override
-    public boolean gameRulers() {
-        return true;
-    }
-
+public class MemoSetCache {
+    
 }

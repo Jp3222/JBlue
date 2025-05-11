@@ -28,77 +28,74 @@ package com.jblue.sistema;
  *
  * @author juan-campos
  */
-public class DevFlags {
+public final class DevFlags {
+
+    public static void loadFlags() {
+
+    }
 
     /**
-     * **Reglas de Juego**
-     * Estructura del nombre de una bandera:
-     * 
-     * PREFIJO_TIPO_NOMBRE
-     * ** RELGLAS DE ESCRITURA:**
-     * Los prefijos y los tipos deben escribirse con solo 3 caracteres.
-     * Los nombres de las banderas pueden escribirse de cualquier tamaño.
-     * 
+     * **Reglas de Juego** Estructura del nombre de una bandera:
+     *
+     * PREFIJO_TIPO_NOMBRE ** RELGLAS DE ESCRITURA:** Los prefijos y los tipos
+     * deben escribirse con solo 3 caracteres. Los nombres de las banderas
+     * pueden escribirse de cualquier tamaño.
+     *
+     * |---------------------| |prefijo | Significado| |---------------------|
+     * |DEV | en desarrollo | |TST | a prueba | |CAN | candidata |
      * |---------------------|
-     * |prefijo | Significado|
-     * |---------------------|
-     * |DEV | en desarrollo  |
-     * |TST | a prueba       |
-     * |CAN | candidata      |
-     * |---------------------|
-     * 
-     * Recuerda que cuando una funcion ya paso los prefijos "DEV", "TST" y "CAN" }
-     * puedes quitar la bandera
-     * 
-     * |---------------------|
-     * |Tipos | Significado  |
-     * |---------------------|
-     * |MSG | Mensaje        |
-     * |FUN | Funcion        |
-     * |PRP | Propiedad      |
-     * |VEW | VISTA          |
-     * |CFG | Configuracion  |
-     * |EXE | Ejecutar       |
-     * |---------------------|
+     *
+     * Recuerda que cuando una funcion ya paso los prefijos "DEV", "TST" y "CAN"
+     * } puedes quitar la bandera
+     *
+     * |---------------------| |Tipos | Significado | |---------------------|
+     * |MSG | Mensaje | |FUN | Funcion | |PRP | Propiedad | |VEW | VISTA | |CFG
+     * | Configuracion | |EXE | Ejecutar | |---------------------|
      *
      *
      */
 //-----------------------BANDERAS GENERICAS-----------------------------------//
-    
     /**
      * Bandera que le da un valor inicial a todas las banderas
      */
-    public static boolean ALL_FLAGS = true;
-    
-    
+    public static boolean ALL_FLAGS = false;
+
     /**
      * Banderaa para todas las vistas nuevas
      */
-    public static boolean DEV_VEW_NEWS = ALL_FLAGS;
+    public static boolean DEV_VEW_NEWS = false;
 
     /**
      * Bandera para todos los mensajes puestos en condigo sobre el codigo
      */
-    public static boolean DEV_MSG_CODE = ALL_FLAGS;
-    
+    public static boolean DEV_MSG_CODE = true;
+
     /**
-     * Bandera para todos los mensajes puestos en el codigo sobre la base de datos
+     * Bandera para todos los mensajes puestos en el codigo sobre la base de
+     * datos
      */
-    public static boolean DEV_MSG_DATA_BASE = ALL_FLAGS;
-    
+    public static boolean DEV_MSG_DATA_BASE = false;
+
     /**
      * Bandera para ejecutar funciones en desarrollo
      */
-    public static boolean DEV_EXE_FUNCION = ALL_FLAGS;
-    
+    public static boolean DEV_EXE_FUNCION = false;
+
     /**
      * Bandera para ejecutar funciones a prueba
      */
-    public static boolean TST_EXE_FUNCION = ALL_FLAGS;
-    
+    public static boolean TST_EXE_FUNCION = false;
+
     /**
      * Bandera para ejecutar funciones candidatas
      */
-    public static boolean CAN_EXE_FUNCION = ALL_FLAGS;
+    public static boolean CAN_EXE_FUNCION = false;
+    /**
+     * Mensaje para mostrar los logs producido por llamada a la base de datos
+     */
+    public static boolean DEV_MSG_LOG_DATA_BASE = false;
+
+    private DevFlags() {
+    }
 
 }

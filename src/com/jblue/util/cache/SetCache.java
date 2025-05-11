@@ -24,7 +24,7 @@ import java.util.function.Predicate;
  *
  * @author juan-campos
  */
-public interface SetCache<T extends Objeto> {
+public interface SetCache <T extends Objeto> {
 
     Set<T> getSet();
 

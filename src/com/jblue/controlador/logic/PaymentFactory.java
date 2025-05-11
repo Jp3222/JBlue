@@ -27,7 +27,7 @@ public class PaymentFactory {
     }
 
     public static PaymentModel getSurchargePayment() {
-        return new surchargepaymentsLogic();
+        return new SurchargePaymentsLogic();
     }
 
     public static PaymentModel getOtherPayment() {

@@ -1,3 +1,15 @@
+package com.jblue.controlador.logic;
+
+import static com.jblue.controlador.logic.AbsctractPayment.KEY_ERROR;
+import static com.jblue.controlador.logic.AbsctractPayment.KEY_MOVS;
+import static com.jblue.controlador.logic.AbsctractPayment.KEY_STATUS_OP;
+import static com.jblue.controlador.logic.AbsctractPayment.STATUS_ERR;
+import static com.jblue.controlador.logic.AbsctractPayment.STATUS_OK;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * Copyright (C) 2025 juan-campos
  *
@@ -14,45 +26,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador.logic;
+/**
+ *
+ * @author juan-campos
+ */
+public class SurchargePaymentsLogic extends AbsctractPayment {
 
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-public class ServicePaymentLogic extends AbsctractPayment {
-
-    public ServicePaymentLogic() {
-        super();
-    }
+    private int status;
 
     @Override
     public String getQuery(String args) {
-        return "INSERT INTO service_payments (employee, user, price, month) values %s"
-                .formatted(args);
-    }
-
-    @Override
-    public boolean gameRulers() {
-        mov.put(KEY_STATUS_OP, STATUS_OK);
-        if (meses_pagados.isEmpty()) {
-            mov.put(KEY_ERROR, "NO HAY MESES SELECCIONADOS");
-            mov.put(KEY_STATUS_OP, STATUS_ERR);
-        }
-        if (isPersonalNull()) {
-            mov.put(KEY_ERROR, "ERROR INTERNO");
-            mov.put(KEY_STATUS_OP, STATUS_ERR);
-        }
-        if (isUserNull()) {
-            mov.put(KEY_ERROR, "ERROR INTERNO");
-            mov.put(KEY_STATUS_OP, STATUS_ERR);
-        }
-        if (isMontoMenor()) {
-            mov.put(KEY_ERROR, "EL DINERO INGRESADO ES MENOR A LA DEUDA");
-            mov.put(KEY_STATUS_OP, STATUS_ERR);
-        }
-        return mov.get(KEY_STATUS_OP).equals(STATUS_OK);
+        return "INSERT INTO surcharge_payments(employee, user, price, month) VALUES %s";
     }
 
     @Override
@@ -92,6 +76,27 @@ public class ServicePaymentLogic extends AbsctractPayment {
             Logger.getLogger(ServicePaymentLogic.class.getName()).log(Level.SEVERE, null, ex);
         }
         return mov.get(KEY_STATUS_OP).equals(STATUS_OK);
+    }
+
+    public void setStatus(int status) {
+
+    }
+
+    @Override
+    public boolean gameRulers() {
+        return true;
+    }
+
+    private boolean isPayed() {
+        StringBuilder query = new StringBuilder("SELECT id FROM surcharge_payments WHERE month = %s");
+        query.append("AND YEAR(date_register) = YEAR(NOW)");
+
+        try {
+            connection.query(query.toString().formatted(""));
+        } catch (SQLException ex) {
+            Logger.getLogger(SurchargePaymentsLogic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
 }

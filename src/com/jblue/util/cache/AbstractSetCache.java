@@ -113,6 +113,4 @@ public abstract class AbstractSetCache<T extends Objeto> implements SetCacheMode
         return Set.copyOf(toList);
     }
 
-    
-
 }

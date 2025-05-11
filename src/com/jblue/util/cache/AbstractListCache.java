@@ -16,20 +16,21 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.util.tools.ObjectUtils;
-import com.jblue.modelo.objetos.Objeto;
-import com.jblue.sistema.DevFlags;
-import com.jutil.dbcon.connection.DBConnection;
+import com.jblue.modelo.dbconexion.JDBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import com.jblue.modelo.objetos.Objeto;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import com.jblue.sistema.DevFlags;
+import com.jblue.util.tools.ObjectUtils;
+import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.jexception.Excp;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.jblue.modelo.dbconexion.JDBConnectionModel;
 
 /**
  *
@@ -40,12 +41,12 @@ public abstract class AbstractListCache<T extends Objeto> implements CacheModel<
 
     protected final ArrayList<T> cache;
     protected final Map<String, List<T>> buffer_cache;
-    protected final JDBConnectionModel<T> conexion;
+    protected final JDBConnection<T> conexion;
     protected int index_min, index_max, steps;
     protected long count;
     protected int call_count;
 
-    public AbstractListCache(int capacity, JDBConnectionModel conexion) {
+    public AbstractListCache(int capacity, JDBConnection conexion) {
         this.cache = new ArrayList<>(capacity);
         this.buffer_cache = new HashMap<>(10);
         this.conexion = conexion;
@@ -55,7 +56,7 @@ public abstract class AbstractListCache<T extends Objeto> implements CacheModel<
 
     }
 
-    public AbstractListCache(JDBConnectionModel conexion) {
+    public AbstractListCache(JDBConnection conexion) {
         this(MIN, conexion);
     }
 
@@ -88,7 +89,7 @@ public abstract class AbstractListCache<T extends Objeto> implements CacheModel<
 
             buffer_cache.put(query, List.copyOf(cache));
         } catch (SQLException ex) {
-            Logger.getLogger(AbstractListCache.class.getName()).log(Level.SEVERE, null, ex);
+            Excp.impTerminal(ex, getClass(), DevFlags.DEV_MSG_LOG_DATA_BASE);
         }
     }
 
@@ -139,7 +140,6 @@ public abstract class AbstractListCache<T extends Objeto> implements CacheModel<
     private long count_count() {
         String query = "SELECT count(id) FROM %s";
         DBConnection _conn = conexion.getConnection();
-
         ResultSet res_count;
         long aux_count = 0;
         try {
@@ -161,5 +161,4 @@ public abstract class AbstractListCache<T extends Objeto> implements CacheModel<
     public int getIndexMin() {
         return index_min;
     }
-
 }

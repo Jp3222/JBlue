@@ -12,6 +12,7 @@ import java.io.File;
  * @author jp
  */
 public class AppFiles {
+
     private static final OsConfig os = OsConfig.getDefaultOsConfig();
     //-- directorios programa usuario--//
     public static final String DIR_PROG = constURL(os.getDocumentos(), ".jblue");
@@ -31,7 +32,7 @@ public class AppFiles {
     public static final String[] S_ARR_PROG_ARC = {
         DIR_PROG_ARC_CONFIG
     };
-    
+
     //-- directorios del usuario--//
     public static final String DIR_USER = constURL(os.getDocumentos(), "JBlue");
 
@@ -65,7 +66,7 @@ public class AppFiles {
         StringBuilder sb = new StringBuilder(100);
         int size = str.length;
         for (int i = 0; i < size - 1; i++) {
-            
+
             sb.append(str[i]).append(File.separator);
         }
         sb.append(str[size - 1]);

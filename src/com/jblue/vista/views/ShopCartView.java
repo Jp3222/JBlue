@@ -78,7 +78,7 @@ public class ShopCartView extends DBView implements ListSearchView {
         controller = FactoryController.getShopCartController(this);
         table_controller = new TableController(this, CacheFactory.SERVICE_PAYMENTS);
         list_controller = new ListController(this, CacheFactory.USUARIOS);
-
+        //list_controller.addFilterList((t) -> t.getStatus() == 1);
         build();
     }
 

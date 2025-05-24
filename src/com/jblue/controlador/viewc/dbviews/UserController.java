@@ -14,30 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador.viewc;
+package com.jblue.controlador.viewc.dbviews;
 
-import com.jblue.controlador.DBController;
-import com.jblue.modelo.dbconexion.JDBConnection;
+import static com.jblue.controlador.DBControllerModel.DELETE_COMMAND;
+import static com.jblue.controlador.DBControllerModel.SAVE_COMMAND;
+import static com.jblue.controlador.DBControllerModel.UPDATE_COMMAND;
 import com.jblue.modelo.fabricas.CacheFactory;
-import com.jblue.modelo.objetos.OWaterIntake;
-import com.jblue.vista.views.WaterIntakesView;
+import com.jblue.modelo.objetos.OUser;
+import com.jblue.sistema.DevFlags;
+import com.jblue.vista.components.CVisorUsuario;
+import com.jblue.vista.views.UserView;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
+import com.jblue.controlador.DBControllerModel;
+import com.jblue.controlador.AbstractDBViewController;
 
 /**
  *
  * @author juan-campos
  */
-public class WaterIntakesController extends DBViewController<OWaterIntake> implements DBController {
+public class UserController extends AbstractDBViewController<OUser> implements DBControllerModel {
 
-    private WaterIntakesView view;
-    private final JDBConnection<OWaterIntake> connection;
+    private final UserView view;
 
-    public WaterIntakesController(WaterIntakesView view) {
-        super(CacheFactory.TIPO_DE_TOMAS);
+    public UserController(UserView view) {
+        super(CacheFactory.USUARIOS);
         this.view = view;
-        connection = (JDBConnection<OWaterIntake>) memo_cache.getConnection();
-
     }
 
     @Override
@@ -51,41 +53,58 @@ public class WaterIntakesController extends DBViewController<OWaterIntake> imple
                 update();
             case CANCEL_COMMAND ->
                 cancel();
+            case "search_object" ->
+                searchObject();
             default ->
                 defaultCase(ae.getActionCommand(), null, -1);
         }
+
     }
 
     @Override
     public void save() {
-        if (isOK()) {
+        if (!view.isValuesOk()) {
             return;
         }
-        String field = "type, price, surcharge";
+        String field = "first_name, last_name1, last_name2, street, house_number, water_intakes, user_type, status";
         boolean insert = connection.insert(field, view.getDbValues(false));
         rmessage(insert);
     }
 
     @Override
     public void delete() {
-        if (isOK()) {
+        if (!view.isValuesOk()) {
             return;
         }
-        //boolean delete = connection.delete("id = %s".formatted(view.getObjectSearch().getId()));
-        boolean delete = connection.update("status", "3", "id = %s".formatted(view.getObjectSearch().getId()));
+        String id = view.getObjectSearch().getId();
+        boolean delete = connection.update("status", "3", "id = %s".formatted(id));
         rmessage(delete);
+        //FUNCION EN DESARROLLO - Ocultar los resgitros de pago de un usuario
+        if (DevFlags.TST_EXE_FUNCION) {
+            int hidden_payments = JOptionPane.showConfirmDialog(view, "¿Desea eliminar los pagos hechos por esta persona?");
+            if (hidden_payments == JOptionPane.YES_OPTION) {
+                boolean update = connection.update(
+                        "status=3",
+                        "id = %s".formatted(view.getObjectSearch().getId())
+                );
+                rmessage(update);
+            }
+        }
     }
 
     @Override
     public void update() {
-        if (isOK()) {
+        if (!view.isValuesOk()) {
             return;
         }
-        String field = "type, previus_price, price, surcharge, date_update";
-        boolean update = connection.update(field.replace(" ", "").split(","),
+        String field = "first_name, last_name1, last_name2, "
+                + "street, house_number, water_intakes, "
+                + "user_type, status";
+
+        boolean update = connection.update(
+                field.split(","),
                 view.getDbValues(true),
-                "id = %s".formatted(view.getObjectSearch().getId())
-        );
+                "id = %s".formatted(view.getObjectSearch().getId()));
         rmessage(update);
     }
 
@@ -97,10 +116,14 @@ public class WaterIntakesController extends DBViewController<OWaterIntake> imple
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE
         );
-
         if (in == JOptionPane.YES_OPTION) {
             view.initialState();
         }
+    }
+
+    private void searchObject() {
+        view.getObjectSearch();
+        CVisorUsuario.showVisor(view.getObjectSearch());
     }
 
     public boolean isOK() {
@@ -110,6 +133,7 @@ public class WaterIntakesController extends DBViewController<OWaterIntake> imple
                 "Operacion %s".formatted(status),
                 "Estado de la operacion",
                 JOptionPane.INFORMATION_MESSAGE);
+        System.out.println(ok);
         return ok;
     }
 

@@ -14,9 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador.compc;
+package com.jblue.controlador;
 
-import com.jblue.controlador.Controller;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.cache.MemoListCache;
 import javax.swing.JComponent;
@@ -26,16 +25,16 @@ import javax.swing.JComponent;
  * @author juan-campos
  * @param <T>
  */
-public abstract class ComponentController<T extends Objeto> extends Controller {
+public abstract class AbstractComponentController <T extends Objeto> extends Controller {
 
     private final JComponent component;
     protected final MemoListCache<T> memo_cache;
 
-    public ComponentController(JComponent component) {
+    public AbstractComponentController(JComponent component) {
         this(component, null);
     }
 
-    public ComponentController(JComponent component, MemoListCache<T> memo_cache) {
+    public AbstractComponentController(JComponent component, MemoListCache<T> memo_cache) {
         this.memo_cache = memo_cache;
         this.component = component;
     }

@@ -16,18 +16,18 @@
  */
 package com.jblue.vista.windows;
 
+import com.jblue.controlador.winc.MainController;
 import com.jblue.vista.components.CVisorUsuario;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
-import com.jblue.vista.views.ConfigurationPanel;
 import com.jblue.vista.views.StreetsView;
-import com.jblue.vista.views.OtherOptions;
 import com.jblue.vista.views.PaymentTypes;
 import com.jblue.vista.views.WaterIntakesView;
 import com.jblue.vista.views.UserView;
 import com.jblue.vista.views.ShopCartView;
-import com.jblue.vista.views.Tools;
 import java.awt.CardLayout;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 /**
@@ -36,16 +36,20 @@ import javax.swing.SwingUtilities;
  */
 public final class WMainMenu extends VentanaSimple {
 
+    //
+    private final CardLayout ly;
+    //
     private final ShopCartView caja;
-    private final OtherOptions menu_type;
     private final UserView usuarios;
     private final StreetsView calles;
     private final WaterIntakesView tipo_de_tomas;
     private final PaymentTypes tipo_de_pagos;
-    private final CardLayout ly;
-    private final Tools tools;
+    //
     private final LoginWindows LOGIN;
+    //
     private CVisorUsuario showVisor;
+    //
+    MainController controller;
 
     /**
      * Creates new form NewMenuPrincipal
@@ -58,13 +62,11 @@ public final class WMainMenu extends VentanaSimple {
 
         caja = new ShopCartView();
         usuarios = new UserView();
-        menu_type = new OtherOptions(this);
         calles = new StreetsView();
         tipo_de_tomas = new WaterIntakesView();
         tipo_de_pagos = new PaymentTypes();
-        tools = new Tools();
         ly = (CardLayout) views_panel.getLayout();
-
+        controller = new MainController(this);
         build();
     }
 
@@ -78,67 +80,31 @@ public final class WMainMenu extends VentanaSimple {
 
     @Override
     public void components() {
-        btn_tipo_pagos.setComponentPopupMenu(jPopupMenu1);
         views_panel.add(caja, caja.getName());
         views_panel.add(usuarios, usuarios.getName());
         views_panel.add(calles, calles.getName());
         views_panel.add(tipo_de_tomas, tipo_de_tomas.getName());
-        views_panel.add(menu_type, menu_type.getName());
         views_panel.add(tipo_de_pagos, tipo_de_pagos.getName());
-        views_panel.add(tools, tools.getName());
     }
 
     @Override
     public void events() {
-        exit_button.addActionListener(e -> setView(0));
-        btn_home.addActionListener(e -> setView(1));
-        btn_usuarios.addActionListener(e -> setView(2));
-        btn_calles.addActionListener(e -> setView(3));
-        btn_tipo_tomas.addActionListener(e -> setView(4));
-        btn_tipo_pagos.addActionListener(e -> setView(5));
-        menu_button.addActionListener(e -> setView(6));
-        tools_button.addActionListener(e -> setView(7));
+        exit_button.addActionListener(controller);
+        btn_home.addActionListener(controller);
+        btn_usuarios.addActionListener(controller);
+        btn_calles.addActionListener(controller);
+        btn_tipo_tomas.addActionListener(controller);
+        btn_tipo_pagos.addActionListener(controller);
 
     }
 
     @Override
     public void initialState() {
-        setView(1);
+
     }
 
     @Override
     public void finalState() {
-    }
-
-    private void setView(int option) {
-        String view_name = switch (option) {
-            case 0:
-                yield OUT;
-            case 1:
-                yield caja.getName();
-            case 2:
-                yield usuarios.getName();
-            case 3:
-                yield calles.getName();
-            case 4:
-                yield tipo_de_tomas.getName();
-            case 5:
-                yield tipo_de_pagos.getName();
-            case 6:
-                yield menu_type.getName();
-            case 7:
-                yield tools.getName();
-            default:
-                JOptionPane.showMessageDialog(center_panel, "Esta opcion aun no esta disponible", "Opcion No encontrada", JOptionPane.INFORMATION_MESSAGE);
-                yield caja.getName();
-        };
-        if (view_name.equals(OUT)) {
-            this.dispose();
-            return;
-        }
-        label_title.setText(view_name);
-        updateTitle(view_name);
-        ly.show(views_panel, view_name);
     }
 
     public void goToHome() {
@@ -154,16 +120,9 @@ public final class WMainMenu extends VentanaSimple {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPopupMenu1 = new javax.swing.JPopupMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
         left_panel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        tools_button = new javax.swing.JButton();
         label_title = new javax.swing.JLabel();
-        menu_button = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -185,22 +144,23 @@ public final class WMainMenu extends VentanaSimple {
         center_panel = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         views_panel = new javax.swing.JPanel();
-
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/perfil.png"))); // NOI18N
-        jMenuItem1.setText("Perfil");
-        jPopupMenu1.add(jMenuItem1);
-
-        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/presidente.png"))); // NOI18N
-        jMenuItem2.setText("Presidente");
-        jPopupMenu1.add(jMenuItem2);
-
-        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cofre-del-tesoro.png"))); // NOI18N
-        jMenuItem3.setText("Tesorero");
-        jPopupMenu1.add(jMenuItem3);
-
-        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/perfil.png"))); // NOI18N
-        jMenuItem4.setText("Administrador");
-        jPopupMenu1.add(jMenuItem4);
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem16 = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem19 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem12 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
+        jMenuItem14 = new javax.swing.JMenuItem();
+        jMenuItem15 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1000, 500));
@@ -212,19 +172,9 @@ public final class WMainMenu extends VentanaSimple {
         jPanel3.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        tools_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/img4.png"))); // NOI18N
-        tools_button.setToolTipText("Herramientas");
-        tools_button.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel3.add(tools_button, java.awt.BorderLayout.LINE_START);
-
         label_title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_title.setText("Inicio");
         jPanel3.add(label_title, java.awt.BorderLayout.CENTER);
-
-        menu_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/menu.png"))); // NOI18N
-        menu_button.setToolTipText("Otros menus");
-        menu_button.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel3.add(menu_button, java.awt.BorderLayout.LINE_END);
 
         left_panel.add(jPanel3, java.awt.BorderLayout.PAGE_START);
 
@@ -329,6 +279,7 @@ public final class WMainMenu extends VentanaSimple {
         exit_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerrar-sesion.png"))); // NOI18N
         exit_button.setText("Salir");
         exit_button.setToolTipText("Salir");
+        exit_button.setActionCommand("OUT");
         exit_button.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         exit_button.setPreferredSize(new java.awt.Dimension(100, 50));
         left_panel.add(exit_button, java.awt.BorderLayout.SOUTH);
@@ -347,6 +298,58 @@ public final class WMainMenu extends VentanaSimple {
 
         getContentPane().add(center_panel, java.awt.BorderLayout.CENTER);
 
+        jMenu1.setText("Menu");
+
+        jMenuItem5.setText("Perfil");
+        jMenu1.add(jMenuItem5);
+
+        jMenuItem6.setText("Panel de Admin");
+        jMenuItem6.setToolTipText("Panel de Administracion");
+        jMenu1.add(jMenuItem6);
+
+        jMenuItem8.setText("Exportar");
+        jMenu1.add(jMenuItem8);
+
+        jMenuItem7.setText("Importar");
+        jMenu1.add(jMenuItem7);
+
+        jMenuItem16.setText("Preferencias");
+        jMenu1.add(jMenuItem16);
+        jMenu1.add(jSeparator2);
+
+        jMenuItem19.setText("Salir");
+        jMenu1.add(jMenuItem19);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Base de datos");
+
+        jMenuItem9.setText("Usuarios");
+        jMenu2.add(jMenuItem9);
+
+        jMenuItem10.setText("Tomas Registradas");
+        jMenu2.add(jMenuItem10);
+
+        jMenuItem12.setText("Tipo de tomas");
+        jMenu2.add(jMenuItem12);
+
+        jMenuItem11.setText("Calles");
+        jMenu2.add(jMenuItem11);
+
+        jMenuItem13.setText("Pagos por el Servicio");
+        jMenuItem13.setActionCommand("Pagos por servicio");
+        jMenu2.add(jMenuItem13);
+
+        jMenuItem14.setText("Recargos");
+        jMenu2.add(jMenuItem14);
+
+        jMenuItem15.setText("Otros pagos");
+        jMenu2.add(jMenuItem15);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -363,10 +366,22 @@ public final class WMainMenu extends VentanaSimple {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
+    private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem15;
+    private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem19;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
@@ -377,26 +392,35 @@ public final class WMainMenu extends VentanaSimple {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel label_title;
     private javax.swing.JPanel left_panel;
-    private javax.swing.JButton menu_button;
-    private javax.swing.JButton tools_button;
     private javax.swing.JPanel views_panel;
     // End of variables declaration//GEN-END:variables
-    private final String OUT = "OUT";
+    public static final String OUT = "OUT";
 
     @Override
     public void dispose() {
         super.dispose(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        menu_type.closeWindows();
         if (showVisor != null && showVisor.isVisible()) {
             showVisor.dispose();
         }
         SwingUtilities.invokeLater(() -> {
             LOGIN.setVisible(true);
         });
+    }
+
+    public CardLayout getCardLayout() {
+        return ly;
+    }
+
+    public JLabel getLabelTitle() {
+        return label_title;
+    }
+
+    public JPanel getViewsPanel() {
+        return views_panel;
     }
 
 }

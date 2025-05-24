@@ -17,11 +17,11 @@
 package com.jblue.controlador;
 
 import com.jblue.controlador.winc.WindowController;
-import com.jblue.controlador.viewc.UserController;
+import com.jblue.controlador.viewc.dbviews.UserController;
 import com.jblue.controlador.winc.LoginController;
 import com.jblue.controlador.viewc.ShopCartController;
-import com.jblue.controlador.viewc.StreetsController;
-import com.jblue.controlador.viewc.WaterIntakesController;
+import com.jblue.controlador.viewc.dbviews.StreetsController;
+import com.jblue.controlador.viewc.dbviews.WaterIntakesController;
 import com.jblue.controlador.winc.MainController;
 import com.jblue.vista.views.WaterIntakesView;
 import com.jblue.vista.views.UserView;

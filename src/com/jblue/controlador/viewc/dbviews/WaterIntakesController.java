@@ -14,63 +14,46 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador.viewc;
+package com.jblue.controlador.viewc.dbviews;
 
-import com.jblue.modelo.fabricas.CacheFactory;
-import com.jblue.modelo.objetos.OCalles;
-import com.jblue.vista.views.StreetsView;
-import java.awt.Desktop;
-import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.net.URI;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import com.jblue.controlador.DBController;
-import com.jblue.controlador.compc.ComponentController;
 import com.jblue.modelo.dbconexion.JDBConnection;
-import java.util.ArrayList;
+import com.jblue.modelo.fabricas.CacheFactory;
+import com.jblue.modelo.objetos.OWaterIntake;
+import com.jblue.vista.views.WaterIntakesView;
+import java.awt.event.ActionEvent;
+import javax.swing.JOptionPane;
+import com.jblue.controlador.DBControllerModel;
+import com.jblue.controlador.AbstractDBViewController;
 
 /**
  *
  * @author juan-campos
  */
-public class StreetsController extends DBViewController<OCalles> implements DBController {
+public class WaterIntakesController extends AbstractDBViewController<OWaterIntake> implements DBControllerModel {
 
-    private final JDBConnection<OCalles> connection;
-    private final StreetsView view;
-    private final ArrayList<ComponentController> components_controllers;
+    private WaterIntakesView view;
+    private final JDBConnection<OWaterIntake> connection;
 
-    public StreetsController(StreetsView view) {
-        super(CacheFactory.CALLES);
-        this.connection = (JDBConnection<OCalles>) memo_cache.getConnection();
+    public WaterIntakesController(WaterIntakesView view) {
+        super(CacheFactory.TIPO_DE_TOMAS);
         this.view = view;
-        this.components_controllers = new ArrayList(5);
+        connection = (JDBConnection<OWaterIntake>) memo_cache.getConnection();
 
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        switch (e.getActionCommand()) {
+    public void actionPerformed(ActionEvent ae) {
+        switch (ae.getActionCommand()) {
             case SAVE_COMMAND ->
                 save();
-            case UPDATE_COMMAND ->
-                update();
             case DELETE_COMMAND ->
                 delete();
+            case UPDATE_COMMAND ->
+                update();
             case CANCEL_COMMAND ->
                 cancel();
-            case "google-maps" -> {
-                try {
-                    String uri = "https://www.google.com.mx/maps/place/Cuauhtemoc,+62757+Cuautla,+Mor./@18.8677895,-98.930224,16z/data=!3m1!4b1!4m6!3m5!1s0x85ce6ead484a42d1:0xe9451cff404f4b4c!8m2!3d18.8678174!4d-98.9259142!16s%2Fg%2F1tj9tnz6?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D";
-                    Desktop.getDesktop().browse(URI.create((uri)));
-
-                } catch (IOException ex) {
-                    Logger.getLogger(StreetsController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
             default ->
-                defaultCase("El comando %s no existe".formatted(e.getActionCommand()), StreetsController.this.getClass().getName(), -1);
+                defaultCase(ae.getActionCommand(), null, -1);
         }
     }
 
@@ -79,7 +62,7 @@ public class StreetsController extends DBViewController<OCalles> implements DBCo
         if (isOK()) {
             return;
         }
-        String field = "name";
+        String field = "type, price, surcharge";
         boolean insert = connection.insert(field, view.getDbValues(false));
         rmessage(insert);
     }
@@ -99,7 +82,7 @@ public class StreetsController extends DBViewController<OCalles> implements DBCo
         if (isOK()) {
             return;
         }
-        String field = "name";
+        String field = "type, previus_price, price, surcharge, date_update";
         boolean update = connection.update(field.replace(" ", "").split(","),
                 view.getDbValues(true),
                 "id = %s".formatted(view.getObjectSearch().getId())

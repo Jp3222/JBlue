@@ -14,14 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador.viewc;
+package com.jblue.controlador;
 
-import com.jblue.controlador.Controller;
+import com.jblue.modelo.objetos.Objeto;
+import com.jblue.util.cache.MemoListCache;
+import com.jblue.modelo.dbconexion.JDBConnection;
+import com.jblue.modelo.objetos.OUser;
 
 /**
  *
  * @author juan-campos
+ * @param <T>
  */
-public abstract class AbstractViewController extends Controller{
-    
+public abstract class AbstractDBViewController<T extends Objeto> extends AbstractViewController implements DBControllerModel {
+
+    protected final MemoListCache<T> memo_cache;
+    protected final JDBConnection<OUser> connection;
+
+    public AbstractDBViewController(MemoListCache<T> memo_cache) {
+        this.memo_cache = memo_cache;
+        this.connection = (JDBConnection<OUser>) memo_cache.getConnection();
+    }
+
 }

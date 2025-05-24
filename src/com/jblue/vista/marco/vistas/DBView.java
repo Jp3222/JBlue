@@ -19,10 +19,10 @@ package com.jblue.vista.marco.vistas;
 import com.jblue.controlador.Controller;
 import com.jblue.controlador.compc.TableController;
 import com.jblue.modelo.objetos.Objeto;
-import com.jblue.util.objetos.ObjetoFK;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import com.jblue.vista.marco.TableSearchView;
+import com.jblue.util.objetos.ForeingKeyObject;
 
 /**
  *
@@ -62,7 +62,7 @@ public abstract class DBView extends SimpleView implements TableSearchView {
     public void finalState() {
     }
 
-    public <T extends Objeto & ObjetoFK> TableController<T> getTableController() {
+    public <T extends Objeto & ForeingKeyObject> TableController<T> getTableController() {
         return table_controller;
     }
 

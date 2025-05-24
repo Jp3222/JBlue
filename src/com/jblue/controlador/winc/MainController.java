@@ -18,6 +18,7 @@ package com.jblue.controlador.winc;
 
 import com.jblue.vista.windows.WMainMenu;
 import java.awt.event.ActionEvent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,12 +26,26 @@ import java.awt.event.ActionEvent;
  */
 public class MainController extends WindowController {
 
+    private final WMainMenu view;
+
     public MainController(WMainMenu view) {
+        this.view = view;
     }
 
     @Override
-    public void actionPerformed(ActionEvent ae) {
-    
+    public void actionPerformed(ActionEvent e) {
+        String actionCommand = e.getActionCommand();
+        if (actionCommand == null || actionCommand.isBlank()) {
+            JOptionPane.showMessageDialog(view, "El comando %s no es valido".formatted(actionCommand));
+            return;
+        }
+        if (actionCommand.equals(WMainMenu.OUT)) {
+            view.dispose();
+            return;
+        }
+        view.getLabelTitle().setText(actionCommand);
+        view.getCardLayout().show(view.getViewsPanel(), actionCommand);
+        view.updateTitle(actionCommand);
     }
 
 }

@@ -17,7 +17,7 @@
 package com.jblue.controlador.utils;
 
 import com.jblue.controlador.Controller;
-import com.jblue.controlador.compc.ComponentController;
+import com.jblue.controlador.AbstractComponentController;
 import com.jblue.vista.windows.UtilsViewWindows;
 import java.awt.event.ActionEvent;
 

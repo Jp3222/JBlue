@@ -16,6 +16,7 @@
  */
 package com.jblue.controlador.compc;
 
+import com.jblue.controlador.AbstractComponentController;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
@@ -26,7 +27,7 @@ import javax.swing.JComboBox;
  * @author juan-campos
  * @param <T>
  */
-public class ComboBoxItemsController<T> extends ComponentController {
+public class ComboBoxItemsController<T> extends AbstractComponentController {
 
     public static ComboBoxItemsController getNumbericItems(JComboBox componente, int stard, int end) {
         String[] items = new String[end];

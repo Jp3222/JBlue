@@ -23,7 +23,7 @@ import javax.swing.JPanel;
  *
  * @author juan-campos
  */
-public interface DBController {
+public interface DBControllerModel {
 
     static final String SAVE_COMMAND = "save";
     static final String UPDATE_COMMAND = "update";

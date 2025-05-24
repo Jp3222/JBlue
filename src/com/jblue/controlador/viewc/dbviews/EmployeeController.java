@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2025 juanp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,34 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador.viewc;
+package com.jblue.controlador.viewc.dbviews;
 
-import com.jblue.controlador.DBController;
-import static com.jblue.controlador.DBController.DELETE_COMMAND;
-import static com.jblue.controlador.DBController.SAVE_COMMAND;
-import static com.jblue.controlador.DBController.UPDATE_COMMAND;
+import com.jblue.controlador.AbstractDBViewController;
 import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.fabricas.CacheFactory;
-import com.jblue.modelo.objetos.OUser;
-import com.jblue.sistema.DevFlags;
-import com.jblue.vista.components.CVisorUsuario;
-import com.jblue.vista.views.UserView;
+import com.jblue.modelo.objetos.OEmployee;
+import com.jblue.vista.views.options.EmployeeView;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author juan-campos
+ * @author juanp
  */
-public class UserController extends DBViewController<OUser> implements DBController {
+public class EmployeeController extends AbstractDBViewController<OEmployee> {
 
-    private final UserView view;
-    private final JDBConnection<OUser> connection;
+    private final EmployeeView view;
+    private final JDBConnection<OEmployee> connection;
 
-    public UserController(UserView view) {
-        super(CacheFactory.USUARIOS);
-        this.connection = (JDBConnection<OUser>) memo_cache.getConnection();
+    public EmployeeController(EmployeeView view) {
+        super(CacheFactory.PERSONAL);
         this.view = view;
+        this.connection = (JDBConnection<OEmployee>) memo_cache.getConnection();
     }
 
     @Override
@@ -65,12 +60,9 @@ public class UserController extends DBViewController<OUser> implements DBControl
 
     @Override
     public void save() {
-        if (!view.isValuesOk()) {
-            return;
-        }
-        String field = "first_name, last_name1, last_name2, street, house_number, water_intakes, user_type, status";
-        boolean insert = connection.insert(field, view.getDbValues(false));
-        rmessage(insert);
+        String fields = "first_name, last_names, employee_type, user, password";
+        boolean res = connection.insert(fields, view.getDbValues(false));
+        rmessage(res);
     }
 
     @Override
@@ -78,20 +70,20 @@ public class UserController extends DBViewController<OUser> implements DBControl
         if (!view.isValuesOk()) {
             return;
         }
+        //boolean delete = connection.delete("id = %s".formatted(view.getObjectSearch().getId()));
         String id = view.getObjectSearch().getId();
         boolean delete = connection.update("status", "3", "id = %s".formatted(id));
+//        if (DevFlags.TST_EXE_FUNCION) {
+//            int hidden_payments = JOptionPane.showConfirmDialog(view, "¿Desea eliminar los pagos hechos por esta persona?");
+//            if (hidden_payments == JOptionPane.YES_OPTION) {
+//                try {
+//                    connection.getConnection().update("service_payments", "status=3", "id = %s".formatted(id));
+//                } catch (SQLException ex) {
+//                    Excp.imp(ex, getClass(), true, true);
+//                }
+//            }
+//        }
         rmessage(delete);
-        //FUNCION EN DESARROLLO - Ocultar los resgitros de pago de un usuario
-        if (DevFlags.TST_EXE_FUNCION) {
-            int hidden_payments = JOptionPane.showConfirmDialog(view, "¿Desea eliminar los pagos hechos por esta persona?");
-            if (hidden_payments == JOptionPane.YES_OPTION) {
-                boolean update = connection.update(
-                        "status=3",
-                        "id = %s".formatted(view.getObjectSearch().getId())
-                );
-                rmessage(update);
-            }
-        }
     }
 
     @Override
@@ -99,14 +91,12 @@ public class UserController extends DBViewController<OUser> implements DBControl
         if (!view.isValuesOk()) {
             return;
         }
-        String field = "first_name, last_name1, last_name2, "
-                + "street, house_number, water_intakes, "
-                + "user_type, status";
+        String field = "first_name, last_names, employee_type, user, password";
 
-        boolean update = connection.update(
-                field.split(","),
+        boolean update = connection.update(field.replace(" ", "").split(","),
                 view.getDbValues(true),
-                "id = %s".formatted(view.getObjectSearch().getId()));
+                "id = %s".formatted(view.getObjectSearch().getId())
+        );
         rmessage(update);
     }
 
@@ -125,7 +115,6 @@ public class UserController extends DBViewController<OUser> implements DBControl
 
     private void searchObject() {
         view.getObjectSearch();
-        CVisorUsuario.showVisor(view.getObjectSearch());
     }
 
     public boolean isOK() {

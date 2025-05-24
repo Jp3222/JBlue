@@ -16,10 +16,10 @@
  */
 package com.jblue.controlador.compc;
 
+import com.jblue.controlador.AbstractComponentController;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filters;
 import com.jblue.util.cache.MemoListCache;
-import com.jblue.util.objetos.ObjetoFK;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -28,13 +28,14 @@ import javax.swing.JOptionPane;
 import com.jblue.vista.marco.TableSearchView;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import com.jblue.util.objetos.ForeingKeyObject;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public class TableController<T extends Objeto & ObjetoFK> extends ComponentController<T> implements ComponentIterable {
+public class TableController<T extends Objeto & ForeingKeyObject> extends AbstractComponentController<T> implements ComponentIterable {
 
     public static final String RELOAD_COMMAND = "reload";
 
@@ -76,7 +77,7 @@ public class TableController<T extends Objeto & ObjetoFK> extends ComponentContr
         dumpData();
         List<T> list;
         list = memo_cache.getList(i -> {
-            return Filters.clearAndCheck(i.toString(),view.getTextSearchTable());
+            return Filters.clearAndCheck(i.toString(), view.getTextSearchTable());
         });
         load(list, (JTableModel) view.getModel());
     }
@@ -96,7 +97,7 @@ public class TableController<T extends Objeto & ObjetoFK> extends ComponentContr
         if (data.isEmpty()) {
             return;
         }
-        if (data.getFirst() instanceof ObjetoFK) {
+        if (data.getFirst() instanceof ForeingKeyObject) {
             for (T i : data) {
                 model.addRow(i.getInfoSinFK());
             }

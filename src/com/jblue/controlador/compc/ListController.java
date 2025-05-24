@@ -16,16 +16,22 @@
  */
 package com.jblue.controlador.compc;
 
+import com.jblue.controlador.AbstractComponentController;
+import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filters;
 import com.jblue.util.cache.MemoListCache;
+import com.jblue.util.objetos.ForeingKeyObject;
+import com.jblue.util.objetos.StatusObject;
 import com.jblue.vista.marco.ListSearchView;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import javax.swing.DefaultListModel;
 
 /**
@@ -33,18 +39,22 @@ import javax.swing.DefaultListModel;
  * @author juan-campos
  * @param <T>
  */
-public class ListController<T extends Objeto> extends ComponentController<T> {
+public final class ListController<T extends Objeto & StatusObject & ForeingKeyObject> extends AbstractComponentController<T> {
 
     protected ListSearchView view;
     protected DefaultListModel<T> model;
     protected String search_text;
+    private final ArrayList<Predicate<T>> filters_list;
 
     public ListController(ListSearchView view, MemoListCache<T> memo_cache) {
         super(view.getList(), memo_cache);
+        this.filters_list = new ArrayList<>(15);
         this.view = view;
         model = view.getListModel();
         view.getTextComponentList().addKeyListener((KeyListener) this);
         view.getTextComponentList().addMouseListener((MouseListener) this);
+        addFilterList((t) -> t.getId().equals(search_text));
+        addFilterList((t) -> Filters.clearAndCheck(t.toString(), search_text));
     }
 
     @Override
@@ -82,9 +92,7 @@ public class ListController<T extends Objeto> extends ComponentController<T> {
         }
 
         List<T> list = memo_cache.getList(o -> {
-            return o.getId().equals(search_text) || Filters
-                    .clearText(o.toString())
-                    .contains(search_text);
+            return isThisUser(o, search_text, false);
         });
         if (list.isEmpty()) {
             dumpData();
@@ -95,7 +103,17 @@ public class ListController<T extends Objeto> extends ComponentController<T> {
         list.forEach((i) -> {
             model.addElement(i);
         });
+    }
 
+    public boolean isThisUser(Objeto o, String txt, boolean validateIsTitular) {
+        if (o instanceof OUser a && !a.isActive()) {
+            return false;
+        }
+//        if (!(o instanceof OUser b && validateIsTitular && b.isTitular())) {
+//            return false;
+//        }
+        return Filters.clearAndCheck(o.getId(), txt)
+                || Filters.clearAndCheck(o.toString(), txt);
     }
 
     @Override
@@ -111,4 +129,9 @@ public class ListController<T extends Objeto> extends ComponentController<T> {
         view.getListModel().removeAllElements();
         view.getTextComponentList().setText(null);
     }
+
+    public void addFilterList(Predicate<T> o) {
+        filters_list.add(o);
+    }
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2025 juanp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,14 @@ package com.jblue.util.objetos;
 
 /**
  *
- * @author juan-campos
+ * @author juanp
  */
-public interface ObjetoFK {
-    
-    String[] getInfoSinFK();
-    
+public interface StatusObject {
+
+    public int getStatus();
+
+    public String getStatusString();
+
+    public boolean isActive();
+
 }

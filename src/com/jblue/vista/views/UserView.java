@@ -617,17 +617,18 @@ public final class UserView extends DBView implements DBValues {
         search_field.setName("buscador"); // NOI18N
         jPanel30.add(search_field, java.awt.BorderLayout.CENTER);
 
-        jPanel23.setLayout(new java.awt.BorderLayout(5, 5));
+        jPanel23.setPreferredSize(new java.awt.Dimension(200, 30));
+        jPanel23.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
 
         back_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
         back_button.setActionCommand("back");
         back_button.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel23.add(back_button, java.awt.BorderLayout.WEST);
+        jPanel23.add(back_button);
 
         next_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
         next_button.setActionCommand("next");
         next_button.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel23.add(next_button, java.awt.BorderLayout.EAST);
+        jPanel23.add(next_button);
 
         jPanel30.add(jPanel23, java.awt.BorderLayout.LINE_END);
 
@@ -931,8 +932,8 @@ public final class UserView extends DBView implements DBValues {
         save_button.setEnabled(false);
         update_button.setEnabled(true);
         delete_button.setEnabled(true);
-        add_consumer_button.setEnabled(false);
-        show_consumer_list_button.setEnabled(false);
+        add_consumer_button.setEnabled(object_search.isTitular());
+        show_consumer_list_button.setEnabled(object_search.isTitular());
     }
 
 }

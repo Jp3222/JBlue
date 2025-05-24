@@ -16,6 +16,16 @@
  */
 package com.jblue.sistema.app;
 
+import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.framework.LaunchApp;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author jp
@@ -40,5 +50,91 @@ public interface AppConfig {
     //
     public static final String HOUR_OPEN = "HOUR OPEN";
     public static final String HOUR_CLOSE = "HOUR CLOSE";
+
+    public static String getMaterUser() {
+        return String.valueOf(getParameter("USUARIO_MAESTRO"));
+    }
+
+    public static String getMaterPassword() {
+        return String.valueOf(getParameter("CONTRASEÑA_MAESTRA"));
+    }
+
+    public static LocalTime getOpenHour() {
+        Object valueOf = getParameter("HORA_DE_APERTURA");
+        if (valueOf == null) {
+            return null;
+        }
+        String hour = String.valueOf(valueOf);
+        return LocalTime.parse(hour, DateTimeFormatter.ofPattern("kk:mm:ss"));
+    }
+
+    public static LocalTime getCloseHour() {
+        Object valueOf = getParameter("HORA_DE_CIERRE");
+        if (valueOf == null) {
+            return null;
+        }
+        String hour = String.valueOf(valueOf);
+        return LocalTime.parse(hour, DateTimeFormatter.ofPattern("kk:mm:ss"));
+    }
+
+    public static boolean isWorkTime() {
+        LocalTime a = getOpenHour(),
+                b = getCloseHour(),
+                o = LocalTime.now();
+        if (a == null || b == null) {
+            return false;
+        }
+        return !isHourValidate() 
+                && o.isAfter(a) 
+                && o.isBefore(b);
+    }
+
+    public static int getPayDay() {
+        Object parameter = getParameter("DIA_DE_COBRO");
+        if (parameter == null) {
+            return -1;
+        }
+        return Integer.parseInt(String.valueOf(parameter));
+    }
+
+    public static boolean isPayDay() {
+        LocalDate o = LocalDate.now();
+        if (getPayDay() <= 0) {
+            return false;
+        }
+        return getPayDay() > o.getDayOfMonth();
+    }
+
+    public static boolean getAutoPay() {
+        Object valueOf = getParameter("COBRO_AUTOMATICO");
+        if (valueOf == null) {
+            return false;
+        }
+        return Boolean.parseBoolean(String.valueOf(valueOf));
+    }
+
+    public static boolean isHourValidate() {
+        Object valueOf = getParameter("VALIDAR_HORA_DE_ENTRADA");
+        if (valueOf == null) {
+            return false;
+        }
+        System.out.println(valueOf);
+        return Boolean.parseBoolean(String.valueOf(valueOf));
+    }
+
+    private static Object getParameter(String name) {
+        try {
+            DBConnection connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
+            String query = "SELECT value FROM parameters WHERE parameter = '%s' AND status = 1"
+                    .formatted(name);
+            ResultSet rs = connection.query(query);
+            if (rs.next()) {
+                return rs.getObject(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AppConfig.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
 }

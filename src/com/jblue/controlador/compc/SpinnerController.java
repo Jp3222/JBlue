@@ -16,19 +16,17 @@
  */
 package com.jblue.controlador.compc;
 
+import com.jblue.controlador.AbstractComponentController;
 import com.jblue.modelo.objetos.Objeto;
-import com.jblue.util.cache.MemoListCache;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
-import javax.swing.SpinnerListModel;
-import com.jblue.vista.marco.TableSearchView;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public class SpinnerController<T extends Objeto> extends ComponentController<T> {
+public class SpinnerController<T extends Objeto> extends AbstractComponentController<T> {
 
     public SpinnerController(JSpinner component) {
         super(component);

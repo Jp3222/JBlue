@@ -16,6 +16,7 @@
  */
 package com.jblue.controlador.compc;
 
+import com.jblue.controlador.AbstractComponentController;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.cache.MemoListCache;
 import java.awt.event.ActionEvent;
@@ -27,7 +28,7 @@ import javax.swing.JComboBox;
  * @author juan-campos
  * @param <T>
  */
-public class ComboBoxController<T extends Objeto> extends ComponentController<T> {
+public class ComboBoxController<T extends Objeto> extends AbstractComponentController<T> {
 
     public ComboBoxController(JComboBox<T> component, MemoListCache<T> memo_cache) {
         super(component, memo_cache);

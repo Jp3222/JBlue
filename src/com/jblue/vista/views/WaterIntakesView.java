@@ -163,7 +163,7 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
         jLabel17 = new javax.swing.JLabel();
         total = new javax.swing.JLabel();
 
-        setName("Tipo de Tomas"); // NOI18N
+        setName("Tipo de tomas"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
 

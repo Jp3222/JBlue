@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 juanp
+ * Copyright (C) 2024 juan-campos
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,84 +14,93 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador.viewc;
+package com.jblue.controlador.viewc.dbviews;
 
-import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.fabricas.CacheFactory;
-import com.jblue.modelo.objetos.OEmployee;
-import com.jblue.vista.views.options.EmployeeView;
+import com.jblue.modelo.objetos.OCalles;
+import com.jblue.vista.views.StreetsView;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import com.jblue.controlador.AbstractComponentController;
+import com.jblue.modelo.dbconexion.JDBConnection;
+import java.util.ArrayList;
+import com.jblue.controlador.DBControllerModel;
+import com.jblue.controlador.AbstractDBViewController;
 
 /**
  *
- * @author juanp
+ * @author juan-campos
  */
-public class EmployeeController extends DBViewController<OEmployee> {
+public class StreetsController extends AbstractDBViewController<OCalles> implements DBControllerModel {
 
-    private final EmployeeView view;
-    private final JDBConnection<OEmployee> connection;
+    private final JDBConnection<OCalles> connection;
+    private final StreetsView view;
+    private final ArrayList<AbstractComponentController> components_controllers;
 
-    public EmployeeController(EmployeeView view) {
-        super(CacheFactory.PERSONAL);
+    public StreetsController(StreetsView view) {
+        super(CacheFactory.CALLES);
+        this.connection = (JDBConnection<OCalles>) memo_cache.getConnection();
         this.view = view;
-        this.connection = (JDBConnection<OEmployee>) memo_cache.getConnection();
+        this.components_controllers = new ArrayList(5);
+
     }
 
     @Override
-    public void actionPerformed(ActionEvent ae) {
-        switch (ae.getActionCommand()) {
+    public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()) {
             case SAVE_COMMAND ->
                 save();
-            case DELETE_COMMAND ->
-                delete();
             case UPDATE_COMMAND ->
                 update();
+            case DELETE_COMMAND ->
+                delete();
             case CANCEL_COMMAND ->
                 cancel();
-            case "search_object" ->
-                searchObject();
-            default ->
-                defaultCase(ae.getActionCommand(), null, -1);
-        }
+            case "google-maps" -> {
+                try {
+                    String uri = "https://www.google.com.mx/maps/place/Cuauhtemoc,+62757+Cuautla,+Mor./@18.8677895,-98.930224,16z/data=!3m1!4b1!4m6!3m5!1s0x85ce6ead484a42d1:0xe9451cff404f4b4c!8m2!3d18.8678174!4d-98.9259142!16s%2Fg%2F1tj9tnz6?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D";
+                    Desktop.getDesktop().browse(URI.create((uri)));
 
+                } catch (IOException ex) {
+                    Logger.getLogger(StreetsController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            default ->
+                defaultCase("El comando %s no existe".formatted(e.getActionCommand()), StreetsController.this.getClass().getName(), -1);
+        }
     }
 
     @Override
     public void save() {
-        String fields = "first_name, last_names, employee_type, user, password";
-        boolean res = connection.insert(fields, view.getDbValues(false));
-        rmessage(res);
+        if (isOK()) {
+            return;
+        }
+        String field = "name";
+        boolean insert = connection.insert(field, view.getDbValues(false));
+        rmessage(insert);
     }
 
     @Override
     public void delete() {
-        if (!view.isValuesOk()) {
+        if (isOK()) {
             return;
         }
         //boolean delete = connection.delete("id = %s".formatted(view.getObjectSearch().getId()));
-        String id = view.getObjectSearch().getId();
-        boolean delete = connection.update("status", "3", "id = %s".formatted(id));
-//        if (DevFlags.TST_EXE_FUNCION) {
-//            int hidden_payments = JOptionPane.showConfirmDialog(view, "¿Desea eliminar los pagos hechos por esta persona?");
-//            if (hidden_payments == JOptionPane.YES_OPTION) {
-//                try {
-//                    connection.getConnection().update("service_payments", "status=3", "id = %s".formatted(id));
-//                } catch (SQLException ex) {
-//                    Excp.imp(ex, getClass(), true, true);
-//                }
-//            }
-//        }
+        boolean delete = connection.update("status", "3", "id = %s".formatted(view.getObjectSearch().getId()));
         rmessage(delete);
     }
 
     @Override
     public void update() {
-        if (!view.isValuesOk()) {
+        if (isOK()) {
             return;
         }
-        String field = "first_name, last_names, employee_type, user, password";
-
+        String field = "name";
         boolean update = connection.update(field.replace(" ", "").split(","),
                 view.getDbValues(true),
                 "id = %s".formatted(view.getObjectSearch().getId())
@@ -107,13 +116,10 @@ public class EmployeeController extends DBViewController<OEmployee> {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE
         );
+
         if (in == JOptionPane.YES_OPTION) {
             view.initialState();
         }
-    }
-
-    private void searchObject() {
-        view.getObjectSearch();
     }
 
     public boolean isOK() {
@@ -123,7 +129,6 @@ public class EmployeeController extends DBViewController<OEmployee> {
                 "Operacion %s".formatted(status),
                 "Estado de la operacion",
                 JOptionPane.INFORMATION_MESSAGE);
-        System.out.println(ok);
         return ok;
     }
 

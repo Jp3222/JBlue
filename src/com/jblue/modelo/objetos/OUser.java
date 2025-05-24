@@ -5,16 +5,17 @@
 package com.jblue.modelo.objetos;
 
 import com.jblue.modelo.constdb.Const;
-import com.jblue.util.objetos.ObjetoFK;
 import com.jblue.util.tools.ObjectUtils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import com.jblue.util.objetos.ForeingKeyObject;
+import com.jblue.util.objetos.StatusObject;
 
 /**
  *
  * @author jp
  */
-public class OUser extends Objeto implements ObjetoFK {
+public class OUser extends Objeto implements ForeingKeyObject, StatusObject{
 
     private String[] infoFK;
 

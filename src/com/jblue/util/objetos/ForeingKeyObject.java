@@ -14,20 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador;
-
-import com.jblue.controlador.compc.ComponentController;
-import java.awt.event.ActionEvent;
+package com.jblue.util.objetos;
 
 /**
  *
  * @author juan-campos
  */
-public class CPersonal extends Controller {
-
-    @Override
-    public void actionPerformed(ActionEvent ae) {
-
-    }
-
+public interface ForeingKeyObject {
+    
+    String[] getInfoSinFK();
+    
 }

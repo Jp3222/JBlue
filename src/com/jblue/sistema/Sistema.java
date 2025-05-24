@@ -4,6 +4,7 @@
  */
 package com.jblue.sistema;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import com.jblue.controlador.winc.ConfigController;
 import com.jblue.modelo.constdb.Const;
 import com.jutil.framework.MainSystem;
@@ -51,7 +52,7 @@ public class Sistema implements MainSystem {
         //
         resources = new HashMap<>(5);
         resources.put("propierties", propiedades);
-        So.setDefaultLookAndFeel();
+        So.setDefaultLookAndFeel(new FlatLightLaf());
     }
 
     public Properties getPropiedades() {

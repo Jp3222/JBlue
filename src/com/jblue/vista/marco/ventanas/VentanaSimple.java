@@ -19,7 +19,7 @@ public abstract class VentanaSimple extends JFrame implements AppInfo, WindowSta
         
     }
 
-    protected final void updateTitle(String title) {
+    public final void updateTitle(String title) {
         StringBuilder s = new StringBuilder(NOMBRE_DEL_PROGRAMA);
         s.append(" ");
         s.append(VERSION_DEL_PROGRAMA);

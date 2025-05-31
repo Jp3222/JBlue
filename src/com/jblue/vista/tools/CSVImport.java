@@ -16,7 +16,7 @@
  */
 package com.jblue.vista.tools;
 
-import com.jblue.vista.components.CSelectorDeArchivos;
+import com.jblue.vista.components.ChooseFileComponent;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.ViewStates;
 import com.jutil.swingw.modelos.JTableModel;
@@ -183,7 +183,7 @@ public final class CSVImport extends javax.swing.JPanel implements ViewStates {
     @Override
     public void events() {
         document_select_button.addActionListener((ae) -> {
-            document_selected = CSelectorDeArchivos.seleccionarDocumento(null);
+            document_selected = ChooseFileComponent.seleccionarDocumento(null);
             if (document_selected == null && !document_selected.isFile()) {
                 return;
             }

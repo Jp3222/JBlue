@@ -23,7 +23,7 @@ import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.util.tools.GraphicsUtils;
-import com.jblue.vista.components.CVisorUsuario;
+import com.jblue.vista.components.UserViewComponent;
 import com.jblue.vista.views.ShopCartView;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -90,7 +90,7 @@ public class ShopCartController extends Controller {
             JOptionPane.showMessageDialog(view, "Usuario no encontrado");
             return;
         }
-        CVisorUsuario.showVisor(view.getObjectSearch());
+        UserViewComponent.showVisor(view.getObjectSearch());
     }
 
     void payments() {

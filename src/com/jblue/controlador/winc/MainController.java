@@ -17,6 +17,7 @@
 package com.jblue.controlador.winc;
 
 import com.jblue.vista.windows.WMainMenu;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
@@ -39,13 +40,40 @@ public class MainController extends WindowController {
             JOptionPane.showMessageDialog(view, "El comando %s no es valido".formatted(actionCommand));
             return;
         }
-        if (actionCommand.equals(WMainMenu.OUT)) {
-            view.dispose();
+        if (isExit(actionCommand)) {
+            return;
+        }
+        if (isNotAvailable(actionCommand)) {
             return;
         }
         view.getLabelTitle().setText(actionCommand);
         view.getCardLayout().show(view.getViewsPanel(), actionCommand);
         view.updateTitle(actionCommand);
+    }
+
+    public boolean isExit(String actionCommand) {
+        boolean out = actionCommand.equals(WMainMenu.OUT);
+        if (out) {
+            view.dispose();
+
+        }
+        return out;
+    }
+
+    public boolean isNotAvailable(String actionCommand) {
+        boolean out = true;
+        for (Component i : view.getViewsPanel().getComponents()) {
+            System.out.println(i.getName());
+            System.out.println(actionCommand);
+            if (i.getName() != null && i.getName().equalsIgnoreCase(actionCommand)) {
+                out = false;
+                break;
+            }
+        }
+        if (out) {
+            JOptionPane.showMessageDialog(view, "La vista \"%s\" No esta disponible".formatted(actionCommand));
+        }
+        return out;
     }
 
 }

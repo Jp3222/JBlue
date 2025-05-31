@@ -63,6 +63,7 @@ public class LoginWindows extends VentanaSimple {
         this.addWindowListener(controller);
         user.addKeyListener(controller);
         password.addKeyListener(controller);
+        change_password_button.addActionListener(controller);
 
         for (TextFieldWrapper envjtf : FIELDS) {
             envjtf.borrarAlClick();
@@ -135,6 +136,7 @@ public class LoginWindows extends VentanaSimple {
         jPanel7 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
 
@@ -227,7 +229,7 @@ public class LoginWindows extends VentanaSimple {
 
         jPanel7.setLayout(new java.awt.BorderLayout(5, 5));
 
-        jLabel7.setPreferredSize(new java.awt.Dimension(30, 20));
+        jLabel7.setPreferredSize(new java.awt.Dimension(30, 25));
         jPanel7.add(jLabel7, java.awt.BorderLayout.NORTH);
 
         login_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
@@ -236,6 +238,17 @@ public class LoginWindows extends VentanaSimple {
         jPanel7.add(login_button, java.awt.BorderLayout.CENTER);
 
         jPanel8.add(jPanel7);
+
+        jPanel9.setLayout(new java.awt.BorderLayout(5, 5));
+
+        jLabel8.setPreferredSize(new java.awt.Dimension(30, 25));
+        jPanel9.add(jLabel8, java.awt.BorderLayout.NORTH);
+
+        change_password_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        change_password_button.setText("Olvide mi contraseña");
+        change_password_button.setActionCommand("change password");
+        jPanel9.add(change_password_button, java.awt.BorderLayout.CENTER);
+
         jPanel8.add(jPanel9);
         jPanel8.add(jPanel10);
 
@@ -262,6 +275,7 @@ public class LoginWindows extends VentanaSimple {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private final javax.swing.JButton change_password_button = new javax.swing.JButton();
     private final javax.swing.JButton config_button = new javax.swing.JButton();
     private final javax.swing.JLabel db_status_field = new javax.swing.JLabel();
     private final javax.swing.JLabel icon_image = new javax.swing.JLabel();
@@ -269,6 +283,7 @@ public class LoginWindows extends VentanaSimple {
     private final javax.swing.JLabel jLabel5 = new javax.swing.JLabel();
     private final javax.swing.JLabel jLabel6 = new javax.swing.JLabel();
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;

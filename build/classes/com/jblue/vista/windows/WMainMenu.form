@@ -40,6 +40,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem19">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Salir"/>
+                <Property name="actionCommand" type="java.lang.String" value="OUT"/>
               </Properties>
             </MenuItem>
           </SubComponents>
@@ -49,38 +50,44 @@
             <Property name="text" type="java.lang.String" value="Base de datos"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem9">
+            <MenuItem class="javax.swing.JMenuItem" name="users_view_item">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Usuarios"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem10">
+            <MenuItem class="javax.swing.JMenuItem" name="water_intakes_view_item">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Tomas Registradas"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem12">
+            <MenuItem class="javax.swing.JMenuItem" name="water_intakes_types_view_item">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Tipo de tomas"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem11">
+            <MenuItem class="javax.swing.JMenuItem" name="street_view_item">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Calles"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem13">
+            <MenuItem class="javax.swing.JMenuItem" name="service_payments_view_item">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Pagos por el Servicio"/>
-                <Property name="actionCommand" type="java.lang.String" value="Pagos por servicio"/>
+                <Property name="actionCommand" type="java.lang.String" value="Inicio"/>
+                <Property name="name" type="java.lang.String" value="Inicio" noResource="true"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem14">
+            <MenuItem class="javax.swing.JMenuItem" name="surcharge_payments_view_item">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Recargos"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem15">
+            <MenuItem class="javax.swing.JMenuItem" name="other_type_payments_view_item">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Otros tipos de pagos"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="other_payments_view_item">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Otros pagos"/>
               </Properties>
@@ -338,7 +345,7 @@
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/com/jblue/media/img/x32/tipo de pago.png"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="Tipo de pagos"/>
+                        <Property name="text" type="java.lang.String" value="Otros tipos de pagos"/>
                         <Property name="toolTipText" type="java.lang.String" value="Tipo de pagos"/>
                         <Property name="hideActionText" type="boolean" value="true"/>
                         <Property name="horizontalAlignment" type="int" value="10"/>

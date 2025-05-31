@@ -84,8 +84,8 @@ public interface AppConfig {
         if (a == null || b == null) {
             return false;
         }
-        return !isHourValidate() 
-                && o.isAfter(a) 
+        return !isHourValidate()
+                && o.isAfter(a)
                 && o.isBefore(b);
     }
 

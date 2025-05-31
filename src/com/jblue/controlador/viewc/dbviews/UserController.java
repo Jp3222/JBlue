@@ -22,7 +22,7 @@ import static com.jblue.controlador.DBControllerModel.UPDATE_COMMAND;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.sistema.DevFlags;
-import com.jblue.vista.components.CVisorUsuario;
+import com.jblue.vista.components.UserViewComponent;
 import com.jblue.vista.views.UserView;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
@@ -123,7 +123,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
 
     private void searchObject() {
         view.getObjectSearch();
-        CVisorUsuario.showVisor(view.getObjectSearch());
+        UserViewComponent.showVisor(view.getObjectSearch());
     }
 
     public boolean isOK() {

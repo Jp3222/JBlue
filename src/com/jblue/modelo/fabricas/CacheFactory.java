@@ -5,7 +5,7 @@
 package com.jblue.modelo.fabricas;
 
 import com.jblue.modelo.objetos.OCalles;
-import com.jblue.modelo.objetos.OPagosOtros;
+import com.jblue.modelo.objetos.OtherPaymentsType;
 import com.jblue.modelo.objetos.OPagosRecargos;
 import com.jblue.modelo.objetos.OServicePayments;
 import com.jblue.modelo.objetos.OEmployee;
@@ -27,7 +27,7 @@ public final class CacheFactory {
     public static final MemoListCache<OCalles> CALLES = new MemoListCache(ConnectionFactory.getStreets());
     public static final MemoListCache<OServicePayments> SERVICE_PAYMENTS = new MemoListCache(ConnectionFactory.getServicePayments());
     public static final MemoListCache<OPagosRecargos> SURCHARGE_PAYMENTS = new MemoListCache(ConnectionFactory.getSurchargePayments());
-    public static final MemoListCache<OPagosOtros> OTHER_PAYMENTS = new MemoListCache(ConnectionFactory.getOtherPayments());
+    public static final MemoListCache<OtherPaymentsType> OTHER_PAYMENTS = new MemoListCache(ConnectionFactory.getOtherPayments());
 
     public static final MemoListCache[] CACHES = {
         PERSONAL, USUARIOS, TIPO_DE_TOMAS, CALLES, SERVICE_PAYMENTS

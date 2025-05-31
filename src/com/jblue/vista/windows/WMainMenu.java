@@ -17,16 +17,17 @@
 package com.jblue.vista.windows;
 
 import com.jblue.controlador.winc.MainController;
-import com.jblue.vista.components.CVisorUsuario;
+import com.jblue.vista.components.UserViewComponent;
 import com.jblue.vista.marco.ventanas.VentanaSimple;
 import com.jblue.vista.views.StreetsView;
-import com.jblue.vista.views.PaymentTypes;
+import com.jblue.vista.views.OtherPaymentTypesView;
+import com.jblue.vista.views.OtherPaymentsView;
 import com.jblue.vista.views.WaterIntakesView;
 import com.jblue.vista.views.UserView;
 import com.jblue.vista.views.ShopCartView;
+import com.jblue.vista.views.SurchargePaymentsView;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -38,16 +39,18 @@ public final class WMainMenu extends VentanaSimple {
 
     //
     private final CardLayout ly;
-    //
-    private final ShopCartView caja;
-    private final UserView usuarios;
-    private final StreetsView calles;
-    private final WaterIntakesView tipo_de_tomas;
-    private final PaymentTypes tipo_de_pagos;
+    //Vistas de la base de datos
+    private final ShopCartView shop_cart_view;
+    private final UserView users_view;
+    private final StreetsView street_view;
+    private final WaterIntakesView water_intakes_type_view;
+    private final OtherPaymentTypesView other_payments_types_view;
+    private final OtherPaymentsView other_payments_view;
+    private final SurchargePaymentsView surcharge_payments_view;
     //
     private final LoginWindows LOGIN;
     //
-    private CVisorUsuario showVisor;
+    private UserViewComponent showVisor;
     //
     MainController controller;
 
@@ -60,13 +63,17 @@ public final class WMainMenu extends VentanaSimple {
         initComponents();
         this.LOGIN = LOGIN;
 
-        caja = new ShopCartView();
-        usuarios = new UserView();
-        calles = new StreetsView();
-        tipo_de_tomas = new WaterIntakesView();
-        tipo_de_pagos = new PaymentTypes();
+        shop_cart_view = new ShopCartView();
+        users_view = new UserView();
+        street_view = new StreetsView();
+        water_intakes_type_view = new WaterIntakesView();
+        other_payments_types_view = new OtherPaymentTypesView();
+        other_payments_view = new OtherPaymentsView();
+        surcharge_payments_view = new SurchargePaymentsView();
+        //
         ly = (CardLayout) views_panel.getLayout();
         controller = new MainController(this);
+        updateTitle(shop_cart_view.getName());
         build();
     }
 
@@ -80,11 +87,13 @@ public final class WMainMenu extends VentanaSimple {
 
     @Override
     public void components() {
-        views_panel.add(caja, caja.getName());
-        views_panel.add(usuarios, usuarios.getName());
-        views_panel.add(calles, calles.getName());
-        views_panel.add(tipo_de_tomas, tipo_de_tomas.getName());
-        views_panel.add(tipo_de_pagos, tipo_de_pagos.getName());
+        views_panel.add(shop_cart_view, shop_cart_view.getName());
+        views_panel.add(users_view, users_view.getName());
+        views_panel.add(street_view, street_view.getName());
+        views_panel.add(water_intakes_type_view, water_intakes_type_view.getName());
+        views_panel.add(other_payments_types_view, other_payments_types_view.getName());
+        views_panel.add(other_payments_view, other_payments_view.getName());
+        views_panel.add(surcharge_payments_view, surcharge_payments_view.getName());
     }
 
     @Override
@@ -95,7 +104,15 @@ public final class WMainMenu extends VentanaSimple {
         btn_calles.addActionListener(controller);
         btn_tipo_tomas.addActionListener(controller);
         btn_tipo_pagos.addActionListener(controller);
-
+        //Items del menu "Base de datos".
+        users_view_item.addActionListener(controller);
+        street_view_item.addActionListener(controller);
+        water_intakes_view_item.addActionListener(controller);
+        water_intakes_types_view_item.addActionListener(controller);
+        other_type_payments_view_item.addActionListener(controller);
+        other_payments_view_item.addActionListener(controller);
+        surcharge_payments_view_item.addActionListener(controller);
+        service_payments_view_item.addActionListener(controller);
     }
 
     @Override
@@ -108,7 +125,7 @@ public final class WMainMenu extends VentanaSimple {
     }
 
     public void goToHome() {
-        ly.show(views_panel, caja.getName());
+        ly.show(views_panel, shop_cart_view.getName());
     }
 
     /**
@@ -154,13 +171,14 @@ public final class WMainMenu extends VentanaSimple {
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItem19 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem10 = new javax.swing.JMenuItem();
-        jMenuItem12 = new javax.swing.JMenuItem();
-        jMenuItem11 = new javax.swing.JMenuItem();
-        jMenuItem13 = new javax.swing.JMenuItem();
-        jMenuItem14 = new javax.swing.JMenuItem();
-        jMenuItem15 = new javax.swing.JMenuItem();
+        users_view_item = new javax.swing.JMenuItem();
+        water_intakes_view_item = new javax.swing.JMenuItem();
+        water_intakes_types_view_item = new javax.swing.JMenuItem();
+        street_view_item = new javax.swing.JMenuItem();
+        service_payments_view_item = new javax.swing.JMenuItem();
+        surcharge_payments_view_item = new javax.swing.JMenuItem();
+        other_type_payments_view_item = new javax.swing.JMenuItem();
+        other_payments_view_item = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1000, 500));
@@ -249,7 +267,7 @@ public final class WMainMenu extends VentanaSimple {
 
         btn_tipo_pagos.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         btn_tipo_pagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/tipo de pago.png"))); // NOI18N
-        btn_tipo_pagos.setText("Tipo de pagos");
+        btn_tipo_pagos.setText("Otros tipos de pagos");
         btn_tipo_pagos.setToolTipText("Tipo de pagos");
         btn_tipo_pagos.setHideActionText(true);
         btn_tipo_pagos.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
@@ -318,33 +336,38 @@ public final class WMainMenu extends VentanaSimple {
         jMenu1.add(jSeparator2);
 
         jMenuItem19.setText("Salir");
+        jMenuItem19.setActionCommand("OUT");
         jMenu1.add(jMenuItem19);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Base de datos");
 
-        jMenuItem9.setText("Usuarios");
-        jMenu2.add(jMenuItem9);
+        users_view_item.setText("Usuarios");
+        jMenu2.add(users_view_item);
 
-        jMenuItem10.setText("Tomas Registradas");
-        jMenu2.add(jMenuItem10);
+        water_intakes_view_item.setText("Tomas Registradas");
+        jMenu2.add(water_intakes_view_item);
 
-        jMenuItem12.setText("Tipo de tomas");
-        jMenu2.add(jMenuItem12);
+        water_intakes_types_view_item.setText("Tipo de tomas");
+        jMenu2.add(water_intakes_types_view_item);
 
-        jMenuItem11.setText("Calles");
-        jMenu2.add(jMenuItem11);
+        street_view_item.setText("Calles");
+        jMenu2.add(street_view_item);
 
-        jMenuItem13.setText("Pagos por el Servicio");
-        jMenuItem13.setActionCommand("Pagos por servicio");
-        jMenu2.add(jMenuItem13);
+        service_payments_view_item.setText("Pagos por el Servicio");
+        service_payments_view_item.setActionCommand("Inicio");
+        service_payments_view_item.setName("Inicio"); // NOI18N
+        jMenu2.add(service_payments_view_item);
 
-        jMenuItem14.setText("Recargos");
-        jMenu2.add(jMenuItem14);
+        surcharge_payments_view_item.setText("Recargos");
+        jMenu2.add(surcharge_payments_view_item);
 
-        jMenuItem15.setText("Otros pagos");
-        jMenu2.add(jMenuItem15);
+        other_type_payments_view_item.setText("Otros tipos de pagos");
+        jMenu2.add(other_type_payments_view_item);
+
+        other_payments_view_item.setText("Otros pagos");
+        jMenu2.add(other_payments_view_item);
 
         jMenuBar1.add(jMenu2);
 
@@ -369,19 +392,12 @@ public final class WMainMenu extends VentanaSimple {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
-    private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
@@ -396,7 +412,15 @@ public final class WMainMenu extends VentanaSimple {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel label_title;
     private javax.swing.JPanel left_panel;
+    private javax.swing.JMenuItem other_payments_view_item;
+    private javax.swing.JMenuItem other_type_payments_view_item;
+    private javax.swing.JMenuItem service_payments_view_item;
+    private javax.swing.JMenuItem street_view_item;
+    private javax.swing.JMenuItem surcharge_payments_view_item;
+    private javax.swing.JMenuItem users_view_item;
     private javax.swing.JPanel views_panel;
+    private javax.swing.JMenuItem water_intakes_types_view_item;
+    private javax.swing.JMenuItem water_intakes_view_item;
     // End of variables declaration//GEN-END:variables
     public static final String OUT = "OUT";
 

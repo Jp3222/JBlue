@@ -24,6 +24,7 @@ import com.jblue.modelo.fabricas.ConnectionFactory;
 import com.jblue.sistema.ConstSisMen;
 import com.jblue.sistema.Sesion;
 import com.jblue.sistema.app.AppConfig;
+import com.jblue.vista.components.ChangePasswordComponent;
 import com.jblue.vista.windows.LoginWindows;
 import com.jblue.vista.windows.ConfigWindow;
 import com.jblue.vista.windows.WMainMenu;
@@ -68,6 +69,8 @@ public class LoginController extends WindowController {
                 config();
             case "show" ->
                 show();
+            case "change password" ->
+                changePassword();
             default ->
                 defaultCase(e.getActionCommand(), null, -1);
         }
@@ -185,6 +188,15 @@ public class LoginController extends WindowController {
         } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             login();
         }
+    }
+
+    private void changePassword() {
+        boolean changePassword = ChangePasswordComponent.getChangePasswordComponent(view);
+        if (!changePassword) {
+            JOptionPane.showMessageDialog(view, "La contraseña no se pudo cambiar");
+            return;
+        }
+        JOptionPane.showMessageDialog(view, "Contraseña Cambiada");
     }
 
 }

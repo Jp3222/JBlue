@@ -55,8 +55,8 @@ public class ObjectUtils {
         mapa.put(Const.SURCHARGE_PAYMENTS.getTable(), new OPagosRecargos());
         mapa.put(ConstBD.TABLAS[7], new OPagosRecargos());
 
-        mapa.put(Const.OTHER_PAYMENTS.getTable(), new OPagosOtros());
-        mapa.put(ConstBD.TABLAS[8], new OPagosOtros());
+        mapa.put(Const.OTHER_PAYMENTS.getTable(), new OtherPaymentsType());
+        mapa.put(ConstBD.TABLAS[8], new OtherPaymentsType());
 
         mapa.put(ConstBD.TABLAS[9], new OValores());
     }

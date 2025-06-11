@@ -18,24 +18,24 @@ package com.jblue.vista.windows;
 
 import com.jblue.modelo.objetos.OEmployee;
 import com.jblue.sistema.Sesion;
-import com.jblue.vista.marco.OptionMenu;
-import com.jblue.vista.marco.ventanas.VentanaSimple;
+import com.jblue.vista.marco.ventanas.AbstractAppWindows;
 import com.jblue.vista.views.ConfigurationPanel;
-import com.jblue.vista.views.options.VContabilidad;
-import com.jblue.vista.views.options.VDocumentos;
-import com.jblue.vista.views.options.VPayments;
-import com.jblue.vista.views.options.VPerfil;
-import com.jblue.vista.views.options.EmployeeView;
-import com.jblue.vista.views.options.VSuministros;
+import com.jblue.vista.views.VContabilidad;
+import com.jblue.vista.views.VDocumentos;
+import com.jblue.vista.views.VPayments;
+import com.jblue.vista.views.VPerfil;
+import com.jblue.vista.views.EmployeeView;
+import com.jblue.vista.views.VSuministros;
 import java.awt.CardLayout;
 import javax.swing.Icon;
 import javax.swing.JPanel;
+import com.jblue.vista.marco.OptionMenuModel;
 
 /**
  *
  * @author jp
  */
-public final class MenuCargos extends VentanaSimple {
+public final class MenuCargos extends AbstractAppWindows {
 
     /**
      * Creates new form MenuCargos
@@ -53,22 +53,22 @@ public final class MenuCargos extends VentanaSimple {
 
         default_icon = user_photo.getIcon();
 
-        Perfil = new OptionMenu[]{
+        Perfil = new OptionMenuModel[]{
             view_perfil
         };
-        Presidente = new OptionMenu[]{
+        Presidente = new OptionMenuModel[]{
             view_payments, view_docs, view_contabilidad
         };
-        Tesorero = new OptionMenu[]{
+        Tesorero = new OptionMenuModel[]{
             view_contabilidad, view_payments
         };
-        Secretario = new OptionMenu[]{
+        Secretario = new OptionMenuModel[]{
             view_payments, view_su, view_docs
         };
-        Pasante = new OptionMenu[]{
+        Pasante = new OptionMenuModel[]{
             view_docs
         };
-        Administrador = new OptionMenu[]{
+        Administrador = new OptionMenuModel[]{
             view_contabilidad, view_docs, view_payments, view_perfil, view_personal, view_su, view_config
         };
         build();
@@ -139,9 +139,9 @@ public final class MenuCargos extends VentanaSimple {
         return r;
     }
 
-    public void addOptions(JPanel panel, OptionMenu... options) {
+    public void addOptions(JPanel panel, OptionMenuModel... options) {
         initialState();
-        for (OptionMenu i : options) {
+        for (OptionMenuModel i : options) {
             i.setEvenOption((e) -> {
                 ly.show(panel, i.getOption().getName());
             });
@@ -221,12 +221,12 @@ public final class MenuCargos extends VentanaSimple {
     private final VSuministros view_su;
     private final ConfigurationPanel view_config;
     //Menus
-    private final OptionMenu[] Perfil;
-    private final OptionMenu[] Presidente;
-    private final OptionMenu[] Tesorero;
-    private final OptionMenu[] Secretario;
-    private final OptionMenu[] Pasante;
-    private final OptionMenu[] Administrador;
+    private final OptionMenuModel[] Perfil;
+    private final OptionMenuModel[] Presidente;
+    private final OptionMenuModel[] Tesorero;
+    private final OptionMenuModel[] Secretario;
+    private final OptionMenuModel[] Pasante;
+    private final OptionMenuModel[] Administrador;
     //Latour
     private final CardLayout ly;
     //

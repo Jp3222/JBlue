@@ -25,8 +25,9 @@ import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.OWaterIntake;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
+import com.jblue.util.Formats;
 import com.jblue.util.Filters;
-import com.jblue.vista.marco.DBValues;
+import com.jblue.util.tools.GraphicsUtils;
 import com.jblue.vista.marco.vistas.DBView;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
@@ -35,12 +36,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import com.jblue.vista.marco.DBValuesModel;
 
 /**
  *
  * @author juan-campos
  */
-public final class UserView extends DBView implements DBValues {
+public final class UserView extends DBView implements DBValuesModel {
 
     private CardLayout ly;
     private final JTableModel model;
@@ -92,7 +94,8 @@ public final class UserView extends DBView implements DBValues {
         ComboBoxController<OCalles> c2 = new ComboBoxController(street, CacheFactory.CALLES);
         ComboBoxController<OWaterIntake> c3 = new ComboBoxController(water_intakes_filter, CacheFactory.TIPO_DE_TOMAS);
         ComboBoxController<OCalles> c4 = new ComboBoxController(street_filter, CacheFactory.CALLES);
-
+        add_file_button.addActionListener(controller);
+        add_photo_button.addActionListener(controller);
         c1.loadData();
         c2.loadData();
         c3.loadData();
@@ -118,11 +121,16 @@ public final class UserView extends DBView implements DBValues {
         man_calle.setSelected(false);
         man_estado.setSelected(false);
         buttonGroup1.setSelected(jRadioButton1.getModel(), true);
-        save_button.setEnabled(true);
-        update_button.setEnabled(false);
-        delete_button.setEnabled(false);
-        add_consumer_button.setEnabled(false);
-        show_consumer_list_button.setEnabled(false);
+        GraphicsUtils.setEnable(false, 
+                save_button, 
+                update_button, 
+                delete_button, 
+                add_consumer_button, 
+                show_consumer_list_button,
+                add_file_button, 
+                add_photo_button
+        );
+
     }
 
     @Override
@@ -183,8 +191,8 @@ public final class UserView extends DBView implements DBValues {
         user_state = new javax.swing.JComboBox<>();
         man_estado = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        Documento = new javax.swing.JButton();
+        add_photo_button = new javax.swing.JButton();
+        add_file_button = new javax.swing.JButton();
         add_consumer_button = new javax.swing.JButton();
         show_consumer_list_button = new javax.swing.JButton();
         option_panel = new javax.swing.JPanel();
@@ -451,15 +459,15 @@ public final class UserView extends DBView implements DBValues {
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/agregar-archivo.png"))); // NOI18N
-        jButton1.setText("Foto");
-        jButton1.setEnabled(false);
-        jPanel1.add(jButton1);
+        add_photo_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/agregar-archivo.png"))); // NOI18N
+        add_photo_button.setText("Foto");
+        add_photo_button.setActionCommand("add_photo");
+        jPanel1.add(add_photo_button);
 
-        Documento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/agregar-archivo.png"))); // NOI18N
-        Documento.setText("Documento");
-        Documento.setEnabled(false);
-        jPanel1.add(Documento);
+        add_file_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/agregar-archivo.png"))); // NOI18N
+        add_file_button.setText("Documento");
+        add_file_button.setActionCommand("add_file");
+        jPanel1.add(add_file_button);
 
         center_panel.add(jPanel1);
 
@@ -489,7 +497,7 @@ public final class UserView extends DBView implements DBValues {
         jPanel13.add(save_button);
 
         update_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        update_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/actualizar.png"))); // NOI18N
+        update_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/update_x32.png"))); // NOI18N
         update_button.setText("Actualizar");
         update_button.setActionCommand("update");
         update_button.setPreferredSize(new java.awt.Dimension(166, 40));
@@ -707,8 +715,9 @@ public final class UserView extends DBView implements DBValues {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Documento;
     private javax.swing.JButton add_consumer_button;
+    private javax.swing.JButton add_file_button;
+    private javax.swing.JButton add_photo_button;
     private javax.swing.JButton back_button;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton cancel_button;
@@ -723,7 +732,6 @@ public final class UserView extends DBView implements DBValues {
     private javax.swing.JCheckBox filtros;
     private javax.swing.JTextField first_name;
     private javax.swing.JTextField house_numer;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -886,7 +894,7 @@ public final class UserView extends DBView implements DBValues {
         String _water_intakes = water_intakes.getItemAt(water_intakes.getSelectedIndex()).getId();
         String _status = String.valueOf(user_state.getSelectedIndex());
         String _type = buttonGroup1.getSelection().getActionCommand();
-        return new String[]{
+        String[] arr = new String[]{
             _first_name,
             _last_name1,
             _last_name2,
@@ -896,6 +904,7 @@ public final class UserView extends DBView implements DBValues {
             _status,
             _type
         };
+        return Formats.getDBFormatInputArray(arr);
     }
 
     @Override

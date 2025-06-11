@@ -1,4 +1,4 @@
-    /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -76,7 +76,7 @@ public class Sistema implements MainSystem {
                     o.wait();
                 }
             } catch (InterruptedException ex) {
-                Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+                SystemLogs.infoDbLogs(ex.getMessage());
             }
         }
         try {
@@ -94,11 +94,10 @@ public class Sistema implements MainSystem {
             connection.setShowQuery(DevFlags.DEV_MSG_CODE);
             resources.put("connection", connection);
         } catch (SQLException e) {
-            showMessage(e.getErrorCode());
-            showRMP();
+            SystemLogs.severeSysLogs(e.getMessage(), e);
             Excp.SysExit();
         }
-        LOG.log(Level.INFO, "DATA BASE CONNECTION");
+        SystemLogs.infoSysLogs("BASE DE DATOS CONECTADA");
         return true;
     }
 
@@ -113,58 +112,47 @@ public class Sistema implements MainSystem {
 
     }
 
-    void showRMP() {
-        int in = JOptionPane.showConfirmDialog(null, "Desea reiniciar las credenciales");
-        if (in == JOptionPane.YES_OPTION) {
-            propiedades.remove(AppConfig.DB_MOTOR);
-            propiedades.remove(AppConfig.DB_HOST);
-            propiedades.remove(AppConfig.DB_PORT);
-            propiedades.remove(AppConfig.DB_NAME);
-            propiedades.remove(AppConfig.DB_USER);
-            propiedades.remove(AppConfig.DB_PASSWORD);
-            try (FileOutputStream out = new FileOutputStream(AppFiles.FIL_ARC_CONFIG);) {
-                propiedades.storeToXML(out, "Configuracion");
-            } catch (IOException ex) {
-                Logger.getLogger(ConfigController.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        }
-    }
-
     @Override
     public boolean appFiles() {
         File aux;
+        //Directorios del sistema
         for (String i : AppFiles.S_ALL_DIR_PROG) {
             aux = new File(i);
             if (aux.exists()) {
-                LOG.log(Level.INFO, log_messages.formatted(i, "FUE LEIDO CORRECTAMENTE"));
+                //SystemLogs.infoSysLogs(log_messages.formatted(i, "EXISTE"));
+                System.out.println(log_messages.formatted(i, "EXISTE"));
             } else {
                 aux.mkdir();
-                LOG.log(Level.INFO, log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
+                //    SystemLogs.infoSysLogs(log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
+                System.out.println(log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
+
             }
         }
 
+        //Directorios del usuario
         for (String i : AppFiles.S_ARR_DIR_USER) {
             aux = new File(i);
             if (aux.exists()) {
-                LOG.log(Level.INFO, log_messages.formatted(i, "FUE LEIDO CORRECTAMENTE"));
+                SystemLogs.infoSysLogs(log_messages.formatted(i, "EXISTE"));
             } else {
-                aux.mkdir();
-                LOG.log(Level.INFO, log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
+                aux.mkdirs();
+                //SystemLogs.infoSysLogs(log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
+                System.out.println(log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
             }
         }
-
+        //Alchivos del programa
         for (String i : AppFiles.S_ARR_PROG_ARC) {
             System.out.println(i);
             aux = new File(i);
             if (aux.exists()) {
                 System.out.println(aux.getAbsolutePath());
-                LOG.log(Level.INFO, log_messages.formatted(i, "FUE LEIDO CORRECTAMENTE"));
+                SystemLogs.infoSysLogs(log_messages.formatted(i, "EXISTE"));
             } else {
                 try {
                     aux.createNewFile();
-                    LOG.log(Level.INFO, log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
+                    SystemLogs.infoSysLogs(log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
                 } catch (IOException ex) {
-                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                    SystemLogs.severeSysLogs(i, ex);
                 }
             }
         }
@@ -174,6 +162,7 @@ public class Sistema implements MainSystem {
 
     @Override
     public boolean cache() {
+        SystemLogs.infoSysLogs("MEMORIA CACHE LISTA");
         return CacheFactory.cache_list || CacheFactory.loadCaches();
     }
 
@@ -200,7 +189,7 @@ public class Sistema implements MainSystem {
         resources.put("t_employees", Const.EMPLOYEES);
         resources.put("t_payments", Const.SERVICE_PAYMENTS);
 
-        LOG.log(Level.INFO, "OPEN SYSTEM");
+        SystemLogs.infoDbLogs("OPEN SYSTEM");
         return true;
     }
 
@@ -208,7 +197,7 @@ public class Sistema implements MainSystem {
     public boolean closeSys() {
         try {
             connection.close();
-            LOG.log(Level.INFO, "CLOSE SYSTEM");
+            SystemLogs.infoDbLogs("CLOSE SYSTEM");
         } catch (SQLException ex) {
             Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -225,4 +214,7 @@ public class Sistema implements MainSystem {
         return resources.get(key);
     }
 
+    public static String buildMSG() {
+        return null;
+    }
 }

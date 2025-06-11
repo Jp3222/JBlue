@@ -6,6 +6,8 @@ package com.jblue.sistema.app;
 
 import com.jblue.util.plataformas.OsConfig;
 import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -23,14 +25,37 @@ public class AppFiles {
 
     public static final String DIR_PROG_MULTIMEDIA = constURL(DIR_PROG, "Multimedia");
 
-    public static final String DIR_PROG_ARC_CONFIG = constURL(DIR_PROG, "jblue.xml");
+    public static final String DIR_PROG_LOG = constURL(DIR_PROG, "Logs");
+
+    public static final String DIR_PROG_LOG_TODAY = constURL(DIR_PROG_LOG, LocalDate.now().format(DateTimeFormatter.ofPattern("dd_MM_yyyy")));
 
     public static final String[] S_ALL_DIR_PROG = {
-        DIR_PROG, DIR_PROG_USUARIOS, DIR_PROG_PERSONAL, DIR_PROG_MULTIMEDIA
+        DIR_PROG, DIR_PROG_USUARIOS, DIR_PROG_PERSONAL, DIR_PROG_MULTIMEDIA, DIR_PROG_LOG, DIR_PROG_LOG_TODAY
     };
 
+    /**
+     * archivo de configuracion
+     */
+    public static final String DIR_PROG_ARC_CONFIG = constURL(DIR_PROG, "jblue.xml");
+    /**
+     * archivo para logs del sistema
+     */
+    public static final String DIR_PROG_ARC_SYS_LOG = constURL(DIR_PROG_LOG_TODAY, "sys.log");
+    /**
+     * archivo para logs de los modulos
+     */
+    public static final String DIR_PROG_ARC_MOD_LOG = constURL(DIR_PROG_LOG_TODAY, "mod.log");
+    /**
+     * archivo para logs de la base de datos
+     */
+    public static final String DIR_PROG_ARC_DB_LOG = constURL(DIR_PROG_LOG_TODAY, "db.log");
+    /**
+     * archivo para logs desconocidos
+     */
+    public static final String DIR_PROG_ARC_UKW_LOG = constURL(DIR_PROG_LOG_TODAY, "ukw.log");
+
     public static final String[] S_ARR_PROG_ARC = {
-        DIR_PROG_ARC_CONFIG
+        DIR_PROG_ARC_CONFIG, DIR_PROG_ARC_SYS_LOG, DIR_PROG_ARC_MOD_LOG, DIR_PROG_ARC_DB_LOG
     };
 
     //-- directorios del usuario--//
@@ -66,7 +91,6 @@ public class AppFiles {
         StringBuilder sb = new StringBuilder(100);
         int size = str.length;
         for (int i = 0; i < size - 1; i++) {
-
             sb.append(str[i]).append(File.separator);
         }
         sb.append(str[size - 1]);

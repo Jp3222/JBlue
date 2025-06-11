@@ -23,19 +23,19 @@ import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filters;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.util.tools.GraphicsUtils;
-import com.jblue.vista.marco.DBValues;
 import com.jblue.vista.marco.vistas.DBView;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 import java.time.LocalDate;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import com.jblue.vista.marco.DBValuesModel;
 
 /**
  *
  * @author juan-campos
  */
-public final class OtherPaymentTypesView extends DBView implements DBValues {
+public final class OtherPaymentTypesView extends DBView implements DBValuesModel {
 
     private JTableModel model;
     private OPaymentsTypes object_search;

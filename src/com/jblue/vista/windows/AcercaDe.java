@@ -5,7 +5,7 @@
 package com.jblue.vista.windows;
 
 import com.jblue.sistema.app.AppInfo;
-import com.jblue.vista.marco.ventanas.VentanaSimple;
+import com.jblue.vista.marco.ventanas.AbstractAppWindows;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -14,7 +14,7 @@ import javax.swing.text.StyledDocument;
  *
  * @author jp
  */
-public final class AcercaDe extends VentanaSimple {
+public final class AcercaDe extends AbstractAppWindows {
 
     /**
      * Creates new form AcercaDE

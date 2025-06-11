@@ -23,20 +23,21 @@ import com.jblue.modelo.fabricas.TableModelFactory;
 import com.jblue.modelo.objetos.OWaterIntake;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filters;
-import com.jblue.vista.marco.DBValues;
+import com.jblue.util.Formats;
 import com.jblue.vista.marco.vistas.DBView;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import com.jblue.vista.marco.TableSearchView;
+import com.jblue.vista.marco.DBValuesModel;
+import com.jblue.vista.marco.TableSearchViewModel;
 
 /**
  *
  * @author juan-campos
  */
-public final class WaterIntakesView extends DBView implements DBValues, TableSearchView {
+public final class WaterIntakesView extends DBView implements DBValuesModel, TableSearchViewModel {
 
     private final CardLayout ly;
     private final JTableModel model;
@@ -50,7 +51,7 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
         model = TableModelFactory.getWaterIntakesTableModel();
-        controller = FactoryController.getWaterIntakesController(this);
+        //controller = FactoryController.getWaterIntakesController(this);
         table_controller = new TableController(this, CacheFactory.TIPO_DE_TOMAS);
         build();
     }
@@ -516,12 +517,13 @@ public final class WaterIntakesView extends DBView implements DBValues, TableSea
         String _previus_price = String.valueOf(object_search.getPrice());
         String _cost = previus_price_field.getText();
         String _fine = surcharge_field.getText();
-        return new String[]{
+        String[] arr = new String[]{
             _type,
             _previus_price,
             _cost,
             _fine
         };
+        return Formats.getDBFormatInputArray(arr);
     }
 
     @Override

@@ -5,7 +5,12 @@
 package com.jblue.sistema;
 
 import com.jblue.modelo.objetos.OEmployee;
+import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.framework.LaunchApp;
 import com.jutil.framework.LocalSession;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Esta clase define al personal de sesion actual, quien hace uso del programa,
@@ -13,9 +18,14 @@ import com.jutil.framework.LocalSession;
  *
  * @author jp
  */
-public class Sesion implements LocalSession {
+public class Sesion implements LocalSession<OEmployee> {
 
     private static Sesion instancia;
+    public final static int USER_INSERT = 1;
+    public final static int USER_UPDATE = 2;
+    public final static int USER_DELETE = 3;
+    public final static int USER_EXPORT = 4;
+    public final static int USER_IMPORT = 5;
 
     /**
      * Retorna una unica instancia de la clase Sesion
@@ -30,20 +40,19 @@ public class Sesion implements LocalSession {
     }
 
     /**
-     * Variable que guarda el personal que ha iniciado sesion
-     *
+     * Empleado que ha iniciado session
      */
     private OEmployee personal;
+    private final DBConnection connection;
+    private final String query;
 
     private Sesion() {
+        connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
+        this.query = "INSERT INTO history(employee, type, description) VALUES(%s,%s,%s)";
     }
 
     public OEmployee getUsuario() {
         return personal;
-    }
-
-    public void setUsuario(OEmployee personal) {
-        this.personal = personal;
     }
 
     @Override
@@ -56,8 +65,16 @@ public class Sesion implements LocalSession {
     }
 
     @Override
-    public <T> void setUser(T user) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void setUser(OEmployee user) {
+        personal = user;
+    }
+
+    public void setMov(int type, String description) {
+        try {
+            connection.query(query.formatted(personal.getId(), type, description));
+        } catch (SQLException ex) {
+            SystemLogs.severeDbLogs("Error al registrar un movimiento", ex);
+        }
     }
 
 }

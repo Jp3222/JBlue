@@ -4,16 +4,16 @@
  */
 package com.jblue.modelo.objetos;
 
-import com.jblue.util.objetos.AbstraccionObjeto;
-import com.jblue.util.objetos.ModeloObjeto;
+import com.jblue.util.objetos.AbstractObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.jblue.util.objetos.ObjectModel;
 
 /**
  *
  * @author jp
  */
-public class Objeto extends AbstraccionObjeto implements ModeloObjeto {
+public class Objeto extends AbstractObject implements ObjectModel {
 
     public Objeto() {
         super(null);

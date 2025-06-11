@@ -77,27 +77,27 @@ public class StreetsController extends AbstractDBViewController<OCalles> impleme
 
     @Override
     public void save() {
-        if (isOK()) {
+        if (view.isValuesOk()) {
             return;
         }
         String field = "name";
         boolean insert = connection.insert(field, view.getDbValues(false));
-        rmessage(insert);
+        rmessage(view, insert);
     }
 
     @Override
     public void delete() {
-        if (isOK()) {
+        if (view.isValuesOk()) {
             return;
         }
         //boolean delete = connection.delete("id = %s".formatted(view.getObjectSearch().getId()));
         boolean delete = connection.update("status", "3", "id = %s".formatted(view.getObjectSearch().getId()));
-        rmessage(delete);
+        rmessage(view, delete);
     }
 
     @Override
     public void update() {
-        if (isOK()) {
+        if (!view.isValuesOk()) {
             return;
         }
         String field = "name";
@@ -105,7 +105,7 @@ public class StreetsController extends AbstractDBViewController<OCalles> impleme
                 view.getDbValues(true),
                 "id = %s".formatted(view.getObjectSearch().getId())
         );
-        rmessage(update);
+        rmessage(view, update);
     }
 
     @Override
@@ -122,25 +122,4 @@ public class StreetsController extends AbstractDBViewController<OCalles> impleme
         }
     }
 
-    public boolean isOK() {
-        boolean ok = view.isValuesOk();
-        String status = ok ? "Exitoso" : "Erroneo";
-        JOptionPane.showMessageDialog(view,
-                "Operacion %s".formatted(status),
-                "Estado de la operacion",
-                JOptionPane.INFORMATION_MESSAGE);
-        return ok;
-    }
-
-    public void rmessage(boolean op) {
-        String status = op ? "Exitoso" : "Erroneo";
-        JOptionPane.showMessageDialog(view,
-                "Operacion %s".formatted(status),
-                "Estado de la operacion",
-                JOptionPane.INFORMATION_MESSAGE);
-        if (op) {
-            memo_cache.reLoadData();
-            view.initialState();
-        }
-    }
 }

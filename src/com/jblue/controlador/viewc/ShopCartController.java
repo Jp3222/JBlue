@@ -48,6 +48,7 @@ public class ShopCartController extends Controller {
     private final PaymentModel o;
 
     public ShopCartController(ShopCartView view) {
+        System.out.println("xd 1");
         this.view = view;
         memo_cache = CacheFactory.USUARIOS;
         this.o = PaymentFactory.getServicePayment();

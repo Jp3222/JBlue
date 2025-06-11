@@ -20,6 +20,9 @@ import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.objetos.OUser;
+import com.jblue.vista.marco.vistas.SimpleView;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -36,4 +39,15 @@ public abstract class AbstractDBViewController<T extends Objeto> extends Abstrac
         this.connection = (JDBConnection<OUser>) memo_cache.getConnection();
     }
 
+    protected void rmessage(SimpleView view, boolean ok) {
+        String status = ok ? "Exitoso" : "Erroneo";
+        JOptionPane.showMessageDialog(view,
+                "Operacion %s".formatted(status),
+                "Estado de la operacion",
+                JOptionPane.INFORMATION_MESSAGE);
+        if (ok) {
+            memo_cache.reLoadData();
+            view.initialState();
+        }
+    }
 }

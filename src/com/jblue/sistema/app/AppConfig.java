@@ -40,6 +40,7 @@ public interface AppConfig {
     public static final String DB_PORT = "DB PORT";
     public static final String DB_HOST = "DB HOST";
     public static final String DB_NAME = "DB NAME";
+
     public static final String[] DB_KEYS = {
         DB_USER, DB_PASSWORD, DB_HOST, DB_MOTOR, DB_NAME, DB_PORT
     };
@@ -81,12 +82,18 @@ public interface AppConfig {
         LocalTime a = getOpenHour(),
                 b = getCloseHour(),
                 o = LocalTime.now();
+
         if (a == null || b == null) {
             return false;
         }
-        return !isHourValidate()
-                && o.isAfter(a)
-                && o.isBefore(b);
+        boolean hour_validate = isHourValidate();
+        System.out.println(hour_validate);
+        if (hour_validate) {
+            System.out.println(o + " > " + a);
+            System.out.println(o + " < " + b);
+            return o.isAfter(a) && o.isBefore(b);
+        }
+        return true;
     }
 
     public static int getPayDay() {
@@ -118,7 +125,6 @@ public interface AppConfig {
         if (valueOf == null) {
             return false;
         }
-        System.out.println(valueOf);
         return Boolean.parseBoolean(String.valueOf(valueOf));
     }
 

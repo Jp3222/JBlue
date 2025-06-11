@@ -16,26 +16,25 @@
  */
 package com.jblue.vista.views;
 
-import com.jblue.controlador.FactoryController;
 import com.jblue.controlador.compc.TableController;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.fabricas.TableModelFactory;
 import com.jblue.modelo.objetos.OCalles;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filters;
-import com.jblue.vista.marco.DBValues;
 import com.jblue.vista.marco.vistas.DBView;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import com.jblue.vista.marco.DBValuesModel;
 
 /**
  *
  * @author juan-campos
  */
-public final class StreetsView extends DBView implements DBValues {
+public final class StreetsView extends DBView implements DBValuesModel {
 
     private OCalles object_search;
     private final CardLayout ly;
@@ -50,7 +49,7 @@ public final class StreetsView extends DBView implements DBValues {
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
         //
-        controller = FactoryController.getStreetsController(this);
+        //controller = FactoryController.getStreetsController(this);
         table_controller = new TableController(this, CacheFactory.CALLES);
         build();
     }

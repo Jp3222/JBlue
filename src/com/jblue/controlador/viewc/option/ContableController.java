@@ -21,7 +21,7 @@ import com.jblue.modelo.constdb.Const;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.OServicePayments;
 import com.jblue.util.cache.MemoListCache;
-import com.jblue.vista.views.options.VContabilidad;
+import com.jblue.vista.views.VContabilidad;
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;

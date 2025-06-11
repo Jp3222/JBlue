@@ -25,6 +25,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
 
     public ServicePaymentLogic() {
         super();
+        System.out.println("xddddddddddd2");
     }
 
     @Override

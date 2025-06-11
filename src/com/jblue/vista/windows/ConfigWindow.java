@@ -4,8 +4,7 @@
  */
 package com.jblue.vista.windows;
 
-import com.jblue.controlador.winc.ConfigController;
-import com.jblue.vista.marco.ventanas.VentanaSimple;
+import com.jblue.vista.marco.ventanas.AbstractAppWindows;
 import com.jblue.vista.views.ConfigurationPanel;
 import java.awt.BorderLayout;
 
@@ -13,7 +12,7 @@ import java.awt.BorderLayout;
  *
  * @author jp
  */
-public final class ConfigWindow extends VentanaSimple {
+public final class ConfigWindow extends AbstractAppWindows {
 
     private final ConfigurationPanel config;
 

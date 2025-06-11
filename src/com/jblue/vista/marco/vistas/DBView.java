@@ -21,26 +21,18 @@ import com.jblue.controlador.compc.TableController;
 import com.jblue.modelo.objetos.Objeto;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import com.jblue.vista.marco.TableSearchView;
 import com.jblue.util.objetos.ForeingKeyObject;
+import com.jblue.vista.marco.TableSearchViewModel;
 
 /**
  *
  * @author jp
  */
-public abstract class DBView extends SimpleView implements TableSearchView {
+public abstract class DBView extends SimpleView implements TableSearchViewModel {
 
     protected TableController table_controller;
     protected int view_show;
     protected ImageIcon icon;
-
-    public Icon getIcon() {
-        return icon;
-    }
-
-    public void setIcon(Icon icon) {
-        this.icon = (ImageIcon) icon;
-    }
 
     @Override
     public void build() {
@@ -70,4 +62,11 @@ public abstract class DBView extends SimpleView implements TableSearchView {
         return controller;
     }
 
+    public Icon getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Icon icon) {
+        this.icon = (ImageIcon) icon;
+    }
 }

@@ -20,7 +20,7 @@ import com.jblue.controlador.AbstractDBViewController;
 import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.OEmployee;
-import com.jblue.vista.views.options.EmployeeView;
+import com.jblue.vista.views.EmployeeView;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
@@ -62,7 +62,7 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
     public void save() {
         String fields = "first_name, last_names, employee_type, user, password";
         boolean res = connection.insert(fields, view.getDbValues(false));
-        rmessage(res);
+        rmessage(view, res);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
 //                }
 //            }
 //        }
-        rmessage(delete);
+        rmessage(view, delete);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
                 view.getDbValues(true),
                 "id = %s".formatted(view.getObjectSearch().getId())
         );
-        rmessage(update);
+        rmessage(view, update);
     }
 
     @Override
@@ -117,26 +117,4 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
         view.getObjectSearch();
     }
 
-    public boolean isOK() {
-        boolean ok = view.isValuesOk();
-        String status = ok ? "Exitoso" : "Erroneo";
-        JOptionPane.showMessageDialog(view,
-                "Operacion %s".formatted(status),
-                "Estado de la operacion",
-                JOptionPane.INFORMATION_MESSAGE);
-        System.out.println(ok);
-        return ok;
-    }
-
-    public void rmessage(boolean op) {
-        String status = op ? "Exitoso" : "Erroneo";
-        JOptionPane.showMessageDialog(view,
-                "Operacion %s".formatted(status),
-                "Estado de la operacion",
-                JOptionPane.INFORMATION_MESSAGE);
-        if (op) {
-            memo_cache.reLoadData();
-            view.initialState();
-        }
-    }
 }

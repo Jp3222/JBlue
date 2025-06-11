@@ -121,19 +121,21 @@ public class LoginController extends WindowController {
     }
 
     public boolean start() {
-//        if (AppConfig.isWorkTime()) {
-//            JOptionPane.showMessageDialog(view, "No es tiempo de trabajar");
-//            return false;
-//        }
+        System.out.println("is work time: " + AppConfig.isWorkTime());
+        if (!AppConfig.isWorkTime()) {
+            JOptionPane.showMessageDialog(view, "No es tiempo de trabajar");
+            return false;
+        }
         Optional<OEmployee> res = query(view.getUser().getText(),
                 String.valueOf(view.getPassword().getPassword())
         );
+
         if (res.isEmpty()) {
             return false;
         }
 
         Sesion sesion = Sesion.getInstancia();
-        sesion.setUsuario(res.get());
+        sesion.setUser(res.get());
 
 //        if (!sesion.inicioSesion()) {
 //            JOptionPane.showMessageDialog(WIN_LOGIN, "ERROR AL REGISTRAR SESION");
@@ -149,8 +151,9 @@ public class LoginController extends WindowController {
         }
         JDBConnection<OEmployee> op = ConnectionFactory.getEmployees();
         try {
-            String encrypt_user = EncriptadoAES.doEncrypt(user, password),
-                    encrypt_password = EncriptadoAES.doEncrypt(password, user);
+            String encrypt_user = EncriptadoAES.doEncrypt(user, password);
+            String encrypt_password = EncriptadoAES.doEncrypt(password, user);
+
             res = op.get("*", WHERE.formatted(
                     encrypt_user, encrypt_password
             ));

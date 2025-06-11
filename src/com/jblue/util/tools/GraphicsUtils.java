@@ -27,9 +27,9 @@ import javax.swing.JPopupMenu;
  */
 public class GraphicsUtils {
 
-    public static void disable(boolean lock, Component... col) {
+    public static void setEnable(boolean enable, Component... col) {
         for (Component i : col) {
-            i.setEnabled(lock);
+            i.setEnabled(enable);
         }
     }
 

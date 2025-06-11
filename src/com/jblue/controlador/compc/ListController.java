@@ -23,7 +23,6 @@ import com.jblue.util.Filters;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.util.objetos.ForeingKeyObject;
 import com.jblue.util.objetos.StatusObject;
-import com.jblue.vista.marco.ListSearchView;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -33,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import javax.swing.DefaultListModel;
+import com.jblue.vista.marco.ListSearchViewModel;
 
 /**
  *
@@ -41,12 +41,12 @@ import javax.swing.DefaultListModel;
  */
 public final class ListController<T extends Objeto & StatusObject & ForeingKeyObject> extends AbstractComponentController<T> {
 
-    protected ListSearchView view;
+    protected ListSearchViewModel view;
     protected DefaultListModel<T> model;
     protected String search_text;
     private final ArrayList<Predicate<T>> filters_list;
 
-    public ListController(ListSearchView view, MemoListCache<T> memo_cache) {
+    public ListController(ListSearchViewModel view, MemoListCache<T> memo_cache) {
         super(view.getList(), memo_cache);
         this.filters_list = new ArrayList<>(15);
         this.view = view;

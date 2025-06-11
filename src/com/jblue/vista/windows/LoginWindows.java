@@ -6,7 +6,7 @@ package com.jblue.vista.windows;
 
 import com.jblue.controlador.winc.LoginController;
 import com.jblue.sistema.app.AppConfig;
-import com.jblue.vista.marco.ventanas.VentanaSimple;
+import com.jblue.vista.marco.ventanas.AbstractAppWindows;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
 import com.jutil.swingw.wrappers.TextFieldWrapper;
@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  * @author jp
  */
-public class LoginWindows extends VentanaSimple {
+public class LoginWindows extends AbstractAppWindows {
 
     private final ConfigWindow MENU_CONFIG_BD;
     private final TextFieldWrapper FIELDS[];

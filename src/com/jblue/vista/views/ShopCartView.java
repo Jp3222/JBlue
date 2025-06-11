@@ -25,7 +25,7 @@ import com.jblue.modelo.fabricas.TableModelFactory;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filters;
-import com.jblue.vista.marco.ListSearchView;
+import com.jblue.util.tools.GraphicsUtils;
 import com.jblue.vista.marco.vistas.DBView;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
@@ -41,12 +41,13 @@ import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import com.jblue.vista.marco.ListSearchViewModel;
 
 /**
  *
  * @author juan-campos
  */
-public class ShopCartView extends DBView implements ListSearchView {
+public class ShopCartView extends DBView implements ListSearchViewModel {
 
     private final CardLayout ly;
     private final JTableModel table_model;
@@ -61,7 +62,6 @@ public class ShopCartView extends DBView implements ListSearchView {
      */
     public ShopCartView() {
         initComponents();
-
         list_model = new DefaultListModel();
         table_model = TableModelFactory.getServicePaymentTableModel();
         month_paid_list = new ArrayList<>(12);
@@ -75,7 +75,6 @@ public class ShopCartView extends DBView implements ListSearchView {
         users_list.setModel(list_model);
         ly = (CardLayout) root_panel.getLayout();
 
-        controller = FactoryController.getShopCartController(this);
         table_controller = new TableController(this, CacheFactory.SERVICE_PAYMENTS);
         list_controller = new ListController(this, CacheFactory.USUARIOS);
         //list_controller.addFilterList((t) -> t.getStatus() == 1);
@@ -92,14 +91,15 @@ public class ShopCartView extends DBView implements ListSearchView {
 
     @Override
     public void events() {
-
+        System.out.println("eve");
+        controller = FactoryController.getShopCartController(this);
+        System.out.println("des eve");
         pay_button.addActionListener(controller);
         cancel_button.addActionListener(controller);
         clear_button.addActionListener(controller);
         recargos_button.addActionListener(controller);
         other_pay_button.addActionListener(controller);
         pay_last_button.addActionListener(controller);
-        util_button.addActionListener(controller);
         info_button.addActionListener(controller);
         lock_button.addActionListener(controller);
         search_user_button.addActionListener(controller);
@@ -143,6 +143,19 @@ public class ShopCartView extends DBView implements ListSearchView {
             i.setEnabled(true);
         }
         object_search = null;
+        count_elements_label.setText("0");
+        GraphicsUtils.setEnable(false,
+                ene, feb, mar,
+                abr, may, jun,
+                jul, ago, sep,
+                oct, nov, dic,
+                all_months_buttons);
+        GraphicsUtils.setEnable(false, 
+                pay_button, 
+                clear_button, 
+                cancel_button,
+                pay_last_button,
+                other_pay_button);
     }
 
     @Override
@@ -233,7 +246,6 @@ public class ShopCartView extends DBView implements ListSearchView {
         recargos_button = new javax.swing.JButton();
         other_pay_button = new javax.swing.JButton();
         pay_last_button = new javax.swing.JButton();
-        util_button = new javax.swing.JButton();
         search_panel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
@@ -659,10 +671,6 @@ public class ShopCartView extends DBView implements ListSearchView {
         pay_last_button.setActionCommand("late_payments");
         jPanel8.add(pay_last_button);
 
-        util_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        util_button.setText("Utilidades");
-        jPanel8.add(util_button);
-
         option_panel.add(jPanel8);
 
         register_panel.add(option_panel);
@@ -863,7 +871,6 @@ public class ShopCartView extends DBView implements ListSearchView {
     private javax.swing.JPanel user_info_panel;
     private javax.swing.JTextField user_type_field;
     private javax.swing.JList<com.jblue.modelo.objetos.OUser> users_list;
-    private javax.swing.JButton util_button;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -965,6 +972,7 @@ public class ShopCartView extends DBView implements ListSearchView {
         type_toma_field.setText(object_search.getWaterIntakesObject().getType());
         cost_field.setText(String.valueOf(object_search.getWaterIntakesObject().getPrice()));
         ((ShopCartController) controller).setPaymentsInfo(object_search);
+        all_months_buttons.setEnabled(true);
     }
 
     @Override
@@ -998,6 +1006,7 @@ public class ShopCartView extends DBView implements ListSearchView {
 
     public void setTotalField(double total_field) {
         this.total_field.setText(String.valueOf(total_field));
+        GraphicsUtils.setEnable(true, pay_button, clear_button, cancel_button);
     }
 
     @Override

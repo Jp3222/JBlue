@@ -59,27 +59,27 @@ public class WaterIntakesController extends AbstractDBViewController<OWaterIntak
 
     @Override
     public void save() {
-        if (isOK()) {
+        if (view.isValuesOk()) {
             return;
         }
         String field = "type, price, surcharge";
         boolean insert = connection.insert(field, view.getDbValues(false));
-        rmessage(insert);
+        rmessage(view, insert);
     }
 
     @Override
     public void delete() {
-        if (isOK()) {
+        if (view.isValuesOk()) {
             return;
         }
         //boolean delete = connection.delete("id = %s".formatted(view.getObjectSearch().getId()));
         boolean delete = connection.update("status", "3", "id = %s".formatted(view.getObjectSearch().getId()));
-        rmessage(delete);
+        rmessage(view, delete);
     }
 
     @Override
     public void update() {
-        if (isOK()) {
+        if (view.isValuesOk()) {
             return;
         }
         String field = "type, previus_price, price, surcharge, date_update";
@@ -87,7 +87,7 @@ public class WaterIntakesController extends AbstractDBViewController<OWaterIntak
                 view.getDbValues(true),
                 "id = %s".formatted(view.getObjectSearch().getId())
         );
-        rmessage(update);
+        rmessage(view, update);
     }
 
     @Override
@@ -104,25 +104,4 @@ public class WaterIntakesController extends AbstractDBViewController<OWaterIntak
         }
     }
 
-    public boolean isOK() {
-        boolean ok = view.isValuesOk();
-        String status = ok ? "Exitoso" : "Erroneo";
-        JOptionPane.showMessageDialog(view,
-                "Operacion %s".formatted(status),
-                "Estado de la operacion",
-                JOptionPane.INFORMATION_MESSAGE);
-        return ok;
-    }
-
-    public void rmessage(boolean op) {
-        String status = op ? "Exitoso" : "Erroneo";
-        JOptionPane.showMessageDialog(view,
-                "Operacion %s".formatted(status),
-                "Estado de la operacion",
-                JOptionPane.INFORMATION_MESSAGE);
-        if (op) {
-            memo_cache.reLoadData();
-            view.initialState();
-        }
-    }
 }

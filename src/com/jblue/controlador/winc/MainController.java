@@ -63,8 +63,6 @@ public class MainController extends WindowController {
     public boolean isNotAvailable(String actionCommand) {
         boolean out = true;
         for (Component i : view.getViewsPanel().getComponents()) {
-            System.out.println(i.getName());
-            System.out.println(actionCommand);
             if (i.getName() != null && i.getName().equalsIgnoreCase(actionCommand)) {
                 out = false;
                 break;

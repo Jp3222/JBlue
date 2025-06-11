@@ -25,10 +25,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.JOptionPane;
-import com.jblue.vista.marco.TableSearchView;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import com.jblue.util.objetos.ForeingKeyObject;
+import com.jblue.vista.marco.TableSearchViewModel;
 
 /**
  *
@@ -39,9 +39,9 @@ public class TableController<T extends Objeto & ForeingKeyObject> extends Abstra
 
     public static final String RELOAD_COMMAND = "reload";
 
-    protected final TableSearchView view;
+    protected final TableSearchViewModel view;
 
-    public TableController(TableSearchView view, MemoListCache<T> memo_cache) {
+    public TableController(TableSearchViewModel view, MemoListCache<T> memo_cache) {
         super(view.getTable(), memo_cache);
         this.view = view;
         this.view.getTextComponenteTable().addKeyListener(this);
@@ -141,19 +141,19 @@ public class TableController<T extends Objeto & ForeingKeyObject> extends Abstra
     }
 
     void searchView() {
-        if (view.getViewShow() == TableSearchView.CONSULT_VIEW) {
+        if (view.getViewShow() == TableSearchViewModel.CONSULT_VIEW) {
             return;
         }
         loadData();
-        view.setViewShow(TableSearchView.CONSULT_VIEW);
+        view.setViewShow(TableSearchViewModel.CONSULT_VIEW);
     }
 
     void registerView() {
-        if (view.getViewShow() == TableSearchView.REGISTER_VIEW) {
+        if (view.getViewShow() == TableSearchViewModel.REGISTER_VIEW) {
             return;
         }
         dumpData();
-        view.setViewShow(TableSearchView.REGISTER_VIEW);
+        view.setViewShow(TableSearchViewModel.REGISTER_VIEW);
     }
 
     @Override
@@ -163,7 +163,7 @@ public class TableController<T extends Objeto & ForeingKeyObject> extends Abstra
         }
 
         int selected_index = view.getTable().getSelectedRow();
-        if (selected_index < 1 || selected_index >= view.getTable().getRowCount()) {
+        if (selected_index < 0 || selected_index >= view.getTable().getRowCount()) {
             return;
         }
         JTableModel model = (JTableModel) view.getModel();
@@ -178,7 +178,7 @@ public class TableController<T extends Objeto & ForeingKeyObject> extends Abstra
         view.setObjectSearch(get);
         view.setScreenTableInfo();
         dumpData();
-        view.setViewShow(TableSearchView.REGISTER_VIEW);
+        view.setViewShow(TableSearchViewModel.REGISTER_VIEW);
 
     }
 

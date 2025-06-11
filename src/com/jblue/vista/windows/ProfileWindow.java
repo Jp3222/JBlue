@@ -16,13 +16,13 @@
  */
 package com.jblue.vista.windows;
 
-import com.jblue.vista.marco.ventanas.VentanaExtendida;
+import com.jblue.vista.marco.ventanas.AbstractAppWindows;
 
 /**
  *
  * @author juanp
  */
-public class ProfileWindow extends VentanaExtendida {
+public class ProfileWindow extends AbstractAppWindows {
 
     /**
      * Creates new form MenuWindow

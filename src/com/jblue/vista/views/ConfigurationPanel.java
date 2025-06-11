@@ -18,8 +18,6 @@ package com.jblue.vista.views;
 
 import com.jblue.controlador.winc.ConfigController;
 import com.jblue.sistema.app.AppConfig;
-import com.jblue.vista.marco.DBValues;
-import com.jblue.vista.marco.OptionMenu;
 import com.jblue.vista.marco.vistas.SimpleView;
 import com.jblue.vista.windows.ConfigWindow;
 import com.jutil.framework.LaunchApp;
@@ -34,12 +32,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JPasswordField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import com.jblue.vista.marco.DBValuesModel;
+import com.jblue.vista.marco.OptionMenuModel;
 
 /**
  *
  * @author juanp
  */
-public final class ConfigurationPanel extends SimpleView implements OptionMenu, DBValues {
+public final class ConfigurationPanel extends SimpleView implements OptionMenuModel, DBValuesModel {
 
     private JButton option;
     private final CardLayout ly;

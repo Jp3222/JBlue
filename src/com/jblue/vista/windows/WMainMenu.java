@@ -18,7 +18,7 @@ package com.jblue.vista.windows;
 
 import com.jblue.controlador.winc.MainController;
 import com.jblue.vista.components.UserViewComponent;
-import com.jblue.vista.marco.ventanas.VentanaSimple;
+import com.jblue.vista.marco.ventanas.AbstractAppWindows;
 import com.jblue.vista.views.StreetsView;
 import com.jblue.vista.views.OtherPaymentTypesView;
 import com.jblue.vista.views.OtherPaymentsView;
@@ -35,7 +35,7 @@ import javax.swing.SwingUtilities;
  *
  * @author juan-campos
  */
-public final class WMainMenu extends VentanaSimple {
+public final class WMainMenu extends AbstractAppWindows {
 
     //
     private final CardLayout ly;
@@ -72,7 +72,6 @@ public final class WMainMenu extends VentanaSimple {
         surcharge_payments_view = new SurchargePaymentsView();
         //
         ly = (CardLayout) views_panel.getLayout();
-        controller = new MainController(this);
         updateTitle(shop_cart_view.getName());
         build();
     }
@@ -98,6 +97,7 @@ public final class WMainMenu extends VentanaSimple {
 
     @Override
     public void events() {
+        controller = new MainController(this);
         exit_button.addActionListener(controller);
         btn_home.addActionListener(controller);
         btn_usuarios.addActionListener(controller);
@@ -224,7 +224,7 @@ public final class WMainMenu extends VentanaSimple {
         jPanel6.setLayout(new java.awt.BorderLayout());
 
         btn_usuarios.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        btn_usuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/usuario.png"))); // NOI18N
+        btn_usuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/user_x32.png"))); // NOI18N
         btn_usuarios.setText("Usuarios");
         btn_usuarios.setToolTipText("Usuarios");
         btn_usuarios.setHideActionText(true);
@@ -252,9 +252,10 @@ public final class WMainMenu extends VentanaSimple {
         jPanel8.setLayout(new java.awt.BorderLayout());
 
         btn_tipo_tomas.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        btn_tipo_tomas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/toma agua.png"))); // NOI18N
+        btn_tipo_tomas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/water_intake_x32.png"))); // NOI18N
         btn_tipo_tomas.setText("Tipo de tomas");
         btn_tipo_tomas.setToolTipText("Tipo de tomas");
+        btn_tipo_tomas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btn_tipo_tomas.setHideActionText(true);
         btn_tipo_tomas.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btn_tipo_tomas.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);

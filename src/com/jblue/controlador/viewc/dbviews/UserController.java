@@ -16,9 +16,6 @@
  */
 package com.jblue.controlador.viewc.dbviews;
 
-import static com.jblue.controlador.DBControllerModel.DELETE_COMMAND;
-import static com.jblue.controlador.DBControllerModel.SAVE_COMMAND;
-import static com.jblue.controlador.DBControllerModel.UPDATE_COMMAND;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.sistema.DevFlags;
@@ -28,6 +25,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import com.jblue.controlador.DBControllerModel;
 import com.jblue.controlador.AbstractDBViewController;
+import com.jblue.sistema.Sesion;
+import com.jblue.sistema.app.AppFiles;
+import com.jblue.vista.components.ComponentFactory;
+import java.io.File;
 
 /**
  *
@@ -55,6 +56,8 @@ public class UserController extends AbstractDBViewController<OUser> implements D
                 cancel();
             case "search_object" ->
                 searchObject();
+            case "add_file" ->
+                saveFile();
             default ->
                 defaultCase(ae.getActionCommand(), null, -1);
         }
@@ -66,9 +69,12 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         if (!view.isValuesOk()) {
             return;
         }
+        String[] arr = view.getDbValues(false);
         String field = "first_name, last_name1, last_name2, street, house_number, water_intakes, user_type, status";
-        boolean insert = connection.insert(field, view.getDbValues(false));
-        rmessage(insert);
+        boolean insert = connection.insert(field,arr);
+        Sesion.getInstancia().setMov(Sesion.USER_INSERT, 
+                insert_desc.formatted(arr[0], arr[1], arr[2]));
+        rmessage(view, insert);
     }
 
     @Override
@@ -78,7 +84,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         }
         String id = view.getObjectSearch().getId();
         boolean delete = connection.update("status", "3", "id = %s".formatted(id));
-        rmessage(delete);
+        rmessage(view, delete);
         //FUNCION EN DESARROLLO - Ocultar los resgitros de pago de un usuario
         if (DevFlags.TST_EXE_FUNCION) {
             int hidden_payments = JOptionPane.showConfirmDialog(view, "¿Desea eliminar los pagos hechos por esta persona?");
@@ -87,7 +93,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
                         "status=3",
                         "id = %s".formatted(view.getObjectSearch().getId())
                 );
-                rmessage(update);
+                rmessage(view, update);
             }
         }
     }
@@ -105,7 +111,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
                 field.split(","),
                 view.getDbValues(true),
                 "id = %s".formatted(view.getObjectSearch().getId()));
-        rmessage(update);
+        rmessage(view, update);
     }
 
     @Override
@@ -126,26 +132,14 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         UserViewComponent.showVisor(view.getObjectSearch());
     }
 
-    public boolean isOK() {
-        boolean ok = view.isValuesOk();
-        String status = ok ? "Exitoso" : "Erroneo";
-        JOptionPane.showMessageDialog(view,
-                "Operacion %s".formatted(status),
-                "Estado de la operacion",
-                JOptionPane.INFORMATION_MESSAGE);
-        System.out.println(ok);
-        return ok;
+    private void saveFile() {
+        File file = ComponentFactory.getFileChooser(view, "Aceptar");
+        File out = new File(AppFiles.DIR_USER, view.getObjectSearch().toString());
+        if (!out.exists()) {
+            out.mkdir();
+        }
+        //Files.copy(file.toPath(), new BufferedOutputStream(new FileOutputStream(out)));
     }
 
-    public void rmessage(boolean op) {
-        String status = op ? "Exitoso" : "Erroneo";
-        JOptionPane.showMessageDialog(view,
-                "Operacion %s".formatted(status),
-                "Estado de la operacion",
-                JOptionPane.INFORMATION_MESSAGE);
-        if (op) {
-            memo_cache.reLoadData();
-            view.initialState();
-        }
-    }
+    String insert_desc = "employee:%s,user:%s %s %s";
 }

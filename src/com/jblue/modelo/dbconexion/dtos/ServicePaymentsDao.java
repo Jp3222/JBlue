@@ -16,12 +16,12 @@
  */
 package com.jblue.modelo.dbconexion.dtos;
 
-import com.jblue.modelo.dbconexion.querys.UsersQuerys;
+import com.jblue.modelo.dbconexion.querys.ServicePayQuerys;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.sistema.SystemLogs;
+import com.jblue.util.tiempo.Fecha;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
-import java.lang.reflect.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -32,7 +32,7 @@ import java.util.List;
  *
  * @author juanp
  */
-public class UserDao {
+public class ServicePaymentsDao {
 
     public static DBConnection connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
 
@@ -40,11 +40,12 @@ public class UserDao {
         ArrayList<String[]> list = new ArrayList<>((int) CacheFactory.USUARIOS.count());
         try {
             LocalDate ly = LocalDate.now();
-            ResultSet rs = connection.query(UsersQuerys.users_not_paid.formatted(ly.getYear()));
-            String[] arr = new String[2];
+            ResultSet rs = connection.query(ServicePayQuerys.pay_of_day.formatted(Fecha.MESES[ly.getMonthValue() - 1]));
+            String[] arr = new String[7];
             while (rs.next()) {
-                arr[0] = rs.getString(1);
-                arr[1] = rs.getString(2);
+                for (int i = 0; i < arr.length; i++) {
+                    arr[i] = rs.getString(i + 1);
+                }
                 list.add(arr.clone());
             }
         } catch (SQLException e) {

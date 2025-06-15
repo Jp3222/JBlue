@@ -77,7 +77,6 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
 
         table_controller = new TableController(this, CacheFactory.SERVICE_PAYMENTS);
         list_controller = new ListController(this, CacheFactory.USUARIOS);
-        //list_controller.addFilterList((t) -> t.getStatus() == 1);
         build();
     }
 
@@ -91,9 +90,7 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
 
     @Override
     public void events() {
-        System.out.println("eve");
         controller = FactoryController.getShopCartController(this);
-        System.out.println("des eve");
         pay_button.addActionListener(controller);
         cancel_button.addActionListener(controller);
         clear_button.addActionListener(controller);
@@ -103,6 +100,7 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         info_button.addActionListener(controller);
         lock_button.addActionListener(controller);
         search_user_button.addActionListener(controller);
+        mov_book_button.addActionListener(controller);
         //
         all_months_buttons.addActionListener(controller);
         //
@@ -150,9 +148,9 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
                 jul, ago, sep,
                 oct, nov, dic,
                 all_months_buttons);
-        GraphicsUtils.setEnable(false, 
-                pay_button, 
-                clear_button, 
+        GraphicsUtils.setEnable(false,
+                pay_button,
+                clear_button,
                 cancel_button,
                 pay_last_button,
                 other_pay_button);
@@ -233,7 +231,7 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         jPanel21 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         total_field = new javax.swing.JLabel();
-        btn_movimientos = new javax.swing.JButton();
+        mov_book_button = new javax.swing.JButton();
         jPanel22 = new javax.swing.JPanel();
         Jlabel1 = new javax.swing.JLabel();
         cambio_field = new javax.swing.JLabel();
@@ -573,11 +571,6 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         dic.setPreferredSize(new java.awt.Dimension(10, 47));
         dic.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         dic.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        dic.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dicActionPerformed(evt);
-            }
-        });
         months_panel.add(dic);
 
         payment_info_panel.add(months_panel);
@@ -601,11 +594,12 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         total_field.setText("0.0");
         jPanel21.add(total_field, java.awt.BorderLayout.CENTER);
 
-        btn_movimientos.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        btn_movimientos.setText("Movimientos");
-        btn_movimientos.setToolTipText("");
-        btn_movimientos.setPreferredSize(new java.awt.Dimension(200, 30));
-        jPanel21.add(btn_movimientos, java.awt.BorderLayout.LINE_END);
+        mov_book_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        mov_book_button.setText("Movimientos");
+        mov_book_button.setToolTipText("");
+        mov_book_button.setActionCommand("mov_book");
+        mov_book_button.setPreferredSize(new java.awt.Dimension(200, 30));
+        jPanel21.add(mov_book_button, java.awt.BorderLayout.LINE_END);
 
         money_panel.add(jPanel21);
 
@@ -780,10 +774,6 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void dicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dicActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dicActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Jlabel1;
@@ -791,7 +781,6 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
     private javax.swing.JCheckBox ago;
     private javax.swing.JCheckBox all_months_buttons;
     private javax.swing.JButton back_button;
-    private javax.swing.JButton btn_movimientos;
     private javax.swing.JLabel cambio_field;
     private javax.swing.JButton cancel_button;
     private javax.swing.JButton clear_button;
@@ -840,6 +829,7 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
     private javax.swing.JPanel money_panel;
     private javax.swing.JTextField month_paid_field;
     private javax.swing.JPanel months_panel;
+    private javax.swing.JButton mov_book_button;
     private javax.swing.JTextField name_user_field;
     private javax.swing.JButton next_button;
     private javax.swing.JCheckBox nov;
@@ -984,14 +974,6 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
 
     public ArrayList<JCheckBox> getMonthList() {
         return month_paid_list;
-    }
-
-    public List<String> getMonthListString() {
-        List<String> lista = new ArrayList<>(12);
-        for (JCheckBox i : month_paid_list) {
-            lista.add(i.getText());
-        }
-        return lista;
     }
 
     public ArrayList<String> getMonthPaidList() {

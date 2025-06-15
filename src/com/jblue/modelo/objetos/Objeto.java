@@ -5,15 +5,15 @@
 package com.jblue.modelo.objetos;
 
 import com.jblue.util.objetos.AbstractObject;
+import com.jutil.dbcon.cn.DBObjectModel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.jblue.util.objetos.ObjectModel;
 
 /**
  *
  * @author jp
  */
-public class Objeto extends AbstractObject implements ObjectModel {
+public class Objeto extends AbstractObject {
 
     public Objeto() {
         super(null);
@@ -30,13 +30,6 @@ public class Objeto extends AbstractObject implements ObjectModel {
     }
 
     @Override
-    public int compareTo(Objeto t) {
-        int x = Integer.parseInt(info[0]);
-        int y = Integer.parseInt(t.info[0]);
-        return Integer.compare(x, y);
-    }
-
-    @Override
     public String getId() {
         return info[0];
     }
@@ -48,8 +41,8 @@ public class Objeto extends AbstractObject implements ObjectModel {
 
     /**
      *
-     * @return @throws java.lang.CloneNotSupportedException
-     */
+     * @return @throws java.lang.CloneNotSupportedException 
+     */ 
     @Override
     public Objeto clone() throws CloneNotSupportedException {
         Objeto o = null;
@@ -59,6 +52,19 @@ public class Objeto extends AbstractObject implements ObjectModel {
             Logger.getLogger(Objeto.class.getName()).log(Level.SEVERE, null, ex);
         }
         return o;
+    }
+
+    @Override
+    public int compareTo(DBObjectModel o) {
+        int x = Integer.parseInt(getId());
+        int y = Integer.parseInt(o.getId());
+        if (x > y) {
+            return 1;
+        } else if (x < y) {
+            return -1;
+        }
+        return 0;
+
     }
 
 }

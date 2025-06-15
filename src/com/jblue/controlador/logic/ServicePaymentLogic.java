@@ -25,7 +25,6 @@ public class ServicePaymentLogic extends AbsctractPayment {
 
     public ServicePaymentLogic() {
         super();
-        System.out.println("xddddddddddd2");
     }
 
     @Override
@@ -46,6 +45,14 @@ public class ServicePaymentLogic extends AbsctractPayment {
             mov.put(KEY_STATUS_OP, STATUS_ERR);
         }
         if (isUserNull()) {
+            mov.put(KEY_ERROR, "ERROR INTERNO");
+            mov.put(KEY_STATUS_OP, STATUS_ERR);
+        }
+        if (isWaterIntakeNull()) {
+            mov.put(KEY_ERROR, "ERROR INTERNO");
+            mov.put(KEY_STATUS_OP, STATUS_ERR);
+        }
+        if (!meses_pagados.isEmpty() && deuda == 0.0) {
             mov.put(KEY_ERROR, "ERROR INTERNO");
             mov.put(KEY_STATUS_OP, STATUS_ERR);
         }
@@ -75,12 +82,23 @@ public class ServicePaymentLogic extends AbsctractPayment {
                     + meses_pagados.get(i) + "')";
             i++;
             values.append(col).append(",");
+
+            mov_book.append(i).append(" - ")
+                    .append(meses_pagados.get(i))
+                    .append(" : ")
+                    .append(toma.getPrice())
+                    .append("\n");
         }
         col = "('" + personal.getId()
                 + "','"
                 + usuario.getId() + "','"
                 + toma.getPrice() + "','"
                 + meses_pagados.get(i) + "')";
+        mov_book.append(i).append(" - ")
+                    .append(meses_pagados.get(i))
+                    .append(" : ")
+                    .append(toma.getPrice())
+                    .append("\n");
         i++;
         values.append(col);
         mov.put(KEY_MOVS, values.toString());

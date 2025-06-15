@@ -44,7 +44,7 @@ public abstract class AbstractObject implements DBObjectModel {
     public void setInfo(String[] info) {
         this.info = info;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 3;

@@ -182,43 +182,50 @@
                 <Property name="rows" type="int" value="15"/>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JFormattedTextField" name="jFormattedTextField1">
+                <Component class="javax.swing.JFormattedTextField" name="open_hour_field">
                   <Properties>
                     <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                       <Format format="kk:mm:ss" subtype="-1" type="2"/>
                     </Property>
+                    <Property name="name" type="java.lang.String" value="HORA_DE_APERTURA" noResource="true"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JFormattedTextField" name="jFormattedTextField2">
+                <Component class="javax.swing.JFormattedTextField" name="close_hour_field">
                   <Properties>
                     <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                       <Format format="kk:mm:ss" subtype="-1" type="2"/>
                     </Property>
+                    <Property name="name" type="java.lang.String" value="HORA_DE_CIERRE" noResource="true"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JSpinner" name="jSpinner1">
+                <Component class="javax.swing.JSpinner" name="last_pay_day_field">
                   <Properties>
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
                       <SpinnerModel initial="1" maximum="31" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
                     </Property>
+                    <Property name="name" type="java.lang.String" value="ULTIMO_DIA_DE_PAGO" noResource="true"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+                <Component class="javax.swing.JCheckBox" name="auto_pay_field">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
+                    <Property name="name" type="java.lang.String" value="RECARGO_AUTOMATICO" noResource="true"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextField1">
+                <Component class="javax.swing.JTextField" name="master_user_field">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jTextField1"/>
+                    <Property name="name" type="java.lang.String" value="USUARIO_MAESTRO" noResource="true"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextField2">
+                <Component class="javax.swing.JTextField" name="master_password_field">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jTextField2"/>
+                    <Property name="name" type="java.lang.String" value="CONTRASE&#xd1;A_MAESTRA" noResource="true"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="jCheckBox2">
+                <Component class="javax.swing.JCheckBox" name="hour_validate_field">
+                  <Properties>
+                    <Property name="name" type="java.lang.String" value="VALIDAR_HORA_DE_EXTRADA" noResource="true"/>
+                  </Properties>
                 </Component>
                 <Container class="javax.swing.JPanel" name="jPanel4">
 
@@ -229,12 +236,12 @@
                     <Property name="verticalGap" type="int" value="10"/>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JButton" name="jButton3">
+                    <Component class="javax.swing.JButton" name="update_button">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Actualizar"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JButton" name="jButton5">
+                    <Component class="javax.swing.JButton" name="cancel_button">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Cancelar"/>
                       </Properties>

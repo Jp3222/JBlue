@@ -39,4 +39,9 @@ public interface PaymentModel {
     void setDineroIngresado(double d);
 
     public void setMesesPagados(ArrayList<String> meses_pagados);
-}
+
+    public void setMovBook(StringBuilder mov_book);
+
+    public double getTotal();
+    public StringBuilder getMovBook();
+    }

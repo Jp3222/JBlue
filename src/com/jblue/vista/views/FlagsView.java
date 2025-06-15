@@ -16,17 +16,115 @@
  */
 package com.jblue.vista.views;
 
+import com.jblue.vista.marco.vistas.SimpleView;
+import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.framework.LaunchApp;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author juanp
  */
-public class FlagsView extends javax.swing.JPanel {
+public final class FlagsView extends SimpleView {
+
+    private static FlagsView instance;
+
+    public synchronized static FlagsView getInstance() {
+        if (instance == null) {
+            instance = new FlagsView();
+        }
+        return instance;
+    }
+    private final String[] parameters;
 
     /**
      * Creates new form FlagsView
      */
-    public FlagsView() {
+    private FlagsView() {
         initComponents();
+
+        this.parameters = new String[]{
+            open_hour_field.getName(),
+            close_hour_field.getName(),
+            last_pay_day_field.getName(),
+            auto_pay_field.getName(),
+            master_user_field.getName(),
+            master_password_field.getName(),
+            hour_validate_field.getName()
+        };
+
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        initialState();
+        finalState();
+    }
+
+    @Override
+    public void components() {
+    }
+
+    @Override
+    public void events() {
+        update_button.addActionListener((e) -> {
+            String querys[] = {
+                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = '%s;",
+                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = '%s;",
+                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = '%s;",
+                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = %s;",
+                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = %s;",
+                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = %s;",
+                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = %s;"
+            };
+            String values[] = {
+                String.valueOf(open_hour_field.getText()),
+                String.valueOf(close_hour_field.getText()),
+                String.valueOf(last_pay_day_field.getValue()),
+                String.valueOf(auto_pay_field.isSelected()),
+                String.valueOf(master_user_field.getText()),
+                String.valueOf(master_password_field.getText()),
+                String.valueOf(hour_validate_field.isSelected())
+            };
+
+            DBConnection connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
+            String mess = "Parametros Actualizados";
+            int icon = JOptionPane.INFORMATION_MESSAGE;
+            for (int i = 0; i < querys.length; i++) {
+                try {
+                    String query = querys[i];
+                    connection.execute(query.formatted(parameters[i], values[i]));
+                } catch (SQLException ex) {
+                    mess = "Error al actualizar el parametro: %s".formatted(parameters[i]);
+                    icon = JOptionPane.ERROR_MESSAGE;
+                }
+            }
+            JOptionPane.showMessageDialog(this, mess, "Parametros", icon);
+        });
+    }
+
+    @Override
+    public void initialState() {
+        DBConnection connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
+        String query = "SELECT value, data_type FROM parameters";
+        try {
+            ResultSet rs = connection.query(query);
+            for (String i : parameters) {
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(FlagsView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void finalState() {
     }
 
     /**
@@ -55,16 +153,16 @@ public class FlagsView extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
-        jSpinner1 = new javax.swing.JSpinner();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jCheckBox2 = new javax.swing.JCheckBox();
+        open_hour_field = new javax.swing.JFormattedTextField();
+        close_hour_field = new javax.swing.JFormattedTextField();
+        last_pay_day_field = new javax.swing.JSpinner();
+        auto_pay_field = new javax.swing.JCheckBox();
+        master_user_field = new javax.swing.JTextField();
+        master_password_field = new javax.swing.JTextField();
+        hour_validate_field = new javax.swing.JCheckBox();
         jPanel4 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        update_button = new javax.swing.JButton();
+        cancel_button = new javax.swing.JButton();
         search_panel = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
@@ -134,32 +232,38 @@ public class FlagsView extends javax.swing.JPanel {
 
         jPanel2.setLayout(new java.awt.GridLayout(15, 0));
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("kk:mm:ss"))));
-        jPanel2.add(jFormattedTextField1);
+        open_hour_field.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("kk:mm:ss"))));
+        open_hour_field.setName("HORA_DE_APERTURA"); // NOI18N
+        jPanel2.add(open_hour_field);
 
-        jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("kk:mm:ss"))));
-        jPanel2.add(jFormattedTextField2);
+        close_hour_field.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("kk:mm:ss"))));
+        close_hour_field.setName("HORA_DE_CIERRE"); // NOI18N
+        jPanel2.add(close_hour_field);
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, 31, 1));
-        jPanel2.add(jSpinner1);
+        last_pay_day_field.setModel(new javax.swing.SpinnerNumberModel(1, 1, 31, 1));
+        last_pay_day_field.setName("ULTIMO_DIA_DE_PAGO"); // NOI18N
+        jPanel2.add(last_pay_day_field);
 
-        jCheckBox1.setToolTipText("");
-        jPanel2.add(jCheckBox1);
+        auto_pay_field.setToolTipText("");
+        auto_pay_field.setName("RECARGO_AUTOMATICO"); // NOI18N
+        jPanel2.add(auto_pay_field);
 
-        jTextField1.setText("jTextField1");
-        jPanel2.add(jTextField1);
+        master_user_field.setName("USUARIO_MAESTRO"); // NOI18N
+        jPanel2.add(master_user_field);
 
-        jTextField2.setText("jTextField2");
-        jPanel2.add(jTextField2);
-        jPanel2.add(jCheckBox2);
+        master_password_field.setName("CONTRASEÑA_MAESTRA"); // NOI18N
+        jPanel2.add(master_password_field);
+
+        hour_validate_field.setName("VALIDAR_HORA_DE_EXTRADA"); // NOI18N
+        jPanel2.add(hour_validate_field);
 
         jPanel4.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
 
-        jButton3.setText("Actualizar");
-        jPanel4.add(jButton3);
+        update_button.setText("Actualizar");
+        jPanel4.add(update_button);
 
-        jButton5.setText("Cancelar");
-        jPanel4.add(jButton5);
+        cancel_button.setText("Cancelar");
+        jPanel4.add(cancel_button);
 
         jPanel2.add(jPanel4);
 
@@ -219,19 +323,17 @@ public class FlagsView extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox auto_pay_field;
+    private javax.swing.JButton cancel_button;
+    private javax.swing.JFormattedTextField close_hour_field;
+    private javax.swing.JCheckBox hour_validate_field;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -246,14 +348,17 @@ public class FlagsView extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JSpinner last_pay_day_field;
+    private javax.swing.JTextField master_password_field;
+    private javax.swing.JTextField master_user_field;
     private javax.swing.JPanel north_panel;
+    private javax.swing.JFormattedTextField open_hour_field;
     private javax.swing.JPanel register_panel;
     private javax.swing.JPanel root_panel;
     private javax.swing.JPanel search_panel;
+    private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
+
 }

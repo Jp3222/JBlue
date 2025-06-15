@@ -61,7 +61,7 @@ public class ObjectUtils {
         mapa.put(ConstBD.TABLAS[9], new OValores());
     }
 
-    public static Objeto getObjeto(String tabla, String[] info) {
+    public static <T extends Objeto> T getObjeto(String tabla, String[] info) {
         Objeto clone = new Objeto();
         try {
             clone = mapa.get(tabla).clone();
@@ -69,7 +69,7 @@ public class ObjectUtils {
             Logger.getLogger(ObjectUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
         clone.setInfo(info);
-        return clone;
+        return (T) clone;
     }
 
     public static OWaterIntake getTipoToma(String id) {

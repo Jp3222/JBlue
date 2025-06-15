@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2025 juanp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,29 +16,16 @@
  */
 package com.jblue.util.cache;
 
+import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.objetos.Objeto;
-import java.util.List;
-import java.util.function.Predicate;
-
+import java.sql.ResultSet;
 /**
  *
- * @author juan-campos
+ * @author juanp
  * @param <T>
  */
-public interface ListCacheModel<T extends Objeto> {
+@FunctionalInterface
+public interface ObjectAdapterModel<T extends Objeto> {
 
-    /**
-     * Consulta la lista con los datos de la base de datos
-     *
-     * @return una lista con los datos "actuales" de la base de datos
-     */
-    List<T> getList();
-
-    /**
-     * Aplica un predicado usando el metodo stream
-     *
-     * @param filter predicado para filtar los datos
-     * @return una lista con el filtro aplicado
-     */
-    List<T> getList(Predicate<T> filter);
+    T adapter(ResultSet rs_data, JDBConnection connection);
 }

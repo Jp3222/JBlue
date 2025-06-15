@@ -48,6 +48,8 @@ public abstract class AbsctractPayment implements PaymentModel {
     protected DBConnection connection;
     protected ArrayList<String> meses_pagados;
 
+    protected StringBuilder mov_book;
+
     public AbsctractPayment() {
         this.mov = new HashMap<>();
         this.personal = Sesion.getInstancia().getUsuario();
@@ -67,6 +69,10 @@ public abstract class AbsctractPayment implements PaymentModel {
         return dinero_ingresado < deuda;
     }
 
+    protected boolean isWaterIntakeNull() {
+        return usuario.getWaterIntakesObject() == null;
+    }
+
     @Override
     public void setUsuario(OUser usuario) {
         this.usuario = usuario;
@@ -82,12 +88,27 @@ public abstract class AbsctractPayment implements PaymentModel {
     public void setMesesPagados(ArrayList<String> meses_pagados) {
         this.meses_pagados = meses_pagados;
     }
-    
-    
 
     @Override
     public Map<String, String> getMov() {
         return mov;
     }
+
+    @Override
+    public void setMovBook(StringBuilder mov_book) {
+        this.mov_book = mov_book;
+    }
+
+    @Override
+    public StringBuilder getMovBook() {
+        return mov_book;
+    }
+
+    @Override
+    public double getTotal() {
+        return usuario.getWaterIntakesObject().getPrice() * meses_pagados.size();
+    }
+    
+    
 
 }

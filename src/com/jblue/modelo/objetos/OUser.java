@@ -115,10 +115,12 @@ public class OUser extends Objeto implements ForeingKeyObject, StatusObject{
      * @return 1 si el usuario esta "activo", 2 si el usuario esta "inactivo" o
      * 3 si el usuario esta de "baja"
      */
+    @Override
     public int getStatus() {
         return Integer.parseInt(info[8]);
     }
 
+    @Override
     public String getStatusString() {
         return switch (getStatus()) {
             case 1:
@@ -132,6 +134,7 @@ public class OUser extends Objeto implements ForeingKeyObject, StatusObject{
         };
     }
 
+    @Override
     public boolean isActive() {
         return getStatus() == 1;
     }

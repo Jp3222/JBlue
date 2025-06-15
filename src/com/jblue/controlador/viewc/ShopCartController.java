@@ -46,12 +46,15 @@ public class ShopCartController extends Controller {
     private final MemoListCache<OUser> memo_cache;
     private final ShopCartView view;
     private final PaymentModel o;
+    private final StringBuilder mov_book;
 
     public ShopCartController(ShopCartView view) {
         System.out.println("xd 1");
         this.view = view;
         memo_cache = CacheFactory.USUARIOS;
         this.o = PaymentFactory.getServicePayment();
+        this.mov_book = new StringBuilder(3000);
+        o.setMovBook(mov_book);
     }
 
     @Override
@@ -77,6 +80,9 @@ public class ShopCartController extends Controller {
                 allMonths((JCheckBox) e.getSource());
             case "month" ->
                 total();
+            case "mov_book" ->{
+                mov_book();
+            }
             default ->
                 defaultCase(e.getActionCommand(), null, -1);
         }
@@ -95,6 +101,10 @@ public class ShopCartController extends Controller {
     }
 
     void payments() {
+        mov_book.setLength(0);
+        mov_book.setLength(3000);
+        mov_book.append("Usuario: ").append(view.getObjectSearch().toString());
+        mov_book.append("\nPAGOS POR EL SERVICIO\n");
         if (view.getObjectSearch() == null) {
             JOptionPane.showMessageDialog(view, "Usuario no valido", "Operacion Erronea", JOptionPane.ERROR_MESSAGE);
             return;
@@ -106,6 +116,7 @@ public class ShopCartController extends Controller {
         o.setMesesPagados(view.getMonthPaidList());
         o.setDineroIngresado(dinero_in);
         boolean execPayment = o.execPayment();
+        mov_book.append("Total: ").append(o.getTotal());
         rmessage(execPayment);
     }
 
@@ -150,7 +161,6 @@ public class ShopCartController extends Controller {
         double months_paids = view.getMonthPaidList().size();
         double total = price * months_paids;
         view.setTotalField(total);
-
     }
 
     public void rmessage(boolean op) {
@@ -167,8 +177,8 @@ public class ShopCartController extends Controller {
 
     public void setPaymentsInfo(OUser user) {
         try {
+            
             LocalDate ld = LocalDate.now();
-
             String query = "SELECT MONTH FROM service_payments WHERE user = '%s' AND YEAR(NOW()) = '%s' AND status != 3"
                     .formatted(user.getId(), ld.getYear());
 
@@ -196,5 +206,9 @@ public class ShopCartController extends Controller {
             Logger.getLogger(ShopCartController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    private void mov_book() {
+        JOptionPane.showMessageDialog(view, o.getMovBook());
     }
 }

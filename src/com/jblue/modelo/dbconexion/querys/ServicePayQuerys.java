@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2025 juanp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,31 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.util.cache;
-
-import com.jblue.modelo.objetos.Objeto;
-import java.util.List;
-import java.util.function.Predicate;
+package com.jblue.modelo.dbconexion.querys;
 
 /**
  *
- * @author juan-campos
- * @param <T>
+ * @author juanp
  */
-public interface ListCacheModel<T extends Objeto> {
+public class ServicePayQuerys {
 
-    /**
-     * Consulta la lista con los datos de la base de datos
-     *
-     * @return una lista con los datos "actuales" de la base de datos
-     */
-    List<T> getList();
-
-    /**
-     * Aplica un predicado usando el metodo stream
-     *
-     * @param filter predicado para filtar los datos
-     * @return una lista con el filtro aplicado
-     */
-    List<T> getList(Predicate<T> filter);
+    public static String pay_of_day = """
+                                      SELECT * FROM service_payments 
+                                      WHERE YEAR(date_register) = YEAR(NOW()) AND month = %s
+                                      """;
+    
 }

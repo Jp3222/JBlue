@@ -22,11 +22,11 @@ public class OWaterIntake extends Objeto {
         return info[1];
     }
 
-    public double getPrice() {
+    public double getPreviusPrice() {
         return Double.parseDouble(info[2]);
     }
 
-    public double getPreviusPrice() {
+    public double getPrice() {
         return Double.parseDouble(info[3]);
     }
 

@@ -4,7 +4,9 @@
  */
 package com.jblue.vista.windows;
 
+import com.jblue.controlador.FactoryController;
 import com.jblue.controlador.winc.LoginController;
+import com.jblue.controlador.winc.WindowController;
 import com.jblue.sistema.app.AppConfig;
 import com.jblue.vista.marco.ventanas.AbstractAppWindows;
 import com.jutil.dbcon.connection.DBConnection;
@@ -55,7 +57,7 @@ public class LoginWindows extends AbstractAppWindows {
 
     @Override
     public void events() {
-        LoginController controller = new LoginController(this, MENU_CONFIG_BD);
+        WindowController controller = FactoryController.getLoginController(this, MENU_CONFIG_BD);
 
         login_button.addActionListener(controller);
         config_button.addActionListener(controller);
@@ -309,7 +311,7 @@ public class LoginWindows extends AbstractAppWindows {
     public void dispose() {
         super.dispose();
         SwingUtilities.invokeLater(() -> initialState());
-        
+
     }
 
     public JPasswordField getPassword() {

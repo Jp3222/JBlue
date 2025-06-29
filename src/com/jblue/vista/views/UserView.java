@@ -58,7 +58,7 @@ public final class UserView extends DBView implements DBValuesModel {
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
         controller = FactoryController.getUserController(this);
-        table_controller = new TableController(this, CacheFactory.USUARIOS);
+        table_controller = new TableController(this, CacheFactory.USERS);
 
         build();
     }
@@ -90,10 +90,10 @@ public final class UserView extends DBView implements DBValuesModel {
         //
         register_button.addActionListener(table_controller);
         search_button.addActionListener(table_controller);
-        ComboBoxController<OWaterIntake> c1 = new ComboBoxController(water_intakes, CacheFactory.TIPO_DE_TOMAS);
-        ComboBoxController<OCalles> c2 = new ComboBoxController(street, CacheFactory.CALLES);
-        ComboBoxController<OWaterIntake> c3 = new ComboBoxController(water_intakes_filter, CacheFactory.TIPO_DE_TOMAS);
-        ComboBoxController<OCalles> c4 = new ComboBoxController(street_filter, CacheFactory.CALLES);
+        ComboBoxController<OWaterIntake> c1 = new ComboBoxController(water_intakes, CacheFactory.WATER_INTAKES_TYPES);
+        ComboBoxController<OCalles> c2 = new ComboBoxController(street, CacheFactory.STREETS);
+        ComboBoxController<OWaterIntake> c3 = new ComboBoxController(water_intakes_filter, CacheFactory.WATER_INTAKES_TYPES);
+        ComboBoxController<OCalles> c4 = new ComboBoxController(street_filter, CacheFactory.STREETS);
         add_file_button.addActionListener(controller);
         add_photo_button.addActionListener(controller);
         c1.loadData();
@@ -121,13 +121,13 @@ public final class UserView extends DBView implements DBValuesModel {
         man_calle.setSelected(false);
         man_estado.setSelected(false);
         buttonGroup1.setSelected(jRadioButton1.getModel(), true);
-        GraphicsUtils.setEnable(false, 
-                save_button, 
-                update_button, 
-                delete_button, 
-                add_consumer_button, 
+        save_button.setEnabled(true);
+        GraphicsUtils.setEnable(false,
+                update_button,
+                delete_button,
+                add_consumer_button,
                 show_consumer_list_button,
-                add_file_button, 
+                add_file_button,
                 add_photo_button
         );
 
@@ -472,11 +472,6 @@ public final class UserView extends DBView implements DBValuesModel {
         center_panel.add(jPanel1);
 
         add_consumer_button.setText("Añadir Consumidor");
-        add_consumer_button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                add_consumer_buttonActionPerformed(evt);
-            }
-        });
         center_panel.add(add_consumer_button);
 
         show_consumer_list_button.setText("Consumidores");
@@ -709,10 +704,6 @@ public final class UserView extends DBView implements DBValuesModel {
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void add_consumer_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_consumer_buttonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_add_consumer_buttonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_consumer_button;
@@ -892,8 +883,9 @@ public final class UserView extends DBView implements DBValuesModel {
         String _street = street.getItemAt(street.getSelectedIndex()).getId();
         String _house_number = house_numer.getText().isBlank() ? "S/N" : house_numer.getText();
         String _water_intakes = water_intakes.getItemAt(water_intakes.getSelectedIndex()).getId();
-        String _status = String.valueOf(user_state.getSelectedIndex());
         String _type = buttonGroup1.getSelection().getActionCommand();
+        String _status = String.valueOf(user_state.getSelectedIndex());
+
         String[] arr = new String[]{
             _first_name,
             _last_name1,
@@ -901,9 +893,10 @@ public final class UserView extends DBView implements DBValuesModel {
             _street,
             _house_number,
             _water_intakes,
-            _status,
-            _type
+            _type,
+            _status
         };
+        
         return Formats.getDBFormatInputArray(arr);
     }
 

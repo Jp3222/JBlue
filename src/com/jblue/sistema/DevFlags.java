@@ -84,7 +84,7 @@ public final class DevFlags {
     /**
      * Bandera para ejecutar funciones a prueba
      */
-    public static boolean TST_EXE_FUNCION = false;
+    public static boolean TST_EXE_FUNCION = true;
 
     /**
      * Bandera para ejecutar funciones candidatas

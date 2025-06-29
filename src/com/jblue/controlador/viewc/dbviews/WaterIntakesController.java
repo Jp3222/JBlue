@@ -35,7 +35,7 @@ public class WaterIntakesController extends AbstractDBViewController<OWaterIntak
     private final JDBConnection<OWaterIntake> connection;
 
     public WaterIntakesController(WaterIntakesView view) {
-        super(CacheFactory.TIPO_DE_TOMAS);
+        super(CacheFactory.WATER_INTAKES_TYPES);
         this.view = view;
         connection = (JDBConnection<OWaterIntake>) memo_cache.getConnection();
 

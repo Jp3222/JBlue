@@ -16,7 +16,7 @@
  */
 package com.jblue.vista.views;
 
-import com.jblue.modelo.ConstBD;
+import com.jblue.modelo.constdb.Const;
 import com.jblue.modelo.objetos.OEmployee;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filters;
@@ -60,7 +60,7 @@ public class EmployeeView extends DBView implements OptionMenuModel, DBValuesMod
      */
     public EmployeeView() {
         initComponents();
-        model = new JTableModel(ConstBD.TABLA_PERSONAL, 0);
+        model = new JTableModel(Const.getEMPLOYEES().getFields(), 0);
         ly = (CardLayout) root_panel.getLayout();
         this.option = mkButton(getName(), null, null);
 

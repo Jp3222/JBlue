@@ -63,6 +63,10 @@ public class ServicePaymentLogic extends AbsctractPayment {
         return mov.get(KEY_STATUS_OP).equals(STATUS_OK);
     }
 
+    public boolean isHasSurcharge() {
+        return true;
+    }
+
     @Override
     public boolean execPayment() {
         deuda = meses_pagados.size() * toma.getPrice();
@@ -70,10 +74,10 @@ public class ServicePaymentLogic extends AbsctractPayment {
         if (!gameRulers()) {
             return false;
         }
-        System.out.println(Arrays.toString(personal.getInfo()));
+
         StringBuilder values = new StringBuilder();
         int i = 0;
-        String col = "";
+        String col;
         while (i < meses_pagados.size() - 1) {
             col = "('" + personal.getId()
                     + "','"
@@ -89,16 +93,18 @@ public class ServicePaymentLogic extends AbsctractPayment {
                     .append(toma.getPrice())
                     .append("\n");
         }
+
         col = "('" + personal.getId()
                 + "','"
                 + usuario.getId() + "','"
                 + toma.getPrice() + "','"
                 + meses_pagados.get(i) + "')";
+
         mov_book.append(i).append(" - ")
-                    .append(meses_pagados.get(i))
-                    .append(" : ")
-                    .append(toma.getPrice())
-                    .append("\n");
+                .append(meses_pagados.get(i))
+                .append(" : ")
+                .append(toma.getPrice())
+                .append("\n");
         i++;
         values.append(col);
         mov.put(KEY_MOVS, values.toString());

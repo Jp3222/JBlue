@@ -22,10 +22,30 @@ package com.jblue.modelo.constdb;
  */
 public class Table {
 
+    /**
+     * Tabla de base de datos
+     */
     private final String table;
+    /**
+     * Campos de base de datos
+     */
     private final String[] fields;
+    /**
+     * Campos Graficos
+     */
     private String[] graphics_field;
+    /**
+     * tamaño total de los campos
+     */
     private int real_count_fields;
+    /**
+     * Formato para 
+     */
+    private String history_to_formtat;
+    /**
+     * Movimientos posibles
+     */
+    private String[] movs;
 
     public Table(String table, String[] fields, String[] graphics_field) {
         this.table = table;
@@ -56,6 +76,22 @@ public class Table {
 
     public String[] getGraphics_field() {
         return graphics_field;
+    }
+
+    public void setHistoryToFormat(String txt) {
+        this.history_to_formtat = txt;
+    }
+
+    public String getHistoryToFormtat() {
+        return history_to_formtat;
+    }
+
+    public void setMovs(String... movs) {
+        this.movs = movs;
+    }
+
+    public String[] getMovs() {
+        return movs;
     }
 
 }

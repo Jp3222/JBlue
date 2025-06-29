@@ -9,8 +9,6 @@ import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
 import com.jutil.framework.LocalSession;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Esta clase define al personal de sesion actual, quien hace uso del programa,
@@ -21,11 +19,6 @@ import java.util.logging.Logger;
 public class Sesion implements LocalSession<OEmployee> {
 
     private static Sesion instancia;
-    public final static int USER_INSERT = 1;
-    public final static int USER_UPDATE = 2;
-    public final static int USER_DELETE = 3;
-    public final static int USER_EXPORT = 4;
-    public final static int USER_IMPORT = 5;
 
     /**
      * Retorna una unica instancia de la clase Sesion

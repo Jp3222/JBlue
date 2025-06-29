@@ -16,7 +16,6 @@
  */
 package com.jblue.util.tools;
 
-import com.jblue.modelo.ConstBD;
 import com.jblue.modelo.constdb.Const;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.*;
@@ -37,28 +36,14 @@ public class ObjectUtils {
 
     static {
         mapa = new HashMap<>(10);
-        mapa.put(ConstBD.TABLAS[0], new OEmployee());
         mapa.put(Const.EMPLOYEES.getTable(), new OEmployee());
-        mapa.put(ConstBD.TABLAS[1], new OUser());
         mapa.put(Const.USER.getTable(), new OUser());
-        mapa.put(ConstBD.TABLAS[2], new OCalles());
         mapa.put(Const.STREETS.getTable(), new OCalles());
-        mapa.put(ConstBD.TABLAS[3], new OWaterIntake());
         mapa.put(Const.WATER_INTAKES.getTable(), new OWaterIntake());
-        mapa.put(ConstBD.TABLAS[4], new OHisMovimientos());
-        mapa.put(ConstBD.TABLAS[5], new OMovimientos());
-
-        //Tipos de pagos
         mapa.put(Const.SERVICE_PAYMENTS.getTable(), new OServicePayments());
-        mapa.put(ConstBD.TABLAS[6], new OServicePayments());
-
         mapa.put(Const.SURCHARGE_PAYMENTS.getTable(), new OPagosRecargos());
-        mapa.put(ConstBD.TABLAS[7], new OPagosRecargos());
-
         mapa.put(Const.OTHER_PAYMENTS.getTable(), new OtherPaymentsType());
-        mapa.put(ConstBD.TABLAS[8], new OtherPaymentsType());
 
-        mapa.put(ConstBD.TABLAS[9], new OValores());
     }
 
     public static <T extends Objeto> T getObjeto(String tabla, String[] info) {
@@ -73,7 +58,7 @@ public class ObjectUtils {
     }
 
     public static OWaterIntake getTipoToma(String id) {
-        return getObjetoById(CacheFactory.TIPO_DE_TOMAS, id);
+        return getObjetoById(CacheFactory.WATER_INTAKES_TYPES, id);
     }
 
     private static <T extends Objeto> T getObjetoById(MemoListCache<T> cache, String id) {
@@ -105,27 +90,28 @@ public class ObjectUtils {
     }
 
     public static String getStreed(String street_id) {
-        return searchInCache(CacheFactory.CALLES, street_id);
+        return searchInCache(CacheFactory.STREETS, street_id);
     }
 
     public static OCalles getStreedObject(String street_id) {
-        return searchInCacheObject(CacheFactory.CALLES, street_id);
+        return searchInCacheObject(CacheFactory.STREETS, street_id);
     }
 
     public static String getWaterIntakes(String water_intakes_id) {
-        return searchInCache(CacheFactory.TIPO_DE_TOMAS, water_intakes_id);
+        return searchInCache(CacheFactory.WATER_INTAKES_TYPES, water_intakes_id);
     }
 
     public static OWaterIntake getWaterIntakesObject(String water_intakes_id) {
-        return searchInCacheObject(CacheFactory.TIPO_DE_TOMAS, water_intakes_id);
+        return searchInCacheObject(CacheFactory.WATER_INTAKES_TYPES, water_intakes_id);
     }
 
     public static OEmployee getEmployee(String employee_id) {
-        return searchInCacheObject(CacheFactory.PERSONAL, employee_id);
+        return searchInCacheObject(CacheFactory.EMPLOYEES, employee_id);
     }
 
     public static OUser getUser(String user_id) {
-        return searchInCacheObject(CacheFactory.USUARIOS, user_id);
+        System.out.println("users: " + CacheFactory.USERS.getList().isEmpty());
+        return searchInCacheObject(CacheFactory.USERS, user_id);
     }
 
     private static <T extends Objeto> String searchInCache(MemoListCache<T> cache, String id) {

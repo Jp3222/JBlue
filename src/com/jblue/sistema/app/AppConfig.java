@@ -128,6 +128,46 @@ public interface AppConfig {
         return Boolean.parseBoolean(String.valueOf(valueOf));
     }
 
+    public static boolean isDevMessages() {
+        Object valueOf = getParameter("MENSAJES_DEV");
+        if (valueOf == null) {
+            return false;
+        }
+        return Boolean.parseBoolean(String.valueOf(valueOf));
+    }
+
+    public static boolean isDbMessages() {
+        Object valueOf = getParameter("MENSAJES_DB");
+        if (valueOf == null) {
+            return false;
+        }
+        return Boolean.parseBoolean(String.valueOf(valueOf));
+    }
+
+    public static boolean isTestMessages() {
+        Object valueOf = getParameter("MENSAJES_TEST");
+        if (valueOf == null) {
+            return false;
+        }
+        return Boolean.parseBoolean(String.valueOf(valueOf));
+    }
+
+    public static boolean isDevFunction() {
+        Object valueOf = getParameter("FUNCIONES_DEV");
+        if (valueOf == null) {
+            return false;
+        }
+        return Boolean.parseBoolean(String.valueOf(valueOf));
+    }
+
+    public static boolean isTestFunction() {
+        Object valueOf = getParameter("FUNCIONES_TEST");
+        if (valueOf == null) {
+            return false;
+        }
+        return Boolean.parseBoolean(String.valueOf(valueOf));
+    }
+
     private static Object getParameter(String name) {
         try {
             DBConnection connection = (DBConnection) LaunchApp.getInstance().getResources("connection");

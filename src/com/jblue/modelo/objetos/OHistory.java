@@ -30,6 +30,7 @@ public enum OHistory {
     SELECT("SELECT");
 
     private String employee;
+    private String user;
     private final String type;
     private StringBuilder description;
 
@@ -40,17 +41,13 @@ public enum OHistory {
     public void setEmployee(String employee) {
         this.employee = employee;
     }
+    
+    public void setUser(String user){
+        this.user = user;
+    }
 
     public void addDescription(String mov) {
         this.description.append(mov);
-    }
-
-    public void remove() {
-        this.description.delete(0, description.length());
-    }
-
-    public void setDescription(StringBuilder description) {
-        this.description = description;
     }
 
     @Override

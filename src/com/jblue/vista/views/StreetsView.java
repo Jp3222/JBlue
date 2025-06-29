@@ -50,7 +50,7 @@ public final class StreetsView extends DBView implements DBValuesModel {
         ly.show(root_panel, register_panel.getName());
         //
         //controller = FactoryController.getStreetsController(this);
-        table_controller = new TableController(this, CacheFactory.CALLES);
+        table_controller = new TableController(this, CacheFactory.STREETS);
         build();
     }
 

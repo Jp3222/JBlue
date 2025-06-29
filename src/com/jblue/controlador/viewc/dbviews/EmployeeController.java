@@ -34,7 +34,7 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
     private final JDBConnection<OEmployee> connection;
 
     public EmployeeController(EmployeeView view) {
-        super(CacheFactory.PERSONAL);
+        super(CacheFactory.EMPLOYEES);
         this.view = view;
         this.connection = (JDBConnection<OEmployee>) memo_cache.getConnection();
     }

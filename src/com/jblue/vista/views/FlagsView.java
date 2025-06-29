@@ -16,13 +16,13 @@
  */
 package com.jblue.vista.views;
 
+import com.jblue.modelo.constdb.Const;
+import com.jblue.sistema.app.AppConfig;
 import com.jblue.vista.marco.vistas.SimpleView;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 
 /**
@@ -56,7 +56,7 @@ public final class FlagsView extends SimpleView {
             master_password_field.getName(),
             hour_validate_field.getName()
         };
-
+        build();
     }
 
     @Override
@@ -75,13 +75,13 @@ public final class FlagsView extends SimpleView {
     public void events() {
         update_button.addActionListener((e) -> {
             String querys[] = {
-                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = '%s;",
-                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = '%s;",
-                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = '%s;",
-                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = %s;",
-                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = %s;",
-                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = %s;",
-                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = %s;"
+                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = '%s'",
+                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = '%s'",
+                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = '%s'",
+                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = '%s'",
+                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = '%s'",
+                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = '%s'",
+                "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = '%s'"
             };
             String values[] = {
                 String.valueOf(open_hour_field.getText()),
@@ -90,8 +90,12 @@ public final class FlagsView extends SimpleView {
                 String.valueOf(auto_pay_field.isSelected()),
                 String.valueOf(master_user_field.getText()),
                 String.valueOf(master_password_field.getText()),
-                String.valueOf(hour_validate_field.isSelected())
-            };
+                String.valueOf(hour_validate_field.isSelected()),
+                String.valueOf(auto_pay_field.isSelected()),
+                String.valueOf(auto_pay_field.isSelected()),
+                String.valueOf(auto_pay_field.isSelected()),
+                String.valueOf(auto_pay_field.isSelected()),
+                String.valueOf(auto_pay_field.isSelected())};
 
             DBConnection connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
             String mess = "Parametros Actualizados";
@@ -99,10 +103,13 @@ public final class FlagsView extends SimpleView {
             for (int i = 0; i < querys.length; i++) {
                 try {
                     String query = querys[i];
-                    connection.execute(query.formatted(parameters[i], values[i]));
+                    System.out.println("parametro: " + parameters[i] + "=" + values[i]);
+                    int out = connection.execute(query.formatted(parameters[i], values[i]));
+                    System.out.println("OUT: " + out);
                 } catch (SQLException ex) {
                     mess = "Error al actualizar el parametro: %s".formatted(parameters[i]);
                     icon = JOptionPane.ERROR_MESSAGE;
+                    ex.printStackTrace();
                 }
             }
             JOptionPane.showMessageDialog(this, mess, "Parametros", icon);
@@ -111,16 +118,18 @@ public final class FlagsView extends SimpleView {
 
     @Override
     public void initialState() {
-        DBConnection connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
-        String query = "SELECT value, data_type FROM parameters";
-        try {
-            ResultSet rs = connection.query(query);
-            for (String i : parameters) {
-                
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(FlagsView.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        open_hour_field.setText(AppConfig.getOpenHour().format(DateTimeFormatter.ofPattern(Const.TIME_FORMAT)));
+        close_hour_field.setText(AppConfig.getCloseHour().format(DateTimeFormatter.ofPattern(Const.TIME_FORMAT)));
+        last_pay_day_field.setValue(AppConfig.getPayDay());
+        auto_pay_field.setSelected(AppConfig.isPayDay());
+        hour_validate_field.setSelected(AppConfig.isHourValidate());
+        master_password_field.setText(AppConfig.getMaterPassword());
+        master_user_field.setText(AppConfig.getMaterUser());
+        dev_messages.setSelected(AppConfig.isDevMessages());
+        db_messages.setSelected(AppConfig.isDbMessages());
+        test_messages.setSelected(AppConfig.isTestMessages());
+        dev_function.setSelected(AppConfig.isDevFunction());
+        test_function.setSelected(AppConfig.isTestFunction());
     }
 
     @Override
@@ -143,6 +152,7 @@ public final class FlagsView extends SimpleView {
         jButton2 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         root_panel = new javax.swing.JPanel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         register_panel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -160,9 +170,22 @@ public final class FlagsView extends SimpleView {
         master_user_field = new javax.swing.JTextField();
         master_password_field = new javax.swing.JTextField();
         hour_validate_field = new javax.swing.JCheckBox();
-        jPanel4 = new javax.swing.JPanel();
-        update_button = new javax.swing.JButton();
-        cancel_button = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        dev_messages = new javax.swing.JCheckBox();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        db_messages = new javax.swing.JCheckBox();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        test_messages = new javax.swing.JCheckBox();
+        jPanel11 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        dev_function = new javax.swing.JCheckBox();
+        jPanel12 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        test_function = new javax.swing.JCheckBox();
         search_panel = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
@@ -172,8 +195,12 @@ public final class FlagsView extends SimpleView {
         jTextField3 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        update_button = new javax.swing.JButton();
+        cancel_button = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(900, 700));
+        setName("Preferencias"); // NOI18N
         setLayout(new java.awt.BorderLayout());
 
         north_panel.setPreferredSize(new java.awt.Dimension(900, 30));
@@ -199,7 +226,7 @@ public final class FlagsView extends SimpleView {
 
         add(north_panel, java.awt.BorderLayout.PAGE_START);
 
-        root_panel.setLayout(new java.awt.CardLayout(10, 10));
+        root_panel.setLayout(new java.awt.BorderLayout());
 
         register_panel.setLayout(new java.awt.BorderLayout());
 
@@ -248,28 +275,69 @@ public final class FlagsView extends SimpleView {
         auto_pay_field.setName("RECARGO_AUTOMATICO"); // NOI18N
         jPanel2.add(auto_pay_field);
 
+        master_user_field.setEditable(false);
         master_user_field.setName("USUARIO_MAESTRO"); // NOI18N
         jPanel2.add(master_user_field);
 
+        master_password_field.setEditable(false);
         master_password_field.setName("CONTRASEÑA_MAESTRA"); // NOI18N
         jPanel2.add(master_password_field);
 
         hour_validate_field.setName("VALIDAR_HORA_DE_EXTRADA"); // NOI18N
         jPanel2.add(hour_validate_field);
 
-        jPanel4.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
-
-        update_button.setText("Actualizar");
-        jPanel4.add(update_button);
-
-        cancel_button.setText("Cancelar");
-        jPanel4.add(cancel_button);
-
-        jPanel2.add(jPanel4);
-
         register_panel.add(jPanel2, java.awt.BorderLayout.CENTER);
 
-        root_panel.add(register_panel, "card2");
+        jTabbedPane1.addTab("Configuraciones Generales", register_panel);
+
+        jPanel7.setLayout(new java.awt.GridLayout(12, 0));
+
+        jPanel8.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setText("MENSAJES_DEV");
+        jLabel1.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel8.add(jLabel1, java.awt.BorderLayout.LINE_START);
+        jPanel8.add(dev_messages, java.awt.BorderLayout.CENTER);
+
+        jPanel7.add(jPanel8);
+
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setText("MENSAJES_DB");
+        jLabel2.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel9.add(jLabel2, java.awt.BorderLayout.LINE_START);
+        jPanel9.add(db_messages, java.awt.BorderLayout.CENTER);
+
+        jPanel7.add(jPanel9);
+
+        jPanel10.setLayout(new java.awt.BorderLayout());
+
+        jLabel10.setText("MENSAJES_TEST");
+        jLabel10.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel10.add(jLabel10, java.awt.BorderLayout.LINE_START);
+        jPanel10.add(test_messages, java.awt.BorderLayout.CENTER);
+
+        jPanel7.add(jPanel10);
+
+        jPanel11.setLayout(new java.awt.BorderLayout());
+
+        jLabel11.setText("FUNCIONES_DEV");
+        jLabel11.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel11.add(jLabel11, java.awt.BorderLayout.LINE_START);
+        jPanel11.add(dev_function, java.awt.BorderLayout.CENTER);
+
+        jPanel7.add(jPanel11);
+
+        jPanel12.setLayout(new java.awt.BorderLayout());
+
+        jLabel12.setText("FUNCIONES_TEST");
+        jLabel12.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel12.add(jLabel12, java.awt.BorderLayout.LINE_START);
+        jPanel12.add(test_function, java.awt.BorderLayout.CENTER);
+
+        jPanel7.add(jPanel12);
+
+        jTabbedPane1.addTab("Funciones experimentales", jPanel7);
 
         search_panel.setLayout(new java.awt.BorderLayout(10, 10));
 
@@ -316,7 +384,20 @@ public final class FlagsView extends SimpleView {
 
         search_panel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        root_panel.add(search_panel, "card3");
+        jTabbedPane1.addTab("Parametros", search_panel);
+
+        root_panel.add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel4.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel4.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
+
+        update_button.setText("Actualizar");
+        jPanel4.add(update_button);
+
+        cancel_button.setText("Cancelar");
+        jPanel4.add(cancel_button);
+
+        root_panel.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -326,6 +407,9 @@ public final class FlagsView extends SimpleView {
     private javax.swing.JCheckBox auto_pay_field;
     private javax.swing.JButton cancel_button;
     private javax.swing.JFormattedTextField close_hour_field;
+    private javax.swing.JCheckBox db_messages;
+    private javax.swing.JCheckBox dev_function;
+    private javax.swing.JCheckBox dev_messages;
     private javax.swing.JCheckBox hour_validate_field;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -334,6 +418,11 @@ public final class FlagsView extends SimpleView {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -342,12 +431,19 @@ public final class FlagsView extends SimpleView {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JSpinner last_pay_day_field;
@@ -358,6 +454,8 @@ public final class FlagsView extends SimpleView {
     private javax.swing.JPanel register_panel;
     private javax.swing.JPanel root_panel;
     private javax.swing.JPanel search_panel;
+    private javax.swing.JCheckBox test_function;
+    private javax.swing.JCheckBox test_messages;
     private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
 

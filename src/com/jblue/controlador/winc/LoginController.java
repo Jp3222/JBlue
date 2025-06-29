@@ -121,7 +121,6 @@ public class LoginController extends WindowController {
     }
 
     public boolean start() {
-        System.out.println("is work time: " + AppConfig.isWorkTime());
         if (!AppConfig.isWorkTime()) {
             JOptionPane.showMessageDialog(view, "No es tiempo de trabajar");
             return false;
@@ -157,12 +156,12 @@ public class LoginController extends WindowController {
             res = op.get("*", WHERE.formatted(
                     encrypt_user, encrypt_password
             ));
-
-            if (res.isEmpty()
-                    && encrypt_user.equals(AppConfig.getMaterUser())
-                    && encrypt_password.equals(AppConfig.getMaterPassword())) {
-                res = op.get("*", "id = 1");
-            }
+            
+//            if (res.isEmpty()
+//                    && encrypt_user.equals(AppConfig.getMaterUser())
+//                    && encrypt_password.equals(AppConfig.getMaterPassword())) {
+//                res = op.get("*", "id = 1");
+//            }
 
         } catch (UnsupportedEncodingException
                 | NoSuchAlgorithmException

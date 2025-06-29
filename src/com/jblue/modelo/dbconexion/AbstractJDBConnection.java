@@ -114,7 +114,6 @@ public abstract class AbstractJDBConnection<T extends Objeto> implements JDBConn
                 System.out.println(select);
                 for (int i = 0; i < a.length; i++) {
                     a[i] = select.getString(i + 1);
-                    System.out.println(fields[i] + "=" + a[i]);
                 }
                 list.add((T) ObjectUtils.getObjeto(table, a.clone()));
             }
@@ -127,6 +126,7 @@ public abstract class AbstractJDBConnection<T extends Objeto> implements JDBConn
     @Override
     public Optional<T> get(String campos, String where) {
         ArrayList<T> select = select(campos, where);
+        System.out.println(Arrays.toString(select.getFirst().getInfo()));
         if (select.isEmpty()) {
             return Optional.empty();
         }

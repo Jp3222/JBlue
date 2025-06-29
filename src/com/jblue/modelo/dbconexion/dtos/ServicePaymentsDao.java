@@ -37,7 +37,7 @@ public class ServicePaymentsDao {
     public static DBConnection connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
 
     public static List<String[]> getUsersNotPayed() {
-        ArrayList<String[]> list = new ArrayList<>((int) CacheFactory.USUARIOS.count());
+        ArrayList<String[]> list = new ArrayList<>((int) CacheFactory.USERS.count());
         try {
             LocalDate ly = LocalDate.now();
             ResultSet rs = connection.query(ServicePayQuerys.pay_of_day.formatted(Fecha.MESES[ly.getMonthValue() - 1]));

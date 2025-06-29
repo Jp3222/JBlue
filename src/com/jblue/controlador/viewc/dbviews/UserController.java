@@ -25,9 +25,13 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import com.jblue.controlador.DBControllerModel;
 import com.jblue.controlador.AbstractDBViewController;
+import com.jblue.modelo.constdb.Const;
+import com.jblue.modelo.dbconexion.JDBConnection;
+import com.jblue.modelo.objetos.OServicePayments;
 import com.jblue.sistema.Sesion;
 import com.jblue.sistema.app.AppFiles;
 import com.jblue.vista.components.ComponentFactory;
+import com.jblue.vista.marco.vistas.SimpleView;
 import java.io.File;
 
 /**
@@ -39,7 +43,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
     private final UserView view;
 
     public UserController(UserView view) {
-        super(CacheFactory.USUARIOS);
+        super(CacheFactory.USERS);
         this.view = view;
     }
 
@@ -71,8 +75,8 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         }
         String[] arr = view.getDbValues(false);
         String field = "first_name, last_name1, last_name2, street, house_number, water_intakes, user_type, status";
-        boolean insert = connection.insert(field,arr);
-        Sesion.getInstancia().setMov(Sesion.USER_INSERT, 
+        boolean insert = connection.insert(field, arr);
+        Sesion.getInstancia().setMov(Const.USER_INSERT,
                 insert_desc.formatted(arr[0], arr[1], arr[2]));
         rmessage(view, insert);
     }
@@ -89,10 +93,8 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         if (DevFlags.TST_EXE_FUNCION) {
             int hidden_payments = JOptionPane.showConfirmDialog(view, "¿Desea eliminar los pagos hechos por esta persona?");
             if (hidden_payments == JOptionPane.YES_OPTION) {
-                boolean update = connection.update(
-                        "status=3",
-                        "id = %s".formatted(view.getObjectSearch().getId())
-                );
+                JDBConnection<OServicePayments> payments = CacheFactory.SERVICE_PAYMENTS.getConnection();
+                boolean update = payments.update("status", "3", "user = %s".formatted(id));
                 rmessage(view, update);
             }
         }
@@ -139,6 +141,14 @@ public class UserController extends AbstractDBViewController<OUser> implements D
             out.mkdir();
         }
         //Files.copy(file.toPath(), new BufferedOutputStream(new FileOutputStream(out)));
+    }
+
+    @Override
+    protected void rmessage(SimpleView view, boolean ok) {
+        super.rmessage(view, ok); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        if (ok) {
+            CacheFactory.SERVICE_PAYMENTS.reLoadData();
+        }
     }
 
     String insert_desc = "employee:%s,user:%s %s %s";

@@ -63,12 +63,15 @@ public class AbstraccionOPago extends Objeto implements ForeingKeyObject {
     public int getStatus() {
         return Integer.parseInt(info[5]);
     }
-    
-    public String getStatusString(){
-        return switch(getStatus()){
-            case 2: yield "PENDIENTE";
-            case 3: yield "ELIMINADO";
-            default: yield "PAGADO";
+
+    public String getStatusString() {
+        return switch (getStatus()) {
+            case 2:
+                yield "PENDIENTE";
+            case 3:
+                yield "ELIMINADO";
+            default:
+                yield "PAGADO";
         };
     }
 
@@ -79,7 +82,8 @@ public class AbstraccionOPago extends Objeto implements ForeingKeyObject {
     @Override
     public void setInfo(String[] info) {
         super.setInfo(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        this.info_fk = info.clone();
+        info_fk = info.clone();
+
     }
 
     @Override
@@ -90,7 +94,8 @@ public class AbstraccionOPago extends Objeto implements ForeingKeyObject {
     @Override
     public String[] getInfoSinFK() {
         info_fk[1] = getEmployeeObject().toString();
-        info_fk[2] = getUserObject().toString();
+        OUser u = getUserObject();
+        info_fk[2] = u == null ? "USUARIO BORRADO": u.toString();
         info_fk[5] = getStatusString();
         return info_fk;
     }

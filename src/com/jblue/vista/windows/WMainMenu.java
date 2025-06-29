@@ -19,6 +19,7 @@ package com.jblue.vista.windows;
 import com.jblue.controlador.winc.MainController;
 import com.jblue.vista.components.UserViewComponent;
 import com.jblue.vista.marco.ventanas.AbstractAppWindows;
+import com.jblue.vista.views.FlagsView;
 import com.jblue.vista.views.StreetsView;
 import com.jblue.vista.views.OtherPaymentTypesView;
 import com.jblue.vista.views.OtherPaymentsView;
@@ -48,6 +49,8 @@ public final class WMainMenu extends AbstractAppWindows {
     private final OtherPaymentsView other_payments_view;
     private final SurchargePaymentsView surcharge_payments_view;
     //
+    private final FlagsView flag_view;
+    //
     private final LoginWindows LOGIN;
     //
     private UserViewComponent showVisor;
@@ -71,6 +74,8 @@ public final class WMainMenu extends AbstractAppWindows {
         other_payments_view = new OtherPaymentsView();
         surcharge_payments_view = new SurchargePaymentsView();
         //
+        flag_view = FlagsView.getInstance();
+        //
         ly = (CardLayout) views_panel.getLayout();
         updateTitle(shop_cart_view.getName());
         build();
@@ -93,6 +98,8 @@ public final class WMainMenu extends AbstractAppWindows {
         views_panel.add(other_payments_types_view, other_payments_types_view.getName());
         views_panel.add(other_payments_view, other_payments_view.getName());
         views_panel.add(surcharge_payments_view, surcharge_payments_view.getName());
+        views_panel.add(flag_view, flag_view.getName());
+        
     }
 
     @Override
@@ -113,6 +120,8 @@ public final class WMainMenu extends AbstractAppWindows {
         other_payments_view_item.addActionListener(controller);
         surcharge_payments_view_item.addActionListener(controller);
         service_payments_view_item.addActionListener(controller);
+        //
+        parameters_view_item.addActionListener(controller);
     }
 
     @Override
@@ -167,7 +176,7 @@ public final class WMainMenu extends AbstractAppWindows {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem16 = new javax.swing.JMenuItem();
+        parameters_view_item = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItem19 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -332,8 +341,8 @@ public final class WMainMenu extends AbstractAppWindows {
         jMenuItem7.setText("Importar");
         jMenu1.add(jMenuItem7);
 
-        jMenuItem16.setText("Preferencias");
-        jMenu1.add(jMenuItem16);
+        parameters_view_item.setText("Preferencias");
+        jMenu1.add(parameters_view_item);
         jMenu1.add(jSeparator2);
 
         jMenuItem19.setText("Salir");
@@ -393,7 +402,6 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
@@ -415,6 +423,7 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JPanel left_panel;
     private javax.swing.JMenuItem other_payments_view_item;
     private javax.swing.JMenuItem other_type_payments_view_item;
+    private javax.swing.JMenuItem parameters_view_item;
     private javax.swing.JMenuItem service_payments_view_item;
     private javax.swing.JMenuItem street_view_item;
     private javax.swing.JMenuItem surcharge_payments_view_item;

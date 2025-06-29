@@ -32,6 +32,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import com.jblue.vista.marco.DBValuesModel;
 import com.jblue.vista.marco.TableSearchViewModel;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -51,8 +54,8 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
         model = TableModelFactory.getWaterIntakesTableModel();
-        //controller = FactoryController.getWaterIntakesController(this);
-        table_controller = new TableController(this, CacheFactory.TIPO_DE_TOMAS);
+        controller = FactoryController.getWaterIntakesController(this);
+        table_controller = new TableController(this, CacheFactory.WATER_INTAKES_TYPES);
         build();
     }
 
@@ -517,13 +520,15 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         String _previus_price = String.valueOf(object_search.getPrice());
         String _cost = previus_price_field.getText();
         String _fine = surcharge_field.getText();
-        String[] arr = new String[]{
-            _type,
-            _previus_price,
-            _cost,
-            _fine
-        };
-        return Formats.getDBFormatInputArray(arr);
+        String _date_update = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+
+        if (update) {
+            return Formats.getDBFormatInputArray(_type,
+                    _previus_price, _cost,
+                    _fine, _date_update);
+        }
+        return Formats.getDBFormatInputArray(_type,
+                _previus_price, _cost, _fine);
     }
 
     @Override

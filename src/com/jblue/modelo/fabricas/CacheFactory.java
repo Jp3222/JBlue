@@ -21,16 +21,20 @@ public final class CacheFactory {
 
     public static boolean cache_list;
 
-    public static final MemoListCache<OEmployee> PERSONAL = new MemoListCache(ConnectionFactory.getEmployees());
-    public static final MemoListCache<OUser> USUARIOS = new MemoListCache(ConnectionFactory.getUser());
-    public static final MemoListCache<OWaterIntake> TIPO_DE_TOMAS = new MemoListCache(ConnectionFactory.getWaterIntakes());
-    public static final MemoListCache<OCalles> CALLES = new MemoListCache(ConnectionFactory.getStreets());
+    public static final MemoListCache<OWaterIntake> WATER_INTAKES_TYPES = new MemoListCache(ConnectionFactory.getWaterIntakes());
+    public static final MemoListCache<OCalles> STREETS = new MemoListCache(ConnectionFactory.getStreets());
+    public static final MemoListCache<OEmployee> EMPLOYEES = new MemoListCache(ConnectionFactory.getEmployees());
+    public static final MemoListCache<OUser> USERS = new MemoListCache(ConnectionFactory.getUser());
     public static final MemoListCache<OServicePayments> SERVICE_PAYMENTS = new MemoListCache(ConnectionFactory.getServicePayments());
     public static final MemoListCache<OPagosRecargos> SURCHARGE_PAYMENTS = new MemoListCache(ConnectionFactory.getSurchargePayments());
     public static final MemoListCache<OtherPaymentsType> OTHER_PAYMENTS = new MemoListCache(ConnectionFactory.getOtherPayments());
 
     public static final MemoListCache[] CACHES = {
-        PERSONAL, USUARIOS, TIPO_DE_TOMAS, CALLES, SERVICE_PAYMENTS
+        WATER_INTAKES_TYPES,
+        STREETS,
+        USERS,
+        EMPLOYEES,
+        SERVICE_PAYMENTS
     };
 
     public static boolean loadCaches() {
@@ -38,7 +42,7 @@ public final class CacheFactory {
         for (MemoListCache i : CACHES) {
             i.loadData();
         }
-        return true;
+        return cache_list;
     }
 
     private CacheFactory() {

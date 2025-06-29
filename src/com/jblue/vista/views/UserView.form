@@ -681,9 +681,6 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="A&#xf1;adir Consumidor"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="add_consumer_buttonActionPerformed"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="show_consumer_list_button">
                   <Properties>

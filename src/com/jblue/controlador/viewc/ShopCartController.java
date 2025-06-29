@@ -51,7 +51,7 @@ public class ShopCartController extends Controller {
     public ShopCartController(ShopCartView view) {
         System.out.println("xd 1");
         this.view = view;
-        memo_cache = CacheFactory.USUARIOS;
+        memo_cache = CacheFactory.USERS;
         this.o = PaymentFactory.getServicePayment();
         this.mov_book = new StringBuilder(3000);
         o.setMovBook(mov_book);

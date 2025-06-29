@@ -40,7 +40,10 @@ public class MemoListCache<T extends Objeto> extends AbstractListCache<T> implem
 
     public T get(Predicate<T> filter) {
         List<T> list = getList(filter);
-        return list.get(0);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.getFirst();
     }
 
     @Override

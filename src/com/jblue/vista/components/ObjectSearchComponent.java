@@ -41,7 +41,7 @@ import javax.swing.KeyStroke;
 public class ObjectSearchComponent<T extends Objeto> extends javax.swing.JDialog {
 
     public static OCalles selectorCalle(JFrame padre) {
-        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.CALLES.getList());
+        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.STREETS.getList());
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;
@@ -50,7 +50,7 @@ public class ObjectSearchComponent<T extends Objeto> extends javax.swing.JDialog
     }
 
     public static OUser selectorUsuarios(JFrame padre) {
-        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.USUARIOS.getList());
+        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.USERS.getList());
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;
@@ -59,7 +59,7 @@ public class ObjectSearchComponent<T extends Objeto> extends javax.swing.JDialog
     }
 
     public static OUser selectorSoloTitulares(JFrame padre) {
-        ArrayList<OUser> list = (ArrayList<OUser>) CacheFactory.USUARIOS.getList(o -> o.isTitular());
+        ArrayList<OUser> list = (ArrayList<OUser>) CacheFactory.USERS.getList(o -> o.isTitular());
         ObjectSearchComponent o = new ObjectSearchComponent(padre, true, list);
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
@@ -69,7 +69,7 @@ public class ObjectSearchComponent<T extends Objeto> extends javax.swing.JDialog
     }
 
     public static OUser selectorSoloUsuarios(JFrame padre) {
-        ArrayList<OUser> list = (ArrayList<OUser>) CacheFactory.USUARIOS.getList(o -> !o.isTitular());
+        ArrayList<OUser> list = (ArrayList<OUser>) CacheFactory.USERS.getList(o -> !o.isTitular());
         ObjectSearchComponent o = new ObjectSearchComponent(padre, true, list);
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
@@ -79,7 +79,7 @@ public class ObjectSearchComponent<T extends Objeto> extends javax.swing.JDialog
     }
 
     public static OWaterIntake selectorTipoDeToma(JFrame padre) {
-        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.TIPO_DE_TOMAS.getList());
+        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.WATER_INTAKES_TYPES.getList());
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;

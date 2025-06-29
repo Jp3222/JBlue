@@ -43,7 +43,7 @@ public class StreetsController extends AbstractDBViewController<OCalles> impleme
     private final ArrayList<AbstractComponentController> components_controllers;
 
     public StreetsController(StreetsView view) {
-        super(CacheFactory.CALLES);
+        super(CacheFactory.STREETS);
         this.connection = (JDBConnection<OCalles>) memo_cache.getConnection();
         this.view = view;
         this.components_controllers = new ArrayList(5);

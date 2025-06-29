@@ -162,8 +162,11 @@ public class Sistema implements MainSystem {
 
     @Override
     public boolean cache() {
-        SystemLogs.infoSysLogs("MEMORIA CACHE LISTA");
-        return CacheFactory.cache_list || CacheFactory.loadCaches();
+        boolean rs = CacheFactory.cache_list || CacheFactory.loadCaches();
+        if (rs) {
+            SystemLogs.infoSysLogs("MEMORIA CACHE LISTA");
+        }
+        return rs;
     }
 
     @Override

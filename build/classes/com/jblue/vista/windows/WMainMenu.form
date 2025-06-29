@@ -30,7 +30,7 @@
                 <Property name="text" type="java.lang.String" value="Importar"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem16">
+            <MenuItem class="javax.swing.JMenuItem" name="parameters_view_item">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Preferencias"/>
               </Properties>

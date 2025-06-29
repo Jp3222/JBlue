@@ -76,7 +76,7 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         ly = (CardLayout) root_panel.getLayout();
 
         table_controller = new TableController(this, CacheFactory.SERVICE_PAYMENTS);
-        list_controller = new ListController(this, CacheFactory.USUARIOS);
+        list_controller = new ListController(this, CacheFactory.USERS);
         build();
     }
 

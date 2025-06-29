@@ -85,18 +85,21 @@ public class TableController<T extends Objeto & ForeingKeyObject> extends Abstra
     @Override
     public void loadData() {
         ArrayList<T> list = memo_cache.getList();
+        if (list.isEmpty()) {
+            return;
+        }
         load(list, (JTableModel) view.getModel());
         view.setRowsData(String.valueOf(list.size()),
                 String.valueOf("%d - %d").formatted(memo_cache.getIndexMin(), memo_cache.getIndexMin()),
                 String.valueOf(memo_cache.count())
         );
-//        view.getTable().updateUI();
     }
 
     private void load(List<T> data, JTableModel model) {
         if (data.isEmpty()) {
             return;
         }
+        System.out.println(data.size());
         if (data.getFirst() instanceof ForeingKeyObject) {
             for (T i : data) {
                 model.addRow(i.getInfoSinFK());

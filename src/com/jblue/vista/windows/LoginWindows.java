@@ -126,8 +126,8 @@ public class LoginWindows extends AbstractAppWindows {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
+        program_images_panel = new javax.swing.JPanel();
+        titles_panel = new javax.swing.JPanel();
         title2_field = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -147,19 +147,11 @@ public class LoginWindows extends AbstractAppWindows {
         setResizable(false);
         getContentPane().setLayout(new java.awt.BorderLayout(5, 5));
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(400, 400));
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        program_images_panel.setPreferredSize(new java.awt.Dimension(400, 400));
+        program_images_panel.setLayout(new java.awt.BorderLayout());
 
-        icon_image.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        icon_image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/img1.png"))); // NOI18N
-        icon_image.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        icon_image.setIconTextGap(30);
-        icon_image.setPreferredSize(new java.awt.Dimension(350, 150));
-        icon_image.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel1.add(icon_image, java.awt.BorderLayout.CENTER);
-
-        jPanel3.setPreferredSize(new java.awt.Dimension(100, 60));
-        jPanel3.setLayout(new java.awt.BorderLayout());
+        titles_panel.setPreferredSize(new java.awt.Dimension(100, 60));
+        titles_panel.setLayout(new java.awt.BorderLayout());
 
         title1_field.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         title1_field.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -167,22 +159,30 @@ public class LoginWindows extends AbstractAppWindows {
         title1_field.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         title1_field.setIconTextGap(30);
         title1_field.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel3.add(title1_field, java.awt.BorderLayout.CENTER);
+        titles_panel.add(title1_field, java.awt.BorderLayout.CENTER);
 
         title2_field.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         title2_field.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         title2_field.setText("TITULO 2");
         title2_field.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel3.add(title2_field, java.awt.BorderLayout.PAGE_END);
+        titles_panel.add(title2_field, java.awt.BorderLayout.PAGE_END);
 
-        jPanel1.add(jPanel3, java.awt.BorderLayout.NORTH);
+        program_images_panel.add(titles_panel, java.awt.BorderLayout.NORTH);
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
+        icon_image.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        icon_image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/img1.png"))); // NOI18N
+        icon_image.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        icon_image.setIconTextGap(30);
+        icon_image.setPreferredSize(new java.awt.Dimension(350, 150));
+        icon_image.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        program_images_panel.add(icon_image, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(program_images_panel, java.awt.BorderLayout.WEST);
 
         jPanel4.setPreferredSize(new java.awt.Dimension(400, 400));
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Inicio de sesion");
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -287,10 +287,8 @@ public class LoginWindows extends AbstractAppWindows {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
@@ -300,8 +298,10 @@ public class LoginWindows extends AbstractAppWindows {
     private final javax.swing.JButton login_button = new javax.swing.JButton();
     private final javax.swing.JCheckBox mostrar = new javax.swing.JCheckBox();
     private final javax.swing.JPasswordField password = new javax.swing.JPasswordField();
+    private javax.swing.JPanel program_images_panel;
     private final javax.swing.JLabel title1_field = new javax.swing.JLabel();
     private javax.swing.JLabel title2_field;
+    private javax.swing.JPanel titles_panel;
     private final javax.swing.JTextField user = new javax.swing.JTextField();
     // End of variables declaration//GEN-END:variables
     private boolean sesion_active = false;

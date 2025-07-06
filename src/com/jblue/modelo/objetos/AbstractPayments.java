@@ -25,14 +25,14 @@ import com.jblue.util.objetos.ForeingKeyObject;
  *
  * @author juanp
  */
-public class AbstraccionOPago extends Objeto implements ForeingKeyObject {
+public class AbstractPayments extends Objeto implements ForeingKeyObject {
 
     private String[] info_fk;
 
-    public AbstraccionOPago() {
+    public AbstractPayments() {
     }
 
-    public AbstraccionOPago(String[] info) {
+    public AbstractPayments(String[] info) {
         super(info);
     }
 

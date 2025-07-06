@@ -19,7 +19,7 @@ package com.jblue.vista.views;
 import com.jblue.controlador.compc.TableController;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.fabricas.TableModelFactory;
-import com.jblue.modelo.objetos.OCalles;
+import com.jblue.modelo.objetos.OStreet;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filters;
 import com.jblue.vista.marco.vistas.DBView;
@@ -36,7 +36,7 @@ import com.jblue.vista.marco.DBValuesModel;
  */
 public final class StreetsView extends DBView implements DBValuesModel {
 
-    private OCalles object_search;
+    private OStreet object_search;
     private final CardLayout ly;
 
     /**
@@ -394,7 +394,7 @@ public final class StreetsView extends DBView implements DBValuesModel {
             JOptionPane.showMessageDialog(this, "No se ha seleccionado un elemento", "Editar", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        object_search = new OCalles((String[]) model.getRow(index));
+        object_search = new OStreet((String[]) model.getRow(index));
         streed_name_field.setText(object_search.getNombre());
     }
 
@@ -504,13 +504,13 @@ public final class StreetsView extends DBView implements DBValuesModel {
     }
 
     @Override
-    public OCalles getObjectSearch() {
+    public OStreet getObjectSearch() {
         return object_search;
     }
 
     @Override
     public void setObjectSearch(Objeto o) {
-        object_search = (OCalles) o;
+        object_search = (OStreet) o;
     }
 
     @Override

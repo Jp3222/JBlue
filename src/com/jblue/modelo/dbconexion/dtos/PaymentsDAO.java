@@ -16,10 +16,13 @@
  */
 package com.jblue.modelo.dbconexion.dtos;
 
-import com.jblue.modelo.dbconexion.querys.ServicePayQuerys;
+import com.jblue.modelo.dbconexion.querys.PaymentsQuerys;
 import com.jblue.modelo.fabricas.CacheFactory;
+import com.jblue.modelo.objetos.AbstractPayments;
+import com.jblue.modelo.objetos.OPagosRecargos;
 import com.jblue.sistema.SystemLogs;
 import com.jblue.util.tiempo.Fecha;
+import com.jblue.util.tools.ObjectUtils;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
 import java.sql.ResultSet;
@@ -32,7 +35,7 @@ import java.util.List;
  *
  * @author juanp
  */
-public class ServicePaymentsDao {
+public class PaymentsDAO {
 
     public static DBConnection connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
 
@@ -40,13 +43,47 @@ public class ServicePaymentsDao {
         ArrayList<String[]> list = new ArrayList<>((int) CacheFactory.USERS.count());
         try {
             LocalDate ly = LocalDate.now();
-            ResultSet rs = connection.query(ServicePayQuerys.pay_of_day.formatted(Fecha.MESES[ly.getMonthValue() - 1]));
+            ResultSet rs = connection.query(PaymentsQuerys.pay_of_day.formatted(Fecha.MESES[ly.getMonthValue() - 1]));
             String[] arr = new String[7];
             while (rs.next()) {
                 for (int i = 0; i < arr.length; i++) {
                     arr[i] = rs.getString(i + 1);
                 }
                 list.add(arr.clone());
+            }
+        } catch (SQLException e) {
+            SystemLogs.severeDbLogs("ERROR: USUARIOS NO PAGADOS", e);
+        }
+        return list;
+    }
+
+    /*
+     * public static List<OPagosRecargos> getSurcharges() {
+     *
+     * }
+     */
+    public static boolean isMonthPay(String month_pay) {
+        String query = "SELECT id FROM service_payments WHERE month IN(%s) AND YEAR(date_register) = YEAR(CUERRENT_TIMESTAMP)";
+        boolean ret = false;
+        try (ResultSet rs = connection.query(query)) {
+            ret = rs.next();
+        } catch (SQLException e) {
+            SystemLogs.severeDbLogs("ERROR: USUARIOS NO PAGADOS", e);
+        }
+        return ret;
+    }
+
+    public <T extends AbstractPayments> List<T> getList(Class<T> obj, String query) {
+        ArrayList<T> list = new ArrayList<>();
+        try {
+            LocalDate ly = LocalDate.now();
+            ResultSet rs = connection.query(query);
+            String[] arr = new String[7];
+            while (rs.next()) {
+                for (int i = 0; i < arr.length; i++) {
+                    arr[i] = rs.getString(i + 1);
+                }
+                list.add(ObjectUtils.getObjeto(obj.getName(), arr));
             }
         } catch (SQLException e) {
             SystemLogs.severeDbLogs("ERROR: USUARIOS NO PAGADOS", e);

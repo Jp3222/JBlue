@@ -20,11 +20,16 @@ package com.jblue.modelo.dbconexion.querys;
  *
  * @author juanp
  */
-public class ServicePayQuerys {
+public class PaymentsQuerys {
 
     public static String pay_of_day = """
                                       SELECT * FROM service_payments 
                                       WHERE YEAR(date_register) = YEAR(NOW()) AND month = %s
                                       """;
-    
+
+    public static String GET_SURCHARGES = """
+                                          SELECT id FROM surcharges_payments 
+                                          WHERE WHERE YEAR(date_register) = YEAR(NOW()) AND month = %s
+                                          """;
+
 }

@@ -8,13 +8,13 @@ package com.jblue.modelo.objetos;
  *
  * @author jp
  */
-public class OCalles extends Objeto {
+public class OStreet extends Objeto {
 
-    public OCalles(String... info) {
+    public OStreet(String... info) {
         super(info);
     }
 
-    public OCalles() {
+    public OStreet() {
         super();
     }
 

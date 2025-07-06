@@ -38,10 +38,12 @@ public class ObjectUtils {
         mapa = new HashMap<>(10);
         mapa.put(Const.EMPLOYEES.getTable(), new OEmployee());
         mapa.put(Const.USER.getTable(), new OUser());
-        mapa.put(Const.STREETS.getTable(), new OCalles());
+        mapa.put(Const.STREETS.getTable(), new OStreet());
         mapa.put(Const.WATER_INTAKES.getTable(), new OWaterIntake());
         mapa.put(Const.SERVICE_PAYMENTS.getTable(), new OServicePayments());
         mapa.put(Const.SURCHARGE_PAYMENTS.getTable(), new OPagosRecargos());
+        mapa.put(OPagosRecargos.class.getName(), new OServicePayments());
+        mapa.put(OServicePayments.class.getName(), new OPagosRecargos());
         mapa.put(Const.OTHER_PAYMENTS.getTable(), new OtherPaymentsType());
 
     }
@@ -93,7 +95,7 @@ public class ObjectUtils {
         return searchInCache(CacheFactory.STREETS, street_id);
     }
 
-    public static OCalles getStreedObject(String street_id) {
+    public static OStreet getStreedObject(String street_id) {
         return searchInCacheObject(CacheFactory.STREETS, street_id);
     }
 

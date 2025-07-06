@@ -16,7 +16,7 @@
  */
 package com.jblue.vista.components;
 
-import com.jblue.modelo.objetos.OCalles;
+import com.jblue.modelo.objetos.OStreet;
 import com.jblue.modelo.objetos.OWaterIntake;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
@@ -40,13 +40,13 @@ import javax.swing.KeyStroke;
  */
 public class ObjectSearchComponent<T extends Objeto> extends javax.swing.JDialog {
 
-    public static OCalles selectorCalle(JFrame padre) {
+    public static OStreet selectorCalle(JFrame padre) {
         ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.STREETS.getList());
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;
         }
-        return (OCalles) o.getObjeto();
+        return (OStreet) o.getObjeto();
     }
 
     public static OUser selectorUsuarios(JFrame padre) {

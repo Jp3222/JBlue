@@ -16,8 +16,8 @@
  */
 package com.jblue.controlador.logic;
 
+import com.jblue.modelo.dbconexion.dtos.PaymentsDAO;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -74,7 +74,6 @@ public class ServicePaymentLogic extends AbsctractPayment {
         if (!gameRulers()) {
             return false;
         }
-
         StringBuilder values = new StringBuilder();
         int i = 0;
         String col;

@@ -18,7 +18,7 @@ package com.jblue.modelo.fabricas;
 
 import com.jblue.modelo.constdb.Const;
 import com.jblue.modelo.dbconexion.JDBConnection;
-import com.jblue.modelo.objetos.OCalles;
+import com.jblue.modelo.objetos.OStreet;
 import com.jblue.modelo.objetos.OtherPaymentsType;
 import com.jblue.modelo.objetos.OServicePayments;
 import com.jblue.modelo.objetos.OEmployee;
@@ -39,7 +39,7 @@ public class ConnectionFactory {
         return new JDBConnection(Const.USER);
     }
 
-    public static JDBConnection<OCalles> getStreets() {
+    public static JDBConnection<OStreet> getStreets() {
         return new JDBConnection(Const.STREETS);
     }
 

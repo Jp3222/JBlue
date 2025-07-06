@@ -4,7 +4,7 @@
  */
 package com.jblue.modelo.fabricas;
 
-import com.jblue.modelo.objetos.OCalles;
+import com.jblue.modelo.objetos.OStreet;
 import com.jblue.modelo.objetos.OtherPaymentsType;
 import com.jblue.modelo.objetos.OPagosRecargos;
 import com.jblue.modelo.objetos.OServicePayments;
@@ -22,7 +22,7 @@ public final class CacheFactory {
     public static boolean cache_list;
 
     public static final MemoListCache<OWaterIntake> WATER_INTAKES_TYPES = new MemoListCache(ConnectionFactory.getWaterIntakes());
-    public static final MemoListCache<OCalles> STREETS = new MemoListCache(ConnectionFactory.getStreets());
+    public static final MemoListCache<OStreet> STREETS = new MemoListCache(ConnectionFactory.getStreets());
     public static final MemoListCache<OEmployee> EMPLOYEES = new MemoListCache(ConnectionFactory.getEmployees());
     public static final MemoListCache<OUser> USERS = new MemoListCache(ConnectionFactory.getUser());
     public static final MemoListCache<OServicePayments> SERVICE_PAYMENTS = new MemoListCache(ConnectionFactory.getServicePayments());

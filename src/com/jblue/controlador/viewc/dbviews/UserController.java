@@ -29,6 +29,7 @@ import com.jblue.modelo.constdb.Const;
 import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.objetos.OServicePayments;
 import com.jblue.sistema.Sesion;
+import com.jblue.sistema.app.AppConfig;
 import com.jblue.sistema.app.AppFiles;
 import com.jblue.vista.components.ComponentFactory;
 import com.jblue.vista.marco.vistas.SimpleView;
@@ -90,7 +91,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         boolean delete = connection.update("status", "3", "id = %s".formatted(id));
         rmessage(view, delete);
         //FUNCION EN DESARROLLO - Ocultar los resgitros de pago de un usuario
-        if (DevFlags.TST_EXE_FUNCION) {
+        if (AppConfig.isDevFunction()) {
             int hidden_payments = JOptionPane.showConfirmDialog(view, "¿Desea eliminar los pagos hechos por esta persona?");
             if (hidden_payments == JOptionPane.YES_OPTION) {
                 JDBConnection<OServicePayments> payments = CacheFactory.SERVICE_PAYMENTS.getConnection();

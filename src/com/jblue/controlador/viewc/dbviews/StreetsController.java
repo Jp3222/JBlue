@@ -17,7 +17,7 @@
 package com.jblue.controlador.viewc.dbviews;
 
 import com.jblue.modelo.fabricas.CacheFactory;
-import com.jblue.modelo.objetos.OCalles;
+import com.jblue.modelo.objetos.OStreet;
 import com.jblue.vista.views.StreetsView;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
@@ -36,15 +36,15 @@ import com.jblue.controlador.AbstractDBViewController;
  *
  * @author juan-campos
  */
-public class StreetsController extends AbstractDBViewController<OCalles> implements DBControllerModel {
+public class StreetsController extends AbstractDBViewController<OStreet> implements DBControllerModel {
 
-    private final JDBConnection<OCalles> connection;
+    private final JDBConnection<OStreet> connection;
     private final StreetsView view;
     private final ArrayList<AbstractComponentController> components_controllers;
 
     public StreetsController(StreetsView view) {
         super(CacheFactory.STREETS);
-        this.connection = (JDBConnection<OCalles>) memo_cache.getConnection();
+        this.connection = (JDBConnection<OStreet>) memo_cache.getConnection();
         this.view = view;
         this.components_controllers = new ArrayList(5);
 

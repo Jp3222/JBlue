@@ -8,7 +8,7 @@ package com.jblue.modelo.objetos;
  *
  * @author jp
  */
-public class OServicePayments extends AbstraccionOPago {
+public class OServicePayments extends AbstractPayments {
 
     public OServicePayments() {
         super();

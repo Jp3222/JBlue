@@ -62,7 +62,7 @@ public class OUser extends Objeto implements ForeingKeyObject, StatusObject{
         return info[4];
     }
 
-    public OCalles getStreetObject() {
+    public OStreet getStreetObject() {
         return ObjectUtils.getStreedObject(getStreet());
     }
 

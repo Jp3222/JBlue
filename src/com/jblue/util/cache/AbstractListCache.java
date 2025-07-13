@@ -17,14 +17,10 @@
 package com.jblue.util.cache;
 
 import com.jblue.modelo.dbconexion.JDBConnection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import com.jblue.modelo.objetos.Objeto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import com.jblue.sistema.SystemLogs;
-import com.jutil.dbcon.connection.DBConnection;
 
 /**
  *

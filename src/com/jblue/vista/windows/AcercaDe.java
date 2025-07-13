@@ -6,6 +6,12 @@ package com.jblue.vista.windows;
 
 import com.jblue.sistema.app.AppInfo;
 import com.jblue.vista.marco.ventanas.AbstractAppWindows;
+import com.jutil.platf.JVMInfo;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -29,7 +35,7 @@ public final class AcercaDe extends AbstractAppWindows {
     public void build() {
         components();
         events();
-        initComponents();
+        initialState();
         finalState();
     }
 
@@ -51,9 +57,24 @@ public final class AcercaDe extends AbstractAppWindows {
 
     @Override
     public void finalState() {
-        date_update.setText("");
+        date_update.setText(AppInfo.UPDATE_DATE);
         prog_version.setText(AppInfo.VERSION_DEL_PROGRAMA);
-        jvm_version.setText(System.getProperty("java.vm.version"));
+        jvm_version.setText(JVMInfo.JAVA_VERSION);
+        facebook_button.addActionListener((e) -> launch(""));
+        instagram_button.addActionListener((e) -> launch(""));//
+        github_button.addActionListener((e) -> launch("https://github.com/Jp3222/JBlue"));
+    }
+//
+
+    private void launch(String uri) {
+        try {
+            if (!Desktop.isDesktopSupported()) {
+                return;
+            }
+            Desktop.getDesktop().browse(URI.create(uri));
+        } catch (IOException ex) {
+            Logger.getLogger(AcercaDe.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -73,10 +94,10 @@ public final class AcercaDe extends AbstractAppWindows {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        facebook_button = new javax.swing.JButton();
+        instagram_button = new javax.swing.JButton();
+        whatsapp_button = new javax.swing.JButton();
+        github_button = new javax.swing.JButton();
         panel_creditos = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
@@ -99,6 +120,7 @@ public final class AcercaDe extends AbstractAppWindows {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Acerca de JBlue");
+        setName("Acerca de"); // NOI18N
         setPreferredSize(new java.awt.Dimension(800, 500));
         setResizable(false);
 
@@ -130,21 +152,21 @@ public final class AcercaDe extends AbstractAppWindows {
         jPanel6.setPreferredSize(new java.awt.Dimension(30, 30));
         jPanel6.setLayout(new java.awt.GridLayout(1, 0));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/facebook.png"))); // NOI18N
-        jButton1.setActionCommand("facebook");
-        jPanel6.add(jButton1);
+        facebook_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/facebook.png"))); // NOI18N
+        facebook_button.setActionCommand("facebook");
+        jPanel6.add(facebook_button);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/instagram.png"))); // NOI18N
-        jButton2.setActionCommand("instagram");
-        jPanel6.add(jButton2);
+        instagram_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/instagram.png"))); // NOI18N
+        instagram_button.setActionCommand("instagram");
+        jPanel6.add(instagram_button);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/whatsapp.png"))); // NOI18N
-        jButton3.setActionCommand("whatsapp");
-        jPanel6.add(jButton3);
+        whatsapp_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/whatsapp.png"))); // NOI18N
+        whatsapp_button.setActionCommand("whatsapp");
+        jPanel6.add(whatsapp_button);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/github.png"))); // NOI18N
-        jButton4.setActionCommand("github");
-        jPanel6.add(jButton4);
+        github_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/github.png"))); // NOI18N
+        github_button.setActionCommand("github");
+        jPanel6.add(github_button);
 
         panel_jblue.add(jPanel6, java.awt.BorderLayout.PAGE_END);
 
@@ -233,10 +255,9 @@ public final class AcercaDe extends AbstractAppWindows {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField date_update;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton facebook_button;
+    private javax.swing.JButton github_button;
+    private javax.swing.JButton instagram_button;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
@@ -263,6 +284,7 @@ public final class AcercaDe extends AbstractAppWindows {
     private javax.swing.JPanel panel_creditos;
     private javax.swing.JPanel panel_jblue;
     private javax.swing.JTextField prog_version;
+    private javax.swing.JButton whatsapp_button;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -156,13 +156,16 @@ public class LoginController extends WindowController {
             res = op.get("*", WHERE.formatted(
                     encrypt_user, encrypt_password
             ));
-            
+
 //            if (res.isEmpty()
 //                    && encrypt_user.equals(AppConfig.getMaterUser())
 //                    && encrypt_password.equals(AppConfig.getMaterPassword())) {
 //                res = op.get("*", "id = 1");
 //            }
-
+            if (res.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Usuario y/o contraseña incorrectos");
+                return Optional.empty();
+            }
         } catch (UnsupportedEncodingException
                 | NoSuchAlgorithmException
                 | InvalidKeyException
@@ -170,10 +173,6 @@ public class LoginController extends WindowController {
                 | IllegalBlockSizeException
                 | BadPaddingException ex) {
             Excp.impTerminal(ex, getClass(), true);
-        }
-        if (res.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Usuario y/o contraseña incorrectos");
-            return Optional.empty();
         }
         return res;
     }

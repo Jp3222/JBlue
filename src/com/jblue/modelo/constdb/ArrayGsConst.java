@@ -35,12 +35,12 @@ interface ArrayGsConst {
     };
 
     public static final String[] WATER_INTAKES_FIELD_GS = {
-        ID, "TIPO", "PRECIO", "PRECIO ANTERIOR", "RECARGO", "F. REGISTRO"
+        ID, "TIPO", "PRECIO ANTERIOR", "PRECIO", "RECARGO", "ESTATUS","F. DE ACTUALIZACION"
     };
 
     public static final String[] SERVICE_PAYMENT_FIELD_GS = {
         ID, "EMPLEADO", "USUARIO", "PRECIO",
-        "MES", "ESTADO", "REGISTRO"
+        "MES", "NO. MES", "ESTADO", "REGISTRO"
     };
 
     public static final String[] SURCHARGE_PAYMENT_FIELD_GS = {

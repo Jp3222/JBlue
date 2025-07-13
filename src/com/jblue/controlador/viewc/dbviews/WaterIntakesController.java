@@ -59,7 +59,7 @@ public class WaterIntakesController extends AbstractDBViewController<OWaterIntak
 
     @Override
     public void save() {
-        if (view.isValuesOk()) {
+        if (!view.isValuesOk()) {
             return;
         }
         String field = "type, price, surcharge";
@@ -69,7 +69,7 @@ public class WaterIntakesController extends AbstractDBViewController<OWaterIntak
 
     @Override
     public void delete() {
-        if (view.isValuesOk()) {
+        if (!view.isValuesOk()) {
             return;
         }
         //boolean delete = connection.delete("id = %s".formatted(view.getObjectSearch().getId()));
@@ -79,7 +79,8 @@ public class WaterIntakesController extends AbstractDBViewController<OWaterIntak
 
     @Override
     public void update() {
-        if (view.isValuesOk()) {
+
+        if (!view.isValuesOk()) {
             return;
         }
         String field = "type, previus_price, price, surcharge, date_update";

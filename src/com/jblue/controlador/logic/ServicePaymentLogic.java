@@ -16,7 +16,6 @@
  */
 package com.jblue.controlador.logic;
 
-import com.jblue.modelo.dbconexion.dtos.PaymentsDAO;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +28,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
 
     @Override
     public String getQuery(String args) {
-        return "INSERT INTO service_payments (employee, user, price, month) values %s"
+        return "INSERT INTO service_payments (employee, user, price, month_name) values %s"
                 .formatted(args);
     }
 
@@ -92,7 +91,6 @@ public class ServicePaymentLogic extends AbsctractPayment {
                     .append(toma.getPrice())
                     .append("\n");
         }
-
         col = "('" + personal.getId()
                 + "','"
                 + usuario.getId() + "','"

@@ -16,8 +16,15 @@
  */
 package com.jblue.controlador.logic;
 
-import com.jblue.modelo.objetos.OUser;
+import static com.jblue.controlador.logic.AbsctractPayment.KEY_ERROR;
+import static com.jblue.controlador.logic.AbsctractPayment.KEY_MOVS;
+import static com.jblue.controlador.logic.AbsctractPayment.KEY_STATUS_OP;
+import static com.jblue.controlador.logic.AbsctractPayment.STATUS_ERR;
+import static com.jblue.controlador.logic.AbsctractPayment.STATUS_OK;
+import java.sql.SQLException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,27 +32,94 @@ import java.util.Map;
  */
 public class OthersPaymentLogic extends AbsctractPayment {
 
-    public OthersPaymentLogic() {
-    }
-
     @Override
     public String getQuery(String args) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean execPayment() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "INSERT INTO service_others (employee, user, price, month) values %s"
+                .formatted(args);
     }
 
     @Override
     public boolean gameRulers() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        mov.put(KEY_STATUS_OP, STATUS_OK);
+        if (meses_pagados.isEmpty()) {
+            mov.put(KEY_ERROR, "NO HAY MESES SELECCIONADOS");
+            mov.put(KEY_STATUS_OP, STATUS_ERR);
+        }
+        if (isPersonalNull()) {
+            mov.put(KEY_ERROR, "ERROR INTERNO");
+            mov.put(KEY_STATUS_OP, STATUS_ERR);
+        }
+        if (isUserNull()) {
+            mov.put(KEY_ERROR, "ERROR INTERNO");
+            mov.put(KEY_STATUS_OP, STATUS_ERR);
+        }
+        if (isWaterIntakeNull()) {
+            mov.put(KEY_ERROR, "ERROR INTERNO");
+            mov.put(KEY_STATUS_OP, STATUS_ERR);
+        }
+        if (!meses_pagados.isEmpty() && deuda == 0.0) {
+            mov.put(KEY_ERROR, "ERROR INTERNO");
+            mov.put(KEY_STATUS_OP, STATUS_ERR);
+        }
+        if (isMontoMenor()) {
+            mov.put(KEY_ERROR, "EL DINERO INGRESADO ES MENOR A LA DEUDA");
+            mov.put(KEY_STATUS_OP, STATUS_ERR);
+        }
+        return mov.get(KEY_STATUS_OP).equals(STATUS_OK);
+    }
+
+    public boolean isHasSurcharge() {
+        return true;
     }
 
     @Override
-    public Map<String, String> getMov() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    public boolean execPayment() {
+        deuda = meses_pagados.size() * toma.getPrice();
 
+        if (!gameRulers()) {
+            return false;
+        }
+        StringBuilder values = new StringBuilder();
+        int i = 0;
+        String col;
+        while (i < meses_pagados.size() - 1) {
+            col = "('" + personal.getId()
+                    + "','"
+                    + usuario.getId() + "','"
+                    + toma.getPrice() + "','"
+                    + meses_pagados.get(i) + "')";
+            i++;
+            values.append(col).append(",");
+
+            mov_book.append(i).append(" - ")
+                    .append(meses_pagados.get(i))
+                    .append(" : ")
+                    .append(toma.getPrice())
+                    .append("\n");
+        }
+
+        col = "('" + personal.getId()
+                + "','"
+                + usuario.getId() + "','"
+                + toma.getPrice() + "','"
+                + meses_pagados.get(i) + "')";
+
+        mov_book.append(i).append(" - ")
+                .append(meses_pagados.get(i))
+                .append(" : ")
+                .append(toma.getPrice())
+                .append("\n");
+        i++;
+        values.append(col);
+        mov.put(KEY_MOVS, values.toString());
+        try {
+            connection.execute(getQuery(values.toString()));
+            mov.put(KEY_STATUS_OP, STATUS_OK);
+        } catch (SQLException ex) {
+            mov.put(KEY_STATUS_OP, STATUS_ERR);
+            mov.put(KEY_ERROR, ex.getMessage());
+            Logger.getLogger(ServicePaymentLogic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return mov.get(KEY_STATUS_OP).equals(STATUS_OK);
+    }
 }

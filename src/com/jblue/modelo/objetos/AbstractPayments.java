@@ -56,12 +56,16 @@ public class AbstractPayments extends Objeto implements ForeingKeyObject {
         return Double.parseDouble(info[3]);
     }
 
-    public String getMonth() {
+    public String getMonthName() {
         return info[4];
     }
 
+    public String getMonth() {
+        return info[5];
+    }
+
     public int getStatus() {
-        return Integer.parseInt(info[5]);
+        return Integer.parseInt(info[6]);
     }
 
     public String getStatusString() {
@@ -76,7 +80,7 @@ public class AbstractPayments extends Objeto implements ForeingKeyObject {
     }
 
     public LocalDateTime getRegister() {
-        return LocalDateTime.parse(info[6], DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+        return LocalDateTime.parse(info[7], DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
 
     @Override
@@ -95,8 +99,8 @@ public class AbstractPayments extends Objeto implements ForeingKeyObject {
     public String[] getInfoSinFK() {
         info_fk[1] = getEmployeeObject().toString();
         OUser u = getUserObject();
-        info_fk[2] = u == null ? "USUARIO BORRADO": u.toString();
-        info_fk[5] = getStatusString();
+        info_fk[2] = u == null ? "USUARIO BORRADO" : u.toString();
+        info_fk[6] = getStatusString();
         return info_fk;
     }
 

@@ -18,6 +18,7 @@ package com.jblue.vista.views;
 
 import com.jblue.controlador.FactoryController;
 import com.jblue.controlador.compc.TableController;
+import com.jblue.modelo.constdb.Const;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.fabricas.TableModelFactory;
 import com.jblue.modelo.objetos.OWaterIntake;
@@ -79,6 +80,7 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         reload_button.addActionListener(table_controller);
         objects_table.addMouseListener(table_controller);
         save_button.addActionListener(controller);
+
         update_button.addActionListener(controller);
         delete_button.addActionListener(controller);
         cancel_button.addActionListener(controller);
@@ -280,16 +282,19 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         save_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         save_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
         save_button.setText("Guardar");
+        save_button.setActionCommand("save");
         jPanel3.add(save_button);
 
         update_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         update_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/sincronizar.png"))); // NOI18N
         update_button.setText("Actualizar");
+        update_button.setActionCommand("update");
         jPanel3.add(update_button);
 
         delete_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         delete_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/eliminar.png"))); // NOI18N
         delete_button.setText("Eliminar");
+        delete_button.setActionCommand("delete");
         jPanel3.add(delete_button);
 
         options_panel.add(jPanel3);
@@ -502,7 +507,7 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
     public boolean isValuesOk() {
         boolean ok = true;
         JTextField[] text_fields = {
-            type_water_intakes_field, previus_price_field, surcharge_field
+            type_water_intakes_field, price_field, surcharge_field
         };
         for (JTextField i : text_fields) {
             if (Filters.isNullOrBlank(i.getText())) {
@@ -517,10 +522,16 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
     @Override
     public String[] getDbValues(boolean update) {
         String _type = type_water_intakes_field.getText();
-        String _previus_price = String.valueOf(object_search.getPrice());
-        String _cost = previus_price_field.getText();
+
+        double pp = 0;
+        if (update) {
+            pp = object_search == null ? 0.0 : object_search.getPrice();
+        }
+        String _previus_price = String.valueOf(pp);
+        String _cost = price_field.getText();
+
         String _fine = surcharge_field.getText();
-        String _date_update = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+        String _date_update = LocalDateTime.now().format(DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
 
         if (update) {
             return Formats.getDBFormatInputArray(_type,
@@ -528,7 +539,7 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
                     _fine, _date_update);
         }
         return Formats.getDBFormatInputArray(_type,
-                _previus_price, _cost, _fine);
+                _cost, _fine);
     }
 
     @Override
@@ -540,6 +551,10 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
 
     @Override
     public void setScreenTableInfo() {
+        type_water_intakes_field.setText(object_search.getType());
+        previus_price_field.setText(String.valueOf(object_search.getPreviusPrice()));
+        price_field.setText(String.valueOf(object_search.getPrice()));
+        surcharge_field.setText(String.valueOf(object_search.getSurcharge()));
         save_button.setEnabled(false);
         update_button.setEnabled(true);
         delete_button.setEnabled(true);

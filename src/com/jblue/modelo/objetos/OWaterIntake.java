@@ -4,11 +4,16 @@
  */
 package com.jblue.modelo.objetos;
 
+import com.jblue.util.objetos.ForeingKeyObject;
+import com.jblue.util.objetos.StatusObject;
+
 /**
  *
  * @author jp
  */
-public class OWaterIntake extends Objeto {
+public class OWaterIntake extends Objeto implements ForeingKeyObject, StatusObject {
+
+    private String[] infoFK;
 
     public OWaterIntake(String[] info) {
         super(info);
@@ -34,19 +39,38 @@ public class OWaterIntake extends Objeto {
         return Double.parseDouble(info[4]);
     }
 
+    @Override
     public int getStatus() {
         return Integer.parseInt(info[5]);
     }
 
+    @Override
     public String getStatusString() {
         return switch (getStatus()) {
             case 2:
-                yield "PENDIENTE";
+                yield "INACTIVO";
             case 3:
-                yield "BOrrado";
+                yield "BORRADO";
             default:
-                yield "PAGADO";
+                yield "ACTIVO";
         };
+    }
+
+    @Override
+    public boolean isActive() {
+        return getStatus() != 3;
+    }
+
+    @Override
+    public void setInfo(String[] info) {
+        super.setInfo(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        this.infoFK = info.clone();
+        this.infoFK[5] = getStatusString();
+    }
+
+    @Override
+    public String[] getInfoSinFK() {
+        return infoFK;
     }
 
     @Override

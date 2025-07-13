@@ -4,9 +4,7 @@
  */
 package jblue;
 
-import com.jblue.sistema.DevFlags;
 import com.jblue.sistema.Sistema;
-import com.jblue.sistema.console.ReadConsole;
 import com.jutil.framework.LaunchApp;
 
 /**
@@ -22,18 +20,6 @@ public class JBlue {
      * @throws java.lang.InterruptedException
      */
     public static void main(String... args) throws InterruptedException {
-        /**
-         * Nota: Poner la bandera en false antes de subir una version final del
-         * sistema
-         */
-        DevFlags.ALL_FLAGS = false;
-        if (args.length > 0) {
-            for (String i : args) {
-                String[] split = i.split(",");
-                ReadConsole.setFlags(split[0], split[1]);
-            }
-        }
-
         /**
          * En caso de no creer necesitar reinicios en el sistema usar el metodo
          * "run"

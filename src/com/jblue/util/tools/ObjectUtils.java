@@ -112,7 +112,6 @@ public class ObjectUtils {
     }
 
     public static OUser getUser(String user_id) {
-        System.out.println("users: " + CacheFactory.USERS.getList().isEmpty());
         return searchInCacheObject(CacheFactory.USERS, user_id);
     }
 

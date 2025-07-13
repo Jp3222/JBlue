@@ -126,7 +126,6 @@ public abstract class AbstractJDBConnection<T extends Objeto> implements JDBConn
     @Override
     public Optional<T> get(String campos, String where) {
         ArrayList<T> select = select(campos, where);
-        System.out.println(Arrays.toString(select.getFirst().getInfo()));
         if (select.isEmpty()) {
             return Optional.empty();
         }

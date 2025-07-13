@@ -20,9 +20,11 @@ import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.sistema.DevFlags;
 import com.jblue.sistema.SystemLogs;
+import com.jblue.sistema.app.AppConfig;
 import com.jblue.util.tools.ObjectUtils;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.jexception.Excp;
+import com.jutil.jexception.JExcp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -84,7 +86,7 @@ public class AbstractCache<T extends Objeto> implements CacheModel<T> {
             load(adapter, conn.query(aux), aux, conexion);
 
         } catch (SQLException ex) {
-            Logger.getLogger(AbstractListCache.class.getName()).log(Level.SEVERE, null, ex);
+            JExcp.getInstance(false, DevFlags.LOGS_DEV).print(ex, getClass(), "loadData");
         }
 
     }
@@ -97,7 +99,7 @@ public class AbstractCache<T extends Objeto> implements CacheModel<T> {
             }
             buffer_cache.put(aux, List.copyOf(cache));
         } catch (SQLException ex) {
-            Excp.impTerminal(ex, getClass(), DevFlags.DEV_MSG_LOG_DATA_BASE);
+            JExcp.getInstance(false, DevFlags.LOGS_DEV).print(ex, getClass(), "load");
         }
     }
 
@@ -138,6 +140,7 @@ public class AbstractCache<T extends Objeto> implements CacheModel<T> {
             }
             res_count.close();
         } catch (SQLException ex) {
+            JExcp.getInstance(false, DevFlags.LOGS_DEV).print(ex, getClass(), "count");
             SystemLogs.severeDbLogs(count_query, ex);
         }
         return aux_count;
@@ -157,7 +160,7 @@ public class AbstractCache<T extends Objeto> implements CacheModel<T> {
             try {
                 info[i] = rs_data.getString(i + 1);
             } catch (SQLException ex) {
-                Logger.getLogger(AbstractListCache.class.getName()).log(Level.SEVERE, null, ex);
+                JExcp.getInstance(false, DevFlags.LOGS_DEV).print(ex, getClass(), "defaultAdapter");
             }
         }
         return ObjectUtils.getObjeto(connection.getTable(), info);

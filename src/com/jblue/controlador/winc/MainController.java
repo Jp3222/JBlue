@@ -40,6 +40,10 @@ public class MainController extends WindowController {
             JOptionPane.showMessageDialog(view, "El comando %s no es valido".formatted(actionCommand));
             return;
         }
+        if (view.getABOUT().getName().equals(actionCommand)) {
+            view.getABOUT().setVisible(true);
+            return;
+        }
         if (isExit(actionCommand)) {
             return;
         }
@@ -53,9 +57,9 @@ public class MainController extends WindowController {
 
     public boolean isExit(String actionCommand) {
         boolean out = actionCommand.equals(WMainMenu.OUT);
+        view.closeWindows();
         if (out) {
             view.dispose();
-
         }
         return out;
     }

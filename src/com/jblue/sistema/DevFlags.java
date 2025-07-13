@@ -16,6 +16,8 @@
  */
 package com.jblue.sistema;
 
+import com.jblue.sistema.app.AppConfig;
+
 /**
  * Esta clase esta dedicada a la declaracion de banderas con el proposito de
  * probar, habilitar o desactivar funciones que puedan tener un efecto negativo,
@@ -30,70 +32,46 @@ package com.jblue.sistema;
  */
 public final class DevFlags {
 
-    public static void loadFlags() {
-
-    }
-
-    /**
-     * **Reglas de Juego** Estructura del nombre de una bandera:
-     *
-     * PREFIJO_TIPO_NOMBRE ** RELGLAS DE ESCRITURA:** Los prefijos y los tipos
-     * deben escribirse con solo 3 caracteres. Los nombres de las banderas
-     * pueden escribirse de cualquier tamaño.
-     *
-     * |---------------------| |prefijo | Significado| |---------------------|
-     * |DEV | en desarrollo | |TST | a prueba | |CAN | candidata |
-     * |---------------------|
-     *
-     * Recuerda que cuando una funcion ya paso los prefijos "DEV", "TST" y "CAN"
-     * } puedes quitar la bandera
-     *
-     * |---------------------| |Tipos | Significado | |---------------------|
-     * |MSG | Mensaje | |FUN | Funcion | |PRP | Propiedad | |VEW | VISTA | |CFG
-     * | Configuracion | |EXE | Ejecutar | |---------------------|
-     *
-     *
-     */
-//-----------------------BANDERAS GENERICAS-----------------------------------//
-    /**
-     * Bandera que le da un valor inicial a todas las banderas
-     */
-    public static boolean ALL_FLAGS = false;
-
     /**
      * Banderaa para todas las vistas nuevas
      */
-    public static boolean DEV_VEW_NEWS = false;
+    public static boolean DEV_VEW_NEWS = AppConfig.isTestFunction();
 
     /**
      * Bandera para todos los mensajes puestos en condigo sobre el codigo
      */
-    public static boolean DEV_MSG_CODE = false;
-
+    public static boolean DEV_MSG_CODE = AppConfig.isDevMessages();
+    
     /**
      * Bandera para todos los mensajes puestos en el codigo sobre la base de
      * datos
      */
-    public static boolean DEV_MSG_DATA_BASE = false;
+    public static boolean DEV_MSG_DATA_BASE = AppConfig.isDbMessages();
 
     /**
      * Bandera para ejecutar funciones en desarrollo
      */
-    public static boolean DEV_EXE_FUNCION = false;
+    public static boolean DEV_EXE_FUNCION = AppConfig.isDevFunction();
 
     /**
      * Bandera para ejecutar funciones a prueba
      */
-    public static boolean TST_EXE_FUNCION = true;
+    public static boolean TST_EXE_FUNCION = AppConfig.isTestFunction();
 
     /**
-     * Bandera para ejecutar funciones candidatas
+     *
      */
-    public static boolean CAN_EXE_FUNCION = false;
+    public static boolean LOGS_DEV = AppConfig.isLogsDev();
+
     /**
-     * Mensaje para mostrar los logs producido por llamada a la base de datos
+     *
      */
-    public static boolean DEV_MSG_LOG_DATA_BASE = false;
+    public static boolean LOGS_TEST = AppConfig.isLogsTest();
+
+    /**
+     *
+     */
+    public static boolean LOGS_DB = AppConfig.isLogsDB();
 
     private DevFlags() {
     }

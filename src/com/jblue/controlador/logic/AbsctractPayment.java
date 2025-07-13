@@ -24,6 +24,7 @@ import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,7 +47,7 @@ public abstract class AbsctractPayment implements PaymentModel {
     protected double deuda;
     protected double dinero_sobrante;
     protected DBConnection connection;
-    protected ArrayList<String> meses_pagados;
+    protected List<String> meses_pagados;
 
     protected StringBuilder mov_book;
 
@@ -85,7 +86,7 @@ public abstract class AbsctractPayment implements PaymentModel {
     }
 
     @Override
-    public void setMesesPagados(ArrayList<String> meses_pagados) {
+    public void setMesesPagados(List<String> meses_pagados) {
         this.meses_pagados = meses_pagados;
     }
 

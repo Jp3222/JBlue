@@ -52,6 +52,7 @@ public class Sistema implements MainSystem {
         //
         resources = new HashMap<>(5);
         resources.put("propierties", propiedades);
+        resources.put("sys_flag_logs", true);
         So.setDefaultLookAndFeel(new FlatLightLaf());
     }
 
@@ -91,8 +92,10 @@ public class Sistema implements MainSystem {
                     propiedades.getProperty(AppConfig.DB_USER),
                     propiedades.getProperty(AppConfig.DB_PASSWORD)
             );
-            connection.setShowQuery(DevFlags.DEV_MSG_CODE);
             resources.put("connection", connection);
+            resources.put("sys_flag_logs", AppConfig.isLogsDB());
+            connection.setShowQuery((boolean) resources.get("sys_flag_logs"));
+            System.out.println("xd:" + resources.get("sys_flag_logs"));
         } catch (SQLException e) {
             SystemLogs.severeSysLogs(e.getMessage(), e);
             Excp.SysExit();
@@ -109,7 +112,6 @@ public class Sistema implements MainSystem {
                 yield "";
         };
         JOptionPane.showMessageDialog(null, msg, "ERROR: %s".formatted(error), JOptionPane.INFORMATION_MESSAGE);
-
     }
 
     @Override

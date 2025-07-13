@@ -80,7 +80,7 @@ public class ShopCartController extends Controller {
                 allMonths((JCheckBox) e.getSource());
             case "month" ->
                 total();
-            case "mov_book" ->{
+            case "mov_book" -> {
                 mov_book();
             }
             default ->
@@ -177,9 +177,9 @@ public class ShopCartController extends Controller {
 
     public void setPaymentsInfo(OUser user) {
         try {
-            
+            System.out.println("lista");
             LocalDate ld = LocalDate.now();
-            String query = "SELECT MONTH FROM service_payments WHERE user = '%s' AND YEAR(NOW()) = '%s' AND status != 3"
+            String query = "SELECT month_name FROM service_payments WHERE user = '%s' AND YEAR(NOW()) = '%s' AND status != 3"
                     .formatted(user.getId(), ld.getYear());
 
             ResultSet res = CacheFactory.SERVICE_PAYMENTS
@@ -192,15 +192,14 @@ public class ShopCartController extends Controller {
             System.out.println(list.toString());
 
             ArrayList<JCheckBox> check_box = view.getMonthList();
-
+            boolean contains = false;
             for (JCheckBox i : check_box) {
-                if (list.contains(i.getText())) {
-                    i.setEnabled(false);
-                    i.setSelected(true);
-                } else {
-                    i.setEnabled(true);
-                    i.setSelected(false);
-                }
+                
+                System.out.println("con: " + contains);
+                contains = list.contains(i.getText());
+                i.setSelected(contains);
+                i.setEnabled(!contains);
+                
             }
         } catch (SQLException ex) {
             Logger.getLogger(ShopCartController.class.getName()).log(Level.SEVERE, null, ex);

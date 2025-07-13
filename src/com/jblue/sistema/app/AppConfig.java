@@ -97,7 +97,7 @@ public interface AppConfig {
     }
 
     public static int getPayDay() {
-        Object parameter = getParameter("DIA_DE_COBRO");
+        Object parameter = getParameter("ULTIMO_DIA_DE_PAGO");
         if (parameter == null) {
             return -1;
         }
@@ -162,6 +162,30 @@ public interface AppConfig {
 
     public static boolean isTestFunction() {
         Object valueOf = getParameter("FUNCIONES_TEST");
+        if (valueOf == null) {
+            return false;
+        }
+        return Boolean.parseBoolean(String.valueOf(valueOf));
+    }
+
+    public static boolean isLogsDev() {
+        Object valueOf = getParameter("LOGS_DEV");
+        if (valueOf == null) {
+            return false;
+        }
+        return Boolean.parseBoolean(String.valueOf(valueOf));
+    }
+
+    public static boolean isLogsTest() {
+        Object valueOf = getParameter("LOGS_TEST");
+        if (valueOf == null) {
+            return false;
+        }
+        return Boolean.parseBoolean(String.valueOf(valueOf));
+    }
+
+    public static boolean isLogsDB() {
+        Object valueOf = getParameter("LOGS_DB");
         if (valueOf == null) {
             return false;
         }

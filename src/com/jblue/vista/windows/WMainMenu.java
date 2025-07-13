@@ -52,6 +52,7 @@ public final class WMainMenu extends AbstractAppWindows {
     private final FlagsView flag_view;
     //
     private final LoginWindows LOGIN;
+    private final AcercaDe ABOUT;
     //
     private UserViewComponent showVisor;
     //
@@ -65,7 +66,7 @@ public final class WMainMenu extends AbstractAppWindows {
     public WMainMenu(LoginWindows LOGIN) {
         initComponents();
         this.LOGIN = LOGIN;
-
+        this.ABOUT = new AcercaDe();
         shop_cart_view = new ShopCartView();
         users_view = new UserView();
         street_view = new StreetsView();
@@ -99,7 +100,7 @@ public final class WMainMenu extends AbstractAppWindows {
         views_panel.add(other_payments_view, other_payments_view.getName());
         views_panel.add(surcharge_payments_view, surcharge_payments_view.getName());
         views_panel.add(flag_view, flag_view.getName());
-        
+
     }
 
     @Override
@@ -122,6 +123,8 @@ public final class WMainMenu extends AbstractAppWindows {
         service_payments_view_item.addActionListener(controller);
         //
         parameters_view_item.addActionListener(controller);
+        //
+        about_item_view.addActionListener(controller);
     }
 
     @Override
@@ -188,6 +191,8 @@ public final class WMainMenu extends AbstractAppWindows {
         surcharge_payments_view_item = new javax.swing.JMenuItem();
         other_type_payments_view_item = new javax.swing.JMenuItem();
         other_payments_view_item = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        about_item_view = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1000, 500));
@@ -381,6 +386,13 @@ public final class WMainMenu extends AbstractAppWindows {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setText("Ayuda");
+
+        about_item_view.setText("Acerca de");
+        jMenu3.add(about_item_view);
+
+        jMenuBar1.add(jMenu3);
+
         setJMenuBar(jMenuBar1);
 
         pack();
@@ -389,6 +401,7 @@ public final class WMainMenu extends AbstractAppWindows {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem about_item_view;
     private javax.swing.JButton btn_calles;
     private javax.swing.JButton btn_home;
     private javax.swing.JButton btn_tipo_pagos;
@@ -401,6 +414,7 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem5;
@@ -455,6 +469,14 @@ public final class WMainMenu extends AbstractAppWindows {
 
     public JPanel getViewsPanel() {
         return views_panel;
+    }
+
+    public AcercaDe getABOUT() {
+        return ABOUT;
+    }
+
+    public void closeWindows() {
+        ABOUT.dispose();
     }
 
 }

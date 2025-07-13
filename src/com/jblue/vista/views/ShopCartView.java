@@ -136,24 +136,29 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         month_paid_field.setText(null);
         total_field.setText(null);
         cambio_field.setText(null);
+
         for (JCheckBox i : month_paid_list) {
             i.setSelected(false);
             i.setEnabled(true);
         }
+
         object_search = null;
         count_elements_label.setText("0");
+
         GraphicsUtils.setEnable(false,
                 ene, feb, mar,
                 abr, may, jun,
                 jul, ago, sep,
                 oct, nov, dic,
                 all_months_buttons);
+
         GraphicsUtils.setEnable(false,
                 pay_button,
                 clear_button,
                 cancel_button,
                 pay_last_button,
-                other_pay_button);
+                other_pay_button,
+                recargos_button);
     }
 
     @Override
@@ -900,16 +905,6 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         return view_show;
     }
 
-    public ArrayList<String> getSelectMonths() {
-        ArrayList<String> months = new ArrayList<>(12);
-        for (JCheckBox i : month_paid_list) {
-            if (i.isEnabled() && i.isSelected()) {
-                months.add(i.getName());
-            }
-        }
-        return months;
-    }
-
     @Override
     public JList getList() {
         return users_list;
@@ -970,20 +965,21 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         count.setText(info[0]);
         range.setText(info[1]);
         total_register_field.setText(info[2]);
+        GraphicsUtils.setEnable(true, pay_button, clear_button, cancel_button);
     }
 
     public ArrayList<JCheckBox> getMonthList() {
         return month_paid_list;
     }
 
-    public ArrayList<String> getMonthPaidList() {
+    public List<String> getMonthPaidList() {
         List<String> lista = new ArrayList<>(12);
         for (JCheckBox i : month_paid_list) {
             if (i.isSelected() && i.isEnabled()) {
                 lista.add(i.getText());
             }
         }
-        return (ArrayList<String>) lista;
+        return lista;
     }
 
     public void setTotalField(double total_field) {

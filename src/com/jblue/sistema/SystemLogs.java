@@ -17,6 +17,8 @@
 package com.jblue.sistema;
 
 import com.jblue.sistema.app.AppFiles;
+import com.jutil.framework.LaunchApp;
+import com.jutil.jexception.JExcp;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -51,7 +53,8 @@ public class SystemLogs {
         try {
             return new PrintWriter(new File(fil));
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(SystemLogs.class.getName()).log(Level.SEVERE, null, ex);
+            JExcp.getInstance(false, (boolean) LaunchApp.getInstance().getResources("sys_flag_logs"))
+                    .print(ex, SystemLogs.class, "getFile");
         }
         return null;
     }
@@ -70,7 +73,8 @@ public class SystemLogs {
         try {
             return new FileHandler(fil, true);
         } catch (IOException | SecurityException ex) {
-            Logger.getLogger(SystemLogs.class.getName()).log(Level.SEVERE, null, ex);
+            JExcp.getInstance(false, (boolean) LaunchApp.getInstance().getResources("sys_flag_logs"))
+                    .print(ex, SystemLogs.class, "getFileHander");
         }
         return null;
     }
@@ -124,7 +128,7 @@ public class SystemLogs {
     }
 
     static void logs(Level level, String name, String msg, Throwable thr) {
-        
+
         int file = switch (msg) {
             case SYS_LOG:
                 yield 1;
@@ -144,7 +148,7 @@ public class SystemLogs {
         Logger log = Logger.getLogger(name);
         log.addHandler(fh);
         log.setLevel(Level.ALL);
-        log.setUseParentHandlers(DevFlags.DEV_MSG_CODE);
+        log.setUseParentHandlers((boolean) LaunchApp.getInstance().getResources("sys_flag_logs"));
 
         if (thr != null) {
             log.log(level, msg, thr);

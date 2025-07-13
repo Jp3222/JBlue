@@ -40,12 +40,12 @@ public interface ArrayDBConst {
 
     public static final String[] SERVICE_PAYMENT_FIELD = {
         ID, "employee", "user", "price",
-        "month", "status", "date_register"
+        "month_name", "month", "status", "date_register"
     };
 
     public static final String[] SURCHARGE_PAYMENT_FIELD = {
         ID, "employee", "user", "price",
-        "month", "status", "date_register"
+        "month_name", "month","status", "date_register"
     };
 
     public static final String[] OTHER_PAYMENT_FIELD = {

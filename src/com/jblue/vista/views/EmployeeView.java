@@ -322,7 +322,7 @@ public class EmployeeView extends DBView implements OptionMenuModel, DBValuesMod
         jPanel13.add(save_button);
 
         update_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        update_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/actualizar.png"))); // NOI18N
+        update_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/update_x32.png"))); // NOI18N
         update_button.setText("Actualizar");
         update_button.setActionCommand("update");
         update_button.setPreferredSize(new java.awt.Dimension(166, 40));

@@ -19,19 +19,14 @@ package com.jblue.util.cache;
 import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.sistema.DevFlags;
-import com.jblue.sistema.SystemLogs;
-import com.jblue.sistema.app.AppConfig;
 import com.jblue.util.tools.ObjectUtils;
 import com.jutil.dbcon.connection.DBConnection;
-import com.jutil.jexception.Excp;
 import com.jutil.jexception.JExcp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -45,11 +40,12 @@ public class AbstractCache<T extends Objeto> implements CacheModel<T> {
     protected final JDBConnection<T> conexion;
     protected final String default_query;
 
-    protected int index_min, index_max, steps;
+    protected int index_min, index_max, steps, last_id;
     protected long count;
     protected int call_count;
 
     protected String query;
+    protected String last_id_query;
 
     protected boolean other_query;
 
@@ -63,6 +59,7 @@ public class AbstractCache<T extends Objeto> implements CacheModel<T> {
         this.index_max = capacity;
         this.steps = capacity;
         this.default_query = "SELECT * FROM %s WHERE id >= %s and id <= %s and status != 3";
+        this.last_id_query = "SELECT MAX(id) FROM %s;";
         setDefaultAdapter();
     }
 
@@ -82,9 +79,12 @@ public class AbstractCache<T extends Objeto> implements CacheModel<T> {
                 System.out.println("leyendo base de datos...");
             }
             DBConnection conn = conexion.getConnection();
-
             load(adapter, conn.query(aux), aux, conexion);
-
+            try (ResultSet rs = conn.query(last_id_query.formatted(conexion.getTable()))) {
+                if (rs.next()) {
+                    last_id = rs.getInt(1);
+                }
+            }
         } catch (SQLException ex) {
             JExcp.getInstance(false, DevFlags.LOGS_DEV).print(ex, getClass(), "loadData");
         }
@@ -128,22 +128,7 @@ public class AbstractCache<T extends Objeto> implements CacheModel<T> {
 
     @Override
     public long count() {
-        String count_query = "SELECT count(id) FROM %s";
-        DBConnection _conn = conexion.getConnection();
-        ResultSet res_count;
-        long aux_count = 0;
-        try {
-            res_count = _conn.query(count_query.formatted(conexion.getTable()));
-
-            if (res_count.next()) {
-                aux_count = res_count.getLong(1);
-            }
-            res_count.close();
-        } catch (SQLException ex) {
-            JExcp.getInstance(false, DevFlags.LOGS_DEV).print(ex, getClass(), "count");
-            SystemLogs.severeDbLogs(count_query, ex);
-        }
-        return aux_count;
+        return last_id;
     }
 
     public void setAdapter(ObjectAdapterModel adapter) {

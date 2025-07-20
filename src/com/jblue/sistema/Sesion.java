@@ -4,11 +4,13 @@
  */
 package com.jblue.sistema;
 
+import com.jblue.modelo.constdb.Const;
 import com.jblue.modelo.objetos.OEmployee;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
 import com.jutil.framework.LocalSession;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  * Esta clase define al personal de sesion actual, quien hace uso del programa,
@@ -41,7 +43,7 @@ public class Sesion implements LocalSession<OEmployee> {
 
     private Sesion() {
         connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
-        this.query = "INSERT INTO history(employee, type, description) VALUES(%s,%s,%s)";
+        this.query = "INSERT INTO history(employee, db_user, type, description) VALUES('%s',(%s),'%s','%s')";
     }
 
     public OEmployee getUsuario() {
@@ -59,15 +61,30 @@ public class Sesion implements LocalSession<OEmployee> {
 
     @Override
     public void setUser(OEmployee user) {
+        String id = "1";
+        String description = "INICIO DE SESIÓN";
+        if (user == null) {
+            id = personal.getId();
+            description = "FIN DE SESIÓN";
+        }
         personal = user;
+        register(id, Const.INSERT_LOGIN, description);
     }
 
-    public void setMov(int type, String description) {
+    void register(String employee, int type, String description) {
+        String sql_user = "SELECT current_user()";
         try {
-            connection.query(query.formatted(personal.getId(), type, description));
+            int execute = connection.execute(query.formatted(employee, sql_user, type, description));
+            if (execute == 0) {
+                JOptionPane.showMessageDialog(null, "Error al registrar la bitacora");
+            }
         } catch (SQLException ex) {
             SystemLogs.severeDbLogs("Error al registrar un movimiento", ex);
         }
+    }
+
+    public void register(int type, String description) {
+        register(personal.getId(), type, description);
     }
 
 }

@@ -56,4 +56,10 @@ INSERT INTO `history_type_mov` (`id`, `name_mov`, `type_mov`, `affected_table`) 
 INSERT INTO `history_type_mov` (`id`, `name_mov`, `type_mov`, `affected_table`) VALUES (41,'EXPORT_TO_OTHERS_PAYMENTS', 'EXPORT', 'OTHERS_PAYMENTS');
 INSERT INTO `history_type_mov` (`id`, `name_mov`, `type_mov`, `affected_table`) VALUES (42,'IMPORT_TO_OTHERS_PAYMENTS', 'IMPORT', 'OTHERS_PAYMENTS');
 
+-- LOGIN
+INSERT INTO `history_type_mov` (`id`, `name_mov`, `type_mov`, `affected_table`) VALUES (43,'INSERT_LOGIN', 'INSERT', 'HISTORY');
+INSERT INTO `history_type_mov` (`id`, `name_mov`, `type_mov`, `affected_table`) VALUES (44,'EXIT_LOGIN', 'INSERT', 'HISTORY');
+INSERT INTO `history_type_mov` (`id`, `name_mov`, `type_mov`, `affected_table`) VALUES (45,'EXPORT_TO_LOGIN', 'EXPORT', 'HISTORY');
+INSERT INTO `history_type_mov` (`id`, `name_mov`, `type_mov`, `affected_table`) VALUES (46,'IMPORT_TO_LOGIN', 'IMPORT', 'HISTORY');
+
 SELECT * FROM jblue_test.history_type_mov;

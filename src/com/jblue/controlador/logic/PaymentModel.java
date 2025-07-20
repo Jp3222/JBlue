@@ -26,22 +26,64 @@ import java.util.Map;
  */
 public interface PaymentModel {
 
+    /**
+     *
+     * @param args
+     * @return
+     */
     String getQuery(String args);
 
+    /**
+     *
+     * @return
+     */
     boolean execPayment();
 
+    /**
+     *
+     * @return
+     */
     boolean gameRulers();
 
+    /**
+     *
+     * @return
+     */
     Map<String, String> getMov();
 
+    /**
+     *
+     * @param o
+     */
     void setUsuario(OUser o);
 
+    /**
+     *
+     * @param d
+     */
     void setDineroIngresado(double d);
 
+    /**
+     *
+     * @param meses_pagados
+     */
     public void setMesesPagados(List<String> meses_pagados);
 
+    /**
+     *
+     * @param mov_book
+     */
     public void setMovBook(StringBuilder mov_book);
 
+    /**
+     *
+     * @return
+     */
     public double getTotal();
+
+    /**
+     *
+     * @return
+     */
     public StringBuilder getMovBook();
-    }
+}

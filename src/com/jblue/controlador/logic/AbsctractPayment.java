@@ -22,7 +22,6 @@ import com.jblue.modelo.objetos.OUser;
 import com.jblue.sistema.Sesion;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

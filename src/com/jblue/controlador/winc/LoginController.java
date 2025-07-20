@@ -103,7 +103,6 @@ public class LoginController extends WindowController {
 
     @Override
     public void windowClosing(WindowEvent we) {
-
         synchronized (LaunchApp.getInstance().getMain()) {
             LaunchApp.getInstance().getMain().notify();
         }

@@ -31,7 +31,7 @@ public interface ArrayDBConst {
     };
 
     public static final String[] STREET_FIELD = {
-        ID, "name"
+        ID, "name","status"
     };
 
     public static final String[] WATER_INTAKES_FIELD = {

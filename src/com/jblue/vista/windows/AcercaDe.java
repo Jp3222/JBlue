@@ -60,9 +60,9 @@ public final class AcercaDe extends AbstractAppWindows {
         date_update.setText(AppInfo.UPDATE_DATE);
         prog_version.setText(AppInfo.VERSION_DEL_PROGRAMA);
         jvm_version.setText(JVMInfo.JAVA_VERSION);
-        facebook_button.addActionListener((e) -> launch(""));
-        instagram_button.addActionListener((e) -> launch(""));//
+        instagram_button.addActionListener((e) -> launch("https://www.instagram.com/jp_322/"));
         github_button.addActionListener((e) -> launch("https://github.com/Jp3222/JBlue"));
+        whatsapp_button.addActionListener((e) -> launch("https://wa.me/7351013730?text=Hola,%20quiero%20información%20sobre%20JBlue."));
     }
 //
 
@@ -157,14 +157,17 @@ public final class AcercaDe extends AbstractAppWindows {
         jPanel6.add(facebook_button);
 
         instagram_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/instagram.png"))); // NOI18N
+        instagram_button.setToolTipText("Sobre el desarrollador");
         instagram_button.setActionCommand("instagram");
         jPanel6.add(instagram_button);
 
         whatsapp_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/whatsapp.png"))); // NOI18N
+        whatsapp_button.setToolTipText("Soporte e informacion");
         whatsapp_button.setActionCommand("whatsapp");
         jPanel6.add(whatsapp_button);
 
         github_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/github.png"))); // NOI18N
+        github_button.setToolTipText("Codigo");
         github_button.setActionCommand("github");
         jPanel6.add(github_button);
 

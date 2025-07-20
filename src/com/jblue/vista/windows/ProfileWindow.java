@@ -16,19 +16,69 @@
  */
 package com.jblue.vista.windows;
 
+import com.jblue.controlador.winc.ProfileController;
 import com.jblue.vista.marco.ventanas.AbstractAppWindows;
+import com.jblue.vista.views.EmployeeView;
+import com.jblue.vista.views.VContabilidad;
+import com.jblue.vista.views.VPerfil;
+import java.awt.CardLayout;
+import javax.swing.JPanel;
 
 /**
  *
  * @author juanp
  */
-public class ProfileWindow extends AbstractAppWindows {
+public final class ProfileWindow extends AbstractAppWindows {
 
+    private final EmployeeView employee_view;
+    private final VPerfil profile_view;
+    private final VContabilidad contabilidad;
+    private final CardLayout ly;
+    private final ProfileController controller;
     /**
      * Creates new form MenuWindow
      */
     public ProfileWindow() {
+        this.employee_view = new EmployeeView();
+        this.profile_view = new VPerfil();
+        this.contabilidad = new VContabilidad();
         initComponents();
+        ly = (CardLayout) root_panel.getLayout();
+        this.controller = new ProfileController(this);
+        build();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        finalState();
+        initialState();
+    }
+
+    @Override
+    public void components() {
+        root_panel.add(employee_view.getName(), employee_view);
+        root_panel.add(contabilidad.getName(), contabilidad);
+        root_panel.add(profile_view.getName(), profile_view);
+    }
+
+    @Override
+    public void events() {
+        employee_view_button.addActionListener(controller);
+        contable_view_button.addActionListener(controller);
+        profile_view_button.addActionListener(controller);
+
+    }
+
+    @Override
+    public void initialState() {
+        ly.show(root_panel, profile_view.getName());
+        updateTitle(profile_view.getName());
+    }
+
+    @Override
+    public void finalState() {
     }
 
     /**
@@ -40,23 +90,88 @@ public class ProfileWindow extends AbstractAppWindows {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        profile_view_button = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        employee_view_button = new javax.swing.JButton();
+        contable_view_button = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        root_panel = new javax.swing.JPanel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(900, 600));
+        setName("Perfil"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(900, 600));
+
+        jPanel1.setName(""); // NOI18N
+        jPanel1.setPreferredSize(new java.awt.Dimension(250, 700));
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setPreferredSize(new java.awt.Dimension(250, 250));
+        jPanel1.add(jLabel1, java.awt.BorderLayout.PAGE_START);
+
+        jPanel3.setLayout(new java.awt.GridLayout(12, 0));
+
+        profile_view_button.setText("Datos de empleado");
+        profile_view_button.setActionCommand("Datos de usuario");
+        jPanel3.add(profile_view_button);
+
+        jButton2.setText("Administracion de usuarios");
+        jPanel3.add(jButton2);
+
+        employee_view_button.setText("Administracion de empleados");
+        employee_view_button.setActionCommand("Personal");
+        jPanel3.add(employee_view_button);
+
+        contable_view_button.setText("Contabilidad");
+        jPanel3.add(contable_view_button);
+
+        jButton5.setText("Historial de actividad");
+        jPanel3.add(jButton5);
+
+        jButton6.setText("Administracion de suministros");
+        jPanel3.add(jButton6);
+
+        jButton7.setText("jButton1");
+        jPanel3.add(jButton7);
+
+        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_START);
+
+        root_panel.setLayout(new java.awt.CardLayout());
+        getContentPane().add(root_panel, java.awt.BorderLayout.CENTER);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton contable_view_button;
+    private javax.swing.JButton employee_view_button;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JButton profile_view_button;
+    private javax.swing.JPanel root_panel;
     // End of variables declaration//GEN-END:variables
+
+    public CardLayout getCardLayout() {
+        return ly;
+    }
+
+    public JPanel getRootPanel() {
+        return root_panel;
+    }
+    
+    
 }

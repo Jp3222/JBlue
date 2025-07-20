@@ -17,6 +17,7 @@
 package com.jblue.vista.windows;
 
 import com.jblue.controlador.winc.MainController;
+import com.jblue.sistema.Sesion;
 import com.jblue.vista.components.UserViewComponent;
 import com.jblue.vista.marco.ventanas.AbstractAppWindows;
 import com.jblue.vista.views.FlagsView;
@@ -53,6 +54,7 @@ public final class WMainMenu extends AbstractAppWindows {
     //
     private final LoginWindows LOGIN;
     private final AcercaDe ABOUT;
+    private final ProfileWindow PROFILE;
     //
     private UserViewComponent showVisor;
     //
@@ -67,6 +69,7 @@ public final class WMainMenu extends AbstractAppWindows {
         initComponents();
         this.LOGIN = LOGIN;
         this.ABOUT = new AcercaDe();
+        this.PROFILE = new ProfileWindow();
         shop_cart_view = new ShopCartView();
         users_view = new UserView();
         street_view = new StreetsView();
@@ -125,6 +128,7 @@ public final class WMainMenu extends AbstractAppWindows {
         parameters_view_item.addActionListener(controller);
         //
         about_item_view.addActionListener(controller);
+        profile_item_view.addActionListener(controller);
     }
 
     @Override
@@ -175,7 +179,7 @@ public final class WMainMenu extends AbstractAppWindows {
         views_panel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        profile_item_view = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
@@ -333,8 +337,8 @@ public final class WMainMenu extends AbstractAppWindows {
 
         jMenu1.setText("Menu");
 
-        jMenuItem5.setText("Perfil");
-        jMenu1.add(jMenuItem5);
+        profile_item_view.setText("Perfil");
+        jMenu1.add(profile_item_view);
 
         jMenuItem6.setText("Panel de Admin");
         jMenuItem6.setToolTipText("Panel de Administracion");
@@ -417,7 +421,6 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem19;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
@@ -438,6 +441,7 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JMenuItem other_payments_view_item;
     private javax.swing.JMenuItem other_type_payments_view_item;
     private javax.swing.JMenuItem parameters_view_item;
+    private javax.swing.JMenuItem profile_item_view;
     private javax.swing.JMenuItem service_payments_view_item;
     private javax.swing.JMenuItem street_view_item;
     private javax.swing.JMenuItem surcharge_payments_view_item;
@@ -450,10 +454,13 @@ public final class WMainMenu extends AbstractAppWindows {
 
     @Override
     public void dispose() {
+        closeWindows();
         super.dispose(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         if (showVisor != null && showVisor.isVisible()) {
             showVisor.dispose();
         }
+        
+        Sesion.getInstancia().setUser(null);
         SwingUtilities.invokeLater(() -> {
             LOGIN.setVisible(true);
         });
@@ -475,8 +482,13 @@ public final class WMainMenu extends AbstractAppWindows {
         return ABOUT;
     }
 
+    public ProfileWindow getProfileWindow() {
+        return PROFILE;
+    }
+
     public void closeWindows() {
         ABOUT.dispose();
+        PROFILE.dispose();
     }
 
 }

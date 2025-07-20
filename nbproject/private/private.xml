@@ -11,6 +11,13 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/vista/windows/ProfileWindow.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/vista/views/EmployeeView.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/vista/views/VPerfil.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/vista/views/VContabilidad.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/controlador/winc/ProfileController.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/vista/windows/WMainMenu.java</file>
+        </group>
     </open-files>
 </project-private>

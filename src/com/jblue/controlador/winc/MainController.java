@@ -44,6 +44,10 @@ public class MainController extends WindowController {
             view.getABOUT().setVisible(true);
             return;
         }
+        if (view.getProfileWindow().getName().equals(actionCommand)) {
+            view.getProfileWindow().setVisible(true);
+            return;
+        }
         if (isExit(actionCommand)) {
             return;
         }

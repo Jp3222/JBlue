@@ -18,7 +18,6 @@ package com.jblue.controlador.viewc.dbviews;
 
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.OUser;
-import com.jblue.sistema.DevFlags;
 import com.jblue.vista.components.UserViewComponent;
 import com.jblue.vista.views.UserView;
 import java.awt.event.ActionEvent;
@@ -42,6 +41,13 @@ import java.io.File;
 public class UserController extends AbstractDBViewController<OUser> implements DBControllerModel {
 
     private final UserView view;
+    private final String[] movs = {
+        "1",//INSERT
+        "2",//UPDATE
+        "3",//LOGIC_DELETE
+        "5",//EXPORT
+        "6"//IMPORT
+    };
 
     public UserController(UserView view) {
         super(CacheFactory.USERS);
@@ -77,8 +83,13 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         String[] arr = view.getDbValues(false);
         String field = "first_name, last_name1, last_name2, street, house_number, water_intakes, user_type, status";
         boolean insert = connection.insert(field, arr);
-        Sesion.getInstancia().setMov(Const.USER_INSERT,
-                insert_desc.formatted(arr[0], arr[1], arr[2]));
+        Sesion.getInstancia().register(
+                Const.INSERT_TO_USER,
+                DESCRIPTION_FORMAT.formatted(Sesion.getInstancia().getUsuario().getId(),
+                        memo_cache.count() + 1,
+                        arr[0], arr[1], arr[2])
+        );
+
         rmessage(view, insert);
     }
 
@@ -89,6 +100,14 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         }
         String id = view.getObjectSearch().getId();
         boolean delete = connection.update("status", "3", "id = %s".formatted(id));
+        if (delete) {
+            Sesion.getInstancia().register(Const.UPDATE_TO_USER, DESCRIPTION_FORMAT.formatted(
+                    view.getObjectSearch().getId(),
+                    view.getObjectSearch().getName(),
+                    view.getObjectSearch().getLastName1(),
+                    view.getObjectSearch().getLastName2()
+            ));
+        }
         rmessage(view, delete);
         //FUNCION EN DESARROLLO - Ocultar los resgitros de pago de un usuario
         if (AppConfig.isDevFunction()) {
@@ -109,11 +128,16 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         String field = "first_name, last_name1, last_name2, "
                 + "street, house_number, water_intakes, "
                 + "user_type, status";
-
+        String values[] = view.getDbValues(true);
         boolean update = connection.update(
                 field.split(","),
-                view.getDbValues(true),
+                values,
                 "id = %s".formatted(view.getObjectSearch().getId()));
+        if (update) {
+            Sesion.getInstancia().register(Const.UPDATE_TO_USER, DESCRIPTION_FORMAT.formatted(
+                    view.getObjectSearch().getId(), values[0], values[1], values[2]
+            ));
+        }
         rmessage(view, update);
     }
 
@@ -152,5 +176,5 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         }
     }
 
-    String insert_desc = "employee:%s,user:%s %s %s";
+    String DESCRIPTION_FORMAT = "'ID:%s, NOMBRE:%s %s %s'";
 }

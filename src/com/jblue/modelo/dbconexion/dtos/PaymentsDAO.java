@@ -19,7 +19,6 @@ package com.jblue.modelo.dbconexion.dtos;
 import com.jblue.modelo.dbconexion.querys.PaymentsQuerys;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.AbstractPayments;
-import com.jblue.modelo.objetos.OPagosRecargos;
 import com.jblue.sistema.SystemLogs;
 import com.jblue.util.tiempo.Fecha;
 import com.jblue.util.tools.ObjectUtils;

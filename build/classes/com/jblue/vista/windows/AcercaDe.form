@@ -149,6 +149,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/com/jblue/media/img/x24/instagram.png"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Sobre el desarrollador"/>
                     <Property name="actionCommand" type="java.lang.String" value="instagram"/>
                   </Properties>
                 </Component>
@@ -157,6 +158,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/com/jblue/media/img/x24/whatsapp.png"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Soporte e informacion"/>
                     <Property name="actionCommand" type="java.lang.String" value="whatsapp"/>
                   </Properties>
                 </Component>
@@ -165,6 +167,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/com/jblue/media/img/x24/github.png"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Codigo"/>
                     <Property name="actionCommand" type="java.lang.String" value="github"/>
                   </Properties>
                 </Component>

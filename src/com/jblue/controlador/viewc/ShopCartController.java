@@ -19,8 +19,10 @@ package com.jblue.controlador.viewc;
 import com.jblue.controlador.Controller;
 import com.jblue.controlador.logic.PaymentFactory;
 import com.jblue.controlador.logic.PaymentModel;
+import com.jblue.modelo.constdb.Const;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.OUser;
+import com.jblue.sistema.Sesion;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.util.tools.GraphicsUtils;
 import com.jblue.vista.components.UserViewComponent;
@@ -42,12 +44,12 @@ import javax.swing.SwingUtilities;
  * @author juan-campos
  */
 public class ShopCartController extends Controller {
-
+    
     private final MemoListCache<OUser> memo_cache;
     private final ShopCartView view;
     private final PaymentModel o;
     private final StringBuilder mov_book;
-
+    
     public ShopCartController(ShopCartView view) {
         System.out.println("xd 1");
         this.view = view;
@@ -56,7 +58,7 @@ public class ShopCartController extends Controller {
         this.mov_book = new StringBuilder(3000);
         o.setMovBook(mov_book);
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
@@ -87,11 +89,11 @@ public class ShopCartController extends Controller {
                 defaultCase(e.getActionCommand(), null, -1);
         }
     }
-
+    
     void lock() {
         GraphicsUtils.disableTreeLock(view.isRootPanelLock(), view.getRootPanel());
     }
-
+    
     void info() {
         if (view.getObjectSearch() == null) {
             JOptionPane.showMessageDialog(view, "Usuario no encontrado");
@@ -99,7 +101,7 @@ public class ShopCartController extends Controller {
         }
         UserViewComponent.showVisor(view.getObjectSearch());
     }
-
+    
     void payments() {
         mov_book.setLength(0);
         mov_book.setLength(3000);
@@ -111,15 +113,23 @@ public class ShopCartController extends Controller {
         }
         String in = JOptionPane.showInputDialog(view, "Dinero Ingresado", "Dinero ingresado", JOptionPane.INFORMATION_MESSAGE);
         float dinero_in = Float.parseFloat(in.concat(".00"));
-
+        
         o.setUsuario(view.getObjectSearch());
         o.setMesesPagados(view.getMonthPaidList());
         o.setDineroIngresado(dinero_in);
         boolean execPayment = o.execPayment();
         mov_book.append("Total: ").append(o.getTotal());
+        if (execPayment) {
+            Sesion.getInstancia().register(
+                    Const.INSERT_TO_SERVICE_PAYMENTS,
+                    DESCRIPTION_FORMAT.formatted(view.getObjectSearch().getId(), view.getMonthPaidList().toString())
+            );
+        }
         rmessage(execPayment);
     }
-
+    
+    private String DESCRIPTION_FORMAT = "USUARIO:%s, MESES:%s";
+    
     void cancel() {
         int input = JOptionPane.showConfirmDialog(view,
                 "¿Desea cancelar la operacion?",
@@ -131,20 +141,20 @@ public class ShopCartController extends Controller {
             view.initialState();
         }
     }
-
+    
     void clear() {
-
+        
     }
-
+    
     private void surcharges() {
     }
-
+    
     private void latePayments() {
     }
-
+    
     private void otherPayments() {
     }
-
+    
     private void allMonths(JCheckBox all) {
         SwingUtilities.invokeLater(() -> {
             for (Component i : view.getMonthList()) {
@@ -155,14 +165,14 @@ public class ShopCartController extends Controller {
             total();
         });
     }
-
+    
     private void total() {
         double price = view.getObjectSearch().getWaterIntakesObject().getPrice();
         double months_paids = view.getMonthPaidList().size();
         double total = price * months_paids;
         view.setTotalField(total);
     }
-
+    
     public void rmessage(boolean op) {
         String status = op ? "Exitoso" : "Erroneo";
         JOptionPane.showMessageDialog(view,
@@ -174,23 +184,23 @@ public class ShopCartController extends Controller {
             view.initialState();
         }
     }
-
+    
     public void setPaymentsInfo(OUser user) {
         try {
             System.out.println("lista");
             LocalDate ld = LocalDate.now();
             String query = "SELECT month_name FROM service_payments WHERE user = '%s' AND YEAR(NOW()) = '%s' AND status != 3"
                     .formatted(user.getId(), ld.getYear());
-
+            
             ResultSet res = CacheFactory.SERVICE_PAYMENTS
                     .getConnection().getConnection().query(query);
             ArrayList<String> list = new ArrayList<>();
             while (res.next()) {
                 list.add(res.getString(1));
             }
-
+            
             System.out.println(list.toString());
-
+            
             ArrayList<JCheckBox> check_box = view.getMonthList();
             boolean contains = false;
             for (JCheckBox i : check_box) {
@@ -204,9 +214,9 @@ public class ShopCartController extends Controller {
         } catch (SQLException ex) {
             Logger.getLogger(ShopCartController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
-
+    
     private void mov_book() {
         JOptionPane.showMessageDialog(view, o.getMovBook());
     }

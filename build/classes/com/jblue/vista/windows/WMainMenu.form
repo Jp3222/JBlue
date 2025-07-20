@@ -9,7 +9,7 @@
             <Property name="text" type="java.lang.String" value="Menu"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
+            <MenuItem class="javax.swing.JMenuItem" name="profile_item_view">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Perfil"/>
               </Properties>

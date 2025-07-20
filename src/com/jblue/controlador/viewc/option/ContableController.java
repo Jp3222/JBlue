@@ -114,7 +114,7 @@ public final class ContableController extends AbstractViewController {
         view.setYear_field(res);
     }
     private final String sum_query = "SELECT SUM(price) FROM service_payments WHERE ";
-    private final int date_register_index = 6;
+    private final int date_register_index = 7;
 
     @Override
     public void actionPerformed(ActionEvent e) {

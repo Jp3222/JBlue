@@ -17,9 +17,11 @@
 package com.jblue.controlador.viewc.dbviews;
 
 import com.jblue.controlador.AbstractDBViewController;
+import com.jblue.modelo.constdb.Const;
 import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.OEmployee;
+import com.jblue.sistema.Sesion;
 import com.jblue.vista.views.EmployeeView;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
@@ -61,7 +63,11 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
     @Override
     public void save() {
         String fields = "first_name, last_names, employee_type, user, password";
-        boolean res = connection.insert(fields, view.getDbValues(false));
+        String values[] = view.getDbValues(false);
+        boolean res = connection.insert(fields, values);
+        if (res) {
+            Sesion.getInstancia().register(Const.INSERT_TO_EMPLOYEES, "id:%s, employee:%s_%s".formatted(values[0], values[1]));
+        }
         rmessage(view, res);
     }
 
@@ -73,6 +79,9 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
         //boolean delete = connection.delete("id = %s".formatted(view.getObjectSearch().getId()));
         String id = view.getObjectSearch().getId();
         boolean delete = connection.update("status", "3", "id = %s".formatted(id));
+        if (delete) {
+            Sesion.getInstancia().register(Const.LOGIC_DELETE_TO_EMPLOYEES, "id:%s".formatted(id));
+        }
 //        if (DevFlags.TST_EXE_FUNCION) {
 //            int hidden_payments = JOptionPane.showConfirmDialog(view, "¿Desea eliminar los pagos hechos por esta persona?");
 //            if (hidden_payments == JOptionPane.YES_OPTION) {
@@ -91,12 +100,15 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
         if (!view.isValuesOk()) {
             return;
         }
+        String id = view.getObjectSearch().getId();
         String field = "first_name, last_names, employee_type, user, password";
-
         boolean update = connection.update(field.replace(" ", "").split(","),
                 view.getDbValues(true),
-                "id = %s".formatted(view.getObjectSearch().getId())
+                "id = %s".formatted(id)
         );
+        if (update) {
+            Sesion.getInstancia().register(Const.UPDATE_TO_EMPLOYEES, "id:%s".formatted(id));
+        }
         rmessage(view, update);
     }
 

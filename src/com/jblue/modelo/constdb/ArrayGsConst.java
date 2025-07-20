@@ -31,7 +31,7 @@ interface ArrayGsConst {
     };
 
     public static final String[] STREET_FIELD_GS = {
-        ID, "NOMBRE"
+        ID, "NOMBRE", "STATUS"
     };
 
     public static final String[] WATER_INTAKES_FIELD_GS = {

@@ -61,10 +61,10 @@ public class PaymentsDAO {
      *
      * }
      */
-    public static boolean isMonthPay(String month_pay) {
+    public static boolean isThisMonthPay() {
         String query = "SELECT id FROM service_payments WHERE month IN(%s) AND YEAR(date_register) = YEAR(CUERRENT_TIMESTAMP)";
         boolean ret = false;
-        try (ResultSet rs = connection.query(query)) {
+        try (ResultSet rs = connection.query(query.formatted(LocalDate.now().getMonthValue()))) {
             ret = rs.next();
         } catch (SQLException e) {
             SystemLogs.severeDbLogs("ERROR: USUARIOS NO PAGADOS", e);

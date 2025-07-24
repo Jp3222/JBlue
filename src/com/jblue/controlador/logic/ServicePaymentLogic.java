@@ -16,9 +16,12 @@
  */
 package com.jblue.controlador.logic;
 
+import com.jblue.sistema.app.AppConfig;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class ServicePaymentLogic extends AbsctractPayment {
 
@@ -72,6 +75,17 @@ public class ServicePaymentLogic extends AbsctractPayment {
 
         if (!gameRulers()) {
             return false;
+        }
+        LocalDate now = LocalDate.now();
+        if (AppConfig.getPayDay() > now.getDayOfMonth()) {
+            JOptionPane.showMessageDialog(null, "La fecha limite de pago ha sido excedida.¿Desea aplicarle un recargo a este usuario?");
+            PaymentModel surcharge = PaymentFactory.getSurchargePayment();
+            surcharge.execPayment();
+            surcharge.setUsuario(usuario);
+            surcharge.set;
+        }
+        if (AppConfig.isAutoPay()) {
+
         }
         StringBuilder values = new StringBuilder();
         int i = 0;

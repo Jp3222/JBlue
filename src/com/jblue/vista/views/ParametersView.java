@@ -32,13 +32,13 @@ import javax.swing.JOptionPane;
  *
  * @author juanp
  */
-public final class FlagsView extends SimpleView {
+public final class ParametersView extends SimpleView {
 
-    private static FlagsView instance;
+    private static ParametersView instance;
 
-    public synchronized static FlagsView getInstance() {
+    public synchronized static ParametersView getInstance() {
         if (instance == null) {
-            instance = new FlagsView();
+            instance = new ParametersView();
         }
         return instance;
     }
@@ -48,7 +48,7 @@ public final class FlagsView extends SimpleView {
     /**
      * Creates new form FlagsView
      */
-    private FlagsView() {
+    private ParametersView() {
         initComponents();
 
         this.parameters = new String[]{

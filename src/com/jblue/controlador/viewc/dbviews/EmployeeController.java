@@ -66,7 +66,10 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
         String values[] = view.getDbValues(false);
         boolean res = connection.insert(fields, values);
         if (res) {
-            Sesion.getInstancia().register(Const.INSERT_TO_EMPLOYEES, "id:%s, employee:%s_%s".formatted(values[0], values[1]));
+            Sesion.getInstancia().register(Const.INSERT_TO_EMPLOYEES, "id:%s, employee:%s_%s".formatted(
+                    memo_cache.count() + 1,
+                    values[0], values[1]
+            ));
         }
         rmessage(view, res);
     }

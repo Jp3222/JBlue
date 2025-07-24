@@ -20,7 +20,7 @@ import com.jblue.controlador.winc.MainController;
 import com.jblue.sistema.Sesion;
 import com.jblue.vista.components.UserViewComponent;
 import com.jblue.vista.marco.ventanas.AbstractAppWindows;
-import com.jblue.vista.views.FlagsView;
+import com.jblue.vista.views.ParametersView;
 import com.jblue.vista.views.StreetsView;
 import com.jblue.vista.views.OtherPaymentTypesView;
 import com.jblue.vista.views.OtherPaymentsView;
@@ -50,7 +50,7 @@ public final class WMainMenu extends AbstractAppWindows {
     private final OtherPaymentsView other_payments_view;
     private final SurchargePaymentsView surcharge_payments_view;
     //
-    private final FlagsView flag_view;
+    private final ParametersView flag_view;
     //
     private final LoginWindows LOGIN;
     private final AcercaDe ABOUT;
@@ -78,7 +78,7 @@ public final class WMainMenu extends AbstractAppWindows {
         other_payments_view = new OtherPaymentsView();
         surcharge_payments_view = new SurchargePaymentsView();
         //
-        flag_view = FlagsView.getInstance();
+        flag_view = ParametersView.getInstance();
         //
         ly = (CardLayout) views_panel.getLayout();
         updateTitle(shop_cart_view.getName());

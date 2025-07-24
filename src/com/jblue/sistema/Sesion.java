@@ -9,6 +9,7 @@ import com.jblue.modelo.objetos.OEmployee;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
 import com.jutil.framework.LocalSession;
+import com.jutil.jexception.JExcp;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -74,12 +75,13 @@ public class Sesion implements LocalSession<OEmployee> {
     void register(String employee, int type, String description) {
         String sql_user = "SELECT current_user()";
         try {
+
             int execute = connection.execute(query.formatted(employee, sql_user, type, description));
             if (execute == 0) {
                 JOptionPane.showMessageDialog(null, "Error al registrar la bitacora");
             }
         } catch (SQLException ex) {
-            SystemLogs.severeDbLogs("Error al registrar un movimiento", ex);
+            JExcp.getInstance(false, true).show(ex, getClass());
         }
     }
 

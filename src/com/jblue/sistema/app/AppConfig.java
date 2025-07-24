@@ -112,7 +112,7 @@ public interface AppConfig {
         return getPayDay() > o.getDayOfMonth();
     }
 
-    public static boolean getAutoPay() {
+    public static boolean isAutoPay() {
         Object valueOf = getParameter("COBRO_AUTOMATICO");
         if (valueOf == null) {
             return false;

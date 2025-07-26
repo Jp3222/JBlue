@@ -16,7 +16,6 @@
  */
 package com.jblue.vista.components;
 
-import com.jblue.modelo.ConstGs;
 import com.jblue.modelo.constdb.Const;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.OUser;
@@ -27,8 +26,7 @@ import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.function.Predicate;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -724,7 +722,7 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
     }
 
     private <T extends Objeto> void load(JTableModel model, MemoListCache<T> cache) {
-        ArrayList<T> select = cache.getConnection().select("*", "user = %s".formatted(usuario.getId()));
+        List<T> select = cache.getConnection().select("*", "user = %s".formatted(usuario.getId()));
         for (T i : select) {
             model.addRow(i.getInfo());
         }

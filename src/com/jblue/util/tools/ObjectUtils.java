@@ -45,6 +45,7 @@ public class ObjectUtils {
         mapa.put(OPagosRecargos.class.getName(), new OServicePayments());
         mapa.put(OServicePayments.class.getName(), new OPagosRecargos());
         mapa.put(Const.OTHER_PAYMENTS.getTable(), new OtherPaymentsType());
+        mapa.put("history", new OHistory());
 
     }
 
@@ -71,24 +72,36 @@ public class ObjectUtils {
         return cache.get(o -> o.getId().equals(id));
     }
 
-    public static boolean isPasante(OEmployee usuario) {
+    public static boolean isRoot(OEmployee usuario) {
         return usuario.getType().equals("1");
     }
 
-    public static boolean isSecretario(OEmployee usuario) {
+    public static boolean isAdministrador(OEmployee usuario) {
         return usuario.getType().equals("2");
     }
 
-    public static boolean isTesorero(OEmployee usuario) {
+    public static boolean isPresidente(OEmployee usuario) {
         return usuario.getType().equals("3");
     }
 
-    public static boolean isPresidente(OEmployee usuario) {
+    public static boolean isTesorero(OEmployee usuario) {
         return usuario.getType().equals("4");
     }
 
-    public static boolean isAdministrador(OEmployee usuario) {
+    public static boolean isSecretario(OEmployee usuario) {
         return usuario.getType().equals("5");
+    }
+
+    public static boolean isPasante(OEmployee usuario) {
+        return usuario.getType().equals("6");
+    }
+
+    public static boolean isDesarrollador(OEmployee usuario) {
+        return usuario.getType().equals("7");
+    }
+
+    public static boolean isUsuarioDePruebas(OEmployee usuario) {
+        return usuario.getType().equals("8");
     }
 
     public static String getStreed(String street_id) {

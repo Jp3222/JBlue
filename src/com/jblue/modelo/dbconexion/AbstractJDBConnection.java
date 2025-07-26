@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -95,7 +96,7 @@ public abstract class AbstractJDBConnection<T extends Objeto> implements JDBConn
     }
 
     @Override
-    public ArrayList<T> select(String campos, String where) {
+    public List<T> select(String campos, String where) {
         ArrayList<T> list = new ArrayList(100);
         try {
             if (campos.isBlank()) {
@@ -125,7 +126,7 @@ public abstract class AbstractJDBConnection<T extends Objeto> implements JDBConn
 
     @Override
     public Optional<T> get(String campos, String where) {
-        ArrayList<T> select = select(campos, where);
+        List<T> select = select(campos, where);
         if (select.isEmpty()) {
             return Optional.empty();
         }

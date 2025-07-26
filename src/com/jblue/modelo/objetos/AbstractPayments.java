@@ -70,8 +70,8 @@ public class AbstractPayments extends Objeto implements ForeingKeyObject {
 
     public String getStatusString() {
         return switch (getStatus()) {
-            case 2:
-                yield "PENDIENTE";
+            case 5:
+                yield "NO PAGADO";
             case 3:
                 yield "ELIMINADO";
             default:

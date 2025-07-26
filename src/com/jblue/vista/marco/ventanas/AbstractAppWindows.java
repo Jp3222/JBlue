@@ -17,10 +17,10 @@
 package com.jblue.vista.marco.ventanas;
 
 import com.jblue.sistema.app.AppInfo;
-import static com.jblue.sistema.app.AppInfo.NOMBRE_DEL_PROGRAMA;
-import static com.jblue.sistema.app.AppInfo.VERSION_DEL_PROGRAMA;
 import com.jutil.framework.WindowStates;
 import javax.swing.JFrame;
+import static com.jblue.sistema.app.AppInfo.PROGRAM_NAME;
+import static com.jblue.sistema.app.AppInfo.PROGRAM_VERSION;
 
 /**
  *
@@ -32,9 +32,9 @@ public abstract class AbstractAppWindows extends JFrame implements AppInfo, Wind
     }
 
     public final void updateTitle(String title) {
-        StringBuilder s = new StringBuilder(NOMBRE_DEL_PROGRAMA);
+        StringBuilder s = new StringBuilder(PROGRAM_NAME);
         s.append(" ");
-        s.append(VERSION_DEL_PROGRAMA);
+        s.append(PROGRAM_VERSION);
         s.append(" - ").append(title);
         this.setTitle(s.toString());
     }

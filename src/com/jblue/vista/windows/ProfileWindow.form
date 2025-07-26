@@ -91,7 +91,7 @@
                 <Property name="text" type="java.lang.String" value="Contabilidad"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton5">
+            <Component class="javax.swing.JButton" name="history_view_button">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Historial de actividad"/>
               </Properties>

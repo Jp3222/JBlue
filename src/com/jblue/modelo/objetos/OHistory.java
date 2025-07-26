@@ -20,43 +20,10 @@ package com.jblue.modelo.objetos;
  *
  * @author juanp
  */
-public enum OHistory {
-    START_SESSION("START_SESSION"),
-    END_SESSION("END_SESSION"),
-    INSERT("INSERT"),
-    UPDATE("UPDATE"),
-    LOGIC_DELETE("LOGIC_DELETE"),
-    DELETE("DELETE"),
-    SELECT("SELECT");
+public class OHistory extends Objeto {
 
-    private String employee;
-    private String user;
-    private final String type;
-    private StringBuilder description;
-
-    private OHistory(String type) {
-        this.type = type;
-    }
-
-    public void setEmployee(String employee) {
-        this.employee = employee;
+    public OHistory() {
+    
     }
     
-    public void setUser(String user){
-        this.user = user;
-    }
-
-    public void addDescription(String mov) {
-        this.description.append(mov);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder values = new StringBuilder("(");
-        values.append("'").append(employee).append("',");
-        values.append("'").append(type).append("',");
-        values.append("'").append(description.toString()).append("')");
-        return values.toString();
-    }
-
 }

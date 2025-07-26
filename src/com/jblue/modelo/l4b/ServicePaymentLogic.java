@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador.logic;
+package com.jblue.modelo.l4b;
 
 import com.jblue.sistema.app.AppConfig;
 import java.sql.SQLException;
@@ -27,12 +27,13 @@ public class ServicePaymentLogic extends AbsctractPayment {
 
     public ServicePaymentLogic() {
         super();
+        this.pay_query = "INSERT INTO service_payments (employee, user, price, month_name) values %s";
+        this.default_query = "INSERT INTO service_payments (employee, user, price, month_name, status) values %s";
     }
 
     @Override
     public String getQuery(String args) {
-        return "INSERT INTO service_payments (employee, user, price, month_name) values %s"
-                .formatted(args);
+        return pay_query.formatted(args);
     }
 
     @Override
@@ -82,7 +83,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
             PaymentModel surcharge = PaymentFactory.getSurchargePayment();
             surcharge.execPayment();
             surcharge.setUsuario(usuario);
-            surcharge.set;
+            surcharge.setDineroIngresado(meses_pagados.size() * toma.getSurcharge());
         }
         if (AppConfig.isAutoPay()) {
 
@@ -121,6 +122,56 @@ public class ServicePaymentLogic extends AbsctractPayment {
         mov.put(KEY_MOVS, values.toString());
         try {
             connection.execute(getQuery(values.toString()));
+            mov.put(KEY_STATUS_OP, STATUS_OK);
+        } catch (SQLException ex) {
+            mov.put(KEY_STATUS_OP, STATUS_ERR);
+            mov.put(KEY_ERROR, ex.getMessage());
+            Logger.getLogger(ServicePaymentLogic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return mov.get(KEY_STATUS_OP).equals(STATUS_OK);
+    }
+    
+    /**
+     * Metodo que inserta pagos con status No Pagados
+     * @return 
+     */
+    @Override
+    public boolean insertToDefault() {
+        StringBuilder values = new StringBuilder();
+        int i = 0;
+        String col;
+        while (i < meses_pagados.size() - 1) {
+            col = "('" + personal.getId()
+                    + "','"
+                    + usuario.getId() + "','"
+                    + toma.getPrice() + "','"
+                    + meses_pagados.get(i)
+                    + PaymentModel.STATUS_NOT_PAY + "')";
+            i++;
+            values.append(col).append(",");
+
+            mov_book.append(i).append(" - ")
+                    .append(meses_pagados.get(i))
+                    .append(" : ")
+                    .append(toma.getPrice())
+                    .append("\n");
+        }
+        col = "('" + personal.getId()
+                + "','"
+                + usuario.getId() + "','"
+                + toma.getPrice() + "','"
+                + meses_pagados.get(i) + "')";
+
+        mov_book.append(i).append(" - ")
+                .append(meses_pagados.get(i))
+                .append(" : ")
+                .append(toma.getPrice())
+                .append("\n");
+        i++;
+        values.append(col);
+        mov.put(KEY_MOVS, values.toString());
+        try {
+            connection.execute(default_query.formatted(values.toString()));
             mov.put(KEY_STATUS_OP, STATUS_OK);
         } catch (SQLException ex) {
             mov.put(KEY_STATUS_OP, STATUS_ERR);

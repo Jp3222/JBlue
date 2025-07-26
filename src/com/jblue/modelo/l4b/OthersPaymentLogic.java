@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador.logic;
+package com.jblue.modelo.l4b;
 
-import static com.jblue.controlador.logic.AbsctractPayment.KEY_ERROR;
-import static com.jblue.controlador.logic.AbsctractPayment.KEY_MOVS;
-import static com.jblue.controlador.logic.AbsctractPayment.KEY_STATUS_OP;
-import static com.jblue.controlador.logic.AbsctractPayment.STATUS_ERR;
-import static com.jblue.controlador.logic.AbsctractPayment.STATUS_OK;
+import static com.jblue.modelo.l4b.AbsctractPayment.KEY_ERROR;
+import static com.jblue.modelo.l4b.AbsctractPayment.KEY_MOVS;
+import static com.jblue.modelo.l4b.AbsctractPayment.KEY_STATUS_OP;
+import static com.jblue.modelo.l4b.AbsctractPayment.STATUS_ERR;
+import static com.jblue.modelo.l4b.AbsctractPayment.STATUS_OK;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.logging.Level;
@@ -121,5 +121,10 @@ public class OthersPaymentLogic extends AbsctractPayment {
             Logger.getLogger(ServicePaymentLogic.class.getName()).log(Level.SEVERE, null, ex);
         }
         return mov.get(KEY_STATUS_OP).equals(STATUS_OK);
+    }
+
+    @Override
+    public boolean insertToDefault() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

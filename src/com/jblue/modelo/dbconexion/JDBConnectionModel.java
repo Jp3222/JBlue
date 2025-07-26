@@ -18,7 +18,7 @@ package com.jblue.modelo.dbconexion;
 
 import com.jblue.modelo.objetos.Objeto;
 import com.jutil.dbcon.connection.DBConnection;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -84,7 +84,7 @@ public interface JDBConnectionModel<T extends Objeto> {
      * valores solicitados por la condicion where en caso de un "SQLExcption"
      * retornara un objeto vacio
      */
-    ArrayList<T> select(String field, String where);
+    List<T> select(String field, String where);
 
     /**
      ** Este metodo recupera un conjunto datos de la base de datos y trata las

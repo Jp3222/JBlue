@@ -5,7 +5,6 @@
 package com.jblue.sistema;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import com.jblue.controlador.winc.ConfigController;
 import com.jblue.modelo.constdb.Const;
 import com.jutil.framework.MainSystem;
 import com.jblue.sistema.app.AppFiles;
@@ -19,7 +18,6 @@ import com.jutil.platf.JVMInfo;
 import com.jutil.platf.So;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -36,7 +34,7 @@ import javax.swing.JOptionPane;
  * @author jp
  */
 public class Sistema implements MainSystem {
-
+    public static final String DATA_BASE_KEY = "connection";
     private static final Logger LOG = Logger.getLogger(Sistema.class.getName());
     private final int code_1049 = 1049;
     /**

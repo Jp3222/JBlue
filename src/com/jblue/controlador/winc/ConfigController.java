@@ -92,20 +92,10 @@ public class ConfigController extends WindowController {
         properties.setProperty(AppConfig.DB_PORT, view.getPort());
         properties.setProperty(AppConfig.DB_HOST, view.getHost());
         properties.setProperty(AppConfig.DB_NAME, view.getDataBaseName());
-
         //
         properties.setProperty(AppConfig.TITLE1, view.getTitle1());
         properties.setProperty(AppConfig.TITLE2, view.getTitle2());
         properties.setProperty(AppConfig.LOGIN_ICON, view.getIconPath());
-        //
-        if (view.getOpenHour() != null) {
-            properties.setProperty(AppConfig.HOUR_OPEN, view.getOpenHour().format(DateTimeFormatter.ISO_TIME));
-        }
-
-        if (view.getCloseHour() != null) {
-            properties.setProperty(AppConfig.HOUR_CLOSE, view.getCloseHour().format(DateTimeFormatter.ISO_TIME));
-        }
-        //
         view.disposeWin();
     }
 

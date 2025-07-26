@@ -14,29 +14,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador.winc;
+package com.jblue.vista.marco.vistas;
 
-import com.jblue.vista.windows.ProfileWindow;
-import java.awt.event.ActionEvent;
+import com.jblue.sistema.Sistema;
+import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.framework.LaunchApp;
 
 /**
  *
  * @author juanp
  */
-public class ProfileController extends WindowController {
+public abstract class DataBaseAccessView extends SimpleView {
 
-    private final ProfileWindow view;
+    protected final DBConnection connection;
 
-    public ProfileController(ProfileWindow view) {
-        this.view = view;
+    public DataBaseAccessView(DBConnection connection) {
+        this.connection = connection;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String actionCommand = e.getActionCommand();
-        System.out.println(actionCommand);
-        view.getCardLayout().show(view.getRootPanel(), actionCommand);
-        view.updateTitle(actionCommand);
+    public DataBaseAccessView() {
+        connection = getDefaultConnection();
     }
 
+    protected final DBConnection getDefaultConnection() {
+        Object resources = LaunchApp.getInstance().getResources(Sistema.DATA_BASE_KEY);
+        return (DBConnection) resources;
+    }
+
+    protected abstract void dataLoad();
+
+    protected abstract void dataDump();
 }

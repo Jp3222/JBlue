@@ -13,12 +13,6 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/jblue/JBlue.java</file>
-            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/controlador/compc/ComboBoxController.java</file>
-            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/controlador/logic/ServicePaymentLogic.java</file>
-            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/modelo/dbconexion/dtos/PaymentsDAO.java</file>
-            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/sistema/app/AppConfig.java</file>
-            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/controlador/logic/PaymentFactory.java</file>
-            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/controlador/logic/SurchargePaymentsLogic.java</file>
         </group>
     </open-files>
 </project-private>

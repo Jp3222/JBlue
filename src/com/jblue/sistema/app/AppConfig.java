@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  *
  * @author jp
  */
-public interface AppConfig {
+public final class AppConfig {
 
     //
     public static final String DB_USER = "DB USER";
@@ -207,4 +207,7 @@ public interface AppConfig {
         return null;
     }
 
+    private AppConfig() {
+
+    }
 }

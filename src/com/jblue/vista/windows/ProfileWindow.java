@@ -19,6 +19,7 @@ package com.jblue.vista.windows;
 import com.jblue.controlador.winc.ProfileController;
 import com.jblue.vista.marco.ventanas.AbstractAppWindows;
 import com.jblue.vista.views.EmployeeView;
+import com.jblue.vista.views.HistoryView;
 import com.jblue.vista.views.VContabilidad;
 import com.jblue.vista.views.VPerfil;
 import java.awt.CardLayout;
@@ -35,6 +36,10 @@ public final class ProfileWindow extends AbstractAppWindows {
     private final VContabilidad contabilidad;
     private final CardLayout ly;
     private final ProfileController controller;
+
+    //
+    private final HistoryView history_view;
+
     /**
      * Creates new form MenuWindow
      */
@@ -42,9 +47,11 @@ public final class ProfileWindow extends AbstractAppWindows {
         this.employee_view = new EmployeeView();
         this.profile_view = new VPerfil();
         this.contabilidad = new VContabilidad();
+        this.history_view = new HistoryView();
         initComponents();
         ly = (CardLayout) root_panel.getLayout();
         this.controller = new ProfileController(this);
+
         build();
     }
 
@@ -61,6 +68,7 @@ public final class ProfileWindow extends AbstractAppWindows {
         root_panel.add(employee_view.getName(), employee_view);
         root_panel.add(contabilidad.getName(), contabilidad);
         root_panel.add(profile_view.getName(), profile_view);
+        root_panel.add(history_view.getName(), history_view);
     }
 
     @Override
@@ -68,7 +76,7 @@ public final class ProfileWindow extends AbstractAppWindows {
         employee_view_button.addActionListener(controller);
         contable_view_button.addActionListener(controller);
         profile_view_button.addActionListener(controller);
-
+        history_view_button.addActionListener(controller);
     }
 
     @Override
@@ -97,7 +105,7 @@ public final class ProfileWindow extends AbstractAppWindows {
         jButton2 = new javax.swing.JButton();
         employee_view_button = new javax.swing.JButton();
         contable_view_button = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        history_view_button = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         root_panel = new javax.swing.JPanel();
@@ -130,8 +138,8 @@ public final class ProfileWindow extends AbstractAppWindows {
         contable_view_button.setText("Contabilidad");
         jPanel3.add(contable_view_button);
 
-        jButton5.setText("Historial de actividad");
-        jPanel3.add(jButton5);
+        history_view_button.setText("Historial de actividad");
+        jPanel3.add(history_view_button);
 
         jButton6.setText("Administracion de suministros");
         jPanel3.add(jButton6);
@@ -154,8 +162,8 @@ public final class ProfileWindow extends AbstractAppWindows {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton contable_view_button;
     private javax.swing.JButton employee_view_button;
+    private javax.swing.JButton history_view_button;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
@@ -172,6 +180,5 @@ public final class ProfileWindow extends AbstractAppWindows {
     public JPanel getRootPanel() {
         return root_panel;
     }
-    
-    
+
 }

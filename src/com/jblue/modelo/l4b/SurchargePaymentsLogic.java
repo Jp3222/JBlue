@@ -1,10 +1,10 @@
-package com.jblue.controlador.logic;
+package com.jblue.modelo.l4b;
 
-import static com.jblue.controlador.logic.AbsctractPayment.KEY_ERROR;
-import static com.jblue.controlador.logic.AbsctractPayment.KEY_MOVS;
-import static com.jblue.controlador.logic.AbsctractPayment.KEY_STATUS_OP;
-import static com.jblue.controlador.logic.AbsctractPayment.STATUS_ERR;
-import static com.jblue.controlador.logic.AbsctractPayment.STATUS_OK;
+import static com.jblue.modelo.l4b.AbsctractPayment.KEY_ERROR;
+import static com.jblue.modelo.l4b.AbsctractPayment.KEY_MOVS;
+import static com.jblue.modelo.l4b.AbsctractPayment.KEY_STATUS_OP;
+import static com.jblue.modelo.l4b.AbsctractPayment.STATUS_ERR;
+import static com.jblue.modelo.l4b.AbsctractPayment.STATUS_OK;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -32,7 +32,11 @@ import java.util.logging.Logger;
  */
 public class SurchargePaymentsLogic extends AbsctractPayment {
 
-    private int status;
+    public SurchargePaymentsLogic() {
+        super();
+        this.pay_query = "UPDATE surcharge_payments SET status = %d".formatted(PaymentModel.STATUS_PAY);
+        this.default_query = "INSERT INTO surcharge_payments(employee, user, price, month, status) VALUES %s";
+    }
 
     @Override
     public String getQuery(String args) {
@@ -97,6 +101,41 @@ public class SurchargePaymentsLogic extends AbsctractPayment {
             Logger.getLogger(SurchargePaymentsLogic.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+
+    @Override
+    public boolean insertToDefault() {
+        int i = 0;
+        String col;
+        StringBuilder values = new StringBuilder(600);
+        while (i < meses_pagados.size() - 1) {
+            col = "('" + personal.getId()
+                    + "','"
+                    + usuario.getId() + "','"
+                    + toma.getPrice() + "','"
+                    + meses_pagados.get(i)
+                    + PaymentModel.STATUS_NOT_PAY + "')";
+            i++;
+            values.append(col).append(",");
+        }
+        col = "('" + personal.getId()
+                + "','"
+                + usuario.getId() + "','"
+                + toma.getPrice() + "','"
+                + meses_pagados.get(i) + "')";
+        i++;
+        values.append(col);
+        mov.put(KEY_MOVS, values.toString());
+        
+        try {
+            connection.execute(getQuery(values.toString()));
+            mov.put(KEY_STATUS_OP, STATUS_OK);
+        } catch (SQLException ex) {
+            mov.put(KEY_STATUS_OP, STATUS_ERR);
+            mov.put(KEY_ERROR, ex.getMessage());
+            Logger.getLogger(ServicePaymentLogic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return mov.get(KEY_STATUS_OP).equals(STATUS_OK);
     }
 
 }

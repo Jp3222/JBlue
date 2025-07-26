@@ -24,6 +24,7 @@ public final class CacheFactory {
     public static final MemoListCache<OWaterIntake> WATER_INTAKES_TYPES = new MemoListCache(ConnectionFactory.getWaterIntakes());
     public static final MemoListCache<OStreet> STREETS = new MemoListCache(ConnectionFactory.getStreets());
     public static final MemoListCache<OEmployee> EMPLOYEES = new MemoListCache(ConnectionFactory.getEmployees());
+
     public static final MemoListCache<OUser> USERS = new MemoListCache(ConnectionFactory.getUser());
     public static final MemoListCache<OServicePayments> SERVICE_PAYMENTS = new MemoListCache(ConnectionFactory.getServicePayments());
     public static final MemoListCache<OPagosRecargos> SURCHARGE_PAYMENTS = new MemoListCache(ConnectionFactory.getSurchargePayments());

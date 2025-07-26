@@ -12,11 +12,11 @@ import javax.swing.ImageIcon;
  */
 public interface AppInfo {
 
-    final String NOMBRE_DEL_PROGRAMA = "JBlue ";
-    final String VERSION_DEL_PROGRAMA = "07.25";
-    final String TITULO_VER_PROGRAMA = String.format("%s - %s", NOMBRE_DEL_PROGRAMA, VERSION_DEL_PROGRAMA);
-    
-    final ImageIcon _ICONO_DEL_PROGRAMA = new ImageIcon(AppInfo.class.getResource("/com/jblue/media/img/x128/jblue_icono.png"));
-    
+    final String PROGRAM_NAME = "JBlue ";
+    final String PROGRAM_VERSION = "07.25";
+    final String PROGRAM_TITLE = String.format("%s - %s", PROGRAM_NAME, PROGRAM_VERSION);
+
+    final ImageIcon PROGRAM_ICON = new ImageIcon(AppInfo.class.getResource("/com/jblue/media/img/x128/jblue_icono.png"));
+
     final String UPDATE_DATE = "13/07/2025";
 }

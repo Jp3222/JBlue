@@ -182,23 +182,6 @@ public final class ConfigurationPanel extends SimpleView implements OptionMenuMo
         jLabel6 = new javax.swing.JLabel();
         icon_image_field = new javax.swing.JTextField();
         search_icon = new javax.swing.JButton();
-        jLabel17 = new javax.swing.JLabel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jPanel10 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        open_hour_field = new javax.swing.JSpinner();
-        jLabel14 = new javax.swing.JLabel();
-        open_minute_field = new javax.swing.JSpinner();
-        jLabel23 = new javax.swing.JLabel();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
-        jPanel16 = new javax.swing.JPanel();
-        jLabel25 = new javax.swing.JLabel();
-        close_hour_field = new javax.swing.JSpinner();
-        jLabel26 = new javax.swing.JLabel();
-        close_minute_field = new javax.swing.JSpinner();
         option_panel = new javax.swing.JPanel();
         save_db_button = new javax.swing.JButton();
 
@@ -393,75 +376,6 @@ public final class ConfigurationPanel extends SimpleView implements OptionMenuMo
 
         program_info_panel.add(jPanel18);
 
-        jLabel17.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
-        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel17.setText("Programacion de apertura");
-        program_info_panel.add(jLabel17);
-
-        jPanel8.setLayout(new java.awt.BorderLayout());
-
-        jLabel8.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel8.setText("H. de apertura");
-        jLabel8.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel8.add(jLabel8, java.awt.BorderLayout.WEST);
-
-        jPanel10.setLayout(new java.awt.GridLayout(1, 0));
-
-        jLabel13.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel13.setText("Hora: ");
-        jPanel10.add(jLabel13);
-
-        open_hour_field.setModel(new javax.swing.SpinnerNumberModel(0, 0, 24, 1));
-        jPanel10.add(open_hour_field);
-
-        jLabel14.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel14.setText("Minuto: ");
-        jPanel10.add(jLabel14);
-
-        open_minute_field.setModel(new javax.swing.SpinnerNumberModel(0, 0, 59, 1));
-        jPanel10.add(open_minute_field);
-
-        jPanel8.add(jPanel10, java.awt.BorderLayout.CENTER);
-
-        jLabel23.setPreferredSize(new java.awt.Dimension(50, 30));
-        jPanel8.add(jLabel23, java.awt.BorderLayout.EAST);
-
-        program_info_panel.add(jPanel8);
-
-        jPanel9.setLayout(new java.awt.BorderLayout());
-
-        jLabel12.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel12.setText("H. de cierre");
-        jLabel12.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel9.add(jLabel12, java.awt.BorderLayout.WEST);
-
-        jLabel24.setPreferredSize(new java.awt.Dimension(50, 30));
-        jPanel9.add(jLabel24, java.awt.BorderLayout.EAST);
-
-        jPanel16.setLayout(new java.awt.GridLayout(1, 0));
-
-        jLabel25.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel25.setText("Hora: ");
-        jPanel16.add(jLabel25);
-
-        close_hour_field.setModel(new javax.swing.SpinnerNumberModel(0, 0, 24, 1));
-        jPanel16.add(close_hour_field);
-
-        jLabel26.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel26.setText("Minuto: ");
-        jPanel16.add(jLabel26);
-
-        close_minute_field.setModel(new javax.swing.SpinnerNumberModel(0, 0, 59, 1));
-        jPanel16.add(close_minute_field);
-
-        jPanel9.add(jPanel16, java.awt.BorderLayout.CENTER);
-
-        program_info_panel.add(jPanel9);
-
         root_panel.add(program_info_panel, "card3");
 
         add(root_panel, java.awt.BorderLayout.CENTER);
@@ -478,8 +392,6 @@ public final class ConfigurationPanel extends SimpleView implements OptionMenuMo
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSpinner close_hour_field;
-    private javax.swing.JSpinner close_minute_field;
     private javax.swing.JPasswordField db_password;
     private javax.swing.JPasswordField db_user;
     private javax.swing.JTextField host;
@@ -487,36 +399,25 @@ public final class ConfigurationPanel extends SimpleView implements OptionMenuMo
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
-    private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel2;
@@ -524,12 +425,8 @@ public final class ConfigurationPanel extends SimpleView implements OptionMenuMo
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JComboBox<String> motor;
     private javax.swing.JTextField name_db;
-    private javax.swing.JSpinner open_hour_field;
-    private javax.swing.JSpinner open_minute_field;
     private javax.swing.JPanel option_panel;
     private javax.swing.JTextField port;
     private javax.swing.JPanel program_info_panel;
@@ -602,27 +499,6 @@ public final class ConfigurationPanel extends SimpleView implements OptionMenuMo
 
     public String getDataBaseName() {
         return name_db.getText();
-    }
-
-    public LocalTime getOpenHour() {
-        SpinnerNumberModel model_hour = (SpinnerNumberModel) open_hour_field.getModel();
-        SpinnerNumberModel model_minute = (SpinnerNumberModel) open_minute_field.getModel();
-        
-        if (model_hour.getNumber().intValue() > 0) {
-            int hour = model_hour.getNumber().intValue(), minute = model_minute.getNumber().intValue();
-            return LocalTime.of((hour - 1), minute);
-        }
-        return null;
-    }
-
-    public LocalTime getCloseHour() {
-        SpinnerNumberModel model_hour = (SpinnerNumberModel) close_hour_field.getModel();
-        SpinnerNumberModel model_minute = (SpinnerNumberModel) close_minute_field.getModel();
-        if (model_hour.getNumber().intValue() > 0) {
-            int hour = model_hour.getNumber().intValue(), minute = model_minute.getNumber().intValue();
-            return LocalTime.of((hour - 1), minute);
-        }
-        return null;
     }
 
     @Override

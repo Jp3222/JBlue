@@ -58,7 +58,7 @@ public final class AcercaDe extends AbstractAppWindows {
     @Override
     public void finalState() {
         date_update.setText(AppInfo.UPDATE_DATE);
-        prog_version.setText(AppInfo.VERSION_DEL_PROGRAMA);
+        prog_version.setText(AppInfo.PROGRAM_VERSION);
         jvm_version.setText(JVMInfo.JAVA_VERSION);
         instagram_button.addActionListener((e) -> launch("https://www.instagram.com/jp_322/"));
         github_button.addActionListener((e) -> launch("https://github.com/Jp3222/JBlue"));

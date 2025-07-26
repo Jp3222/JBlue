@@ -58,7 +58,7 @@ public class AbstractCache<T extends Objeto> implements CacheModel<T> {
         this.index_min = 1;
         this.index_max = capacity;
         this.steps = capacity;
-        this.default_query = "SELECT * FROM %s WHERE id >= %s and id <= %s and status != 3";
+        this.default_query = "SELECT * FROM %s WHERE id >= %s and id <= %s and status NOT IN(3,8)";
         this.last_id_query = "SELECT MAX(id) FROM %s;";
         setDefaultAdapter();
     }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador.logic;
+package com.jblue.modelo.l4b;
 
 import com.jblue.modelo.objetos.OEmployee;
 import com.jblue.modelo.objetos.OWaterIntake;
@@ -32,12 +32,6 @@ import java.util.Map;
  */
 public abstract class AbsctractPayment implements PaymentModel {
 
-    public static final String KEY_ERROR = "err_msg";
-    public static final String KEY_MOVS = "mov";
-    public static final String KEY_STATUS_OP = "status";
-    public static final String STATUS_OK = "ok";
-    public static final String STATUS_ERR = "err";
-
     protected final Map<String, String> mov;
     protected final OEmployee personal;
     protected OUser usuario;
@@ -47,6 +41,10 @@ public abstract class AbsctractPayment implements PaymentModel {
     protected double dinero_sobrante;
     protected DBConnection connection;
     protected List<String> meses_pagados;
+    protected int type_payment;
+    protected String pay_query;
+    protected String default_query;
+    
 
     protected StringBuilder mov_book;
 
@@ -108,7 +106,10 @@ public abstract class AbsctractPayment implements PaymentModel {
     public double getTotal() {
         return usuario.getWaterIntakesObject().getPrice() * meses_pagados.size();
     }
-    
-    
+
+    @Override
+    public void setTypePayment(int TypePayment) {
+        this.type_payment = TypePayment;
+    }
 
 }

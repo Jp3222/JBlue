@@ -61,5 +61,6 @@ INSERT INTO `history_type_mov` (`id`, `name_mov`, `type_mov`, `affected_table`) 
 INSERT INTO `history_type_mov` (`id`, `name_mov`, `type_mov`, `affected_table`) VALUES (44,'EXIT_LOGIN', 'INSERT', 'HISTORY');
 INSERT INTO `history_type_mov` (`id`, `name_mov`, `type_mov`, `affected_table`) VALUES (45,'EXPORT_TO_LOGIN', 'EXPORT', 'HISTORY');
 INSERT INTO `history_type_mov` (`id`, `name_mov`, `type_mov`, `affected_table`) VALUES (46,'IMPORT_TO_LOGIN', 'IMPORT', 'HISTORY');
+INSERT INTO `history_type_mov` (`id`, `name_mov`, `type_mov`, `affected_table`) VALUES (47,'DELETE_TO_HISTORY', 'DELETE', 'HISTORY');
 
 SELECT * FROM jblue_test.history_type_mov;

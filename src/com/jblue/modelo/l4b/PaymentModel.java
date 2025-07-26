@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.controlador.logic;
+package com.jblue.modelo.l4b;
 
 import com.jblue.modelo.objetos.OUser;
 import java.util.List;
@@ -25,6 +25,20 @@ import java.util.Map;
  * @author juan-campos
  */
 public interface PaymentModel {
+
+    static final int SERVICE_PAYMENT = 1;
+    static final int SURCHARGE_PAYMENT = 2;
+    static final int OTHERS_PAYMENT = 3;
+
+    static final int STATUS_PAY = 4;
+    static final int STATUS_NOT_PAY = 5;
+    static final int STATUS_PENDING_PAY = 6;
+
+    static final String KEY_ERROR = "err_msg";
+    static final String KEY_MOVS = "mov";
+    static final String KEY_STATUS_OP = "status";
+    static final String STATUS_OK = "ok";
+    static final String STATUS_ERR = "err";
 
     /**
      *
@@ -40,8 +54,23 @@ public interface PaymentModel {
     boolean execPayment();
 
     /**
+     * inserta un registro por defecto(Pago pendiente)
      *
-     * @return
+     * @return boolean si se ejecuto correctamente
+     */
+    boolean insertToDefault();
+
+    /**
+     * define el tipo de pago a realizar
+     *
+     * @param TypePayment tipo de pago a realizar
+     */
+    void setTypePayment(int TypePayment);
+
+    /**
+     * metodo para definir validaciones antes de ejecular un movimiento
+     *
+     * @return true si todas las reglas del juego se cumplen
      */
     boolean gameRulers();
 
@@ -76,14 +105,15 @@ public interface PaymentModel {
     public void setMovBook(StringBuilder mov_book);
 
     /**
+     * total a pagar
      *
-     * @return
+     * @return el total a pagar con decimales
      */
     public double getTotal();
 
     /**
      *
-     * @return
+     * @return una StringBuilder con los movimientos ejecutados
      */
     public StringBuilder getMovBook();
 }

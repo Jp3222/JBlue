@@ -41,9 +41,9 @@ public class ObjectUtils {
         mapa.put(Const.STREETS.getTable(), new OStreet());
         mapa.put(Const.WATER_INTAKES.getTable(), new OWaterIntake());
         mapa.put(Const.SERVICE_PAYMENTS.getTable(), new OServicePayments());
-        mapa.put(Const.SURCHARGE_PAYMENTS.getTable(), new OPagosRecargos());
-        mapa.put(OPagosRecargos.class.getName(), new OServicePayments());
-        mapa.put(OServicePayments.class.getName(), new OPagosRecargos());
+        mapa.put(Const.SURCHARGE_PAYMENTS.getTable(), new OSurchargePayments());
+        mapa.put(OSurchargePayments.class.getName(), new OServicePayments());
+        mapa.put(OServicePayments.class.getName(), new OSurchargePayments());
         mapa.put(Const.OTHER_PAYMENTS.getTable(), new OtherPaymentsType());
         mapa.put("history", new OHistory());
 

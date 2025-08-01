@@ -34,6 +34,7 @@ import javax.swing.JOptionPane;
  * @author jp
  */
 public class Sistema implements MainSystem {
+
     public static final String DATA_BASE_KEY = "connection";
     private static final Logger LOG = Logger.getLogger(Sistema.class.getName());
     private final int code_1049 = 1049;

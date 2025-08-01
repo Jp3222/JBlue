@@ -5,9 +5,9 @@
 package com.jblue.modelo.objetos;
 
 import com.jblue.util.objetos.AbstractObject;
-import com.jutil.dbcon.cn.DBObjectModel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.jutil.dbcon.cn.JDBObjectModel;
 
 /**
  *
@@ -55,7 +55,7 @@ public class Objeto extends AbstractObject {
     }
 
     @Override
-    public int compareTo(DBObjectModel o) {
+    public int compareTo(JDBObjectModel o) {
         int x = Integer.parseInt(getId());
         int y = Integer.parseInt(o.getId());
         if (x > y) {

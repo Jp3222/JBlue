@@ -5,6 +5,7 @@
 package com.jblue.modelo.objetos;
 
 import com.jblue.modelo.constdb.Const;
+import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.util.tools.ObjectUtils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,7 +16,7 @@ import com.jblue.util.objetos.StatusObject;
  *
  * @author jp
  */
-public class OUser extends Objeto implements ForeingKeyObject, StatusObject{
+public class OUser extends Objeto implements ForeingKeyObject, StatusObject {
 
     private String[] infoFK;
 
@@ -122,16 +123,7 @@ public class OUser extends Objeto implements ForeingKeyObject, StatusObject{
 
     @Override
     public String getStatusString() {
-        return switch (getStatus()) {
-            case 1:
-                yield "Activo";
-            case 2:
-                yield "Inactivo";
-            case 3:
-                yield "Baja";
-            default:
-                throw new AssertionError();
-        };
+        return CacheFactory.ITEMS_STATUS_CAT[getStatus()];
     }
 
     @Override

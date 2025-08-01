@@ -16,16 +16,18 @@
  */
 package com.jblue.modelo.objetos;
 
+import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.util.tools.ObjectUtils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import com.jblue.util.objetos.ForeingKeyObject;
+import com.jblue.util.objetos.StatusObject;
 
 /**
  *
  * @author juanp
  */
-public class AbstractPayments extends Objeto implements ForeingKeyObject {
+public class AbstractPayments extends Objeto implements ForeingKeyObject, StatusObject {
 
     private String[] info_fk;
 
@@ -64,19 +66,14 @@ public class AbstractPayments extends Objeto implements ForeingKeyObject {
         return info[5];
     }
 
+    @Override
     public int getStatus() {
         return Integer.parseInt(info[6]);
     }
 
+    @Override
     public String getStatusString() {
-        return switch (getStatus()) {
-            case 5:
-                yield "NO PAGADO";
-            case 3:
-                yield "ELIMINADO";
-            default:
-                yield "PAGADO";
-        };
+        return CacheFactory.ITEMS_STATUS_CAT[getStatus()];
     }
 
     public LocalDateTime getRegister() {
@@ -102,6 +99,11 @@ public class AbstractPayments extends Objeto implements ForeingKeyObject {
         info_fk[2] = u == null ? "USUARIO BORRADO" : u.toString();
         info_fk[6] = getStatusString();
         return info_fk;
+    }
+
+    @Override
+    public boolean isActive() {
+        return getStatus() == 1;
     }
 
 }

@@ -4,6 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
+import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.util.objetos.ForeingKeyObject;
 import com.jblue.util.objetos.StatusObject;
 
@@ -46,14 +47,7 @@ public class OWaterIntake extends Objeto implements ForeingKeyObject, StatusObje
 
     @Override
     public String getStatusString() {
-        return switch (getStatus()) {
-            case 2:
-                yield "INACTIVO";
-            case 3:
-                yield "BORRADO";
-            default:
-                yield "ACTIVO";
-        };
+        return CacheFactory.ITEMS_STATUS_CAT[getStatus()];
     }
 
     @Override

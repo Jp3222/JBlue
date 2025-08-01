@@ -16,8 +16,8 @@
  */
 package com.jblue.util.objetos;
 
-import com.jutil.dbcon.cn.DBObjectModel;
 import java.util.Arrays;
+import com.jutil.dbcon.cn.JDBObjectModel;
 
 /**
  * Esta clase es una abstraccion maxima de la cual deberan heredar todas las
@@ -25,7 +25,7 @@ import java.util.Arrays;
  *
  * @author juan-campos
  */
-public abstract class AbstractObject implements DBObjectModel {
+public abstract class AbstractObject implements JDBObjectModel {
 
     /**
      * Este array almacena un conjunto de valores de diferentes tipos extraido

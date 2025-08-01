@@ -8,6 +8,6 @@ package com.jblue.modelo.objetos;
  *
  * @author jp
  */
-public class OPagosRecargos extends AbstractPayments {
+public class OSurchargePayments extends AbstractPayments {
 
 }

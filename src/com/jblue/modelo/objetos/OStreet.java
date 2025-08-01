@@ -4,6 +4,7 @@
  */
 package com.jblue.modelo.objetos;
 
+import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.util.objetos.StatusObject;
 
 /**
@@ -31,23 +32,12 @@ public class OStreet extends Objeto implements StatusObject {
 
     @Override
     public String getStatusString() {
-        return switch (getStatus()) {
-            case 2:
-                yield "Inactivo";
-            case 3:
-                yield "Borrado";
-            default:
-                yield "Activo";
-        };
+        return CacheFactory.ITEMS_STATUS_CAT[getStatus()];
     }
 
     @Override
     public boolean isActive() {
         return getStatus() == 1;
-    }
-
-    public String getLocation() {
-        return "ToDo";
     }
 
     @Override

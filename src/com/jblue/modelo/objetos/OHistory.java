@@ -16,14 +16,51 @@
  */
 package com.jblue.modelo.objetos;
 
+import com.jblue.util.objetos.ForeingKeyObject;
+
 /**
  *
  * @author juanp
  */
-public class OHistory extends Objeto {
+public class OHistory extends Objeto implements ForeingKeyObject {
+
+    private String[] fk_info;
+
+    public OHistory(String... args) {
+        super(args);
+        fk_info = args.clone();
+    }
 
     public OHistory() {
+        super();
+    }
+
+    public String getEmployee() {
+        return info[1];
+    }
+
+    public String getDBUser() {
+        return info[2];
+    }
+
+    public String getType() {
+        return info[3];
+    }
+
+    public String getDateRegister() {
+        return info[4];
+    }
+
+    @Override
+    public void setInfo(String[] info) {
+        super.setInfo(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        fk_info = info.clone();
     
     }
-    
+
+    @Override
+    public String[] getInfoSinFK() {
+        return fk_info;
+    }
+
 }

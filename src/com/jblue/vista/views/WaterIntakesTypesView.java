@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 juanp
+ * Copyright (C) 2024 juan-campos
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,17 +16,99 @@
  */
 package com.jblue.vista.views;
 
+import com.jblue.controlador.FactoryController;
+import com.jblue.controlador.compc.TableController;
+import com.jblue.modelo.constdb.Const;
+import com.jblue.modelo.fabricas.CacheFactory;
+import com.jblue.modelo.fabricas.TableModelFactory;
+import com.jblue.modelo.objetos.OWaterIntake;
+import com.jblue.modelo.objetos.Objeto;
+import com.jblue.util.Filters;
+import com.jblue.util.Formats;
+import com.jblue.vista.marco.vistas.DBView;
+import com.jutil.swingw.modelos.JTableModel;
+import java.awt.CardLayout;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import com.jblue.vista.marco.DBValuesModel;
+import com.jblue.vista.marco.TableSearchViewModel;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  *
- * @author juanp
+ * @author juan-campos
  */
-public class WaterIntakesView extends javax.swing.JPanel {
+public final class WaterIntakesTypesView extends DBView implements DBValuesModel, TableSearchViewModel {
+
+    private final CardLayout ly;
+    private final JTableModel model;
+    private OWaterIntake object_search;
 
     /**
-     * Creates new form WaterIntakesView
+     * Creates new form NewTipoDeTomas
      */
-    public WaterIntakesView() {
+    public WaterIntakesTypesView() {
         initComponents();
+        ly = (CardLayout) root_panel.getLayout();
+        ly.show(root_panel, register_panel.getName());
+        model = TableModelFactory.getWaterIntakesTableModel();
+        controller = FactoryController.getWaterIntakesController(this);
+        table_controller = new TableController(this, CacheFactory.WATER_INTAKES_TYPES);
+        build();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        finalState();
+        initialState();
+    }
+
+    @Override
+    public void components() {
+        objects_table.setModel(model);
+    }
+
+    @Override
+    public void events() {
+        back_button.addActionListener(table_controller);
+        next_button.addActionListener(table_controller);
+        reload_button.addActionListener(table_controller);
+        objects_table.addMouseListener(table_controller);
+        save_button.addActionListener(controller);
+
+        update_button.addActionListener(controller);
+        delete_button.addActionListener(controller);
+        cancel_button.addActionListener(controller);
+        register_button.addActionListener(table_controller);
+        search_button.addActionListener(table_controller);
+    }
+
+    @Override
+    public void initialState() {
+        type_water_intakes_field.setText(null);
+        previus_price_field.setText(null);
+        price_field.setText(null);
+        surcharge_field.setText(null);
+        object_search = null;
+        view_show = 1;
+        save_button.setEnabled(true);
+        update_button.setEnabled(false);
+        delete_button.setEnabled(false);
+    }
+
+    @Override
+    public OWaterIntake getObjectSearch() {
+        return object_search;
+    }
+
+    @Override
+    public void setObjectSearch(Objeto o) {
+        object_search = (OWaterIntake) o;
     }
 
     /**
@@ -50,35 +132,16 @@ public class WaterIntakesView extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        water_intake_type_field = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        type_water_intakes_field = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        operation_cost_field = new javax.swing.JTextField();
+        previus_price_field = new javax.swing.JTextField();
         jPanel12 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        user_field = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        price_field = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        street1_field = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
-        jPanel13 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        street2_field = new javax.swing.JTextField();
-        jButton5 = new javax.swing.JButton();
-        jPanel14 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        location_field = new javax.swing.JTextField();
-        jPanel16 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        status_field = new javax.swing.JComboBox<>();
-        jPanel17 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        date_update_field = new javax.swing.JTextField();
-        jPanel18 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        date_register = new javax.swing.JTextField();
+        surcharge_field = new javax.swing.JTextField();
         options_panel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         save_button = new javax.swing.JButton();
@@ -106,7 +169,7 @@ public class WaterIntakesView extends javax.swing.JPanel {
         jLabel17 = new javax.swing.JLabel();
         total = new javax.swing.JLabel();
 
-        setName("Tomas Registradas"); // NOI18N
+        setName("Tipo de tomas"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
 
@@ -156,18 +219,13 @@ public class WaterIntakesView extends javax.swing.JPanel {
         jPanel8.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel2.setText("Tipo Toma de agua");
+        jLabel2.setText("Tipo de toma:");
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel8.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        water_intake_type_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        water_intake_type_field.setName(""); // NOI18N
-        jPanel8.add(water_intake_type_field, java.awt.BorderLayout.CENTER);
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        jButton1.setToolTipText("Seleccionar Tipo de toma");
-        jButton1.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel8.add(jButton1, java.awt.BorderLayout.LINE_END);
+        type_water_intakes_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        type_water_intakes_field.setName("Tipo de toma"); // NOI18N
+        jPanel8.add(type_water_intakes_field, java.awt.BorderLayout.CENTER);
 
         panel_campos.add(jPanel8);
 
@@ -175,13 +233,14 @@ public class WaterIntakesView extends javax.swing.JPanel {
         jPanel9.setLayout(new java.awt.BorderLayout());
 
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel3.setText("Costo de operacion");
+        jLabel3.setText("Precio anterior.");
         jLabel3.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel9.add(jLabel3, java.awt.BorderLayout.WEST);
 
-        operation_cost_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        operation_cost_field.setName(""); // NOI18N
-        jPanel9.add(operation_cost_field, java.awt.BorderLayout.CENTER);
+        previus_price_field.setEditable(false);
+        previus_price_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        previus_price_field.setName("Costo"); // NOI18N
+        jPanel9.add(previus_price_field, java.awt.BorderLayout.CENTER);
 
         panel_campos.add(jPanel9);
 
@@ -189,18 +248,13 @@ public class WaterIntakesView extends javax.swing.JPanel {
         jPanel12.setLayout(new java.awt.BorderLayout());
 
         jLabel6.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel6.setText("Titular");
+        jLabel6.setText("Precio:");
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel12.add(jLabel6, java.awt.BorderLayout.WEST);
 
-        user_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        user_field.setName(""); // NOI18N
-        jPanel12.add(user_field, java.awt.BorderLayout.CENTER);
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        jButton3.setToolTipText("Seleccionar titular");
-        jButton3.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel12.add(jButton3, java.awt.BorderLayout.LINE_END);
+        price_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        price_field.setName("Costo"); // NOI18N
+        jPanel12.add(price_field, java.awt.BorderLayout.CENTER);
 
         panel_campos.add(jPanel12);
 
@@ -208,97 +262,15 @@ public class WaterIntakesView extends javax.swing.JPanel {
         jPanel10.setLayout(new java.awt.BorderLayout());
 
         jLabel5.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel5.setText("Calle 1: ");
+        jLabel5.setText("Costo de recargo:");
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel10.add(jLabel5, java.awt.BorderLayout.WEST);
 
-        street1_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        street1_field.setName(""); // NOI18N
-        jPanel10.add(street1_field, java.awt.BorderLayout.CENTER);
-
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        jButton4.setToolTipText("Seleccionar Calle 1");
-        jButton4.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel10.add(jButton4, java.awt.BorderLayout.LINE_END);
+        surcharge_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        surcharge_field.setName("Costo del recargo"); // NOI18N
+        jPanel10.add(surcharge_field, java.awt.BorderLayout.CENTER);
 
         panel_campos.add(jPanel10);
-
-        jPanel13.setPreferredSize(new java.awt.Dimension(100, 35));
-        jPanel13.setLayout(new java.awt.BorderLayout());
-
-        jLabel7.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel7.setText("Calle 2: ");
-        jLabel7.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel13.add(jLabel7, java.awt.BorderLayout.WEST);
-
-        street2_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        street2_field.setName(""); // NOI18N
-        jPanel13.add(street2_field, java.awt.BorderLayout.CENTER);
-
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        jButton5.setToolTipText("Seleccionar Calle 2");
-        jButton5.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel13.add(jButton5, java.awt.BorderLayout.LINE_END);
-
-        panel_campos.add(jPanel13);
-
-        jPanel14.setPreferredSize(new java.awt.Dimension(100, 35));
-        jPanel14.setLayout(new java.awt.BorderLayout());
-
-        jLabel8.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel8.setText("Ubicacion");
-        jLabel8.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel14.add(jLabel8, java.awt.BorderLayout.WEST);
-
-        location_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        location_field.setName(""); // NOI18N
-        jPanel14.add(location_field, java.awt.BorderLayout.CENTER);
-
-        panel_campos.add(jPanel14);
-
-        jPanel16.setPreferredSize(new java.awt.Dimension(100, 35));
-        jPanel16.setLayout(new java.awt.BorderLayout());
-
-        jLabel9.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel9.setText("Estado: ");
-        jLabel9.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel16.add(jLabel9, java.awt.BorderLayout.WEST);
-
-        status_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar Estado.", "Activo.", "Inactivo." }));
-        status_field.setName(""); // NOI18N
-        jPanel16.add(status_field, java.awt.BorderLayout.CENTER);
-
-        panel_campos.add(jPanel16);
-
-        jPanel17.setPreferredSize(new java.awt.Dimension(100, 35));
-        jPanel17.setLayout(new java.awt.BorderLayout());
-
-        jLabel10.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel10.setText("Fecha de actualizacion");
-        jLabel10.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel17.add(jLabel10, java.awt.BorderLayout.WEST);
-
-        date_update_field.setEditable(false);
-        date_update_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        date_update_field.setName(""); // NOI18N
-        jPanel17.add(date_update_field, java.awt.BorderLayout.CENTER);
-
-        panel_campos.add(jPanel17);
-
-        jPanel18.setPreferredSize(new java.awt.Dimension(100, 35));
-        jPanel18.setLayout(new java.awt.BorderLayout());
-
-        jLabel11.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel11.setText("Fecha de registro.");
-        jLabel11.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel18.add(jLabel11, java.awt.BorderLayout.WEST);
-
-        date_register.setEditable(false);
-        date_register.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        date_register.setName(""); // NOI18N
-        jPanel18.add(date_register, java.awt.BorderLayout.CENTER);
-
-        panel_campos.add(jPanel18);
 
         register_panel.add(panel_campos, java.awt.BorderLayout.CENTER);
 
@@ -443,17 +415,9 @@ public class WaterIntakesView extends javax.swing.JPanel {
     private javax.swing.JButton back_button;
     private javax.swing.JButton cancel_button;
     private javax.swing.JLabel count;
-    private javax.swing.JTextField date_register;
-    private javax.swing.JTextField date_update_field;
     private javax.swing.JButton delete_button;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
@@ -461,18 +425,10 @@ public class WaterIntakesView extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel17;
-    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel32;
@@ -481,13 +437,13 @@ public class WaterIntakesView extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JToggleButton jToggleButton2;
-    private javax.swing.JTextField location_field;
     private javax.swing.JButton next_button;
     private javax.swing.JTable objects_table;
-    private javax.swing.JTextField operation_cost_field;
     private javax.swing.JPanel options_panel;
     private javax.swing.JPanel panel_campos;
     private javax.swing.JPanel panel_izq;
+    private javax.swing.JTextField previus_price_field;
+    private javax.swing.JTextField price_field;
     private javax.swing.JLabel range;
     private javax.swing.JButton register_button;
     private javax.swing.JPanel register_panel;
@@ -498,14 +454,110 @@ public class WaterIntakesView extends javax.swing.JPanel {
     private javax.swing.JTextField search_field;
     private javax.swing.JPanel search_panel;
     private javax.swing.JPanel status_bar_panel;
-    private javax.swing.JComboBox<String> status_field;
-    private javax.swing.JTextField street1_field;
-    private javax.swing.JTextField street2_field;
+    private javax.swing.JTextField surcharge_field;
     private javax.swing.JScrollPane tabla_usuarios;
     private javax.swing.JPanel tools_panel;
     private javax.swing.JLabel total;
+    private javax.swing.JTextField type_water_intakes_field;
     private javax.swing.JButton update_button;
-    private javax.swing.JTextField user_field;
-    private javax.swing.JTextField water_intake_type_field;
     // End of variables declaration//GEN-END:variables
+
+    public OWaterIntake getObject() {
+        return object_search;
+    }
+
+    @Override
+    public JTextField getTextComponenteTable() {
+        return search_field;
+    }
+
+    @Override
+    public String getTextSearchTable() {
+        return Filters.clearText(search_field.getText());
+    }
+
+    @Override
+    public JTable getTable() {
+        return objects_table;
+    }
+
+    @Override
+    public JTableModel getModel() {
+        return model;
+    }
+
+    @Override
+    public void setViewShow(int view_show) {
+        this.view_show = view_show;
+        String op = switch (view_show) {
+            case 2:
+                yield search_panel.getName();
+            default:
+                yield register_panel.getName();
+        };
+        ly.show(root_panel, op);
+    }
+
+    @Override
+    public int getViewShow() {
+        return view_show;
+    }
+
+    @Override
+    public boolean isValuesOk() {
+        boolean ok = true;
+        JTextField[] text_fields = {
+            type_water_intakes_field, price_field, surcharge_field
+        };
+        for (JTextField i : text_fields) {
+            if (Filters.isNullOrBlank(i.getText())) {
+                JOptionPane.showMessageDialog(this, "El campo %s no es valido", "Campo no valido", JOptionPane.ERROR_MESSAGE);
+                ok = false;
+                break;
+            }
+        }
+        return ok;
+    }
+
+    @Override
+    public String[] getDbValues(boolean update) {
+        String _type = type_water_intakes_field.getText();
+
+        double pp = 0;
+        if (update) {
+            pp = object_search == null ? 0.0 : object_search.getPrice();
+        }
+        String _previus_price = String.valueOf(pp);
+        String _cost = price_field.getText();
+
+        String _fine = surcharge_field.getText();
+        String _date_update = LocalDateTime.now().format(DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
+
+        if (update) {
+            return Formats.getDBFormatInputArray(_type,
+                    _previus_price, _cost,
+                    _fine, _date_update);
+        }
+        return Formats.getDBFormatInputArray(_type,
+                _cost, _fine);
+    }
+
+    @Override
+    public void setRowsData(String... info) {
+        count.setText(info[0]);
+        range.setText(info[1]);
+        total.setText(info[2]);
+    }
+
+    @Override
+    public void setScreenTableInfo() {
+        type_water_intakes_field.setText(object_search.getType());
+        previus_price_field.setText(String.valueOf(object_search.getPreviusPrice()));
+        price_field.setText(String.valueOf(object_search.getPrice()));
+        surcharge_field.setText(String.valueOf(object_search.getSurcharge()));
+        save_button.setEnabled(false);
+        update_button.setEnabled(true);
+        delete_button.setEnabled(true);
+    }
+
 }

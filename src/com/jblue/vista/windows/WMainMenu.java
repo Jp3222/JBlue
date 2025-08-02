@@ -24,10 +24,11 @@ import com.jblue.vista.views.ParametersView;
 import com.jblue.vista.views.StreetsView;
 import com.jblue.vista.views.OtherPaymentTypesView;
 import com.jblue.vista.views.OtherPaymentsView;
-import com.jblue.vista.views.WaterIntakesView;
+import com.jblue.vista.views.WaterIntakesTypesView;
 import com.jblue.vista.views.UserView;
 import com.jblue.vista.views.ShopCartView;
 import com.jblue.vista.views.SurchargePaymentsView;
+import com.jblue.vista.views.WaterIntakesView;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -45,7 +46,8 @@ public final class WMainMenu extends AbstractAppWindows {
     private final ShopCartView shop_cart_view;
     private final UserView users_view;
     private final StreetsView street_view;
-    private final WaterIntakesView water_intakes_type_view;
+    private final WaterIntakesTypesView water_intakes_type_view;
+    private final WaterIntakesView water_intakes;
     private final OtherPaymentTypesView other_payments_types_view;
     private final OtherPaymentsView other_payments_view;
     private final SurchargePaymentsView surcharge_payments_view;
@@ -73,7 +75,8 @@ public final class WMainMenu extends AbstractAppWindows {
         shop_cart_view = new ShopCartView();
         users_view = new UserView();
         street_view = new StreetsView();
-        water_intakes_type_view = new WaterIntakesView();
+        water_intakes_type_view = new WaterIntakesTypesView();
+        water_intakes = new WaterIntakesView();
         other_payments_types_view = new OtherPaymentTypesView();
         other_payments_view = new OtherPaymentsView();
         surcharge_payments_view = new SurchargePaymentsView();
@@ -99,10 +102,12 @@ public final class WMainMenu extends AbstractAppWindows {
         views_panel.add(users_view, users_view.getName());
         views_panel.add(street_view, street_view.getName());
         views_panel.add(water_intakes_type_view, water_intakes_type_view.getName());
+        views_panel.add(water_intakes, water_intakes.getName());
         views_panel.add(other_payments_types_view, other_payments_types_view.getName());
         views_panel.add(other_payments_view, other_payments_view.getName());
         views_panel.add(surcharge_payments_view, surcharge_payments_view.getName());
         views_panel.add(flag_view, flag_view.getName());
+        
 
     }
 

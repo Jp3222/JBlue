@@ -15,11 +15,10 @@ import com.jblue.sistema.Sistema;
 import com.jblue.util.cache.MemoListCache;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
+import com.jutil.jexception.JExcp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -94,8 +93,7 @@ public final class CacheFactory {
             System.out.println(Arrays.toString(cat));
             return cat;
         } catch (SQLException e) {
-            System.out.println(e.getCause());
-            e.printStackTrace();
+            JExcp.getInstance(false, true).print(e, CacheFactory.class, "readCat");
         }
         return null;
     }

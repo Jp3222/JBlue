@@ -23,7 +23,7 @@ import com.jblue.controlador.viewc.ShopCartController;
 import com.jblue.controlador.viewc.dbviews.StreetsController;
 import com.jblue.controlador.viewc.dbviews.WaterIntakesController;
 import com.jblue.controlador.winc.MainController;
-import com.jblue.vista.views.WaterIntakesView;
+import com.jblue.vista.views.WaterIntakesTypesView;
 import com.jblue.vista.views.UserView;
 import com.jblue.vista.views.StreetsView;
 import com.jblue.vista.views.ShopCartView;
@@ -57,7 +57,7 @@ public class FactoryController {
         return new UserController(view);
     }
 
-    public static Controller getWaterIntakesController(WaterIntakesView view) {
+    public static Controller getWaterIntakesController(WaterIntakesTypesView view) {
         return new WaterIntakesController(view);
     }
 

@@ -89,7 +89,7 @@ public class CSVExport extends javax.swing.JPanel {
         jPanel4.add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
         jComboBox1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Personal", "Usuarios", "Pagos por el servicio", " " }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Personal", "Usuarios", "Pagos por el servicio", "Pagos por recargos", "Otros Pagos" }));
         jPanel4.add(jComboBox1, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel4);

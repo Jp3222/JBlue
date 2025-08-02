@@ -19,7 +19,7 @@ package com.jblue.controlador.viewc.dbviews;
 import com.jblue.modelo.dbconexion.JDBConnection;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.objetos.OWaterIntake;
-import com.jblue.vista.views.WaterIntakesView;
+import com.jblue.vista.views.WaterIntakesTypesView;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import com.jblue.controlador.DBControllerModel;
@@ -31,10 +31,10 @@ import com.jblue.controlador.AbstractDBViewController;
  */
 public class WaterIntakesController extends AbstractDBViewController<OWaterIntake> implements DBControllerModel {
 
-    private WaterIntakesView view;
+    private WaterIntakesTypesView view;
     private final JDBConnection<OWaterIntake> connection;
 
-    public WaterIntakesController(WaterIntakesView view) {
+    public WaterIntakesController(WaterIntakesTypesView view) {
         super(CacheFactory.WATER_INTAKES_TYPES);
         this.view = view;
         connection = (JDBConnection<OWaterIntake>) memo_cache.getConnection();

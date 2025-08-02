@@ -121,11 +121,12 @@
                       <Font name="Liberation Sans" size="14" style="0"/>
                     </Property>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="4">
+                      <StringArray count="5">
                         <StringItem index="0" value="Personal"/>
                         <StringItem index="1" value="Usuarios"/>
                         <StringItem index="2" value="Pagos por el servicio"/>
-                        <StringItem index="3" value=" "/>
+                        <StringItem index="3" value="Pagos por recargos"/>
+                        <StringItem index="4" value="Otros Pagos"/>
                       </StringArray>
                     </Property>
                   </Properties>

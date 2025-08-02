@@ -4,9 +4,8 @@
  */
 package jblue;
 
-import com.jblue.sistema.Sistema;
+import com.jblue.sys.JBlueMainSystem;
 import com.jutil.framework.LaunchApp;
-
 /**
  * java
  *
@@ -28,6 +27,9 @@ public class JBlue {
          * funcionar, siempre puedes crear una nueva y extender de "MainSystemn"
          * para probar distintas configuraciones
          */
-        LaunchApp.getInstance(new Sistema()).doWhileRun();
+        //Sistema o = new Sistema();
+        JBlueMainSystem jBlueMainSystem = new JBlueMainSystem();
+        LaunchApp.getInstance(jBlueMainSystem).doWhileRun();
     }
+
 }

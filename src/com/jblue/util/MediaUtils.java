@@ -16,7 +16,7 @@
  */
 package com.jblue.util;
 
-import com.jblue.sistema.app.AppFiles;
+import com.jblue.sys.app.AppFiles;
 import java.io.File;
 
 /**

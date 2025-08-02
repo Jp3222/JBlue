@@ -16,9 +16,9 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.modelo.dbconexion.JDBConnection;
-import com.jblue.modelo.objetos.Objeto;
-import com.jblue.util.tools.ObjectUtils;
+import com.jblue.model.JDBConnection;
+import com.jblue.model.dtos.Objeto;
+import com.jblue.util.ObjectUtils;
 import com.jutil.dbcon.connection.DBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

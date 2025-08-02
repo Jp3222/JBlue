@@ -16,7 +16,7 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.modelo.objetos.Objeto;
+import com.jblue.model.dtos.Objeto;
 import java.util.List;
 import java.util.function.Predicate;
 

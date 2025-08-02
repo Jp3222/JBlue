@@ -1,0 +1,64 @@
+/*
+ * Copyright (C) 2025 juanp
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.jblue.model.dtos;
+
+/**
+ *
+ * @author juanp
+ */
+public class OHistory extends Objeto implements ForeingKeyObject {
+
+    private String[] fk_info;
+
+    public OHistory(String... args) {
+        super(args);
+        fk_info = args.clone();
+    }
+
+    public OHistory() {
+        super();
+    }
+
+    public String getEmployee() {
+        return info[1];
+    }
+
+    public String getDBUser() {
+        return info[2];
+    }
+
+    public String getType() {
+        return info[3];
+    }
+
+    public String getDateRegister() {
+        return info[4];
+    }
+
+    @Override
+    public void setInfo(String[] info) {
+        super.setInfo(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        fk_info = info.clone();
+    
+    }
+
+    @Override
+    public String[] getInfoSinFK() {
+        return fk_info;
+    }
+
+}

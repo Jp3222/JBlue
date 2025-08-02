@@ -27,7 +27,7 @@ import com.jblue.controllers.AbstractDBViewController;
 import com.jblue.model.constants.Const;
 import com.jblue.model.JDBConnection;
 import com.jblue.model.dtos.OServicePayments;
-import com.jblue.sys.Session;
+import com.jblue.sys.SystemSession;
 import com.jblue.sys.app.AppConfig;
 import com.jblue.sys.app.AppFiles;
 import com.jblue.views.components.ComponentFactory;
@@ -78,7 +78,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         boolean insert = connection.insert(field, arr);
         
         if (insert) {
-            Session.getInstancia().register(Const.INSERT_TO_USER, DESCRIPTION_FORMAT.formatted(
+            SystemSession.getInstancia().register(Const.INSERT_TO_USER, DESCRIPTION_FORMAT.formatted(
                     memo_cache.count() + 1,
                     arr[0], arr[1], arr[2]
             ));
@@ -95,7 +95,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         String id = view.getObjectSearch().getId();
         boolean delete = connection.update("status", "3", "id = %s".formatted(id));
         if (delete) {
-            Session.getInstancia().register(Const.LOGIC_DELETE_TO_USER, DESCRIPTION_FORMAT.formatted(
+            SystemSession.getInstancia().register(Const.LOGIC_DELETE_TO_USER, DESCRIPTION_FORMAT.formatted(
                     view.getObjectSearch().getId(),
                     view.getObjectSearch().getName(),
                     view.getObjectSearch().getLastName1(),
@@ -128,7 +128,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
                 values,
                 "id = %s".formatted(view.getObjectSearch().getId()));
         if (update) {
-            Session.getInstancia().register(Const.UPDATE_TO_USER, DESCRIPTION_FORMAT.formatted(
+            SystemSession.getInstancia().register(Const.UPDATE_TO_USER, DESCRIPTION_FORMAT.formatted(
                     view.getObjectSearch().getId(),
                     view.getObjectSearch().getName(),
                     view.getObjectSearch().getLastName1(),

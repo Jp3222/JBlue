@@ -16,7 +16,7 @@
  */
 package com.jblue.controllers.winc;
 
-import com.jblue.sys.Session;
+import com.jblue.sys.SystemSession;
 import com.jblue.sys.app.AppConfig;
 import com.jblue.sys.app.AppFiles;
 import com.jblue.views.ConfigurationPanel;
@@ -134,7 +134,7 @@ public class ConfigController extends WindowController {
     }
 
     boolean sessionStart() {
-        return Session.getInstancia().getUsuario() != null;
+        return SystemSession.getInstancia().getUsuario() != null;
     }
 
 }

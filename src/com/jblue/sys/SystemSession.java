@@ -19,18 +19,18 @@ import javax.swing.JOptionPane;
  *
  * @author jp
  */
-public class Session implements LocalSession<OEmployee> {
+public class SystemSession implements LocalSession<OEmployee> {
 
-    private static Session instancia;
+    private static SystemSession instancia;
 
     /**
      * Retorna una unica instancia de la clase Sesion
      *
      * @return
      */
-    public static synchronized Session getInstancia() {
+    public static synchronized SystemSession getInstancia() {
         if (instancia == null) {
-            instancia = new Session();
+            instancia = new SystemSession();
         }
         return instancia;
     }
@@ -42,7 +42,7 @@ public class Session implements LocalSession<OEmployee> {
     private final DBConnection connection;
     private final String query;
 
-    private Session() {
+    private SystemSession() {
         connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
         this.query = "INSERT INTO history(employee, db_user, type, description) VALUES('%s',(%s),'%s','%s')";
     }

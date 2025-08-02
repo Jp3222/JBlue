@@ -17,7 +17,7 @@
 package com.jblue.views.win;
 
 import com.jblue.controllers.winc.MainController;
-import com.jblue.sys.Session;
+import com.jblue.sys.SystemSession;
 import com.jblue.views.components.UserViewComponent;
 import com.jblue.views.framework.AbstractAppWindows;
 import com.jblue.views.ParametersView;
@@ -55,7 +55,7 @@ public final class WMainMenu extends AbstractAppWindows {
     private final ParametersView flag_view;
     //
     private final LoginWindows LOGIN;
-    private final AcercaDe ABOUT;
+    private final AboutUs ABOUT;
     private final ProfileWindow PROFILE;
     //
     private UserViewComponent showVisor;
@@ -70,7 +70,7 @@ public final class WMainMenu extends AbstractAppWindows {
     public WMainMenu(LoginWindows LOGIN) {
         initComponents();
         this.LOGIN = LOGIN;
-        this.ABOUT = new AcercaDe();
+        this.ABOUT = new AboutUs();
         this.PROFILE = new ProfileWindow();
         shop_cart_view = new ShopCartView();
         users_view = new UserView();
@@ -465,7 +465,7 @@ public final class WMainMenu extends AbstractAppWindows {
             showVisor.dispose();
         }
         
-        Session.getInstancia().setUser(null);
+        SystemSession.getInstancia().setUser(null);
         SwingUtilities.invokeLater(() -> {
             LOGIN.setVisible(true);
         });
@@ -483,7 +483,7 @@ public final class WMainMenu extends AbstractAppWindows {
         return views_panel;
     }
 
-    public AcercaDe getABOUT() {
+    public AboutUs getABOUT() {
         return ABOUT;
     }
 

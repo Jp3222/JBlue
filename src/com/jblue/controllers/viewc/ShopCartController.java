@@ -23,7 +23,7 @@ import com.jblue.model.constants.Const;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.model.dtos.OUser;
 import com.jblue.sys.DevFlags;
-import com.jblue.sys.Session;
+import com.jblue.sys.SystemSession;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.util.GraphicsUtils;
 import com.jblue.views.components.UserViewComponent;
@@ -126,7 +126,7 @@ public class ShopCartController extends Controller {
         boolean execPayment = service_payment.execPayment();
         mov_book.append("Total: ").append(service_payment.getTotal());
         if (execPayment) {
-            Session.getInstancia().register(
+            SystemSession.getInstancia().register(
                     Const.INSERT_TO_SERVICE_PAYMENTS,
                     DESCRIPTION_FORMAT.formatted(view.getObjectSearch().getId(), view.getMonthPaidList().toString())
             );
@@ -174,7 +174,7 @@ public class ShopCartController extends Controller {
             boolean execPayment = service_payment.insertToDefault();
             mov_book.append("Total: ").append(service_payment.getTotal());
             if (execPayment) {
-                Session.getInstancia().register(
+                SystemSession.getInstancia().register(
                         Const.INSERT_TO_SURCHARGE_PAYMENTS,
                         DESCRIPTION_FORMAT.formatted(view.getObjectSearch().getId(), view.getMonthPaidList().toString())
                 );

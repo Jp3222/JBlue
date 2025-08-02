@@ -18,7 +18,7 @@ package com.jblue.views;
 
 import com.jblue.model.constants.Const;
 import com.jblue.model.dtos.OEmployee;
-import com.jblue.sys.Session;
+import com.jblue.sys.SystemSession;
 import com.jblue.views.framework.SimpleView;
 import java.awt.event.ActionListener;
 import java.time.format.DateTimeFormatter;
@@ -40,7 +40,7 @@ public final class VPerfil extends SimpleView implements OptionMenuModel {
     public VPerfil() {
         initComponents();
         this.option = mkButton(getName(), null, null);
-        personal = Session.getInstancia().getUsuario();
+        personal = SystemSession.getInstancia().getUsuario();
         setInfoGrafica();
 
     }

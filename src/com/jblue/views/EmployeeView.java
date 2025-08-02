@@ -281,7 +281,7 @@ public class EmployeeView extends DBView implements OptionMenuModel, DBValuesMod
 
         jPanel25.setLayout(new java.awt.BorderLayout());
 
-        jCheckBox3.setText("jCheckBox3");
+        jCheckBox3.setText("Fecha Limite");
         jPanel25.add(jCheckBox3, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel25);

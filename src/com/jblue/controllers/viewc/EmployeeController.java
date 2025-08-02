@@ -21,7 +21,7 @@ import com.jblue.model.constants.Const;
 import com.jblue.model.JDBConnection;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.model.dtos.OEmployee;
-import com.jblue.sys.Session;
+import com.jblue.sys.SystemSession;
 import com.jblue.views.EmployeeView;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
@@ -66,7 +66,7 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
         String values[] = view.getDbValues(false);
         boolean res = connection.insert(fields, values);
         if (res) {
-            Session.getInstancia().register(Const.INSERT_TO_EMPLOYEES, "id:%s, employee:%s_%s".formatted(
+            SystemSession.getInstancia().register(Const.INSERT_TO_EMPLOYEES, "id:%s, employee:%s_%s".formatted(
                     memo_cache.count() + 1,
                     values[0], values[1]
             ));
@@ -83,7 +83,7 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
         String id = view.getObjectSearch().getId();
         boolean delete = connection.update("status", "3", "id = %s".formatted(id));
         if (delete) {
-            Session.getInstancia().register(Const.LOGIC_DELETE_TO_EMPLOYEES, "id:%s".formatted(id));
+            SystemSession.getInstancia().register(Const.LOGIC_DELETE_TO_EMPLOYEES, "id:%s".formatted(id));
         }
 //        if (DevFlags.TST_EXE_FUNCION) {
 //            int hidden_payments = JOptionPane.showConfirmDialog(view, "¿Desea eliminar los pagos hechos por esta persona?");
@@ -110,7 +110,7 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
                 "id = %s".formatted(id)
         );
         if (update) {
-            Session.getInstancia().register(Const.UPDATE_TO_EMPLOYEES, "id:%s".formatted(id));
+            SystemSession.getInstancia().register(Const.UPDATE_TO_EMPLOYEES, "id:%s".formatted(id));
         }
         rmessage(view, update);
     }

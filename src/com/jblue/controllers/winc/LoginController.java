@@ -21,7 +21,7 @@ import com.jblue.model.dtos.OEmployee;
 import com.jblue.util.Filters;
 import com.jblue.util.EncriptadoAES;
 import com.jblue.model.factories.ConnectionFactory;
-import com.jblue.sys.Session;
+import com.jblue.sys.SystemSession;
 import com.jblue.sys.app.AppConfig;
 import com.jblue.views.components.ChangePasswordComponent;
 import com.jblue.views.win.LoginWindows;
@@ -129,7 +129,7 @@ public class LoginController extends WindowController {
             return false;
         }
 
-        Session sesion = Session.getInstancia();
+        SystemSession sesion = SystemSession.getInstancia();
         sesion.setUser(res.get());
 
 //        if (!sesion.inicioSesion()) {

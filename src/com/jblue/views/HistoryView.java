@@ -76,6 +76,7 @@ public class HistoryView extends DataBaseAccessView {
 
         setMinimumSize(new java.awt.Dimension(900, 700));
         setName("Historial de actividad"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N

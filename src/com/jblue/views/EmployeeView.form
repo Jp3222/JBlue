@@ -427,7 +427,7 @@
                   <SubComponents>
                     <Component class="javax.swing.JCheckBox" name="jCheckBox3">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="jCheckBox3"/>
+                        <Property name="text" type="java.lang.String" value="Fecha Limite"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">

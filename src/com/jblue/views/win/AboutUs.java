@@ -20,12 +20,12 @@ import javax.swing.text.StyledDocument;
  *
  * @author jp
  */
-public final class AcercaDe extends AbstractAppWindows {
+public final class AboutUs extends AbstractAppWindows {
 
     /**
      * Creates new form AcercaDE
      */
-    public AcercaDe() {
+    public AboutUs() {
         initComponents();
         build();
 
@@ -73,7 +73,7 @@ public final class AcercaDe extends AbstractAppWindows {
             }
             Desktop.getDesktop().browse(URI.create(uri));
         } catch (IOException ex) {
-            Logger.getLogger(AcercaDe.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AboutUs.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

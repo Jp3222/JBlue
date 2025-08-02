@@ -19,7 +19,7 @@ package com.jblue.model.l4b;
 import com.jblue.model.dtos.OEmployee;
 import com.jblue.model.dtos.OWaterIntakeTypes;
 import com.jblue.model.dtos.OUser;
-import com.jblue.sys.Session;
+import com.jblue.sys.SystemSession;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
 import java.util.HashMap;
@@ -50,7 +50,7 @@ public abstract class AbsctractPayment implements PaymentModel {
 
     public AbsctractPayment() {
         this.mov = new HashMap<>();
-        this.personal = Session.getInstancia().getUsuario();
+        this.personal = SystemSession.getInstancia().getUsuario();
         System.out.println(personal);
         this.connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
     }

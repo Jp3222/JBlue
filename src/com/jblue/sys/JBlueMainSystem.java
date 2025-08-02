@@ -26,7 +26,6 @@ import com.jblue.views.win.LoginWindows;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.MainSystem;
 import com.jutil.jexception.Excp;
-import com.jutil.platf.JVMInfo;
 import com.jutil.platf.So;
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,7 +36,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -113,16 +111,6 @@ public class JBlueMainSystem implements MainSystem {
         return true;
     }
 
-    void showMessage(int error) {
-        String msg = switch (error) {
-            case code_1049:
-                yield "Nombre de la base de datos incorrecto";
-            default:
-                yield "";
-        };
-        JOptionPane.showMessageDialog(null, msg, "ERROR: %s".formatted(error), JOptionPane.INFORMATION_MESSAGE);
-    }
-
     @Override
     public boolean appFiles() {
         File aux;
@@ -130,16 +118,12 @@ public class JBlueMainSystem implements MainSystem {
         for (String i : com.jblue.sys.app.AppFiles.S_ALL_DIR_PROG) {
             aux = new File(i);
             if (aux.exists()) {
-                //SystemLogs.infoSysLogs(log_messages.formatted(i, "EXISTE"));
                 System.out.println(log_messages.formatted(i, "EXISTE"));
             } else {
                 aux.mkdir();
-                //    SystemLogs.infoSysLogs(log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
                 System.out.println(log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
-
             }
         }
-
         //Directorios del usuario
         for (String i : AppFiles.S_ARR_DIR_USER) {
             aux = new File(i);
@@ -147,7 +131,6 @@ public class JBlueMainSystem implements MainSystem {
                 SystemLogs.infoSysLogs(log_messages.formatted(i, "EXISTE"));
             } else {
                 aux.mkdirs();
-                //SystemLogs.infoSysLogs(log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
                 System.out.println(log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
             }
         }
@@ -189,15 +172,12 @@ public class JBlueMainSystem implements MainSystem {
 
     @Override
     public boolean openSys() {
-        String JV = JVMInfo.JAVA_VERSION;
-
         try (FileInputStream input = new FileInputStream(AppFiles.FIL_ARC_CONFIG)) {
             propiedades.loadFromXML(input);
 
         } catch (IOException ex) {
             Logger.getLogger(JBlueMainSystem.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         resources.put("t_streets", Const.STREETS);
         resources.put("t_water_intakes", Const.WATER_INTAKES_TYPES);
         resources.put("t_employees", Const.EMPLOYEES);
@@ -228,7 +208,4 @@ public class JBlueMainSystem implements MainSystem {
         return resources.get(key);
     }
 
-    public static String buildMSG() {
-        return null;
-    }
 }

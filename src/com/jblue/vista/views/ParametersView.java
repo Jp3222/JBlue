@@ -103,8 +103,7 @@ public final class ParametersView extends SimpleView {
                 String.valueOf(db_messages.isSelected()),
                 String.valueOf(dev_logs.isSelected()),
                 String.valueOf(test_logs.isSelected()),
-                String.valueOf(db_logs.isSelected()),
-            };
+                String.valueOf(db_logs.isSelected()),};
 
             DBConnection connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
             String mess = "Parametros Actualizados";
@@ -326,7 +325,7 @@ public final class ParametersView extends SimpleView {
         master_password_field.setName("CONTRASEÑA_MAESTRA"); // NOI18N
         jPanel2.add(master_password_field);
 
-        hour_validate_field.setName("VALIDAR_HORA_DE_EXTRADA"); // NOI18N
+        hour_validate_field.setName("VALIDAR_HORA_DE_ENTRADA"); // NOI18N
         jPanel2.add(hour_validate_field);
 
         register_panel.add(jPanel2, java.awt.BorderLayout.CENTER);

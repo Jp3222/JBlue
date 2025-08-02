@@ -235,7 +235,7 @@
                     </Component>
                     <Component class="javax.swing.JCheckBox" name="hour_validate_field">
                       <Properties>
-                        <Property name="name" type="java.lang.String" value="VALIDAR_HORA_DE_EXTRADA" noResource="true"/>
+                        <Property name="name" type="java.lang.String" value="VALIDAR_HORA_DE_ENTRADA" noResource="true"/>
                       </Properties>
                     </Component>
                   </SubComponents>

@@ -39,7 +39,7 @@ public class ObjectUtils {
         mapa.put(Const.EMPLOYEES.getTable(), new OEmployee());
         mapa.put(Const.USER.getTable(), new OUser());
         mapa.put(Const.STREETS.getTable(), new OStreet());
-        mapa.put(Const.WATER_INTAKES.getTable(), new OWaterIntake());
+        mapa.put(Const.WATER_INTAKES.getTable(), new OWaterIntakeTypes());
         mapa.put(Const.SERVICE_PAYMENTS.getTable(), new OServicePayments());
         mapa.put(Const.SURCHARGE_PAYMENTS.getTable(), new OSurchargePayments());
         mapa.put(OSurchargePayments.class.getName(), new OServicePayments());
@@ -60,7 +60,7 @@ public class ObjectUtils {
         return (T) clone;
     }
 
-    public static OWaterIntake getTipoToma(String id) {
+    public static OWaterIntakeTypes getTipoToma(String id) {
         return getObjetoById(CacheFactory.WATER_INTAKES_TYPES, id);
     }
 
@@ -116,7 +116,7 @@ public class ObjectUtils {
         return searchInCache(CacheFactory.WATER_INTAKES_TYPES, water_intakes_id);
     }
 
-    public static OWaterIntake getWaterIntakesObject(String water_intakes_id) {
+    public static OWaterIntakeTypes getWaterIntakesObject(String water_intakes_id) {
         return searchInCacheObject(CacheFactory.WATER_INTAKES_TYPES, water_intakes_id);
     }
 

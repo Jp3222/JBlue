@@ -17,7 +17,7 @@
 package com.jblue.modelo.l4b;
 
 import com.jblue.modelo.objetos.OEmployee;
-import com.jblue.modelo.objetos.OWaterIntake;
+import com.jblue.modelo.objetos.OWaterIntakeTypes;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.sistema.Sesion;
 import com.jutil.dbcon.connection.DBConnection;
@@ -35,7 +35,7 @@ public abstract class AbsctractPayment implements PaymentModel {
     protected final Map<String, String> mov;
     protected final OEmployee personal;
     protected OUser usuario;
-    protected OWaterIntake toma;
+    protected OWaterIntakeTypes toma;
     protected double dinero_ingresado;
     protected double deuda;
     protected double dinero_sobrante;

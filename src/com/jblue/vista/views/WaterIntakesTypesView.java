@@ -21,7 +21,7 @@ import com.jblue.controlador.compc.TableController;
 import com.jblue.modelo.constdb.Const;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.fabricas.TableModelFactory;
-import com.jblue.modelo.objetos.OWaterIntake;
+import com.jblue.modelo.objetos.OWaterIntakeTypes;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filters;
 import com.jblue.util.Formats;
@@ -45,7 +45,7 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
 
     private final CardLayout ly;
     private final JTableModel model;
-    private OWaterIntake object_search;
+    private OWaterIntakeTypes object_search;
 
     /**
      * Creates new form NewTipoDeTomas
@@ -102,13 +102,13 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
     }
 
     @Override
-    public OWaterIntake getObjectSearch() {
+    public OWaterIntakeTypes getObjectSearch() {
         return object_search;
     }
 
     @Override
     public void setObjectSearch(Objeto o) {
-        object_search = (OWaterIntake) o;
+        object_search = (OWaterIntakeTypes) o;
     }
 
     /**
@@ -462,7 +462,7 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
     private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
 
-    public OWaterIntake getObject() {
+    public OWaterIntakeTypes getObject() {
         return object_search;
     }
 

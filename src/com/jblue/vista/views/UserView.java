@@ -22,7 +22,7 @@ import com.jblue.controlador.compc.TableController;
 import com.jblue.modelo.fabricas.CacheFactory;
 import com.jblue.modelo.fabricas.TableModelFactory;
 import com.jblue.modelo.objetos.OStreet;
-import com.jblue.modelo.objetos.OWaterIntake;
+import com.jblue.modelo.objetos.OWaterIntakeTypes;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Formats;
@@ -90,9 +90,9 @@ public final class UserView extends DBView implements DBValuesModel {
         //
         register_button.addActionListener(table_controller);
         search_button.addActionListener(table_controller);
-        ComboBoxController<OWaterIntake> c1 = new ComboBoxController(water_intakes, CacheFactory.WATER_INTAKES_TYPES);
+        ComboBoxController<OWaterIntakeTypes> c1 = new ComboBoxController(water_intakes, CacheFactory.WATER_INTAKES_TYPES);
         ComboBoxController<OStreet> c2 = new ComboBoxController(street, CacheFactory.STREETS);
-        ComboBoxController<OWaterIntake> c3 = new ComboBoxController(water_intakes_filter, CacheFactory.WATER_INTAKES_TYPES);
+        ComboBoxController<OWaterIntakeTypes> c3 = new ComboBoxController(water_intakes_filter, CacheFactory.WATER_INTAKES_TYPES);
         ComboBoxController<OStreet> c4 = new ComboBoxController(street_filter, CacheFactory.STREETS);
         add_file_button.addActionListener(controller);
         add_photo_button.addActionListener(controller);
@@ -799,8 +799,8 @@ public final class UserView extends DBView implements DBValuesModel {
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     private javax.swing.JComboBox<String> user_state;
-    private javax.swing.JComboBox<com.jblue.modelo.objetos.OWaterIntake> water_intakes;
-    private javax.swing.JComboBox<com.jblue.modelo.objetos.OWaterIntake> water_intakes_filter;
+    private javax.swing.JComboBox<com.jblue.modelo.objetos.OWaterIntakeTypes> water_intakes;
+    private javax.swing.JComboBox<com.jblue.modelo.objetos.OWaterIntakeTypes> water_intakes_filter;
     // End of variables declaration//GEN-END:variables
 
     public OUser getObject() {

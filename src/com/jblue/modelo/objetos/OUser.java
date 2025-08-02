@@ -79,7 +79,7 @@ public class OUser extends Objeto implements ForeingKeyObject, StatusObject {
         return info[6];
     }
 
-    public OWaterIntake getWaterIntakesObject() {
+    public OWaterIntakeTypes getWaterIntakesObject() {
         return ObjectUtils.getWaterIntakesObject(getWaterIntakes());
     }
 

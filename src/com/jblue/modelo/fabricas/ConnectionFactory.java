@@ -22,7 +22,7 @@ import com.jblue.modelo.objetos.OStreet;
 import com.jblue.modelo.objetos.OtherPaymentsType;
 import com.jblue.modelo.objetos.OServicePayments;
 import com.jblue.modelo.objetos.OEmployee;
-import com.jblue.modelo.objetos.OWaterIntake;
+import com.jblue.modelo.objetos.OWaterIntakeTypes;
 import com.jblue.modelo.objetos.OUser;
 
 /**
@@ -43,7 +43,7 @@ public class ConnectionFactory {
         return new JDBConnection(Const.STREETS);
     }
 
-    public static JDBConnection<OWaterIntake> getWaterIntakes() {
+    public static JDBConnection<OWaterIntakeTypes> getWaterIntakes() {
         return new JDBConnection(Const.WATER_INTAKES);
     }
 

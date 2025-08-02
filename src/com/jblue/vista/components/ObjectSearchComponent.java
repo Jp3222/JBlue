@@ -17,7 +17,7 @@
 package com.jblue.vista.components;
 
 import com.jblue.modelo.objetos.OStreet;
-import com.jblue.modelo.objetos.OWaterIntake;
+import com.jblue.modelo.objetos.OWaterIntakeTypes;
 import com.jblue.modelo.objetos.OUser;
 import com.jblue.modelo.objetos.Objeto;
 import com.jblue.util.Filters;
@@ -78,13 +78,13 @@ public class ObjectSearchComponent<T extends Objeto> extends javax.swing.JDialog
         return (OUser) o.getObjeto();
     }
 
-    public static OWaterIntake selectorTipoDeToma(JFrame padre) {
+    public static OWaterIntakeTypes selectorTipoDeToma(JFrame padre) {
         ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.WATER_INTAKES_TYPES.getList());
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;
         }
-        return (OWaterIntake) o.getObjeto();
+        return (OWaterIntakeTypes) o.getObjeto();
     }
 
     private final DefaultListModel<String> modelo_lista;

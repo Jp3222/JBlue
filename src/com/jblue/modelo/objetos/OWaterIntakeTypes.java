@@ -12,15 +12,15 @@ import com.jblue.util.objetos.StatusObject;
  *
  * @author jp
  */
-public class OWaterIntake extends Objeto implements ForeingKeyObject, StatusObject {
+public class OWaterIntakeTypes extends Objeto implements ForeingKeyObject, StatusObject {
 
     private String[] infoFK;
 
-    public OWaterIntake(String[] info) {
+    public OWaterIntakeTypes(String[] info) {
         super(info);
     }
 
-    public OWaterIntake() {
+    public OWaterIntakeTypes() {
         super();
     }
 

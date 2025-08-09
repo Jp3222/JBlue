@@ -16,7 +16,7 @@
  */
 package com.jblue.controllers;
 
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.model.JDBConnection;
 import com.jblue.views.framework.SimpleView;
@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
  * @author juan-campos
  * @param <T>
  */
-public abstract class AbstractDBViewController<T extends Objeto> extends AbstractViewController implements DBControllerModel {
+public abstract class AbstractDBViewController<T extends Objects> extends AbstractViewController implements DBControllerModel {
 
     protected final MemoListCache<T> memo_cache;
     protected final JDBConnection<T> connection;

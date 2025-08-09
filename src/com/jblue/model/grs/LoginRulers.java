@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2025 juanp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,31 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.util.cache;
+package com.jblue.model.grs;
 
-import com.jblue.model.dtos.Objects;
-import java.util.List;
-import java.util.function.Predicate;
+import com.jblue.model.dtos.OEmployee;
+import com.jblue.model.dtos.OUser;
+import com.jblue.sys.app.AppConfig;
+import java.time.LocalDateTime;
 
 /**
  *
- * @author juan-campos
- * @param <T>
+ * @author juanp
  */
-public interface ListCacheModel<T extends Objects> {
+public class LoginRulers {
 
-    /**
-     * Consulta la lista con los datos de la base de datos
-     *
-     * @return una lista con los datos "actuales" de la base de datos
-     */
-    List<T> getList();
+    public static boolean isWorkTime() {
+        return !AppConfig.isWorkTime();
+    }
 
-    /**
-     * Aplica un predicado usando el metodo stream
-     *
-     * @param filter predicado para filtar los datos
-     * @return una lista con el filtro aplicado
-     */
-    List<T> getList(Predicate<T> filter);
+    public static boolean isDateEnd(OEmployee o) {
+        return o.getEndDate() != null && LocalDateTime.now().isAfter(o.getEndDate());
+    }
+
+    public static boolean isEmployeeNull(OEmployee o) {
+        return o == null;
+    }
 }

@@ -22,7 +22,7 @@ import com.jblue.model.constants.Const;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.model.factories.TableModelFactory;
 import com.jblue.model.dtos.OWaterIntakeTypes;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.util.Filters;
 import com.jblue.util.Formats;
 import com.jblue.views.framework.DBView;
@@ -54,8 +54,8 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
         initComponents();
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
-        model = TableModelFactory.getWaterIntakesTableModel();
-        controller = FactoryController.getWaterIntakesController(this);
+        model = TableModelFactory.getWaterIntakeTypesTableModel();
+        controller = FactoryController.getWaterIntakeTypesController(this);
         table_controller = new TableController(this, CacheFactory.WATER_INTAKES_TYPES);
         build();
     }
@@ -107,7 +107,7 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
     }
 
     @Override
-    public void setObjectSearch(Objeto o) {
+    public void setObjectSearch(Objects o) {
         object_search = (OWaterIntakeTypes) o;
     }
 
@@ -351,7 +351,7 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
         panel_izq.setLayout(new java.awt.BorderLayout(10, 10));
 
         objects_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Objects [][] {
 
             },
             new String [] {
@@ -461,10 +461,6 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
     private javax.swing.JTextField type_water_intakes_field;
     private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
-
-    public OWaterIntakeTypes getObject() {
-        return object_search;
-    }
 
     @Override
     public JTextField getTextComponenteTable() {

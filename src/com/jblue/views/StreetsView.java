@@ -20,7 +20,7 @@ import com.jblue.controllers.compc.TableController;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.model.factories.TableModelFactory;
 import com.jblue.model.dtos.OStreet;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.util.Filters;
 import com.jblue.views.framework.DBView;
 import com.jutil.swingw.modelos.JTableModel;
@@ -325,7 +325,7 @@ public final class StreetsView extends DBView implements DBValuesModel {
 
         objects_table.setAutoCreateRowSorter(true);
         objects_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Objects [][] {
 
             },
             new String [] {
@@ -509,7 +509,7 @@ public final class StreetsView extends DBView implements DBValuesModel {
     }
 
     @Override
-    public void setObjectSearch(Objeto o) {
+    public void setObjectSearch(Objects o) {
         object_search = (OStreet) o;
     }
 

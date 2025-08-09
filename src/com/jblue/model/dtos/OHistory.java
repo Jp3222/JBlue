@@ -20,7 +20,7 @@ package com.jblue.model.dtos;
  *
  * @author juanp
  */
-public class OHistory extends Objeto implements ForeingKeyObject {
+public class OHistory extends Objects implements ForeingKeyObject {
 
     private String[] fk_info;
 

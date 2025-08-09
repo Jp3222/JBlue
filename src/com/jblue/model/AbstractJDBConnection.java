@@ -16,7 +16,7 @@
  */
 package com.jblue.model;
 
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.util.ObjectUtils;
 import com.jutil.dbcon.connection.DBConnection;
 import java.sql.SQLException;
@@ -31,7 +31,7 @@ import java.util.Optional;
  * @author juan-campos
  * @param <T>
  */
-public abstract class AbstractJDBConnection<T extends Objeto> implements JDBConnectionModel {
+public abstract class AbstractJDBConnection<T extends Objects> implements JDBConnectionModel {
 
     public static final int FIELDS = 1;
     public static final int VALUES = 2;

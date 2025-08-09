@@ -5,6 +5,7 @@
 package com.jblue.model.dtos;
 
 import com.jblue.model.constants.Const;
+import com.jblue.model.factories.CacheFactory;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -14,7 +15,9 @@ import java.time.format.DateTimeFormatter;
  *
  * @author jp
  */
-public class OEmployee extends Objeto {
+public class OEmployee extends Objects implements ForeingKeyObject, StatusObject {
+
+    private String[] info_fk;
 
     /**
      * Construye un objeto OPersonal con la informacion dada en el array
@@ -23,6 +26,7 @@ public class OEmployee extends Objeto {
      */
     public OEmployee(String[] info) {
         super(info);
+        info_fk = info.clone();
     }
 
     /**
@@ -84,29 +88,19 @@ public class OEmployee extends Objeto {
      * @return 1 si el usuario esta "activo", 2 si el usuario esta "inactivo" o
      * 3 si el usuario esta de "baja"
      */
+    @Override
     public int getStatus() {
         return Integer.parseInt(info[4]);
     }
 
+    @Override
     public String getStatusString() {
-        return switch (getStatus()) {
-            case 1:
-                yield "Activo";
-            case 2:
-                yield "Inactivo";
-            case 3:
-                yield "Baja";
-            default:
-                throw new AssertionError();
-        };
+        return CacheFactory.ITEMS_STATUS_CAT[getStatus()];
     }
 
+    @Override
     public boolean isActive() {
         return getStatus() == 1;
-    }
-
-    public boolean isDelete() {
-        return getStatus() == 3;
     }
 
     /**
@@ -129,8 +123,18 @@ public class OEmployee extends Objeto {
         return LocalDateTime.parse(info[7], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
     }
 
-    public String getEndDate() {
-        return info[8];
+    public LocalDateTime getEndDate() {
+        if (info[8] == null || info[8].isEmpty()) {
+            return null;
+        }
+        return LocalDateTime.parse(info[8], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
+    }
+
+    @Override
+    public String[] getInfoSinFK() {
+        info_fk[3] = getCargoString();
+        info_fk[4] = getStatusString();
+        return info_fk;
     }
 
     @Override

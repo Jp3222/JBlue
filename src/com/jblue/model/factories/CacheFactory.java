@@ -29,7 +29,7 @@ public final class CacheFactory {
 
     public static boolean cache_list;
 
-    public static final MemoListCache<OWaterIntakeTypes> WATER_INTAKES_TYPES = new MemoListCache(ConnectionFactory.getWaterIntakes());
+    public static final MemoListCache<OWaterIntakeTypes> WATER_INTAKES_TYPES = new MemoListCache(ConnectionFactory.getWaterIntakesTypes());
     public static final MemoListCache<OStreet> STREETS = new MemoListCache(ConnectionFactory.getStreets());
     public static final MemoListCache<OEmployee> EMPLOYEES = new MemoListCache(ConnectionFactory.getEmployees());
     public static final MemoListCache<OWaterIntakes> WATER_INTAKES = new MemoListCache(ConnectionFactory.getWaterIntakes());

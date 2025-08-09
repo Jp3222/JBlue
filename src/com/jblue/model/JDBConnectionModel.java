@@ -16,7 +16,7 @@
  */
 package com.jblue.model;
 
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jutil.dbcon.connection.DBConnection;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +26,7 @@ import java.util.Optional;
  * @author juan-campos
  * @param <T>
  */
-public interface JDBConnectionModel<T extends Objeto> {
+public interface JDBConnectionModel<T extends Objects> {
 
     /**
      * Este metodo inserta valores en la base de datos ignorando el primer valor

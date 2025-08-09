@@ -12,9 +12,9 @@ import com.jutil.dbcon.cn.JDBObjectModel;
  *
  * @author jp
  */
-public class Objeto extends AbstractObject {
+public class Objects extends AbstractObject {
 
-    public Objeto() {
+    public Objects() {
         super(null);
     }
 
@@ -24,7 +24,7 @@ public class Objeto extends AbstractObject {
      *
      * @param info
      */
-    public Objeto(String[] info) {
+    public Objects(String[] info) {
         super(info);
     }
 
@@ -40,15 +40,15 @@ public class Objeto extends AbstractObject {
 
     /**
      *
-     * @return @throws java.lang.CloneNotSupportedException 
-     */ 
+     * @return @throws java.lang.CloneNotSupportedException
+     */
     @Override
-    public Objeto clone() throws CloneNotSupportedException {
-        Objeto o = null;
+    public Objects clone() throws CloneNotSupportedException {
+        Objects o = null;
         try {
-            o = (Objeto) super.clone();
+            o = (Objects) super.clone();
         } catch (CloneNotSupportedException ex) {
-            Logger.getLogger(Objeto.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Objects.class.getName()).log(Level.SEVERE, null, ex);
         }
         return o;
     }

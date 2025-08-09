@@ -21,8 +21,8 @@ import com.jblue.model.dtos.OEmployee;
 import com.jblue.util.Filters;
 import com.jblue.util.EncriptadoAES;
 import com.jblue.model.factories.ConnectionFactory;
+import com.jblue.model.grs.LoginRulers;
 import com.jblue.sys.SystemSession;
-import com.jblue.sys.app.AppConfig;
 import com.jblue.views.components.ChangePasswordComponent;
 import com.jblue.views.win.LoginWindows;
 import com.jblue.views.win.ConfigWindow;
@@ -117,18 +117,22 @@ public class LoginController extends WindowController {
     }
 
     public boolean start() {
-        if (!AppConfig.isWorkTime()) {
-            JOptionPane.showMessageDialog(view, "No es tiempo de trabajar");
+        if (LoginRulers.isWorkTime()) {
+            rmessage("No es hora de Trabajar", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         Optional<OEmployee> res = query(view.getUser().getText(),
                 String.valueOf(view.getPassword().getPassword())
         );
 
-        if (res.isEmpty()) {
+        if (res.isEmpty() && LoginRulers.isEmployeeNull(res.get())) {
+            rmessage("Usuario y/o contraseña no validos", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
-
+        if (LoginRulers.isDateEnd(res.get())) {
+            rmessage("Periodo de acceso finalizado", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
         SystemSession sesion = SystemSession.getInstancia();
         sesion.setUser(res.get());
 
@@ -159,7 +163,6 @@ public class LoginController extends WindowController {
 //                res = op.get("*", "id = 1");
 //            }
             if (res.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Usuario y/o contraseña incorrectos");
                 return Optional.empty();
             }
         } catch (UnsupportedEncodingException
@@ -196,4 +199,7 @@ public class LoginController extends WindowController {
         JOptionPane.showMessageDialog(view, "Contraseña Cambiada");
     }
 
+    void rmessage(String msg, int type) {
+        JOptionPane.showMessageDialog(view, msg, "Inicio de sesion", type);
+    }
 }

@@ -22,7 +22,7 @@ import java.time.LocalDate;
  *
  * @author juan-campos
  */
-public class OPaymentsTypes extends Objeto {
+public class OPaymentsTypes extends Objects {
 
     public String getMotivo() {
         return info[1];

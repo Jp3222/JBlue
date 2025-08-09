@@ -19,7 +19,7 @@ package com.jblue.views.components;
 import com.jblue.model.dtos.OStreet;
 import com.jblue.model.dtos.OWaterIntakeTypes;
 import com.jblue.model.dtos.OUser;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.util.Filters;
 import com.jblue.model.factories.CacheFactory;
 import java.awt.event.ActionEvent;
@@ -38,7 +38,7 @@ import javax.swing.KeyStroke;
  * @author jp
  * @param <T>
  */
-public class ObjectSearchComponent<T extends Objeto> extends javax.swing.JDialog {
+public class ObjectSearchComponent<T extends Objects> extends javax.swing.JDialog {
 
     public static OStreet selectorCalle(JFrame padre) {
         ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.STREETS.getList());
@@ -310,7 +310,7 @@ public class ObjectSearchComponent<T extends Objeto> extends javax.swing.JDialog
 
     private void cargar() {
         modelo_lista.clear();
-        for (Objeto i : cache) {
+        for (Objects i : cache) {
             StringBuilder sb = new StringBuilder(100);
             sb.append(i.getId()).append(" - ").append(i.toString());
             modelo_lista.addElement(sb.toString());

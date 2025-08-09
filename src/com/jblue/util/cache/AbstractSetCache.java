@@ -17,7 +17,7 @@
 package com.jblue.util.cache;
 
 import com.jblue.model.JDBConnection;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.util.ObjectUtils;
 import com.jutil.dbcon.connection.DBConnection;
 import java.sql.ResultSet;
@@ -34,7 +34,7 @@ import java.util.logging.Logger;
  * @author juan-campos
  * @param <T>
  */
-public abstract class AbstractSetCache<T extends Objeto> implements SetCacheModel<T> {
+public abstract class AbstractSetCache<T extends Objects> implements SetCacheModel<T> {
 
     protected final Set<T> cache;
     protected final JDBConnection<T> conexion;
@@ -70,7 +70,7 @@ public abstract class AbstractSetCache<T extends Objeto> implements SetCacheMode
                 for (int i = 0; i < conexion.getFields().length; i++) {
                     info[i] = rs_data.getString(conexion.getFields()[i]);
                 }
-                Objeto objeto = ObjectUtils.getObjeto(conexion.getTable(), info);
+                Objects objeto = ObjectUtils.getObjeto(conexion.getTable(), info);
                 cache.add((T) objeto);
             }
         } catch (SQLException ex) {

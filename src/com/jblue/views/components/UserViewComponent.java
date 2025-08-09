@@ -19,7 +19,7 @@ package com.jblue.views.components;
 import com.jblue.model.constants.Const;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.model.dtos.OUser;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.util.cache.MemoListCache;
 import com.jutil.framework.ComponentStates;
 import com.jutil.swingw.modelos.JTableModel;
@@ -351,7 +351,7 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
         panel_pxs.add(jPanel1, java.awt.BorderLayout.NORTH);
 
         service_payments.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Objects [][] {
 
             },
             new String [] {
@@ -367,7 +367,7 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
         panel_pxr.setLayout(new java.awt.BorderLayout());
 
         surcharge_payments.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Objects [][] {
 
             },
             new String [] {
@@ -417,7 +417,7 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
         panel_pxo.add(jPanel7, java.awt.BorderLayout.NORTH);
 
         other_payments.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Objects [][] {
 
             },
             new String [] {
@@ -721,7 +721,7 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
         load(modelo_pagos_x_recargo, CacheFactory.SURCHARGE_PAYMENTS);
     }
 
-    private <T extends Objeto> void load(JTableModel model, MemoListCache<T> cache) {
+    private <T extends Objects> void load(JTableModel model, MemoListCache<T> cache) {
         List<T> select = cache.getConnection().select("*", "user = %s".formatted(usuario.getId()));
         for (T i : select) {
             model.addRow(i.getInfo());

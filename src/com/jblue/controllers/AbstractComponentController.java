@@ -16,7 +16,7 @@
  */
 package com.jblue.controllers;
 
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.util.cache.MemoListCache;
 import javax.swing.JComponent;
 
@@ -25,7 +25,7 @@ import javax.swing.JComponent;
  * @author juan-campos
  * @param <T>
  */
-public abstract class AbstractComponentController <T extends Objeto> extends Controller {
+public abstract class AbstractComponentController <T extends Objects> extends Controller {
 
     private final JComponent component;
     protected final MemoListCache<T> memo_cache;

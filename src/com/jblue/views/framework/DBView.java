@@ -18,7 +18,7 @@ package com.jblue.views.framework;
 
 import com.jblue.controllers.Controller;
 import com.jblue.controllers.compc.TableController;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import com.jblue.model.dtos.ForeingKeyObject;
@@ -53,7 +53,7 @@ public abstract class DBView extends SimpleView implements TableSearchViewModel 
     public void finalState() {
     }
 
-    public <T extends Objeto & ForeingKeyObject> TableController<T> getTableController() {
+    public <T extends Objects & ForeingKeyObject> TableController<T> getTableController() {
         return table_controller;
     }
 

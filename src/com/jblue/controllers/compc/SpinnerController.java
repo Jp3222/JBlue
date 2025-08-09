@@ -17,7 +17,7 @@
 package com.jblue.controllers.compc;
 
 import com.jblue.controllers.AbstractComponentController;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 
@@ -26,7 +26,7 @@ import javax.swing.JSpinner;
  * @author juan-campos
  * @param <T>
  */
-public class SpinnerController<T extends Objeto> extends AbstractComponentController<T> {
+public class SpinnerController<T extends Objects> extends AbstractComponentController<T> {
 
     public SpinnerController(JSpinner component) {
         super(component);

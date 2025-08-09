@@ -21,7 +21,6 @@ import com.jblue.model.factories.CacheFactory;
 import com.jblue.sys.SystemLogs;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.LaunchApp;
-import java.lang.reflect.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;

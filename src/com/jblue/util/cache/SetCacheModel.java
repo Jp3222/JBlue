@@ -16,12 +16,12 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 
 /**
  *
  * @author juan-campos
  */
-public interface SetCacheModel<T extends Objeto> extends CacheModel<T>, SetCache<T> {
+public interface SetCacheModel<T extends Objects> extends CacheModel<T>, SetCache<T> {
     
 }

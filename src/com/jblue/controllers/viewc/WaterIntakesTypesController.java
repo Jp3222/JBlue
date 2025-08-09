@@ -96,7 +96,6 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE
         );
-
         if (in == JOptionPane.YES_OPTION) {
             view.initialState();
         }

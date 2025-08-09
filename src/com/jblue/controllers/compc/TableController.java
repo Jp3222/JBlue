@@ -17,7 +17,7 @@
 package com.jblue.controllers.compc;
 
 import com.jblue.controllers.AbstractComponentController;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.util.Filters;
 import com.jblue.util.cache.MemoListCache;
 import com.jutil.swingw.modelos.JTableModel;
@@ -35,7 +35,7 @@ import com.jblue.views.framework.TableSearchViewModel;
  * @author juan-campos
  * @param <T>
  */
-public class TableController<T extends Objeto & ForeingKeyObject> extends AbstractComponentController<T> implements ComponentIterable {
+public class TableController<T extends Objects & ForeingKeyObject> extends AbstractComponentController<T> implements ComponentIterable {
 
     public static final String RELOAD_COMMAND = "reload";
 

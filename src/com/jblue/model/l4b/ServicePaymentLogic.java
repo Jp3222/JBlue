@@ -78,15 +78,12 @@ public class ServicePaymentLogic extends AbsctractPayment {
             return false;
         }
         LocalDate now = LocalDate.now();
-        if (AppConfig.getPayDay() > now.getDayOfMonth()) {
+        if (AppConfig.isAutoPay() && (now.getDayOfMonth() > AppConfig.getPayDay())) {
             JOptionPane.showMessageDialog(null, "La fecha limite de pago ha sido excedida.¿Desea aplicarle un recargo a este usuario?");
             PaymentModel surcharge = PaymentFactory.getSurchargePayment();
-            surcharge.execPayment();
+            surcharge.insertToDefault();
             surcharge.setUsuario(usuario);
             surcharge.setDineroIngresado(meses_pagados.size() * toma.getSurcharge());
-        }
-        if (AppConfig.isAutoPay()) {
-
         }
         StringBuilder values = new StringBuilder();
         int i = 0;
@@ -130,10 +127,11 @@ public class ServicePaymentLogic extends AbsctractPayment {
         }
         return mov.get(KEY_STATUS_OP).equals(STATUS_OK);
     }
-    
+
     /**
      * Metodo que inserta pagos con status No Pagados
-     * @return 
+     *
+     * @return
      */
     @Override
     public boolean insertToDefault() {

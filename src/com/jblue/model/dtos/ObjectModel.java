@@ -16,14 +16,14 @@
  */
 package com.jblue.model.dtos;
 
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import java.io.Serializable;
 
 /**
  *
  * @author juan-campos
  */
-public interface ObjectModel extends Serializable, Cloneable, Comparable<Objeto>{
+public interface ObjectModel extends Serializable, Cloneable, Comparable<Objects>{
    
     String getId();
 

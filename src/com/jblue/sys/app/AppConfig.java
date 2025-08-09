@@ -87,10 +87,7 @@ public final class AppConfig {
             return false;
         }
         boolean hour_validate = isHourValidate();
-        System.out.println(hour_validate);
         if (hour_validate) {
-            System.out.println(o + " > " + a);
-            System.out.println(o + " < " + b);
             return o.isAfter(a) && o.isBefore(b);
         }
         return true;
@@ -192,10 +189,26 @@ public final class AppConfig {
         return Boolean.parseBoolean(String.valueOf(valueOf));
     }
 
+    public static LocalDate getReferenceDate() {
+        Object value = getParameter("FECHA_DE_INICIO");
+        if (value == null) {
+            return LocalDate.now();
+        }
+        return LocalDate.parse((CharSequence) value, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
+    public static LocalDate getDataBaseDate() {
+        Object value = getParameter("FECHA_DEL_PROGRAMA");
+        if (value == null) {
+            return LocalDate.now();
+        }
+        return LocalDate.parse((CharSequence) value, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
     private static Object getParameter(String name) {
         try {
             DBConnection connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
-            String query = "SELECT value FROM parameters WHERE parameter = '%s' AND status = 1"
+            String query = "SELECT value,data_type FROM parameters WHERE parameter = '%s' AND status = 1"
                     .formatted(name);
             ResultSet rs = connection.query(query);
             if (rs.next()) {

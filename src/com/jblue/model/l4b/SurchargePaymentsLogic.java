@@ -53,7 +53,7 @@ public class SurchargePaymentsLogic extends AbsctractPayment {
         System.out.println(Arrays.toString(personal.getInfo()));
         StringBuilder values = new StringBuilder();
         int i = 0;
-        String col = "";
+        String col;
         while (i < meses_pagados.size() - 1) {
             col = "('" + personal.getId()
                     + "','"

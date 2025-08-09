@@ -17,7 +17,7 @@
 package com.jblue.model;
 
 import com.jblue.model.constants.Table;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jutil.jexception.Excp;
 import java.sql.SQLException;
 
@@ -26,7 +26,7 @@ import java.sql.SQLException;
  * @author juan-campos
  * @param <T>
  */
-public class JDBConnection<T extends Objeto> extends AbstractJDBConnection<T> {
+public class JDBConnection<T extends Objects> extends AbstractJDBConnection<T> {
 
     private Table object_table;
 

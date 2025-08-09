@@ -19,7 +19,7 @@ package com.jblue.views;
 import com.jblue.controllers.compc.ComboBoxItemsController;
 import com.jblue.controllers.compc.TableController;
 import com.jblue.model.dtos.OPaymentsTypes;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.util.Filters;
 import com.jblue.util.Fecha;
 import com.jblue.util.GraphicsUtils;
@@ -361,7 +361,7 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
         panel_izq.setLayout(new java.awt.BorderLayout(10, 10));
 
         objects_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Objects [][] {
 
             },
             new String [] {
@@ -516,7 +516,7 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
         return null;
     }
 
-    public Objeto getObject() {
+    public Objects getObject() {
         return object_search;
     }
 
@@ -563,7 +563,7 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
     }
 
     @Override
-    public void setObjectSearch(Objeto o) {
+    public void setObjectSearch(Objects o) {
         object_search = (OPaymentsTypes) o;
     }
 

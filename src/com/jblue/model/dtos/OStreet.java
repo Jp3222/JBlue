@@ -10,7 +10,7 @@ import com.jblue.model.factories.CacheFactory;
  *
  * @author jp
  */
-public class OStreet extends Objeto implements StatusObject {
+public class OStreet extends Objects implements StatusObject {
 
     public OStreet(String... info) {
         super(info);

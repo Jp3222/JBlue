@@ -16,14 +16,14 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 
 /**
  *
  * @author jp
  * @param <T>
  */
-public interface CacheModel<T extends Objeto> {
+public interface CacheModel<T extends Objects> {
 
     static final int MIN = 1000;
     static final int MID = 2000;

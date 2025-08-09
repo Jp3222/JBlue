@@ -19,7 +19,7 @@ package com.jblue.controllers.viewc;
 import com.jblue.controllers.AbstractDBViewController;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.model.dtos.OWaterIntakes;
-import com.jblue.util.cache.MemoListCache;
+import com.jblue.views.WaterIntakesView;
 import java.awt.event.ActionEvent;
 
 /**
@@ -28,8 +28,11 @@ import java.awt.event.ActionEvent;
  */
 public class WaterIntakesController extends AbstractDBViewController<OWaterIntakes> {
 
-    public WaterIntakesController(MemoListCache<OWaterIntakes> memo_cache) {
+    private WaterIntakesView view;
+
+    public WaterIntakesController(WaterIntakesView view) {
         super(CacheFactory.WATER_INTAKES);
+        this.view = view;
     }
 
     @Override

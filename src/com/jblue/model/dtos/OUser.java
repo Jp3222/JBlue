@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
  *
  * @author jp
  */
-public class OUser extends Objeto implements ForeingKeyObject, StatusObject {
+public class OUser extends Objects implements ForeingKeyObject, StatusObject {
 
     private String[] infoFK;
 
@@ -73,12 +73,12 @@ public class OUser extends Objeto implements ForeingKeyObject, StatusObject {
      *
      * @return una cadena con el ID del tipo de toma asociada a este usuario
      */
-    public String getWaterIntakes() {
+    public String getWaterIntakeType() {
         return info[6];
     }
 
     public OWaterIntakeTypes getWaterIntakesObject() {
-        return ObjectUtils.getWaterIntakesObject(getWaterIntakes());
+        return ObjectUtils.getWaterIntakesObject(getWaterIntakeType());
     }
 
     /**

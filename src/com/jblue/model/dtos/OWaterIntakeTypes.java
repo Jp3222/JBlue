@@ -10,7 +10,7 @@ import com.jblue.model.factories.CacheFactory;
  *
  * @author jp
  */
-public class OWaterIntakeTypes extends Objeto implements ForeingKeyObject, StatusObject {
+public class OWaterIntakeTypes extends Objects implements ForeingKeyObject, StatusObject {
 
     private String[] infoFK;
 

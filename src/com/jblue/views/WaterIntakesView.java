@@ -16,17 +16,92 @@
  */
 package com.jblue.views;
 
+import com.jblue.controllers.FactoryController;
+import com.jblue.controllers.compc.TableController;
+import com.jblue.model.dtos.OWaterIntakes;
+import com.jblue.model.dtos.Objects;
+import com.jblue.model.factories.CacheFactory;
+import com.jblue.model.factories.TableModelFactory;
+import com.jblue.util.Filters;
+import com.jblue.views.framework.DBValuesModel;
+import com.jblue.views.framework.DBView;
+import com.jblue.views.framework.TableSearchViewModel;
+import com.jutil.swingw.modelos.JTableModel;
+import java.awt.CardLayout;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+
 /**
  *
  * @author juanp
  */
-public class WaterIntakesView extends javax.swing.JPanel {
+public final class WaterIntakesView extends DBView implements DBValuesModel, TableSearchViewModel {
 
+    private final CardLayout ly;
+    private final JTableModel model;
+    private OWaterIntakes object_search;
+    
     /**
      * Creates new form WaterIntakesView
      */
     public WaterIntakesView() {
         initComponents();
+        ly = (CardLayout) root_panel.getLayout();
+        ly.show(root_panel, register_panel.getName());
+        model = TableModelFactory.getWaterIntakesTableModel();
+        controller = FactoryController.getWaterIntakesController(this);
+        table_controller = new TableController(this, CacheFactory.WATER_INTAKES);
+        build();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        finalState();
+        initialState();
+    }
+
+    @Override
+    public void components() {
+        objects_table.setModel(model);
+    }
+
+    @Override
+    public void events() {
+        back_button.addActionListener(table_controller);
+        next_button.addActionListener(table_controller);
+        reload_button.addActionListener(table_controller);
+        objects_table.addMouseListener(table_controller);
+        save_button.addActionListener(controller);
+
+        update_button.addActionListener(controller);
+        delete_button.addActionListener(controller);
+        cancel_button.addActionListener(controller);
+        register_button.addActionListener(table_controller);
+        search_button.addActionListener(table_controller);
+    }
+
+    @Override
+    public void initialState() {
+
+        //
+        object_search = null;
+        view_show = 1;
+        save_button.setEnabled(true);
+        update_button.setEnabled(false);
+        delete_button.setEnabled(false);
+    }
+
+    @Override
+    public OWaterIntakes getObjectSearch() {
+        return object_search;
+    }
+
+    @Override
+    public void setObjectSearch(Objects o) {
+        object_search = (OWaterIntakes) o;
     }
 
     /**
@@ -379,7 +454,7 @@ public class WaterIntakesView extends javax.swing.JPanel {
         panel_izq.setLayout(new java.awt.BorderLayout(10, 10));
 
         objects_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Objects [][] {
 
             },
             new String [] {
@@ -508,4 +583,75 @@ public class WaterIntakesView extends javax.swing.JPanel {
     private javax.swing.JTextField user_field;
     private javax.swing.JTextField water_intake_type_field;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public JTextField getTextComponenteTable() {
+        return search_field;
+    }
+
+    @Override
+    public String getTextSearchTable() {
+        return Filters.clearText(search_field.getText());
+    }
+
+    @Override
+    public JTable getTable() {
+        return objects_table;
+    }
+
+    @Override
+    public JTableModel getModel() {
+        return model;
+    }
+
+    @Override
+    public void setViewShow(int view_show) {
+        this.view_show = view_show;
+        String op = switch (view_show) {
+            case 2:
+                yield search_panel.getName();
+            default:
+                yield register_panel.getName();
+        };
+        ly.show(root_panel, op);
+    }
+
+    @Override
+    public int getViewShow() {
+        return view_show;
+    }
+
+    @Override
+    public boolean isValuesOk() {
+        boolean ok = true;
+        JTextField[] text_fields = {};
+        for (JTextField i : text_fields) {
+            if (Filters.isNullOrBlank(i.getText())) {
+                JOptionPane.showMessageDialog(this, "El campo %s no es valido", "Campo no valido", JOptionPane.ERROR_MESSAGE);
+                ok = false;
+                break;
+            }
+        }
+        return ok;
+    }
+
+    @Override
+    public String[] getDbValues(boolean update) {
+        return null;
+    }
+
+    @Override
+    public void setRowsData(String... info) {
+        count.setText(info[0]);
+        range.setText(info[1]);
+        total.setText(info[2]);
+    }
+
+    @Override
+    public void setScreenTableInfo() {
+        //
+        save_button.setEnabled(false);
+        update_button.setEnabled(true);
+        delete_button.setEnabled(true);
+    }
 }

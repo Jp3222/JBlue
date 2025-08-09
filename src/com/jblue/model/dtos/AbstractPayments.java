@@ -25,7 +25,7 @@ import java.time.format.DateTimeFormatter;
  *
  * @author juanp
  */
-public class AbstractPayments extends Objeto implements ForeingKeyObject, StatusObject {
+public class AbstractPayments extends Objects implements ForeingKeyObject, StatusObject {
 
     private String[] info_fk;
 

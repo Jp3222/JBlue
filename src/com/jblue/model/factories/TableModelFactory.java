@@ -34,8 +34,12 @@ public final class TableModelFactory {
         return getTableModel(Const.STREETS);
     }
 
-    public static JTableModel getWaterIntakesTableModel() {
+    public static JTableModel getWaterIntakeTypesTableModel() {
         return getTableModel(Const.WATER_INTAKES_TYPES);
+    }
+
+    public static JTableModel getWaterIntakesTableModel() {
+        return getTableModel(Const.WATER_INTAKES);
     }
 
     public static JTableModel getEmployeesTableModel() {

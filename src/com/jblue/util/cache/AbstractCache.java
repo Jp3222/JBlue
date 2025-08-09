@@ -17,7 +17,7 @@
 package com.jblue.util.cache;
 
 import com.jblue.model.JDBConnection;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.sys.DevFlags;
 import com.jblue.util.ObjectUtils;
 import com.jutil.dbcon.connection.DBConnection;
@@ -33,7 +33,7 @@ import java.util.Map;
  * @author juan-campos
  * @param <T>
  */
-public class AbstractCache<T extends Objeto> implements CacheModel<T> {
+public class AbstractCache<T extends Objects> implements CacheModel<T> {
 
     protected final List<T> cache;
     protected final Map<String, List<T>> buffer_cache;
@@ -94,7 +94,7 @@ public class AbstractCache<T extends Objeto> implements CacheModel<T> {
     public void load(ObjectAdapterModel<T> adapter, ResultSet rs_data, String aux, JDBConnection<T> connection) {
         try {
             while (rs_data.next()) {
-                Objeto objeto = adapter.adapter(rs_data, connection);
+                Objects objeto = adapter.adapter(rs_data, connection);
                 cache.add((T) objeto);
             }
             buffer_cache.put(aux, List.copyOf(cache));
@@ -139,7 +139,7 @@ public class AbstractCache<T extends Objeto> implements CacheModel<T> {
         adapter = (rs_data, connection) -> defaultAdapter(rs_data, connection);
     }
 
-    private Objeto defaultAdapter(ResultSet rs_data, JDBConnection connection) {
+    private Objects defaultAdapter(ResultSet rs_data, JDBConnection connection) {
         String[] info = new String[connection.getFields().length];
         for (int i = 0; i < info.length; i++) {
             try {

@@ -24,7 +24,7 @@ import com.jblue.model.factories.TableModelFactory;
 import com.jblue.model.dtos.OStreet;
 import com.jblue.model.dtos.OWaterIntakeTypes;
 import com.jblue.model.dtos.OUser;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.util.Formats;
 import com.jblue.util.Filters;
 import com.jblue.util.GraphicsUtils;
@@ -643,7 +643,7 @@ public final class UserView extends DBView implements DBValuesModel {
         panel_tabla.add(jPanel30, java.awt.BorderLayout.NORTH);
 
         objects_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Objects [][] {
 
             },
             new String [] {
@@ -906,7 +906,7 @@ public final class UserView extends DBView implements DBValuesModel {
     }
 
     @Override
-    public void setObjectSearch(Objeto o) {
+    public void setObjectSearch(Objects o) {
         object_search = (OUser) o;
     }
 

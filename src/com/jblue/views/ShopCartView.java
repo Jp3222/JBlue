@@ -23,7 +23,7 @@ import com.jblue.controllers.viewc.ShopCartController;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.model.factories.TableModelFactory;
 import com.jblue.model.dtos.OUser;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.util.Filters;
 import com.jblue.util.GraphicsUtils;
 import com.jblue.views.framework.DBView;
@@ -714,7 +714,7 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         search_panel.add(jPanel1, java.awt.BorderLayout.NORTH);
 
         objects_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Objects [][] {
 
             },
             new String [] {
@@ -944,7 +944,7 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
     }
 
     @Override
-    public void setObjectSearch(Objeto o) {
+    public void setObjectSearch(Objects o) {
         object_search = (OUser) o;
     }
 

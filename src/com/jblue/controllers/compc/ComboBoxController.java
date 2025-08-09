@@ -17,7 +17,7 @@
 package com.jblue.controllers.compc;
 
 import com.jblue.controllers.AbstractComponentController;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.util.cache.MemoListCache;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
@@ -28,7 +28,7 @@ import javax.swing.JComboBox;
  * @author juan-campos
  * @param <T>
  */
-public class ComboBoxController<T extends Objeto> extends AbstractComponentController<T> {
+public class ComboBoxController<T extends Objects> extends AbstractComponentController<T> {
 
     public ComboBoxController(JComboBox<T> component, MemoListCache<T> memo_cache) {
         super(component, memo_cache);
@@ -37,7 +37,7 @@ public class ComboBoxController<T extends Objeto> extends AbstractComponentContr
     @Override
     public void loadData() {
         JComboBox<T> box = getComponent();
-        box.addItem((T) new Objeto() {
+        box.addItem((T) new Objects() {
             @Override
             public String toString() {
                 return "Seleccione elemento";

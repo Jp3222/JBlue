@@ -18,7 +18,7 @@ package com.jblue.views.win;
 
 import com.jblue.controllers.winc.ProfileController;
 import com.jblue.views.framework.AbstractAppWindows;
-import com.jblue.views.EmployeeView;
+import com.jblue.views.EmployeesView;
 import com.jblue.views.HistoryView;
 import com.jblue.views.VContabilidad;
 import com.jblue.views.VPerfil;
@@ -31,7 +31,7 @@ import javax.swing.JPanel;
  */
 public final class ProfileWindow extends AbstractAppWindows {
 
-    private final EmployeeView employee_view;
+    private final EmployeesView employee_view;
     private final VPerfil profile_view;
     private final VContabilidad contabilidad;
     private final CardLayout ly;
@@ -44,7 +44,7 @@ public final class ProfileWindow extends AbstractAppWindows {
      * Creates new form MenuWindow
      */
     public ProfileWindow() {
-        this.employee_view = new EmployeeView();
+        this.employee_view = new EmployeesView();
         this.profile_view = new VPerfil();
         this.contabilidad = new VContabilidad();
         this.history_view = new HistoryView();

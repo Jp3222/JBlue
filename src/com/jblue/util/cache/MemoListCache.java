@@ -17,7 +17,7 @@
 package com.jblue.util.cache;
 
 import com.jblue.model.JDBConnection;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -26,7 +26,7 @@ import java.util.function.Predicate;
  * @author juan-campos
  * @param <T>
  */
-public class MemoListCache<T extends Objeto> extends AbstractListCache<T> implements Paginated {
+public class MemoListCache<T extends Objects> extends AbstractListCache<T> implements Paginated {
 
     private int page;
 

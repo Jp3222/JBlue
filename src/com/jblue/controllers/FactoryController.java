@@ -16,17 +16,21 @@
  */
 package com.jblue.controllers;
 
+import com.jblue.controllers.viewc.EmployeeController;
 import com.jblue.controllers.winc.WindowController;
 import com.jblue.controllers.viewc.UserController;
 import com.jblue.controllers.winc.LoginController;
 import com.jblue.controllers.viewc.ShopCartController;
 import com.jblue.controllers.viewc.StreetsController;
+import com.jblue.controllers.viewc.WaterIntakesController;
 import com.jblue.controllers.viewc.WaterIntakesTypesController;
 import com.jblue.controllers.winc.MainController;
+import com.jblue.views.EmployeesView;
 import com.jblue.views.WaterIntakesTypesView;
 import com.jblue.views.UserView;
 import com.jblue.views.StreetsView;
 import com.jblue.views.ShopCartView;
+import com.jblue.views.WaterIntakesView;
 import com.jblue.views.win.LoginWindows;
 import com.jblue.views.win.ConfigWindow;
 import com.jblue.views.win.WMainMenu;
@@ -57,8 +61,15 @@ public class FactoryController {
         return new UserController(view);
     }
 
-    public static Controller getWaterIntakesController(WaterIntakesTypesView view) {
+    public static Controller getWaterIntakeTypesController(WaterIntakesTypesView view) {
         return new WaterIntakesTypesController(view);
     }
 
+    public static Controller getWaterIntakesController(WaterIntakesView view) {
+        return new WaterIntakesController(view);
+    }
+
+    public static Controller getEmployeeController(EmployeesView view) {
+        return new EmployeeController(view);
+    }
 }

@@ -18,11 +18,10 @@ package com.jblue.controllers.viewc;
 
 import com.jblue.controllers.AbstractDBViewController;
 import com.jblue.model.constants.Const;
-import com.jblue.model.JDBConnection;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.model.dtos.OEmployee;
 import com.jblue.sys.SystemSession;
-import com.jblue.views.EmployeeView;
+import com.jblue.views.EmployeesView;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
@@ -32,13 +31,11 @@ import javax.swing.JOptionPane;
  */
 public class EmployeeController extends AbstractDBViewController<OEmployee> {
 
-    private final EmployeeView view;
-    private final JDBConnection<OEmployee> connection;
+    private final EmployeesView view;
 
-    public EmployeeController(EmployeeView view) {
+    public EmployeeController(EmployeesView view) {
         super(CacheFactory.EMPLOYEES);
         this.view = view;
-        this.connection = (JDBConnection<OEmployee>) memo_cache.getConnection();
     }
 
     @Override

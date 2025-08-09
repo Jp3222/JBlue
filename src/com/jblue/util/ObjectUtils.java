@@ -18,7 +18,7 @@ package com.jblue.util;
 
 import com.jblue.model.dtos.OtherPaymentsType;
 import com.jblue.model.dtos.OStreet;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.model.dtos.OWaterIntakeTypes;
 import com.jblue.model.dtos.OWaterIntakes;
 import com.jblue.model.dtos.OUser;
@@ -41,7 +41,7 @@ import java.util.logging.Logger;
  */
 public class ObjectUtils {
 
-    private static final Map<String, Objeto> mapa;
+    private static final Map<String, Objects> mapa;
 
     static {
         mapa = new HashMap<>(10);
@@ -59,8 +59,8 @@ public class ObjectUtils {
 
     }
 
-    public static <T extends Objeto> T getObjeto(String tabla, String[] info) {
-        Objeto clone = new Objeto();
+    public static <T extends Objects> T getObjeto(String tabla, String[] info) {
+        Objects clone = new Objects();
         try {
             clone = mapa.get(tabla).clone();
         } catch (CloneNotSupportedException ex) {
@@ -74,7 +74,7 @@ public class ObjectUtils {
         return getObjetoById(CacheFactory.WATER_INTAKES_TYPES, id);
     }
 
-    private static <T extends Objeto> T getObjetoById(MemoListCache<T> cache, String id) {
+    private static <T extends Objects> T getObjetoById(MemoListCache<T> cache, String id) {
         ArrayList<T> list = cache.getList();
         if (list.isEmpty()) {
             return null;
@@ -114,16 +114,8 @@ public class ObjectUtils {
         return usuario.getType().equals("8");
     }
 
-    public static String getStreed(String street_id) {
-        return searchInCache(CacheFactory.STREETS, street_id);
-    }
-
     public static OStreet getStreedObject(String street_id) {
         return searchInCacheObject(CacheFactory.STREETS, street_id);
-    }
-
-    public static String getWaterIntakes(String water_intakes_id) {
-        return searchInCache(CacheFactory.WATER_INTAKES_TYPES, water_intakes_id);
     }
 
     public static OWaterIntakeTypes getWaterIntakesObject(String water_intakes_id) {
@@ -138,11 +130,7 @@ public class ObjectUtils {
         return searchInCacheObject(CacheFactory.USERS, user_id);
     }
 
-    private static <T extends Objeto> String searchInCache(MemoListCache<T> cache, String id) {
-        return cache.get(o -> o.getId().equals(id)).toString();
-    }
-
-    private static <T extends Objeto> T searchInCacheObject(MemoListCache<T> cache, String id) {
+    private static <T extends Objects> T searchInCacheObject(MemoListCache<T> cache, String id) {
         return cache.get((t) -> t.getId().equals(id));
     }
 

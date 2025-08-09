@@ -16,16 +16,20 @@
  */
 package com.jblue.views;
 
-import com.jblue.model.constants.Const;
+import com.jblue.controllers.FactoryController;
+import com.jblue.controllers.compc.TableController;
+import com.jblue.controllers.viewc.EmployeeController;
 import com.jblue.model.dtos.OEmployee;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
+import com.jblue.model.factories.CacheFactory;
+import com.jblue.model.factories.TableModelFactory;
 import com.jblue.util.Filters;
 import com.jblue.util.Formats;
 import com.jblue.util.EncriptadoAES;
+import com.jblue.util.GraphicsUtils;
 import com.jblue.views.framework.DBView;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
-import java.awt.event.ActionListener;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -34,41 +38,100 @@ import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import com.jblue.views.framework.DBValuesModel;
-import com.jblue.views.framework.OptionMenuModel;
 
 /**
  *
  * @author jp
  */
-public class EmployeeView extends DBView implements OptionMenuModel, DBValuesModel {
+public final class EmployeesView extends DBView implements DBValuesModel {
 
     private final JTableModel model;
     private final CardLayout ly;
     private OEmployee object_search;
-    private final JButton option;
 
     /**
      * Creates new form PersonalC
      *
      *
      */
-    public EmployeeView() {
+    public EmployeesView() {
         initComponents();
-        model = new JTableModel(Const.getEMPLOYEES().getFields(), 0);
+        model = TableModelFactory.getEmployeesTableModel();
+        objects_table.setModel(model);
         ly = (CardLayout) root_panel.getLayout();
-        this.option = mkButton(getName(), null, null);
+        ly.show(root_panel, register_panel.getName());
+        controller = FactoryController.getEmployeeController(this);
+        table_controller = new TableController(this, CacheFactory.EMPLOYEES);
+        build();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        finalState();
+        initialState();
+    }
+
+    @Override
+    public void events() {
+        objects_table.addMouseListener(table_controller);
+        //
+        save_button.addActionListener(controller);
+        update_button.addActionListener(controller);
+        delete_button.addActionListener(controller);
+        cancel_button.addActionListener(controller);
+        search_object.addActionListener(controller);
+        //
+        back_button.addActionListener(table_controller);
+        next_button.addActionListener(table_controller);
+        reload_button.addActionListener(table_controller);
+        //
+        register_button.addActionListener(table_controller);
+        search_button.addActionListener(table_controller);
+        //
 
     }
 
     @Override
-    public void initialState() {
+    public void components() {
+    }
 
+    @Override
+    public void initialState() {
+        //Fields
+        first_name.setText(null);
+        last_names.setText(null);
+        employee_type_field.setSelectedIndex(0);
+        status_type_field.setSelectedIndex(0);
+        user_field.setText(null);
+        password_field.setText(null);
+        date_limit_field.setSelected(false);
+        day_limit_field.setSelectedIndex(0);
+        month_limit_field.setSelectedIndex(0);
+        year_limit_field.setSelectedIndex(0);
+        //
+        view_show = 1;
+        object_search = null;
+        //
+        save_button.setEnabled(true);
+        GraphicsUtils.setEnable(false,
+                update_button,
+                delete_button,
+                day_limit_field,
+                month_limit_field,
+                year_limit_field
+        );
+
+    }
+
+    @Override
+    public void finalState() {
     }
 
     /**
@@ -97,7 +160,7 @@ public class EmployeeView extends DBView implements OptionMenuModel, DBValuesMod
         first_name = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
-        last_name = new javax.swing.JTextField();
+        last_names = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         employee_type_field = new javax.swing.JComboBox<>();
@@ -113,13 +176,13 @@ public class EmployeeView extends DBView implements OptionMenuModel, DBValuesMod
         password_field = new javax.swing.JPasswordField();
         jCheckBox2 = new javax.swing.JCheckBox();
         jPanel25 = new javax.swing.JPanel();
-        jCheckBox3 = new javax.swing.JCheckBox();
+        date_limit_field = new javax.swing.JCheckBox();
         jPanel35 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jComboBox5 = new javax.swing.JComboBox<>();
+        day_limit_field = new javax.swing.JComboBox<>();
+        month_limit_field = new javax.swing.JComboBox<>();
+        year_limit_field = new javax.swing.JComboBox<>();
         options_panel = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         save_button = new javax.swing.JButton();
@@ -216,8 +279,8 @@ public class EmployeeView extends DBView implements OptionMenuModel, DBValuesMod
         jLabel18.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel7.add(jLabel18, java.awt.BorderLayout.LINE_START);
 
-        last_name.setName("Apellidos"); // NOI18N
-        jPanel7.add(last_name, java.awt.BorderLayout.CENTER);
+        last_names.setName("Apellidos"); // NOI18N
+        jPanel7.add(last_names, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel7);
 
@@ -281,8 +344,8 @@ public class EmployeeView extends DBView implements OptionMenuModel, DBValuesMod
 
         jPanel25.setLayout(new java.awt.BorderLayout());
 
-        jCheckBox3.setText("Fecha Limite");
-        jPanel25.add(jCheckBox3, java.awt.BorderLayout.CENTER);
+        date_limit_field.setText("Fecha Limite");
+        jPanel25.add(date_limit_field, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel25);
 
@@ -294,14 +357,14 @@ public class EmployeeView extends DBView implements OptionMenuModel, DBValuesMod
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(jComboBox3);
+        day_limit_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel1.add(day_limit_field);
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(jComboBox4);
+        month_limit_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel1.add(month_limit_field);
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(jComboBox5);
+        year_limit_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel1.add(year_limit_field);
 
         jPanel35.add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -383,7 +446,7 @@ public class EmployeeView extends DBView implements OptionMenuModel, DBValuesMod
         panel_tabla.add(jPanel30, java.awt.BorderLayout.NORTH);
 
         objects_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Objects [][] {
 
             },
             new String [] {
@@ -450,16 +513,14 @@ public class EmployeeView extends DBView implements OptionMenuModel, DBValuesMod
     private javax.swing.JButton cancel_button;
     private javax.swing.JPanel center_panel;
     private javax.swing.JLabel count;
+    private javax.swing.JCheckBox date_limit_field;
+    private javax.swing.JComboBox<String> day_limit_field;
     private javax.swing.JButton delete_button;
     private javax.swing.JComboBox<String> employee_type_field;
     private javax.swing.JTextField first_name;
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -485,7 +546,8 @@ public class EmployeeView extends DBView implements OptionMenuModel, DBValuesMod
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField last_name;
+    private javax.swing.JTextField last_names;
+    private javax.swing.JComboBox<String> month_limit_field;
     private javax.swing.JButton next_button;
     private javax.swing.JPanel north_panel;
     private javax.swing.JPanel np_cp_center;
@@ -510,6 +572,7 @@ public class EmployeeView extends DBView implements OptionMenuModel, DBValuesMod
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     private javax.swing.JPasswordField user_field;
+    private javax.swing.JComboBox<String> year_limit_field;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -550,25 +613,13 @@ public class EmployeeView extends DBView implements OptionMenuModel, DBValuesMod
     }
 
     @Override
-    public void setObjectSearch(Objeto o) {
+    public void setObjectSearch(Objects o) {
         this.object_search = (OEmployee) o;
     }
 
     @Override
     public OEmployee getObjectSearch() {
         return object_search;
-    }
-
-    @Override
-    public JButton getOption() {
-        return option;
-    }
-
-    @Override
-    public void setEvenOption(ActionListener e) {
-        if (option.getActionListeners().length < 1) {
-            option.addActionListener(e);
-        }
     }
 
     @Override
@@ -585,7 +636,7 @@ public class EmployeeView extends DBView implements OptionMenuModel, DBValuesMod
     @Override
     public boolean isValuesOk() {
         JTextField[] arr = {
-            first_name, last_name, user_field, password_field
+            first_name, last_names, user_field, password_field
         };
         for (JTextField i : arr) {
             if (Filters.isNullOrBlank(i.getText())) {
@@ -626,14 +677,14 @@ public class EmployeeView extends DBView implements OptionMenuModel, DBValuesMod
         try {
             _user = EncriptadoAES.doEncrypt(String.valueOf(user_field.getPassword()),
                     String.valueOf(password_field.getPassword()));
-            
+
             _password = EncriptadoAES.doEncrypt(String.valueOf(password_field.getPassword()),
                     String.valueOf(user_field.getPassword()));
-            
+
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException
                 | InvalidKeyException | NoSuchPaddingException
                 | IllegalBlockSizeException | BadPaddingException ex) {
-            Logger.getLogger(EmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeesView.class.getName()).log(Level.SEVERE, null, ex);
         }
         return new String[]{
             _user, _password

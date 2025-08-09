@@ -16,7 +16,7 @@
  */
 package com.jblue.views.framework;
 
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -43,9 +43,9 @@ public interface TableSearchViewModel {
 
     int getViewShow();
 
-    void setObjectSearch(Objeto o);
+    void setObjectSearch(Objects o);
 
-    <T extends Objeto> T getObjectSearch();
+    <T extends Objects> T getObjectSearch();
     
     public void setRowsData(String... info);
     

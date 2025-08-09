@@ -18,7 +18,7 @@ package com.jblue.controllers.compc;
 
 import com.jblue.controllers.AbstractComponentController;
 import com.jblue.model.dtos.OUser;
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import com.jblue.util.Filters;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.model.dtos.ForeingKeyObject;
@@ -39,7 +39,7 @@ import com.jblue.views.framework.ListSearchViewModel;
  * @author juan-campos
  * @param <T>
  */
-public final class ListController<T extends Objeto & StatusObject & ForeingKeyObject> extends AbstractComponentController<T> {
+public final class ListController<T extends Objects & StatusObject & ForeingKeyObject> extends AbstractComponentController<T> {
 
     protected ListSearchViewModel view;
     protected DefaultListModel<T> model;
@@ -105,7 +105,7 @@ public final class ListController<T extends Objeto & StatusObject & ForeingKeyOb
         });
     }
 
-    public boolean isThisUser(Objeto o, String txt, boolean validateIsTitular) {
+    public boolean isThisUser(Objects o, String txt, boolean validateIsTitular) {
         if (o instanceof OUser a && !a.isActive()) {
             return false;
         }

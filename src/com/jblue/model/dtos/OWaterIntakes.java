@@ -20,6 +20,6 @@ package com.jblue.model.dtos;
  *
  * @author juanp
  */
-public class OWaterIntakes extends Objeto {
+public class OWaterIntakes extends Objects {
     
 }

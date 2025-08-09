@@ -16,7 +16,7 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.model.dtos.Objeto;
+import com.jblue.model.dtos.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -24,7 +24,7 @@ import java.util.function.Predicate;
  *
  * @author juan-campos
  */
-public interface SetCache <T extends Objeto> {
+public interface SetCache <T extends Objects> {
 
     Set<T> getSet();
 

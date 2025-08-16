@@ -99,7 +99,6 @@ public class TableController<T extends Objects & ForeingKeyObject> extends Abstr
         if (data.isEmpty()) {
             return;
         }
-        System.out.println(data.size());
         if (data.getFirst() instanceof ForeingKeyObject) {
             for (T i : data) {
                 model.addRow(i.getInfoSinFK());
@@ -172,8 +171,6 @@ public class TableController<T extends Objects & ForeingKeyObject> extends Abstr
         JTableModel model = (JTableModel) view.getModel();
         String[] row = model.getRow(selected_index);
         T get = memo_cache.get((t) -> t.getId().equals(row[0]));
-        System.out.println(get);
-        System.out.println(row[0]);
         if (get == null) {
             return;
         }

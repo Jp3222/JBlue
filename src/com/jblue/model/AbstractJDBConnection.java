@@ -112,7 +112,6 @@ public abstract class AbstractJDBConnection<T extends Objects> implements JDBCon
             ResultSet select = connection.select(campos, table, where);
             String[] a = new String[fields.length];
             while (select.next()) {
-                System.out.println(select);
                 for (int i = 0; i < a.length; i++) {
                     a[i] = select.getString(i + 1);
                 }

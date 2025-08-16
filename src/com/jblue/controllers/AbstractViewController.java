@@ -16,8 +16,6 @@
  */
 package com.jblue.controllers;
 
-import com.jblue.controllers.Controller;
-
 /**
  *
  * @author juan-campos

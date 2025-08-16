@@ -102,7 +102,6 @@ public class JBlueMainSystem implements MainSystem {
             resources.put("connection", connection);
             resources.put("sys_flag_logs", AppConfig.isLogsDB());
             connection.setShowQuery((boolean) resources.get("sys_flag_logs"));
-            System.out.println("xd:" + resources.get("sys_flag_logs"));
         } catch (SQLException e) {
             SystemLogs.severeSysLogs(e.getMessage(), e);
             Excp.SysExit();

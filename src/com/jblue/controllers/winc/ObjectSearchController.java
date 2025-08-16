@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2025 juanp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,15 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.util.plataformas;
+package com.jblue.controllers.winc;
+
+import com.jblue.model.dtos.ForeingKeyObject;
+import com.jblue.model.dtos.Objects;
+import com.jblue.model.dtos.StatusObject;
+import com.jblue.views.components.ObjectSearchComponent;
+import java.awt.event.ActionEvent;
 
 /**
  *
- * @author juan-campos
+ * @author juanp
+ * @param <T>
  */
-public class Linux extends OsConfig {
+public class ObjectSearchController<T extends Objects & StatusObject & ForeingKeyObject> extends WindowController {
 
-    public Linux() {
+    private ObjectSearchComponent<T> view;
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 
 }

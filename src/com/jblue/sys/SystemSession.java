@@ -62,12 +62,8 @@ public class SystemSession implements LocalSession<OEmployee> {
 
     @Override
     public void setUser(OEmployee user) {
-        String id = "1";
-        String description = "INICIO DE SESIÓN";
-        if (user == null) {
-            id = personal.getId();
-            description = "FIN DE SESIÓN";
-        }
+        String id = user == null ? personal.getId() : user.getId();
+        String description = user == null ? "FIN DE SESION" : "INICIO DE SESIÓN";
         personal = user;
         register(id, Const.INSERT_LOGIN, description);
     }

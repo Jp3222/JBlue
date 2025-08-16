@@ -49,7 +49,7 @@ public abstract class OsConfig implements OsConfigModel {
     public static final OsConfig getMacConfing() {
         return new Windows();
     }
-    protected final String documents_path[],
+    protected String documents_path[],
             desktop_path[];
 
     public OsConfig() {

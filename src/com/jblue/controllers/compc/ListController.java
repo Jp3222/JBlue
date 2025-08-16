@@ -23,6 +23,7 @@ import com.jblue.util.Filters;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.model.dtos.ForeingKeyObject;
 import com.jblue.model.dtos.StatusObject;
+import com.jblue.sys.DevFlags;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -92,7 +93,7 @@ public final class ListController<T extends Objects & StatusObject & ForeingKeyO
         }
 
         List<T> list = memo_cache.getList(o -> {
-            return isThisUser(o, search_text, false);
+            return isThis(o, search_text, false);
         });
         if (list.isEmpty()) {
             dumpData();
@@ -105,13 +106,10 @@ public final class ListController<T extends Objects & StatusObject & ForeingKeyO
         });
     }
 
-    public boolean isThisUser(Objects o, String txt, boolean validateIsTitular) {
-        if (o instanceof OUser a && !a.isActive()) {
+    public boolean isThis(Objects o, String txt, boolean validateIsTitular) {
+        if (o instanceof StatusObject a && !a.isActive()) {
             return false;
         }
-//        if (!(o instanceof OUser b && validateIsTitular && b.isTitular())) {
-//            return false;
-//        }
         return Filters.clearAndCheck(o.getId(), txt)
                 || Filters.clearAndCheck(o.toString(), txt);
     }

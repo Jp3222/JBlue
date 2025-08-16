@@ -131,6 +131,12 @@ public class OEmployee extends Objects implements ForeingKeyObject, StatusObject
     }
 
     @Override
+    public void setInfo(String[] info) {
+        super.setInfo(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        this.info_fk = info.clone();
+    }
+
+    @Override
     public String[] getInfoSinFK() {
         info_fk[3] = getCargoString();
         info_fk[4] = getStatusString();

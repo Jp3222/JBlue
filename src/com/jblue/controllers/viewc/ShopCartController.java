@@ -28,6 +28,7 @@ import com.jblue.util.cache.MemoListCache;
 import com.jblue.util.GraphicsUtils;
 import com.jblue.views.components.UserViewComponent;
 import com.jblue.views.ShopCartView;
+import com.jblue.views.components.ObjectSearchComponent;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
@@ -53,7 +54,6 @@ public class ShopCartController extends Controller {
     private final StringBuilder mov_book;
 
     public ShopCartController(ShopCartView view) {
-        System.out.println("xd 1");
         this.view = view;
         memo_cache = CacheFactory.USERS;
         this.service_payment = PaymentFactory.getServicePayment();
@@ -88,6 +88,8 @@ public class ShopCartController extends Controller {
             case "mov_book" -> {
                 mov_book();
             }
+            case "search_user_button" ->
+                searchUser();
             default ->
                 defaultCase(e.getActionCommand(), null, -1);
         }
@@ -115,9 +117,6 @@ public class ShopCartController extends Controller {
             return;
         }
         String in = JOptionPane.showInputDialog(view, "Dinero Ingresado", "Dinero ingresado", JOptionPane.INFORMATION_MESSAGE);
-        if (DevFlags.DEV_MSG_CODE) {
-            System.out.println("Dinero ingresado" + in);
-        }
         float dinero_in = Float.parseFloat(in.concat(".00"));
 
         service_payment.setUsuario(view.getObjectSearch());
@@ -125,6 +124,7 @@ public class ShopCartController extends Controller {
         service_payment.setDineroIngresado(dinero_in);
         boolean execPayment = service_payment.execPayment();
         mov_book.append("Total: ").append(service_payment.getTotal());
+
         if (execPayment) {
             SystemSession.getInstancia().register(
                     Const.INSERT_TO_SERVICE_PAYMENTS,
@@ -221,7 +221,6 @@ public class ShopCartController extends Controller {
 
     public void setPaymentsInfo(OUser user) {
         try {
-            System.out.println("lista");
             LocalDate ld = LocalDate.now();
             String query = "SELECT month_name FROM service_payments WHERE user = '%s' AND YEAR(NOW()) = '%s' AND status != 3"
                     .formatted(user.getId(), ld.getYear());
@@ -233,13 +232,9 @@ public class ShopCartController extends Controller {
                 list.add(res.getString(1));
             }
 
-            System.out.println(list.toString());
-
             ArrayList<JCheckBox> check_box = view.getMonthList();
             boolean contains = false;
             for (JCheckBox i : check_box) {
-
-                System.out.println("con: " + contains);
                 contains = list.contains(i.getText());
                 i.setSelected(contains);
                 i.setEnabled(!contains);
@@ -252,6 +247,20 @@ public class ShopCartController extends Controller {
     }
 
     private void mov_book() {
-        JOptionPane.showMessageDialog(view, service_payment.getMovBook());
+        String book = service_payment.getMovBook().toString();
+        if (book == null || book.isBlank()) {
+            book = "Sin Movimientos";
+        }
+        JOptionPane.showMessageDialog(view, book, "Movimientos Recientes", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void searchUser() {
+        OUser o = ObjectSearchComponent.getUser(null);
+        if (o == null) {
+            JOptionPane.showMessageDialog(view, "Usuario no encontrado");
+            return;
+        }
+        view.setObjectSearch(o);
+        UserViewComponent.showVisor(view.getObjectSearch());
     }
 }

@@ -139,7 +139,6 @@ public class SystemLogs {
             default:
                 yield 0;
         };
-        System.out.println(name);
         FileHandler fh = getFileHander(file);
         //
         SimpleFormatter formatter = new SimpleFormatter();

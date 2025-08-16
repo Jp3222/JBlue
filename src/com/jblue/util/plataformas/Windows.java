@@ -16,20 +16,14 @@
  */
 package com.jblue.util.plataformas;
 
-import com.jutil.platf.So;
-import java.io.File;
-import java.io.FileNotFoundException;
-
 /**
  *
  * @author juan-campos
  */
 public class Windows extends OsConfig {
 
-   
     public Windows() {
-        
-    }
 
+    }
 
 }

@@ -125,7 +125,7 @@ public class LoginController extends WindowController {
                 String.valueOf(view.getPassword().getPassword())
         );
 
-        if (res.isEmpty() && LoginRulers.isEmployeeNull(res.get())) {
+        if (res.isEmpty()) {
             rmessage("Usuario y/o contraseña no validos", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }

@@ -34,7 +34,6 @@ public class ProfileController extends WindowController {
     @Override
     public void actionPerformed(ActionEvent e) {
         String actionCommand = e.getActionCommand();
-        System.out.println(actionCommand);
         view.getCardLayout().show(view.getRootPanel(), actionCommand);
         view.updateTitle(actionCommand);
     }

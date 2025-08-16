@@ -66,14 +66,10 @@ public final class CacheFactory {
         int isc_size = sizeCat(connection, "id", "items_status");
         USER_TYPES_CAT = new String[utc_size];
         USER_TYPES_CAT = readCat(connection, utc_size, "user_type", "user_type", "date_finalize IS NULL");
-        System.out.println(Arrays.toString(USER_TYPES_CAT));
-
         HISTORY_TYPES_CAT = new String[htc_size];
         HISTORY_TYPES_CAT = readCat(connection, htc_size, "name_mov", "history_type_mov", "status NOT IN(3,8)");
-        System.out.println(Arrays.toString(HISTORY_TYPES_CAT));
         ITEMS_STATUS_CAT = new String[isc_size];
         ITEMS_STATUS_CAT = readCat(connection, isc_size, "description", "items_status", "date_finalize IS NULL");
-        System.out.println(Arrays.toString(ITEMS_STATUS_CAT));
         return USER_TYPES_CAT != null
                 && HISTORY_TYPES_CAT != null
                 && ITEMS_STATUS_CAT != null;
@@ -83,16 +79,13 @@ public final class CacheFactory {
         try {
             ResultSet rs = connection.query("SELECT %s FROM %s WHERE %s".formatted(field, table, where));
             String[] cat = new String[size + 1];
-            System.out.println("size: " + size);
             cat[0] = "desconocido";
             int i = 1;
             while (rs.next()) {
                 cat[i] = rs.getString(1);
-                System.out.println(cat[i]);
                 i++;
             }
             rs.close();
-            System.out.println(Arrays.toString(cat));
             return cat;
         } catch (SQLException e) {
             JExcp.getInstance(false, true).print(e, CacheFactory.class, "readCat");
@@ -106,8 +99,7 @@ public final class CacheFactory {
                 return query.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println(e.getCause());
-            e.printStackTrace();
+            JExcp.getInstance(false, true).print(e, CacheFactory.class, "sizeCat");
         }
         return -1;
     }

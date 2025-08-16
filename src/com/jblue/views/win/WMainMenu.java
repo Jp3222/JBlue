@@ -200,6 +200,8 @@ public final class WMainMenu extends AbstractAppWindows {
         surcharge_payments_view_item = new javax.swing.JMenuItem();
         other_type_payments_view_item = new javax.swing.JMenuItem();
         other_payments_view_item = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         about_item_view = new javax.swing.JMenuItem();
 
@@ -395,6 +397,18 @@ public final class WMainMenu extends AbstractAppWindows {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu4.setText("Tramites");
+
+        jMenuItem1.setText("Alta de toma");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu4);
+
         jMenu3.setText("Ayuda");
 
         about_item_view.setText("Acerca de");
@@ -407,6 +421,10 @@ public final class WMainMenu extends AbstractAppWindows {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -424,7 +442,9 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;

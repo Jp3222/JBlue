@@ -16,19 +16,48 @@
  */
 package com.jblue.views;
 
+import com.jblue.model.dtos.OSurchargePayments;
+import com.jblue.model.dtos.Objects;
 import com.jblue.model.dtos.OtherPaymentsType;
+import com.jblue.views.framework.ListSearchViewModel;
+import com.jblue.views.framework.SimpleView;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JTextField;
 
 /**
  *
  * @author juanp
  */
-public class SurchargePaymentsView extends javax.swing.JPanel {
+public class SurchargePaymentsView extends SimpleView implements ListSearchViewModel {
+
+    DefaultListModel<OSurchargePayments> model;
 
     /**
      * Creates new form OtherPaymentsView
      */
     public SurchargePaymentsView() {
         initComponents();
+    }
+
+    @Override
+    public void build() {
+    }
+
+    @Override
+    public void events() {
+    }
+
+    @Override
+    public void components() {
+    }
+
+    @Override
+    public void initialState() {
+    }
+
+    @Override
+    public void finalState() {
     }
 
     /**
@@ -147,14 +176,8 @@ public class SurchargePaymentsView extends javax.swing.JPanel {
 
         jPanel2.setPreferredSize(new java.awt.Dimension(880, 30));
         jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jButton1.setText("jButton1");
         jPanel2.add(jButton1, java.awt.BorderLayout.LINE_START);
-
-        jTextField1.setText("jTextField1");
         jPanel2.add(jTextField1, java.awt.BorderLayout.CENTER);
-
-        jButton3.setText("jButton3");
         jPanel2.add(jButton3, java.awt.BorderLayout.LINE_END);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
@@ -387,4 +410,50 @@ public class SurchargePaymentsView extends javax.swing.JPanel {
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public JList getList() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public JTextField getTextComponentList() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getTextSearchList() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public DefaultListModel getListModel() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void setCountElements(int count) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public int getCountElements() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void setScreenListInfo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Objects getObjectSearch() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void setObjectSearch(Objects object) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

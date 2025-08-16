@@ -443,7 +443,7 @@ public final class UserView extends DBView implements DBValuesModel {
         pc_estado.add(jLabel8, java.awt.BorderLayout.WEST);
 
         user_state.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        user_state.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona Elemento.", "Activo.", "Inactivo.", "Baja." }));
+        user_state.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona Elemento.", "Activo.", "Inactivo." }));
         user_state.setName("Estado"); // NOI18N
         user_state.setPreferredSize(new java.awt.Dimension(100, 30));
         pc_estado.add(user_state, java.awt.BorderLayout.CENTER);
@@ -643,7 +643,7 @@ public final class UserView extends DBView implements DBValuesModel {
         panel_tabla.add(jPanel30, java.awt.BorderLayout.NORTH);
 
         objects_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Objects [][] {
+            new Object [][] {
 
             },
             new String [] {

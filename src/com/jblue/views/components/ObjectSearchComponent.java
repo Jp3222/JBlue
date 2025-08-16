@@ -16,15 +16,19 @@
  */
 package com.jblue.views.components;
 
+import com.jblue.controllers.compc.ListController;
+import com.jblue.model.dtos.ForeingKeyObject;
 import com.jblue.model.dtos.OStreet;
 import com.jblue.model.dtos.OWaterIntakeTypes;
 import com.jblue.model.dtos.OUser;
 import com.jblue.model.dtos.Objects;
-import com.jblue.util.Filters;
+import com.jblue.model.dtos.StatusObject;
 import com.jblue.model.factories.CacheFactory;
+import com.jblue.util.cache.MemoListCache;
+import com.jblue.views.framework.ListSearchViewModel;
+import com.jutil.framework.WindowStates;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.DefaultListModel;
@@ -32,64 +36,48 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
-
 /**
  *
  * @author jp
  * @param <T>
  */
-public class ObjectSearchComponent<T extends Objects> extends javax.swing.JDialog {
+import javax.swing.JDialog;
+import javax.swing.JList;
+import javax.swing.JTextField;
 
-    public static OStreet selectorCalle(JFrame padre) {
-        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.STREETS.getList());
+public final class ObjectSearchComponent<T extends Objects & StatusObject & ForeingKeyObject> extends JDialog implements WindowStates, ListSearchViewModel {
+
+    public static OStreet getStreet(JFrame padre) {
+        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.STREETS);
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;
         }
-        return (OStreet) o.getObjeto();
+        return (OStreet) o.getObjectSearch();
     }
 
-    public static OUser selectorUsuarios(JFrame padre) {
-        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.USERS.getList());
+    public static OUser getUser(JFrame padre) {
+        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.USERS);
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;
         }
-        return (OUser) o.getObjeto();
+        return (OUser) o.getObjectSearch();
     }
 
-    public static OUser selectorSoloTitulares(JFrame padre) {
-        ArrayList<OUser> list = (ArrayList<OUser>) CacheFactory.USERS.getList(o -> o.isTitular());
-        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, list);
+    public static OWaterIntakeTypes getWaterIntakeType(JFrame padre) {
+        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.WATER_INTAKES_TYPES);
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;
         }
-        return (OUser) o.getObjeto();
+        return (OWaterIntakeTypes) o.getObjectSearch();
     }
 
-    public static OUser selectorSoloUsuarios(JFrame padre) {
-        ArrayList<OUser> list = (ArrayList<OUser>) CacheFactory.USERS.getList(o -> !o.isTitular());
-        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, list);
-        o.setVisible(true);
-        if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
-            return null;
-        }
-        return (OUser) o.getObjeto();
-    }
-
-    public static OWaterIntakeTypes selectorTipoDeToma(JFrame padre) {
-        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.WATER_INTAKES_TYPES.getList());
-        o.setVisible(true);
-        if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
-            return null;
-        }
-        return (OWaterIntakeTypes) o.getObjeto();
-    }
-
-    private final DefaultListModel<String> modelo_lista;
-    private final ArrayList<T> cache;
-    private final ArrayList<T> cache_aux;
+    private MemoListCache<T> _cache;
+    private T object_search;
+    //
+    private DefaultListModel<T> list_model;
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -99,27 +87,39 @@ public class ObjectSearchComponent<T extends Objects> extends javax.swing.JDialo
      */
     public static final int RET_OK = 1;
 
+    private ListController<T> list_controller;
+
     /**
      * Creates new form NewOkCancelDialog
      *
      * @param parent
      * @param modal
-     * @param lista
+     * @param memo_list
      */
-    public ObjectSearchComponent(JFrame parent, boolean modal, ArrayList<T> lista) {
+    public ObjectSearchComponent(JFrame parent, boolean modal, MemoListCache<T> memo_list) {
         super(parent, modal);
         initComponents();
-        modelo_lista = new DefaultListModel<>();
-        cache = lista;
-        cache_aux = new ArrayList<>(lista.size());
-        lista_usuarios.setModel(modelo_lista);
-        cargar();
-        //
+        list_model = new DefaultListModel();
+        objects_list.setModel(list_model);
+        System.out.println(memo_list.size());
+        this.list_controller = new ListController(this, memo_list);
+        build();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        initComponents();
+        finalState();
+    }
+
+    @Override
+    public void events() {
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelName);
-
         ActionMap actionMap = getRootPane().getActionMap();
         actionMap.put(cancelName, new AbstractAction() {
             @Override
@@ -127,19 +127,21 @@ public class ObjectSearchComponent<T extends Objects> extends javax.swing.JDialo
                 doClose(RET_CANCEL);
             }
         });
-        
-        
+
+        objects_list.addMouseListener(list_controller);
+        //ok_button.addActionListener(controller);
     }
 
-    public T getObjeto() {
-        ArrayList<T> lista;
-        System.out.println(buscado);
-        if (buscado) {
-            lista = cache_aux;
-        } else {
-            lista = cache;
-        }
-        return lista.get(lista_usuarios.getSelectedIndex());
+    @Override
+    public void components() {
+    }
+
+    @Override
+    public void initialState() {
+    }
+
+    @Override
+    public void finalState() {
     }
 
     /**
@@ -162,15 +164,15 @@ public class ObjectSearchComponent<T extends Objects> extends javax.swing.JDialo
         panel_central = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        search_field = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        lista_usuarios = new javax.swing.JList<>();
+        objects_list = new javax.swing.JList<>();
         botones = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        okButton = new javax.swing.JButton();
-        cancelButton = new javax.swing.JButton();
+        ok_button = new javax.swing.JButton();
+        cancel_button = new javax.swing.JButton();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -190,25 +192,15 @@ public class ObjectSearchComponent<T extends Objects> extends javax.swing.JDialo
         jLabel2.setText("Buscar");
         jLabel2.setPreferredSize(new java.awt.Dimension(100, 40));
         jPanel1.add(jLabel2, java.awt.BorderLayout.LINE_START);
-
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField1KeyReleased(evt);
-            }
-        });
-        jPanel1.add(jTextField1, java.awt.BorderLayout.CENTER);
+        jPanel1.add(search_field, java.awt.BorderLayout.CENTER);
 
         panel_central.add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
         jPanel2.setMinimumSize(new java.awt.Dimension(600, 230));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        lista_usuarios.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lista_usuariosMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(lista_usuarios);
+        objects_list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(objects_list);
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -222,23 +214,23 @@ public class ObjectSearchComponent<T extends Objects> extends javax.swing.JDialo
         jPanel3.setPreferredSize(new java.awt.Dimension(200, 30));
         jPanel3.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
 
-        okButton.setText("Seleccionar");
-        okButton.setPreferredSize(new java.awt.Dimension(200, 30));
-        okButton.addActionListener(new java.awt.event.ActionListener() {
+        ok_button.setText("Seleccionar");
+        ok_button.setPreferredSize(new java.awt.Dimension(200, 30));
+        ok_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonActionPerformed(evt);
+                ok_buttonActionPerformed(evt);
             }
         });
-        jPanel3.add(okButton);
-        getRootPane().setDefaultButton(okButton);
+        jPanel3.add(ok_button);
+        getRootPane().setDefaultButton(ok_button);
 
-        cancelButton.setText("Cancelar");
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+        cancel_button.setText("Cancelar");
+        cancel_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
+                cancel_buttonActionPerformed(evt);
             }
         });
-        jPanel3.add(cancelButton);
+        jPanel3.add(cancel_button);
 
         botones.add(jPanel3, java.awt.BorderLayout.EAST);
 
@@ -250,57 +242,17 @@ public class ObjectSearchComponent<T extends Objects> extends javax.swing.JDialo
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        doClose(RET_OK);
-    }//GEN-LAST:event_okButtonActionPerformed
-
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+    private void cancel_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancel_buttonActionPerformed
         doClose(RET_CANCEL);
-    }//GEN-LAST:event_cancelButtonActionPerformed
+    }//GEN-LAST:event_cancel_buttonActionPerformed
 
-    /**
-     * Closes the dialog
-     */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    private void lista_usuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lista_usuariosMouseClicked
-        if (evt.getClickCount() == 2) {
-            doClose(RET_OK);
-        }
-    }//GEN-LAST:event_lista_usuariosMouseClicked
-
-    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
-        if (Filters.isNullOrBlank(jTextField1.getText())) {
-            buscado = false;
-            cargar();
-            return;
-        }
-        buscado = true;
-
-        _buscador(jTextField1.getText());
-    }//GEN-LAST:event_jTextField1KeyReleased
-
-    private void _buscador(String txt) {
-        modelo_lista.clear();
-        cache_aux.clear();
-
-        txt = Filters.clearText(txt);
-
-        String aux;
-        for (T i : cache) {
-            aux = Filters.clearText(i.toString());
-            if (!aux.contains(txt)) {
-                continue;
-            }
-            StringBuilder sb = new StringBuilder(100);
-            sb.append(i.getId()).append(" - ").append(i.toString());
-
-            modelo_lista.addElement(sb.toString());
-            cache_aux.add(i);
-        }
-    }
+    private void ok_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ok_buttonActionPerformed
+        doClose(RET_OK);
+    }//GEN-LAST:event_ok_buttonActionPerformed
 
     private void doClose(int retStatus) {
         returnStatus = retStatus;
@@ -308,31 +260,71 @@ public class ObjectSearchComponent<T extends Objects> extends javax.swing.JDialo
         dispose();
     }
 
-    private void cargar() {
-        modelo_lista.clear();
-        for (Objects i : cache) {
-            StringBuilder sb = new StringBuilder(100);
-            sb.append(i.getId()).append(" - ").append(i.toString());
-            modelo_lista.addElement(sb.toString());
-        }
-    }
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel botones;
-    private javax.swing.JButton cancelButton;
+    private javax.swing.JButton cancel_button;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JList<String> lista_usuarios;
-    private javax.swing.JButton okButton;
+    private javax.swing.JList<T> objects_list;
+    private javax.swing.JButton ok_button;
     private javax.swing.JPanel panel_central;
     private javax.swing.JPanel panel_root;
+    private javax.swing.JTextField search_field;
     // End of variables declaration//GEN-END:variables
-    private boolean buscado = false;
     private int returnStatus = RET_CANCEL;
+
+    @Override
+    public JList getList() {
+        return objects_list;
+    }
+
+    @Override
+    public JTextField getTextComponentList() {
+        System.out.println("componente:");
+        System.out.println(search_field.getText());
+        return search_field;
+    }
+
+    @Override
+    public String getTextSearchList() {
+        System.out.println();
+        System.out.println("texto");
+        System.out.println(search_field.getText());
+        return search_field.getText().trim().toUpperCase().replace(" ", "");
+    }
+
+    @Override
+    public DefaultListModel getListModel() {
+        return list_model;
+    }
+
+    @Override
+    public void setCountElements(int count) {
+    }
+
+    @Override
+    public int getCountElements() {
+        return 0;
+    }
+
+    @Override
+    public void setScreenListInfo() {
+        T object = list_model.get(objects_list.getSelectedIndex());
+        setObjectSearch(object);
+        doClose(RET_OK);
+    }
+
+    @Override
+    public T getObjectSearch() {
+        return object_search;
+    }
+
+    @Override
+    public void setObjectSearch(Objects o) {
+        object_search = (T) o;
+    }
 }

@@ -77,14 +77,6 @@ public class ServicePaymentLogic extends AbsctractPayment {
         if (!gameRulers()) {
             return false;
         }
-        LocalDate now = LocalDate.now();
-        if (AppConfig.isAutoPay() && (now.getDayOfMonth() > AppConfig.getPayDay())) {
-            JOptionPane.showMessageDialog(null, "La fecha limite de pago ha sido excedida.¿Desea aplicarle un recargo a este usuario?");
-            PaymentModel surcharge = PaymentFactory.getSurchargePayment();
-            surcharge.insertToDefault();
-            surcharge.setUsuario(usuario);
-            surcharge.setDineroIngresado(meses_pagados.size() * toma.getSurcharge());
-        }
         StringBuilder values = new StringBuilder();
         int i = 0;
         String col;

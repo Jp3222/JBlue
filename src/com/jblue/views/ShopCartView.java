@@ -46,6 +46,7 @@ import com.jblue.views.framework.ListSearchViewModel;
 /**
  *
  * @author juan-campos
+ * @version 1.0
  */
 public class ShopCartView extends DBView implements ListSearchViewModel {
 

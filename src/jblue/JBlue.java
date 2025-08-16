@@ -6,17 +6,19 @@ package jblue;
 
 import com.jblue.sys.JBlueMainSystem;
 import com.jutil.framework.LaunchApp;
+
 /**
  * java
  *
  * @author jp
- *
+ * @version 1.0
  */
 public class JBlue {
 
     /**
      * @param args the command line arguments
      * @throws java.lang.InterruptedException
+     * 
      */
     public static void main(String... args) throws InterruptedException {
         /**

@@ -16,6 +16,7 @@
  */
 package com.jblue.views.framework;
 
+import com.jblue.model.dtos.Objects;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JTextField;
@@ -39,4 +40,9 @@ public interface ListSearchViewModel {
     int getCountElements();
 
     void setScreenListInfo();
+
+    Objects getObjectSearch();
+
+    void setObjectSearch(Objects object);
+
 }

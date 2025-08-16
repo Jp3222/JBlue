@@ -1,4 +1,4 @@
-USE `jblue_test`;
+USE `jblue_test_copy`;
 
 -- USERS
 INSERT INTO `history_type_mov` (`id`, `name_mov`, `type_mov`, `affected_table`) VALUES (1,'INSERT_TO_USER', 'INSERT', 'USERS');

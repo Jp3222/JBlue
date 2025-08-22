@@ -13,4 +13,6 @@ UPDATE service_payments SET month = 10 WHERE month_name = 'OCT';
 UPDATE service_payments SET month = 11 WHERE month_name = 'NOV';
 UPDATE service_payments SET month = 12 WHERE month_name = 'DIC';
 
+UPDATE service_payments SET status = 4;
+
 SELECT * FROM service_payments;

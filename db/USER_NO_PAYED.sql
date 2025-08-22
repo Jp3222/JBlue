@@ -1,7 +1,7 @@
 CREATE VIEW `new_view` AS 
 SELECT
 	CONCAT(a.first_name, " ", a.last_name1, " ", a.last_name2) AS 'USUARIO',
-	COUNT(b.month)
+	COUNT(b.month) AS 'MESES_PAGADOS'
 FROM 
 	users a
 INNER JOIN 
@@ -9,4 +9,5 @@ INNER JOIN
 	ON a.`id` = b.`user`
 WHERE 
 	YEAR(a.date_register) = YEAR(NOW())
-GROUP BY USUARIO;
+GROUP BY USUARIO
+HAVING MESES_PAGADOS > 12;

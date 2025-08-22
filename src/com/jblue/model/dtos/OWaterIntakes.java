@@ -16,10 +16,87 @@
  */
 package com.jblue.model.dtos;
 
+import com.jblue.model.factories.CacheFactory;
+
 /**
  *
  * @author juanp
  */
-public class OWaterIntakes extends Objects {
-    
+public class OWaterIntakes extends Objects implements ForeingKeyObject, StatusObject {
+
+    private String[] infoFk;
+
+    public OWaterIntakes(String[] info) {
+        super(info);
+        infoFk = info.clone();
+    }
+
+    public OWaterIntakes() {
+        super();
+        infoFk = null;
+    }
+
+    public String getConstProcedure() {
+        return info[1];
+    }
+
+    public String getWaterIntakeType() {
+        return info[2];
+    }
+
+    public String getProcedurePayemnts() {
+        return info[3];
+    }
+
+    public String getUser() {
+        return info[4];
+    }
+
+    public String getStreet1() {
+        return info[5];
+    }
+
+    public String getStreet2() {
+        return info[6];
+    }
+
+    public String getLocation() {
+        return info[7];
+    }
+
+    public String getDescription() {
+        return info[8];
+    }
+
+    @Override
+    public int getStatus() {
+        return Integer.parseInt(info[9]);
+    }
+
+    @Override
+    public String getStatusString() {
+        return CacheFactory.ITEMS_STATUS_CAT[getStatus()];
+    }
+
+    @Override
+    public boolean isActive() {
+        return getStatus() == 1;
+    }
+
+    @Override
+    public String[] getInfoSinFK() {
+        return infoFk;
+    }
+
+    public String getDateUpdate() {
+        return info[10];
+    }
+
+    public String getDateRegister() {
+        return info[11];
+    }
+
+    public String getDateEnd() {
+        return info[12];
+    }
 }

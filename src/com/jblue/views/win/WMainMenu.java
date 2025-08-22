@@ -206,7 +206,8 @@ public final class WMainMenu extends AbstractAppWindows {
         about_item_view = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1000, 500));
+        setMinimumSize(new java.awt.Dimension(1000, 600));
+        setPreferredSize(new java.awt.Dimension(1200, 700));
         getContentPane().setLayout(new java.awt.BorderLayout(5, 5));
 
         left_panel.setPreferredSize(new java.awt.Dimension(300, 700));
@@ -336,6 +337,7 @@ public final class WMainMenu extends AbstractAppWindows {
         jSeparator1.setPreferredSize(new java.awt.Dimension(10, 10));
         center_panel.add(jSeparator1, java.awt.BorderLayout.WEST);
 
+        views_panel.setMinimumSize(new java.awt.Dimension(900, 700));
         views_panel.setPreferredSize(new java.awt.Dimension(900, 700));
         views_panel.setLayout(new java.awt.CardLayout());
         center_panel.add(views_panel, java.awt.BorderLayout.CENTER);

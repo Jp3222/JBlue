@@ -58,23 +58,11 @@ public class MemoListCache<T extends Objects> extends AbstractListCache<T> imple
 
     @Override
     public boolean movData(int mov) {
-        int aux;
-
         if (mov == MOV_TO_BACK) {
-            aux = index_min - steps;
-//            if (aux <= 0) {
-//                return false;
-//            }
             this.index_min -= steps;
             this.index_max -= steps;
         }
-
         if (mov == MOV_TO_NEXT) {
-            aux = index_max + steps;
-
-//            if (aux > count()) {
-//                return false;
-//            }
             this.index_min += steps;
             this.index_max += steps;
         }

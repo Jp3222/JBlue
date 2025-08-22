@@ -18,7 +18,6 @@ package com.jblue.views;
 
 import com.jblue.controllers.FactoryController;
 import com.jblue.controllers.compc.TableController;
-import com.jblue.controllers.viewc.EmployeeController;
 import com.jblue.model.dtos.OEmployee;
 import com.jblue.model.dtos.Objects;
 import com.jblue.model.factories.CacheFactory;

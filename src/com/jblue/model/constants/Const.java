@@ -16,15 +16,21 @@
  */
 package com.jblue.model.constants;
 
+import java.time.format.DateTimeFormatter;
+
 /**
  *
  * @author juan-campos
  */
-public class Const implements TableDBConst{
+public class Const implements TableDBConst {
 
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String TIME_FORMAT = "HH:mm:ss";
+
+    public static final DateTimeFormatter DATE_TIME = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+    public static final DateTimeFormatter DATE = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    public static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern(TIME_FORMAT);
 
     public static Table getUSER() {
         USER.setHistoryToFormat("user: %s %s %s");
@@ -54,6 +60,5 @@ public class Const implements TableDBConst{
     public static Table getOTHER_PAYMENTS() {
         return OTHER_PAYMENTS;
     }
-    
-    
+
 }

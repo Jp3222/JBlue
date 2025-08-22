@@ -26,6 +26,7 @@ import com.jblue.controllers.DBControllerModel;
 import com.jblue.controllers.AbstractDBViewController;
 import com.jblue.model.constants.Const;
 import com.jblue.model.JDBConnection;
+import com.jblue.model.constants.LogBookFormats;
 import com.jblue.model.dtos.OServicePayments;
 import com.jblue.sys.SystemSession;
 import com.jblue.sys.app.AppConfig;
@@ -76,7 +77,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         String[] arr = view.getDbValues(false);
         String field = "first_name, last_name1, last_name2, street, house_number, water_intakes, user_type, status";
         boolean insert = connection.insert(field, arr);
-        
+
         if (insert) {
             SystemSession.getInstancia().register(Const.INSERT_TO_USER, DESCRIPTION_FORMAT.formatted(
                     memo_cache.count() + 1,
@@ -128,12 +129,13 @@ public class UserController extends AbstractDBViewController<OUser> implements D
                 values,
                 "id = %s".formatted(view.getObjectSearch().getId()));
         if (update) {
-            SystemSession.getInstancia().register(Const.UPDATE_TO_USER, DESCRIPTION_FORMAT.formatted(
-                    view.getObjectSearch().getId(),
-                    view.getObjectSearch().getName(),
-                    view.getObjectSearch().getLastName1(),
-                    view.getObjectSearch().getLastName2()
-            ));
+            SystemSession.getInstancia().register(Const.UPDATE_TO_USER,
+                    LogBookFormats.USERS.formatted(
+                            view.getObjectSearch().getId(),
+                            view.getObjectSearch().getName(),
+                            view.getObjectSearch().getLastName1(),
+                            view.getObjectSearch().getLastName2()
+                    ));
         }
         rmessage(view, update);
     }

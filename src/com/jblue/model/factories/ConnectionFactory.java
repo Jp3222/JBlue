@@ -18,13 +18,7 @@ package com.jblue.model.factories;
 
 import com.jblue.model.constants.Const;
 import com.jblue.model.JDBConnection;
-import com.jblue.model.dtos.OStreet;
-import com.jblue.model.dtos.OtherPaymentsType;
-import com.jblue.model.dtos.OServicePayments;
-import com.jblue.model.dtos.OEmployee;
-import com.jblue.model.dtos.OWaterIntakeTypes;
-import com.jblue.model.dtos.OUser;
-import com.jblue.model.dtos.OWaterIntakes;
+import com.jblue.model.dtos.*;
 
 /**
  *
@@ -59,8 +53,12 @@ public class ConnectionFactory {
     public static JDBConnection<OtherPaymentsType> getOtherPayments() {
         return new JDBConnection(Const.OTHER_PAYMENTS);
     }
-    
-    public static JDBConnection<OWaterIntakes> getWaterIntakes(){
+
+    public static JDBConnection<OWaterIntakes> getWaterIntakes() {
         return new JDBConnection(Const.WATER_INTAKES);
+    }
+
+    public static JDBConnection<OEmployeeTypes> getEmployeeTypes() {
+        return new JDBConnection(Const.EMPLOYEES_TYPES);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 jp
+ * Copyright (C) 2025 juanp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,38 +14,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.views.framework;
+package com.jblue.model.wrappers;
 
-import com.jblue.controllers.compc.TableController;
-import javax.swing.ImageIcon;
+import com.jblue.model.dtos.OUser;
+import com.jblue.model.dtos.OWaterIntakes;
 
 /**
  *
- * @author jp
+ * @author juanp
  */
-public abstract class DBView extends SimpleView implements TableSearchViewModel {
+public class NewUserRegistration {
+    
+    private OUser user;
+    private OWaterIntakes water_intake;
 
-    protected TableController table_controller;
-    protected int view_show;
-
-    @Override
-    public void build() {
+    public NewUserRegistration(OUser user, OWaterIntakes water_intake) {
+        this.user = user;
+        this.water_intake = water_intake;
     }
-
-    @Override
-    public void events() {
-    }
-
-    @Override
-    public void components() {
-    }
-
-    @Override
-    public void initialState() {
-    }
-
-    @Override
-    public void finalState() {
-    }
-
+    
 }

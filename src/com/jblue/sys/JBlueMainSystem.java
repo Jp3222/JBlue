@@ -26,6 +26,7 @@ import com.jblue.views.win.LoginWindows;
 import com.jutil.dbcon.connection.DBConnection;
 import com.jutil.framework.MainSystem;
 import com.jutil.jexception.Excp;
+import com.jutil.jexception.JExcp;
 import com.jutil.platf.So;
 import java.io.File;
 import java.io.FileInputStream;
@@ -104,7 +105,9 @@ public class JBlueMainSystem implements MainSystem {
             connection.setShowQuery((boolean) resources.get("sys_flag_logs"));
         } catch (SQLException e) {
             SystemLogs.severeSysLogs(e.getMessage(), e);
-            Excp.SysExit();
+            JExcp.getInstance(true, true).printAndShow(e, getClass());
+            SystemLogs.infoSysLogs("ERROR EN CONEXION");
+            return false;
         }
         SystemLogs.infoSysLogs("BASE DE DATOS CONECTADA");
         return true;
@@ -181,7 +184,7 @@ public class JBlueMainSystem implements MainSystem {
         resources.put("t_water_intakes", Const.WATER_INTAKES_TYPES);
         resources.put("t_employees", Const.EMPLOYEES);
         resources.put("t_payments", Const.SERVICE_PAYMENTS);
-
+        System.out.println(AppFiles.FIL_ARC_CONFIG.getAbsolutePath());
         SystemLogs.infoDbLogs("OPEN SYSTEM");
         return true;
     }

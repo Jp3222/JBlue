@@ -17,7 +17,10 @@
 package com.jblue.views;
 
 import com.jblue.controllers.FactoryController;
+import com.jblue.controllers.compc.ComboBoxController;
 import com.jblue.controllers.compc.TableController;
+import com.jblue.model.dtos.OStreet;
+import com.jblue.model.dtos.OWaterIntakeTypes;
 import com.jblue.model.dtos.OWaterIntakes;
 import com.jblue.model.dtos.Objects;
 import com.jblue.model.factories.CacheFactory;
@@ -41,7 +44,10 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
     private final CardLayout ly;
     private final JTableModel model;
     private OWaterIntakes object_search;
-    
+    private ComboBoxController<OStreet> street_cat_1;
+    private ComboBoxController<OStreet> street_cat_2;
+    private ComboBoxController<OWaterIntakeTypes> water_intake;
+
     /**
      * Creates new form WaterIntakesView
      */
@@ -52,6 +58,9 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         model = TableModelFactory.getWaterIntakesTableModel();
         controller = FactoryController.getWaterIntakesController(this);
         table_controller = new TableController(this, CacheFactory.WATER_INTAKES);
+        water_intake = new ComboBoxController(water_intake_types_field, CacheFactory.WATER_INTAKES_TYPES);
+        street_cat_1 = new ComboBoxController(street1_field, CacheFactory.STREETS);
+        street_cat_2 = new ComboBoxController(street2_field, CacheFactory.STREETS);
         build();
     }
 
@@ -95,6 +104,13 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
     }
 
     @Override
+    public void finalState() {
+        street_cat_1.loadData();
+        street_cat_2.loadData();
+        water_intake.loadData();
+    }
+
+    @Override
     public OWaterIntakes getObjectSearch() {
         return object_search;
     }
@@ -123,25 +139,25 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         register_panel = new javax.swing.JPanel();
         panel_campos = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        water_intake_type_field = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        operation_cost_field = new javax.swing.JTextField();
         jPanel12 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         user_field = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        water_intake_types_field = new javax.swing.JComboBox<>();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        operation_cost_field = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        street1_field = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
+        street1_field = new javax.swing.JComboBox<>();
         jPanel13 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        street2_field = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
+        street2_field = new javax.swing.JComboBox<>();
         jPanel14 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         location_field = new javax.swing.JTextField();
@@ -227,39 +243,6 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         jLabel4.setPreferredSize(new java.awt.Dimension(500, 100));
         panel_campos.add(jLabel4);
 
-        jPanel8.setPreferredSize(new java.awt.Dimension(100, 35));
-        jPanel8.setLayout(new java.awt.BorderLayout());
-
-        jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel2.setText("Tipo Toma de agua");
-        jLabel2.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel8.add(jLabel2, java.awt.BorderLayout.WEST);
-
-        water_intake_type_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        water_intake_type_field.setName(""); // NOI18N
-        jPanel8.add(water_intake_type_field, java.awt.BorderLayout.CENTER);
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        jButton1.setToolTipText("Seleccionar Tipo de toma");
-        jButton1.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel8.add(jButton1, java.awt.BorderLayout.LINE_END);
-
-        panel_campos.add(jPanel8);
-
-        jPanel9.setPreferredSize(new java.awt.Dimension(100, 35));
-        jPanel9.setLayout(new java.awt.BorderLayout());
-
-        jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel3.setText("Costo de operacion");
-        jLabel3.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel9.add(jLabel3, java.awt.BorderLayout.WEST);
-
-        operation_cost_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        operation_cost_field.setName(""); // NOI18N
-        jPanel9.add(operation_cost_field, java.awt.BorderLayout.CENTER);
-
-        panel_campos.add(jPanel9);
-
         jPanel12.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanel12.setLayout(new java.awt.BorderLayout());
 
@@ -279,6 +262,37 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
 
         panel_campos.add(jPanel12);
 
+        jPanel8.setPreferredSize(new java.awt.Dimension(100, 35));
+        jPanel8.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel2.setText("Tipo Toma de agua");
+        jLabel2.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel8.add(jLabel2, java.awt.BorderLayout.WEST);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
+        jButton1.setToolTipText("Seleccionar Tipo de toma");
+        jButton1.setPreferredSize(new java.awt.Dimension(50, 50));
+        jPanel8.add(jButton1, java.awt.BorderLayout.LINE_END);
+
+        jPanel8.add(water_intake_types_field, java.awt.BorderLayout.CENTER);
+
+        panel_campos.add(jPanel8);
+
+        jPanel9.setPreferredSize(new java.awt.Dimension(100, 35));
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel3.setText("Costo de operacion");
+        jLabel3.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel9.add(jLabel3, java.awt.BorderLayout.WEST);
+
+        operation_cost_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        operation_cost_field.setName(""); // NOI18N
+        jPanel9.add(operation_cost_field, java.awt.BorderLayout.CENTER);
+
+        panel_campos.add(jPanel9);
+
         jPanel10.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanel10.setLayout(new java.awt.BorderLayout());
 
@@ -287,14 +301,12 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel10.add(jLabel5, java.awt.BorderLayout.WEST);
 
-        street1_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        street1_field.setName(""); // NOI18N
-        jPanel10.add(street1_field, java.awt.BorderLayout.CENTER);
-
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
         jButton4.setToolTipText("Seleccionar Calle 1");
         jButton4.setPreferredSize(new java.awt.Dimension(50, 50));
         jPanel10.add(jButton4, java.awt.BorderLayout.LINE_END);
+
+        jPanel10.add(street1_field, java.awt.BorderLayout.CENTER);
 
         panel_campos.add(jPanel10);
 
@@ -306,14 +318,12 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         jLabel7.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel13.add(jLabel7, java.awt.BorderLayout.WEST);
 
-        street2_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        street2_field.setName(""); // NOI18N
-        jPanel13.add(street2_field, java.awt.BorderLayout.CENTER);
-
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
         jButton5.setToolTipText("Seleccionar Calle 2");
         jButton5.setPreferredSize(new java.awt.Dimension(50, 50));
         jPanel13.add(jButton5, java.awt.BorderLayout.LINE_END);
+
+        jPanel13.add(street2_field, java.awt.BorderLayout.CENTER);
 
         panel_campos.add(jPanel13);
 
@@ -454,7 +464,7 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         panel_izq.setLayout(new java.awt.BorderLayout(10, 10));
 
         objects_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Objects [][] {
+            new Object [][] {
 
             },
             new String [] {
@@ -574,14 +584,14 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
     private javax.swing.JPanel search_panel;
     private javax.swing.JPanel status_bar_panel;
     private javax.swing.JComboBox<String> status_field;
-    private javax.swing.JTextField street1_field;
-    private javax.swing.JTextField street2_field;
+    private javax.swing.JComboBox<OStreet> street1_field;
+    private javax.swing.JComboBox<OStreet> street2_field;
     private javax.swing.JScrollPane tabla_usuarios;
     private javax.swing.JPanel tools_panel;
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     private javax.swing.JTextField user_field;
-    private javax.swing.JTextField water_intake_type_field;
+    private javax.swing.JComboBox<OWaterIntakes> water_intake_types_field;
     // End of variables declaration//GEN-END:variables
 
     @Override

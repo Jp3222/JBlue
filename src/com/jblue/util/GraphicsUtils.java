@@ -18,8 +18,10 @@ package com.jblue.util;
 
 import java.awt.Component;
 import java.awt.Container;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
 
 /**
  *
@@ -27,6 +29,23 @@ import javax.swing.JPopupMenu;
  */
 public class GraphicsUtils {
 
+    public static int isComboBoxFieldOK(JComboBox... arr) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].getSelectedIndex() == 0) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int isTextFieldOK(JTextField... arr) {
+        for (int i = 0; i < arr.length; i++) {
+            if (Filters.isNullOrBlank(arr[i].getText())) {
+                return i;
+            }
+        }
+        return -1;
+    }
     public static void setEnable(boolean enable, Component... col) {
         for (Component i : col) {
             i.setEnabled(enable);

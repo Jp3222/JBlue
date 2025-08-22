@@ -67,16 +67,18 @@ public class AbstractCache<T extends Objects> implements CacheModel<T> {
     public void loadData() {
         try {
             if (DevFlags.DEV_MSG_CODE) {
-                System.out.println("load");
+                System.out.println("load...");
             }
             String aux = default_query.formatted(conexion.getTable(), index_min, index_max);
             if (buffer_cache.containsKey(aux)) {
+                if (DevFlags.DEV_MSG_CODE) {
+                    System.out.println("read in the buffer....");
+                }
                 cache.addAll(buffer_cache.get(aux));
                 return;
             }
-
             if (DevFlags.DEV_MSG_CODE) {
-                System.out.println("leyendo base de datos...");
+                System.out.println("leyendo base de datos.....");
             }
             DBConnection conn = conexion.getConnection();
             load(adapter, conn.query(aux), aux, conexion);
@@ -96,6 +98,10 @@ public class AbstractCache<T extends Objects> implements CacheModel<T> {
             while (rs_data.next()) {
                 Objects objeto = adapter.adapter(rs_data, connection);
                 cache.add((T) objeto);
+            }
+            
+            if (DevFlags.DEV_MSG_CODE) {
+                System.out.println("saving in the buffer......");
             }
             buffer_cache.put(aux, List.copyOf(cache));
         } catch (SQLException ex) {

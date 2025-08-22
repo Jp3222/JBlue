@@ -209,7 +209,7 @@ public final class ConfigurationPanel extends SimpleView implements OptionMenuMo
         jPanel1.add(jLabel1, java.awt.BorderLayout.WEST);
 
         db_user.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        db_user.setText("usuario");
+        db_user.setText("program_user");
         jPanel1.add(db_user, java.awt.BorderLayout.CENTER);
 
         show_user.setActionCommand("show_user");
@@ -231,7 +231,8 @@ public final class ConfigurationPanel extends SimpleView implements OptionMenuMo
         jPanel4.add(jLabel2, java.awt.BorderLayout.WEST);
 
         db_password.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        db_password.setText("contraseña");
+        db_password.setText("00000");
+        db_password.setToolTipText("");
         db_password.setPreferredSize(new java.awt.Dimension(100, 50));
         jPanel4.add(db_password, java.awt.BorderLayout.CENTER);
 

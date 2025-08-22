@@ -30,7 +30,7 @@ interface TableDBConst extends HistoryConst, ArrayDBConst, ArrayGsConst {
             "water_intakes_types", WATER_INTAKES_TYPES_FIELD, WATER_INTAKES_TYPES_FIELD_GS
     );
     public static final Table WATER_INTAKES = new Table(
-            "water_intakes", WATER_INTAKES_FIELD ,WATER_INTAKES_FIELD_GS
+            "water_intakes", WATER_INTAKES_FIELD, WATER_INTAKES_FIELD_GS
     );
     public static final Table EMPLOYEES = new Table(
             "employees", EMPLOYEES_FIELD, EMPLOYEES_FIELD_GS
@@ -50,5 +50,9 @@ interface TableDBConst extends HistoryConst, ArrayDBConst, ArrayGsConst {
 
     public static final Table OTHER_PAYMENTS = new Table(
             "other_payments", OTHER_PAYMENT_FIELD, OTHER_PAYMENT_FIELD_GS
+    );
+
+    public static final Table EMPLOYEES_TYPES = new Table(
+            "employee_types", EMPLOYEES_TYPES_FIELD, EMPLOYEES_TYPES_FIELD_GS
     );
 }

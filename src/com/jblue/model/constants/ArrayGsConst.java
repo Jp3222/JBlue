@@ -16,53 +16,61 @@
  */
 package com.jblue.model.constants;
 
-import static com.jblue.model.constants.ArrayDBConst.ID;
-
 /**
  *
  * @author juanp
  */
 interface ArrayGsConst {
 
-    static final String ID = "id";
+    static final String ID_GS = "id";
+    static final String DATE_LAST_UPDATE_GS = "F. DE MODIFICACION";
+    static final String DATE_REGISTER_GS = "F. DE REGISTRO";
+    static final String DATE_END_GS = "F. DE FINALIZACION";
+    static final String EMPLOYEE_GS = "EMPLEADO";
+    static final String STATUS_GS = "ESTADO";
+    static final String NAME_GS = "NOMBRE";
+    static final String MONTH_GS = "MES";
+    static final String USER_GS = "USUARIO";
 
     public static final String[] USER_FIELD_GS = {
-        ID, "NOMBRE", "A. PATERNO", "A. MATERNO",
+        ID_GS, NAME_GS, "A. PATERNO", "A. MATERNO",
         "CALLE", "NO. CASA", "TIPO DE TOMA", "TIPO DE USUARIO",
-        "ESTADO", "FECHA DE REGISTRO"
+        STATUS_GS, DATE_REGISTER_GS
     };
 
     public static final String[] STREET_FIELD_GS = {
-        ID, "NOMBRE", "STATUS"
+        ID_GS, NAME_GS, STATUS_GS
     };
 
     public static final String[] WATER_INTAKES_TYPES_FIELD_GS = {
-        ID, "TIPO", "PRECIO ANTERIOR", "PRECIO", "RECARGO", "ESTATUS", "F. DE ACTUALIZACION"
+        ID_GS, "TIPO", "PRECIO ANTERIOR", "PRECIO", "RECARGO", "ESTATUS", DATE_LAST_UPDATE_GS
     };
 
     public static final String[] WATER_INTAKES_FIELD_GS = {
-        ID, "TIPO DE TOMA", "COSTO DE OPERACION", "TITULAR", "CALLE 1", 
-        "CALLE 2", "UBICACION", "ESTADO", "F. DE ACTUALIZACION", "F. DE REGISTRO"
+        ID_GS, "TIPO DE TOMA", "COSTO DE OPERACION", "TITULAR", "CALLE 1",
+        "CALLE 2", "UBICACION", "DETALLES", STATUS_GS, DATE_LAST_UPDATE_GS, DATE_REGISTER_GS
     };
 
     public static final String[] SERVICE_PAYMENT_FIELD_GS = {
-        ID, "EMPLEADO", "USUARIO", "PRECIO",
-        "MES", "NO. MES", "ESTADO", "REGISTRO"
+        ID_GS, EMPLOYEE_GS, USER_GS, "PRECIO",
+        MONTH_GS, "NO. MES", STATUS_GS, DATE_REGISTER_GS
     };
 
     public static final String[] SURCHARGE_PAYMENT_FIELD_GS = {
-        ID, "EMPLEADO", "USUARIO", "PRECIO",
-        "MES", "ESTADO", "REGISTRO"
+        ID_GS, EMPLOYEE_GS, USER_GS, "PRECIO",
+        MONTH_GS, STATUS_GS, DATE_REGISTER_GS
     };
 
     public static final String[] OTHER_PAYMENT_FIELD_GS = {
-        ID, "EMPLEADO", "USUARIO", "PRECIO",
-        "MES", "ESTADO", "REGISTRO"
+        ID_GS, EMPLOYEE_GS, USER_GS, "PRECIO",
+        MONTH_GS, STATUS_GS, DATE_REGISTER_GS
     };
 
     public static final String[] EMPLOYEES_FIELD_GS = {
-        ID, "NOMBRE", "APELLIDOS", "CARGO",
-        "ESTADO", "USUARIO", "CONTRASEÑA", "F. REGISTRO", "F. FIN"
+        ID_GS, NAME_GS, "APELLIDOS", "CARGO",
+        STATUS_GS, USER_GS, "CONTRASEÑA", DATE_REGISTER_GS, "F. FIN"
     };
 
+    public static final String[] EMPLOYEES_TYPES_FIELD_GS = {
+        ID_GS, "TIPO DE EMPLEADO", STATUS_GS, DATE_REGISTER_GS, DATE_END_GS};
 }

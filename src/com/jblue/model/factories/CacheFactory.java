@@ -9,6 +9,7 @@ import com.jblue.model.dtos.OtherPaymentsType;
 import com.jblue.model.dtos.OSurchargePayments;
 import com.jblue.model.dtos.OServicePayments;
 import com.jblue.model.dtos.OEmployee;
+import com.jblue.model.dtos.OEmployeeTypes;
 import com.jblue.model.dtos.OWaterIntakeTypes;
 import com.jblue.model.dtos.OUser;
 import com.jblue.model.dtos.OWaterIntakes;
@@ -28,52 +29,10 @@ import java.util.Arrays;
 public final class CacheFactory {
 
     public static boolean cache_list;
-
-    public static final MemoListCache<OWaterIntakeTypes> WATER_INTAKES_TYPES = new MemoListCache(ConnectionFactory.getWaterIntakesTypes());
-    public static final MemoListCache<OStreet> STREETS = new MemoListCache(ConnectionFactory.getStreets());
-    public static final MemoListCache<OEmployee> EMPLOYEES = new MemoListCache(ConnectionFactory.getEmployees());
-    public static final MemoListCache<OWaterIntakes> WATER_INTAKES = new MemoListCache(ConnectionFactory.getWaterIntakes());
-
-    public static final MemoListCache<OUser> USERS = new MemoListCache(ConnectionFactory.getUser());
-    public static final MemoListCache<OServicePayments> SERVICE_PAYMENTS = new MemoListCache(ConnectionFactory.getServicePayments());
-    public static final MemoListCache<OSurchargePayments> SURCHARGE_PAYMENTS = new MemoListCache(ConnectionFactory.getSurchargePayments());
-    public static final MemoListCache<OtherPaymentsType> OTHER_PAYMENTS = new MemoListCache(ConnectionFactory.getOtherPayments());
-
-    public static final MemoListCache[] CACHES = {
-        WATER_INTAKES_TYPES,
-        STREETS,
-        USERS,
-        EMPLOYEES,
-        SERVICE_PAYMENTS
-    };
-
-    public static boolean loadCaches() {
-        cache_list = true;
-        loadCataloges((DBConnection) LaunchApp.getInstance().getResources(JBlueMainSystem.DATA_BASE_KEY));
-        for (MemoListCache i : CACHES) {
-            i.loadData();
-        }
-        return cache_list;
-    }
     public static String[] USER_TYPES_CAT;
     public static String[] HISTORY_TYPES_CAT;
     public static String[] ITEMS_STATUS_CAT;
     public static final String COUNT_FORMAT = "SELECT COUNT(%s) FROM %s";
-
-    public static boolean loadCataloges(DBConnection connection) {
-        int utc_size = sizeCat(connection, "id", "user_type");
-        int htc_size = sizeCat(connection, "id", "history_type_mov");
-        int isc_size = sizeCat(connection, "id", "items_status");
-        USER_TYPES_CAT = new String[utc_size];
-        USER_TYPES_CAT = readCat(connection, utc_size, "user_type", "user_type", "date_finalize IS NULL");
-        HISTORY_TYPES_CAT = new String[htc_size];
-        HISTORY_TYPES_CAT = readCat(connection, htc_size, "name_mov", "history_type_mov", "status NOT IN(3,8)");
-        ITEMS_STATUS_CAT = new String[isc_size];
-        ITEMS_STATUS_CAT = readCat(connection, isc_size, "description", "items_status", "date_finalize IS NULL");
-        return USER_TYPES_CAT != null
-                && HISTORY_TYPES_CAT != null
-                && ITEMS_STATUS_CAT != null;
-    }
 
     private static String[] readCat(DBConnection connection, int size, String field, String table, String where) {
         try {
@@ -102,6 +61,51 @@ public final class CacheFactory {
             JExcp.getInstance(false, true).print(e, CacheFactory.class, "sizeCat");
         }
         return -1;
+    }
+
+    public static boolean loadCataloges(DBConnection connection) {
+        int utc_size = sizeCat(connection, "id", "user_type");
+        int htc_size = sizeCat(connection, "id", "history_type_mov");
+        int isc_size = sizeCat(connection, "id", "items_status");
+        USER_TYPES_CAT = new String[utc_size];
+        USER_TYPES_CAT = readCat(connection, utc_size, "user_type", "user_type", "date_finalize IS NULL");
+
+        HISTORY_TYPES_CAT = new String[htc_size];
+        HISTORY_TYPES_CAT = readCat(connection, htc_size, "name_mov", "history_type_mov", "status NOT IN(3,8)");
+
+        ITEMS_STATUS_CAT = new String[isc_size];
+        ITEMS_STATUS_CAT = readCat(connection, isc_size, "description", "items_status", "date_finalize IS NULL");
+        return USER_TYPES_CAT != null
+                && HISTORY_TYPES_CAT != null
+                && ITEMS_STATUS_CAT != null;
+    }
+    
+    public static final MemoListCache<OEmployeeTypes> EMPLOYEE_TYPES = new MemoListCache(ConnectionFactory.getEmployeeTypes());
+    public static final MemoListCache<OWaterIntakeTypes> WATER_INTAKES_TYPES = new MemoListCache(ConnectionFactory.getWaterIntakesTypes());
+    public static final MemoListCache<OStreet> STREETS = new MemoListCache(ConnectionFactory.getStreets());
+    public static final MemoListCache<OEmployee> EMPLOYEES = new MemoListCache(ConnectionFactory.getEmployees());
+    public static final MemoListCache<OUser> USERS = new MemoListCache(ConnectionFactory.getUser());
+    public static final MemoListCache<OWaterIntakes> WATER_INTAKES = new MemoListCache(ConnectionFactory.getWaterIntakes());
+
+    public static final MemoListCache<OServicePayments> SERVICE_PAYMENTS = new MemoListCache(ConnectionFactory.getServicePayments());
+    public static final MemoListCache<OSurchargePayments> SURCHARGE_PAYMENTS = new MemoListCache(ConnectionFactory.getSurchargePayments());
+    public static final MemoListCache<OtherPaymentsType> OTHER_PAYMENTS = new MemoListCache(ConnectionFactory.getOtherPayments());
+
+    public static final MemoListCache[] CACHES = {
+        WATER_INTAKES_TYPES,
+        STREETS,
+        USERS,
+        EMPLOYEES,
+        SERVICE_PAYMENTS
+    };
+
+    public static boolean loadCaches() {
+        cache_list = true;
+        loadCataloges((DBConnection) LaunchApp.getInstance().getResources(JBlueMainSystem.DATA_BASE_KEY));
+        for (MemoListCache i : CACHES) {
+            i.loadData();
+        }
+        return cache_list;
     }
 
     private CacheFactory() {

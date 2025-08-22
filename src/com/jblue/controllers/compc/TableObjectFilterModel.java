@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 jp
+ * Copyright (C) 2025 juanp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,38 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.views.framework;
+package com.jblue.controllers.compc;
 
-import com.jblue.controllers.compc.TableController;
-import javax.swing.ImageIcon;
+import com.jblue.model.dtos.ForeingKeyObject;
+import com.jblue.model.dtos.Objects;
+import com.jblue.model.dtos.StatusObject;
+import java.util.function.Predicate;
 
 /**
  *
- * @author jp
+ * @author juanp
+ * @param <T>
  */
-public abstract class DBView extends SimpleView implements TableSearchViewModel {
+public interface TableObjectFilterModel<T extends Objects & ForeingKeyObject & StatusObject> {
+    
+    void add(Predicate<T> item);
 
-    protected TableController table_controller;
-    protected int view_show;
-
-    @Override
-    public void build() {
-    }
-
-    @Override
-    public void events() {
-    }
-
-    @Override
-    public void components() {
-    }
-
-    @Override
-    public void initialState() {
-    }
-
-    @Override
-    public void finalState() {
-    }
-
+    boolean filter();
 }

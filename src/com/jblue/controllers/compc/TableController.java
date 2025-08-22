@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import com.jblue.model.dtos.ForeingKeyObject;
+import com.jblue.model.dtos.StatusObject;
 import com.jblue.views.framework.TableSearchViewModel;
 
 /**
@@ -35,11 +36,12 @@ import com.jblue.views.framework.TableSearchViewModel;
  * @author juan-campos
  * @param <T>
  */
-public class TableController<T extends Objects & ForeingKeyObject> extends AbstractComponentController<T> implements ComponentIterable {
+public class TableController<T extends Objects & ForeingKeyObject & StatusObject> extends AbstractComponentController<T> implements ComponentIterable {
 
     public static final String RELOAD_COMMAND = "reload";
 
     protected final TableSearchViewModel view;
+    protected TableObjectFilterModel<T> filters;
 
     public TableController(TableSearchViewModel view, MemoListCache<T> memo_cache) {
         super(view.getTable(), memo_cache);
@@ -131,7 +133,9 @@ public class TableController<T extends Objects & ForeingKeyObject> extends Abstr
         if (!memo_cache.next()) {
             memo_cache.back();
             defaultCase("No existen mas registros", "Registros", JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
+        updateData();
     }
 
     @Override
@@ -139,7 +143,9 @@ public class TableController<T extends Objects & ForeingKeyObject> extends Abstr
         if (!memo_cache.back()) {
             memo_cache.next();
             defaultCase("No existen mas registros", "Registros", JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
+        updateData();
     }
 
     void searchView() {
@@ -179,7 +185,6 @@ public class TableController<T extends Objects & ForeingKeyObject> extends Abstr
         view.setScreenTableInfo();
         dumpData();
         view.setViewShow(TableSearchViewModel.REGISTER_VIEW);
-
     }
 
 }

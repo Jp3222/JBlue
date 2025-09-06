@@ -201,7 +201,7 @@ public class ShopCartController extends Controller {
     }
 
     private void total() {
-        double price = view.getObjectSearch().getWaterIntakesObject().getPrice();
+        double price = view.getObjectSearch().getWaterIntakesObject().getCurrentPrice();
         double months_paids = view.getMonthPaidList().size();
         double total = price * months_paids;
         view.setTotalField(total);
@@ -226,7 +226,7 @@ public class ShopCartController extends Controller {
                     .formatted(user.getId(), ld.getYear());
 
             ResultSet res = CacheFactory.SERVICE_PAYMENTS
-                    .getConnection().getConnection().query(query);
+                    .getConnection().getJDBConnection().query(query);
             ArrayList<String> list = new ArrayList<>();
             while (res.next()) {
                 list.add(res.getString(1));

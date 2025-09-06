@@ -955,8 +955,8 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         object_search = list_model.get(index);
         user_type_field.setText(object_search.getUserTypeString());
         name_user_field.setText(object_search.toString());
-        type_toma_field.setText(object_search.getWaterIntakesObject().getType());
-        cost_field.setText(String.valueOf(object_search.getWaterIntakesObject().getPrice()));
+        type_toma_field.setText(object_search.getWaterIntakesObject().getTypeName());
+        cost_field.setText(String.valueOf(object_search.getWaterIntakesObject().getCurrentPrice()));
         ((ShopCartController) controller).setPaymentsInfo(object_search);
         all_months_buttons.setEnabled(true);
     }

@@ -28,21 +28,23 @@ import com.jblue.model.dtos.Objects;
 import com.jblue.util.Formats;
 import com.jblue.util.Filters;
 import com.jblue.util.GraphicsUtils;
+import com.jblue.views.framework.DBValuesMapModel;
 import com.jblue.views.framework.DBView;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
+import java.util.HashMap;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import com.jblue.views.framework.DBValuesModel;
+import java.util.Map;
 
 /**
  *
  * @author juan-campos
  */
-public final class UserView extends DBView implements DBValuesModel {
+public final class UserView extends DBView implements DBValuesMapModel {
 
     private CardLayout ly;
     private final JTableModel model;
@@ -91,7 +93,8 @@ public final class UserView extends DBView implements DBValuesModel {
         register_button.addActionListener(table_controller);
         search_button.addActionListener(table_controller);
         ComboBoxController<OWaterIntakeTypes> c1 = new ComboBoxController(water_intakes, CacheFactory.WATER_INTAKES_TYPES);
-        ComboBoxController<OStreet> c2 = new ComboBoxController(street, CacheFactory.STREETS);
+        ComboBoxController<OStreet> c2 = new ComboBoxController(street1_field, CacheFactory.STREETS);
+        ComboBoxController<OStreet> c5 = new ComboBoxController(street2_field, CacheFactory.STREETS);
         ComboBoxController<OWaterIntakeTypes> c3 = new ComboBoxController(water_intakes_filter, CacheFactory.WATER_INTAKES_TYPES);
         ComboBoxController<OStreet> c4 = new ComboBoxController(street_filter, CacheFactory.STREETS);
         add_file_button.addActionListener(controller);
@@ -100,6 +103,7 @@ public final class UserView extends DBView implements DBValuesModel {
         c2.loadData();
         c3.loadData();
         c4.loadData();
+        c5.loadData();
     }
 
     @Override
@@ -108,13 +112,28 @@ public final class UserView extends DBView implements DBValuesModel {
 
     @Override
     public void initialState() {
+        // Campos ya existentes
         first_name.setText(null);
         last_name_1.setText(null);
         last_name_2.setText(null);
-        house_numer.setText(null);
-        street.setSelectedIndex(0);
+        inside_number_field.setText(null);
+        street1_field.setSelectedIndex(0);
         water_intakes.setSelectedIndex(0);
-        user_state.setSelectedIndex(0);
+        user_status_field.setSelectedIndex(0);
+        // --- Campos añadidos ---
+        // Suponiendo que tienes un campo de texto para el ID y la CURP
+        curp_field.setText(null);
+        // Suponiendo que tienes campos de texto para el email y los números de teléfono
+        email_field.setText(null);
+        phone_number1_field.setText(null);
+        phone_number2_field.setText(null);
+
+        // Suponiendo que tienes campos de texto para la calle 2 y el número exterior
+        street2_field.setSelectedIndex(0);
+        outside_number_field.setText(null);
+        date_last_update_field.setText(null);
+        date_register_field.setText(null);
+
         view_show = 1;
         object_search = null;
         man_tipo_toma.setSelected(false);
@@ -157,8 +176,8 @@ public final class UserView extends DBView implements DBValuesModel {
         jButton3 = new javax.swing.JButton();
         root_panel = new javax.swing.JPanel();
         register_panel = new javax.swing.JPanel();
-        center_panel = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        user_data_panel = new javax.swing.JPanel();
         pc_tipo = new javax.swing.JPanel();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
@@ -180,16 +199,43 @@ public final class UserView extends DBView implements DBValuesModel {
         man_tipo_toma = new javax.swing.JCheckBox();
         pc_calle = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        street = new javax.swing.JComboBox<>();
+        street1_field = new javax.swing.JComboBox<>();
         man_calle = new javax.swing.JCheckBox();
         pc_ncasa = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        house_numer = new javax.swing.JTextField();
+        inside_number_field = new javax.swing.JTextField();
         sn_numero = new javax.swing.JCheckBox();
         pc_estado = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        user_state = new javax.swing.JComboBox<>();
+        user_status_field = new javax.swing.JComboBox<>();
         man_estado = new javax.swing.JCheckBox();
+        pc_estado1 = new javax.swing.JPanel();
+        jLabel23 = new javax.swing.JLabel();
+        man_estado1 = new javax.swing.JCheckBox();
+        date_last_update_field = new javax.swing.JTextField();
+        pc_estado2 = new javax.swing.JPanel();
+        jLabel24 = new javax.swing.JLabel();
+        man_estado2 = new javax.swing.JCheckBox();
+        date_register_field = new javax.swing.JTextField();
+        complement_data_panel = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel22 = new javax.swing.JLabel();
+        curp_field = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        email_field = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
+        phone_number1_field = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel19 = new javax.swing.JLabel();
+        phone_number2_field = new javax.swing.JTextField();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        street2_field = new javax.swing.JComboBox<>();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel21 = new javax.swing.JLabel();
+        outside_number_field = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         add_photo_button = new javax.swing.JButton();
         add_file_button = new javax.swing.JButton();
@@ -288,13 +334,8 @@ public final class UserView extends DBView implements DBValuesModel {
         register_panel.setName("register"); // NOI18N
         register_panel.setLayout(new java.awt.BorderLayout());
 
-        center_panel.setPreferredSize(new java.awt.Dimension(500, 600));
-        center_panel.setLayout(new java.awt.GridLayout(13, 1, 0, 10));
-
-        jLabel11.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("Datos de usuario");
-        center_panel.add(jLabel11);
+        user_data_panel.setPreferredSize(new java.awt.Dimension(500, 600));
+        user_data_panel.setLayout(new java.awt.GridLayout(11, 1, 0, 10));
 
         pc_tipo.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -309,14 +350,14 @@ public final class UserView extends DBView implements DBValuesModel {
         jRadioButton2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pc_tipo.add(jRadioButton2);
 
-        center_panel.add(pc_tipo);
+        user_data_panel.add(pc_tipo);
 
         pc_nombre.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel2.setText("Nombre: ");
         jLabel2.setMaximumSize(new java.awt.Dimension(60, 20));
-        jLabel2.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel2.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_nombre.add(jLabel2, java.awt.BorderLayout.WEST);
 
         first_name.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
@@ -328,14 +369,14 @@ public final class UserView extends DBView implements DBValuesModel {
         jLabel7.setPreferredSize(new java.awt.Dimension(60, 30));
         pc_nombre.add(jLabel7, java.awt.BorderLayout.LINE_END);
 
-        center_panel.add(pc_nombre);
+        user_data_panel.add(pc_nombre);
 
         pc_ap.setPreferredSize(new java.awt.Dimension(250, 30));
         pc_ap.setLayout(new java.awt.BorderLayout());
 
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel3.setText("A. Paterno: ");
-        jLabel3.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel3.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_ap.add(jLabel3, java.awt.BorderLayout.WEST);
 
         last_name_1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
@@ -347,14 +388,14 @@ public final class UserView extends DBView implements DBValuesModel {
         jLabel9.setPreferredSize(new java.awt.Dimension(60, 30));
         pc_ap.add(jLabel9, java.awt.BorderLayout.LINE_END);
 
-        center_panel.add(pc_ap);
+        user_data_panel.add(pc_ap);
 
         pc_am.setPreferredSize(new java.awt.Dimension(250, 30));
         pc_am.setLayout(new java.awt.BorderLayout());
 
         jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel4.setText("A. Materno:");
-        jLabel4.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel4.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_am.add(jLabel4, java.awt.BorderLayout.WEST);
 
         last_name_2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
@@ -366,14 +407,14 @@ public final class UserView extends DBView implements DBValuesModel {
         jLabel10.setPreferredSize(new java.awt.Dimension(60, 30));
         pc_am.add(jLabel10, java.awt.BorderLayout.LINE_END);
 
-        center_panel.add(pc_am);
+        user_data_panel.add(pc_am);
 
         pc_tipo_toma.setPreferredSize(new java.awt.Dimension(500, 50));
         pc_tipo_toma.setLayout(new java.awt.BorderLayout());
 
         jLabel5.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel5.setText("T. Toma");
-        jLabel5.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel5.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_tipo_toma.add(jLabel5, java.awt.BorderLayout.WEST);
 
         water_intakes.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
@@ -388,20 +429,20 @@ public final class UserView extends DBView implements DBValuesModel {
         man_tipo_toma.setPreferredSize(new java.awt.Dimension(60, 30));
         pc_tipo_toma.add(man_tipo_toma, java.awt.BorderLayout.EAST);
 
-        center_panel.add(pc_tipo_toma);
+        user_data_panel.add(pc_tipo_toma);
 
         pc_calle.setPreferredSize(new java.awt.Dimension(500, 50));
         pc_calle.setLayout(new java.awt.BorderLayout());
 
         jLabel6.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel6.setText("Calle: ");
-        jLabel6.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel6.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_calle.add(jLabel6, java.awt.BorderLayout.WEST);
 
-        street.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        street.setName("Calle"); // NOI18N
-        street.setPreferredSize(new java.awt.Dimension(100, 30));
-        pc_calle.add(street, java.awt.BorderLayout.CENTER);
+        street1_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        street1_field.setName("Calle"); // NOI18N
+        street1_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_calle.add(street1_field, java.awt.BorderLayout.CENTER);
 
         man_calle.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         man_calle.setText("M.");
@@ -410,21 +451,21 @@ public final class UserView extends DBView implements DBValuesModel {
         man_calle.setPreferredSize(new java.awt.Dimension(60, 30));
         pc_calle.add(man_calle, java.awt.BorderLayout.EAST);
 
-        center_panel.add(pc_calle);
+        user_data_panel.add(pc_calle);
 
         pc_ncasa.setPreferredSize(new java.awt.Dimension(500, 50));
         pc_ncasa.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel1.setText("N. Casa");
-        jLabel1.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel1.setText("Numero Interior");
+        jLabel1.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_ncasa.add(jLabel1, java.awt.BorderLayout.WEST);
 
-        house_numer.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        house_numer.setToolTipText("<html> Campo: Numero de casa  <br>Valor: Solo numeros <br>Longitud: 3 Caracteres");
-        house_numer.setName("Numero de Casa"); // NOI18N
-        house_numer.setPreferredSize(new java.awt.Dimension(100, 30));
-        pc_ncasa.add(house_numer, java.awt.BorderLayout.CENTER);
+        inside_number_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        inside_number_field.setToolTipText("<html> Campo: Numero de casa  <br>Valor: Solo numeros <br>Longitud: 3 Caracteres");
+        inside_number_field.setName("Numero de Casa"); // NOI18N
+        inside_number_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_ncasa.add(inside_number_field, java.awt.BorderLayout.CENTER);
 
         sn_numero.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         sn_numero.setText("S/N");
@@ -432,21 +473,21 @@ public final class UserView extends DBView implements DBValuesModel {
         sn_numero.setPreferredSize(new java.awt.Dimension(60, 30));
         pc_ncasa.add(sn_numero, java.awt.BorderLayout.EAST);
 
-        center_panel.add(pc_ncasa);
+        user_data_panel.add(pc_ncasa);
 
         pc_estado.setPreferredSize(new java.awt.Dimension(500, 50));
         pc_estado.setLayout(new java.awt.BorderLayout());
 
         jLabel8.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel8.setText("Estado: ");
-        jLabel8.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel8.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_estado.add(jLabel8, java.awt.BorderLayout.WEST);
 
-        user_state.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        user_state.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona Elemento.", "Activo.", "Inactivo." }));
-        user_state.setName("Estado"); // NOI18N
-        user_state.setPreferredSize(new java.awt.Dimension(100, 30));
-        pc_estado.add(user_state, java.awt.BorderLayout.CENTER);
+        user_status_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        user_status_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona Elemento.", "Activo.", "Inactivo." }));
+        user_status_field.setName("Estado"); // NOI18N
+        user_status_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_estado.add(user_status_field, java.awt.BorderLayout.CENTER);
 
         man_estado.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         man_estado.setText("M.");
@@ -455,7 +496,106 @@ public final class UserView extends DBView implements DBValuesModel {
         man_estado.setPreferredSize(new java.awt.Dimension(60, 30));
         pc_estado.add(man_estado, java.awt.BorderLayout.EAST);
 
-        center_panel.add(pc_estado);
+        user_data_panel.add(pc_estado);
+
+        pc_estado1.setPreferredSize(new java.awt.Dimension(500, 50));
+        pc_estado1.setLayout(new java.awt.BorderLayout());
+
+        jLabel23.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel23.setText("F. de actualizacion");
+        jLabel23.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_estado1.add(jLabel23, java.awt.BorderLayout.WEST);
+
+        man_estado1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        man_estado1.setText("M.");
+        man_estado1.setToolTipText("Mantener el estado del usuario seleccionado\n");
+        man_estado1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        man_estado1.setPreferredSize(new java.awt.Dimension(60, 30));
+        pc_estado1.add(man_estado1, java.awt.BorderLayout.EAST);
+
+        date_last_update_field.setEditable(false);
+        pc_estado1.add(date_last_update_field, java.awt.BorderLayout.CENTER);
+
+        user_data_panel.add(pc_estado1);
+
+        pc_estado2.setPreferredSize(new java.awt.Dimension(500, 50));
+        pc_estado2.setLayout(new java.awt.BorderLayout());
+
+        jLabel24.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel24.setText("F. de registro");
+        jLabel24.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_estado2.add(jLabel24, java.awt.BorderLayout.WEST);
+
+        man_estado2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        man_estado2.setText("M.");
+        man_estado2.setToolTipText("Mantener el estado del usuario seleccionado\n");
+        man_estado2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        man_estado2.setPreferredSize(new java.awt.Dimension(60, 30));
+        pc_estado2.add(man_estado2, java.awt.BorderLayout.EAST);
+
+        date_register_field.setEditable(false);
+        pc_estado2.add(date_register_field, java.awt.BorderLayout.CENTER);
+
+        user_data_panel.add(pc_estado2);
+
+        jTabbedPane1.addTab("Datos de usuario", user_data_panel);
+
+        complement_data_panel.setLayout(new java.awt.GridLayout(11, 1, 10, 10));
+
+        jPanel7.setLayout(new java.awt.BorderLayout());
+
+        jLabel22.setText("CURP");
+        jLabel22.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel7.add(jLabel22, java.awt.BorderLayout.WEST);
+        jPanel7.add(curp_field, java.awt.BorderLayout.CENTER);
+
+        complement_data_panel.add(jPanel7);
+
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jLabel11.setText("Email");
+        jLabel11.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel2.add(jLabel11, java.awt.BorderLayout.WEST);
+        jPanel2.add(email_field, java.awt.BorderLayout.CENTER);
+
+        complement_data_panel.add(jPanel2);
+
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        jLabel14.setText("Telefono 1: ");
+        jLabel14.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel3.add(jLabel14, java.awt.BorderLayout.WEST);
+        jPanel3.add(phone_number1_field, java.awt.BorderLayout.CENTER);
+
+        complement_data_panel.add(jPanel3);
+
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        jLabel19.setText("Telefono 2:");
+        jLabel19.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel4.add(jLabel19, java.awt.BorderLayout.WEST);
+        jPanel4.add(phone_number2_field, java.awt.BorderLayout.CENTER);
+
+        complement_data_panel.add(jPanel4);
+
+        jPanel5.setLayout(new java.awt.BorderLayout());
+
+        jLabel20.setText("Calle 2:");
+        jLabel20.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel5.add(jLabel20, java.awt.BorderLayout.WEST);
+
+        jPanel5.add(street2_field, java.awt.BorderLayout.CENTER);
+
+        complement_data_panel.add(jPanel5);
+
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        jLabel21.setText("Numero exterior");
+        jLabel21.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel6.add(jLabel21, java.awt.BorderLayout.WEST);
+        jPanel6.add(outside_number_field, java.awt.BorderLayout.CENTER);
+
+        complement_data_panel.add(jPanel6);
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
@@ -469,15 +609,17 @@ public final class UserView extends DBView implements DBValuesModel {
         add_file_button.setActionCommand("add_file");
         jPanel1.add(add_file_button);
 
-        center_panel.add(jPanel1);
+        complement_data_panel.add(jPanel1);
 
         add_consumer_button.setText("Añadir Consumidor");
-        center_panel.add(add_consumer_button);
+        complement_data_panel.add(add_consumer_button);
 
         show_consumer_list_button.setText("Consumidores");
-        center_panel.add(show_consumer_list_button);
+        complement_data_panel.add(show_consumer_list_button);
 
-        register_panel.add(center_panel, java.awt.BorderLayout.CENTER);
+        jTabbedPane1.addTab("Informacion complementaria.", complement_data_panel);
+
+        register_panel.add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
         option_panel.setLayout(new java.awt.GridLayout(2, 0, 10, 10));
 
@@ -712,9 +854,13 @@ public final class UserView extends DBView implements DBValuesModel {
     private javax.swing.JButton back_button;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton cancel_button;
-    private javax.swing.JPanel center_panel;
+    private javax.swing.JPanel complement_data_panel;
     private javax.swing.JLabel count;
+    private javax.swing.JTextField curp_field;
+    private javax.swing.JTextField date_last_update_field;
+    private javax.swing.JTextField date_register_field;
     private javax.swing.JButton delete_button;
+    private javax.swing.JTextField email_field;
     private javax.swing.JTextField filtro_Titular;
     private javax.swing.JComboBox<String> filtro_estado;
     private javax.swing.JCheckBox filtro_is_consumidor;
@@ -722,18 +868,25 @@ public final class UserView extends DBView implements DBValuesModel {
     private javax.swing.JButton filtro_quitar;
     private javax.swing.JCheckBox filtros;
     private javax.swing.JTextField first_name;
-    private javax.swing.JTextField house_numer;
+    private javax.swing.JTextField inside_number_field;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -743,6 +896,7 @@ public final class UserView extends DBView implements DBValuesModel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel24;
@@ -751,16 +905,24 @@ public final class UserView extends DBView implements DBValuesModel {
     private javax.swing.JPanel jPanel27;
     private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel29;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
     private javax.swing.JPanel jPanel32;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField last_name_1;
     private javax.swing.JTextField last_name_2;
     private javax.swing.JCheckBox man_calle;
     private javax.swing.JCheckBox man_estado;
+    private javax.swing.JCheckBox man_estado1;
+    private javax.swing.JCheckBox man_estado2;
     private javax.swing.JCheckBox man_tipo_toma;
     private javax.swing.JButton next_button;
     private javax.swing.JPanel north_panel;
@@ -769,18 +931,23 @@ public final class UserView extends DBView implements DBValuesModel {
     private javax.swing.JPanel np_cp_west;
     private javax.swing.JTable objects_table;
     private javax.swing.JPanel option_panel;
+    private javax.swing.JTextField outside_number_field;
     private javax.swing.JPanel panel_filtros;
     private javax.swing.JPanel panel_tabla;
     private javax.swing.JPanel pc_am;
     private javax.swing.JPanel pc_ap;
     private javax.swing.JPanel pc_calle;
     private javax.swing.JPanel pc_estado;
+    private javax.swing.JPanel pc_estado1;
+    private javax.swing.JPanel pc_estado2;
     private javax.swing.JPanel pc_ncasa;
     private javax.swing.JPanel pc_nombre;
     private javax.swing.JPanel pc_tipo;
     private javax.swing.JPanel pc_tipo_toma;
     private javax.swing.JPanel pf_bar_super;
     private javax.swing.JPanel pf_filtros;
+    private javax.swing.JTextField phone_number1_field;
+    private javax.swing.JTextField phone_number2_field;
     private javax.swing.JLabel range;
     private javax.swing.JButton register_button;
     private javax.swing.JPanel register_panel;
@@ -794,11 +961,13 @@ public final class UserView extends DBView implements DBValuesModel {
     private javax.swing.JButton show_consumer_list_button;
     private javax.swing.JCheckBox sn_numero;
     private javax.swing.JPanel status_bar_panel;
-    private javax.swing.JComboBox<com.jblue.model.dtos.OStreet> street;
+    private javax.swing.JComboBox<com.jblue.model.dtos.OStreet> street1_field;
+    private javax.swing.JComboBox<com.jblue.model.dtos.OStreet> street2_field;
     private javax.swing.JComboBox<com.jblue.model.dtos.OStreet> street_filter;
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
-    private javax.swing.JComboBox<String> user_state;
+    private javax.swing.JPanel user_data_panel;
+    private javax.swing.JComboBox<String> user_status_field;
     private javax.swing.JComboBox<com.jblue.model.dtos.OWaterIntakeTypes> water_intakes;
     private javax.swing.JComboBox<com.jblue.model.dtos.OWaterIntakeTypes> water_intakes_filter;
     // End of variables declaration//GEN-END:variables
@@ -859,7 +1028,7 @@ public final class UserView extends DBView implements DBValuesModel {
             }
         }
         JComboBox[] combo_boxes_fields = {
-            water_intakes, street, user_state
+            water_intakes, street1_field, user_status_field
         };
 
         for (JComboBox i : combo_boxes_fields) {
@@ -876,28 +1045,86 @@ public final class UserView extends DBView implements DBValuesModel {
     }
 
     @Override
-    public String[] getDbValues(boolean update) {
-        String _first_name = first_name.getText();
-        String _last_name1 = last_name_1.getText();
-        String _last_name2 = last_name_2.getText();
-        String _street = street.getItemAt(street.getSelectedIndex()).getId();
-        String _house_number = house_numer.getText().isBlank() ? "S/N" : house_numer.getText();
-        String _water_intakes = water_intakes.getItemAt(water_intakes.getSelectedIndex()).getId();
-        String _type = buttonGroup1.getSelection().getActionCommand();
-        String _status = String.valueOf(user_state.getSelectedIndex());
+    public Map<String, String> getValues(boolean update) {
+        Map<String, String> map = Map.of();
+        try {
+            String _curp = curp_field.getText();
+            String _first_name = first_name.getText();
+            String _last_name1 = last_name_1.getText();
+            String _last_name2 = last_name_2.getText();
+            String _email = email_field.getText();
+            String _phone_number1 = phone_number1_field.getText();
+            String _phone_number2 = phone_number2_field.getText();
+            String _street1 = street1_field.getItemAt(street1_field.getSelectedIndex()).getId();
+            String _street2 = street2_field.getSelectedIndex() == 0
+                    ? null : street2_field.getItemAt(street2_field.getSelectedIndex()).getId();
+            String _inside_number = inside_number_field.getText();
+            String _outside_number = outside_number_field.getText();
+            String _water_intakes = water_intakes.getItemAt(water_intakes.getSelectedIndex()).getId();
+            String _type = buttonGroup1.getSelection().getActionCommand();
+            String _status = String.valueOf(user_status_field.getSelectedIndex());
+            if (update) {
+                map = saveUpdate(object_search, _curp, _first_name, _last_name1, _last_name2,
+                        _email, _phone_number1, _phone_number2,
+                        _street1, _street2, _inside_number, _outside_number,
+                        _water_intakes, _type, _status);
+            } else {
+                map = saveInsert(_curp, _first_name, _last_name1, _last_name2,
+                        _email, _phone_number1, _phone_number2, _street1, _street2,
+                        _inside_number, _outside_number, _water_intakes, _type, _status);
+            }
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return Formats.getDBFormatInputMap(map);
+    }
 
-        String[] arr = new String[]{
-            _first_name,
-            _last_name1,
-            _last_name2,
-            _street,
-            _house_number,
-            _water_intakes,
-            _type,
-            _status
-        };
-        
-        return Formats.getDBFormatInputArray(arr);
+    private Map<String, String> saveInsert(String _curp, String _first_name, String _last_name1, String _last_name2, String _email, String _phone_number1, String _phone_number2, String _street1, String _street2, String _inside_number, String _outside_number, String _water_intakes, String _type, String _status) {
+        Map<String, String> map = new HashMap<>(15); // Tamaño inicial más preciso
+
+        // Usando un método auxiliar para validar y agregar
+        Filters.putIfPresentAndNotBlank(map, "curp", _curp);
+        Filters.putIfPresentAndNotBlank(map, "first_name", _first_name);
+        Filters.putIfPresentAndNotBlank(map, "last_name1", _last_name1);
+        Filters.putIfPresentAndNotBlank(map, "last_name2", _last_name2);
+        Filters.putIfPresentAndNotBlank(map, "email", _email);
+        Filters.putIfPresentAndNotBlank(map, "phone_number1", _phone_number1);
+        Filters.putIfPresentAndNotBlank(map, "phone_number2", _phone_number2);
+        Filters.putIfPresentAndNotBlank(map, "inside_number", _inside_number);
+        Filters.putIfPresentAndNotBlank(map, "outside_number", _outside_number);
+
+        // Estos campos no tienen la validación isBlank(), así que se manejan por separado
+        Filters.putIfNotNull(map, "street1", _street1);
+        Filters.putIfNotNull(map, "street2", _street2);
+        Filters.putIfNotNull(map, "water_intake_type", _water_intakes);
+        Filters.putIfNotNull(map, "user_type", _type);
+        Filters.putIfNotNull(map, "status", _status);
+        return map;
+    }
+
+    private Map<String, String> saveUpdate(OUser object_search, String _curp, String _first_name, String _last_name1, String _last_name2, String _email, String _phone_number1, String _phone_number2, String _street1, String _street2, String _inside_number, String _outside_number, String _water_intakes, String _type, String _status) {
+        if (object_search == null) {
+            throw new NullPointerException("Objeto buscado null");
+        }
+        Map<String, String> map = new HashMap<>();
+
+        // Usando un método auxiliar para validar y agregar al mapa
+        Filters.addIfChanged(map, "curp", object_search.getCURP(), _curp);
+        Filters.addIfChanged(map, "first_name", object_search.getName(), _first_name);
+        Filters.addIfChanged(map, "last_name1", object_search.getLastName1(), _last_name1);
+        Filters.addIfChanged(map, "last_name2", object_search.getLastName2(), _last_name2);
+        Filters.addIfChanged(map, "email", object_search.getEmail(), _email);
+        Filters.addIfChanged(map, "phone_number1", object_search.getPhoneNumber1(), _phone_number1);
+        Filters.addIfChanged(map, "phone_number2", object_search.getPhoneNumber2(), _phone_number2);
+        Filters.addIfChanged(map, "inside_number", object_search.getInsideNumber(), _inside_number);
+        Filters.addIfChanged(map, "outside_number", object_search.getOutSideNumber(), _outside_number);
+        Filters.addIfChanged(map, "street1", object_search.getStreetObject() != null ? object_search.getStreetObject().toString() : null, _street1);
+        Filters.addIfChanged(map, "street2", object_search.getStreet2(), _street2);
+        Filters.addIfChanged(map, "water_intake_type", object_search.getWaterIntakesObject() != null ? object_search.getWaterIntakesObject().toString() : null, _water_intakes);
+        Filters.addIfChanged(map, "user_type", String.valueOf(object_search.getUserType()), _type);
+        Filters.addIfChanged(map, "status", String.valueOf(object_search.getStatus()), _status);
+        return map;
     }
 
     @Override
@@ -919,13 +1146,38 @@ public final class UserView extends DBView implements DBValuesModel {
 
     @Override
     public void setScreenTableInfo() {
+        // Campos ya existentes
         first_name.setText(object_search.getName());
         last_name_1.setText(object_search.getLastName1());
         last_name_2.setText(object_search.getLastName2());
-        house_numer.setText(object_search.getHouseNumber());
-        street.setSelectedItem(object_search.getStreetObject());
+        inside_number_field.setText(object_search.getInsideNumber());
+        street1_field.setSelectedItem(object_search.getStreetObject());
         water_intakes.setSelectedItem(object_search.getWaterIntakesObject());
-        user_state.setSelectedIndex(object_search.getStatus());
+        user_status_field.setSelectedIndex(object_search.getStatus());
+
+        // --- Campos añadidos ---
+        // Suponiendo que tienes un campo de texto para el ID y la CURP
+        curp_field.setText(object_search.getCURP());
+
+        // Suponiendo que tienes campos de texto para el email y los números de teléfono
+        email_field.setText(object_search.getEmail());
+        phone_number1_field.setText(object_search.getPhoneNumber1());
+        phone_number2_field.setText(object_search.getPhoneNumber2());
+
+        // Suponiendo que tienes campos de texto para la calle 2 y el número exterior
+        if (object_search.getStreetObject2() == null) {
+            street2_field.setSelectedIndex(0);
+        } else {
+            street2_field.setSelectedItem(object_search.getStreet2());
+        }
+
+        outside_number_field.setText(object_search.getOutSideNumber());
+
+        // Suponiendo que tienes un campo para el tipo de usuario
+        //user_type_field.setText(object_search.getUserType());
+        // Suponiendo que tienes campos para las fechas
+        date_last_update_field.setText(object_search.getDateUpdate().toString());
+        date_register_field.setText(object_search.getDateRegister().toString());
         man_tipo_toma.setSelected(false);
         man_calle.setSelected(false);
         man_estado.setSelected(false);

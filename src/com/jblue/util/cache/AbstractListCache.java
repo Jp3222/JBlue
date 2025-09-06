@@ -16,7 +16,7 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.model.JDBConnection;
+import com.jblue.model.DBConnection;
 import com.jblue.model.dtos.Objects;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +29,11 @@ import java.util.function.Predicate;
  */
 public abstract class AbstractListCache<T extends Objects> extends AbstractCache<T> implements ListCacheModel<T> {
 
-    public AbstractListCache(int capacity, JDBConnection conexion) {
+    public AbstractListCache(int capacity, DBConnection conexion) {
         super(new ArrayList<>(capacity), capacity, conexion);
     }
 
-    public AbstractListCache(JDBConnection conexion) {
+    public AbstractListCache(DBConnection conexion) {
         this(MIN, conexion);
     }
 

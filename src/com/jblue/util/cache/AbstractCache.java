@@ -16,11 +16,11 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.model.JDBConnection;
+import com.jblue.model.DBConnection;
 import com.jblue.model.dtos.Objects;
 import com.jblue.sys.DevFlags;
 import com.jblue.util.ObjectUtils;
-import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.jexception.JExcp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,7 +37,7 @@ public class AbstractCache<T extends Objects> implements CacheModel<T> {
 
     protected final List<T> cache;
     protected final Map<String, List<T>> buffer_cache;
-    protected final JDBConnection<T> conexion;
+    protected final DBConnection<T> conexion;
     protected final String default_query;
 
     protected int index_min, index_max, steps, last_id;
@@ -51,7 +51,7 @@ public class AbstractCache<T extends Objects> implements CacheModel<T> {
 
     protected ObjectAdapterModel adapter;
 
-    public AbstractCache(List<T> cache, int capacity, JDBConnection conexion) {
+    public AbstractCache(List<T> cache, int capacity, DBConnection conexion) {
         this.buffer_cache = new HashMap<>(40);
         this.cache = cache;
         this.conexion = conexion;
@@ -80,7 +80,7 @@ public class AbstractCache<T extends Objects> implements CacheModel<T> {
             if (DevFlags.DEV_MSG_CODE) {
                 System.out.println("leyendo base de datos.....");
             }
-            DBConnection conn = conexion.getConnection();
+            JDBConnection conn = conexion.getJDBConnection();
             load(adapter, conn.query(aux), aux, conexion);
             try (ResultSet rs = conn.query(last_id_query.formatted(conexion.getTable()))) {
                 if (rs.next()) {
@@ -93,13 +93,13 @@ public class AbstractCache<T extends Objects> implements CacheModel<T> {
 
     }
 
-    public void load(ObjectAdapterModel<T> adapter, ResultSet rs_data, String aux, JDBConnection<T> connection) {
+    public void load(ObjectAdapterModel<T> adapter, ResultSet rs_data, String aux, DBConnection<T> connection) {
         try {
             while (rs_data.next()) {
                 Objects objeto = adapter.adapter(rs_data, connection);
                 cache.add((T) objeto);
             }
-            
+
             if (DevFlags.DEV_MSG_CODE) {
                 System.out.println("saving in the buffer......");
             }
@@ -145,7 +145,7 @@ public class AbstractCache<T extends Objects> implements CacheModel<T> {
         adapter = (rs_data, connection) -> defaultAdapter(rs_data, connection);
     }
 
-    private Objects defaultAdapter(ResultSet rs_data, JDBConnection connection) {
+    private Objects defaultAdapter(ResultSet rs_data, DBConnection connection) {
         String[] info = new String[connection.getFields().length];
         for (int i = 0; i < info.length; i++) {
             try {

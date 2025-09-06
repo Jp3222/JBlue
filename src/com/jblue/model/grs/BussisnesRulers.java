@@ -19,7 +19,7 @@ package com.jblue.model.grs;
 import com.jblue.model.dtos.AbstractPayments;
 import com.jblue.model.dtos.OEmployee;
 import com.jblue.model.dtos.OUser;
-import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.connection.JDBConnection;
 
 /**
  *
@@ -60,7 +60,7 @@ public final class BussisnesRulers {
      * @return 1 si el pago es de servicios, 2 si el pago es por un recargo, 3
      * si es otro tipo de pagos
      */
-    public static int existPendingPayment(DBConnection con, OUser o) {
+    public static int existPendingPayment(JDBConnection con, OUser o) {
         if (existPendingPayment4Service(con, o)) {
             return SERVICE_PAYMENT;
         }
@@ -73,19 +73,19 @@ public final class BussisnesRulers {
         return -1;
     }
 
-    public static boolean existPendingPayment4Service(DBConnection con, OUser o) {
+    public static boolean existPendingPayment4Service(JDBConnection con, OUser o) {
         return false;
     }
 
-    public static boolean existPendingPayment4Surcharge(DBConnection con, OUser o) {
+    public static boolean existPendingPayment4Surcharge(JDBConnection con, OUser o) {
         return false;
     }
 
-    public static boolean existPendingPayment4Others(DBConnection con, OUser o) {
+    public static boolean existPendingPayment4Others(JDBConnection con, OUser o) {
         return false;
     }
 
-    public static String getStatusDescription(DBConnection o, AbstractPayments p) {
+    public static String getStatusDescription(JDBConnection o, AbstractPayments p) {
         String[] arr = {
             "ACTIVO",
             "INACTIVO",

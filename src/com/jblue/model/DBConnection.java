@@ -18,23 +18,28 @@ package com.jblue.model;
 
 import com.jblue.model.constants.Table;
 import com.jblue.model.dtos.Objects;
+import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.jexception.Excp;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public class JDBConnection<T extends Objects> extends AbstractJDBConnection<T> {
+public class DBConnection<T extends Objects> extends AbstractDBConnection<T> {
 
     private Table object_table;
 
-    public JDBConnection(String table, String[] fields) {
+    public DBConnection(String table, String[] fields) {
         super(table, fields);
     }
 
-    public JDBConnection(Table table) {
+    public DBConnection(Table table) {
         super(table.getTable(), table.getFields());
     }
 
@@ -46,6 +51,21 @@ public class JDBConnection<T extends Objects> extends AbstractJDBConnection<T> {
             Excp.imp(ex, getClass(), true, true);
         }
         return out;
+    }
+
+    public Map<String, String> insertAndGet(String fields, String values) {
+        Map<String, String> map = new HashMap<>(10);
+
+        try (Statement st = connection.getConnection().createStatement()) {
+            String query = JDBConnection.INSERT_COL.formatted(table, fields, format(VALUES, null, values));
+            st.execute(query, new String[]{"id"});
+            try (ResultSet rs = st.getResultSet()) {
+                map.put(fields, rs.getString("id"));
+            }
+        } catch (SQLException ex) {
+            Excp.imp(ex, getClass(), true, true);
+        }
+        return map;
     }
 
     public boolean update(String key_value, String where) {

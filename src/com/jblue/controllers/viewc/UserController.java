@@ -24,16 +24,21 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import com.jblue.controllers.DBControllerModel;
 import com.jblue.controllers.AbstractDBViewController;
+import com.jblue.model.DBConnection;
 import com.jblue.model.constants.Const;
-import com.jblue.model.JDBConnection;
 import com.jblue.model.constants.LogBookFormats;
 import com.jblue.model.dtos.OServicePayments;
 import com.jblue.sys.SystemSession;
 import com.jblue.sys.app.AppConfig;
 import com.jblue.sys.app.AppFiles;
+import com.jblue.util.Formats;
 import com.jblue.views.components.ComponentFactory;
-import com.jblue.views.framework.SimpleView;
+import com.jutil.dbcon.connection.JDBConnection;
 import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Map;
 
 /**
  *
@@ -74,70 +79,108 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         if (!view.isValuesOk()) {
             return;
         }
-        String[] arr = view.getDbValues(false);
-        String field = "first_name, last_name1, last_name2, street, house_number, water_intakes, user_type, status";
-        boolean insert = connection.insert(field, arr);
-
-        if (insert) {
-            SystemSession.getInstancia().register(Const.INSERT_TO_USER, DESCRIPTION_FORMAT.formatted(
-                    memo_cache.count() + 1,
-                    arr[0], arr[1], arr[2]
-            ));
+        Map<String, String> values = view.getValues(false);
+        if (values.isEmpty()) {
+            rmessage(view, false);
+            return;
         }
+        String[] insertFormats = Formats.getInsertFormats(values);
+        String query = JDBConnection.INSERT_VAL.formatted(Const.TABLE_USERS, insertFormats[0], insertFormats[1]);
+        try {
+            connection.setAutoCommit(false);
+            try (Statement st = connection.getConnection().createStatement();) {
+                boolean insert = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
+                try (ResultSet rs = st.getGeneratedKeys()) {
+                    if (insert && rs.next()) {
+                        rmessage(view, insert, Const.INSERT_TO_USER, LogBookFormats.USERS.formatted(
+                                rs.getString("id"),
+                                values.get("first_name"),
+                                values.get("last_name1"),
+                                values.get("last_name2")));
 
-        rmessage(view, insert);
+                    }
+                }
+            }
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (SQLException ex) {
+            connection.rollBack();
+            rmessage(view, false);
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Override
     public void delete() {
-        if (!view.isValuesOk()) {
-            return;
-        }
-        String id = view.getObjectSearch().getId();
-        boolean delete = connection.update("status", "3", "id = %s".formatted(id));
-        if (delete) {
-            SystemSession.getInstancia().register(Const.LOGIC_DELETE_TO_USER, DESCRIPTION_FORMAT.formatted(
+        try {
+            if (!view.isValuesOk()) {
+                return;
+            }
+            connection.setAutoCommit(false);
+            String id = view.getObjectSearch().getId();
+            boolean delete = connection.update("status", "3", "id = %s".formatted(id));
+            rmessage(view, delete, Const.DELETE_TO_USER, LogBookFormats.USERS.formatted(
                     view.getObjectSearch().getId(),
                     view.getObjectSearch().getName(),
                     view.getObjectSearch().getLastName1(),
                     view.getObjectSearch().getLastName2()
             ));
-        }
-        rmessage(view, delete);
-        //FUNCION EN DESARROLLO - Ocultar los resgitros de pago de un usuario
-        if (AppConfig.isDevFunction()) {
-            int hidden_payments = JOptionPane.showConfirmDialog(view, "¿Desea eliminar los pagos hechos por esta persona?");
-            if (hidden_payments == JOptionPane.YES_OPTION) {
-                JDBConnection<OServicePayments> payments = CacheFactory.SERVICE_PAYMENTS.getConnection();
-                boolean update = payments.update("status", "3", "user = %s".formatted(id));
-                rmessage(view, update);
+            //FUNCION EN DESARROLLO - Ocultar los resgitros de pago de un usuario
+            if (!AppConfig.isDevFunction()) {
+                return;
             }
+            int hidden_payments = JOptionPane.showConfirmDialog(view,
+                    "¿Desea eliminar los pagos hechos por esta persona?",
+                    "Eliminar - Pagos",
+                    JOptionPane.YES_NO_OPTION
+            );
+            if (hidden_payments != JOptionPane.YES_OPTION) {
+                return;
+            }
+            DBConnection<OServicePayments> payments = CacheFactory.SERVICE_PAYMENTS.getConnection();
+            boolean update = payments.update("status", "3", "user = %s".formatted(id));
+            rmessage(view, update, Const.LOGIC_DELETE_TO_SERVICE_PAYMENTS, LogBookFormats.USERS.formatted(
+                    view.getObjectSearch().getId(),
+                    view.getObjectSearch().getName(),
+                    view.getObjectSearch().getLastName1(),
+                    view.getObjectSearch().getLastName2()
+            ));
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (NullPointerException e) {
+            connection.rollBack();
         }
     }
 
     @Override
     public void update() {
-        if (!view.isValuesOk()) {
-            return;
+        try {
+            if (!view.isValuesOk()) {
+                return;
+            }
+            Map<String, String> values = view.getValues(true);
+            if (values.isEmpty()) {
+                rmessage(view, false);
+                return;
+            }
+            String update_format = Formats.getUpdateFormats(values);
+            System.out.println(update_format);
+
+            String query = JDBConnection.UPDATE_COL.formatted(Const.TABLE_USERS,
+                    update_format,
+                    "id = %s".formatted(view.getObjectSearch().getId())
+            );
+            boolean update = connection.getJDBConnection().execute(query) > 0;
+            rmessage(view, update, Const.UPDATE_TO_USER, LogBookFormats.USERS.formatted(
+                    view.getObjectSearch().getId(),
+                    view.getObjectSearch().getName(),
+                    view.getObjectSearch().getLastName1(),
+                    view.getObjectSearch().getLastName2()
+            ));
+        } catch (SQLException ex) {
+            rmessage(view, false);
+            System.getLogger(UserController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-        String field = "first_name, last_name1, last_name2, "
-                + "street, house_number, water_intakes, "
-                + "user_type, status";
-        String values[] = view.getDbValues(true);
-        boolean update = connection.update(
-                field.split(","),
-                values,
-                "id = %s".formatted(view.getObjectSearch().getId()));
-        if (update) {
-            SystemSession.getInstancia().register(Const.UPDATE_TO_USER,
-                    LogBookFormats.USERS.formatted(
-                            view.getObjectSearch().getId(),
-                            view.getObjectSearch().getName(),
-                            view.getObjectSearch().getLastName1(),
-                            view.getObjectSearch().getLastName2()
-                    ));
-        }
-        rmessage(view, update);
     }
 
     @Override
@@ -165,14 +208,6 @@ public class UserController extends AbstractDBViewController<OUser> implements D
             out.mkdir();
         }
         //Files.copy(file.toPath(), new BufferedOutputStream(new FileOutputStream(out)));
-    }
-
-    @Override
-    protected void rmessage(SimpleView view, boolean ok) {
-        super.rmessage(view, ok); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        if (ok) {
-            CacheFactory.SERVICE_PAYMENTS.reLoadData();
-        }
     }
 
     String DESCRIPTION_FORMAT = "ID:%s, NOMBRE:%s %s %s";

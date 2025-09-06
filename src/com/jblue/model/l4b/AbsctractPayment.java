@@ -20,7 +20,7 @@ import com.jblue.model.dtos.OEmployee;
 import com.jblue.model.dtos.OWaterIntakeTypes;
 import com.jblue.model.dtos.OUser;
 import com.jblue.sys.SystemSession;
-import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +39,7 @@ public abstract class AbsctractPayment implements PaymentModel {
     protected double dinero_ingresado;
     protected double deuda;
     protected double dinero_sobrante;
-    protected DBConnection connection;
+    protected JDBConnection connection;
     protected List<String> meses_pagados;
     protected int type_payment;
     protected String pay_query;
@@ -51,7 +51,7 @@ public abstract class AbsctractPayment implements PaymentModel {
     public AbsctractPayment() {
         this.mov = new HashMap<>();
         this.personal = SystemSession.getInstancia().getUsuario();
-        this.connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
+        this.connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
     }
 
     protected boolean isUserNull() {
@@ -103,7 +103,7 @@ public abstract class AbsctractPayment implements PaymentModel {
 
     @Override
     public double getTotal() {
-        return usuario.getWaterIntakesObject().getPrice() * meses_pagados.size();
+        return usuario.getWaterIntakesObject().getCurrentPrice() * meses_pagados.size();
     }
 
     @Override

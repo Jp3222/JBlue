@@ -695,8 +695,8 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
         last_name1_field.setText(usuario.getLastName1());
         last_name2_field.setText(usuario.getLastName2());
         street_field.setText(usuario.getStreetObject().getNombre());
-        house_number_field.setText(usuario.getHouseNumber());
-        water_intake_type_field.setText(usuario.getWaterIntakesObject().getType());
+        house_number_field.setText(usuario.getInsideNumber());
+        water_intake_type_field.setText(usuario.getWaterIntakesObject().getTypeName());
         date_register_field.setText(usuario.getLastName2());
         status_field.setText(usuario.getStatusString());
         user_type_field.setText(usuario.getUserTypeString());

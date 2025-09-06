@@ -118,6 +118,8 @@ public final class ProfileWindow extends AbstractAppWindows {
         jPanel1.setPreferredSize(new java.awt.Dimension(250, 700));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x128/usuario.png"))); // NOI18N
         jLabel1.setPreferredSize(new java.awt.Dimension(250, 250));
         jPanel1.add(jLabel1, java.awt.BorderLayout.PAGE_START);
 

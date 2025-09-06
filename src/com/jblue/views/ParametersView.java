@@ -19,7 +19,7 @@ package com.jblue.views;
 import com.jblue.model.constants.Const;
 import com.jblue.sys.app.AppConfig;
 import com.jblue.views.framework.SimpleView;
-import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
 import com.jutil.jexception.JExcp;
 import com.jutil.swingw.modelos.JTableModel;
@@ -105,7 +105,7 @@ public final class ParametersView extends SimpleView {
                 String.valueOf(test_logs.isSelected()),
                 String.valueOf(db_logs.isSelected()),};
 
-            DBConnection connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
+            JDBConnection connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
             String mess = "Parametros Actualizados";
 
             int icon = JOptionPane.INFORMATION_MESSAGE;
@@ -147,8 +147,8 @@ public final class ParametersView extends SimpleView {
     }
 
     public void loadData() {
-        DBConnection conn = DBConnection.getInstance();
-        String query = DBConnection.SELECT.formatted("parameter, value, description", "parameters", "status = 1");
+        JDBConnection conn = JDBConnection.getInstance();
+        String query = JDBConnection.SELECT.formatted("parameter, value, description", "parameters", "status = 1");
         try (ResultSet rs = conn.query(query)) {
             model.removeAllRows();
             while (rs.next()) {

@@ -15,7 +15,7 @@ import com.jblue.model.dtos.OUser;
 import com.jblue.model.dtos.OWaterIntakes;
 import com.jblue.sys.JBlueMainSystem;
 import com.jblue.util.cache.MemoListCache;
-import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
 import com.jutil.jexception.JExcp;
 import java.sql.ResultSet;
@@ -34,7 +34,7 @@ public final class CacheFactory {
     public static String[] ITEMS_STATUS_CAT;
     public static final String COUNT_FORMAT = "SELECT COUNT(%s) FROM %s";
 
-    private static String[] readCat(DBConnection connection, int size, String field, String table, String where) {
+    private static String[] readCat(JDBConnection connection, int size, String field, String table, String where) {
         try {
             ResultSet rs = connection.query("SELECT %s FROM %s WHERE %s".formatted(field, table, where));
             String[] cat = new String[size + 1];
@@ -52,7 +52,7 @@ public final class CacheFactory {
         return null;
     }
 
-    private static int sizeCat(DBConnection connection, String field, String table) {
+    private static int sizeCat(JDBConnection connection, String field, String table) {
         try (ResultSet query = connection.query(COUNT_FORMAT.formatted(field, table))) {
             if (query.next()) {
                 return query.getInt(1);
@@ -63,7 +63,7 @@ public final class CacheFactory {
         return -1;
     }
 
-    public static boolean loadCataloges(DBConnection connection) {
+    public static boolean loadCataloges(JDBConnection connection) {
         int utc_size = sizeCat(connection, "id", "user_type");
         int htc_size = sizeCat(connection, "id", "history_type_mov");
         int isc_size = sizeCat(connection, "id", "items_status");
@@ -101,7 +101,7 @@ public final class CacheFactory {
 
     public static boolean loadCaches() {
         cache_list = true;
-        loadCataloges((DBConnection) LaunchApp.getInstance().getResources(JBlueMainSystem.DATA_BASE_KEY));
+        loadCataloges((JDBConnection) LaunchApp.getInstance().getResources(JBlueMainSystem.DATA_BASE_KEY));
         for (MemoListCache i : CACHES) {
             i.loadData();
         }

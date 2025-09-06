@@ -28,13 +28,17 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
         super();
     }
 
+    public String getCURP() {
+        return info[1];
+    }
+
     /**
      * metodo que retorna el nombre del usuario
      *
      * @return una cadena con el nombre del usuario
      */
     public String getName() {
-        return info[1];
+        return info[2];
     }
 
     /**
@@ -42,7 +46,7 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
      * @return una cadena con el apellido paterno del usuario
      */
     public String getLastName1() {
-        return info[2];
+        return info[3];
     }
 
     /**
@@ -50,7 +54,19 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
      * @return una cadena con el apellido materno del usuario
      */
     public String getLastName2() {
-        return info[3];
+        return info[4];
+    }
+
+    public String getEmail() {
+        return info[5];
+    }
+
+    public String getPhoneNumber1() {
+        return info[6];
+    }
+
+    public String getPhoneNumber2() {
+        return info[7];
     }
 
     /**
@@ -58,15 +74,27 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
      * @return una cadena con el ID de la calle asociada a este usuario
      */
     public String getStreet() {
-        return info[4];
+        return info[8];
     }
 
     public OStreet getStreetObject() {
         return ObjectUtils.getStreedObject(getStreet());
     }
 
-    public String getHouseNumber() {
-        return info[5];
+    public String getStreet2() {
+        return info[9];
+    }
+
+    public OStreet getStreetObject2() {
+        return ObjectUtils.getStreedObject(getStreet2());
+    }
+
+    public String getInsideNumber() {
+        return info[10];
+    }
+
+    public String getOutSideNumber() {
+        return info[11];
     }
 
     /**
@@ -74,7 +102,7 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
      * @return una cadena con el ID del tipo de toma asociada a este usuario
      */
     public String getWaterIntakeType() {
-        return info[6];
+        return info[12];
     }
 
     public OWaterIntakeTypes getWaterIntakesObject() {
@@ -86,7 +114,7 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
      * @return 1 si el usuario es titular o 2 si el usuario es consumidor
      */
     public int getUserType() {
-        return Integer.parseInt(info[7]);
+        return Integer.parseInt(info[13]);
     }
 
     /**
@@ -116,7 +144,7 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
      */
     @Override
     public int getStatus() {
-        return Integer.parseInt(info[8]);
+        return Integer.parseInt(info[14]);
     }
 
     @Override
@@ -133,8 +161,12 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
         return getStatus() == 3;
     }
 
+    public LocalDateTime getDateUpdate() {
+        return LocalDateTime.parse(info[15], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
+    }
+
     public LocalDateTime getDateRegister() {
-        return LocalDateTime.parse(info[9], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
+        return LocalDateTime.parse(info[16], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
     }
 
     /**
@@ -200,10 +232,11 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
      */
     @Override
     public String[] getInfoSinFK() {
-        infoFK[4] = getStreetObject().getNombre();
-        infoFK[6] = getWaterIntakesObject().getType();
-        infoFK[7] = getUserTypeString();
-        infoFK[8] = getStatusString();
+        infoFK[8] = getStreetObject().getNombre();
+        infoFK[9] = getStreetObject2() == null ? " ":getStreetObject2().getNombre();
+        infoFK[12] = getWaterIntakesObject().getTypeName();
+        infoFK[13] = getUserTypeString();
+        infoFK[14] = getStatusString();
         return infoFK;
     }
 

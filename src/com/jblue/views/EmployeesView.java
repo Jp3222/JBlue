@@ -42,6 +42,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import com.jblue.views.framework.DBValuesModel;
+import java.time.LocalDate;
 
 /**
  *
@@ -111,26 +112,21 @@ public final class EmployeesView extends DBView implements DBValuesModel {
         user_field.setText(null);
         password_field.setText(null);
         date_limit_field.setSelected(false);
-        day_limit_field.setSelectedIndex(0);
-        month_limit_field.setSelectedIndex(0);
-        year_limit_field.setSelectedIndex(0);
         //
         view_show = 1;
         object_search = null;
         //
         save_button.setEnabled(true);
         GraphicsUtils.setEnable(false,
-                update_button,
-                delete_button,
-                day_limit_field,
-                month_limit_field,
-                year_limit_field
+                update_button
         );
 
     }
 
     @Override
     public void finalState() {
+        LocalDate ld = LocalDate.now();
+
     }
 
     /**
@@ -178,10 +174,7 @@ public final class EmployeesView extends DBView implements DBValuesModel {
         date_limit_field = new javax.swing.JCheckBox();
         jPanel35 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        day_limit_field = new javax.swing.JComboBox<>();
-        month_limit_field = new javax.swing.JComboBox<>();
-        year_limit_field = new javax.swing.JComboBox<>();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
         options_panel = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         save_button = new javax.swing.JButton();
@@ -265,9 +258,10 @@ public final class EmployeesView extends DBView implements DBValuesModel {
 
         jLabel16.setText("Nombre: ");
         jLabel16.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel6.add(jLabel16, java.awt.BorderLayout.LINE_START);
+        jPanel6.add(jLabel16, java.awt.BorderLayout.WEST);
 
         first_name.setName("Nombre"); // NOI18N
+        first_name.setPreferredSize(null);
         jPanel6.add(first_name, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel6);
@@ -276,9 +270,10 @@ public final class EmployeesView extends DBView implements DBValuesModel {
 
         jLabel18.setText("Apellidos: ");
         jLabel18.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel7.add(jLabel18, java.awt.BorderLayout.LINE_START);
+        jPanel7.add(jLabel18, java.awt.BorderLayout.WEST);
 
         last_names.setName("Apellidos"); // NOI18N
+        last_names.setPreferredSize(null);
         jPanel7.add(last_names, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel7);
@@ -287,10 +282,11 @@ public final class EmployeesView extends DBView implements DBValuesModel {
 
         jLabel19.setText("Cargo");
         jLabel19.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel8.add(jLabel19, java.awt.BorderLayout.LINE_START);
+        jPanel8.add(jLabel19, java.awt.BorderLayout.WEST);
 
         employee_type_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECCIONE UNA OPCION", "PRESIDENTE", "SECRETARIO", "TESORERO", "PASANTE", "ADMINISTRADOR" }));
         employee_type_field.setName("Cargo"); // NOI18N
+        employee_type_field.setPreferredSize(null);
         jPanel8.add(employee_type_field, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel8);
@@ -299,10 +295,11 @@ public final class EmployeesView extends DBView implements DBValuesModel {
 
         jLabel20.setText("Estado: ");
         jLabel20.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel14.add(jLabel20, java.awt.BorderLayout.LINE_START);
+        jPanel14.add(jLabel20, java.awt.BorderLayout.WEST);
 
         status_type_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACTIVO.", "INACTIVO.", "BAJA." }));
         status_type_field.setName("Estatus"); // NOI18N
+        status_type_field.setPreferredSize(null);
         jPanel14.add(status_type_field, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel14);
@@ -311,9 +308,10 @@ public final class EmployeesView extends DBView implements DBValuesModel {
 
         jLabel21.setText("Usuario: ");
         jLabel21.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel15.add(jLabel21, java.awt.BorderLayout.LINE_START);
+        jPanel15.add(jLabel21, java.awt.BorderLayout.WEST);
 
         user_field.setName("Usuario"); // NOI18N
+        user_field.setPreferredSize(null);
         jPanel15.add(user_field, java.awt.BorderLayout.CENTER);
 
         jCheckBox1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -328,9 +326,10 @@ public final class EmployeesView extends DBView implements DBValuesModel {
 
         jLabel22.setText("Contraseña: ");
         jLabel22.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel20.add(jLabel22, java.awt.BorderLayout.LINE_START);
+        jPanel20.add(jLabel22, java.awt.BorderLayout.WEST);
 
         password_field.setName("Contraseña"); // NOI18N
+        password_field.setPreferredSize(null);
         jPanel20.add(password_field, java.awt.BorderLayout.CENTER);
 
         jCheckBox2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -352,20 +351,11 @@ public final class EmployeesView extends DBView implements DBValuesModel {
 
         jLabel24.setText("F. Limite: ");
         jLabel24.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel35.add(jLabel24, java.awt.BorderLayout.LINE_START);
+        jPanel35.add(jLabel24, java.awt.BorderLayout.WEST);
 
-        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
-
-        day_limit_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(day_limit_field);
-
-        month_limit_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(month_limit_field);
-
-        year_limit_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(year_limit_field);
-
-        jPanel35.add(jPanel1, java.awt.BorderLayout.CENTER);
+        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat(""))));
+        jFormattedTextField1.setPreferredSize(null);
+        jPanel35.add(jFormattedTextField1, java.awt.BorderLayout.CENTER);
 
         center_panel.add(jPanel35);
 
@@ -445,7 +435,7 @@ public final class EmployeesView extends DBView implements DBValuesModel {
         panel_tabla.add(jPanel30, java.awt.BorderLayout.NORTH);
 
         objects_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Objects [][] {
+            new Object [][] {
 
             },
             new String [] {
@@ -513,13 +503,13 @@ public final class EmployeesView extends DBView implements DBValuesModel {
     private javax.swing.JPanel center_panel;
     private javax.swing.JLabel count;
     private javax.swing.JCheckBox date_limit_field;
-    private javax.swing.JComboBox<String> day_limit_field;
     private javax.swing.JButton delete_button;
     private javax.swing.JComboBox<String> employee_type_field;
     private javax.swing.JTextField first_name;
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -530,7 +520,6 @@ public final class EmployeesView extends DBView implements DBValuesModel {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
@@ -546,7 +535,6 @@ public final class EmployeesView extends DBView implements DBValuesModel {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField last_names;
-    private javax.swing.JComboBox<String> month_limit_field;
     private javax.swing.JButton next_button;
     private javax.swing.JPanel north_panel;
     private javax.swing.JPanel np_cp_center;
@@ -571,7 +559,6 @@ public final class EmployeesView extends DBView implements DBValuesModel {
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     private javax.swing.JPasswordField user_field;
-    private javax.swing.JComboBox<String> year_limit_field;
     // End of variables declaration//GEN-END:variables
 
     @Override

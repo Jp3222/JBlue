@@ -32,18 +32,18 @@ interface ArrayGsConst {
     static final String MONTH_GS = "MES";
     static final String USER_GS = "USUARIO";
 
-    public static final String[] USER_FIELD_GS = {
-        ID_GS, NAME_GS, "A. PATERNO", "A. MATERNO",
-        "CALLE", "NO. CASA", "TIPO DE TOMA", "TIPO DE USUARIO",
+    public static final String[] USERS_FIELD_GS = {
+        ID_GS, "CURP", NAME_GS, "A. PATERNO", "A. MATERNO", "EMAIL", "TELEFONO 1", "TELEFONO 2",
+        "CALLE 1", "CALLE 2", "NO. INT", "NO. EXT", "TIPO DE TOMA", "TIPO DE USUARIO",
         STATUS_GS, DATE_REGISTER_GS
     };
 
-    public static final String[] STREET_FIELD_GS = {
+    public static final String[] STREETS_FIELD_GS = {
         ID_GS, NAME_GS, STATUS_GS
     };
 
     public static final String[] WATER_INTAKES_TYPES_FIELD_GS = {
-        ID_GS, "TIPO", "PRECIO ANTERIOR", "PRECIO", "RECARGO", "ESTATUS", DATE_LAST_UPDATE_GS
+        ID_GS, "TIPO", "PRECIO ACTUAL", "PRECIO ANTERIOR", "RECARGO", "ESTATUS", DATE_LAST_UPDATE_GS, DATE_REGISTER_GS
     };
 
     public static final String[] WATER_INTAKES_FIELD_GS = {
@@ -51,17 +51,17 @@ interface ArrayGsConst {
         "CALLE 2", "UBICACION", "DETALLES", STATUS_GS, DATE_LAST_UPDATE_GS, DATE_REGISTER_GS
     };
 
-    public static final String[] SERVICE_PAYMENT_FIELD_GS = {
+    public static final String[] SERVICE_PAYMENTS_FIELD_GS = {
         ID_GS, EMPLOYEE_GS, USER_GS, "PRECIO",
         MONTH_GS, "NO. MES", STATUS_GS, DATE_REGISTER_GS
     };
 
-    public static final String[] SURCHARGE_PAYMENT_FIELD_GS = {
+    public static final String[] SURCHARGE_PAYMENTS_FIELD_GS = {
         ID_GS, EMPLOYEE_GS, USER_GS, "PRECIO",
         MONTH_GS, STATUS_GS, DATE_REGISTER_GS
     };
 
-    public static final String[] OTHER_PAYMENT_FIELD_GS = {
+    public static final String[] OTHER_PAYMENTS_FIELD_GS = {
         ID_GS, EMPLOYEE_GS, USER_GS, "PRECIO",
         MONTH_GS, STATUS_GS, DATE_REGISTER_GS
     };

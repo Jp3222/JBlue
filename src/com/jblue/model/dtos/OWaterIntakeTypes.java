@@ -22,15 +22,15 @@ public class OWaterIntakeTypes extends Objects implements ForeingKeyObject, Stat
         super();
     }
 
-    public String getType() {
+    public String getTypeName() {
         return info[1];
     }
 
-    public double getPreviusPrice() {
+    public double getPreviousPrice() {
         return Double.parseDouble(info[2]);
     }
 
-    public double getPrice() {
+    public double getCurrentPrice() {
         return Double.parseDouble(info[3]);
     }
 
@@ -67,7 +67,7 @@ public class OWaterIntakeTypes extends Objects implements ForeingKeyObject, Stat
 
     @Override
     public String toString() {
-        return getType();
+        return getTypeName();
     }
 
 }

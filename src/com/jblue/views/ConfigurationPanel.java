@@ -16,6 +16,7 @@
  */
 package com.jblue.views;
 
+import com.jblue.controllers.Controller;
 import com.jblue.controllers.winc.ConfigController;
 import com.jblue.sys.app.AppConfig;
 import com.jblue.views.framework.SimpleView;
@@ -25,26 +26,23 @@ import com.jutil.platf.So;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import java.awt.CardLayout;
 import java.awt.event.ActionListener;
-import java.time.LocalTime;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPasswordField;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import com.jblue.views.framework.DBValuesModel;
 import com.jblue.views.framework.OptionMenuModel;
+import java.awt.event.WindowListener;
 
 /**
  *
  * @author juanp
  */
-public final class ConfigurationPanel extends SimpleView implements OptionMenuModel, DBValuesModel {
+public final class ConfigurationPanel extends SimpleView implements DBValuesModel {
 
-    private JButton option;
     private final CardLayout ly;
-    private final ConfigController controller;
-    private Properties properties;
+    private final Properties properties;
     private ConfigWindow root;
 
     /**
@@ -57,10 +55,9 @@ public final class ConfigurationPanel extends SimpleView implements OptionMenuMo
         ly = (CardLayout) root_panel.getLayout();
         controller = new ConfigController(this);
         properties = (Properties) LaunchApp.getInstance().getResources("propierties");
-        this.option = mkButton(getName(), null, null);
         if (root != null) {
             this.root = root;
-            this.root.addWindowListener(controller);
+            this.root.addWindowListener((WindowListener) controller);
         }
         build();
 
@@ -85,7 +82,7 @@ public final class ConfigurationPanel extends SimpleView implements OptionMenuMo
 
     @Override
     public void events() {
-        addWindowListener(controller);
+        addWindowListener((WindowListener) controller);
 
         show_user.addActionListener(controller);
         show_password.addActionListener(controller);
@@ -503,19 +500,6 @@ public final class ConfigurationPanel extends SimpleView implements OptionMenuMo
     }
 
     @Override
-    public JButton getOption() {
-
-        return option;
-    }
-
-    @Override
-    public void setEvenOption(ActionListener e) {
-        if (option.getActionListeners().length < 1) {
-            option.addActionListener(e);
-        }
-    }
-
-    @Override
     public boolean isValuesOk() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
@@ -524,4 +508,9 @@ public final class ConfigurationPanel extends SimpleView implements OptionMenuMo
     public String[] getDbValues(boolean update) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    public Controller getController() {
+        return controller;
+    }
+
 }

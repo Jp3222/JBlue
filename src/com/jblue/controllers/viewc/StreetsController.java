@@ -27,7 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import com.jblue.controllers.AbstractComponentController;
-import com.jblue.model.JDBConnection;
+import com.jblue.model.DBConnection;
 import java.util.ArrayList;
 import com.jblue.controllers.DBControllerModel;
 import com.jblue.controllers.AbstractDBViewController;
@@ -38,13 +38,13 @@ import com.jblue.controllers.AbstractDBViewController;
  */
 public class StreetsController extends AbstractDBViewController<OStreet> implements DBControllerModel {
 
-    private final JDBConnection<OStreet> connection;
+    private final DBConnection<OStreet> connection;
     private final StreetsView view;
     private final ArrayList<AbstractComponentController> components_controllers;
 
     public StreetsController(StreetsView view) {
         super(CacheFactory.STREETS);
-        this.connection = (JDBConnection<OStreet>) memo_cache.getConnection();
+        this.connection = (DBConnection<OStreet>) memo_cache.getConnection();
         this.view = view;
         this.components_controllers = new ArrayList(5);
 

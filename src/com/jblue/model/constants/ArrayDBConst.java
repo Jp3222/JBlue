@@ -22,54 +22,56 @@ package com.jblue.model.constants;
  */
 public interface ArrayDBConst {
 
-    static final String ID = "id";
-    static final String DATE_LAST_UPDATE = "date_update";
-    static final String DATE_REGISTER = "date_register";
-    static final String DATE_END = "date_end";
-    static final String EMPLOYEE = "employee";
-    static final String STATUS = "status";
-    static final String NAME = "first_name";
-    static final String MONTH = "month";
-    static final String USER = "user";
+    static final String ID_FIELD = "id";
+    static final String DATE_LAST_UPDATE_FIELD = "date_update";
+    static final String DATE_REGISTER_FIELD = "date_register";
+    static final String DATE_END_FIELD = "date_end";
+    static final String EMPLOYEE_FIELD = "employee";
+    static final String STATUS_FIELD = "status";
+    static final String NAME_FIELD = "first_name";
+    static final String MONTH_FIELD = "month";
+    static final String USER_FIELD = "user";
 
-    public static final String[] USER_FIELD = {
-        ID, "first_name", "last_name1", "last_name2",
-        "street", "house_number", "water_intakes", "user_type",
-        STATUS, DATE_REGISTER
+    public static final String[] USERS_FIELD = {
+        ID_FIELD, "curp", "first_name", "last_name1", "last_name2",
+        "email", "phone_number1", "phone_number2", "street1",
+        "street2", "outside_number", "inside_number", "water_intake_type",
+        "user_type", "status", "date_last_update", "date_register"
+
     };
 
-    public static final String[] STREET_FIELD = {
-        ID, "name", STATUS
+    public static final String[] STREETS_FIELD = {
+        ID_FIELD, "name", STATUS_FIELD
     };
 
     public static final String[] WATER_INTAKES_TYPES_FIELD = {
-        ID, "type", "previus_price", "price", "surcharge", STATUS, "date_update"
+        ID_FIELD, "type_name", "current_price", "previous_price", "surcharge", STATUS_FIELD, DATE_LAST_UPDATE_FIELD, DATE_REGISTER_FIELD
     };
     public static final String[] WATER_INTAKES_FIELD = {
-        ID, "cost_operation", "water_intake_type", "procedure_payments", "user", "street1",
-        "street2", "location", "descripcion", STATUS, "date_update", DATE_REGISTER
+        ID_FIELD, "cost_operation", "water_intake_type", "procedure_payments", "user", "street1",
+        "street2", "location", "descripcion", STATUS_FIELD, "date_update", DATE_REGISTER_FIELD
     };
-    public static final String[] SERVICE_PAYMENT_FIELD = {
-        ID, EMPLOYEE, "user", "price",
-        "month_name", "month", STATUS, DATE_REGISTER
-    };
-
-    public static final String[] SURCHARGE_PAYMENT_FIELD = {
-        ID, EMPLOYEE, "user", "price",
-        "month_name", "month", STATUS, DATE_REGISTER
+    public static final String[] SERVICE_PAYMENTS_FIELD = {
+        ID_FIELD, EMPLOYEE_FIELD, "user", "price",
+        "month_name", "month", STATUS_FIELD, DATE_REGISTER_FIELD
     };
 
-    public static final String[] OTHER_PAYMENT_FIELD = {
-        ID, EMPLOYEE, "user", "price",
-        "month", STATUS, DATE_REGISTER
+    public static final String[] SURCHARGE_PAYMENTS_FIELD = {
+        ID_FIELD, EMPLOYEE_FIELD, "user", "price",
+        "month_name", "month", STATUS_FIELD, DATE_REGISTER_FIELD
+    };
+
+    public static final String[] OTHER_PAYMENTS_FIELD = {
+        ID_FIELD, EMPLOYEE_FIELD, "user", "price",
+        "month", STATUS_FIELD, DATE_REGISTER_FIELD
     };
 
     public static final String[] EMPLOYEES_FIELD = {
-        ID, "first_name", "last_names", "employee_type",
-        STATUS, "user", "password", DATE_REGISTER, "end_date"
+        ID_FIELD, "first_name", "last_names", "employee_type",
+        STATUS_FIELD, "user", "password", DATE_REGISTER_FIELD, "end_date"
     };
 
     public static final String[] EMPLOYEES_TYPES_FIELD = {
-        ID, "employee_type", STATUS, DATE_REGISTER
+        ID_FIELD, "employee_type", STATUS_FIELD, DATE_REGISTER_FIELD
     };
 }

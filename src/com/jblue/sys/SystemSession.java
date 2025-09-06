@@ -6,7 +6,7 @@ package com.jblue.sys;
 
 import com.jblue.model.constants.Const;
 import com.jblue.model.dtos.OEmployee;
-import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
 import com.jutil.framework.LocalSession;
 import com.jutil.jexception.JExcp;
@@ -39,11 +39,11 @@ public class SystemSession implements LocalSession<OEmployee> {
      * Empleado que ha iniciado session
      */
     private OEmployee personal;
-    private final DBConnection connection;
+    private final JDBConnection connection;
     private final String query;
 
     private SystemSession() {
-        connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
+        connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
         this.query = "INSERT INTO history(employee, db_user, type, description) VALUES('%s',(%s),'%s','%s')";
     }
 

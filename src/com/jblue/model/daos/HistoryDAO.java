@@ -14,18 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.util.cache;
+package com.jblue.model.daos;
 
 import com.jblue.model.DBConnection;
-import com.jblue.model.dtos.Objects;
-import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author juanp
- * @param <T>
  */
-@FunctionalInterface
-public interface ObjectAdapterModel<T extends Objects> {
+public final class HistoryDAO extends DBConnection {
 
-    T adapter(ResultSet rs_data, DBConnection connection);
+    private static HistoryDAO instance;
+
+    public static HistoryDAO getInstance() {
+        return instance;
+    }
+
+    public HistoryDAO() {
+        super("history", new String[]{
+            "id", "employee", "type", "description", "date_register"
+        });
+    }
+
 }

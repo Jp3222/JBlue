@@ -18,7 +18,10 @@ package com.jblue.controllers;
 
 import com.jblue.model.dtos.Objects;
 import com.jblue.util.cache.MemoListCache;
-import com.jblue.model.JDBConnection;
+import com.jblue.model.DBConnection;
+import com.jblue.model.constants.Const;
+import com.jblue.model.constants.LogBookFormats;
+import com.jblue.sys.SystemSession;
 import com.jblue.views.framework.SimpleView;
 import javax.swing.JOptionPane;
 
@@ -30,22 +33,29 @@ import javax.swing.JOptionPane;
 public abstract class AbstractDBViewController<T extends Objects> extends AbstractViewController implements DBControllerModel {
 
     protected final MemoListCache<T> memo_cache;
-    protected final JDBConnection<T> connection;
+    protected final DBConnection<T> connection;
 
     public AbstractDBViewController(MemoListCache<T> memo_cache) {
         this.memo_cache = memo_cache;
-        this.connection = (JDBConnection<T>) memo_cache.getConnection();
+        this.connection = (DBConnection<T>) memo_cache.getConnection();
     }
 
-    protected void rmessage(SimpleView view, boolean ok) {
-        String status = ok ? "Exitoso" : "Erroneo";
+    public void rmessage(SimpleView view, boolean mov) {
+        rmessage(view, mov, -1, null);
+    }
+
+    protected void rmessage(SimpleView view, boolean mov, int mov_type, String description) {
+        String status = mov ? "Exitosa" : "Erronea";
+        if (mov_type > 0) {
+            SystemSession.getInstancia().register(mov_type, description);
+        }
+        if (mov) {
+            memo_cache.reLoadData();
+            view.initialState();
+        }
         JOptionPane.showMessageDialog(view,
                 "Operacion %s".formatted(status),
                 "Estado de la operacion",
                 JOptionPane.INFORMATION_MESSAGE);
-        if (ok) {
-            memo_cache.reLoadData();
-            view.initialState();
-        }
     }
 }

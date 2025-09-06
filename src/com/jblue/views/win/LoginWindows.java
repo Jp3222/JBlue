@@ -8,7 +8,7 @@ import com.jblue.controllers.FactoryController;
 import com.jblue.controllers.winc.WindowController;
 import com.jblue.sys.app.AppConfig;
 import com.jblue.views.framework.AbstractAppWindows;
-import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
 import com.jutil.swingw.wrappers.TextFieldWrapper;
 import java.awt.Image;
@@ -105,7 +105,7 @@ public class LoginWindows extends AbstractAppWindows {
             icon_image.setIcon(i);
         }
         //
-        DBConnection conn = (DBConnection) LaunchApp.getInstance().getResources("connection");
+        JDBConnection conn = (JDBConnection) LaunchApp.getInstance().getResources("connection");
         String status_db;
         try {
             status_db = conn.getConnection().isClosed() ? "Desconectado" : "Conectado";

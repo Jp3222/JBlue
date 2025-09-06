@@ -12,9 +12,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/jblue/JBlue.java</file>
-            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/sys/JBlueMainSystem.java</file>
-            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/views/ConfigurationPanel.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/controllers/viewc/UserController.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/views/UserView.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/views/WaterIntakesTypesView.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/controllers/viewc/WaterIntakesTypesController.java</file>
         </group>
     </open-files>
 </project-private>

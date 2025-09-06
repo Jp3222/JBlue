@@ -14,29 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.model.daos;
+package com.jblue.views.framework;
 
-import com.jblue.model.JDBConnection;
+import java.util.Map;
 
 /**
  *
  * @author juanp
  */
-public final class BitacoraDAO extends JDBConnection {
+public interface DBValuesMapModel {
 
-    private static BitacoraDAO instance;
+    /**
+     * Metodo para evaludar todos lo campos obligatorios o evaluar la logica de
+     * entrada
+     *
+     * @return true si todas las evaluaciones se han cumplido
+     */
+    boolean isValuesOk();
 
-    public static BitacoraDAO getInstance() {
-        return instance;
-    }
-
-    public BitacoraDAO() {
-        super("history", new String[]{
-            "id", "employee", "type", "description", "date_register"
-        });
-    }
-
-    public void registerUser(String type, String nombre) {
-    }
-
+    /**
+     * Metodo para obtener los datos
+     *
+     * @param update indica si el metodo retornara datos para una actualizacion
+     * @return los datos asignados
+     */
+    Map<String, String> getValues(boolean update);
 }

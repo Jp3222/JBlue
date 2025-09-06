@@ -16,7 +16,7 @@
  */
 package com.jblue.controllers.winc;
 
-import com.jblue.model.JDBConnection;
+import com.jblue.model.DBConnection;
 import com.jblue.model.dtos.OEmployee;
 import com.jblue.util.Filters;
 import com.jblue.util.EncriptadoAES;
@@ -148,7 +148,7 @@ public class LoginController extends WindowController {
         if (Filters.isNullOrBlank(user, password)) {
             return res;
         }
-        JDBConnection<OEmployee> op = ConnectionFactory.getEmployees();
+        DBConnection<OEmployee> op = ConnectionFactory.getEmployees();
         try {
             String encrypt_user = EncriptadoAES.doEncrypt(user, password);
             String encrypt_password = EncriptadoAES.doEncrypt(password, user);

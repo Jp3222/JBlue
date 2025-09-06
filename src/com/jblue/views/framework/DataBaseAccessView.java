@@ -17,7 +17,7 @@
 package com.jblue.views.framework;
 
 import com.jblue.sys.JBlueMainSystem;
-import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
 
 /**
@@ -26,9 +26,9 @@ import com.jutil.framework.LaunchApp;
  */
 public abstract class DataBaseAccessView extends SimpleView {
 
-    protected final DBConnection connection;
+    protected final JDBConnection connection;
 
-    public DataBaseAccessView(DBConnection connection) {
+    public DataBaseAccessView(JDBConnection connection) {
         this.connection = connection;
     }
 
@@ -36,9 +36,9 @@ public abstract class DataBaseAccessView extends SimpleView {
         connection = getDefaultConnection();
     }
 
-    protected final DBConnection getDefaultConnection() {
+    protected final JDBConnection getDefaultConnection() {
         Object resources = LaunchApp.getInstance().getResources(JBlueMainSystem.DATA_BASE_KEY);
-        return (DBConnection) resources;
+        return (JDBConnection) resources;
     }
 
     protected abstract void dataLoad();

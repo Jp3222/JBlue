@@ -17,7 +17,7 @@
 package com.jblue.views;
 
 import com.jblue.views.components.ChooseFileComponent;
-import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.ViewStates;
 import com.jutil.swingw.modelos.JTableModel;
 import java.io.BufferedReader;

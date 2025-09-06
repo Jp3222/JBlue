@@ -16,7 +16,7 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.model.JDBConnection;
+import com.jblue.model.DBConnection;
 import com.jblue.model.dtos.Objects;
 import java.util.List;
 import java.util.function.Predicate;
@@ -30,11 +30,11 @@ public class MemoListCache<T extends Objects> extends AbstractListCache<T> imple
 
     private int page;
 
-    public MemoListCache(int capacity, JDBConnection conexion) {
+    public MemoListCache(int capacity, DBConnection conexion) {
         super(capacity, conexion);
     }
 
-    public MemoListCache(JDBConnection conexion) {
+    public MemoListCache(DBConnection conexion) {
         super(conexion);
     }
 
@@ -85,7 +85,7 @@ public class MemoListCache<T extends Objects> extends AbstractListCache<T> imple
 
     private int buffer_direc;
 
-    public JDBConnection<T> getConnection() {
+    public DBConnection<T> getConnection() {
         return conexion;
     }
 

@@ -20,7 +20,7 @@ import com.jblue.sys.SystemSession;
 import com.jblue.sys.app.AppConfig;
 import com.jblue.sys.app.AppFiles;
 import com.jblue.views.ConfigurationPanel;
-import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
@@ -99,7 +99,7 @@ public class ConfigController extends WindowController {
     }
 
     void testDB() {
-        try (DBConnection connection = DBConnection.getNewInstance(
+        try (JDBConnection connection = JDBConnection.getNewInstance(
                 view.getURL(), view.getSUser(), view.getSPassword())) {
 
             boolean valid = connection.getConnection().isValid(1000);
@@ -118,15 +118,14 @@ public class ConfigController extends WindowController {
     }
 
     @Override
-    public void windowClosing(WindowEvent we) {
+    public void windowClosed(WindowEvent we) {
         try (FileOutputStream out = new FileOutputStream(AppFiles.FIL_ARC_CONFIG);) {
             properties.storeToXML(out, "Configuracion");
         } catch (IOException ex) {
             Logger.getLogger(ConfigController.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
-
         synchronized (LaunchApp.getInstance().getMain()) {
-            LaunchApp.getInstance().getMain().notify();
+            LaunchApp.getInstance().getMain().notifyAll();
         }
         synchronized (view) {
             view.notify();

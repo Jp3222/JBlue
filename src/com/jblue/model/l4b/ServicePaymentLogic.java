@@ -72,7 +72,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
 
     @Override
     public boolean execPayment() {
-        deuda = meses_pagados.size() * toma.getPrice();
+        deuda = meses_pagados.size() * toma.getCurrentPrice();
 
         if (!gameRulers()) {
             return false;
@@ -84,7 +84,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
             col = "('" + personal.getId()
                     + "','"
                     + usuario.getId() + "','"
-                    + toma.getPrice() + "','"
+                    + toma.getCurrentPrice() + "','"
                     + meses_pagados.get(i) + "')";
             i++;
             values.append(col).append(",");
@@ -92,19 +92,19 @@ public class ServicePaymentLogic extends AbsctractPayment {
             mov_book.append(i).append(" - ")
                     .append(meses_pagados.get(i))
                     .append(" : ")
-                    .append(toma.getPrice())
+                    .append(toma.getCurrentPrice())
                     .append("\n");
         }
         col = "('" + personal.getId()
                 + "','"
                 + usuario.getId() + "','"
-                + toma.getPrice() + "','"
+                + toma.getCurrentPrice() + "','"
                 + meses_pagados.get(i) + "')";
 
         mov_book.append(i).append(" - ")
                 .append(meses_pagados.get(i))
                 .append(" : ")
-                .append(toma.getPrice())
+                .append(toma.getCurrentPrice())
                 .append("\n");
         i++;
         values.append(col);
@@ -134,7 +134,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
             col = "('" + personal.getId()
                     + "','"
                     + usuario.getId() + "','"
-                    + toma.getPrice() + "','"
+                    + toma.getCurrentPrice() + "','"
                     + meses_pagados.get(i)
                     + PaymentModel.STATUS_NOT_PAY + "')";
             i++;
@@ -143,19 +143,19 @@ public class ServicePaymentLogic extends AbsctractPayment {
             mov_book.append(i).append(" - ")
                     .append(meses_pagados.get(i))
                     .append(" : ")
-                    .append(toma.getPrice())
+                    .append(toma.getCurrentPrice())
                     .append("\n");
         }
         col = "('" + personal.getId()
                 + "','"
                 + usuario.getId() + "','"
-                + toma.getPrice() + "','"
+                + toma.getCurrentPrice() + "','"
                 + meses_pagados.get(i) + "')";
 
         mov_book.append(i).append(" - ")
                 .append(meses_pagados.get(i))
                 .append(" : ")
-                .append(toma.getPrice())
+                .append(toma.getCurrentPrice())
                 .append("\n");
         i++;
         values.append(col);

@@ -17,6 +17,8 @@
 package com.jblue.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -36,5 +38,48 @@ public class Formats {
             list.add(a);
         }
         return list.toArray(args);
+    }
+
+    public static Map<String, String> getDBFormatInputMap(String[] keys, String[] values) {
+        Map<String, String> map = new HashMap<>(keys.length);
+        for (int i = 0; i < keys.length; i++) {
+            map.put(keys[i], getTextFormat(values[i]));
+        }
+        return map;
+    }
+
+    public static Map<String, String> getDBFormatInputMap(Map<String, String> map) {
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            entry.setValue(getTextFormat(entry.getValue()));
+        }
+        return map;
+    }
+
+    public static String getTextFormat(String o) {
+        return o.trim().replace(" ", "_").toUpperCase();
+    }
+
+    public static String[] getInsertFormats(Map<String, String> map) {
+        StringBuilder fields = new StringBuilder();
+        StringBuilder values = new StringBuilder();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            fields.append(entry.getKey()).append(",");
+            values.append("'").append(entry.getValue()).append("',");
+        }
+        String[] info = new String[2];
+        info[0] = fields.substring(0, fields.length() - 1);
+        info[1] = values.substring(0, values.length() - 1);
+        return info;
+    }
+
+    public static String getUpdateFormats(Map<String, String> map) {
+        StringBuilder sb = new StringBuilder();
+        String aux;
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            aux = UtilsConstants.UPDATE_COL_FORMAT.formatted(entry.getKey(), entry.getValue());
+            sb.append(aux).append(",");
+        }
+
+        return sb.substring(0, sb.length() - 1);
     }
 }

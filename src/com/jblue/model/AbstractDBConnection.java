@@ -18,33 +18,34 @@ package com.jblue.model;
 
 import com.jblue.model.dtos.Objects;
 import com.jblue.util.ObjectUtils;
-import com.jutil.dbcon.connection.DBConnection;
-import java.sql.SQLException;
-import java.sql.ResultSet;
+import com.jutil.dbcon.connection.JDBConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.Connection;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public abstract class AbstractJDBConnection<T extends Objects> implements JDBConnectionModel {
+public abstract class AbstractDBConnection<T extends Objects> implements DBConnectionModel {
 
     public static final int FIELDS = 1;
     public static final int VALUES = 2;
     public static final int KEY_VALUES = 3;
 
-    protected final DBConnection connection;
+    protected final JDBConnection connection;
     protected final String table;
     private final String[] fields;
     private final String format_insert = "'%s'";
     private final String format_update_col = "%s = '%s'";
 
-    public AbstractJDBConnection(String table, String[] fields) {
-        this.connection = DBConnection.getInstance();
+    public AbstractDBConnection(String table, String[] fields) {
+        this.connection = JDBConnection.getInstance();
         this.table = table;
         this.fields = fields;
     }
@@ -178,8 +179,36 @@ public abstract class AbstractJDBConnection<T extends Objects> implements JDBCon
     }
 
     @Override
-    public DBConnection getConnection() {
+    public JDBConnection getJDBConnection() {
         return connection;
+    }
+
+    public Connection getConnection() {
+        return connection.getConnection();
+    }
+
+    public void setAutoCommit(boolean auto) {
+        try {
+            connection.getConnection().setAutoCommit(auto);
+        } catch (SQLException ex) {
+            System.getLogger(AbstractDBConnection.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }
+
+    public void commit() {
+        try {
+            connection.getConnection().commit();
+        } catch (SQLException ex) {
+            System.getLogger(AbstractDBConnection.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }
+
+    public void rollBack() {
+        try {
+            connection.getConnection().rollback();
+        } catch (SQLException ex) {
+            System.getLogger(AbstractDBConnection.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }
 
 }

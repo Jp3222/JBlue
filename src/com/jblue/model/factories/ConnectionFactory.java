@@ -17,7 +17,7 @@
 package com.jblue.model.factories;
 
 import com.jblue.model.constants.Const;
-import com.jblue.model.JDBConnection;
+import com.jblue.model.DBConnection;
 import com.jblue.model.dtos.*;
 
 /**
@@ -26,39 +26,39 @@ import com.jblue.model.dtos.*;
  */
 public class ConnectionFactory {
 
-    public static JDBConnection<OEmployee> getEmployees() {
-        return new JDBConnection(Const.EMPLOYEES);
+    public static DBConnection<OEmployee> getEmployees() {
+        return new DBConnection(Const.EMPLOYEES);
     }
 
-    public static JDBConnection<OUser> getUser() {
-        return new JDBConnection(Const.USER);
+    public static DBConnection<OUser> getUser() {
+        return new DBConnection(Const.USERS);
     }
 
-    public static JDBConnection<OStreet> getStreets() {
-        return new JDBConnection(Const.STREETS);
+    public static DBConnection<OStreet> getStreets() {
+        return new DBConnection(Const.STREETS);
     }
 
-    public static JDBConnection<OWaterIntakeTypes> getWaterIntakesTypes() {
-        return new JDBConnection(Const.WATER_INTAKES_TYPES);
+    public static DBConnection<OWaterIntakeTypes> getWaterIntakesTypes() {
+        return new DBConnection(Const.WATER_INTAKES_TYPES);
     }
 
-    public static JDBConnection<OServicePayments> getServicePayments() {
-        return new JDBConnection(Const.SERVICE_PAYMENTS);
+    public static DBConnection<OServicePayments> getServicePayments() {
+        return new DBConnection(Const.SERVICE_PAYMENTS);
     }
 
-    public static JDBConnection<OServicePayments> getSurchargePayments() {
-        return new JDBConnection(Const.SURCHARGE_PAYMENTS);
+    public static DBConnection<OServicePayments> getSurchargePayments() {
+        return new DBConnection(Const.SURCHARGE_PAYMENTS);
     }
 
-    public static JDBConnection<OtherPaymentsType> getOtherPayments() {
-        return new JDBConnection(Const.OTHER_PAYMENTS);
+    public static DBConnection<OtherPaymentsType> getOtherPayments() {
+        return new DBConnection(Const.OTHER_PAYMENTS);
     }
 
-    public static JDBConnection<OWaterIntakes> getWaterIntakes() {
-        return new JDBConnection(Const.WATER_INTAKES);
+    public static DBConnection<OWaterIntakes> getWaterIntakes() {
+        return new DBConnection(Const.WATER_INTAKES);
     }
 
-    public static JDBConnection<OEmployeeTypes> getEmployeeTypes() {
-        return new JDBConnection(Const.EMPLOYEES_TYPES);
+    public static DBConnection<OEmployeeTypes> getEmployeeTypes() {
+        return new DBConnection(Const.EMPLOYEES_TYPES);
     }
 }

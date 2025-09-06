@@ -40,13 +40,13 @@ import java.util.logging.Logger;
  * @author juan-campos
  */
 public class ObjectUtils {
-
+    
     private static final Map<String, Objects> mapa;
-
+    
     static {
         mapa = new HashMap<>(10);
         mapa.put(Const.EMPLOYEES.getTable(), new OEmployee());
-        mapa.put(Const.USER.getTable(), new OUser());
+        mapa.put(Const.USERS.getTable(), new OUser());
         mapa.put(Const.STREETS.getTable(), new OStreet());
         mapa.put(Const.WATER_INTAKES_TYPES.getTable(), new OWaterIntakeTypes());
         mapa.put(Const.SERVICE_PAYMENTS.getTable(), new OServicePayments());
@@ -56,9 +56,9 @@ public class ObjectUtils {
         mapa.put(Const.OTHER_PAYMENTS.getTable(), new OtherPaymentsType());
         mapa.put("history", new OHistory());
         mapa.put(Const.WATER_INTAKES.getTable(), new OWaterIntakes());
-
+        
     }
-
+    
     public static <T extends Objects> T getObjeto(String tabla, String[] info) {
         Objects clone = new Objects();
         try {
@@ -69,11 +69,11 @@ public class ObjectUtils {
         clone.setInfo(info);
         return (T) clone;
     }
-
+    
     public static OWaterIntakeTypes getTipoToma(String id) {
         return getObjetoById(CacheFactory.WATER_INTAKES_TYPES, id);
     }
-
+    
     private static <T extends Objects> T getObjetoById(MemoListCache<T> cache, String id) {
         ArrayList<T> list = cache.getList();
         if (list.isEmpty()) {
@@ -81,57 +81,60 @@ public class ObjectUtils {
         }
         return cache.get(o -> o.getId().equals(id));
     }
-
+    
     public static boolean isRoot(OEmployee usuario) {
         return usuario.getType().equals("1");
     }
-
+    
     public static boolean isAdministrador(OEmployee usuario) {
         return usuario.getType().equals("2");
     }
-
+    
     public static boolean isPresidente(OEmployee usuario) {
         return usuario.getType().equals("3");
     }
-
+    
     public static boolean isTesorero(OEmployee usuario) {
         return usuario.getType().equals("4");
     }
-
+    
     public static boolean isSecretario(OEmployee usuario) {
         return usuario.getType().equals("5");
     }
-
+    
     public static boolean isPasante(OEmployee usuario) {
         return usuario.getType().equals("6");
     }
-
+    
     public static boolean isDesarrollador(OEmployee usuario) {
         return usuario.getType().equals("7");
     }
-
+    
     public static boolean isUsuarioDePruebas(OEmployee usuario) {
         return usuario.getType().equals("8");
     }
-
+    
     public static OStreet getStreedObject(String street_id) {
+        if (street_id == null) {
+            return null;
+        }
         return searchInCacheObject(CacheFactory.STREETS, street_id);
     }
-
+    
     public static OWaterIntakeTypes getWaterIntakesObject(String water_intakes_id) {
         return searchInCacheObject(CacheFactory.WATER_INTAKES_TYPES, water_intakes_id);
     }
-
+    
     public static OEmployee getEmployee(String employee_id) {
         return searchInCacheObject(CacheFactory.EMPLOYEES, employee_id);
     }
-
+    
     public static OUser getUser(String user_id) {
         return searchInCacheObject(CacheFactory.USERS, user_id);
     }
-
+    
     private static <T extends Objects> T searchInCacheObject(MemoListCache<T> cache, String id) {
         return cache.get((t) -> t.getId().equals(id));
     }
-
+    
 }

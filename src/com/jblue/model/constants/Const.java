@@ -32,11 +32,6 @@ public class Const implements TableDBConst {
     public static final DateTimeFormatter DATE = DateTimeFormatter.ofPattern(DATE_FORMAT);
     public static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern(TIME_FORMAT);
 
-    public static Table getUSER() {
-        USER.setHistoryToFormat("user: %s %s %s");
-        return USER;
-    }
-
     public static Table getSTREETS() {
         return STREETS;
     }

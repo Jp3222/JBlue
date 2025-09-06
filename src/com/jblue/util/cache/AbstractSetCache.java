@@ -16,10 +16,10 @@
  */
 package com.jblue.util.cache;
 
-import com.jblue.model.JDBConnection;
+import com.jblue.model.DBConnection;
 import com.jblue.model.dtos.Objects;
 import com.jblue.util.ObjectUtils;
-import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.connection.JDBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
@@ -37,12 +37,12 @@ import java.util.logging.Logger;
 public abstract class AbstractSetCache<T extends Objects> implements SetCacheModel<T> {
 
     protected final Set<T> cache;
-    protected final JDBConnection<T> conexion;
+    protected final DBConnection<T> conexion;
     protected int index_min, index_max, steps;
     protected long count;
     protected int call_count;
 
-    public AbstractSetCache(int capacity, JDBConnection conexion) {
+    public AbstractSetCache(int capacity, DBConnection conexion) {
         this.cache = new HashSet<>(MIN);
         this.conexion = conexion;
         this.index_min = 1;
@@ -61,7 +61,7 @@ public abstract class AbstractSetCache<T extends Objects> implements SetCacheMod
         query = query.formatted(conexion.getTable(), index_min, index_max);
         System.out.println("leyendo base de datos...");
         try {
-            DBConnection conn = conexion.getConnection();
+            JDBConnection conn = conexion.getJDBConnection();
             ResultSet rs_data;
             rs_data = conn.query(query);
             String[] info;

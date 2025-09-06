@@ -27,7 +27,7 @@ import com.jutil.swingw.modelos.JTableModel;
 public final class TableModelFactory {
 
     public static JTableModel getUserTableModel() {
-        return getTableModel(Const.USER);
+        return getTableModel(Const.USERS);
     }
 
     public static JTableModel getStreetTableModel() {

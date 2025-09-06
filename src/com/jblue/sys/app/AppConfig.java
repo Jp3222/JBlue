@@ -16,7 +16,7 @@
  */
 package com.jblue.sys.app;
 
-import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -207,7 +207,7 @@ public final class AppConfig {
 
     private static Object getParameter(String name) {
         try {
-            DBConnection connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
+            JDBConnection connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
             String query = "SELECT value,data_type FROM parameters WHERE parameter = '%s' AND status = 1"
                     .formatted(name);
             ResultSet rs = connection.query(query);

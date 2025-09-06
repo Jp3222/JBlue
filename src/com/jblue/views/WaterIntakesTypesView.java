@@ -25,23 +25,24 @@ import com.jblue.model.dtos.OWaterIntakeTypes;
 import com.jblue.model.dtos.Objects;
 import com.jblue.util.Filters;
 import com.jblue.util.Formats;
+import com.jblue.views.framework.DBValuesMapModel;
 import com.jblue.views.framework.DBView;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import com.jblue.views.framework.DBValuesModel;
 import com.jblue.views.framework.TableSearchViewModel;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author juan-campos
  */
-public final class WaterIntakesTypesView extends DBView implements DBValuesModel, TableSearchViewModel {
+public final class WaterIntakesTypesView extends DBView implements DBValuesMapModel, TableSearchViewModel {
 
     private final CardLayout ly;
     private final JTableModel model;
@@ -90,9 +91,9 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
 
     @Override
     public void initialState() {
-        type_water_intakes_field.setText(null);
-        previus_price_field.setText(null);
-        price_field.setText(null);
+        type_name_field.setText(null);
+        previous_price_field.setText(null);
+        current_price_field.setText(null);
         surcharge_field.setText(null);
         object_search = null;
         view_show = 1;
@@ -132,16 +133,22 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
         jLabel4 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        type_water_intakes_field = new javax.swing.JTextField();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        previus_price_field = new javax.swing.JTextField();
+        type_name_field = new javax.swing.JTextField();
         jPanel12 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        price_field = new javax.swing.JTextField();
+        current_price_field = new javax.swing.JTextField();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        previous_price_field = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         surcharge_field = new javax.swing.JTextField();
+        jPanel13 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        date_update_field = new javax.swing.JTextField();
+        jPanel14 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        date_register_field = new javax.swing.JTextField();
         options_panel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         save_button = new javax.swing.JButton();
@@ -223,26 +230,11 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel8.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        type_water_intakes_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        type_water_intakes_field.setName("Tipo de toma"); // NOI18N
-        jPanel8.add(type_water_intakes_field, java.awt.BorderLayout.CENTER);
+        type_name_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        type_name_field.setName("Tipo de toma"); // NOI18N
+        jPanel8.add(type_name_field, java.awt.BorderLayout.CENTER);
 
         panel_campos.add(jPanel8);
-
-        jPanel9.setPreferredSize(new java.awt.Dimension(100, 35));
-        jPanel9.setLayout(new java.awt.BorderLayout());
-
-        jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel3.setText("Precio anterior.");
-        jLabel3.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel9.add(jLabel3, java.awt.BorderLayout.WEST);
-
-        previus_price_field.setEditable(false);
-        previus_price_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        previus_price_field.setName("Costo"); // NOI18N
-        jPanel9.add(previus_price_field, java.awt.BorderLayout.CENTER);
-
-        panel_campos.add(jPanel9);
 
         jPanel12.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanel12.setLayout(new java.awt.BorderLayout());
@@ -252,11 +244,26 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel12.add(jLabel6, java.awt.BorderLayout.WEST);
 
-        price_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        price_field.setName("Costo"); // NOI18N
-        jPanel12.add(price_field, java.awt.BorderLayout.CENTER);
+        current_price_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        current_price_field.setName("Costo"); // NOI18N
+        jPanel12.add(current_price_field, java.awt.BorderLayout.CENTER);
 
         panel_campos.add(jPanel12);
+
+        jPanel9.setPreferredSize(new java.awt.Dimension(100, 35));
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel3.setText("Precio anterior.");
+        jLabel3.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel9.add(jLabel3, java.awt.BorderLayout.WEST);
+
+        previous_price_field.setEditable(false);
+        previous_price_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        previous_price_field.setName("Costo"); // NOI18N
+        jPanel9.add(previous_price_field, java.awt.BorderLayout.CENTER);
+
+        panel_campos.add(jPanel9);
 
         jPanel10.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanel10.setLayout(new java.awt.BorderLayout());
@@ -271,6 +278,34 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
         jPanel10.add(surcharge_field, java.awt.BorderLayout.CENTER);
 
         panel_campos.add(jPanel10);
+
+        jPanel13.setPreferredSize(new java.awt.Dimension(100, 35));
+        jPanel13.setLayout(new java.awt.BorderLayout());
+
+        jLabel7.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel7.setText("F. Actualizacion");
+        jLabel7.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel13.add(jLabel7, java.awt.BorderLayout.WEST);
+
+        date_update_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        date_update_field.setName("Costo del recargo"); // NOI18N
+        jPanel13.add(date_update_field, java.awt.BorderLayout.CENTER);
+
+        panel_campos.add(jPanel13);
+
+        jPanel14.setPreferredSize(new java.awt.Dimension(100, 35));
+        jPanel14.setLayout(new java.awt.BorderLayout());
+
+        jLabel8.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel8.setText("F. Registro");
+        jLabel8.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel14.add(jLabel8, java.awt.BorderLayout.WEST);
+
+        date_register_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        date_register_field.setName("Costo del recargo"); // NOI18N
+        jPanel14.add(date_register_field, java.awt.BorderLayout.CENTER);
+
+        panel_campos.add(jPanel14);
 
         register_panel.add(panel_campos, java.awt.BorderLayout.CENTER);
 
@@ -351,7 +386,7 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
         panel_izq.setLayout(new java.awt.BorderLayout(10, 10));
 
         objects_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Objects [][] {
+            new Object [][] {
 
             },
             new String [] {
@@ -415,6 +450,9 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
     private javax.swing.JButton back_button;
     private javax.swing.JButton cancel_button;
     private javax.swing.JLabel count;
+    private javax.swing.JTextField current_price_field;
+    private javax.swing.JTextField date_register_field;
+    private javax.swing.JTextField date_update_field;
     private javax.swing.JButton delete_button;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -425,9 +463,13 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
@@ -442,8 +484,7 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
     private javax.swing.JPanel options_panel;
     private javax.swing.JPanel panel_campos;
     private javax.swing.JPanel panel_izq;
-    private javax.swing.JTextField previus_price_field;
-    private javax.swing.JTextField price_field;
+    private javax.swing.JTextField previous_price_field;
     private javax.swing.JLabel range;
     private javax.swing.JButton register_button;
     private javax.swing.JPanel register_panel;
@@ -458,7 +499,7 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
     private javax.swing.JScrollPane tabla_usuarios;
     private javax.swing.JPanel tools_panel;
     private javax.swing.JLabel total;
-    private javax.swing.JTextField type_water_intakes_field;
+    private javax.swing.JTextField type_name_field;
     private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
 
@@ -503,7 +544,7 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
     public boolean isValuesOk() {
         boolean ok = true;
         JTextField[] text_fields = {
-            type_water_intakes_field, price_field, surcharge_field
+            type_name_field, current_price_field, surcharge_field
         };
         for (JTextField i : text_fields) {
             if (Filters.isNullOrBlank(i.getText())) {
@@ -515,16 +556,15 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
         return ok;
     }
 
-    @Override
     public String[] getDbValues(boolean update) {
-        String _type = type_water_intakes_field.getText();
+        String _type = type_name_field.getText();
 
         double pp = 0;
         if (update) {
-            pp = object_search == null ? 0.0 : object_search.getPrice();
+            pp = object_search == null ? 0.0 : object_search.getCurrentPrice();
         }
         String _previus_price = String.valueOf(pp);
-        String _cost = price_field.getText();
+        String _cost = current_price_field.getText();
 
         String _fine = surcharge_field.getText();
         String _date_update = LocalDateTime.now().format(DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
@@ -547,13 +587,60 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesModel
 
     @Override
     public void setScreenTableInfo() {
-        type_water_intakes_field.setText(object_search.getType());
-        previus_price_field.setText(String.valueOf(object_search.getPreviusPrice()));
-        price_field.setText(String.valueOf(object_search.getPrice()));
+        type_name_field.setText(object_search.getTypeName());
+        previous_price_field.setText(String.valueOf(object_search.getPreviousPrice()));
+        current_price_field.setText(String.valueOf(object_search.getCurrentPrice()));
         surcharge_field.setText(String.valueOf(object_search.getSurcharge()));
         save_button.setEnabled(false);
         update_button.setEnabled(true);
         delete_button.setEnabled(true);
+    }
+
+    @Override
+    public Map<String, String> getValues(boolean update) {
+        Map<String, String> map = Map.of();
+        String _type_name = type_name_field.getText();
+        String _current_price = current_price_field.getText();
+        String _previous_price = previous_price_field.getText();
+        String _surcharge = surcharge_field.getText();
+        if (update) {
+            map = saveUpdate(object_search, _type_name, _current_price, _previous_price, _surcharge);
+        } else {
+            map = saveInsert(_type_name, _current_price, _previous_price, _surcharge);
+        }
+        return map;
+    }
+
+    private Map<String, String> saveInsert(
+            String _type_name, String _current_price, String _previous_price,
+            String _surcharge) {
+        Map<String, String> map = new HashMap<>(6); // Se adapta el tamaño inicial a la cantidad de campos
+        // Campos que no deben estar en blanco
+        Filters.putIfPresentAndNotBlank(map, "type_name", _type_name);
+        Filters.putIfPresentAndNotBlank(map, "current_price", _current_price);
+        Filters.putIfPresentAndNotBlank(map, "previous_price", _previous_price);
+        Filters.putIfPresentAndNotBlank(map, "surcharge", _surcharge);
+        // Campos que pueden ser nulos o en blanco, pero que son manejados por el sistema de la BD
+        // Ojo: los campos de fecha en tu tabla tienen DEFAULT, así que no necesitan validación aquí.
+        // Si no tuvieran DEFAULT, se usaría putIfNotNull.
+        return map;
+    }
+
+    private Map<String, String> saveUpdate(
+            OWaterIntakeTypes object_search, String _type_name, String _current_price,
+            String _previous_price, String _surcharge) {
+
+        if (object_search == null) {
+            throw new NullPointerException("Objeto buscado null");
+        }
+
+        Map<String, String> map = new HashMap<>();
+        // Usando un método auxiliar para validar y agregar los cambios al mapa
+        Filters.addIfChanged(map, "type_name", object_search.getTypeName(), _type_name);
+        Filters.addIfChanged(map, "current_price", String.valueOf(object_search.getCurrentPrice()), _current_price);
+        Filters.addIfChanged(map, "previous_price", String.valueOf(object_search.getPreviousPrice()), _previous_price);
+        Filters.addIfChanged(map, "surcharge", String.valueOf(object_search.getSurcharge()), _surcharge);
+        return map;
     }
 
 }

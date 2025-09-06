@@ -19,7 +19,7 @@ package com.jblue.model.daos;
 import com.jblue.model.scripts.UsersQuerys;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.sys.SystemLogs;
-import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class UserDao {
 
-    public static DBConnection connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
+    public static JDBConnection connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
 
     public static List<String[]> getUsersNotPayed() {
         ArrayList<String[]> list = new ArrayList<>((int) CacheFactory.USERS.count());

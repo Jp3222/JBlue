@@ -16,7 +16,7 @@
  */
 package com.jblue.views.components;
 
-import com.jblue.model.JDBConnection;
+import com.jblue.model.DBConnection;
 import com.jblue.model.factories.ConnectionFactory;
 import com.jblue.model.dtos.OUser;
 import com.jblue.util.EncriptadoAES;
@@ -241,7 +241,7 @@ public final class ChangePasswordComponent extends javax.swing.JDialog {
     private javax.swing.JTextField user_field1;
     // End of variables declaration//GEN-END:variables
     private String id;
-    private JDBConnection<OUser> user = ConnectionFactory.getUser();
+    private DBConnection<OUser> user = ConnectionFactory.getUser();
     private int returnStatus = RET_CANCEL;
 
     public boolean isChangePassword() {
@@ -256,7 +256,7 @@ public final class ChangePasswordComponent extends javax.swing.JDialog {
         try {
             String _user = EncriptadoAES.doEncrypt(this.user_field.getText(), new_pass2_field.getText());
             String _password = EncriptadoAES.doEncrypt(new_pass2_field.getText(), user_field.getText());
-            int row_affected = this.user.getConnection().execute(query.formatted(_user, _password, id));
+            int row_affected = this.user.getJDBConnection().execute(query.formatted(_user, _password, id));
             if (row_affected < 0) {
                 return false;
             }
@@ -295,7 +295,7 @@ public final class ChangePasswordComponent extends javax.swing.JDialog {
             String value = user_field1.getText();
             String query = "SELECT id, user, password FROM employees WHERE CONCAT(first_name, ' ', last_names) = '%s'"
                     .formatted(value);
-            ResultSet rs = user.getConnection().query(query);
+            ResultSet rs = user.getJDBConnection().query(query);
             if (!rs.next()) {
                 JOptionPane.showConfirmDialog(this, "Empleado inexistente");
             }

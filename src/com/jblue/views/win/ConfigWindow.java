@@ -24,7 +24,6 @@ public final class ConfigWindow extends AbstractAppWindows {
         initComponents();
         this.config = new ConfigurationPanel(this);
         getContentPane().add(config, BorderLayout.CENTER);
-
     }
 
     /**
@@ -37,6 +36,9 @@ public final class ConfigWindow extends AbstractAppWindows {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("config");
+        setMinimumSize(new java.awt.Dimension(500, 500));
+        setPreferredSize(new java.awt.Dimension(900, 500));
         setResizable(false);
 
         pack();
@@ -45,27 +47,22 @@ public final class ConfigWindow extends AbstractAppWindows {
 
     @Override
     public void build() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void events() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void components() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void initialState() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void finalState() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 

@@ -1,8 +1,21 @@
-DROP SCHEMA IF EXISTS `jblue_test_copy`;
-CREATE SCHEMA  `jblue_test_copy`;
+DROP SCHEMA IF EXISTS `jblue`;
+CREATE SCHEMA  `jblue`;
+USE `jblue`;
 
-USE `jblue_test_copy`;
+-- -- -- -- -- -- -- -- -- CATALOGOS -- -- -- -- -- -- -- -- --
 
+-- TIPOS DE ESTADOS
+DROP TABLE IF EXISTS `items_status`;
+
+CREATE TABLE `items_status` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `description` varchar(30) NOT NULL DEFAULT 'ACTIVO',
+  `affected_table` varchar(30) NOT NULL DEFAULT 'GENERICO',
+  `date_register` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_finalize` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+-- TIPOS DE EMPLEADOS
 DROP TABLE IF EXISTS `employee_types`;
 CREATE TABLE `employee_types` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -11,7 +24,7 @@ CREATE TABLE `employee_types` (
   `date_register` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 );
-
+-- TIPOS DE MOVIMIENTOS EN EL HISTORIAL
 DROP TABLE IF EXISTS `history_type_mov`;
 CREATE TABLE `history_type_mov` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -24,16 +37,7 @@ CREATE TABLE `history_type_mov` (
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE IF EXISTS `items_status`;
-CREATE TABLE `items_status` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `description` varchar(30) NOT NULL DEFAULT 'ACTIVO',
-  `affected_table` varchar(30) NOT NULL DEFAULT 'GENERICO',
-  `date_register` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_finalize` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
+-- PARAMETROS
 DROP TABLE IF EXISTS `parameters`;
 CREATE TABLE `parameters` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -47,7 +51,7 @@ CREATE TABLE `parameters` (
   PRIMARY KEY (`id`,`parameter`),
   UNIQUE KEY `parameter_UNIQUE` (`parameter`)
 ) ;
-
+-- TIPOS DE USUARIO
 DROP TABLE IF EXISTS `user_type`;
 CREATE TABLE `user_type` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -56,7 +60,7 @@ CREATE TABLE `user_type` (
   `date_finalize` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
-
+-- TIPOS DE TOMA DE AGUA POTABLE
 DROP TABLE IF EXISTS `water_intakes_types`;
 CREATE TABLE `water_intakes_types` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -68,7 +72,7 @@ CREATE TABLE `water_intakes_types` (
   `date_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 );
-
+-- OTROS TIPOS DE PAGO
 CREATE TABLE `other_type_payments` (
   `id` int NOT NULL AUTO_INCREMENT,
   `type_payment` float NOT NULL,
@@ -79,7 +83,7 @@ CREATE TABLE `other_type_payments` (
   `date_end` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
-
+-- CATALOGO DE CALLES
 DROP TABLE IF EXISTS `street`;
 CREATE TABLE `street` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -88,6 +92,7 @@ CREATE TABLE `street` (
   PRIMARY KEY (`id`)
 );
 
+-- EMPLEADOS
 DROP TABLE IF EXISTS `employees`;
 CREATE TABLE `employees` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -102,6 +107,7 @@ CREATE TABLE `employees` (
   PRIMARY KEY (`id`)
 );
 
+-- USUARIOS
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -125,6 +131,7 @@ CREATE TABLE `users` (
   CONSTRAINT `user_status` FOREIGN KEY (`status`) REFERENCES `items_status` (`id`)
 ) ;
 
+-- TOMAS DE AGUA POTABLE
 CREATE TABLE `water_intakes` (
   `id` int NOT NULL AUTO_INCREMENT,
   `water_intake_type` int DEFAULT NULL,
@@ -149,6 +156,8 @@ CREATE TABLE `water_intakes` (
   CONSTRAINT `fk_wi_user` FOREIGN KEY (`user`) REFERENCES `users` (`id`),
   CONSTRAINT `fk_wi_wit` FOREIGN KEY (`water_intake_type`) REFERENCES `water_intakes_types` (`id`)
 );
+
+-- CONSUMIDORES
 DROP TABLE IF EXISTS `consumers`;
 CREATE TABLE `consumers` (
   `titular` int NOT NULL,
@@ -160,6 +169,7 @@ CREATE TABLE `consumers` (
   CONSTRAINT `fk_consumer` FOREIGN KEY (`consumer`) REFERENCES `users` (`id`)
 ) COMMENT='Evitar que el id del titular sea diferente del consumidor';
 
+-- PAGOS DE SERVICIO
 DROP TABLE IF EXISTS `service_payments`;
 CREATE TABLE `service_payments` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -176,7 +186,7 @@ CREATE TABLE `service_payments` (
   CONSTRAINT `fk_payments_employee` FOREIGN KEY (`employee`) REFERENCES `employees` (`id`),
   CONSTRAINT `fk_payments_user` FOREIGN KEY (`user`) REFERENCES `users` (`id`)
 );
-
+-- PAGOS DE RECARGOS
 DROP TABLE IF EXISTS `surcharge_payments`;
 CREATE TABLE `surcharge_payments` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -194,6 +204,7 @@ CREATE TABLE `surcharge_payments` (
   CONSTRAINT `fk_surcharge_payments_user` FOREIGN KEY (`user`) REFERENCES `users` (`id`)
 );
 
+-- OTROS PAGOS
 DROP TABLE IF EXISTS `other_payments`;
 CREATE TABLE `other_payments` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -215,6 +226,7 @@ CREATE TABLE `other_payments` (
   CONSTRAINT `fk_status` FOREIGN KEY (`status`) REFERENCES `items_status` (`id`)
 );
 
+-- CONTRATO
 DROP TABLE IF EXISTS `contract_procedure`;
 CREATE TABLE `contract_procedure` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -243,7 +255,7 @@ CREATE TABLE `contract_procedure` (
   CONSTRAINT `fk_water_intake` FOREIGN KEY (`water_intake`) REFERENCES `water_intakes` (`id`),
   CONSTRAINT `fl_user_start` FOREIGN KEY (`employee_start`) REFERENCES `employees` (`id`)
 );
-
+-- HISTORIAL
 DROP TABLE IF EXISTS `history`;
 CREATE TABLE `history` (
   `id` int NOT NULL AUTO_INCREMENT,

@@ -64,7 +64,7 @@ public final class ContableController extends AbstractViewController {
                 .append(Const.SERVICE_PAYMENTS.getFields()[date_register_index])
                 .append(") = YEAR(NOW())");
         try {
-            ResultSet rs = cache.getConnection().getConnection().query(query.toString());
+            ResultSet rs = cache.getConnection().getJDBConnection().query(query.toString());
             if (rs.next()) {
                 res = rs.getDouble(1);
                 total += res;
@@ -85,7 +85,7 @@ public final class ContableController extends AbstractViewController {
                 .append(Const.SERVICE_PAYMENTS.getFields()[date_register_index])
                 .append(") = YEAR(NOW())");
         try {
-            ResultSet rs = cache.getConnection().getConnection().query(query.toString());
+            ResultSet rs = cache.getConnection().getJDBConnection().query(query.toString());
             if (rs.next()) {
                 res = rs.getDouble(1);
                 total += res;
@@ -103,7 +103,7 @@ public final class ContableController extends AbstractViewController {
                 .append(Const.SERVICE_PAYMENTS.getFields()[date_register_index])
                 .append(") = YEAR(NOW())");
         try {
-            ResultSet rs = cache.getConnection().getConnection().query(query.toString());
+            ResultSet rs = cache.getConnection().getJDBConnection().query(query.toString());
             if (rs.next()) {
                 res = rs.getDouble(1);
                 total += res;

@@ -23,7 +23,7 @@ import com.jblue.sys.app.AppConfig;
 import com.jblue.sys.app.AppFiles;
 import com.jblue.views.win.ConfigWindow;
 import com.jblue.views.win.LoginWindows;
-import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.MainSystem;
 import com.jutil.jexception.Excp;
 import com.jutil.jexception.JExcp;
@@ -53,7 +53,7 @@ public class JBlueMainSystem implements MainSystem {
     private final Map<String, Object> resources;
     private final Properties propiedades;
     //private Conexion conexion;
-    private DBConnection connection;
+    private JDBConnection connection;
 
     public JBlueMainSystem() {
         propiedades = new Properties(20);
@@ -90,7 +90,7 @@ public class JBlueMainSystem implements MainSystem {
         }
         try {
             String database_url = "jdbc:%s://%s:%s/%s";
-            connection = DBConnection.getInstance(
+            connection = JDBConnection.getInstance(
                     database_url.formatted(
                             propiedades.getProperty(AppConfig.DB_MOTOR),
                             propiedades.getProperty(AppConfig.DB_HOST),

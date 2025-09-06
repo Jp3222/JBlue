@@ -22,7 +22,7 @@ import com.jblue.model.dtos.AbstractPayments;
 import com.jblue.sys.SystemLogs;
 import com.jblue.util.Fecha;
 import com.jblue.util.ObjectUtils;
-import com.jutil.dbcon.connection.DBConnection;
+import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class PaymentsDAO {
 
-    public static DBConnection connection = (DBConnection) LaunchApp.getInstance().getResources("connection");
+    public static JDBConnection connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
 
     public static List<String[]> getUsersNotPayed() {
         ArrayList<String[]> list = new ArrayList<>((int) CacheFactory.USERS.count());

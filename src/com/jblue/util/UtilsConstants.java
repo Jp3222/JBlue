@@ -14,18 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.jblue.util.cache;
+package com.jblue.util;
 
-import com.jblue.model.DBConnection;
-import com.jblue.model.dtos.Objects;
-import java.sql.ResultSet;
 /**
  *
  * @author juanp
- * @param <T>
  */
-@FunctionalInterface
-public interface ObjectAdapterModel<T extends Objects> {
+public class UtilsConstants {
 
-    T adapter(ResultSet rs_data, DBConnection connection);
+    public static String UPDATE_COL_FORMAT = "%s = '%s'";
 }

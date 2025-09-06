@@ -46,6 +46,7 @@ public class GraphicsUtils {
         }
         return -1;
     }
+
     public static void setEnable(boolean enable, Component... col) {
         for (Component i : col) {
             i.setEnabled(enable);
@@ -77,6 +78,12 @@ public class GraphicsUtils {
             for (Component child : children) {
                 disableTreeLock(lock, child);
             }
+        }
+    }
+
+    public static void getComboBoxDate(JComboBox<Integer> comp, int start, int end) {
+        for (int i = start; i < end; i++) {
+            comp.addItem(i);
         }
     }
 

@@ -50,9 +50,31 @@
             <Property name="text" type="java.lang.String" value="Base de datos"/>
           </Properties>
           <SubComponents>
+            <Menu class="javax.swing.JMenu" name="jMenu5">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Catalogos"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Tipo de usuarios"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Tipo de status"/>
+                  </Properties>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="users_view_item">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Usuarios"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="user_consumer_item">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Consumidores"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="water_intakes_view_item">
@@ -99,13 +121,15 @@
             <Property name="text" type="java.lang.String" value="Tramites"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="process_item">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Alta de toma"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
-              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cambio de titular"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -347,7 +371,7 @@
                         <Property name="text" type="java.lang.String" value="Tipo de tomas"/>
                         <Property name="toolTipText" type="java.lang.String" value="Tipo de tomas"/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                          <Color id="Default Cursor"/>
+                          <Color id="Cursor Por defecto"/>
                         </Property>
                         <Property name="hideActionText" type="boolean" value="true"/>
                         <Property name="horizontalAlignment" type="int" value="10"/>

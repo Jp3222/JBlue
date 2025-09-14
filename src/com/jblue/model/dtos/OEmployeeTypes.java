@@ -16,7 +16,7 @@
  */
 package com.jblue.model.dtos;
 
-import com.jblue.model.constants.Const;
+import com.jblue.model.constants._Const;
 import com.jblue.model.factories.CacheFactory;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -70,6 +70,6 @@ public class OEmployeeTypes extends Objects implements ForeingKeyObject, StatusO
     }
 
     public LocalDate getDateRegister() {
-        return LocalDate.parse(info[3], Const.DATE_TIME);
+        return LocalDate.parse(info[3], _Const.DATE_TIME);
     }
 }

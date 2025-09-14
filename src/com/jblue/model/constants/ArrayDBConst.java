@@ -33,7 +33,7 @@ public interface ArrayDBConst {
     static final String USER_FIELD = "user";
 
     public static final String[] USERS_FIELD = {
-        ID_FIELD, "curp", "first_name", "last_name1", "last_name2",
+        ID_FIELD, "curp", "first_name", "last_name1", "last_name2", "gender",
         "email", "phone_number1", "phone_number2", "street1",
         "street2", "outside_number", "inside_number", "water_intake_type",
         "user_type", "status", "date_last_update", "date_register"

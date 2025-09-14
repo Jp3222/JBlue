@@ -135,11 +135,6 @@ public class LoginController extends WindowController {
         }
         SystemSession sesion = SystemSession.getInstancia();
         sesion.setUser(res.get());
-
-//        if (!sesion.inicioSesion()) {
-//            JOptionPane.showMessageDialog(WIN_LOGIN, "ERROR AL REGISTRAR SESION");
-//            return false;
-//        }
         return true;
     }
 
@@ -156,12 +151,6 @@ public class LoginController extends WindowController {
             res = op.get("*", WHERE.formatted(
                     encrypt_user, encrypt_password
             ));
-
-//            if (res.isEmpty()
-//                    && encrypt_user.equals(AppConfig.getMaterUser())
-//                    && encrypt_password.equals(AppConfig.getMaterPassword())) {
-//                res = op.get("*", "id = 1");
-//            }
             if (res.isEmpty()) {
                 return Optional.empty();
             }

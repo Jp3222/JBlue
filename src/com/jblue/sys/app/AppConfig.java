@@ -16,6 +16,7 @@
  */
 package com.jblue.sys.app;
 
+import com.jblue.model.constants._Const;
 import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
 import java.sql.ResultSet;
@@ -208,8 +209,8 @@ public final class AppConfig {
     private static Object getParameter(String name) {
         try {
             JDBConnection connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
-            String query = "SELECT value,data_type FROM parameters WHERE parameter = '%s' AND status = 1"
-                    .formatted(name);
+            String query = "SELECT value,data_type FROM %s WHERE parameter = '%s' AND status = 1"
+                    .formatted(_Const.DEV_PARAMETERS_NAME, name);
             ResultSet rs = connection.query(query);
             if (rs.next()) {
                 return rs.getObject(1);

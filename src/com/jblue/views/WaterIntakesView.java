@@ -129,7 +129,7 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        tools_panel = new javax.swing.JPanel();
+        north_panel = new javax.swing.JPanel();
         jToggleButton2 = new javax.swing.JToggleButton();
         jPanel15 = new javax.swing.JPanel();
         register_button = new javax.swing.JButton();
@@ -201,13 +201,13 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
 
-        tools_panel.setPreferredSize(new java.awt.Dimension(900, 30));
-        tools_panel.setLayout(new java.awt.BorderLayout(10, 10));
+        north_panel.setPreferredSize(new java.awt.Dimension(900, 30));
+        north_panel.setLayout(new java.awt.BorderLayout(10, 10));
 
         jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
         jToggleButton2.setPreferredSize(new java.awt.Dimension(100, 30));
         jToggleButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/desbloquear.png"))); // NOI18N
-        tools_panel.add(jToggleButton2, java.awt.BorderLayout.WEST);
+        north_panel.add(jToggleButton2, java.awt.BorderLayout.WEST);
 
         jPanel15.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
 
@@ -221,13 +221,13 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         search_button.setActionCommand("search_view");
         jPanel15.add(search_button);
 
-        tools_panel.add(jPanel15, java.awt.BorderLayout.CENTER);
+        north_panel.add(jPanel15, java.awt.BorderLayout.CENTER);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/configuraciones.png"))); // NOI18N
         jButton2.setPreferredSize(new java.awt.Dimension(100, 30));
-        tools_panel.add(jButton2, java.awt.BorderLayout.EAST);
+        north_panel.add(jButton2, java.awt.BorderLayout.EAST);
 
-        add(tools_panel, java.awt.BorderLayout.NORTH);
+        add(north_panel, java.awt.BorderLayout.NORTH);
 
         root_panel.setLayout(new java.awt.CardLayout(10, 10));
 
@@ -568,6 +568,7 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
     private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JTextField location_field;
     private javax.swing.JButton next_button;
+    private javax.swing.JPanel north_panel;
     private javax.swing.JTable objects_table;
     private javax.swing.JTextField operation_cost_field;
     private javax.swing.JPanel options_panel;
@@ -587,7 +588,6 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
     private javax.swing.JComboBox<OStreet> street1_field;
     private javax.swing.JComboBox<OStreet> street2_field;
     private javax.swing.JScrollPane tabla_usuarios;
-    private javax.swing.JPanel tools_panel;
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     private javax.swing.JTextField user_field;
@@ -663,5 +663,9 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         save_button.setEnabled(false);
         update_button.setEnabled(true);
         delete_button.setEnabled(true);
+    }
+
+    void hiddenNorthPanel(boolean b) {
+        this.north_panel.setVisible(b);
     }
 }

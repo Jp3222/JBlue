@@ -4,7 +4,7 @@
  */
 package com.jblue.sys;
 
-import com.jblue.model.constants.Const;
+import com.jblue.model.constants._Const;
 import com.jblue.model.dtos.OEmployee;
 import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
@@ -39,16 +39,22 @@ public class SystemSession implements LocalSession<OEmployee> {
      * Empleado que ha iniciado session
      */
     private OEmployee personal;
+    private OEmployee presidente;
     private final JDBConnection connection;
     private final String query;
 
     private SystemSession() {
         connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
-        this.query = "INSERT INTO history(employee, db_user, type, description) VALUES('%s',(%s),'%s','%s')";
+        this.query = "INSERT INTO hys_history(employee, db_user, affected_table, type_mov, description) VALUES('%s',(%s),'%s','%s')";
     }
 
     public OEmployee getUsuario() {
         return personal;
+    }
+
+    public OEmployee getPresidente() {
+        String query = "SELECT * FROM emp_employees";
+        return presidente;
     }
 
     @Override
@@ -64,15 +70,17 @@ public class SystemSession implements LocalSession<OEmployee> {
     public void setUser(OEmployee user) {
         String id = user == null ? personal.getId() : user.getId();
         String description = user == null ? "FIN DE SESION" : "INICIO DE SESIÓN";
+        int type = user == null ? _Const.INDEX_LOGOUT : _Const.INDEX_LOGIN;
         personal = user;
-        register(id, Const.INSERT_LOGIN, description);
+        //register(id, type, description);
     }
 
     void register(String employee, int type, String description) {
         String sql_user = "SELECT current_user()";
+        int tabla = _Const.INDEX_HYS_HISTORY;
         try {
 
-            int execute = connection.execute(query.formatted(employee, sql_user, type, description));
+            int execute = connection.execute(query.formatted(employee, sql_user, tabla, type, description));
             if (execute == 0) {
                 JOptionPane.showMessageDialog(null, "Error al registrar la bitacora");
             }
@@ -81,7 +89,7 @@ public class SystemSession implements LocalSession<OEmployee> {
         }
     }
 
-    public void register(int type, String description) {
+    public void register(int table, int type, String description) {
         register(personal.getId(), type, description);
     }
 

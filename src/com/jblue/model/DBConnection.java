@@ -35,7 +35,7 @@ public class DBConnection<T extends Objects> extends AbstractDBConnection<T> {
 
     private Table object_table;
 
-    public DBConnection(String table, String[] fields) {
+    public DBConnection(Class cls, String table, String[] fields) {
         super(table, fields);
     }
 

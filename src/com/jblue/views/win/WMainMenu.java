@@ -24,10 +24,12 @@ import com.jblue.views.ParametersView;
 import com.jblue.views.StreetsView;
 import com.jblue.views.OtherPaymentTypesView;
 import com.jblue.views.OtherPaymentsView;
+import com.jblue.views.ProcessView;
 import com.jblue.views.WaterIntakesTypesView;
 import com.jblue.views.UserView;
 import com.jblue.views.ShopCartView;
 import com.jblue.views.SurchargePaymentsView;
+import com.jblue.views.UserConsumerView;
 import com.jblue.views.WaterIntakesView;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
@@ -51,6 +53,8 @@ public final class WMainMenu extends AbstractAppWindows {
     private final OtherPaymentTypesView other_payments_types_view;
     private final OtherPaymentsView other_payments_view;
     private final SurchargePaymentsView surcharge_payments_view;
+    private final ProcessView process_view;
+    private final UserConsumerView user_consumer;
     //
     private final ParametersView flag_view;
     //
@@ -80,6 +84,8 @@ public final class WMainMenu extends AbstractAppWindows {
         other_payments_types_view = new OtherPaymentTypesView();
         other_payments_view = new OtherPaymentsView();
         surcharge_payments_view = new SurchargePaymentsView();
+        process_view = new ProcessView();
+        user_consumer = new UserConsumerView();
         //
         flag_view = ParametersView.getInstance();
         //
@@ -107,7 +113,8 @@ public final class WMainMenu extends AbstractAppWindows {
         views_panel.add(other_payments_view, other_payments_view.getName());
         views_panel.add(surcharge_payments_view, surcharge_payments_view.getName());
         views_panel.add(flag_view, flag_view.getName());
-        
+        views_panel.add(process_view, process_view.getName());
+        views_panel.add(user_consumer, user_consumer.getName());
 
     }
 
@@ -129,6 +136,8 @@ public final class WMainMenu extends AbstractAppWindows {
         other_payments_view_item.addActionListener(controller);
         surcharge_payments_view_item.addActionListener(controller);
         service_payments_view_item.addActionListener(controller);
+        user_consumer_item.addActionListener(controller);
+        process_item.addActionListener(controller);
         //
         parameters_view_item.addActionListener(controller);
         //
@@ -192,7 +201,11 @@ public final class WMainMenu extends AbstractAppWindows {
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItem19 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         users_view_item = new javax.swing.JMenuItem();
+        user_consumer_item = new javax.swing.JMenuItem();
         water_intakes_view_item = new javax.swing.JMenuItem();
         water_intakes_types_view_item = new javax.swing.JMenuItem();
         street_view_item = new javax.swing.JMenuItem();
@@ -201,7 +214,8 @@ public final class WMainMenu extends AbstractAppWindows {
         other_type_payments_view_item = new javax.swing.JMenuItem();
         other_payments_view_item = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        process_item = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         about_item_view = new javax.swing.JMenuItem();
 
@@ -371,8 +385,21 @@ public final class WMainMenu extends AbstractAppWindows {
 
         jMenu2.setText("Base de datos");
 
+        jMenu5.setText("Catalogos");
+
+        jMenuItem1.setText("Tipo de usuarios");
+        jMenu5.add(jMenuItem1);
+
+        jMenuItem3.setText("Tipo de status");
+        jMenu5.add(jMenuItem3);
+
+        jMenu2.add(jMenu5);
+
         users_view_item.setText("Usuarios");
         jMenu2.add(users_view_item);
+
+        user_consumer_item.setText("Consumidores");
+        jMenu2.add(user_consumer_item);
 
         water_intakes_view_item.setText("Tomas Registradas");
         jMenu2.add(water_intakes_view_item);
@@ -401,13 +428,11 @@ public final class WMainMenu extends AbstractAppWindows {
 
         jMenu4.setText("Tramites");
 
-        jMenuItem1.setText("Alta de toma");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu4.add(jMenuItem1);
+        process_item.setText("Alta de toma");
+        jMenu4.add(process_item);
+
+        jMenuItem2.setText("Cambio de titular");
+        jMenu4.add(jMenuItem2);
 
         jMenuBar1.add(jMenu4);
 
@@ -423,10 +448,6 @@ public final class WMainMenu extends AbstractAppWindows {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -445,9 +466,12 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem19;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
@@ -468,10 +492,12 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JMenuItem other_payments_view_item;
     private javax.swing.JMenuItem other_type_payments_view_item;
     private javax.swing.JMenuItem parameters_view_item;
+    private javax.swing.JMenuItem process_item;
     private javax.swing.JMenuItem profile_item_view;
     private javax.swing.JMenuItem service_payments_view_item;
     private javax.swing.JMenuItem street_view_item;
     private javax.swing.JMenuItem surcharge_payments_view_item;
+    private javax.swing.JMenuItem user_consumer_item;
     private javax.swing.JMenuItem users_view_item;
     private javax.swing.JPanel views_panel;
     private javax.swing.JMenuItem water_intakes_types_view_item;
@@ -486,7 +512,7 @@ public final class WMainMenu extends AbstractAppWindows {
         if (showVisor != null && showVisor.isVisible()) {
             showVisor.dispose();
         }
-        
+
         SystemSession.getInstancia().setUser(null);
         SwingUtilities.invokeLater(() -> {
             LOGIN.setVisible(true);

@@ -17,7 +17,6 @@
 package com.jblue.sys;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import com.jblue.model.constants.Const;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.sys.app.AppConfig;
 import com.jblue.sys.app.AppFiles;
@@ -25,7 +24,6 @@ import com.jblue.views.win.ConfigWindow;
 import com.jblue.views.win.LoginWindows;
 import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.MainSystem;
-import com.jutil.jexception.Excp;
 import com.jutil.jexception.JExcp;
 import com.jutil.platf.So;
 import java.io.File;
@@ -180,10 +178,6 @@ public class JBlueMainSystem implements MainSystem {
         } catch (IOException ex) {
             Logger.getLogger(JBlueMainSystem.class.getName()).log(Level.SEVERE, null, ex);
         }
-        resources.put("t_streets", Const.STREETS);
-        resources.put("t_water_intakes", Const.WATER_INTAKES_TYPES);
-        resources.put("t_employees", Const.EMPLOYEES);
-        resources.put("t_payments", Const.SERVICE_PAYMENTS);
         System.out.println(AppFiles.FIL_ARC_CONFIG.getAbsolutePath());
         SystemLogs.infoDbLogs("OPEN SYSTEM");
         return true;

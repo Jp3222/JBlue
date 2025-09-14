@@ -82,7 +82,7 @@ public class StreetsController extends AbstractDBViewController<OStreet> impleme
         }
         String field = "name";
         boolean insert = connection.insert(field, view.getDbValues(false));
-        rmessage(view, insert);
+        returnMessage(view, insert);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class StreetsController extends AbstractDBViewController<OStreet> impleme
         }
         //boolean delete = connection.delete("id = %s".formatted(view.getObjectSearch().getId()));
         boolean delete = connection.update("status", "3", "id = %s".formatted(view.getObjectSearch().getId()));
-        rmessage(view, delete);
+        returnMessage(view, delete);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class StreetsController extends AbstractDBViewController<OStreet> impleme
                 view.getDbValues(true),
                 "id = %s".formatted(view.getObjectSearch().getId())
         );
-        rmessage(view, update);
+        returnMessage(view, update);
     }
 
     @Override

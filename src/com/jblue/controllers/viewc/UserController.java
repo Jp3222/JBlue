@@ -25,8 +25,8 @@ import javax.swing.JOptionPane;
 import com.jblue.controllers.DBControllerModel;
 import com.jblue.controllers.AbstractDBViewController;
 import com.jblue.model.DBConnection;
-import com.jblue.model.constants.Const;
-import com.jblue.model.constants.LogBookFormats;
+import com.jblue.model.constants._Const;
+import com.jblue.model.daos.HysHistoryDAO;
 import com.jblue.model.dtos.OServicePayments;
 import com.jblue.sys.SystemSession;
 import com.jblue.sys.app.AppConfig;
@@ -81,31 +81,51 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         }
         Map<String, String> values = view.getValues(false);
         if (values.isEmpty()) {
-            rmessage(view, false);
+            returnMessage(view, false);
             return;
         }
         String[] insertFormats = Formats.getInsertFormats(values);
-        String query = JDBConnection.INSERT_VAL.formatted(Const.TABLE_USERS, insertFormats[0], insertFormats[1]);
+        String query = JDBConnection.INSERT_VAL.formatted(_Const.USR_USERS_NAME, insertFormats[0], insertFormats[1]);
+        Statement st;
+        ResultSet rs;
         try {
             connection.setAutoCommit(false);
-            try (Statement st = connection.getConnection().createStatement();) {
-                boolean insert = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
-                try (ResultSet rs = st.getGeneratedKeys()) {
-                    if (insert && rs.next()) {
-                        rmessage(view, insert, Const.INSERT_TO_USER, LogBookFormats.USERS.formatted(
-                                rs.getString("id"),
+            st = connection.getConnection().createStatement();
+            boolean insert = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
+            rs = st.getGeneratedKeys();
+            String user_key = rs.getString("id");
+            if (insert && rs.next()) {
+                HysHistoryDAO.getINSTANCE().insertToUsers(
+                        DESCRIPTION_FORMAT.formatted(
+                                "INSERTO",
+                                user_key,
                                 values.get("first_name"),
                                 values.get("last_name1"),
-                                values.get("last_name2")));
+                                values.get("last_name2")
+                        ));
 
-                    }
-                }
             }
+            view.setUserKey(user_key);
+            rs.close();
+            //Si es un tramite se inicia el registro
+            if (view.isProcess()) {
+                String name = "users_cosumers";
+                String fields = "employee_start,president,user,status";
+                String v2 = "'%s','%s','%s','%s'".formatted(
+                        SystemSession.getInstancia().getUsuario().getId(),
+                        SystemSession.getInstancia().getPresidente().getId(),
+                        user_key
+                );
+                query = JDBConnection.INSERT_VAL.formatted(_Const.PRO_PROCESS_NAME, fields, v2);
+                boolean vs = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
+                //registerHistory(_Const.CONTRACT_PROCEDURE_INSERT, DESCRIPTION_FORMAT);
+            }
+            st.close();
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException ex) {
             connection.rollBack();
-            rmessage(view, false);
+            returnMessage(view, false);
             System.out.println(ex.getMessage());
         }
     }
@@ -119,12 +139,12 @@ public class UserController extends AbstractDBViewController<OUser> implements D
             connection.setAutoCommit(false);
             String id = view.getObjectSearch().getId();
             boolean delete = connection.update("status", "3", "id = %s".formatted(id));
-            rmessage(view, delete, Const.DELETE_TO_USER, LogBookFormats.USERS.formatted(
-                    view.getObjectSearch().getId(),
-                    view.getObjectSearch().getName(),
-                    view.getObjectSearch().getLastName1(),
-                    view.getObjectSearch().getLastName2()
-            ));
+//            rmessage(view, delete, _Const.INDEX_DELETE, LogBookFormats.USERS.formatted(
+//                    view.getObjectSearch().getId(),
+//                    view.getObjectSearch().getName(),
+//                    view.getObjectSearch().getLastName1(),
+//                    view.getObjectSearch().getLastName2()
+//            ));
             //FUNCION EN DESARROLLO - Ocultar los resgitros de pago de un usuario
             if (!AppConfig.isDevFunction()) {
                 return;
@@ -139,12 +159,12 @@ public class UserController extends AbstractDBViewController<OUser> implements D
             }
             DBConnection<OServicePayments> payments = CacheFactory.SERVICE_PAYMENTS.getConnection();
             boolean update = payments.update("status", "3", "user = %s".formatted(id));
-            rmessage(view, update, Const.LOGIC_DELETE_TO_SERVICE_PAYMENTS, LogBookFormats.USERS.formatted(
-                    view.getObjectSearch().getId(),
-                    view.getObjectSearch().getName(),
-                    view.getObjectSearch().getLastName1(),
-                    view.getObjectSearch().getLastName2()
-            ));
+//            rmessage(view, update, _Const.LOGIC_DELETE_TO_SERVICE_PAYMENTS, LogBookFormats.USERS.formatted(
+//                    view.getObjectSearch().getId(),
+//                    view.getObjectSearch().getName(),
+//                    view.getObjectSearch().getLastName1(),
+//                    view.getObjectSearch().getLastName2()
+//            ));
             connection.commit();
             connection.setAutoCommit(true);
         } catch (NullPointerException e) {
@@ -160,25 +180,25 @@ public class UserController extends AbstractDBViewController<OUser> implements D
             }
             Map<String, String> values = view.getValues(true);
             if (values.isEmpty()) {
-                rmessage(view, false);
+                returnMessage(view, false);
                 return;
             }
             String update_format = Formats.getUpdateFormats(values);
             System.out.println(update_format);
 
-            String query = JDBConnection.UPDATE_COL.formatted(Const.TABLE_USERS,
+            String query = JDBConnection.UPDATE_COL.formatted(_Const.USR_USERS_NAME,
                     update_format,
                     "id = %s".formatted(view.getObjectSearch().getId())
             );
             boolean update = connection.getJDBConnection().execute(query) > 0;
-            rmessage(view, update, Const.UPDATE_TO_USER, LogBookFormats.USERS.formatted(
-                    view.getObjectSearch().getId(),
-                    view.getObjectSearch().getName(),
-                    view.getObjectSearch().getLastName1(),
-                    view.getObjectSearch().getLastName2()
-            ));
+//            rmessage(view, update, _Const.UPDATE_TO_USER, LogBookFormats.USERS.formatted(
+//                    view.getObjectSearch().getId(),
+//                    view.getObjectSearch().getName(),
+//                    view.getObjectSearch().getLastName1(),
+//                    view.getObjectSearch().getLastName2()
+//            ));
         } catch (SQLException ex) {
-            rmessage(view, false);
+            returnMessage(view, false);
             System.getLogger(UserController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
@@ -210,5 +230,8 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         //Files.copy(file.toPath(), new BufferedOutputStream(new FileOutputStream(out)));
     }
 
-    String DESCRIPTION_FORMAT = "ID:%s, NOMBRE:%s %s %s";
+    /**
+     * Movimiento, id, nombre, a paterno, a materno
+     */
+    String DESCRIPTION_FORMAT = "SE %s EL USUARIO: %s - %s %s %s";
 }

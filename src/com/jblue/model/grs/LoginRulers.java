@@ -32,7 +32,7 @@ public class LoginRulers {
     }
 
     public static boolean isDateEnd(OEmployee o) {
-        return o.getEndDate() != null && LocalDateTime.now().isAfter(o.getEndDate());
+        return o.getDateEnd() != null && LocalDateTime.now().isAfter(o.getDateEnd());
     }
 
     public static boolean isEmployeeNull(OEmployee o) {

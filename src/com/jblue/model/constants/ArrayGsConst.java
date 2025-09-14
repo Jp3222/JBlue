@@ -33,7 +33,7 @@ interface ArrayGsConst {
     static final String USER_GS = "USUARIO";
 
     public static final String[] USERS_FIELD_GS = {
-        ID_GS, "CURP", NAME_GS, "A. PATERNO", "A. MATERNO", "EMAIL", "TELEFONO 1", "TELEFONO 2",
+        ID_GS, "CURP", NAME_GS, "A. PATERNO", "A. MATERNO", "GENERO", "EMAIL", "TELEFONO 1", "TELEFONO 2",
         "CALLE 1", "CALLE 2", "NO. INT", "NO. EXT", "TIPO DE TOMA", "TIPO DE USUARIO",
         STATUS_GS, DATE_REGISTER_GS
     };

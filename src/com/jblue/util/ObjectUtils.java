@@ -26,9 +26,10 @@ import com.jblue.model.dtos.OEmployee;
 import com.jblue.model.dtos.OSurchargePayments;
 import com.jblue.model.dtos.OHistory;
 import com.jblue.model.dtos.OServicePayments;
-import com.jblue.model.constants.Const;
+import com.jblue.model.constants._Const;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.util.cache.MemoListCache;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,25 +41,24 @@ import java.util.logging.Logger;
  * @author juan-campos
  */
 public class ObjectUtils {
-    
+
     private static final Map<String, Objects> mapa;
-    
+
     static {
         mapa = new HashMap<>(10);
-        mapa.put(Const.EMPLOYEES.getTable(), new OEmployee());
-        mapa.put(Const.USERS.getTable(), new OUser());
-        mapa.put(Const.STREETS.getTable(), new OStreet());
-        mapa.put(Const.WATER_INTAKES_TYPES.getTable(), new OWaterIntakeTypes());
-        mapa.put(Const.SERVICE_PAYMENTS.getTable(), new OServicePayments());
-        mapa.put(Const.SURCHARGE_PAYMENTS.getTable(), new OSurchargePayments());
+        mapa.put(_Const.EMP_EMPLOYEES_TABLE.getTable(), new OEmployee());
+        mapa.put(_Const.USR_USERS_TABLE.getTable(), new OUser());
+        mapa.put(_Const.CAT_STREET_TABLE.getTable(), new OStreet());
+        mapa.put(_Const.WKI_WATER_INTAKE_TYPE_TABLE.getTable(), new OWaterIntakeTypes());
+        mapa.put(_Const.WKI_WATER_INTAKES_TABLE.getTable(), new OWaterIntakes());
+        mapa.put(_Const.PYM_SERVICE_PAYMENTS_TABLE.getTable(), new OServicePayments());
+        mapa.put(_Const.PYM_SURCHARGE_PAYMENTS_TABLE.getTable(), new OSurchargePayments());
         mapa.put(OSurchargePayments.class.getName(), new OServicePayments());
         mapa.put(OServicePayments.class.getName(), new OSurchargePayments());
-        mapa.put(Const.OTHER_PAYMENTS.getTable(), new OtherPaymentsType());
+        mapa.put(_Const.PYM_OTHER_PAYMENTS_TABLE.getTable(), new OtherPaymentsType());
         mapa.put("history", new OHistory());
-        mapa.put(Const.WATER_INTAKES.getTable(), new OWaterIntakes());
-        
     }
-    
+
     public static <T extends Objects> T getObjeto(String tabla, String[] info) {
         Objects clone = new Objects();
         try {
@@ -69,11 +69,21 @@ public class ObjectUtils {
         clone.setInfo(info);
         return (T) clone;
     }
-    
+
+    public static <T extends Objects> T getObjeto(Class cls, String[] info) {
+        try {
+            return (T) cls.getDeclaredConstructor().newInstance();
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+                | IllegalArgumentException | InvocationTargetException ex) {
+            System.getLogger(ObjectUtils.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return null;
+    }
+
     public static OWaterIntakeTypes getTipoToma(String id) {
         return getObjetoById(CacheFactory.WATER_INTAKES_TYPES, id);
     }
-    
+
     private static <T extends Objects> T getObjetoById(MemoListCache<T> cache, String id) {
         ArrayList<T> list = cache.getList();
         if (list.isEmpty()) {
@@ -81,60 +91,72 @@ public class ObjectUtils {
         }
         return cache.get(o -> o.getId().equals(id));
     }
-    
+
     public static boolean isRoot(OEmployee usuario) {
         return usuario.getType().equals("1");
     }
-    
+
     public static boolean isAdministrador(OEmployee usuario) {
         return usuario.getType().equals("2");
     }
-    
+
     public static boolean isPresidente(OEmployee usuario) {
         return usuario.getType().equals("3");
     }
-    
+
     public static boolean isTesorero(OEmployee usuario) {
         return usuario.getType().equals("4");
     }
-    
+
     public static boolean isSecretario(OEmployee usuario) {
         return usuario.getType().equals("5");
     }
-    
+
     public static boolean isPasante(OEmployee usuario) {
         return usuario.getType().equals("6");
     }
-    
+
     public static boolean isDesarrollador(OEmployee usuario) {
         return usuario.getType().equals("7");
     }
-    
+
     public static boolean isUsuarioDePruebas(OEmployee usuario) {
         return usuario.getType().equals("8");
     }
-    
+
     public static OStreet getStreedObject(String street_id) {
         if (street_id == null) {
             return null;
         }
         return searchInCacheObject(CacheFactory.STREETS, street_id);
     }
-    
-    public static OWaterIntakeTypes getWaterIntakesObject(String water_intakes_id) {
+
+    public static OWaterIntakeTypes getWaterIntakeTypeObject(String water_intakes_id) {
         return searchInCacheObject(CacheFactory.WATER_INTAKES_TYPES, water_intakes_id);
     }
-    
+
     public static OEmployee getEmployee(String employee_id) {
         return searchInCacheObject(CacheFactory.EMPLOYEES, employee_id);
     }
-    
+
     public static OUser getUser(String user_id) {
         return searchInCacheObject(CacheFactory.USERS, user_id);
     }
-    
+
     private static <T extends Objects> T searchInCacheObject(MemoListCache<T> cache, String id) {
         return cache.get((t) -> t.getId().equals(id));
     }
-    
+
+    public static int getIndexEmployeeCAT(String value) {
+        return getIndexCAT(value, CacheFactory.EMPLOYEE_TYPE_CAT);
+    }
+
+    public static int getIndexCAT(String value, String[] cataloge) {
+        for (int i = 0; i < cataloge.length; i++) {
+            if (value.equalsIgnoreCase(cataloge[i])) {
+                return i;
+            }
+        }
+        return 5;
+    }
 }

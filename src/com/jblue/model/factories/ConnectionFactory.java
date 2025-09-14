@@ -16,7 +16,7 @@
  */
 package com.jblue.model.factories;
 
-import com.jblue.model.constants.Const;
+import com.jblue.model.constants._Const;
 import com.jblue.model.DBConnection;
 import com.jblue.model.dtos.*;
 
@@ -27,38 +27,38 @@ import com.jblue.model.dtos.*;
 public class ConnectionFactory {
 
     public static DBConnection<OEmployee> getEmployees() {
-        return new DBConnection(Const.EMPLOYEES);
+        return new DBConnection(_Const.EMP_EMPLOYEES_TABLE);
     }
 
     public static DBConnection<OUser> getUser() {
-        return new DBConnection(Const.USERS);
+        return new DBConnection(_Const.USR_USERS_TABLE);
     }
 
     public static DBConnection<OStreet> getStreets() {
-        return new DBConnection(Const.STREETS);
+        return new DBConnection(_Const.CAT_STREET_TABLE);
     }
 
     public static DBConnection<OWaterIntakeTypes> getWaterIntakesTypes() {
-        return new DBConnection(Const.WATER_INTAKES_TYPES);
+        return new DBConnection(_Const.WKI_WATER_INTAKE_TYPE_TABLE);
     }
 
     public static DBConnection<OServicePayments> getServicePayments() {
-        return new DBConnection(Const.SERVICE_PAYMENTS);
+        return new DBConnection(_Const.PYM_SERVICE_PAYMENTS_TABLE);
     }
 
     public static DBConnection<OServicePayments> getSurchargePayments() {
-        return new DBConnection(Const.SURCHARGE_PAYMENTS);
+        return new DBConnection(_Const.PYM_SURCHARGE_PAYMENTS_TABLE);
     }
 
     public static DBConnection<OtherPaymentsType> getOtherPayments() {
-        return new DBConnection(Const.OTHER_PAYMENTS);
+        return new DBConnection(_Const.PYM_OTHER_PAYMENTS_TABLE);
     }
 
     public static DBConnection<OWaterIntakes> getWaterIntakes() {
-        return new DBConnection(Const.WATER_INTAKES);
+        return new DBConnection(_Const.WKI_WATER_INTAKES_TABLE);
     }
 
     public static DBConnection<OEmployeeTypes> getEmployeeTypes() {
-        return new DBConnection(Const.EMPLOYEES_TYPES);
+        return new DBConnection(_Const.EMP_EMPLOYEE_TYPES_TABLE);
     }
 }

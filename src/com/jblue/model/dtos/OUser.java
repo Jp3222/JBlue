@@ -4,7 +4,7 @@
  */
 package com.jblue.model.dtos;
 
-import com.jblue.model.constants.Const;
+import com.jblue.model.constants._Const;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.util.ObjectUtils;
 import java.time.LocalDateTime;
@@ -57,16 +57,20 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
         return info[4];
     }
 
-    public String getEmail() {
-        return info[5];
+    public int getGender() {
+        return Integer.parseInt(info[5]);
     }
 
-    public String getPhoneNumber1() {
+    public String getEmail() {
         return info[6];
     }
 
-    public String getPhoneNumber2() {
+    public String getPhoneNumber1() {
         return info[7];
+    }
+
+    public String getPhoneNumber2() {
+        return info[8];
     }
 
     /**
@@ -74,7 +78,7 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
      * @return una cadena con el ID de la calle asociada a este usuario
      */
     public String getStreet() {
-        return info[8];
+        return info[9];
     }
 
     public OStreet getStreetObject() {
@@ -82,7 +86,7 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
     }
 
     public String getStreet2() {
-        return info[9];
+        return info[10];
     }
 
     public OStreet getStreetObject2() {
@@ -90,11 +94,11 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
     }
 
     public String getInsideNumber() {
-        return info[10];
+        return info[11];
     }
 
     public String getOutSideNumber() {
-        return info[11];
+        return info[12];
     }
 
     /**
@@ -102,11 +106,11 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
      * @return una cadena con el ID del tipo de toma asociada a este usuario
      */
     public String getWaterIntakeType() {
-        return info[12];
+        return info[13];
     }
 
     public OWaterIntakeTypes getWaterIntakesObject() {
-        return ObjectUtils.getWaterIntakesObject(getWaterIntakeType());
+        return ObjectUtils.getWaterIntakeTypeObject(getWaterIntakeType());
     }
 
     /**
@@ -114,7 +118,7 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
      * @return 1 si el usuario es titular o 2 si el usuario es consumidor
      */
     public int getUserType() {
-        return Integer.parseInt(info[13]);
+        return Integer.parseInt(info[14]);
     }
 
     /**
@@ -144,7 +148,7 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
      */
     @Override
     public int getStatus() {
-        return Integer.parseInt(info[14]);
+        return Integer.parseInt(info[15]);
     }
 
     @Override
@@ -162,11 +166,11 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
     }
 
     public LocalDateTime getDateUpdate() {
-        return LocalDateTime.parse(info[15], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
+        return LocalDateTime.parse(info[16], DateTimeFormatter.ofPattern(_Const.DATE_TIME_FORMAT));
     }
 
     public LocalDateTime getDateRegister() {
-        return LocalDateTime.parse(info[16], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
+        return LocalDateTime.parse(info[17], DateTimeFormatter.ofPattern(_Const.DATE_TIME_FORMAT));
     }
 
     /**
@@ -232,11 +236,11 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
      */
     @Override
     public String[] getInfoSinFK() {
-        infoFK[8] = getStreetObject().getNombre();
-        infoFK[9] = getStreetObject2() == null ? " ":getStreetObject2().getNombre();
-        infoFK[12] = getWaterIntakesObject().getTypeName();
-        infoFK[13] = getUserTypeString();
-        infoFK[14] = getStatusString();
+        infoFK[9] = getStreetObject().getNombre();
+        infoFK[10] = getStreetObject2() == null ? " " : getStreetObject2().getNombre();
+        infoFK[13] = getWaterIntakesObject().getTypeName();
+        infoFK[14] = getUserTypeString();
+        infoFK[15] = getStatusString();
         return infoFK;
     }
 

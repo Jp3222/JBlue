@@ -4,8 +4,9 @@
  */
 package com.jblue.model.dtos;
 
-import com.jblue.model.constants.Const;
+import com.jblue.model.constants._Const;
 import com.jblue.model.factories.CacheFactory;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -17,6 +18,10 @@ import java.time.format.DateTimeFormatter;
  */
 public class OEmployee extends Objects implements ForeingKeyObject, StatusObject {
 
+    /**
+     * employee_type, status, user, password, date_update, date_register,
+     * date_end
+     */
     private String[] info_fk;
 
     /**
@@ -37,36 +42,63 @@ public class OEmployee extends Objects implements ForeingKeyObject, StatusObject
         super();
     }
 
-    /**
-     * @return el nombre del personal
-     */
-    public String getName() {
+    public String getCURP() {
         return info[1];
     }
 
     /**
+     * metodo que retorna el nombre del usuario
      *
-     * @return los apellidos del personal
+     * @return una cadena con el nombre del usuario
      */
-    public String getLastNames() {
+    public String getFirstName() {
         return info[2];
     }
 
     /**
-     * Metodo que contiene el cargo del personal
-     * <br>1 Pasante
-     * <br>2 Secretario
-     * <br>3 Tesorero
-     * <br>4 Presidente
-     * <br>5 Administrador.
      *
-     * @return un entero con el cargo del personal
+     * @return una cadena con el apellido paterno del usuario
      */
-    public String getType() {
+    public String getLastName1() {
         return info[3];
     }
 
-    public String getCargoString() {
+    /**
+     *
+     * @return una cadena con el apellido materno del usuario
+     */
+    public String getLastName2() {
+        return info[4];
+    }
+
+    public int getGender() {
+        return Integer.parseInt(info[5]);
+    }
+
+    public String getEmail() {
+        return info[6];
+    }
+
+    public LocalDate getDateBirday() {
+        if (info[7] == null || info[7].isEmpty()) {
+            return null;
+        }
+        return _Const.parseDate(info[7]);
+    }
+
+    public String getPhoneNumber1() {
+        return info[8];
+    }
+
+    public String getPhoneNumber2() {
+        return info[9];
+    }
+
+    public String getType() {
+        return info[10];
+    }
+
+    public String getEmployeeType() {
         return switch (getType()) {
             case "1":
                 yield "Pasante";
@@ -90,7 +122,7 @@ public class OEmployee extends Objects implements ForeingKeyObject, StatusObject
      */
     @Override
     public int getStatus() {
-        return Integer.parseInt(info[4]);
+        return Integer.parseInt(info[11]);
     }
 
     @Override
@@ -108,7 +140,7 @@ public class OEmployee extends Objects implements ForeingKeyObject, StatusObject
      * @return el nombre usuario encriptado del usuario
      */
     public String getUser() {
-        return info[5];
+        return info[12];
     }
 
     /**
@@ -116,18 +148,22 @@ public class OEmployee extends Objects implements ForeingKeyObject, StatusObject
      * @return la contraseña encriptada del usuario
      */
     public String getPassword() {
-        return info[6];
+        return info[13];
     }
 
     public LocalDateTime getDateRegister() {
-        return LocalDateTime.parse(info[7], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
+        return LocalDateTime.parse(info[14], DateTimeFormatter.ofPattern(_Const.DATE_TIME_FORMAT));
     }
 
-    public LocalDateTime getEndDate() {
-        if (info[8] == null || info[8].isEmpty()) {
+    public LocalDateTime getDateUpdate() {
+        return LocalDateTime.parse(info[15], DateTimeFormatter.ofPattern(_Const.DATE_TIME_FORMAT));
+    }
+
+    public LocalDateTime getDateEnd() {
+        if (info[16] == null || info[16].isEmpty()) {
             return null;
         }
-        return LocalDateTime.parse(info[8], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
+        return _Const.parseDateTime(info[16]);
     }
 
     @Override
@@ -138,14 +174,15 @@ public class OEmployee extends Objects implements ForeingKeyObject, StatusObject
 
     @Override
     public String[] getInfoSinFK() {
-        info_fk[3] = getCargoString();
-        info_fk[4] = getStatusString();
+        info_fk[5] = CacheFactory.CAT_GENDER[getGender()];
+        info_fk[10] = getEmployeeType();
+        info_fk[11] = getStatusString();
         return info_fk;
     }
 
     @Override
     public String toString() {
-        return getName().concat(" ").concat(getLastNames());
+        return getFirstName().concat(" ").concat(getLastName1()).concat(" ").concat(getLastName2());
     }
 
 }

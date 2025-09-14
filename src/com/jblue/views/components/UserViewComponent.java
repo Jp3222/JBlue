@@ -16,7 +16,7 @@
  */
 package com.jblue.views.components;
 
-import com.jblue.model.constants.Const;
+import com.jblue.model.constants._Const;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.model.dtos.OUser;
 import com.jblue.model.dtos.Objects;
@@ -93,9 +93,9 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
             dato_codigo
         };
         //
-        modelo_pagos_x_servicio = new JTableModel(Const.SERVICE_PAYMENTS.getFields(), 0);
-        modelo_pagos_x_recargo = new JTableModel(Const.SURCHARGE_PAYMENTS.getFields(), 0);
-        modelo_pagos_x_otros = new JTableModel(Const.OTHER_PAYMENTS.getFields(), 0);
+        modelo_pagos_x_servicio = new JTableModel(_Const.PYM_SERVICE_PAYMENTS_TABLE.getFields(), 0);
+        modelo_pagos_x_recargo = new JTableModel(_Const.PYM_SURCHARGE_PAYMENTS_TABLE.getFields(), 0);
+        modelo_pagos_x_otros = new JTableModel(_Const.PYM_OTHER_PAYMENTS_TABLE.getFields(), 0);
         //
         service_payments.setModel(modelo_pagos_x_servicio);
         surcharge_payments.setModel(modelo_pagos_x_recargo);

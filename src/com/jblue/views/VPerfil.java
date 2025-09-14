@@ -16,7 +16,7 @@
  */
 package com.jblue.views;
 
-import com.jblue.model.constants.Const;
+import com.jblue.model.constants._Const;
 import com.jblue.model.dtos.OEmployee;
 import com.jblue.sys.SystemSession;
 import com.jblue.views.framework.SimpleView;
@@ -206,13 +206,13 @@ private final JButton option;
         if (!isInfoValid()) {
             return;
         }
-        campo_nombre.setText(personal.getName());
-        campo_apellidos.setText(personal.getLastNames());
-        campo_cargo.setText(personal.getCargoString());
+        campo_nombre.setText(personal.getFirstName());
+        campo_apellidos.setText(personal.getLastName1() +  personal.getLastName2());
+        campo_cargo.setText(personal.getEmployeeType());
         campo_estado.setText(personal.getStatus() + "");
         campo_usuario.setText(personal.getUser());
         campo_contra.setText(personal.getPassword());
-        campo_fecha_registro.setText(personal.getDateRegister().format(DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT)));
+        campo_fecha_registro.setText(personal.getDateRegister().format(DateTimeFormatter.ofPattern(_Const.DATE_TIME_FORMAT)));
     }
 
     public boolean isInfoValid() {

@@ -19,8 +19,6 @@ package com.jblue.controllers;
 import com.jblue.model.dtos.Objects;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.model.DBConnection;
-import com.jblue.model.constants.Const;
-import com.jblue.model.constants.LogBookFormats;
 import com.jblue.sys.SystemSession;
 import com.jblue.views.framework.SimpleView;
 import javax.swing.JOptionPane;
@@ -40,15 +38,8 @@ public abstract class AbstractDBViewController<T extends Objects> extends Abstra
         this.connection = (DBConnection<T>) memo_cache.getConnection();
     }
 
-    public void rmessage(SimpleView view, boolean mov) {
-        rmessage(view, mov, -1, null);
-    }
-
-    protected void rmessage(SimpleView view, boolean mov, int mov_type, String description) {
+    protected void returnMessage(SimpleView view, boolean mov) {
         String status = mov ? "Exitosa" : "Erronea";
-        if (mov_type > 0) {
-            SystemSession.getInstancia().register(mov_type, description);
-        }
         if (mov) {
             memo_cache.reLoadData();
             view.initialState();
@@ -58,4 +49,5 @@ public abstract class AbstractDBViewController<T extends Objects> extends Abstra
                 "Estado de la operacion",
                 JOptionPane.INFORMATION_MESSAGE);
     }
+
 }

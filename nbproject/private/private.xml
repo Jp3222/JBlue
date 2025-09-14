@@ -14,8 +14,15 @@
         <group>
             <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/controllers/viewc/UserController.java</file>
             <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/views/UserView.java</file>
-            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/views/WaterIntakesTypesView.java</file>
-            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/controllers/viewc/WaterIntakesTypesController.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/util/ObjectUtils.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/model/dtos/OUser.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/views/components/UserViewComponent.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/controllers/compc/TableController.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/model/daos/PaymentsDAO.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/model/AbstractDBConnection.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/model/DBConnection.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/model/constants/_Const.java</file>
+            <file>file:/D:/Programacion/Java/NetBeansProjects/JBlue/src/com/jblue/model/constants/_ConstTables.java</file>
         </group>
     </open-files>
 </project-private>

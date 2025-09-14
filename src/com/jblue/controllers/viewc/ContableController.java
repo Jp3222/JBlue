@@ -17,7 +17,7 @@
 package com.jblue.controllers.viewc;
 
 import com.jblue.controllers.AbstractViewController;
-import com.jblue.model.constants.Const;
+import com.jblue.model.constants._Const;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.model.dtos.OServicePayments;
 import com.jblue.util.cache.MemoListCache;
@@ -55,13 +55,13 @@ public final class ContableController extends AbstractViewController {
         double res = 0;
         StringBuilder query = new StringBuilder(sum_query);
         query.append("DAY(")
-                .append(Const.SERVICE_PAYMENTS.getFields()[date_register_index])
+                .append(_Const.PYM_SERVICE_PAYMENTS_TABLE.getFields()[date_register_index])
                 .append(") = DAY(NOW())");
         query.append("AND MONTH(")
-                .append(Const.SERVICE_PAYMENTS.getFields()[date_register_index])
+                .append(_Const.PYM_SERVICE_PAYMENTS_TABLE.getFields()[date_register_index])
                 .append(") = MONTH(NOW())");
         query.append("AND YEAR(")
-                .append(Const.SERVICE_PAYMENTS.getFields()[date_register_index])
+                .append(_Const.PYM_SERVICE_PAYMENTS_TABLE.getFields()[date_register_index])
                 .append(") = YEAR(NOW())");
         try {
             ResultSet rs = cache.getConnection().getJDBConnection().query(query.toString());
@@ -79,10 +79,10 @@ public final class ContableController extends AbstractViewController {
         double res = 0;
         StringBuilder query = new StringBuilder(sum_query);
         query.append("MONTH(")
-                .append(Const.SERVICE_PAYMENTS.getFields()[date_register_index])
+                .append(_Const.PYM_SERVICE_PAYMENTS_TABLE.getFields()[date_register_index])
                 .append(") = MONTH(NOW())");
         query.append("AND YEAR(")
-                .append(Const.SERVICE_PAYMENTS.getFields()[date_register_index])
+                .append(_Const.PYM_SERVICE_PAYMENTS_TABLE.getFields()[date_register_index])
                 .append(") = YEAR(NOW())");
         try {
             ResultSet rs = cache.getConnection().getJDBConnection().query(query.toString());
@@ -100,7 +100,7 @@ public final class ContableController extends AbstractViewController {
         double res = 0;
         StringBuilder query = new StringBuilder(sum_query);
         query.append("YEAR(")
-                .append(Const.SERVICE_PAYMENTS.getFields()[date_register_index])
+                .append(_Const.PYM_SERVICE_PAYMENTS_TABLE.getFields()[date_register_index])
                 .append(") = YEAR(NOW())");
         try {
             ResultSet rs = cache.getConnection().getJDBConnection().query(query.toString());
@@ -113,7 +113,7 @@ public final class ContableController extends AbstractViewController {
         }
         view.setYear_field(res);
     }
-    private final String sum_query = "SELECT SUM(price) FROM service_payments WHERE ";
+    private final String sum_query = "SELECT SUM(price) FROM pym_service_payments WHERE ";
     private final int date_register_index = 7;
 
     @Override

@@ -62,7 +62,7 @@ public class Filters {
     }
 
     public static boolean isNullOrBlank(String txt) {
-        return txt == null || txt.isBlank() || txt.isEmpty();
+        return txt == null || txt.isEmpty()|| txt.isBlank();
     }
 
     public static boolean isNullOrBlank(String... txt) {

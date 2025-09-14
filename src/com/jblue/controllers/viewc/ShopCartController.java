@@ -19,10 +19,10 @@ package com.jblue.controllers.viewc;
 import com.jblue.controllers.Controller;
 import com.jblue.model.l4b.PaymentFactory;
 import com.jblue.model.l4b.PaymentModel;
-import com.jblue.model.constants.Const;
+import com.jblue.model.constants._Const;
+import com.jblue.model.daos.HysHistoryDAO;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.model.dtos.OUser;
-import com.jblue.sys.DevFlags;
 import com.jblue.sys.SystemSession;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.util.GraphicsUtils;
@@ -108,9 +108,10 @@ public class ShopCartController extends Controller {
     }
 
     void payments() {
+        OUser user = view.getObjectSearch();
         mov_book.setLength(0);
         mov_book.setLength(3000);
-        mov_book.append("Usuario: ").append(view.getObjectSearch().toString());
+        mov_book.append("Usuario: ").append(user.toString());
         mov_book.append("\nPAGOS POR EL SERVICIO\n");
         if (view.getObjectSearch() == null) {
             JOptionPane.showMessageDialog(view, "Usuario no valido", "Operacion Erronea", JOptionPane.ERROR_MESSAGE);
@@ -126,15 +127,16 @@ public class ShopCartController extends Controller {
         mov_book.append("Total: ").append(service_payment.getTotal());
 
         if (execPayment) {
-            SystemSession.getInstancia().register(
-                    Const.INSERT_TO_SERVICE_PAYMENTS,
-                    DESCRIPTION_FORMAT.formatted(view.getObjectSearch().getId(), view.getMonthPaidList().toString())
-            );
+            HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_PYM_SERVICE_PAYMENTS,
+                    "PAGO DEL USUARIO: %s %s %s, MESES:%s".formatted(
+                            user.getName(),
+                            user.getLastName1(),
+                            user.getLastName2(),
+                            view.getMonthPaidList().toString()
+                    ));
         }
         rmessage(execPayment);
     }
-
-    private String DESCRIPTION_FORMAT = "USUARIO:%s, MESES:%s";
 
     void cancel() {
         int input = JOptionPane.showConfirmDialog(view,
@@ -153,6 +155,7 @@ public class ShopCartController extends Controller {
     }
 
     private void surcharges() {
+        OUser user = view.getObjectSearch();
         int i = JOptionPane.showConfirmDialog(view,
                 "¿Desea generarle un recargo a este usuario?",
                 "Recargos",
@@ -163,7 +166,7 @@ public class ShopCartController extends Controller {
         if (i == JOptionPane.YES_OPTION) {
             mov_book.setLength(0);
             mov_book.setLength(3000);
-            mov_book.append("Usuario: ").append(view.getObjectSearch().toString());
+            mov_book.append("Usuario: ").append(user.toString());
             mov_book.append("\nRECARGOS POR PAGOS TARDIOS\n");
             if (view.getObjectSearch() == null) {
                 JOptionPane.showMessageDialog(view, "Usuario no valido", "Operacion Erronea", JOptionPane.ERROR_MESSAGE);
@@ -174,9 +177,12 @@ public class ShopCartController extends Controller {
             boolean execPayment = service_payment.insertToDefault();
             mov_book.append("Total: ").append(service_payment.getTotal());
             if (execPayment) {
-                SystemSession.getInstancia().register(
-                        Const.INSERT_TO_SURCHARGE_PAYMENTS,
-                        DESCRIPTION_FORMAT.formatted(view.getObjectSearch().getId(), view.getMonthPaidList().toString())
+                HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_PYM_SURCHARGE_PAYMENTS,
+                        "RECARGO AL USUARIO: %s %s %s".formatted(
+                                user.getName(),
+                                user.getLastName1(),
+                                user.getLastName2()
+                        )
                 );
             }
             rmessage(execPayment);

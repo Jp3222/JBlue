@@ -18,14 +18,16 @@ package com.jblue.views;
 
 import com.jblue.controllers.FactoryController;
 import com.jblue.controllers.compc.TableController;
+import com.jblue.model.constants._Const;
 import com.jblue.model.dtos.OEmployee;
 import com.jblue.model.dtos.Objects;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.model.factories.TableModelFactory;
 import com.jblue.util.Filters;
-import com.jblue.util.Formats;
 import com.jblue.util.EncriptadoAES;
 import com.jblue.util.GraphicsUtils;
+import com.jblue.util.ObjectUtils;
+import com.jblue.views.framework.DBValuesMapModel;
 import com.jblue.views.framework.DBView;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
@@ -41,14 +43,14 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import com.jblue.views.framework.DBValuesModel;
-import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author jp
  */
-public final class EmployeesView extends DBView implements DBValuesModel {
+public final class EmployeesView extends DBView implements DBValuesMapModel {
 
     private final JTableModel model;
     private final CardLayout ly;
@@ -105,27 +107,37 @@ public final class EmployeesView extends DBView implements DBValuesModel {
     @Override
     public void initialState() {
         //Fields
-        first_name.setText(null);
-        last_names.setText(null);
+        curp_field.setText(null);
+        first_name_field.setText(null);
+        last_name_1_field.setText(null);
+        last_name_2_field.setText(null);
+        gender_field.setSelectedIndex(0);
+        email_field.setText(null);
+        date_birday_field.setText(null);
+        phone_number1_field.setText(null);
+        phone_number2_field.setText(null);
         employee_type_field.setSelectedIndex(0);
         status_type_field.setSelectedIndex(0);
         user_field.setText(null);
         password_field.setText(null);
-        date_limit_field.setSelected(false);
+        date_end_check_field.setSelected(false);
+        date_last_update_field.setText(null);
+        date_register_field.setText(null);
+        date_end_field.setText(null);
+        date_end_field.setEditable(false);
         //
         view_show = 1;
         object_search = null;
         //
         save_button.setEnabled(true);
         GraphicsUtils.setEnable(false,
-                update_button
+                update_button, delete_button
         );
 
     }
 
     @Override
     public void finalState() {
-        LocalDate ld = LocalDate.now();
 
     }
 
@@ -148,33 +160,69 @@ public final class EmployeesView extends DBView implements DBValuesModel {
         jButton3 = new javax.swing.JButton();
         root_panel = new javax.swing.JPanel();
         register_panel = new javax.swing.JPanel();
-        center_panel = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
-        jLabel16 = new javax.swing.JLabel();
-        first_name = new javax.swing.JTextField();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel18 = new javax.swing.JLabel();
-        last_names = new javax.swing.JTextField();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel19 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        user_data_panel = new javax.swing.JPanel();
+        pc_nombre = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        first_name_field = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        pc_ap = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        last_name_1_field = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        pc_am = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        last_name_2_field = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel25 = new javax.swing.JLabel();
+        gender_field = new javax.swing.JComboBox<>();
+        jLabel26 = new javax.swing.JLabel();
+        pc_tipo_toma = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        man_tipo_toma = new javax.swing.JCheckBox();
         employee_type_field = new javax.swing.JComboBox<>();
-        jPanel14 = new javax.swing.JPanel();
-        jLabel20 = new javax.swing.JLabel();
+        pc_calle = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
         status_type_field = new javax.swing.JComboBox<>();
-        jPanel15 = new javax.swing.JPanel();
-        jLabel21 = new javax.swing.JLabel();
+        man_calle = new javax.swing.JCheckBox();
+        pc_ncasa = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        sn_numero = new javax.swing.JCheckBox();
         user_field = new javax.swing.JPasswordField();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jPanel20 = new javax.swing.JPanel();
-        jLabel22 = new javax.swing.JLabel();
+        pc_estado = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        man_estado = new javax.swing.JCheckBox();
         password_field = new javax.swing.JPasswordField();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jPanel25 = new javax.swing.JPanel();
-        date_limit_field = new javax.swing.JCheckBox();
-        jPanel35 = new javax.swing.JPanel();
-        jLabel24 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        pc_estado1 = new javax.swing.JPanel();
+        jLabel27 = new javax.swing.JLabel();
+        man_estado1 = new javax.swing.JCheckBox();
+        date_last_update_field = new javax.swing.JTextField();
+        pc_estado2 = new javax.swing.JPanel();
+        jLabel28 = new javax.swing.JLabel();
+        man_estado2 = new javax.swing.JCheckBox();
+        date_register_field = new javax.swing.JTextField();
+        complement_data_panel = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel29 = new javax.swing.JLabel();
+        curp_field = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        email_field = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
+        phone_number1_field = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel30 = new javax.swing.JLabel();
+        phone_number2_field = new javax.swing.JTextField();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel31 = new javax.swing.JLabel();
+        date_birday_field = new javax.swing.JFormattedTextField();
+        date_end_check_field = new javax.swing.JCheckBox();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        date_end_field = new javax.swing.JFormattedTextField();
+        show_consumer_list_button = new javax.swing.JButton();
         options_panel = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         save_button = new javax.swing.JButton();
@@ -246,120 +294,270 @@ public final class EmployeesView extends DBView implements DBValuesModel {
         register_panel.setName("register"); // NOI18N
         register_panel.setLayout(new java.awt.BorderLayout());
 
-        center_panel.setPreferredSize(new java.awt.Dimension(500, 600));
-        center_panel.setLayout(new java.awt.GridLayout(13, 1, 0, 10));
+        user_data_panel.setPreferredSize(new java.awt.Dimension(500, 600));
+        user_data_panel.setLayout(new java.awt.GridLayout(11, 1, 0, 10));
 
-        jLabel11.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("Datos del personal");
-        center_panel.add(jLabel11);
+        pc_nombre.setLayout(new java.awt.BorderLayout());
 
-        jPanel6.setLayout(new java.awt.BorderLayout());
+        jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel2.setText("Nombre: ");
+        jLabel2.setMaximumSize(new java.awt.Dimension(60, 20));
+        jLabel2.setMinimumSize(new java.awt.Dimension(150, 25));
+        jLabel2.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_nombre.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        jLabel16.setText("Nombre: ");
-        jLabel16.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel6.add(jLabel16, java.awt.BorderLayout.WEST);
+        first_name_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        first_name_field.setToolTipText("<html>\nCampo: Nombre\n<br>valores admitidos: Solo texto\n<br>tamaño maximo: 32 Caracteres");
+        first_name_field.setName("Nombre"); // NOI18N
+        first_name_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_nombre.add(first_name_field, java.awt.BorderLayout.CENTER);
 
-        first_name.setName("Nombre"); // NOI18N
-        first_name.setPreferredSize(null);
-        jPanel6.add(first_name, java.awt.BorderLayout.CENTER);
+        jLabel7.setPreferredSize(new java.awt.Dimension(60, 30));
+        pc_nombre.add(jLabel7, java.awt.BorderLayout.LINE_END);
 
-        center_panel.add(jPanel6);
+        user_data_panel.add(pc_nombre);
 
-        jPanel7.setLayout(new java.awt.BorderLayout());
+        pc_ap.setPreferredSize(new java.awt.Dimension(250, 30));
+        pc_ap.setLayout(new java.awt.BorderLayout());
 
-        jLabel18.setText("Apellidos: ");
-        jLabel18.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel7.add(jLabel18, java.awt.BorderLayout.WEST);
+        jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel3.setText("A. Paterno: ");
+        jLabel3.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_ap.add(jLabel3, java.awt.BorderLayout.WEST);
 
-        last_names.setName("Apellidos"); // NOI18N
-        last_names.setPreferredSize(null);
-        jPanel7.add(last_names, java.awt.BorderLayout.CENTER);
+        last_name_1_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        last_name_1_field.setToolTipText("<html>\nCampos: Apellido Paterno\n<br>Valor: Solo texto \n<br>Longitud: 32 Caracteres");
+        last_name_1_field.setName("A. Paterno"); // NOI18N
+        last_name_1_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_ap.add(last_name_1_field, java.awt.BorderLayout.CENTER);
 
-        center_panel.add(jPanel7);
+        jLabel9.setPreferredSize(new java.awt.Dimension(60, 30));
+        pc_ap.add(jLabel9, java.awt.BorderLayout.LINE_END);
 
-        jPanel8.setLayout(new java.awt.BorderLayout());
+        user_data_panel.add(pc_ap);
 
-        jLabel19.setText("Cargo");
-        jLabel19.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel8.add(jLabel19, java.awt.BorderLayout.WEST);
+        pc_am.setPreferredSize(new java.awt.Dimension(250, 30));
+        pc_am.setLayout(new java.awt.BorderLayout());
 
-        employee_type_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECCIONE UNA OPCION", "PRESIDENTE", "SECRETARIO", "TESORERO", "PASANTE", "ADMINISTRADOR" }));
-        employee_type_field.setName("Cargo"); // NOI18N
-        employee_type_field.setPreferredSize(null);
-        jPanel8.add(employee_type_field, java.awt.BorderLayout.CENTER);
+        jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel4.setText("A. Materno:");
+        jLabel4.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_am.add(jLabel4, java.awt.BorderLayout.WEST);
 
-        center_panel.add(jPanel8);
+        last_name_2_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        last_name_2_field.setToolTipText("<html> Campos: Apellido Materno\n<br>Valor: Solo texto <br>Longitud: 32 Caracteres");
+        last_name_2_field.setName("A. Materno"); // NOI18N
+        last_name_2_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_am.add(last_name_2_field, java.awt.BorderLayout.CENTER);
 
-        jPanel14.setLayout(new java.awt.BorderLayout());
+        jLabel10.setPreferredSize(new java.awt.Dimension(60, 30));
+        pc_am.add(jLabel10, java.awt.BorderLayout.LINE_END);
 
-        jLabel20.setText("Estado: ");
-        jLabel20.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel14.add(jLabel20, java.awt.BorderLayout.WEST);
+        user_data_panel.add(pc_am);
 
-        status_type_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACTIVO.", "INACTIVO.", "BAJA." }));
-        status_type_field.setName("Estatus"); // NOI18N
-        status_type_field.setPreferredSize(null);
-        jPanel14.add(status_type_field, java.awt.BorderLayout.CENTER);
+        jPanel9.setLayout(new java.awt.BorderLayout());
 
-        center_panel.add(jPanel14);
+        jLabel25.setText("Genero");
+        jLabel25.setPreferredSize(new java.awt.Dimension(150, 25));
+        jPanel9.add(jLabel25, java.awt.BorderLayout.LINE_START);
 
-        jPanel15.setLayout(new java.awt.BorderLayout());
+        gender_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No. Definido", "Masculino.", "Femenino." }));
+        jPanel9.add(gender_field, java.awt.BorderLayout.CENTER);
 
-        jLabel21.setText("Usuario: ");
-        jLabel21.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel15.add(jLabel21, java.awt.BorderLayout.WEST);
+        jLabel26.setPreferredSize(new java.awt.Dimension(60, 30));
+        jPanel9.add(jLabel26, java.awt.BorderLayout.LINE_END);
 
-        user_field.setName("Usuario"); // NOI18N
-        user_field.setPreferredSize(null);
-        jPanel15.add(user_field, java.awt.BorderLayout.CENTER);
+        user_data_panel.add(jPanel9);
 
-        jCheckBox1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jCheckBox1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
-        jCheckBox1.setPreferredSize(new java.awt.Dimension(50, 20));
-        jCheckBox1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img3.png"))); // NOI18N
-        jPanel15.add(jCheckBox1, java.awt.BorderLayout.LINE_END);
+        pc_tipo_toma.setPreferredSize(new java.awt.Dimension(500, 50));
+        pc_tipo_toma.setLayout(new java.awt.BorderLayout());
 
-        center_panel.add(jPanel15);
+        jLabel5.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel5.setText("Tipo de Empleado");
+        jLabel5.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_tipo_toma.add(jLabel5, java.awt.BorderLayout.WEST);
 
-        jPanel20.setLayout(new java.awt.BorderLayout());
+        man_tipo_toma.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        man_tipo_toma.setText("M.");
+        man_tipo_toma.setToolTipText("Mantener el tipo de toma seleccionado");
+        man_tipo_toma.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        man_tipo_toma.setPreferredSize(new java.awt.Dimension(60, 30));
+        pc_tipo_toma.add(man_tipo_toma, java.awt.BorderLayout.EAST);
 
-        jLabel22.setText("Contraseña: ");
-        jLabel22.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel20.add(jLabel22, java.awt.BorderLayout.WEST);
+        employee_type_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ADMINISTRADOR", "PRESIDENTE", "TESORERO", "SECRETARIO", "PASANTE" }));
+        pc_tipo_toma.add(employee_type_field, java.awt.BorderLayout.CENTER);
 
-        password_field.setName("Contraseña"); // NOI18N
-        password_field.setPreferredSize(null);
-        jPanel20.add(password_field, java.awt.BorderLayout.CENTER);
+        user_data_panel.add(pc_tipo_toma);
 
-        jCheckBox2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jCheckBox2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img2.png"))); // NOI18N
-        jCheckBox2.setPreferredSize(new java.awt.Dimension(50, 20));
-        jCheckBox2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/img3.png"))); // NOI18N
-        jPanel20.add(jCheckBox2, java.awt.BorderLayout.LINE_END);
+        pc_calle.setPreferredSize(new java.awt.Dimension(500, 50));
+        pc_calle.setLayout(new java.awt.BorderLayout());
 
-        center_panel.add(jPanel20);
+        jLabel6.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel6.setText("Status");
+        jLabel6.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_calle.add(jLabel6, java.awt.BorderLayout.WEST);
 
-        jPanel25.setLayout(new java.awt.BorderLayout());
+        status_type_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        status_type_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACTIVO", "INACTIVO", "FINALIZADO" }));
+        status_type_field.setName("Calle"); // NOI18N
+        status_type_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_calle.add(status_type_field, java.awt.BorderLayout.CENTER);
 
-        date_limit_field.setText("Fecha Limite");
-        jPanel25.add(date_limit_field, java.awt.BorderLayout.CENTER);
+        man_calle.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        man_calle.setText("M.");
+        man_calle.setToolTipText("Mantener la calle seleccionada\n");
+        man_calle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        man_calle.setPreferredSize(new java.awt.Dimension(60, 30));
+        pc_calle.add(man_calle, java.awt.BorderLayout.EAST);
 
-        center_panel.add(jPanel25);
+        user_data_panel.add(pc_calle);
 
-        jPanel35.setLayout(new java.awt.BorderLayout());
+        pc_ncasa.setPreferredSize(new java.awt.Dimension(500, 50));
+        pc_ncasa.setLayout(new java.awt.BorderLayout());
 
-        jLabel24.setText("F. Limite: ");
-        jLabel24.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel35.add(jLabel24, java.awt.BorderLayout.WEST);
+        jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel1.setText("Usuario");
+        jLabel1.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_ncasa.add(jLabel1, java.awt.BorderLayout.WEST);
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat(""))));
-        jFormattedTextField1.setPreferredSize(null);
-        jPanel35.add(jFormattedTextField1, java.awt.BorderLayout.CENTER);
+        sn_numero.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        sn_numero.setText("S/N");
+        sn_numero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sn_numero.setPreferredSize(new java.awt.Dimension(60, 30));
+        pc_ncasa.add(sn_numero, java.awt.BorderLayout.EAST);
+        pc_ncasa.add(user_field, java.awt.BorderLayout.CENTER);
 
-        center_panel.add(jPanel35);
+        user_data_panel.add(pc_ncasa);
 
-        register_panel.add(center_panel, java.awt.BorderLayout.CENTER);
+        pc_estado.setPreferredSize(new java.awt.Dimension(500, 50));
+        pc_estado.setLayout(new java.awt.BorderLayout());
+
+        jLabel8.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel8.setText("Contraseña");
+        jLabel8.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_estado.add(jLabel8, java.awt.BorderLayout.WEST);
+
+        man_estado.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        man_estado.setText("M.");
+        man_estado.setToolTipText("Mantener el estado del usuario seleccionado\n");
+        man_estado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        man_estado.setPreferredSize(new java.awt.Dimension(60, 30));
+        pc_estado.add(man_estado, java.awt.BorderLayout.EAST);
+        pc_estado.add(password_field, java.awt.BorderLayout.CENTER);
+
+        user_data_panel.add(pc_estado);
+
+        pc_estado1.setPreferredSize(new java.awt.Dimension(500, 50));
+        pc_estado1.setLayout(new java.awt.BorderLayout());
+
+        jLabel27.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel27.setText("F. de actualizacion");
+        jLabel27.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_estado1.add(jLabel27, java.awt.BorderLayout.WEST);
+
+        man_estado1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        man_estado1.setText("M.");
+        man_estado1.setToolTipText("Mantener el estado del usuario seleccionado\n");
+        man_estado1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        man_estado1.setPreferredSize(new java.awt.Dimension(60, 30));
+        pc_estado1.add(man_estado1, java.awt.BorderLayout.EAST);
+
+        date_last_update_field.setEditable(false);
+        pc_estado1.add(date_last_update_field, java.awt.BorderLayout.CENTER);
+
+        user_data_panel.add(pc_estado1);
+
+        pc_estado2.setPreferredSize(new java.awt.Dimension(500, 50));
+        pc_estado2.setLayout(new java.awt.BorderLayout());
+
+        jLabel28.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel28.setText("F. de registro");
+        jLabel28.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_estado2.add(jLabel28, java.awt.BorderLayout.WEST);
+
+        man_estado2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        man_estado2.setText("M.");
+        man_estado2.setToolTipText("Mantener el estado del usuario seleccionado\n");
+        man_estado2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        man_estado2.setPreferredSize(new java.awt.Dimension(60, 30));
+        pc_estado2.add(man_estado2, java.awt.BorderLayout.EAST);
+
+        date_register_field.setEditable(false);
+        pc_estado2.add(date_register_field, java.awt.BorderLayout.CENTER);
+
+        user_data_panel.add(pc_estado2);
+
+        jTabbedPane1.addTab("Datos de usuario", user_data_panel);
+
+        complement_data_panel.setLayout(new java.awt.GridLayout(11, 1, 10, 10));
+
+        jPanel10.setLayout(new java.awt.BorderLayout());
+
+        jLabel29.setText("CURP");
+        jLabel29.setPreferredSize(new java.awt.Dimension(150, 25));
+        jPanel10.add(jLabel29, java.awt.BorderLayout.WEST);
+        jPanel10.add(curp_field, java.awt.BorderLayout.CENTER);
+
+        complement_data_panel.add(jPanel10);
+
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jLabel12.setText("Email");
+        jLabel12.setPreferredSize(new java.awt.Dimension(150, 25));
+        jPanel2.add(jLabel12, java.awt.BorderLayout.WEST);
+        jPanel2.add(email_field, java.awt.BorderLayout.CENTER);
+
+        complement_data_panel.add(jPanel2);
+
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        jLabel14.setText("Telefono 1: ");
+        jLabel14.setPreferredSize(new java.awt.Dimension(150, 25));
+        jPanel3.add(jLabel14, java.awt.BorderLayout.WEST);
+        jPanel3.add(phone_number1_field, java.awt.BorderLayout.CENTER);
+
+        complement_data_panel.add(jPanel3);
+
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        jLabel30.setText("Telefono 2:");
+        jLabel30.setPreferredSize(new java.awt.Dimension(150, 25));
+        jPanel4.add(jLabel30, java.awt.BorderLayout.WEST);
+        jPanel4.add(phone_number2_field, java.awt.BorderLayout.CENTER);
+
+        complement_data_panel.add(jPanel4);
+
+        jPanel5.setLayout(new java.awt.BorderLayout());
+
+        jLabel31.setText("Fecha de cumpleaños");
+        jLabel31.setPreferredSize(new java.awt.Dimension(150, 25));
+        jPanel5.add(jLabel31, java.awt.BorderLayout.WEST);
+
+        date_birday_field.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat(""))));
+        jPanel5.add(date_birday_field, java.awt.BorderLayout.CENTER);
+
+        complement_data_panel.add(jPanel5);
+
+        date_end_check_field.setText("Fecha de Finalizacion");
+        complement_data_panel.add(date_end_check_field);
+
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jLabel11.setText("F. de finalizacion");
+        jLabel11.setPreferredSize(new java.awt.Dimension(150, 25));
+        jPanel1.add(jLabel11, java.awt.BorderLayout.LINE_START);
+
+        date_end_field.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat(""))));
+        jPanel1.add(date_end_field, java.awt.BorderLayout.CENTER);
+
+        complement_data_panel.add(jPanel1);
+
+        show_consumer_list_button.setText("Añadir Foto");
+        complement_data_panel.add(show_consumer_list_button);
+
+        jTabbedPane1.addTab("Informacion complementaria.", complement_data_panel);
+
+        register_panel.add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
         options_panel.setLayout(new java.awt.GridLayout(2, 0));
 
@@ -500,41 +698,63 @@ public final class EmployeesView extends DBView implements DBValuesModel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back_button;
     private javax.swing.JButton cancel_button;
-    private javax.swing.JPanel center_panel;
+    private javax.swing.JPanel complement_data_panel;
     private javax.swing.JLabel count;
-    private javax.swing.JCheckBox date_limit_field;
+    private javax.swing.JTextField curp_field;
+    private javax.swing.JFormattedTextField date_birday_field;
+    private javax.swing.JCheckBox date_end_check_field;
+    private javax.swing.JFormattedTextField date_end_field;
+    private javax.swing.JTextField date_last_update_field;
+    private javax.swing.JTextField date_register_field;
     private javax.swing.JButton delete_button;
+    private javax.swing.JTextField email_field;
     private javax.swing.JComboBox<String> employee_type_field;
-    private javax.swing.JTextField first_name;
+    private javax.swing.JTextField first_name_field;
+    private javax.swing.JComboBox<String> gender_field;
     private javax.swing.JButton jButton3;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
-    private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel23;
-    private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel29;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel32;
-    private javax.swing.JPanel jPanel35;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField last_names;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField last_name_1_field;
+    private javax.swing.JTextField last_name_2_field;
+    private javax.swing.JCheckBox man_calle;
+    private javax.swing.JCheckBox man_estado;
+    private javax.swing.JCheckBox man_estado1;
+    private javax.swing.JCheckBox man_estado2;
+    private javax.swing.JCheckBox man_tipo_toma;
     private javax.swing.JButton next_button;
     private javax.swing.JPanel north_panel;
     private javax.swing.JPanel np_cp_center;
@@ -544,6 +764,17 @@ public final class EmployeesView extends DBView implements DBValuesModel {
     private javax.swing.JPanel options_panel;
     private javax.swing.JPanel panel_tabla;
     private javax.swing.JPasswordField password_field;
+    private javax.swing.JPanel pc_am;
+    private javax.swing.JPanel pc_ap;
+    private javax.swing.JPanel pc_calle;
+    private javax.swing.JPanel pc_estado;
+    private javax.swing.JPanel pc_estado1;
+    private javax.swing.JPanel pc_estado2;
+    private javax.swing.JPanel pc_ncasa;
+    private javax.swing.JPanel pc_nombre;
+    private javax.swing.JPanel pc_tipo_toma;
+    private javax.swing.JTextField phone_number1_field;
+    private javax.swing.JTextField phone_number2_field;
     private javax.swing.JLabel range;
     private javax.swing.JButton register_button;
     private javax.swing.JPanel register_panel;
@@ -554,10 +785,13 @@ public final class EmployeesView extends DBView implements DBValuesModel {
     private javax.swing.JTextField search_field;
     private javax.swing.JButton search_object;
     private javax.swing.JPanel search_panel;
+    private javax.swing.JButton show_consumer_list_button;
+    private javax.swing.JCheckBox sn_numero;
     private javax.swing.JPanel status_bar_panel;
     private javax.swing.JComboBox<String> status_type_field;
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
+    private javax.swing.JPanel user_data_panel;
     private javax.swing.JPasswordField user_field;
     // End of variables declaration//GEN-END:variables
 
@@ -617,25 +851,52 @@ public final class EmployeesView extends DBView implements DBValuesModel {
 
     @Override
     public void setScreenTableInfo() {
+        save_button.setEnabled(false);
+        GraphicsUtils.setEnable(true, update_button, delete_button);
+        //
+        curp_field.setText(object_search.getCURP());
+        first_name_field.setText(object_search.getFirstName());
+        last_name_1_field.setText(object_search.getLastName1());
+        last_name_2_field.setText(object_search.getLastName1());
+        gender_field.setSelectedIndex(object_search.getGender() - 1);
+        email_field.setText(object_search.getEmail());
+        date_birday_field.setText(_Const.getLocalDateToString(object_search.getDateBirday()));
+        phone_number1_field.setText(object_search.getPhoneNumber1());
+        phone_number2_field.setText(object_search.getPhoneNumber2());
+        employee_type_field.setSelectedIndex(0);
+        status_type_field.setSelectedIndex(0);
+        user_field.setText(object_search.getUser());
+        password_field.setText(object_search.getPassword());
+        date_last_update_field.setText(_Const.getLocalDateTimeToString(object_search.getDateUpdate()));
+        date_register_field.setText(_Const.getLocalDateTimeToString(object_search.getDateRegister()));
+        boolean end = object_search.getDateEnd() != null;
+        date_end_check_field.setSelected(end);
+        if (end) {
+            date_end_field.setText(null);
+        } else {
+            date_end_field.setText(_Const.getLocalDateTimeToString(object_search.getDateEnd()));
+        }
+        date_end_field.setEditable(end);
     }
 
     @Override
     public boolean isValuesOk() {
         JTextField[] arr = {
-            first_name, last_names, user_field, password_field
+            first_name_field, last_name_1_field, last_name_2_field, user_field, password_field
         };
         for (JTextField i : arr) {
+
             if (Filters.isNullOrBlank(i.getText())) {
-                JOptionPane.showInternalMessageDialog(center_panel, "El campo: \"%s\" no es valido".formatted(i.getName()));
+                JOptionPane.showMessageDialog(register_panel, "El campo: \"%s\" no es valido".formatted(i.getName()));
                 return false;
             }
         }
         JComboBox[] arr2 = {
-            employee_type_field, status_type_field
+            gender_field, employee_type_field, status_type_field
         };
         for (JComboBox i : arr2) {
             if (i.getSelectedIndex() > 0) {
-                JOptionPane.showInternalMessageDialog(center_panel, "El campo: \"%s\" no es valido".formatted(i.getName()));
+                JOptionPane.showMessageDialog(register_panel, "El campo: \"%s\" no es valido".formatted(i.getName()));
                 return false;
             }
         }
@@ -643,17 +904,86 @@ public final class EmployeesView extends DBView implements DBValuesModel {
     }
 
     @Override
-    public String[] getDbValues(boolean update) {
-        String _first_name = first_name.getText();
-        String _last_name = first_name.getText();
-        String _user_type = String.valueOf(employee_type_field.getSelectedItem());
-        String _status = String.valueOf(status_type_field.getSelectedItem());
-        String[] credentials = credentials();
-        String[] arr = new String[]{
-            _first_name, _last_name, _user_type,
-            _status, credentials[0], credentials[1]
-        };
-        return Formats.getDBFormatInputArray(arr);
+    public Map<String, String> getValues(boolean update) {
+        Map<String, String> map = Map.of();
+        String _curp = curp_field.getText();
+        String _first_name = first_name_field.getText();
+        String _last_name1 = last_name_1_field.getText();
+        String _last_name2 = last_name_2_field.getText();
+        String _gender = String.valueOf(gender_field.getSelectedIndex());
+        String _email = email_field.getText();
+        String _date_birday = date_birday_field.getText();
+        String _phone_number1 = phone_number1_field.getText();
+        String _phone_number2 = phone_number2_field.getText();
+        String _employee_type = String.valueOf(ObjectUtils.getIndexEmployeeCAT(employee_type_field.getSelectedItem().toString()));
+        String _status = String.valueOf(status_type_field.getSelectedIndex());
+        String[] crd = credentials();
+        String _user = crd[0];
+        String _password = crd[0];
+        String _date_end = null;
+        if (date_end_check_field.isSelected()) {
+            _date_end = date_end_field.getText();
+        }
+        if (update) {
+            saveUpdate(object_search, _curp, _first_name, _last_name1, _last_name2, _gender, _email, _date_birday, _phone_number1, _phone_number2, _employee_type, _status, _user, _password, _date_end);
+        } else {
+            saveInsert(_curp, _first_name, _last_name1, _last_name2, _gender, _email, _date_birday, _phone_number1, _phone_number2, _employee_type, _status, _user, _password, _date_end);
+        }
+        return map;
+    }
+
+    private Map<String, String> saveInsert(String curp, String first_name, String last_name1, String last_name2,
+            String gender, String email, String date_birday, String phone_number1,
+            String phone_number2, String employee_type, String status, String user,
+            String password, String date_end) {
+
+        Map<String, String> map = new HashMap<>();
+
+        // Campos que tienen validación de no nulo y no en blanco
+        Filters.putIfPresentAndNotBlank(map, "curp", curp);
+        Filters.putIfPresentAndNotBlank(map, "first_name", first_name);
+        Filters.putIfPresentAndNotBlank(map, "last_name1", last_name1);
+        Filters.putIfPresentAndNotBlank(map, "last_name2", last_name2);
+        Filters.putIfPresentAndNotBlank(map, "gender", gender);
+        Filters.putIfPresentAndNotBlank(map, "email", email);
+        Filters.putIfPresentAndNotBlank(map, "date_birday", date_birday);
+        Filters.putIfPresentAndNotBlank(map, "phone_number1", phone_number1);
+        Filters.putIfPresentAndNotBlank(map, "phone_number2", phone_number2);
+        Filters.putIfPresentAndNotBlank(map, "employee_type", employee_type);
+        Filters.putIfPresentAndNotBlank(map, "status", status);
+        Filters.putIfPresentAndNotBlank(map, "user", user);
+        Filters.putIfPresentAndNotBlank(map, "password", password);
+        Filters.putIfPresentAndNotBlank(map, "date_end", date_end);
+        return map;
+    }
+
+    private Map<String, String> saveUpdate(OEmployee object_search,
+            String curp, String first_name, String last_name1,
+            String last_name2, String gender, String email,
+            String date_birday, String phone_number1, String phone_number2,
+            String employee_type, String status, String user,
+            String password, String date_end) {
+        if (object_search == null) {
+            throw new NullPointerException("Objeto buscado null");
+        }
+        Map<String, String> map = new HashMap<>();
+
+        // Usando un método auxiliar para validar y agregar al mapa
+        Filters.addIfChanged(map, "curp", object_search.getCURP(), curp);
+        Filters.addIfChanged(map, "first_name", object_search.getFirstName(), first_name);
+        Filters.addIfChanged(map, "last_name1", object_search.getLastName1(), last_name1);
+        Filters.addIfChanged(map, "last_name2", object_search.getLastName2(), last_name2);
+        Filters.addIfChanged(map, "gender", String.valueOf(object_search.getGender()), gender);
+        Filters.addIfChanged(map, "email", object_search.getEmail(), email);
+        Filters.addIfChanged(map, "date_birday", object_search.getDateBirday().format(_Const.DATE_TIME), date_birday);
+        Filters.addIfChanged(map, "phone_number1", object_search.getPhoneNumber1(), phone_number1);
+        Filters.addIfChanged(map, "phone_number2", object_search.getPhoneNumber2(), phone_number2);
+        Filters.addIfChanged(map, "employee_type", String.valueOf(object_search.getType()), employee_type);
+        Filters.addIfChanged(map, "status", String.valueOf(object_search.getStatus()), status);
+        Filters.addIfChanged(map, "user", object_search.getUser(), user);
+        Filters.addIfChanged(map, "password", object_search.getPassword(), password);
+        Filters.addIfChanged(map, "date_end", object_search.getDateEnd().format(_Const.DATE_TIME), date_end);
+        return map;
     }
 
     private String[] credentials() {

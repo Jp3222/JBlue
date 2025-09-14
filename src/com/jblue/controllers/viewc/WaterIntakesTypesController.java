@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import com.jblue.controllers.DBControllerModel;
 import com.jblue.controllers.AbstractDBViewController;
-import com.jblue.model.constants.Const;
+import com.jblue.model.constants._Const;
 import com.jblue.model.dtos.OUser;
 import com.jblue.util.Formats;
 import com.jutil.dbcon.connection.JDBConnection;
@@ -71,16 +71,16 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
         connection.setAutoCommit(false);
         Map<String, String> values = view.getValues(false);
         String[] arr = Formats.getInsertFormats(values);
-        String query = JDBConnection.INSERT_VAL.formatted(Const.INSERT_TO_TYPE_WATER_INTAKES, arr[0], arr[1]);
+        String query = JDBConnection.INSERT_VAL.formatted(_Const.INDEX_INSERT, arr[0], arr[1]);
         try (Statement st = connection.getConnection().createStatement();) {
             boolean res = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
             try (ResultSet rs = st.getGeneratedKeys()) {
                 if (!rs.next()) {
                     return;
                 }
-                rmessage(view, res,
-                        Const.INSERT_TO_TYPE_WATER_INTAKES,
-                        "SE CREO EL TIPO DE TOMA: %s - %s".formatted(rs.getString(0), values.get("type_name")));
+//                rmessage(view, res,
+//                        _Const.INSERT_TO_TYPE_WATER_INTAKES,
+//                        "SE CREO EL TIPO DE TOMA: %s - %s".formatted(rs.getString(0), values.get("type_name")));
             }
         } catch (SQLException ex) {
             connection.rollBack();
@@ -101,10 +101,10 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
             }
             connection.setAutoCommit(false);
             boolean delete = connection.update("status", "3", "id = %s".formatted(view.getObjectSearch().getId()));
-            rmessage(view, delete,
-                    Const.LOGIC_DELETE_TO_TYPE_WATER_INTAKES,
-                    "SE ELIMINO EL TIPO DE TOMA: %s".formatted(view.getObjectSearch().getTypeName())
-            );
+//            rmessage(view, delete,
+//                    _Const.LOGIC_DELETE_TO_TYPE_WATER_INTAKES,
+//                    "SE ELIMINO EL TIPO DE TOMA: %s".formatted(view.getObjectSearch().getTypeName())
+//            );
             connection.setAutoCommit(true);
             connection.commit();
         } catch (NullPointerException e) {
@@ -120,16 +120,16 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
         connection.setAutoCommit(false);
         Map<String, String> values = view.getValues(false);
         String arr = Formats.getUpdateFormats(values);
-        String query = JDBConnection.UPDATE_COL.formatted(Const.INSERT_TO_TYPE_WATER_INTAKES, arr,
+        String query = JDBConnection.UPDATE_COL.formatted(_Const.WKI_WATER_INTAKE_TYPE_NAME, arr,
                 "id = %s".formatted(view.getObjectSearch().getId()));
         try (Statement st = connection.getConnection().createStatement();) {
             boolean res = st.executeUpdate(query) > 0;
-            rmessage(view, res,
-                    Const.INSERT_TO_TYPE_WATER_INTAKES,
-                    "SE ACTUALIZO EL TIPO DE TOMA: %s - %s".formatted(
-                            view.getObjectSearch().getId(),
-                            view.getObjectSearch().getTypeName())
-            );
+//            rmessage(view, res,
+//                    _Const.INSERT_TO_TYPE_WATER_INTAKES,
+//                    "SE ACTUALIZO EL TIPO DE TOMA: %s - %s".formatted(
+//                            view.getObjectSearch().getId(),
+//                            view.getObjectSearch().getTypeName())
+//            );
         } catch (SQLException ex) {
             connection.rollBack();
             System.getLogger(WaterIntakesTypesController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);

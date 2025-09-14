@@ -18,7 +18,7 @@ package com.jblue.views;
 
 import com.jblue.controllers.FactoryController;
 import com.jblue.controllers.compc.TableController;
-import com.jblue.model.constants.Const;
+import com.jblue.model.constants._Const;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.model.factories.TableModelFactory;
 import com.jblue.model.dtos.OWaterIntakeTypes;
@@ -567,7 +567,7 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesMapMo
         String _cost = current_price_field.getText();
 
         String _fine = surcharge_field.getText();
-        String _date_update = LocalDateTime.now().format(DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
+        String _date_update = LocalDateTime.now().format(DateTimeFormatter.ofPattern(_Const.DATE_TIME_FORMAT));
 
         if (update) {
             return Formats.getDBFormatInputArray(_type,

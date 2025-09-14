@@ -82,7 +82,7 @@ public class PaymentsDAO {
                 for (int i = 0; i < arr.length; i++) {
                     arr[i] = rs.getString(i + 1);
                 }
-                list.add(ObjectUtils.getObjeto(obj.getName(), arr));
+                //list.add(ObjectUtils.get(obj.getName(), arr));
             }
         } catch (SQLException e) {
             SystemLogs.severeDbLogs("ERROR: USUARIOS NO PAGADOS", e);

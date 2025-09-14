@@ -16,7 +16,7 @@
  */
 package com.jblue.views;
 
-import com.jblue.model.constants.Const;
+import com.jblue.model.constants._Const;
 import com.jblue.sys.app.AppConfig;
 import com.jblue.views.framework.SimpleView;
 import com.jutil.dbcon.connection.JDBConnection;
@@ -127,8 +127,8 @@ public final class ParametersView extends SimpleView {
 
     @Override
     public void initialState() {
-        open_hour_field.setText(AppConfig.getOpenHour().format(DateTimeFormatter.ofPattern(Const.TIME_FORMAT)));
-        close_hour_field.setText(AppConfig.getCloseHour().format(DateTimeFormatter.ofPattern(Const.TIME_FORMAT)));
+        open_hour_field.setText(AppConfig.getOpenHour().format(DateTimeFormatter.ofPattern(_Const.TIME_FORMAT)));
+        close_hour_field.setText(AppConfig.getCloseHour().format(DateTimeFormatter.ofPattern(_Const.TIME_FORMAT)));
         last_pay_day_field.setValue(AppConfig.getPayDay());
         auto_pay_field.setSelected(AppConfig.isPayDay());
         hour_validate_field.setSelected(AppConfig.isHourValidate());
@@ -148,7 +148,7 @@ public final class ParametersView extends SimpleView {
 
     public void loadData() {
         JDBConnection conn = JDBConnection.getInstance();
-        String query = JDBConnection.SELECT.formatted("parameter, value, description", "parameters", "status = 1");
+        String query = JDBConnection.SELECT.formatted("parameter, value, description", "dev_parameters", "status = 1");
         try (ResultSet rs = conn.query(query)) {
             model.removeAllRows();
             while (rs.next()) {

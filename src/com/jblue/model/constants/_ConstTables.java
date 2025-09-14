@@ -1,0 +1,55 @@
+/*
+ * Copyright (C) 2025 juanp
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.jblue.model.constants;
+
+import java.time.format.DateTimeFormatter;
+
+/**
+ *
+ * @author juanp
+ */
+public interface _ConstTables extends _TableNameConsts, _ArrayGsConst, _ArrayDBConst {
+
+    public static final Table CAT_GROUP_PREFIX_TABLE = new Table(CAT_GROUP_PREFIX_NAME, CAT_GROUP_PREFIX_FIELDS, CAT_GROUP_PREFIX_FIELDS_GS);
+    public static final Table CAT_HISTORY_TYPE_MOV_TABLE = new Table(CAT_HISTORY_TYPE_MOV_NAME, CAT_HISTORY_TYPE_MOV_FIELDS, CAT_HISTORY_TYPE_MOV_FIELDS_GS);
+    public static final Table CAT_PROCESS_TYPE_TABLE = new Table(CAT_PROCESS_TYPE_NAME, CAT_PROCESS_TYPE_FIELDS, CAT_PROCESS_TYPE_FIELDS_GS);
+    public static final Table CAT_STATUS_TABLE = new Table(CAT_STATUS_NAME, CAT_STATUS_FIELDS, CAT_STATUS_FIELDS_GS);
+    public static final Table CAT_STREET_TABLE = new Table(CAT_STREET_NAME, CAT_STREET_FIELDS, CAT_STREET_FIELDS_GS);
+    public static final Table CAT_TABLES_DB_TABLE = new Table(CAT_TABLES_DB_NAME, CAT_TABLES_DB_FIELDS, CAT_TABLES_DB_FIELDS_GS);
+    public static final Table CAT_USER_MOVEMENTS_TABLE = new Table(CAT_USER_MOVEMENTS_NAME, CAT_USER_MOVEMENTS_FIELDS, CAT_USER_MOVEMENTS_FIELDS_GS);
+    public static final Table DEV_PARAMETERS_TABLE = new Table(DEV_PARAMETERS_NAME, DEV_PARAMETERS_FIELDS, DEV_PARAMETERS_FIELDS_GS);
+    public static final Table EMP_EMPLOYEE_TYPES_TABLE = new Table(EMP_EMPLOYEE_TYPES_NAME, EMP_EMPLOYEE_TYPES_FIELDS, EMP_EMPLOYEE_TYPES_FIELDS_GS);
+    public static final Table EMP_EMPLOYEES_TABLE = new Table(EMP_EMPLOYEES_NAME, EMP_EMPLOYEES_FIELDS, EMP_EMPLOYEES_FIELDS_GS);
+    public static final Table HYS_HISTORY_TABLE = new Table(HYS_HISTORY_NAME, HYS_HISTORY_FIELDS, HYS_HISTORY_FIELDS_GS);
+    public static final Table HYS_PROGRAM_HISTORY_TABLE = new Table(HYS_PROGRAM_HISTORY_NAME, HYS_PROGRAM_HISTORY_FIELDS, HYS_PROGRAM_HISTORY_FIELDS_GS);
+    public static final Table LOGBOOK_TO_PAYMENTS_TABLE = new Table(LOGBOOK_TO_PAYMENTS_NAME, LOGBOOK_TO_PAYMENTS_FIELDS, LOGBOOK_TO_PAYMENTS_FIELDS_GS);
+    public static final Table LOGBOOK_TO_USERS_TABLE = new Table(LOGBOOK_TO_USERS_NAME, LOGBOOK_TO_USERS_FIELDS, LOGBOOK_TO_USERS_FIELDS_GS);
+    public static final Table LOGBOOK_TO_WATER_INTAKES_TABLE = new Table(LOGBOOK_TO_WATER_INTAKES_NAME, LOGBOOK_TO_WATER_INTAKES_FIELDS, LOGBOOK_TO_WATER_INTAKES_FIELDS_GS);
+    public static final Table LOGBOOK_TO_WATER_INTAKES_TYPE_TABLE = new Table(LOGBOOK_TO_WATER_INTAKES_TYPE_NAME, LOGBOOK_TO_WATER_INTAKES_TYPE_FIELDS, LOGBOOK_TO_WATER_INTAKES_TYPE_FIELDS_GS);
+    public static final Table PRO_CHANGE_OWNER_TABLE = new Table(PRO_CHANGE_OWNER_NAME, PRO_CHANGE_OWNER_FIELDS, PRO_CHANGE_OWNER_FIELDS_GS);
+    public static final Table PRO_PROCESS_TABLE = new Table(PRO_PROCESS_NAME, PRO_PROCESS_FIELDS, PRO_PROCESS_FIELDS_GS);
+    public static final Table PYM_OTHER_PAYMENTS_TABLE = new Table(PYM_OTHER_PAYMENTS_NAME, PYM_OTHER_PAYMENTS_FIELDS, PYM_OTHER_PAYMENTS_FIELDS_GS);
+    public static final Table PYM_OTHER_PAYMENTS_TYPE_TABLE = new Table(PYM_OTHER_PAYMENTS_TYPE_NAME, PYM_OTHER_PAYMENTS_TYPE_FIELDS, PYM_OTHER_PAYMENTS_TYPE_FIELDS_GS);
+    public static final Table PYM_PROCEDURE_PAYMENTS_TABLE = new Table(PYM_PROCEDURE_PAYMENTS_NAME, PYM_PROCEDURE_PAYMENTS_FIELDS, PYM_PROCEDURE_PAYMENTS_FIELDS_GS);
+    public static final Table PYM_SERVICE_PAYMENTS_TABLE = new Table(PYM_SERVICE_PAYMENTS_NAME, PYM_SERVICE_PAYMENTS_FIELDS, PYM_SERVICE_PAYMENTS_FIELDS_GS);
+    public static final Table PYM_SURCHARGE_PAYMENTS_TABLE = new Table(PYM_SURCHARGE_PAYMENTS_NAME, PYM_SURCHARGE_PAYMENTS_FIELDS, PYM_SURCHARGE_PAYMENTS_FIELDS_GS);
+    public static final Table USR_USER_TYPE_TABLE = new Table(USR_USER_TYPE_NAME, USR_USER_TYPE_FIELDS, USR_USER_TYPE_FIELDS_GS);
+    public static final Table USR_USERS_TABLE = new Table(USR_USERS_NAME, USR_USERS_FIELDS, USR_USERS_FIELDS_GS);
+    public static final Table USR_USERS_CONSUMERS_TABLE = new Table(USR_USERS_CONSUMERS_NAME, USR_USERS_CONSUMERS_FIELDS, USR_USERS_CONSUMERS_FIELDS_GS);
+    public static final Table WKI_WATER_INTAKE_TYPE_TABLE = new Table(WKI_WATER_INTAKE_TYPE_NAME, WKI_WATER_INTAKE_TYPE_FIELDS, WKI_WATER_INTAKE_TYPE_FIELDS_GS);
+    public static final Table WKI_WATER_INTAKES_TABLE = new Table(WKI_WATER_INTAKES_NAME, WKI_WATER_INTAKES_FIELDS, WKI_WATER_INTAKES_FIELDS_GS);
+}

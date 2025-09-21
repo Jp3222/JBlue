@@ -17,7 +17,6 @@
 package com.jblue.views.framework;
 
 import com.jblue.controllers.compc.TableController;
-import javax.swing.ImageIcon;
 
 /**
  *

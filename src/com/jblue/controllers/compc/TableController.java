@@ -108,7 +108,7 @@ public class TableController<T extends Objects & ForeingKeyObject & StatusObject
             return;
         }
         for (T i : data) {
-            model.addRow(i.getInfo());
+            model.addRow(i.getData());
         }
     }
 

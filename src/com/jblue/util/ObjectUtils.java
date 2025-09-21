@@ -64,7 +64,7 @@ public class ObjectUtils {
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(ObjectUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
-        clone.setInfo(info);
+        clone.setData(info);
         return (T) clone;
     }
 

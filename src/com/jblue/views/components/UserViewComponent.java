@@ -724,7 +724,7 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
     private <T extends Objects> void load(JTableModel model, MemoListCache<T> cache) {
         List<T> select = cache.getConnection().select("*", "user = %s".formatted(usuario.getId()));
         for (T i : select) {
-            model.addRow(i.getInfo());
+            model.addRow(i.getData());
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

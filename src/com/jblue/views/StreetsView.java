@@ -22,6 +22,7 @@ import com.jblue.model.factories.TableModelFactory;
 import com.jblue.model.dtos.OStreet;
 import com.jblue.model.dtos.Objects;
 import com.jblue.util.Filters;
+import com.jblue.util.Formats;
 import com.jblue.views.framework.DBView;
 import com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
@@ -325,7 +326,7 @@ public final class StreetsView extends DBView implements DBValuesModel {
 
         objects_table.setAutoCreateRowSorter(true);
         objects_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Objects [][] {
+            new Object [][] {
 
             },
             new String [] {
@@ -461,9 +462,7 @@ public final class StreetsView extends DBView implements DBValuesModel {
     @Override
     public String[] getDbValues(boolean update) {
         String _name = streed_name_field.getText();
-        return new String[]{
-            _name
-        };
+        return Formats.getDBFormatInputArray(_name);
     }
 
     @Override

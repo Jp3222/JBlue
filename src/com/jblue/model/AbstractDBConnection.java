@@ -17,7 +17,6 @@
 package com.jblue.model;
 
 import com.jblue.model.dtos.Objects;
-import com.jblue.sys.SystemLogs;
 import com.jblue.util.ObjectUtils;
 import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.jexception.JExcp;

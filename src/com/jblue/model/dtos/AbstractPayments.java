@@ -79,15 +79,15 @@ public class AbstractPayments extends Objects implements ForeingKeyObject, Statu
     }
 
     @Override
-    public void setInfo(String[] info) {
-        super.setInfo(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    public void setData(String[] info) {
+        super.setData(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         info_fk = info.clone();
 
     }
 
     @Override
-    public String[] getInfo() {
-        return super.getInfo(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    public String[] getData() {
+        return super.getData(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
     @Override

@@ -50,7 +50,7 @@ public class SurchargePaymentsLogic extends AbsctractPayment {
         if (!gameRulers()) {
             return false;
         }
-        System.out.println(Arrays.toString(personal.getInfo()));
+        System.out.println(Arrays.toString(personal.getData()));
         StringBuilder values = new StringBuilder();
         int i = 0;
         String col;

@@ -50,8 +50,8 @@ public class OHistory extends Objects implements ForeingKeyObject {
     }
 
     @Override
-    public void setInfo(String[] info) {
-        super.setInfo(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    public void setData(String[] info) {
+        super.setData(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         fk_info = info.clone();
     
     }

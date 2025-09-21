@@ -31,6 +31,7 @@ import com.jblue.model.DBConnection;
 import java.util.ArrayList;
 import com.jblue.controllers.DBControllerModel;
 import com.jblue.controllers.AbstractDBViewController;
+import com.jutil.jexception.JExcp;
 
 /**
  *
@@ -81,8 +82,16 @@ public class StreetsController extends AbstractDBViewController<OStreet> impleme
             return;
         }
         String field = "name";
-        boolean insert = connection.insert(field, view.getDbValues(false));
-        returnMessage(view, insert);
+        try {
+            connection.setAutoCommit(false);
+            boolean insert = connection.insert(field, view.getDbValues(false));
+            returnMessage(view, insert);
+        } catch (Exception e) {
+            connection.rollBack();
+            JExcp.getInstance(false, true).print(e, getClass(), SAVE_COMMAND);
+        } finally {
+            connection.setAutoCommit(true);
+        }
     }
 
     @Override
@@ -90,9 +99,14 @@ public class StreetsController extends AbstractDBViewController<OStreet> impleme
         if (view.isValuesOk()) {
             return;
         }
-        //boolean delete = connection.delete("id = %s".formatted(view.getObjectSearch().getId()));
-        boolean delete = connection.update("status", "3", "id = %s".formatted(view.getObjectSearch().getId()));
-        returnMessage(view, delete);
+        try {
+            boolean delete = connection.update("status", "3", "id = %s".formatted(view.getObjectSearch().getId()));
+            returnMessage(view, delete);
+        } catch (Exception e) {
+            connection.rollBack();
+            JExcp.getInstance(false, true).print(e, getClass(), SAVE_COMMAND);
+        } finally {
+        }
     }
 
     @Override

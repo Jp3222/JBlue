@@ -187,8 +187,8 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
      * <br> 9 date_register
      */
     @Override
-    public void setInfo(String[] info) {
-        super.setInfo(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    public void setData(String[] info) {
+        super.setData(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         infoFK = info.clone();
     }
 
@@ -207,8 +207,8 @@ public class OUser extends Objects implements ForeingKeyObject, StatusObject {
      * @return un arreglo con la informacion en el orden mostrado
      */
     @Override
-    public String[] getInfo() {
-        return super.getInfo(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    public String[] getData() {
+        return super.getData(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
     @Override

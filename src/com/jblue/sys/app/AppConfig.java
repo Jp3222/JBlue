@@ -210,7 +210,7 @@ public final class AppConfig {
         try {
             JDBConnection connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
             String query = "SELECT value,data_type FROM %s WHERE parameter = '%s' AND status = 1"
-                    .formatted(_Const.DEV_PARAMETERS_NAME, name);
+                    .formatted(_Const.DEV_PARAMETERS_TABLE.getTableName(), name);
             ResultSet rs = connection.query(query);
             if (rs.next()) {
                 return rs.getObject(1);

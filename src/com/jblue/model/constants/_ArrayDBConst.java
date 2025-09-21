@@ -20,9 +20,9 @@ package com.jblue.model.constants;
  *
  * @author juanp
  */
-public interface _ArrayDBConst {
+class _ArrayDBConst {
 
-    public static String[] CAT_GROUP_PREFIX_FIELDS = {
+    static final String[] CAT_GROUP_PREFIX_FIELDS = {
         "id",
         "prefix_type",
         "description",
@@ -30,13 +30,13 @@ public interface _ArrayDBConst {
         "date_register",
         "date_end"
     };
-    public static String[] CAT_HISTORY_TYPE_MOV_FIELDS = {
+    static final String[] CAT_HISTORY_TYPE_MOV_FIELDS = {
         "id",
         "description",
         "status",
         "date_register"
     };
-    public static String[] CAT_PROCESS_TYPE_FIELDS = {
+    static final String[] CAT_PROCESS_TYPE_FIELDS = {
         "id",
         "type_name",
         "affected_table_id",
@@ -45,7 +45,7 @@ public interface _ArrayDBConst {
         "status",
         "date_register"
     };
-    public static String[] CAT_STATUS_FIELDS = {
+    static final String[] CAT_STATUS_FIELDS = {
         "id",
         "description",
         "affected_table",
@@ -53,14 +53,14 @@ public interface _ArrayDBConst {
         "date_register",
         "date_finalize"
     };
-    public static String[] CAT_STREET_FIELDS = {
+    static final String[] CAT_STREET_FIELDS = {
         "id",
         "street_name",
         "status",
         "date_update",
         "date_register"
     };
-    public static String[] CAT_TABLES_DB_FIELDS = {
+    static final String[] CAT_TABLES_DB_FIELDS = {
         "id",
         "group_prefix",
         "table_name",
@@ -72,7 +72,7 @@ public interface _ArrayDBConst {
         "date_register",
         "date_end"
     };
-    public static String[] CAT_USER_MOVEMENTS_FIELDS = {
+    static final String[] CAT_USER_MOVEMENTS_FIELDS = {
         "id",
         "type_mov",
         "group",
@@ -80,7 +80,7 @@ public interface _ArrayDBConst {
         "date_update",
         "date_register"
     };
-    public static String[] DEV_PARAMETERS_FIELDS = {
+    static final String[] DEV_PARAMETERS_FIELDS = {
         "id",
         "parameter",
         "description",
@@ -93,13 +93,13 @@ public interface _ArrayDBConst {
         "date_update",
         "date_register"
     };
-    public static String[] EMP_EMPLOYEE_TYPES_FIELDS = {
+    static final String[] EMP_EMPLOYEE_TYPES_FIELDS = {
         "id",
         "employee_type",
         "status",
         "date_register"
     };
-    public static String[] EMP_EMPLOYEES_FIELDS = {
+    static final String[] EMP_EMPLOYEES_FIELDS = {
         "id",
         "curp",
         "first_name",
@@ -118,7 +118,7 @@ public interface _ArrayDBConst {
         "date_register",
         "date_end"
     };
-    public static String[] HYS_HISTORY_FIELDS = {
+    static final String[] HYS_HISTORY_FIELDS = {
         "id",
         "affected_environment_id",
         "affected_environment_desc",
@@ -127,7 +127,7 @@ public interface _ArrayDBConst {
         "id_mov",
         "date_register"
     };
-    public static String[] HYS_PROGRAM_HISTORY_FIELDS = {
+    static final String[] HYS_PROGRAM_HISTORY_FIELDS = {
         "id",
         "employee",
         "db_user",
@@ -136,7 +136,7 @@ public interface _ArrayDBConst {
         "description",
         "date_register"
     };
-    public static String[] LOGBOOK_TO_PAYMENTS_FIELDS = {
+    static final String[] LOGBOOK_TO_PAYMENTS_FIELDS = {
         "id",
         "payment_id",
         "payment_type",
@@ -147,7 +147,7 @@ public interface _ArrayDBConst {
         "db_user",
         "date_register"
     };
-    public static String[] LOGBOOK_TO_USERS_FIELDS = {
+    static final String[] LOGBOOK_TO_USERS_FIELDS = {
         "id",
         "user_id",
         "type_mov",
@@ -157,7 +157,7 @@ public interface _ArrayDBConst {
         "db_user",
         "date_register"
     };
-    public static String[] LOGBOOK_TO_WATER_INTAKES_FIELDS = {
+    static final String[] LOGBOOK_TO_WATER_INTAKES_FIELDS = {
         "id",
         "water_intake_id",
         "user_id",
@@ -168,7 +168,7 @@ public interface _ArrayDBConst {
         "db_user",
         "date_register"
     };
-    public static String[] LOGBOOK_TO_WATER_INTAKES_TYPE_FIELDS = {
+    static final String[] LOGBOOK_TO_WATER_INTAKES_TYPE_FIELDS = {
         "id",
         "water_intake_type_id",
         "type_mov",
@@ -178,7 +178,7 @@ public interface _ArrayDBConst {
         "db_user",
         "date_register"
     };
-    public static String[] PRO_CHANGE_OWNER_FIELDS = {
+    static final String[] PRO_CHANGE_OWNER_FIELDS = {
         "id",
         "price",
         "water_intake",
@@ -190,7 +190,7 @@ public interface _ArrayDBConst {
         "status",
         "date_register"
     };
-    public static String[] PRO_PROCESS_FIELDS = {
+    static final String[] PRO_PROCESS_FIELDS = {
         "id",
         "process_type",
         "employee_start",
@@ -206,7 +206,7 @@ public interface _ArrayDBConst {
         "status",
         "date_register"
     };
-    public static String[] PYM_OTHER_PAYMENTS_FIELDS = {
+    static final String[] PYM_OTHER_PAYMENTS_FIELDS = {
         "id",
         "employee",
         "user",
@@ -216,7 +216,7 @@ public interface _ArrayDBConst {
         "date_register",
         "date_payment"
     };
-    public static String[] PYM_OTHER_PAYMENTS_TYPE_FIELDS = {
+    static final String[] PYM_OTHER_PAYMENTS_TYPE_FIELDS = {
         "id",
         "type_payment",
         "description",
@@ -225,7 +225,7 @@ public interface _ArrayDBConst {
         "date_register",
         "date_end"
     };
-    public static String[] PYM_PROCEDURE_PAYMENTS_FIELDS = {
+    static final String[] PYM_PROCEDURE_PAYMENTS_FIELDS = {
         "id",
         "water_intake",
         "cost_total",
@@ -235,7 +235,7 @@ public interface _ArrayDBConst {
         "cost_clamp",
         "cost_stopcock"
     };
-    public static String[] PYM_SERVICE_PAYMENTS_FIELDS = {
+    static final String[] PYM_SERVICE_PAYMENTS_FIELDS = {
         "id",
         "employee",
         "user",
@@ -246,7 +246,7 @@ public interface _ArrayDBConst {
         "date_update",
         "date_register"
     };
-    public static String[] PYM_SURCHARGE_PAYMENTS_FIELDS = {
+    static final String[] PYM_SURCHARGE_PAYMENTS_FIELDS = {
         "id",
         "employee",
         "user",
@@ -257,14 +257,14 @@ public interface _ArrayDBConst {
         "date_update",
         "date_register"
     };
-    public static String[] USR_USER_TYPE_FIELDS = {
+    static final String[] USR_USER_TYPE_FIELDS = {
         "id",
         "user_type",
         "status",
         "date_register",
         "date_finalize"
     };
-    public static String[] USR_USERS_FIELDS = {
+    static final String[] USR_USERS_FIELDS = {
         "id",
         "curp",
         "first_name",
@@ -284,7 +284,7 @@ public interface _ArrayDBConst {
         "date_last_update",
         "date_register"
     };
-    public static String[] USR_USERS_CONSUMERS_FIELDS = {
+    static final String[] USR_USERS_CONSUMERS_FIELDS = {
         "id",
         "water_intake",
         "holder",
@@ -294,7 +294,7 @@ public interface _ArrayDBConst {
         "date_register",
         "date_end"
     };
-    public static String[] WKI_WATER_INTAKE_TYPE_FIELDS = {
+    static final String[] WKI_WATER_INTAKE_TYPE_FIELDS = {
         "id",
         "type_name",
         "current_price",
@@ -305,7 +305,7 @@ public interface _ArrayDBConst {
         "date_register",
         "date_end"
     };
-    public static String[] WKI_WATER_INTAKES_FIELDS = {
+    static final String[] WKI_WATER_INTAKES_FIELDS = {
         "id",
         "cost_procedure",
         "water_intake_type",

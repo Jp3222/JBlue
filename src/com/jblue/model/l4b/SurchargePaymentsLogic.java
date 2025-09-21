@@ -45,7 +45,7 @@ public class SurchargePaymentsLogic extends AbsctractPayment {
 
     @Override
     public boolean execPayment() {
-        deuda = meses_pagados.size() * toma.getCurrentPrice();
+        deuda = meses_pagados.size() * water_intake_type.getCurrentPrice();
 
         if (!gameRulers()) {
             return false;
@@ -58,7 +58,7 @@ public class SurchargePaymentsLogic extends AbsctractPayment {
             col = "('" + personal.getId()
                     + "','"
                     + usuario.getId() + "','"
-                    + toma.getCurrentPrice() + "','"
+                    + water_intake_type.getCurrentPrice() + "','"
                     + meses_pagados.get(i) + "')";
             i++;
             values.append(col).append(",");
@@ -66,7 +66,7 @@ public class SurchargePaymentsLogic extends AbsctractPayment {
         col = "('" + personal.getId()
                 + "','"
                 + usuario.getId() + "','"
-                + toma.getCurrentPrice() + "','"
+                + water_intake_type.getCurrentPrice() + "','"
                 + meses_pagados.get(i) + "')";
         i++;
         values.append(col);
@@ -112,7 +112,7 @@ public class SurchargePaymentsLogic extends AbsctractPayment {
             col = "('" + personal.getId()
                     + "','"
                     + usuario.getId() + "','"
-                    + toma.getCurrentPrice() + "','"
+                    + water_intake_type.getCurrentPrice() + "','"
                     + meses_pagados.get(i)
                     + PaymentModel.STATUS_NOT_PAY + "')";
             i++;
@@ -121,7 +121,7 @@ public class SurchargePaymentsLogic extends AbsctractPayment {
         col = "('" + personal.getId()
                 + "','"
                 + usuario.getId() + "','"
-                + toma.getCurrentPrice() + "','"
+                + water_intake_type.getCurrentPrice() + "','"
                 + meses_pagados.get(i) + "')";
         i++;
         values.append(col);

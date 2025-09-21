@@ -85,7 +85,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
             return;
         }
         String[] insertFormats = Formats.getInsertFormats(values);
-        String query = JDBConnection.INSERT_VAL.formatted(_Const.USR_USERS_NAME, insertFormats[0], insertFormats[1]);
+        String query = JDBConnection.INSERT_VAL.formatted(_Const.USR_USERS_TABLE.getTableName(), insertFormats[0], insertFormats[1]);
         Statement st;
         ResultSet rs;
         try {
@@ -95,7 +95,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
             rs = st.getGeneratedKeys();
             String user_key = rs.getString("id");
             if (insert && rs.next()) {
-                HysHistoryDAO.getINSTANCE().insertToUsers(
+                HysHistoryDAO.getINSTANCE().getHysUsersMovs().insertToUsers(
                         DESCRIPTION_FORMAT.formatted(
                                 "INSERTO",
                                 user_key,
@@ -116,7 +116,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
                         SystemSession.getInstancia().getPresidente().getId(),
                         user_key
                 );
-                query = JDBConnection.INSERT_VAL.formatted(_Const.PRO_PROCESS_NAME, fields, v2);
+                query = JDBConnection.INSERT_VAL.formatted(_Const.PRO_PROCESS_TABLE.getTableName(), fields, v2);
                 boolean vs = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
                 //registerHistory(_Const.CONTRACT_PROCEDURE_INSERT, DESCRIPTION_FORMAT);
             }
@@ -186,7 +186,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
             String update_format = Formats.getUpdateFormats(values);
             System.out.println(update_format);
 
-            String query = JDBConnection.UPDATE_COL.formatted(_Const.USR_USERS_NAME,
+            String query = JDBConnection.UPDATE_COL.formatted(_Const.USR_USERS_TABLE.getTableName(),
                     update_format,
                     "id = %s".formatted(view.getObjectSearch().getId())
             );

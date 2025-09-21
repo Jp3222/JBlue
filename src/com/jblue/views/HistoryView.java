@@ -203,7 +203,7 @@ public class HistoryView extends DataBaseAccessView {
     protected void dataLoad() {
         try {
             String query = """
-                        SELECT CONCAT(em.first_name, '_',em.last_names), name_mov, his.description, his.date_register FROM jblue_test.history his
+                        SELECT CONCAT(em.first_name, '_',em.last_names), name_mov, his.description, his.date_register FROM hys_program_history his
                         INNER JOIN jblue_test.history_type_mov ty ON ty.id = his.type
                         INNER JOIN jblue_test.employees em ON em.id = his.employee;
                         """;

@@ -17,13 +17,11 @@
 package com.jblue.controllers.compc;
 
 import com.jblue.controllers.AbstractComponentController;
-import com.jblue.model.dtos.OUser;
 import com.jblue.model.dtos.Objects;
 import com.jblue.util.Filters;
 import com.jblue.util.cache.MemoListCache;
 import com.jblue.model.dtos.ForeingKeyObject;
 import com.jblue.model.dtos.StatusObject;
-import com.jblue.sys.DevFlags;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -87,6 +85,7 @@ public final class ListController<T extends Objects & StatusObject & ForeingKeyO
     public void keyReleased(KeyEvent e) {
         search_text = view.getTextSearchList();
         dumpData();
+        
         if (Filters.isNullOrBlank(search_text)) {
             view.setCountElements(0);
             return;
@@ -95,12 +94,15 @@ public final class ListController<T extends Objects & StatusObject & ForeingKeyO
         List<T> list = memo_cache.getList(o -> {
             return isThis(o, search_text, false);
         });
+
         if (list.isEmpty()) {
             dumpData();
             view.setCountElements(0);
             return;
         }
+
         view.setCountElements(list.size());
+
         list.forEach((i) -> {
             model.addElement(i);
         });
@@ -123,6 +125,7 @@ public final class ListController<T extends Objects & StatusObject & ForeingKeyO
         if (index < 0 || index >= view.getList().getModel().getSize()) {
             return;
         }
+        view.setObjectSearch(model.get(index));
         view.setScreenListInfo();
         view.getListModel().removeAllElements();
         view.getTextComponentList().setText(null);

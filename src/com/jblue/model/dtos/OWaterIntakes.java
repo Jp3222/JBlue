@@ -17,6 +17,7 @@
 package com.jblue.model.dtos;
 
 import com.jblue.model.factories.CacheFactory;
+import com.jblue.util.ObjectUtils;
 
 /**
  *
@@ -44,11 +45,19 @@ public class OWaterIntakes extends Objects implements ForeingKeyObject, StatusOb
         return info[2];
     }
 
-    public String getProcedurePayemnts() {
-        return info[3];
+    public OWaterIntakeTypes getWaterIntakeTypeObject() {
+        return ObjectUtils.getWaterIntakeTypeObject(getWaterIntakeType());
     }
 
     public String getUser() {
+        return info[3];
+    }
+
+    public OUser getUserObject() {
+        return ObjectUtils.getUser(getUser());
+    }
+
+    public String getUserName() {
         return info[4];
     }
 
@@ -83,11 +92,6 @@ public class OWaterIntakes extends Objects implements ForeingKeyObject, StatusOb
         return getStatus() == 1;
     }
 
-    @Override
-    public String[] getInfoSinFK() {
-        return infoFk;
-    }
-
     public String getDateUpdate() {
         return info[10];
     }
@@ -99,4 +103,15 @@ public class OWaterIntakes extends Objects implements ForeingKeyObject, StatusOb
     public String getDateEnd() {
         return info[12];
     }
+
+    @Override
+    public String[] getInfoSinFK() {
+        return infoFk;
+    }
+
+    @Override
+    public String toString() {
+        return getUserName();
+    }
+
 }

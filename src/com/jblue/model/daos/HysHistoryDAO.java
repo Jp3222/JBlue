@@ -17,6 +17,7 @@
 package com.jblue.model.daos;
 
 import com.jblue.model.constants._Const;
+import com.jblue.model.dtos.OEmployee;
 import com.jblue.sys.SystemSession;
 import com.jutil.dbcon.connection.JDBConnection;
 import java.sql.PreparedStatement;
@@ -36,57 +37,44 @@ public class HysHistoryDAO {
     }
 
     private final JDBConnection connection;
-    private final String query = "INSERT INTO hys_program_history(employee, db_user, affected_table, type_mov, description) VALUES(?,?,?,?,?)";
+    private final String query;
+    //
+    private final HysEmployeeMovs INSTANCE2;
+    private final HysUsersMovs INSTANCE3;
 
     public HysHistoryDAO() {
+        this.INSTANCE3 = new HysUsersMovs();
+        this.INSTANCE2 = new HysEmployeeMovs();
+        this.query = "INSERT INTO hys_program_history(employee, db_user, affected_table, type_mov, description) VALUES(?,?,?,?,?)";
         connection = JDBConnection.getInstance();
     }
 
-    public boolean insertToUsers(String description) {
-        return insert(_Const.INDEX_USR_USERS, description);
-    }
-
-    public boolean updateToUsers(String description) {
-        return insert(_Const.INDEX_USR_USERS, description);
-    }
-
-    public boolean deleteToUsers(String description) {
-        return insert(_Const.INDEX_USR_USERS, description);
-    }
-
-    public boolean insert(int affected_table, String description) {
+    public boolean insert(int affected_table, String description) throws SQLException {
         return save(affected_table, _Const.INDEX_INSERT, description);
     }
 
-    public boolean update(int affected_table, String description) {
+    public boolean update(int affected_table, String description) throws SQLException {
         return save(affected_table, _Const.INDEX_UPDATE, description);
     }
 
-    public boolean delete(int affected_table, String description) {
+    public boolean delete(int affected_table, String description) throws SQLException {
         return save(affected_table, _Const.INDEX_LOGIC_DELETE, description);
     }
 
-    public boolean save(int affected_table, int type_mov, String description) {
+    public boolean save(int affected_table, int type_mov, String description) throws SQLException {
+        OEmployee employee = SystemSession.getInstancia().getUsuario();
+        return save(employee, affected_table, type_mov, description);
+    }
+
+    protected boolean save(OEmployee employee, int affected_table, int type_mov, String description) throws SQLException {
         boolean rt = false;
-        try {
-            connection.getConnection().setAutoCommit(false);
-            try (PreparedStatement ps = connection.getConnection().prepareStatement(query)) {
-                ps.setString(1, SystemSession.getInstancia().getUsuario().getId());
-                ps.setString(2, currentUser());
-                ps.setInt(3, affected_table);
-                ps.setInt(4, type_mov);
-                ps.setString(5, description);
-                rt = ps.executeUpdate() > 0;
-                connection.getConnection().commit();
-                connection.getConnection().setAutoCommit(true);
-            }
-        } catch (SQLException ex) {
-            try {
-                connection.getConnection().rollback();
-            } catch (SQLException ex1) {
-                System.getLogger(HysHistoryDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex1);
-            }
-            System.getLogger(HysHistoryDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        try (PreparedStatement ps = connection.getConnection().prepareStatement(query)) {
+            ps.setString(1, employee.getId());
+            ps.setString(2, currentUser());
+            ps.setInt(3, affected_table);
+            ps.setInt(4, type_mov);
+            ps.setString(5, description);
+            rt = ps.executeUpdate() > 0;
         }
         return rt;
     }
@@ -95,11 +83,60 @@ public class HysHistoryDAO {
         String q = "SELECT CURRENT_USER";
         String curus = null;
         try (ResultSet rs = connection.query(q);) {
-            curus = rs.getString(1);
+            if (rs.next()) {
+                curus = rs.getString(1);
+            }
         } catch (SQLException ex) {
             System.getLogger(HysHistoryDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return curus;
     }
 
+    public HysEmployeeMovs getHysEmployeeMovs() {
+        return INSTANCE2;
+    }
+
+    public HysUsersMovs getHysUsersMovs() {
+        return INSTANCE3;
+    }
+
+    public class HysEmployeeMovs {
+
+        public boolean insertToEmployee(String description) throws SQLException {
+            return insert(_Const.INDEX_EMP_EMPLOYEES, description);
+        }
+
+        public boolean updateToEmployee(String description) throws SQLException {
+            return insert(_Const.INDEX_EMP_EMPLOYEES, description);
+        }
+
+        public boolean deleteToEmployee(String description) throws SQLException {
+            return insert(_Const.INDEX_EMP_EMPLOYEES, description);
+        }
+
+        public boolean saveLogin(OEmployee employee, String description) throws SQLException {
+            return save(employee, _Const.INDEX_HYS_PROGRAM_HISTORY, _Const.INDEX_LOGIN, description);
+        }
+
+        public boolean saveLogOut(OEmployee employee, String description) throws SQLException {
+            return save(employee, _Const.INDEX_HYS_PROGRAM_HISTORY, _Const.INDEX_LOGOUT, description);
+        }
+
+    }
+
+    public class HysUsersMovs {
+
+        public boolean insertToUsers(String description) throws SQLException {
+            return insert(_Const.INDEX_USR_USERS, description);
+        }
+
+        public boolean updateToUsers(String description) throws SQLException {
+            return insert(_Const.INDEX_USR_USERS, description);
+        }
+
+        public boolean deleteToUsers(String description) throws SQLException {
+            return insert(_Const.INDEX_USR_USERS, description);
+        }
+
+    }
 }

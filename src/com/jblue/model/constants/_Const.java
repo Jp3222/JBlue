@@ -24,7 +24,7 @@ import java.time.format.DateTimeFormatter;
  *
  * @author juanp
  */
-public interface _Const extends _ConstTables {
+public class _Const extends _ConstTables {
 
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_FORMAT = "yyyy-MM-dd";

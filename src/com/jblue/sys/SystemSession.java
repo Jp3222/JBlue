@@ -5,6 +5,7 @@
 package com.jblue.sys;
 
 import com.jblue.model.constants._Const;
+import com.jblue.model.daos.HysHistoryDAO;
 import com.jblue.model.dtos.OEmployee;
 import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
@@ -68,11 +69,19 @@ public class SystemSession implements LocalSession<OEmployee> {
 
     @Override
     public void setUser(OEmployee user) {
-        String id = user == null ? personal.getId() : user.getId();
-        String description = user == null ? "FIN DE SESION" : "INICIO DE SESIÓN";
-        int type = user == null ? _Const.INDEX_LOGOUT : _Const.INDEX_LOGIN;
-        personal = user;
-        //register(id, type, description);
+        try {
+            String description = user == null ? "FIN DE SESION" : "INICIO DE SESIÓN";
+            if (user == null) {
+                HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogOut(personal, description);
+            } else {
+                HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogin(user, description);
+            }
+            personal = user;
+            System.out.println(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+        }
     }
 
     void register(String employee, int type, String description) {

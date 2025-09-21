@@ -73,7 +73,7 @@ public class OthersPaymentLogic extends AbsctractPayment {
 
     @Override
     public boolean execPayment() {
-        deuda = meses_pagados.size() * toma.getCurrentPrice();
+        deuda = meses_pagados.size() * water_intake_type.getCurrentPrice();
 
         if (!gameRulers()) {
             return false;
@@ -85,7 +85,7 @@ public class OthersPaymentLogic extends AbsctractPayment {
             col = "('" + personal.getId()
                     + "','"
                     + usuario.getId() + "','"
-                    + toma.getCurrentPrice() + "','"
+                    + water_intake_type.getCurrentPrice() + "','"
                     + meses_pagados.get(i) + "')";
             i++;
             values.append(col).append(",");
@@ -93,20 +93,20 @@ public class OthersPaymentLogic extends AbsctractPayment {
             mov_book.append(i).append(" - ")
                     .append(meses_pagados.get(i))
                     .append(" : ")
-                    .append(toma.getCurrentPrice())
+                    .append(water_intake_type.getCurrentPrice())
                     .append("\n");
         }
 
         col = "('" + personal.getId()
                 + "','"
                 + usuario.getId() + "','"
-                + toma.getCurrentPrice() + "','"
+                + water_intake_type.getCurrentPrice() + "','"
                 + meses_pagados.get(i) + "')";
 
         mov_book.append(i).append(" - ")
                 .append(meses_pagados.get(i))
                 .append(" : ")
-                .append(toma.getCurrentPrice())
+                .append(water_intake_type.getCurrentPrice())
                 .append("\n");
         i++;
         values.append(col);
@@ -126,4 +126,5 @@ public class OthersPaymentLogic extends AbsctractPayment {
     public boolean insertToDefault() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
 }

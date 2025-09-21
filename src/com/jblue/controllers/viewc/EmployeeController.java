@@ -24,6 +24,7 @@ import com.jblue.model.dtos.OEmployee;
 import com.jblue.util.Formats;
 import com.jblue.views.EmployeesView;
 import com.jutil.dbcon.connection.JDBConnection;
+import com.jutil.jexception.JExcp;
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -73,10 +74,11 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
         Map<String, String> values = view.getValues(false);
         String[] info = Formats.getInsertFormats(values);
         String query = JDBConnection.INSERT_VAL.formatted(
-                _Const.USR_USERS_NAME,// NOMBRE DE LA TABLA
+                _Const.EMP_EMPLOYEES_TABLE.getTableName(),// NOMBRE DE LA TABLA
                 info[0],// CAMPOS
                 info[1]// DATOS
         );
+        System.out.println(query);
         System.out.println("se armaron los valores");
         try (Statement st = connection.getConnection().createStatement();) {
             connection.setAutoCommit(false);
@@ -92,7 +94,7 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
                 if (employee_id != null) {
                     // Lógica para el historial
                 }
-                boolean hys = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_EMP_EMPLOYEES,
+                boolean hys = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().insertToEmployee(
                         "SE INSERTO AL EMPLEADO: %s - %s %s %s".formatted(
                                 employee_id,
                                 values.get("first_name"),
@@ -107,8 +109,8 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
             returnMessage(view, true);
         } catch (SQLException ex) {
             connection.rollBack();
+            JExcp.getInstance(false, true).print(ex, getClass(), "save");
             returnMessage(view, false);
-            ex.printStackTrace();
         } finally {
             connection.setAutoCommit(true);
         }
@@ -120,29 +122,32 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
         if (employee == null) {
             return;
         }
-        connection.setAutoCommit(false);
-        boolean update = connection.update("status", "3", "id = %s".formatted(employee.getId()));
-        if (!update) {
+        try {
+            connection.setAutoCommit(false);
+            boolean update = connection.update("status", "3", "id = %s".formatted(employee.getId()));
+            if (!update) {
+                returnMessage(view, false);
+                return;
+            }
+            boolean hys = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().deleteToEmployee(
+                    "SE OCULTO AL EMPLEADO: %s - %s %s %s".formatted(
+                            employee.getId(),
+                            employee.getFirstName(),
+                            employee.getLastName1(),
+                            employee.getLastName2()
+                    ));
+            if (!hys) {
+                returnMessage(view, false);
+                return;
+            }
+            connection.commit();
+        } catch (SQLException ex) {
             connection.rollBack();
-            connection.setAutoCommit(true);
+            JExcp.getInstance(false, true).print(ex, getClass(), "delete");
             returnMessage(view, false);
-            return;
-        }
-        boolean hys = HysHistoryDAO.getINSTANCE().deleteToUsers(
-                "SE OCULTO AL EMPLEADO: %s - %s %s %s".formatted(
-                        employee.getId(),
-                        employee.getFirstName(),
-                        employee.getLastName1(),
-                        employee.getLastName2()
-                )
-        );
-        if (!hys) {
-            connection.rollBack();
+        } finally {
             connection.setAutoCommit(true);
-            returnMessage(view, false);
-            return;
         }
-        connection.commit();
     }
 
     @Override
@@ -156,7 +161,7 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
             if (!update) {
                 throw new SQLException("UPDATE FALLIDO");
             }
-            boolean hys = HysHistoryDAO.getINSTANCE().updateToUsers(
+            boolean hys = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().updateToEmployee(
                     "SE ACTUALIZO EL USUARIO: %s - %s %s %s".formatted(
                             employee.getId(),
                             employee.getFirstName(),
@@ -168,8 +173,9 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
             }
             connection.commit();
             returnMessage(view, true);
-        } catch (SQLException e) {
+        } catch (SQLException ex) {
             connection.rollBack();
+            JExcp.getInstance(false, true).print(ex, getClass(), "update");
             returnMessage(view, false);
         } finally {
             connection.setAutoCommit(true);

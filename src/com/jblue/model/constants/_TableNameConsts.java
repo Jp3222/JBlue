@@ -20,34 +20,34 @@ package com.jblue.model.constants;
  *
  * @author juanp
  */
-public interface _TableNameConsts {
+class _TableNameConsts extends _ArrayGsConst {
 
-    public static final String CAT_GROUP_PREFIX_NAME = "cat_group_prefix";
-    public static final String CAT_HISTORY_TYPE_MOV_NAME = "cat_history_type_mov";
-    public static final String CAT_PROCESS_TYPE_NAME = "cat_process_type";
-    public static final String CAT_STATUS_NAME = "cat_status";
-    public static final String CAT_STREET_NAME = "cat_street";
-    public static final String CAT_TABLES_DB_NAME = "cat_tables_db";
-    public static final String CAT_USER_MOVEMENTS_NAME = "cat_user_movements";
-    public static final String DEV_PARAMETERS_NAME = "dev_parameters";
-    public static final String EMP_EMPLOYEE_TYPES_NAME = "emp_employee_types";
-    public static final String EMP_EMPLOYEES_NAME = "emp_employees";
-    public static final String HYS_HISTORY_NAME = "hys_history";
-    public static final String HYS_PROGRAM_HISTORY_NAME = "hys_program_history";
-    public static final String LOGBOOK_TO_PAYMENTS_NAME = "logbook_to_payments";
-    public static final String LOGBOOK_TO_USERS_NAME = "logbook_to_users";
-    public static final String LOGBOOK_TO_WATER_INTAKES_NAME = "logbook_to_water_intakes";
-    public static final String LOGBOOK_TO_WATER_INTAKES_TYPE_NAME = "logbook_to_water_intakes_type";
-    public static final String PRO_CHANGE_OWNER_NAME = "pro_change_owner";
-    public static final String PRO_PROCESS_NAME = "pro_process";
-    public static final String PYM_OTHER_PAYMENTS_NAME = "pym_other_payments";
-    public static final String PYM_OTHER_PAYMENTS_TYPE_NAME = "pym_other_payments_type";
-    public static final String PYM_PROCEDURE_PAYMENTS_NAME = "pym_procedure_payments";
-    public static final String PYM_SERVICE_PAYMENTS_NAME = "pym_service_payments";
-    public static final String PYM_SURCHARGE_PAYMENTS_NAME = "pym_surcharge_payments";
-    public static final String USR_USER_TYPE_NAME = "usr_user_type";
-    public static final String USR_USERS_NAME = "usr_users";
-    public static final String USR_USERS_CONSUMERS_NAME = "usr_users_consumers";
-    public static final String WKI_WATER_INTAKE_TYPE_NAME = "wki_water_intake_type";
-    public static final String WKI_WATER_INTAKES_NAME = "wki_water_intakes";
+    static final String CAT_GROUP_PREFIX_TABLE_NAME = "cat_group_prefix";
+    static final String CAT_HISTORY_TYPE_MOV_TABLE_NAME = "cat_history_type_mov";
+    static final String CAT_PROCESS_TYPE_TABLE_NAME = "cat_process_type";
+    static final String CAT_STATUS_TABLE_NAME = "cat_status";
+    static final String CAT_STREET_TABLE_NAME = "cat_street";
+    static final String CAT_TABLES_DB_TABLE_NAME = "cat_tables_db";
+    static final String CAT_USER_MOVEMENTS_TABLE_NAME = "cat_user_movements";
+    static final String DEV_PARAMETERS_TABLE_NAME = "dev_parameters";
+    static final String EMP_EMPLOYEE_TYPES_TABLE_NAME = "emp_employee_types";
+    static final String EMP_EMPLOYEES_TABLE_NAME = "emp_employees";
+    static final String HYS_HISTORY_TABLE_NAME = "hys_history";
+    static final String HYS_PROGRAM_HISTORY_TABLE_NAME = "hys_program_history";
+    static final String LOGBOOK_TO_PAYMENTS_TABLE_NAME = "logbook_to_payments";
+    static final String LOGBOOK_TO_USERS_TABLE_NAME = "logbook_to_users";
+    static final String LOGBOOK_TO_WATER_INTAKES_TABLE_NAME = "logbook_to_water_intakes";
+    static final String LOGBOOK_TO_WATER_INTAKES_TYPE_TABLE_NAME = "logbook_to_water_intakes_type";
+    static final String PRO_CHANGE_OWNER_TABLE_NAME = "pro_change_owner";
+    static final String PRO_PROCESS_TABLE_NAME = "pro_process";
+    static final String PYM_OTHER_PAYMENTS_TABLE_NAME = "pym_other_payments";
+    static final String PYM_OTHER_PAYMENTS_TYPE_TABLE_NAME = "pym_other_payments_type";
+    static final String PYM_PROCEDURE_PAYMENTS_TABLE_NAME = "pym_procedure_payments";
+    static final String PYM_SERVICE_PAYMENTS_TABLE_NAME = "pym_service_payments";
+    static final String PYM_SURCHARGE_PAYMENTS_TABLE_NAME = "pym_surcharge_payments";
+    static final String USR_USER_TYPE_TABLE_NAME = "usr_user_type";
+    static final String USR_USERS_TABLE_NAME = "usr_users";
+    static final String USR_USERS_CONSUMERS_TABLE_NAME = "usr_users_consumers";
+    static final String WKI_WATER_INTAKE_TYPE_TABLE_NAME = "wki_water_intake_type";
+    static final String WKI_WATER_INTAKES_TABLE_NAME = "wki_water_intakes";
 }

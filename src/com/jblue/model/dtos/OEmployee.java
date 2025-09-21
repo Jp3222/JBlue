@@ -6,7 +6,6 @@ package com.jblue.model.dtos;
 
 import com.jblue.model.constants._Const;
 import com.jblue.model.factories.CacheFactory;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -79,11 +78,8 @@ public class OEmployee extends Objects implements ForeingKeyObject, StatusObject
         return info[6];
     }
 
-    public LocalDate getDateBirday() {
-        if (info[7] == null || info[7].isEmpty()) {
-            return null;
-        }
-        return _Const.parseDate(info[7]);
+    public String getDateBirday() {
+        return info[7];
     }
 
     public String getPhoneNumber1() {
@@ -94,25 +90,12 @@ public class OEmployee extends Objects implements ForeingKeyObject, StatusObject
         return info[9];
     }
 
-    public String getType() {
-        return info[10];
+    public int getEmployeeType() {
+        return Integer.parseInt(info[10]);
     }
 
-    public String getEmployeeType() {
-        return switch (getType()) {
-            case "1":
-                yield "Pasante";
-            case "2":
-                yield "Secretario";
-            case "3":
-                yield "Tesorero";
-            case "4":
-                yield "Presidente";
-            case "5":
-                yield "Administrador";
-            default:
-                yield "none";
-        };
+    public String getStringEmployeeType() {
+        return CacheFactory.EMPLOYEE_TYPE_CAT[getEmployeeType()];
     }
 
     /**
@@ -175,14 +158,14 @@ public class OEmployee extends Objects implements ForeingKeyObject, StatusObject
     @Override
     public String[] getInfoSinFK() {
         info_fk[5] = CacheFactory.CAT_GENDER[getGender()];
-        info_fk[10] = getEmployeeType();
+        info_fk[10] = getStringEmployeeType();
         info_fk[11] = getStatusString();
         return info_fk;
     }
 
     @Override
     public String toString() {
-        return getFirstName().concat(" ").concat(getLastName1()).concat(" ").concat(getLastName2());
+        return getFirstName().concat(" ").concat(getLastName1()).concat(" ").concat(getLastName2() ==null ? "":getLastName2());
     }
 
 }

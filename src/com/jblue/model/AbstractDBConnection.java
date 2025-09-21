@@ -17,8 +17,10 @@
 package com.jblue.model;
 
 import com.jblue.model.dtos.Objects;
+import com.jblue.sys.SystemLogs;
 import com.jblue.util.ObjectUtils;
 import com.jutil.dbcon.connection.JDBConnection;
+import com.jutil.jexception.JExcp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -100,6 +102,8 @@ public abstract class AbstractDBConnection<T extends Objects> implements DBConne
     public List<T> select(String campos, String where) {
         ArrayList<T> list = new ArrayList(100);
         try {
+            System.out.println(campos);
+            System.out.println(where);
             if (campos.isBlank()) {
                 return list;
             }
@@ -111,15 +115,18 @@ public abstract class AbstractDBConnection<T extends Objects> implements DBConne
             }
 
             ResultSet select = connection.select(campos, table, where);
+            System.out.println(select);
             String[] a = new String[fields.length];
             while (select.next()) {
                 for (int i = 0; i < a.length; i++) {
                     a[i] = select.getString(i + 1);
+                    System.out.println(a[i]);
                 }
                 list.add((T) ObjectUtils.getObjeto(table, a.clone()));
             }
+            System.out.println(list.toString());
         } catch (SQLException ex) {
-
+            JExcp.getInstance(false, true).print(ex, getClass(), "select");
         }
         return list;
     }

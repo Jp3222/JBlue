@@ -4,7 +4,9 @@
  */
 package com.jblue.model.dtos;
 
+import com.jblue.model.constants._Const;
 import com.jblue.model.factories.CacheFactory;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -26,11 +28,11 @@ public class OWaterIntakeTypes extends Objects implements ForeingKeyObject, Stat
         return info[1];
     }
 
-    public double getPreviousPrice() {
+    public double getCurrentPrice() {
         return Double.parseDouble(info[2]);
     }
 
-    public double getCurrentPrice() {
+    public double getPreviousPrice() {
         return Double.parseDouble(info[3]);
     }
 
@@ -53,15 +55,27 @@ public class OWaterIntakeTypes extends Objects implements ForeingKeyObject, Stat
         return getStatus() != 3;
     }
 
+    public LocalDateTime getDateUpdate() {
+        return _Const.parseDateTime(info[6]);
+    }
+
+    public LocalDateTime getDateRegister() {
+        return _Const.parseDateTime(info[7]);
+    }
+
+    public LocalDateTime getDateEnd() {
+        return _Const.parseDateTime(info[8]);
+    }
+
     @Override
     public void setInfo(String[] info) {
         super.setInfo(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         this.infoFK = info.clone();
-        this.infoFK[5] = getStatusString();
     }
 
     @Override
     public String[] getInfoSinFK() {
+        this.infoFK[5] = getStatusString();
         return infoFK;
     }
 

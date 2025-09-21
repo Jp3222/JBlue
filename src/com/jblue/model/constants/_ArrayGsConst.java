@@ -20,9 +20,9 @@ package com.jblue.model.constants;
  *
  * @author juanp
  */
-public interface _ArrayGsConst {
+class _ArrayGsConst extends _ArrayDBConst{
 
-    public static String[] CAT_GROUP_PREFIX_FIELDS_GS = {
+    static final String[] CAT_GROUP_PREFIX_FIELDS_GS = {
         "ID",
         "TIPO_DE_PREFIJO",
         "DESCRIPCION",
@@ -30,13 +30,13 @@ public interface _ArrayGsConst {
         "FECHA_REGISTRO",
         "FECHA_FIN"
     };
-    public static String[] CAT_HISTORY_TYPE_MOV_FIELDS_GS = {
+    static final String[] CAT_HISTORY_TYPE_MOV_FIELDS_GS = {
         "ID",
         "DESCRIPCION",
         "ESTADO",
         "FECHA_REGISTRO"
     };
-    public static String[] CAT_PROCESS_TYPE_FIELDS_GS = {
+    static final String[] CAT_PROCESS_TYPE_FIELDS_GS = {
         "ID",
         "NOMBRE_TIPO",
         "ID_TABLA_AFECTADA",
@@ -45,7 +45,7 @@ public interface _ArrayGsConst {
         "ESTADO",
         "FECHA_REGISTRO"
     };
-    public static String[] CAT_STATUS_FIELDS_GS = {
+    static final String[] CAT_STATUS_FIELDS_GS = {
         "ID",
         "DESCRIPCION",
         "TABLA_AFECTADA",
@@ -53,14 +53,14 @@ public interface _ArrayGsConst {
         "FECHA_REGISTRO",
         "FECHA_FINALIZACION"
     };
-    public static String[] CAT_STREET_FIELDS_GS = {
+    static final String[] CAT_STREET_FIELDS_GS = {
         "ID",
         "NOMBRE_CALLE",
         "ESTADO",
         "FECHA_ACTUALIZACION",
         "FECHA_REGISTRO"
     };
-    public static String[] CAT_TABLES_DB_FIELDS_GS = {
+    static final String[] CAT_TABLES_DB_FIELDS_GS = {
         "ID",
         "PREFIJO_GRUPO",
         "NOMBRE_TABLA",
@@ -72,7 +72,7 @@ public interface _ArrayGsConst {
         "FECHA_REGISTRO",
         "FECHA_FIN"
     };
-    public static String[] CAT_USER_MOVEMENTS_FIELDS_GS = {
+    static final String[] CAT_USER_MOVEMENTS_FIELDS_GS = {
         "ID",
         "TIPO_MOVIMIENTO",
         "GRUPO",
@@ -80,7 +80,7 @@ public interface _ArrayGsConst {
         "FECHA_ACTUALIZACION",
         "FECHA_REGISTRO"
     };
-    public static String[] DEV_PARAMETERS_FIELDS_GS = {
+    static final String[] DEV_PARAMETERS_FIELDS_GS = {
         "ID",
         "PARAMETRO",
         "DESCRIPCION",
@@ -93,13 +93,13 @@ public interface _ArrayGsConst {
         "FECHA_ACTUALIZACION",
         "FECHA_REGISTRO"
     };
-    public static String[] EMP_EMPLOYEE_TYPES_FIELDS_GS = {
+    static final String[] EMP_EMPLOYEE_TYPES_FIELDS_GS = {
         "ID",
         "TIPO_EMPLEADO",
         "ESTADO",
         "FECHA_REGISTRO"
     };
-    public static String[] EMP_EMPLOYEES_FIELDS_GS = {
+    static final String[] EMP_EMPLOYEES_FIELDS_GS = {
         "ID",
         "CURP",
         "PRIMER_NOMBRE",
@@ -118,7 +118,7 @@ public interface _ArrayGsConst {
         "FECHA_REGISTRO",
         "FECHA_FIN"
     };
-    public static String[] HYS_HISTORY_FIELDS_GS = {
+    static final String[] HYS_HISTORY_FIELDS_GS = {
         "ID",
         "ID_AMBIENTE_AFECTADO",
         "DESCRIPCION_AMBIENTE_AFECTADO",
@@ -127,7 +127,7 @@ public interface _ArrayGsConst {
         "ID_MOVIMIENTO",
         "FECHA_REGISTRO"
     };
-    public static String[] HYS_PROGRAM_HISTORY_FIELDS_GS = {
+    static final String[] HYS_PROGRAM_HISTORY_FIELDS_GS = {
         "ID",
         "EMPLEADO",
         "USUARIO_BD",
@@ -136,7 +136,7 @@ public interface _ArrayGsConst {
         "DESCRIPCION",
         "FECHA_REGISTRO"
     };
-    public static String[] LOGBOOK_TO_PAYMENTS_FIELDS_GS = {
+    static final String[] LOGBOOK_TO_PAYMENTS_FIELDS_GS = {
         "ID",
         "ID_PAGO",
         "TIPO_PAGO",
@@ -147,7 +147,7 @@ public interface _ArrayGsConst {
         "USUARIO_BD",
         "FECHA_REGISTRO"
     };
-    public static String[] LOGBOOK_TO_USERS_FIELDS_GS = {
+    static final String[] LOGBOOK_TO_USERS_FIELDS_GS = {
         "ID",
         "ID_USUARIO",
         "TIPO_MOVIMIENTO",
@@ -157,7 +157,7 @@ public interface _ArrayGsConst {
         "USUARIO_BD",
         "FECHA_REGISTRO"
     };
-    public static String[] LOGBOOK_TO_WATER_INTAKES_FIELDS_GS = {
+    static final String[] LOGBOOK_TO_WATER_INTAKES_FIELDS_GS = {
         "ID",
         "ID_TOMA_DE_AGUA",
         "ID_USUARIO",
@@ -168,7 +168,7 @@ public interface _ArrayGsConst {
         "USUARIO_BD",
         "FECHA_REGISTRO"
     };
-    public static String[] LOGBOOK_TO_WATER_INTAKES_TYPE_FIELDS_GS = {
+    static final String[] LOGBOOK_TO_WATER_INTAKES_TYPE_FIELDS_GS = {
         "ID",
         "ID_TIPO_TOMA_DE_AGUA",
         "TIPO_MOVIMIENTO",
@@ -178,7 +178,7 @@ public interface _ArrayGsConst {
         "USUARIO_BD",
         "FECHA_REGISTRO"
     };
-    public static String[] PRO_CHANGE_OWNER_FIELDS_GS = {
+    static final String[] PRO_CHANGE_OWNER_FIELDS_GS = {
         "ID",
         "PRECIO",
         "TOMA_DE_AGUA",
@@ -190,7 +190,7 @@ public interface _ArrayGsConst {
         "ESTADO",
         "FECHA_REGISTRO"
     };
-    public static String[] PRO_PROCESS_FIELDS_GS = {
+    static final String[] PRO_PROCESS_FIELDS_GS = {
         "ID",
         "TIPO_PROCESO",
         "EMPLEADO_INICIO",
@@ -206,7 +206,7 @@ public interface _ArrayGsConst {
         "ESTADO",
         "FECHA_REGISTRO"
     };
-    public static String[] PYM_OTHER_PAYMENTS_FIELDS_GS = {
+    static final String[] PYM_OTHER_PAYMENTS_FIELDS_GS = {
         "ID",
         "EMPLEADO",
         "USUARIO",
@@ -216,7 +216,7 @@ public interface _ArrayGsConst {
         "FECHA_REGISTRO",
         "FECHA_PAGO"
     };
-    public static String[] PYM_OTHER_PAYMENTS_TYPE_FIELDS_GS = {
+    static final String[] PYM_OTHER_PAYMENTS_TYPE_FIELDS_GS = {
         "ID",
         "TIPO_PAGO",
         "DESCRIPCION",
@@ -225,7 +225,7 @@ public interface _ArrayGsConst {
         "FECHA_REGISTRO",
         "FECHA_FIN"
     };
-    public static String[] PYM_PROCEDURE_PAYMENTS_FIELDS_GS = {
+    static final String[] PYM_PROCEDURE_PAYMENTS_FIELDS_GS = {
         "ID",
         "TOMA_DE_AGUA",
         "COSTO_TOTAL",
@@ -235,7 +235,7 @@ public interface _ArrayGsConst {
         "COSTO_ABRAZADERA",
         "COSTO_LLAVE"
     };
-    public static String[] PYM_SERVICE_PAYMENTS_FIELDS_GS = {
+    static final String[] PYM_SERVICE_PAYMENTS_FIELDS_GS = {
         "ID",
         "EMPLEADO",
         "USUARIO",
@@ -246,7 +246,7 @@ public interface _ArrayGsConst {
         "FECHA_ACTUALIZACION",
         "FECHA_REGISTRO"
     };
-    public static String[] PYM_SURCHARGE_PAYMENTS_FIELDS_GS = {
+    static final String[] PYM_SURCHARGE_PAYMENTS_FIELDS_GS = {
         "ID",
         "EMPLEADO",
         "USUARIO",
@@ -257,14 +257,14 @@ public interface _ArrayGsConst {
         "FECHA_ACTUALIZACION",
         "FECHA_REGISTRO"
     };
-    public static String[] USR_USER_TYPE_FIELDS_GS = {
+    static final String[] USR_USER_TYPE_FIELDS_GS = {
         "ID",
         "TIPO_USUARIO",
         "ESTADO",
         "FECHA_REGISTRO",
         "FECHA_FINALIZACION"
     };
-    public static String[] USR_USERS_FIELDS_GS = {
+    static final String[] USR_USERS_FIELDS_GS = {
         "ID",
         "CURP",
         "PRIMER_NOMBRE",
@@ -284,7 +284,7 @@ public interface _ArrayGsConst {
         "FECHA_ULTIMA_ACTUALIZACION",
         "FECHA_REGISTRO"
     };
-    public static String[] USR_USERS_CONSUMERS_FIELDS_GS = {
+    static final String[] USR_USERS_CONSUMERS_FIELDS_GS = {
         "ID",
         "TOMA_DE_AGUA",
         "TITULAR",
@@ -294,7 +294,7 @@ public interface _ArrayGsConst {
         "FECHA_REGISTRO",
         "FECHA_FIN"
     };
-    public static String[] WKI_WATER_INTAKE_TYPE_FIELDS_GS = {
+    static final String[] WKI_WATER_INTAKE_TYPE_FIELDS_GS = {
         "ID",
         "NOMBRE_TIPO",
         "PRECIO_ACTUAL",
@@ -305,7 +305,7 @@ public interface _ArrayGsConst {
         "FECHA_REGISTRO",
         "FECHA_FIN"
     };
-    public static String[] WKI_WATER_INTAKES_FIELDS_GS = {
+    static final String[] WKI_WATER_INTAKES_FIELDS_GS = {
         "ID",
         "COSTO_PROCEDIMIENTO",
         "TIPO_TOMA_DE_AGUA",

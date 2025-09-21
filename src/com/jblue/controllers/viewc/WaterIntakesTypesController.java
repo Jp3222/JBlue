@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import com.jblue.controllers.DBControllerModel;
 import com.jblue.controllers.AbstractDBViewController;
 import com.jblue.model.constants._Const;
+import com.jblue.model.daos.HysHistoryDAO;
 import com.jblue.model.dtos.OUser;
 import com.jblue.util.Formats;
 import com.jutil.dbcon.connection.JDBConnection;
@@ -75,16 +76,21 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
         try (Statement st = connection.getConnection().createStatement();) {
             boolean res = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
             try (ResultSet rs = st.getGeneratedKeys()) {
-                if (!rs.next()) {
+                if (!res && !rs.next()) {
                     return;
                 }
-//                rmessage(view, res,
-//                        _Const.INSERT_TO_TYPE_WATER_INTAKES,
-//                        "SE CREO EL TIPO DE TOMA: %s - %s".formatted(rs.getString(0), values.get("type_name")));
+                HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_WKI_WATER_INTAKE_TYPE,
+                        "SE INSERTO LA TIPO DE TOMA: %s - %s".formatted(
+                                rs.getString("id"),
+                                values.get("type_name")
+                        )
+                );
             }
         } catch (SQLException ex) {
             connection.rollBack();
             System.getLogger(WaterIntakesTypesController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } finally {
+            connection.setAutoCommit(true);
         }
     }
 
@@ -120,7 +126,7 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
         connection.setAutoCommit(false);
         Map<String, String> values = view.getValues(false);
         String arr = Formats.getUpdateFormats(values);
-        String query = JDBConnection.UPDATE_COL.formatted(_Const.WKI_WATER_INTAKE_TYPE_NAME, arr,
+        String query = JDBConnection.UPDATE_COL.formatted(_Const.WKI_WATER_INTAKE_TYPE_TABLE.getTableName(), arr,
                 "id = %s".formatted(view.getObjectSearch().getId()));
         try (Statement st = connection.getConnection().createStatement();) {
             boolean res = st.executeUpdate(query) > 0;

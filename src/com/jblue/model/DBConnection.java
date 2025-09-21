@@ -16,9 +16,9 @@
  */
 package com.jblue.model;
 
-import com.jblue.model.constants.Table;
 import com.jblue.model.dtos.Objects;
 import com.jutil.dbcon.connection.JDBConnection;
+import com.jutil.dbcon.tb.JDBTable;
 import com.jutil.jexception.Excp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,14 +33,14 @@ import java.util.Map;
  */
 public class DBConnection<T extends Objects> extends AbstractDBConnection<T> {
 
-    private Table object_table;
+    private JDBTable object_table;
 
     public DBConnection(Class cls, String table, String[] fields) {
         super(table, fields);
     }
 
-    public DBConnection(Table table) {
-        super(table.getTable(), table.getFields());
+    public DBConnection(JDBTable table) {
+        super(table.getTableName(), table.getFields());
     }
 
     public boolean insert(String fields, String... values) {
@@ -78,7 +78,7 @@ public class DBConnection<T extends Objects> extends AbstractDBConnection<T> {
         return out;
     }
 
-    public Table getObjectTable() {
+    public JDBTable getObjectTable() {
         return object_table;
     }
 

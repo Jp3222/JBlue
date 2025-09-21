@@ -17,7 +17,7 @@
 package com.jblue.model.factories;
 
 import com.jblue.model.constants._Const;
-import com.jblue.model.constants.Table;
+import com.jutil.dbcon.tb.JDBTable;
 import com.jutil.swingw.modelos.JTableModel;
 
 /**
@@ -58,7 +58,7 @@ public final class TableModelFactory {
         return getTableModel(_Const.PYM_OTHER_PAYMENTS_TABLE);
     }
 
-    private static JTableModel getTableModel(Table table) {
-        return new JTableModel(table.getGraphics_field(), 0);
+    private static JTableModel getTableModel(JDBTable table) {
+        return new JTableModel(table.getGraphicsField(), 0);
     }
 }

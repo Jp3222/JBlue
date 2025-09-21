@@ -17,6 +17,7 @@
 package com.jblue.model.l4b;
 
 import com.jblue.model.dtos.OUser;
+import com.jblue.model.dtos.OWaterIntakes;
 import java.util.List;
 import java.util.Map;
 
@@ -84,19 +85,21 @@ public interface PaymentModel {
      *
      * @param o
      */
-    void setUsuario(OUser o);
+    void setUser(OUser o);
+
+    void setWaterIntake(OWaterIntakes o);
 
     /**
      *
      * @param d
      */
-    void setDineroIngresado(double d);
+    void setMoneyReceived(double d);
 
     /**
      *
      * @param meses_pagados
      */
-    public void setMesesPagados(List<String> meses_pagados);
+    public void setMonthsPaid(List<String> meses_pagados);
 
     /**
      *

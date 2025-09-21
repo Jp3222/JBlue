@@ -19,6 +19,7 @@ package com.jblue.model.l4b;
 import com.jblue.model.dtos.OEmployee;
 import com.jblue.model.dtos.OWaterIntakeTypes;
 import com.jblue.model.dtos.OUser;
+import com.jblue.model.dtos.OWaterIntakes;
 import com.jblue.sys.SystemSession;
 import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
@@ -35,7 +36,8 @@ public abstract class AbsctractPayment implements PaymentModel {
     protected final Map<String, String> mov;
     protected final OEmployee personal;
     protected OUser usuario;
-    protected OWaterIntakeTypes toma;
+    protected OWaterIntakes water_intake;
+    protected OWaterIntakeTypes water_intake_type;
     protected double dinero_ingresado;
     protected double deuda;
     protected double dinero_sobrante;
@@ -44,7 +46,6 @@ public abstract class AbsctractPayment implements PaymentModel {
     protected int type_payment;
     protected String pay_query;
     protected String default_query;
-    
 
     protected StringBuilder mov_book;
 
@@ -71,18 +72,18 @@ public abstract class AbsctractPayment implements PaymentModel {
     }
 
     @Override
-    public void setUsuario(OUser usuario) {
+    public void setUser(OUser usuario) {
         this.usuario = usuario;
-        this.toma = usuario.getWaterIntakesObject();
+        this.water_intake_type = usuario.getWaterIntakesObject();
     }
 
     @Override
-    public void setDineroIngresado(double dinero_ingresado) {
+    public void setMoneyReceived(double dinero_ingresado) {
         this.dinero_ingresado = dinero_ingresado;
     }
 
     @Override
-    public void setMesesPagados(List<String> meses_pagados) {
+    public void setMonthsPaid(List<String> meses_pagados) {
         this.meses_pagados = meses_pagados;
     }
 
@@ -109,6 +110,11 @@ public abstract class AbsctractPayment implements PaymentModel {
     @Override
     public void setTypePayment(int TypePayment) {
         this.type_payment = TypePayment;
+    }
+
+    @Override
+    public void setWaterIntake(OWaterIntakes o) {
+        this.water_intake = o;
     }
 
 }

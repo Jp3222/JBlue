@@ -3,7 +3,7 @@ WHERE table_schema = 'jblue';
 
 -- TABLE_NAMES
 USE jblue;
-SELECT CONCAT('public static String ', UPPER(table_name), '_FIELDS = "', table_name, '";')
+SELECT CONCAT('TRUNCATE TABLE jblue.', TABLE_NAME)
 FROM information_schema.tables
 WHERE table_schema = 'jblue';
 -- ARRAY CONST 

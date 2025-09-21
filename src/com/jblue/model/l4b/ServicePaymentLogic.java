@@ -16,18 +16,17 @@
  */
 package com.jblue.model.l4b;
 
-import com.jblue.sys.app.AppConfig;
+import com.jblue.model.constants._Const;
+import com.jblue.model.daos.HysHistoryDAO;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 public class ServicePaymentLogic extends AbsctractPayment {
 
     public ServicePaymentLogic() {
         super();
-        this.pay_query = "INSERT INTO service_payments (employee, user, price, month_name) values %s";
+        this.pay_query = "INSERT INTO " + _Const.PYM_SERVICE_PAYMENTS_TABLE.getTableName() + " (employee, user, price, month_name) values %s";
         this.default_query = "INSERT INTO service_payments (employee, user, price, month_name, status) values %s";
     }
 
@@ -72,7 +71,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
 
     @Override
     public boolean execPayment() {
-        deuda = meses_pagados.size() * toma.getCurrentPrice();
+        deuda = meses_pagados.size() * water_intake_type.getCurrentPrice();
 
         if (!gameRulers()) {
             return false;
@@ -84,7 +83,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
             col = "('" + personal.getId()
                     + "','"
                     + usuario.getId() + "','"
-                    + toma.getCurrentPrice() + "','"
+                    + water_intake_type.getCurrentPrice() + "','"
                     + meses_pagados.get(i) + "')";
             i++;
             values.append(col).append(",");
@@ -92,30 +91,55 @@ public class ServicePaymentLogic extends AbsctractPayment {
             mov_book.append(i).append(" - ")
                     .append(meses_pagados.get(i))
                     .append(" : ")
-                    .append(toma.getCurrentPrice())
+                    .append(water_intake_type.getCurrentPrice())
                     .append("\n");
         }
         col = "('" + personal.getId()
                 + "','"
                 + usuario.getId() + "','"
-                + toma.getCurrentPrice() + "','"
+                + water_intake_type.getCurrentPrice() + "','"
                 + meses_pagados.get(i) + "')";
 
         mov_book.append(i).append(" - ")
                 .append(meses_pagados.get(i))
                 .append(" : ")
-                .append(toma.getCurrentPrice())
+                .append(water_intake_type.getCurrentPrice())
                 .append("\n");
         i++;
         values.append(col);
         mov.put(KEY_MOVS, values.toString());
         try {
+            connection.getConnection().setAutoCommit(false);
             connection.execute(getQuery(values.toString()));
             mov.put(KEY_STATUS_OP, STATUS_OK);
+            HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_PYM_SERVICE_PAYMENTS,
+                    "PAGO DEL USUARIO: %s - %s %s %s, PAGO LOS MESES:%s".formatted(
+                            usuario.getId(),
+                            usuario.getName(),
+                            usuario.getLastName1(),
+                            usuario.getLastName2(),
+                            meses_pagados.toString()
+                    ));
+            connection.getConnection().commit();
         } catch (SQLException ex) {
+            try {
+                connection.getConnection().rollback();
+            } catch (SQLException ex1) {
+                mov.put(KEY_STATUS_OP, STATUS_ERR);
+                mov.put(KEY_ERROR, ex.getMessage());
+                System.getLogger(ServicePaymentLogic.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex1);
+            }
             mov.put(KEY_STATUS_OP, STATUS_ERR);
             mov.put(KEY_ERROR, ex.getMessage());
             Logger.getLogger(ServicePaymentLogic.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.getConnection().setAutoCommit(true);
+            } catch (SQLException ex) {
+                mov.put(KEY_STATUS_OP, STATUS_ERR);
+                mov.put(KEY_ERROR, ex.getMessage());
+                System.getLogger(ServicePaymentLogic.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
         }
         return mov.get(KEY_STATUS_OP).equals(STATUS_OK);
     }
@@ -134,7 +158,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
             col = "('" + personal.getId()
                     + "','"
                     + usuario.getId() + "','"
-                    + toma.getCurrentPrice() + "','"
+                    + water_intake_type.getCurrentPrice() + "','"
                     + meses_pagados.get(i)
                     + PaymentModel.STATUS_NOT_PAY + "')";
             i++;
@@ -143,19 +167,19 @@ public class ServicePaymentLogic extends AbsctractPayment {
             mov_book.append(i).append(" - ")
                     .append(meses_pagados.get(i))
                     .append(" : ")
-                    .append(toma.getCurrentPrice())
+                    .append(water_intake_type.getCurrentPrice())
                     .append("\n");
         }
         col = "('" + personal.getId()
                 + "','"
                 + usuario.getId() + "','"
-                + toma.getCurrentPrice() + "','"
+                + water_intake_type.getCurrentPrice() + "','"
                 + meses_pagados.get(i) + "')";
 
         mov_book.append(i).append(" - ")
                 .append(meses_pagados.get(i))
                 .append(" : ")
-                .append(toma.getCurrentPrice())
+                .append(water_intake_type.getCurrentPrice())
                 .append("\n");
         i++;
         values.append(col);

@@ -191,6 +191,9 @@
                           <Font name="Liberation Sans" size="14" style="0"/>
                         </Property>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
+                      </AuxValues>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                           <BorderConstraints direction="Center"/>
@@ -236,7 +239,7 @@
                         <Property name="selectionMode" type="int" value="0"/>
                       </Properties>
                       <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;com.jblue.model.dtos.OUser&gt;"/>
+                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;OWaterIntakes&gt;"/>
                       </AuxValues>
                     </Component>
                   </SubComponents>
@@ -1016,6 +1019,9 @@
                         <Property name="text" type="java.lang.String" value="Recargos"/>
                         <Property name="actionCommand" type="java.lang.String" value="surcharges"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="recargos_buttonActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="other_pay_button">
                       <Properties>
@@ -1025,6 +1031,9 @@
                         <Property name="text" type="java.lang.String" value="Otros Pagos"/>
                         <Property name="actionCommand" type="java.lang.String" value="other_payments"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="other_pay_buttonActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="pay_last_button">
                       <Properties>

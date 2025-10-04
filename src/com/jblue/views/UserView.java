@@ -64,7 +64,6 @@ public final class UserView extends DBView implements DBValuesMapModel {
         ly.show(root_panel, register_panel.getName());
         controller = FactoryController.getUserController(this);
         table_controller = new TableController(this, CacheFactory.USERS);
-
         build();
     }
 
@@ -424,6 +423,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jPanel8.add(jLabel25, java.awt.BorderLayout.LINE_START);
 
         gender_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No. Definido", "Masculino.", "Femenino." }));
+        gender_field.setName("Genero"); // NOI18N
         jPanel8.add(gender_field, java.awt.BorderLayout.CENTER);
 
         jLabel26.setPreferredSize(new java.awt.Dimension(60, 30));
@@ -485,7 +485,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
 
         inside_number_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         inside_number_field.setToolTipText("<html> Campo: Numero de casa  <br>Valor: Solo numeros <br>Longitud: 3 Caracteres");
-        inside_number_field.setName("Numero de Casa"); // NOI18N
+        inside_number_field.setName("Numero Interior"); // NOI18N
         inside_number_field.setPreferredSize(new java.awt.Dimension(100, 30));
         pc_ncasa.add(inside_number_field, java.awt.BorderLayout.CENTER);
 
@@ -536,6 +536,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
         pc_estado1.add(man_estado1, java.awt.BorderLayout.EAST);
 
         date_last_update_field.setEditable(false);
+        date_last_update_field.setName("Fecha de Actualizacion"); // NOI18N
         pc_estado1.add(date_last_update_field, java.awt.BorderLayout.CENTER);
 
         user_data_panel.add(pc_estado1);
@@ -556,6 +557,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
         pc_estado2.add(man_estado2, java.awt.BorderLayout.EAST);
 
         date_register_field.setEditable(false);
+        date_register_field.setName("Fecha de Registro"); // NOI18N
         pc_estado2.add(date_register_field, java.awt.BorderLayout.CENTER);
 
         user_data_panel.add(pc_estado2);
@@ -569,6 +571,8 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jLabel22.setText("CURP");
         jLabel22.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel7.add(jLabel22, java.awt.BorderLayout.WEST);
+
+        curp_field.setName("CURP"); // NOI18N
         jPanel7.add(curp_field, java.awt.BorderLayout.CENTER);
 
         complement_data_panel.add(jPanel7);
@@ -578,6 +582,8 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jLabel11.setText("Email");
         jLabel11.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel2.add(jLabel11, java.awt.BorderLayout.WEST);
+
+        email_field.setName("Correo Electronico"); // NOI18N
         jPanel2.add(email_field, java.awt.BorderLayout.CENTER);
 
         complement_data_panel.add(jPanel2);
@@ -587,6 +593,8 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jLabel14.setText("Telefono 1: ");
         jLabel14.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel3.add(jLabel14, java.awt.BorderLayout.WEST);
+
+        phone_number1_field.setName("Telefono 1"); // NOI18N
         jPanel3.add(phone_number1_field, java.awt.BorderLayout.CENTER);
 
         complement_data_panel.add(jPanel3);
@@ -596,6 +604,8 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jLabel19.setText("Telefono 2:");
         jLabel19.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel4.add(jLabel19, java.awt.BorderLayout.WEST);
+
+        phone_number2_field.setName("Telefono 2"); // NOI18N
         jPanel4.add(phone_number2_field, java.awt.BorderLayout.CENTER);
 
         complement_data_panel.add(jPanel4);
@@ -606,6 +616,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jLabel20.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel5.add(jLabel20, java.awt.BorderLayout.WEST);
 
+        street2_field.setName("Calle 2"); // NOI18N
         jPanel5.add(street2_field, java.awt.BorderLayout.CENTER);
 
         complement_data_panel.add(jPanel5);
@@ -615,6 +626,8 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jLabel21.setText("Numero exterior");
         jLabel21.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel6.add(jLabel21, java.awt.BorderLayout.WEST);
+
+        outside_number_field.setName("Numero Exterior"); // NOI18N
         jPanel6.add(outside_number_field, java.awt.BorderLayout.CENTER);
 
         complement_data_panel.add(jPanel6);

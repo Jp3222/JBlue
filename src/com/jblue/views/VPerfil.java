@@ -42,7 +42,7 @@ public final class VPerfil extends SimpleView {
      */
     public VPerfil() {
         initComponents();
-        current_employee = SystemSession.getInstancia().getUsuario();
+        current_employee = SystemSession.getInstancia().getCurrentEmployee();
         setInfoGrafica();
 
     }

@@ -31,6 +31,8 @@ import com.jutil.dbcon.connection.JDBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -66,28 +68,50 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
 
     @Override
     public void save() {
+        //validar los camapos obligatorios
         if (!view.isValuesOk()) {
             return;
         }
-        connection.setAutoCommit(false);
-        Map<String, String> values = view.getValues(false);
-        String[] arr = Formats.getInsertFormats(values);
-        String query = JDBConnection.INSERT_VAL.formatted(_Const.INDEX_INSERT, arr[0], arr[1]);
-        try (Statement st = connection.getConnection().createStatement();) {
+        connection.setAutoCommit(false);//desactivar el autocommit
+        Map<String, String> values = view.getValues(false);//leer datos
+        String[] arr = Formats.getInsertFormats(values);//dar formato de entrada
+        //Estructuramos el query
+        String query = JDBConnection.INSERT_VAL.formatted(
+                _Const.WKI_WATER_INTAKE_TYPE_TABLE.getTableName(),
+                arr[0],
+                arr[1]
+        );
+        //Creamos el stament
+        try (Statement st = connection.getJDBConnection().getNewStament()) {
+            System.out.println(query);
+            //ejecuta el query
             boolean res = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
+            //validar si fue exitoso
+            if (!res) {
+                throw new SQLException("[1] REGISTRO INCOMPLETO");
+            }
+            //obtener las llaves generadas
             try (ResultSet rs = st.getGeneratedKeys()) {
-                if (!res && !rs.next()) {
-                    return;
+                if (!rs.next()) {
+                    throw new SQLException("[2] Primary Key no generada");
                 }
-                HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_WKI_WATER_INTAKE_TYPE,
+                //registro en bitacora
+                boolean insert = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_WKI_WATER_INTAKE_TYPE,
                         "SE INSERTO LA TIPO DE TOMA: %s - %s".formatted(
-                                rs.getString("id"),
+                                rs.getString(1),
                                 values.get("type_name")
                         )
                 );
+                if (!insert) {
+                    throw new SQLException("[3] REGISTRO EN BITACORA INCOMPLETO");
+                }
             }
+            //confirmar los cambios
+            connection.commit();
+            returnMessage(view, true);
         } catch (SQLException ex) {
             connection.rollBack();
+            returnMessage(view, false);
             System.getLogger(WaterIntakesTypesController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         } finally {
             connection.setAutoCommit(true);
@@ -99,22 +123,45 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
         if (!view.isValuesOk()) {
             return;
         }
+        connection.setAutoCommit(false);
         try {
+            //comprobamos si hay usuarios usando este tipo de toma
             List<OUser> list = CacheFactory.USERS.getList((t) -> t.getWaterIntakeType().equals(view.getObjectSearch().getId()));
             if (!list.isEmpty()) {
                 JOptionPane.showMessageDialog(view, "Hay %s usando este registro".formatted(list.size()));
                 return;
             }
-            connection.setAutoCommit(false);
-            boolean delete = connection.update("status", "3", "id = %s".formatted(view.getObjectSearch().getId()));
-//            rmessage(view, delete,
-//                    _Const.LOGIC_DELETE_TO_TYPE_WATER_INTAKES,
-//                    "SE ELIMINO EL TIPO DE TOMA: %s".formatted(view.getObjectSearch().getTypeName())
-//            );
-            connection.setAutoCommit(true);
+            //sino hay usuarios, hacemos un borrado logico
+            String current_date_time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            if (connection == null) {
+                throw new SQLException("conexion null");
+            }
+
+            boolean delete = connection.update("status = '3', date_end = '%s'".formatted(current_date_time),
+                    "id = %s".formatted(view.getObjectSearch().getId())
+            );
+
+            // si no se hizo el borrado, mandamos una excepcion
+            if (!delete) {
+                throw new SQLException("NO SE PUDO ELIMINAR LOGICAMENTE EL REGISTRO");
+            }
+            boolean insert = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_WKI_WATER_INTAKE_TYPE,
+                    "SE ELIMINO LOGICAMENTE EL TIPO DE TOMA: %s - %s".formatted(
+                            view.getObjectSearch().getId(),
+                            view.getObjectSearch().getTypeName()
+                    ));
+            if (!insert) {
+                throw new SQLException("NO SE PUDO REGISTRAR EN BITACORA");
+            }
+            //si se hizo hacemos la confirmacion
             connection.commit();
-        } catch (NullPointerException e) {
+            returnMessage(view, true);
+        } catch (SQLException | NullPointerException ex) {
             connection.rollBack();
+            returnMessage(view, false);
+            System.getLogger(WaterIntakesTypesController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } finally {
+            connection.setAutoCommit(true);
         }
     }
 
@@ -128,17 +175,28 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
         String arr = Formats.getUpdateFormats(values);
         String query = JDBConnection.UPDATE_COL.formatted(_Const.WKI_WATER_INTAKE_TYPE_TABLE.getTableName(), arr,
                 "id = %s".formatted(view.getObjectSearch().getId()));
+
         try (Statement st = connection.getConnection().createStatement();) {
             boolean res = st.executeUpdate(query) > 0;
-//            rmessage(view, res,
-//                    _Const.INSERT_TO_TYPE_WATER_INTAKES,
-//                    "SE ACTUALIZO EL TIPO DE TOMA: %s - %s".formatted(
-//                            view.getObjectSearch().getId(),
-//                            view.getObjectSearch().getTypeName())
-//            );
+            if (!res) {
+                throw new SQLException("NO SE PUDO ELIMINAR LOGICAMENTE EL REGISTRO");
+            }
+            boolean insert = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_WKI_WATER_INTAKE_TYPE,
+                    "SE ACTUALIZO EL TIPO DE TOMA: %s - %s".formatted(
+                            view.getObjectSearch().getId(),
+                            view.getObjectSearch().getTypeName()
+                    ));
+            if (!insert) {
+                throw new SQLException("NO SE PUDO REGISTRAR EN BITACORA");
+            }
+            connection.commit();
+            returnMessage(view, true);
         } catch (SQLException ex) {
             connection.rollBack();
+            returnMessage(view, false);
             System.getLogger(WaterIntakesTypesController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } finally {
+            connection.setAutoCommit(true);
         }
     }
 

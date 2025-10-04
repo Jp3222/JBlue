@@ -20,7 +20,7 @@ package com.jblue.model.constants;
  *
  * @author juanp
  */
-class _ArrayGsConst extends _ArrayDBConst{
+class _ArrayGsConst extends _ArrayDBConst {
 
     static final String[] CAT_GROUP_PREFIX_FIELDS_GS = {
         "ID",
@@ -281,8 +281,9 @@ class _ArrayGsConst extends _ArrayDBConst{
         "TIPO_TOMA_DE_AGUA",
         "TIPO_USUARIO",
         "ESTADO",
-        "FECHA_ULTIMA_ACTUALIZACION",
-        "FECHA_REGISTRO"
+        "FECHA_ACTUALIZACION",
+        "FECHA_REGISTRO",
+        "FECHA_FINALIZACION"
     };
     static final String[] USR_USERS_CONSUMERS_FIELDS_GS = {
         "ID",

@@ -51,7 +51,7 @@ public abstract class AbsctractPayment implements PaymentModel {
 
     public AbsctractPayment() {
         this.mov = new HashMap<>();
-        this.personal = SystemSession.getInstancia().getUsuario();
+        this.personal = SystemSession.getInstancia().getCurrentEmployee();
         this.connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
     }
 

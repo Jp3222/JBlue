@@ -133,7 +133,7 @@ public class ConfigController extends WindowController {
     }
 
     boolean sessionStart() {
-        return SystemSession.getInstancia().getUsuario() != null;
+        return SystemSession.getInstancia().getCurrentEmployee() != null;
     }
 
 }

@@ -88,18 +88,22 @@ public class JBlueMainSystem implements MainSystem {
         }
         try {
             String database_url = "jdbc:%s://%s:%s/%s";
+            propiedades.put(AppConfig.DB_URL, database_url.formatted(
+                    propiedades.getProperty(AppConfig.DB_MOTOR),
+                    propiedades.getProperty(AppConfig.DB_HOST),
+                    propiedades.getProperty(AppConfig.DB_PORT),
+                    propiedades.getProperty(AppConfig.DB_NAME)
+            ));
             connection = JDBConnection.getInstance(
-                    database_url.formatted(
-                            propiedades.getProperty(AppConfig.DB_MOTOR),
-                            propiedades.getProperty(AppConfig.DB_HOST),
-                            propiedades.getProperty(AppConfig.DB_PORT),
-                            propiedades.getProperty(AppConfig.DB_NAME)
-                    ),
+                    propiedades.getProperty(AppConfig.DB_URL),
                     propiedades.getProperty(AppConfig.DB_USER),
                     propiedades.getProperty(AppConfig.DB_PASSWORD)
             );
             resources.put("connection", connection);
             resources.put("sys_flag_logs", AppConfig.isLogsDB());
+            resources.put(AppConfig.DB_USER, propiedades.getProperty(AppConfig.DB_USER));
+            resources.put(AppConfig.DB_PASSWORD, propiedades.getProperty(AppConfig.DB_PASSWORD));
+            resources.put(AppConfig.DB_URL, propiedades.getProperty(AppConfig.DB_URL));
             connection.setShowQuery((boolean) resources.get("sys_flag_logs"));
         } catch (SQLException e) {
             SystemLogs.severeSysLogs(e.getMessage(), e);

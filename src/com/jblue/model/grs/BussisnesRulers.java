@@ -16,20 +16,21 @@
  */
 package com.jblue.model.grs;
 
+import com.jblue.model.constants._Const;
 import com.jblue.model.dtos.AbstractPayments;
 import com.jblue.model.dtos.OEmployee;
 import com.jblue.model.dtos.OUser;
+import com.jblue.model.factories.CacheFactory;
 import com.jutil.dbcon.connection.JDBConnection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 /**
  *
  * @author juanp
  */
 public final class BussisnesRulers {
-
-    public static int SERVICE_PAYMENT = 1;
-    public static int SURCHARGE_PAYMENT = 2;
-    public static int OTHER_PAYMENT = 3;
 
     /**
      * metodo para comprobar si un usuario es nulo
@@ -62,39 +63,48 @@ public final class BussisnesRulers {
      */
     public static int existPendingPayment(JDBConnection con, OUser o) {
         if (existPendingPayment4Service(con, o)) {
-            return SERVICE_PAYMENT;
+            return _Const.INDEX_PYM_SERVICE_PAYMENTS;
         }
         if (existPendingPayment4Surcharge(con, o)) {
-            return SURCHARGE_PAYMENT;
+            return _Const.INDEX_PYM_SURCHARGE_PAYMENTS;
         }
         if (existPendingPayment4Others(con, o)) {
-            return OTHER_PAYMENT;
+            return _Const.INDEX_PYM_OTHER_PAYMENTS;
         }
         return -1;
     }
 
     public static boolean existPendingPayment4Service(JDBConnection con, OUser o) {
-        return false;
+        return existPendingPayment(con, o, _Const.PYM_SERVICE_PAYMENTS_TABLE.getTableName());
     }
 
     public static boolean existPendingPayment4Surcharge(JDBConnection con, OUser o) {
-        return false;
+        return existPendingPayment(con, o, _Const.PYM_SURCHARGE_PAYMENTS_TABLE.getTableName());
     }
 
     public static boolean existPendingPayment4Others(JDBConnection con, OUser o) {
+        return existPendingPayment(con, o, _Const.PYM_OTHER_PAYMENTS_TABLE.getTableName());
+    }
+
+    private static boolean existPendingPayment(JDBConnection con, OUser o, String table) {
+        LocalDate ld = LocalDate.now();
+        String query = "SELECT * FROM %s WHERE user = %s AND YEAR(NOW()) = %s AND MONTH(NOW()) = %s";
+        query = query.formatted(
+                table,//tabla de pago
+                ld.getYear(), // año actual
+                ld.getMonthValue() // mes actual
+        );
+
+        try (ResultSet rs = con.query(query)) {
+            return rs.next();
+        } catch (SQLException ex) {
+            System.getLogger(BussisnesRulers.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
         return false;
     }
 
-    public static String getStatusDescription(JDBConnection o, AbstractPayments p) {
-        String[] arr = {
-            "ACTIVO",
-            "INACTIVO",
-            "ELIMINADO",
-            "PAGADO",
-            "NO PAGADO",
-            "PENDIENTE",
-            "FINALIZADO"
-        };
-        return arr[p.getStatus()];
+    public static String getStatusDescription(AbstractPayments p) {
+        return CacheFactory.ITEMS_STATUS_CAT[p.getStatus()];
     }
+
 }

@@ -35,6 +35,7 @@ public class Formats {
         ArrayList<String> list = new ArrayList<>(args.length);
         for (String i : args) {
             a = i.trim().replace(" ", "_").toUpperCase();
+            a = "'".concat(a).concat("'");
             list.add(a);
         }
         return list.toArray(args);

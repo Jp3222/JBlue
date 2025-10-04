@@ -31,7 +31,15 @@ import com.jblue.model.DBConnection;
 import java.util.ArrayList;
 import com.jblue.controllers.DBControllerModel;
 import com.jblue.controllers.AbstractDBViewController;
+import com.jblue.model.constants._Const;
+import com.jblue.model.daos.HysHistoryDAO;
+import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.jexception.JExcp;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -39,15 +47,11 @@ import com.jutil.jexception.JExcp;
  */
 public class StreetsController extends AbstractDBViewController<OStreet> implements DBControllerModel {
 
-    private final DBConnection<OStreet> connection;
     private final StreetsView view;
-    private final ArrayList<AbstractComponentController> components_controllers;
 
     public StreetsController(StreetsView view) {
         super(CacheFactory.STREETS);
-        this.connection = (DBConnection<OStreet>) memo_cache.getConnection();
         this.view = view;
-        this.components_controllers = new ArrayList(5);
 
     }
 
@@ -78,17 +82,39 @@ public class StreetsController extends AbstractDBViewController<OStreet> impleme
 
     @Override
     public void save() {
-        if (view.isValuesOk()) {
+        if (!view.isValuesOk()) {
             return;
         }
-        String field = "name";
-        try {
-            connection.setAutoCommit(false);
-            boolean insert = connection.insert(field, view.getDbValues(false));
-            returnMessage(view, insert);
-        } catch (Exception e) {
+        String[] values = view.getDbValues(false);
+        String query = JDBConnection.INSERT_VAL.formatted(
+                _Const.CAT_STREET_TABLE.getTableName(),
+                "street_name",
+                values[0]
+        );
+        System.out.println(query);
+        connection.setAutoCommit(false);
+        try (Statement st = this.connection.getJDBConnection().getNewStament()) {
+            boolean insert = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
+            if (!insert) {
+                throw new SQLException("REGISTRO CORRUPTO");
+            }
+            ResultSet rs = st.getGeneratedKeys();
+            insert = rs.next();
+            if (!insert) {
+                throw new SQLException("ERROR AL GENERAL LAS LLAVES");
+            }
+            insert = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_CAT_STREET,
+                    "SE INSERTO LA CALLE: %s - %s".formatted(rs.getString(1), values[0])
+            );
+            if (!insert) {
+                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+            }
+            connection.commit();
+            returnMessage(view, true);
+        } catch (SQLException e) {
             connection.rollBack();
             JExcp.getInstance(false, true).print(e, getClass(), SAVE_COMMAND);
+            returnMessage(view, false);
         } finally {
             connection.setAutoCommit(true);
         }
@@ -100,12 +126,30 @@ public class StreetsController extends AbstractDBViewController<OStreet> impleme
             return;
         }
         try {
-            boolean delete = connection.update("status", "3", "id = %s".formatted(view.getObjectSearch().getId()));
-            returnMessage(view, delete);
-        } catch (Exception e) {
+            connection.setAutoCommit(false);
+            String query = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            boolean delete = connection.update(
+                    "status = '3', date_end = '%s'".formatted(query),
+                    "WHERE id = '%s'".formatted(view.getObjectSearch().getId())
+            );
+            if (!delete) {
+                throw new SQLException("BORRADO LOGICO CORRUPTO");
+            }
+            delete = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_CAT_STREET,
+                    "SE ELIMINO LA CALLE: %s - %s".formatted(
+                            view.getObjectSearch().getId(),
+                            view.getObjectSearch().getNombre()
+                    ));
+            if (!delete) {
+                throw new SQLException("ERROR AL REGISTRAR EN BITACORA");
+            }
+            returnMessage(view, true);
+        } catch (SQLException e) {
             connection.rollBack();
+            returnMessage(view, false);
             JExcp.getInstance(false, true).print(e, getClass(), SAVE_COMMAND);
         } finally {
+            connection.setAutoCommit(true);
         }
     }
 
@@ -114,12 +158,28 @@ public class StreetsController extends AbstractDBViewController<OStreet> impleme
         if (!view.isValuesOk()) {
             return;
         }
-        String field = "name";
-        boolean update = connection.update(field.replace(" ", "").split(","),
-                view.getDbValues(true),
-                "id = %s".formatted(view.getObjectSearch().getId())
-        );
-        returnMessage(view, update);
+        try {
+            connection.setAutoCommit(false);
+            String field = "name";
+            boolean update = connection.update(field.replace(" ", "").split(","),
+                    view.getDbValues(true),
+                    "id = %s".formatted(view.getObjectSearch().getId())
+            );
+            if (!update) {
+                throw new SQLException("ERROR AL ACTUALIZAR");
+            }
+            update = HysHistoryDAO.getINSTANCE().delete(_Const.INDEX_CAT_STREET, "SE ACTUALIZO LA CALLE");
+            if (!update) {
+                throw new SQLException("ERROR AL REGISTRAR EL BITACORA");
+            }
+            connection.commit();
+            returnMessage(view, update);
+        } catch (SQLException ex) {
+            connection.rollBack();
+            System.getLogger(StreetsController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } finally {
+            connection.setAutoCommit(true);
+        }
     }
 
     @Override
@@ -130,7 +190,6 @@ public class StreetsController extends AbstractDBViewController<OStreet> impleme
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE
         );
-
         if (in == JOptionPane.YES_OPTION) {
             view.initialState();
         }

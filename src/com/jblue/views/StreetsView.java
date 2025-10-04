@@ -16,6 +16,7 @@
  */
 package com.jblue.views;
 
+import com.jblue.controllers.FactoryController;
 import com.jblue.controllers.compc.TableController;
 import com.jblue.model.factories.CacheFactory;
 import com.jblue.model.factories.TableModelFactory;
@@ -49,9 +50,6 @@ public final class StreetsView extends DBView implements DBValuesModel {
         objects_table.setModel(model);
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
-        //
-        //controller = FactoryController.getStreetsController(this);
-        table_controller = new TableController(this, CacheFactory.STREETS);
         build();
     }
 
@@ -74,6 +72,8 @@ public final class StreetsView extends DBView implements DBValuesModel {
 
     @Override
     public void events() {
+        controller = FactoryController.getStreetsController(this);
+        table_controller = new TableController(this, CacheFactory.STREETS);
         back_button.addActionListener(table_controller);
         next_button.addActionListener(table_controller);
         reload_button.addActionListener(table_controller);
@@ -389,15 +389,6 @@ public final class StreetsView extends DBView implements DBValuesModel {
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void itemEdit() {
-        int index = objects_table.getSelectedRow();
-        if (index < 0) {
-            JOptionPane.showMessageDialog(this, "No se ha seleccionado un elemento", "Editar", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        object_search = new OStreet((String[]) model.getRow(index));
-        streed_name_field.setText(object_search.getNombre());
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back_button;
@@ -522,7 +513,6 @@ public final class StreetsView extends DBView implements DBValuesModel {
     @Override
     public void setScreenTableInfo() {
         streed_name_field.setText(object_search.getNombre());
-
         save_button.setEnabled(false);
         update_button.setEnabled(true);
         delete_button.setEnabled(true);

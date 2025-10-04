@@ -18,6 +18,7 @@ package com.jblue.views;
 
 import com.jblue.model.constants._Const;
 import com.jblue.sys.app.AppConfig;
+import com.jblue.views.framework.DBValuesMapModel;
 import com.jblue.views.framework.SimpleView;
 import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
@@ -26,13 +27,16 @@ import com.jutil.swingw.modelos.JTableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author juanp
  */
-public final class ParametersView extends SimpleView {
+public final class ParametersView extends SimpleView implements DBValuesMapModel {
 
     private static ParametersView instance;
 
@@ -42,32 +46,15 @@ public final class ParametersView extends SimpleView {
         }
         return instance;
     }
-    private final String[] parameters;
     private final JTableModel model = new JTableModel(new String[]{"Parametro", "Valor", "Descripcion"}, 1);
+    private final Map<String, String> parameters_map;
 
     /**
      * Creates new form FlagsView
      */
     private ParametersView() {
         initComponents();
-
-        this.parameters = new String[]{
-            open_hour_field.getName(),
-            close_hour_field.getName(),
-            last_pay_day_field.getName(),
-            auto_pay_field.getName(),
-            master_user_field.getName(),
-            master_password_field.getName(),
-            hour_validate_field.getName(),
-            dev_messages.getName(),
-            test_messages.getName(),
-            db_messages.getName(),
-            dev_function.getName(),
-            test_function.getName(),
-            dev_logs.getName(),
-            test_logs.getName(),
-            db_logs.getName()
-        };
+        parameters_map = new HashMap(20);
         build();
     }
 
@@ -87,41 +74,34 @@ public final class ParametersView extends SimpleView {
     @Override
     public void events() {
         update_button.addActionListener((e) -> {
-            final String query = "UPDATE parameters SET value = '%s', date_update=current_timestamp WHERE parameter = '%s'";
-            String values[] = {
-                String.valueOf(open_hour_field.getText()),
-                String.valueOf(close_hour_field.getText()),
-                String.valueOf(last_pay_day_field.getValue()),
-                String.valueOf(auto_pay_field.isSelected()),
-                String.valueOf(master_user_field.getText()),
-                String.valueOf(master_password_field.getText()),
-                String.valueOf(hour_validate_field.isSelected()),
-                String.valueOf(dev_messages.isSelected()),
-                String.valueOf(dev_function.isSelected()),
-                String.valueOf(test_messages.isSelected()),
-                String.valueOf(test_function.isSelected()),
-                String.valueOf(db_messages.isSelected()),
-                String.valueOf(dev_logs.isSelected()),
-                String.valueOf(test_logs.isSelected()),
-                String.valueOf(db_logs.isSelected()),};
-
+            final String query = "UPDATE " + _Const.DEV_PARAMETERS_TABLE.getTableName() + " SET value = ? WHERE parameter = ?";
             JDBConnection connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
             String mess = "Parametros Actualizados";
-
-            int icon = JOptionPane.INFORMATION_MESSAGE;
-
-            for (int i = 0; i < parameters.length; i++) {
-                try {
-                    int execute = connection.execute(query.formatted(values[i], parameters[i]));
-                    System.out.println("Parametros: " + execute);
-                } catch (SQLException ex) {
-                    mess = "Error al actualizar el parametro: %s".formatted(parameters[i]);
-                    icon = JOptionPane.ERROR_MESSAGE;
-                    ex.printStackTrace();
+            Map<String, String> values = getValues(true);
+            System.out.println(values.toString());
+            connection.setAutoCommit(false);
+            try (var st = connection.getNewPreparedStatement(query)) {
+                for (Map.Entry<String, String> entry : values.entrySet()) {
+                    String key = entry.getKey();
+                    String val = entry.getValue();
+                    st.setString(1, val);
+                    st.setString(2, key);
+                    st.addBatch();
                 }
+                int[] executeBatch = st.executeBatch();
+                System.out.println(Arrays.toString(executeBatch));
+                connection.commit();
+                st.clearBatch();
+                loadData();
+            } catch (SQLException ex) {
+                connection.rollBack();
+                System.getLogger(ParametersView.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            } finally {
+                connection.setAutoCommit(true);
+                int icon = JOptionPane.INFORMATION_MESSAGE;
+                JOptionPane.showMessageDialog(this, mess, "Parametros", icon);
+
             }
-            JOptionPane.showMessageDialog(this, mess, "Parametros", icon);
-            loadData();
         });
     }
 
@@ -157,6 +137,7 @@ public final class ParametersView extends SimpleView {
                     rs.getString("value"),
                     rs.getString("description")
                 };
+                parameters_map.put(data[0], data[1]);
                 model.addRow(data);
             }
 
@@ -553,5 +534,48 @@ public final class ParametersView extends SimpleView {
     private javax.swing.JCheckBox test_messages;
     private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public boolean isValuesOk() {
+        return true;
+    }
+
+    @Override
+    public Map<String, String> getValues(boolean update) {
+        Map<String, String> currentValues = new HashMap<>();
+
+        // Mapeo directo de cada campo de la UI a su nombre de parámetro
+        // Esto hace que el código sea legible y robusto.
+        currentValues.put("open_hour".toUpperCase(), open_hour_field.getText());
+        currentValues.put("close_hour".toUpperCase(), close_hour_field.getText());
+        currentValues.put("last_pay_day".toUpperCase(), String.valueOf(last_pay_day_field.getValue()));
+        currentValues.put("auto_pay".toUpperCase(), String.valueOf(auto_pay_field.isSelected()));
+        currentValues.put("master_user".toUpperCase(), master_user_field.getText());
+        currentValues.put("master_password".toUpperCase(), master_password_field.getText());
+        currentValues.put("hour_validate".toUpperCase(), String.valueOf(hour_validate_field.isSelected()));
+        currentValues.put("dev_messages".toUpperCase(), String.valueOf(dev_messages.isSelected()));
+        currentValues.put("dev_function".toUpperCase(), String.valueOf(dev_function.isSelected()));
+        currentValues.put("test_messages".toUpperCase(), String.valueOf(test_messages.isSelected()));
+        currentValues.put("test_function".toUpperCase(), String.valueOf(test_function.isSelected()));
+        currentValues.put("db_messages".toUpperCase(), String.valueOf(db_messages.isSelected()));
+        currentValues.put("dev_logs".toUpperCase(), String.valueOf(dev_logs.isSelected()));
+        currentValues.put("test_logs".toUpperCase(), String.valueOf(test_logs.isSelected()));
+        currentValues.put("db_logs".toUpperCase(), String.valueOf(db_logs.isSelected()));
+
+        Map<String, String> map = new HashMap<>(20);
+
+        // Iterar sobre los valores actuales para verificar cambios
+        for (Map.Entry<String, String> entry : currentValues.entrySet()) {
+            String paramName = entry.getKey();
+            String currentValue = entry.getValue();
+            String originalValue = parameters_map.get(paramName);
+            System.out.println(currentValue + "!=" + (originalValue));
+            // Lógica de filtro: añadir al mapa solo si el valor ha cambiado.
+            if (!currentValue.equals(originalValue)) {
+                map.put(paramName, currentValue);
+            }
+        }
+        return map;
+    }
 
 }

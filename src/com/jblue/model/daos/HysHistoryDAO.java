@@ -62,7 +62,7 @@ public class HysHistoryDAO {
     }
 
     public boolean save(int affected_table, int type_mov, String description) throws SQLException {
-        OEmployee employee = SystemSession.getInstancia().getUsuario();
+        OEmployee employee = SystemSession.getInstancia().getCurrentEmployee();
         return save(employee, affected_table, type_mov, description);
     }
 

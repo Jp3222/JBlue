@@ -287,6 +287,7 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesMapMo
         jLabel7.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel13.add(jLabel7, java.awt.BorderLayout.WEST);
 
+        date_update_field.setEditable(false);
         date_update_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         date_update_field.setName("Costo del recargo"); // NOI18N
         jPanel13.add(date_update_field, java.awt.BorderLayout.CENTER);
@@ -301,6 +302,7 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesMapMo
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel14.add(jLabel8, java.awt.BorderLayout.WEST);
 
+        date_register_field.setEditable(false);
         date_register_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         date_register_field.setName("Costo del recargo"); // NOI18N
         jPanel14.add(date_register_field, java.awt.BorderLayout.CENTER);
@@ -598,17 +600,18 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesMapMo
 
     @Override
     public Map<String, String> getValues(boolean update) {
-        Map<String, String> map = Map.of();
+        Map<String, String> map;
         String _type_name = type_name_field.getText();
         String _current_price = current_price_field.getText();
-        String _previous_price = previous_price_field.getText();
+        String _previous_price = "0.00";
         String _surcharge = surcharge_field.getText();
         if (update) {
+            _current_price = String.valueOf(object_search.getCurrentPrice());
             map = saveUpdate(object_search, _type_name, _current_price, _previous_price, _surcharge);
         } else {
             map = saveInsert(_type_name, _current_price, _previous_price, _surcharge);
         }
-        return map;
+        return Formats.getDBFormatInputMap(map);
     }
 
     private Map<String, String> saveInsert(

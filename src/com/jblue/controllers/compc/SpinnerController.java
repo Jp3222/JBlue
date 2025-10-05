@@ -29,7 +29,7 @@ import javax.swing.JSpinner;
 public class SpinnerController<T extends Objects> extends AbstractComponentController<T> {
 
     public SpinnerController(JSpinner component) {
-        super(component);
+        super(component, null, null);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class SpinnerController<T extends Objects> extends AbstractComponentContr
         JSpinner o = getComponent();
 
         memo_cache.getList().forEach(e -> {
-        
+
         });
     }
 

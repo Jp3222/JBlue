@@ -61,4 +61,6 @@ public class ConnectionFactory {
     public static DBConnection<OEmployeeTypes> getEmployeeTypes() {
         return new DBConnection(_Const.EMP_EMPLOYEE_TYPES_TABLE);
     }
+    
+    
 }

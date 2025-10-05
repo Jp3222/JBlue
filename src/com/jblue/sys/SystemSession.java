@@ -5,11 +5,14 @@
 package com.jblue.sys;
 
 import com.jblue.model.daos.HysHistoryDAO;
+import com.jblue.model.dtos.AdministrationHistoryObject;
 import com.jblue.model.dtos.OEmployee;
 import com.jutil.dbcon.connection.JDBConnection;
 import com.jutil.framework.LaunchApp;
 import com.jutil.framework.LocalSession;
+import com.jutil.jexception.JExcp;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  * Esta clase define al personal de sesion actual, quien hace uso del programa,
@@ -36,8 +39,9 @@ public class SystemSession implements LocalSession<OEmployee> {
     /**
      * Empleado que ha iniciado session
      */
-    private OEmployee personal;
-    private OEmployee presidente;
+    private OEmployee current_employee;
+    private AdministrationHistoryObject current_administration;
+
     private final JDBConnection connection;
 
     private SystemSession() {
@@ -45,17 +49,36 @@ public class SystemSession implements LocalSession<OEmployee> {
     }
 
     public OEmployee getCurrentEmployee() {
-        return personal;
+        return current_employee;
     }
 
-    public OEmployee getPresidente() {
-        String query = "SELECT * FROM emp_employees";
-        return presidente;
+    public AdministrationHistoryObject getCurrentAdministration() {
+        return current_administration;
+    }
+
+    public void getWarnings() {
+        StringBuilder sb = new StringBuilder(255);
+        if (getCurrentEmployee() == null) {
+            sb.append("El usuario no se ha registrado correctamente, No podra hacer registro algunos");
+        }
+
+        if (getCurrentAdministration() == null) {
+            sb.append("La administracion actual no ha sido registrada, no podra hacer registro alguno");
+        }
+        
+        if (!sb.isEmpty()) {
+            JOptionPane.showConfirmDialog(null,
+                    sb.toString(),
+                    "Advertencias",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+        }
     }
 
     @Override
     public boolean isOpen() {
-        return personal != null;
+        return current_employee != null;
     }
 
     @Override
@@ -64,23 +87,30 @@ public class SystemSession implements LocalSession<OEmployee> {
 
     @Override
     public void setUser(OEmployee user) {
+        connection.setAutoCommit(false);
         try {
             String description = user == null ? "FIN DE SESION" : "INICIO DE SESIÓN";
+            boolean register;
             if (user == null) {
-                HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogOut(personal, description);
+                register = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogOut(current_employee, description);
             } else {
-                HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogin(user, description);
+                register = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogin(user, description);
+
             }
-            personal = user;
-            System.out.println(user);
+            if (!register) {
+                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+            }
+            current_employee = user;
         } catch (SQLException e) {
-            e.printStackTrace();
+            connection.rollBack();
+            JExcp.getInstance(false, true).print(e, getClass(), "setUser");
         } finally {
+            connection.setAutoCommit(true);
         }
     }
 
     public void load() {
-        
+
     }
 
 }

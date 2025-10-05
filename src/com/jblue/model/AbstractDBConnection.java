@@ -194,27 +194,15 @@ public abstract class AbstractDBConnection<T extends Objects> implements DBConne
     }
 
     public void setAutoCommit(boolean auto) {
-        try {
-            connection.getConnection().setAutoCommit(auto);
-        } catch (SQLException ex) {
-            System.getLogger(AbstractDBConnection.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
+        connection.setAutoCommit(auto);
     }
 
     public void commit() {
-        try {
-            connection.getConnection().commit();
-        } catch (SQLException ex) {
-            System.getLogger(AbstractDBConnection.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
+        connection.commit();
     }
 
     public void rollBack() {
-        try {
-            connection.getConnection().rollback();
-        } catch (SQLException ex) {
-            System.getLogger(AbstractDBConnection.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
+        connection.rollBack();
     }
 
 }

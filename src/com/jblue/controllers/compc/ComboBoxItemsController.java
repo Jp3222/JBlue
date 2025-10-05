@@ -41,7 +41,7 @@ public class ComboBoxItemsController<T> extends AbstractComponentController {
     DefaultComboBoxModel<String> model;
 
     public ComboBoxItemsController(JComboBox<T> component, String... cache) {
-        super(component);
+        super(component, null, null);
         if (!(component.getModel() instanceof DefaultComboBoxModel)) {
             model = new DefaultComboBoxModel(cache);
         } else {

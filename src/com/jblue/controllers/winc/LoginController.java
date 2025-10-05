@@ -135,6 +135,7 @@ public class LoginController extends WindowController {
         }
         SystemSession sesion = SystemSession.getInstancia();
         sesion.setUser(res.get());
+        sesion.getWarnings();
         return true;
     }
 

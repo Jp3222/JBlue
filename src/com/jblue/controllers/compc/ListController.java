@@ -46,7 +46,7 @@ public final class ListController<T extends Objects & StatusObject & ForeingKeyO
     private final ArrayList<Predicate<T>> filters_list;
 
     public ListController(ListSearchViewModel view, MemoListCache<T> memo_cache) {
-        super(view.getList(), memo_cache);
+        super(view.getList(), memo_cache, null);
         this.filters_list = new ArrayList<>(15);
         this.view = view;
         model = view.getListModel();

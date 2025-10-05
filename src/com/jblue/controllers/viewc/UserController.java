@@ -27,6 +27,8 @@ import com.jblue.controllers.AbstractDBViewController;
 import com.jblue.model.DBConnection;
 import com.jblue.model.constants._Const;
 import com.jblue.model.daos.HysHistoryDAO;
+import com.jblue.model.dtos.AdministrationHistoryObject;
+import com.jblue.model.dtos.OEmployee;
 import com.jblue.model.dtos.OServicePayments;
 import com.jblue.sys.SystemSession;
 import com.jblue.sys.app.AppConfig;
@@ -34,6 +36,7 @@ import com.jblue.sys.app.AppFiles;
 import com.jblue.util.Formats;
 import com.jblue.views.components.ComponentFactory;
 import com.jutil.dbcon.connection.JDBConnection;
+import com.jutil.jexception.JExcp;
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,6 +50,11 @@ import java.util.Map;
 public class UserController extends AbstractDBViewController<OUser> implements DBControllerModel {
 
     private final UserView view;
+
+    /**
+     * Movimiento, id, nombre, a paterno, a materno
+     */
+    private String DESCRIPTION_FORMAT = "SE %s EL USUARIO: %s - %s %s %s";
 
     public UserController(UserView view) {
         super(CacheFactory.USERS);
@@ -92,67 +100,20 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         // se deshabilita el autocomit
         connection.setAutoCommit(false);
         try (Statement st = connection.getConnection().createStatement()) {
-            //ejecutamos el quer
-            boolean registro = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
-            //si no se registra lanzamos una excepcion para hacer un rollback
-            if (!registro) {
-                throw new SQLException("REGISTRO CORRUPTO");
-            }
-            //si se registra obtenemos la primary key generada
-            try (ResultSet rs = st.getGeneratedKeys()) {
-                registro = rs.next();
-                //si no se obtuvo la llave lanzamos una excepcion para hacer un rollback
-                if (!registro) {
-                    throw new SQLException("ERROR AL GENERAL LA LLAVE");
-                }
-                //si se obtuvo se registra en el historial de movimientos
-                String user_key = rs.getString(1);
-                registro = HysHistoryDAO.getINSTANCE().getHysUsersMovs().insertToUsers(
-                        DESCRIPTION_FORMAT.formatted(
-                                "INSERTO",
-                                user_key,
-                                values.get("first_name"),
-                                values.get("last_name1"),
-                                values.get("last_name2")
-                        ));
-                //si no se registra en el historial lanzamos una excepcion para hacer un rollback
-                if (!registro) {
-                    throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-                }
-                //si se registra en el historial, validamos si es un tramite y si es un alta de titular o de consumidor
-                if (view.isProcess() || values.get("user_type").contains("1")) {
-                    //si es un titular se inicial el proceso de alta de toma
-                    String fields = "employee_start,president,user,status";
-                    String v2 = "'%s','%s','%s','%s'".formatted(
-                            SystemSession.getInstancia().getCurrentEmployee().getId(),
-                            SystemSession.getInstancia().getPresidente().getId(),
-                            user_key
-                    );
-                    //se construye el query
-                    query = JDBConnection.INSERT_VAL.formatted(_Const.PRO_PROCESS_TABLE.getTableName(), fields, v2);
-                    registro = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
-                    // si no se hizo el registro del tramite lanzamos una excepcion para hacer un rollback
-                    if (!registro) {
-                        throw new SQLException("REGISTRO DEL TRAMITE CORRUPTO");
-                    }
-                    // registramos el tramite en el historial
-                    registro = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_PRO_CONTRACT_PROCEDURE,
-                            "SE REGISTRO EL TRAMITE DEL USUARIO: %s - %s %s %s".formatted(user_key,
-                                    values.get("first_name"),
-                                    values.get("last_name1"),
-                                    values.get("last_name2")
-                            )
-                    );
-                    //si no se registra en el historial lanzamos una excepcion para hacer un rollback
-                    if (!registro) {
-                        throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-                    }
-                }
+            String user_key = userRegister(st, query, values);
+            //si se registra en el historial, validamos si es un tramite y si es un alta de titular o de consumidor
+            if (view.isProcess() || values.get("user_type").contains("1")) {
+                processOwnerRegister(st, user_key, values, "1");
+            } else {
+                processOwnerRegister(st, user_key, values, "2");
             }
             connection.commit();
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
             connection.rollBack();
-            System.out.println(ex.getMessage());
+            JExcp.getInstance(false, true).print(e, getClass(), "save");
+            returnMessage(view, false);
+        } catch (NullPointerException e) {
+            JExcp.getInstance(false, true).print(e, getClass(), "save");
             returnMessage(view, false);
         } finally {
             connection.setAutoCommit(true);
@@ -203,32 +164,46 @@ public class UserController extends AbstractDBViewController<OUser> implements D
 
     @Override
     public void update() {
-        try {
-            if (!view.isValuesOk()) {
-                return;
-            }
-            Map<String, String> values = view.getValues(true);
-            if (values.isEmpty()) {
-                returnMessage(view, false);
-                return;
-            }
-            String update_format = Formats.getUpdateFormats(values);
-            System.out.println(update_format);
+        if (!view.isValuesOk()) {
+            return;
+        }
+        OUser user = view.getObjectSearch();
+        Map<String, String> values = view.getValues(true);
+        if (values.isEmpty()) {
+            returnMessage(view, false);
+            return;
+        }
+        String update_format = Formats.getUpdateFormats(values);
+        String query = JDBConnection.UPDATE_COL.formatted(
+                _Const.USR_USERS_TABLE.getTableName(),
+                update_format,
+                "id = ".formatted(user.getId())
+        );
 
-            String query = JDBConnection.UPDATE_COL.formatted(_Const.USR_USERS_TABLE.getTableName(),
-                    update_format,
-                    "id = %s".formatted(view.getObjectSearch().getId())
-            );
-            boolean update = connection.getJDBConnection().execute(query) > 0;
-//            rmessage(view, update, _Const.UPDATE_TO_USER, LogBookFormats.USERS.formatted(
-//                    view.getObjectSearch().getId(),
-//                    view.getObjectSearch().getName(),
-//                    view.getObjectSearch().getLastName1(),
-//                    view.getObjectSearch().getLastName2()
-//            ));
+        JDBConnection jconnection = connection.getJDBConnection();
+        jconnection.setAutoCommit(false);
+        try (Statement st = jconnection.getNewStament();) {
+            boolean register = st.executeUpdate(query) > 0;
+            if (!register) {
+                throw new SQLException("ACTUALIZACION CORRUPTA");
+            }
+            register = HysHistoryDAO.getINSTANCE().getHysUsersMovs().updateToUsers(DESCRIPTION_FORMAT.formatted(
+                    "ACTUALIZO",
+                    user.getId(),
+                    user.getName(),
+                    user.getLastName1(),
+                    user.getLastName2()
+            ));
+            if (!register) {
+                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+            }
+            jconnection.commit();
+            returnMessage(view, true);
         } catch (SQLException ex) {
             returnMessage(view, false);
             System.getLogger(UserController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } finally {
+            jconnection.setAutoCommit(true);
         }
     }
 
@@ -259,8 +234,77 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         //Files.copy(file.toPath(), new BufferedOutputStream(new FileOutputStream(out)));
     }
 
-    /**
-     * Movimiento, id, nombre, a paterno, a materno
-     */
-    String DESCRIPTION_FORMAT = "SE %s EL USUARIO: %s - %s %s %s";
+    private String userRegister(Statement st, String query, Map<String, String> user_data) throws SQLException {
+        //ejecutamos el quer
+        boolean registro = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
+        //si no se registra lanzamos una excepcion para hacer un rollback
+        if (!registro) {
+            throw new SQLException("REGISTRO CORRUPTO");
+        }
+        //si se registra obtenemos la primary key generada
+        String user_key = null;
+        try (ResultSet rs = st.getGeneratedKeys()) {
+            registro = rs.next();
+            //si no se obtuvo la llave lanzamos una excepcion para hacer un rollback
+            if (!registro) {
+                throw new SQLException("ERROR AL GENERAL LA LLAVE");
+            }
+            //si se obtuvo se registra en el historial de movimientos
+            user_key = rs.getString(1);
+            registro = HysHistoryDAO.getINSTANCE().getHysUsersMovs().insertToUsers(
+                    DESCRIPTION_FORMAT.formatted(
+                            "INSERTO",
+                            user_key,
+                            user_data.get("first_name"),
+                            user_data.get("last_name1"),
+                            user_data.get("last_name2")
+                    ));
+            //si no se registra en el historial lanzamos una excepcion para hacer un rollback
+            if (!registro) {
+                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+            }
+        }
+        return user_key;
+    }
+
+    private void processOwnerRegister(Statement st, String user_key, Map<String, String> user_data, String process_type) throws SQLException, NullPointerException {
+        boolean registro;
+        //si es un titular se inicial el proceso de alta de toma
+        String fields = "process_type,employee_start,president,user,status";
+
+        OEmployee current_employee = SystemSession.getInstancia().getCurrentEmployee();
+        AdministrationHistoryObject current_admin = SystemSession.getInstancia().getCurrentAdministration();
+        if (current_employee == null) {
+            throw new NullPointerException("El empleado actual esta corrupto");
+        }
+        if (current_admin == null) {
+            throw new NullPointerException("La administracion actual esta corrupta");
+        }
+        String v2 = "'%s','%s','%s','%s'".formatted(
+                process_type,
+                current_employee.getId(),
+                current_admin.getId(),
+                user_key
+        );
+        //se construye el query
+        String query = JDBConnection.INSERT_VAL.formatted(_Const.PRO_PROCESS_TABLE.getTableName(), fields, v2);
+        registro = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
+        // si no se hizo el registro del tramite lanzamos una excepcion para hacer un rollback
+        if (!registro) {
+            throw new SQLException("REGISTRO DEL TRAMITE CORRUPTO");
+        }
+        // registramos el tramite en el historial
+        registro = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_PRO_CONTRACT_PROCEDURE,
+                "SE REGISTRO EL TRAMITE DEL USUARIO: %s - %s %s %s".formatted(user_key,
+                        user_data.get("first_name"),
+                        user_data.get("last_name1"),
+                        user_data.get("last_name2")
+                )
+        );
+        //si no se registra en el historial lanzamos una excepcion para hacer un rollback
+        if (!registro) {
+            throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+        }
+    }
+
 }

@@ -44,7 +44,7 @@ public class TableController<T extends Objects & ForeingKeyObject & StatusObject
     protected TableObjectFilterModel<T> filters;
 
     public TableController(TableSearchViewModel view, MemoListCache<T> memo_cache) {
-        super(view.getTable(), memo_cache);
+        super(view.getTable(), memo_cache, null);
         this.view = view;
         this.view.getTextComponenteTable().addKeyListener(this);
     }
@@ -105,10 +105,10 @@ public class TableController<T extends Objects & ForeingKeyObject & StatusObject
             for (T i : data) {
                 model.addRow(i.getInfoSinFK());
             }
-            return;
-        }
-        for (T i : data) {
-            model.addRow(i.getData());
+        } else {
+            for (T i : data) {
+                model.addRow(i.getData());
+            }
         }
     }
 
@@ -180,7 +180,6 @@ public class TableController<T extends Objects & ForeingKeyObject & StatusObject
         if (get == null) {
             return;
         }
-
         view.setObjectSearch(get);
         view.setScreenTableInfo();
         dumpData();

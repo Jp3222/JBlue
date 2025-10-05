@@ -18,6 +18,7 @@ package com.jblue.controllers;
 
 import com.jblue.model.dtos.Objects;
 import com.jblue.util.cache.MemoListCache;
+import java.util.List;
 import javax.swing.JComponent;
 
 /**
@@ -25,18 +26,16 @@ import javax.swing.JComponent;
  * @author juan-campos
  * @param <T>
  */
-public abstract class AbstractComponentController <T extends Objects> extends Controller {
+public abstract class AbstractComponentController<T extends Objects> extends Controller {
 
     private final JComponent component;
     protected final MemoListCache<T> memo_cache;
+    protected final List<T> list_items;
 
-    public AbstractComponentController(JComponent component) {
-        this(component, null);
-    }
-
-    public AbstractComponentController(JComponent component, MemoListCache<T> memo_cache) {
-        this.memo_cache = memo_cache;
+    public AbstractComponentController(JComponent component, MemoListCache<T> memo_cache, List<T> list_items) {
         this.component = component;
+        this.memo_cache = memo_cache;
+        this.list_items = list_items;
     }
 
     public abstract void loadData();

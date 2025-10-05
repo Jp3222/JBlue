@@ -20,6 +20,7 @@ import com.jblue.controllers.AbstractComponentController;
 import com.jblue.model.dtos.Objects;
 import com.jblue.util.cache.MemoListCache;
 import java.awt.event.ActionEvent;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
@@ -30,8 +31,14 @@ import javax.swing.JComboBox;
  */
 public class ComboBoxController<T extends Objects> extends AbstractComponentController<T> {
 
+    private String format;
+
+    public ComboBoxController(JComboBox<T> component, List<T> list_items) {
+        super(component, null, list_items);
+    }
+
     public ComboBoxController(JComboBox<T> component, MemoListCache<T> memo_cache) {
-        super(component, memo_cache);
+        super(component, memo_cache, null);
     }
 
     @Override
@@ -43,7 +50,12 @@ public class ComboBoxController<T extends Objects> extends AbstractComponentCont
                 return "Seleccione elemento";
             }
         });
-        memo_cache.getList().forEach((t) -> box.addItem(t));
+
+        if (memo_cache != null) {
+            memo_cache.getList().forEach((t) -> box.addItem(t));
+        } else {
+            list_items.forEach(t -> box.addItem(t));
+        }
     }
 
     @Override
@@ -64,6 +76,14 @@ public class ComboBoxController<T extends Objects> extends AbstractComponentCont
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-
     }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
 }

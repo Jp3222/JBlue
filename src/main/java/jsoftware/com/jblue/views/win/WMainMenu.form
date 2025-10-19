@@ -20,6 +20,12 @@
                 <Property name="toolTipText" type="java.lang.String" value="Panel de Administracion"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="administration_history_view_item">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Administracion"/>
+                <Property name="name" type="java.lang.String" value="Administracion" noResource="true"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem8">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Exportar"/>

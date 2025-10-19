@@ -27,7 +27,7 @@ import jsoftware.com.jblue.model.constants._Const;
 import jsoftware.com.jblue.model.daos.HysHistoryDAO;
 import jsoftware.com.jblue.model.dtos.OUser;
 import jsoftware.com.jblue.util.Formats;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
+import jsoftware.com.jutil.db.JDBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,6 +35,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import jsoftware.com.jutil.jexception.JExcp;
 
 /**
  *
@@ -85,10 +86,10 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
         try (Statement st = connection.getJDBConnection().getNewStament()) {
             System.out.println(query);
             //ejecuta el query
-            boolean res = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
+            boolean registro = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
             //validar si fue exitoso
-            if (!res) {
-                throw new SQLException("[1] REGISTRO INCOMPLETO");
+            if (!registro) {
+                throw new SQLException("[1] REGISTRO CORRUPTO");
             }
             //obtener las llaves generadas
             try (ResultSet rs = st.getGeneratedKeys()) {
@@ -96,13 +97,13 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
                     throw new SQLException("[2] Primary Key no generada");
                 }
                 //registro en bitacora
-                boolean insert = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_WKI_WATER_INTAKE_TYPE,
+                registro = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_WKI_WATER_INTAKE_TYPE,
                         "SE INSERTO LA TIPO DE TOMA: %s - %s".formatted(
                                 rs.getString(1),
                                 values.get("type_name")
                         )
                 );
-                if (!insert) {
+                if (!registro) {
                     throw new SQLException("[3] REGISTRO EN BITACORA INCOMPLETO");
                 }
             }
@@ -112,7 +113,7 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
         } catch (SQLException ex) {
             connection.rollBack();
             returnMessage(view, false);
-            System.getLogger(WaterIntakesTypesController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            JExcp.getInstance(false, true).show(ex, getClass());
         } finally {
             connection.setAutoCommit(true);
         }
@@ -137,20 +138,20 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
                 throw new SQLException("conexion null");
             }
 
-            boolean delete = connection.update("status = '3', date_end = '%s'".formatted(current_date_time),
+            boolean registro = connection.update("status = '3', date_end = '%s'".formatted(current_date_time),
                     "id = %s".formatted(view.getObjectSearch().getId())
             );
 
             // si no se hizo el borrado, mandamos una excepcion
-            if (!delete) {
-                throw new SQLException("NO SE PUDO ELIMINAR LOGICAMENTE EL REGISTRO");
+            if (!registro) {
+                throw new SQLException("BORRADO LOGICO CORRUPTO");
             }
-            boolean insert = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_WKI_WATER_INTAKE_TYPE,
+            registro = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_WKI_WATER_INTAKE_TYPE,
                     "SE ELIMINO LOGICAMENTE EL TIPO DE TOMA: %s - %s".formatted(
                             view.getObjectSearch().getId(),
                             view.getObjectSearch().getTypeName()
                     ));
-            if (!insert) {
+            if (!registro) {
                 throw new SQLException("NO SE PUDO REGISTRAR EN BITACORA");
             }
             //si se hizo hacemos la confirmacion
@@ -177,16 +178,16 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
                 "id = %s".formatted(view.getObjectSearch().getId()));
 
         try (Statement st = connection.getConnection().createStatement();) {
-            boolean res = st.executeUpdate(query) > 0;
-            if (!res) {
+            boolean registro = st.executeUpdate(query) > 0;
+            if (!registro) {
                 throw new SQLException("NO SE PUDO ELIMINAR LOGICAMENTE EL REGISTRO");
             }
-            boolean insert = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_WKI_WATER_INTAKE_TYPE,
+            registro = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_WKI_WATER_INTAKE_TYPE,
                     "SE ACTUALIZO EL TIPO DE TOMA: %s - %s".formatted(
                             view.getObjectSearch().getId(),
                             view.getObjectSearch().getTypeName()
                     ));
-            if (!insert) {
+            if (!registro) {
                 throw new SQLException("NO SE PUDO REGISTRAR EN BITACORA");
             }
             connection.commit();

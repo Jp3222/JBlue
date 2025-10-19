@@ -16,6 +16,7 @@
  */
 package jsoftware.com.jblue.controllers.viewc;
 
+import java.awt.HeadlessException;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.dtos.OUser;
 import jsoftware.com.jblue.views.components.UserViewComponent;
@@ -35,7 +36,7 @@ import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.views.components.ComponentFactory;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
+import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.jexception.JExcp;
 import java.io.File;
 import java.sql.ResultSet;
@@ -84,6 +85,11 @@ public class UserController extends AbstractDBViewController<OUser> implements D
 
     @Override
     public void save() {
+        AdministrationHistoryObject currentAdministration = SystemSession.getInstancia().getCurrentAdministration();
+        if (currentAdministration == null) {
+            returnMessage(view, false, "[1] La administracion actual no ha sido registrada");
+            return;
+        }
         if (!view.isValuesOk()) {
             return;
         }
@@ -104,15 +110,17 @@ public class UserController extends AbstractDBViewController<OUser> implements D
             //si se registra en el historial, validamos si es un tramite y si es un alta de titular o de consumidor
             if (view.isProcess() || values.get("user_type").contains("1")) {
                 processOwnerRegister(st, user_key, values, "1");
-            } else {
+            } else if (view.isProcess() || values.get("user_type").contains("2")) {
                 processOwnerRegister(st, user_key, values, "2");
+            } else {
+                throw new UnknownError("Tramite Desconocido");
             }
             connection.commit();
         } catch (SQLException e) {
             connection.rollBack();
             JExcp.getInstance(false, true).print(e, getClass(), "save");
             returnMessage(view, false);
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             JExcp.getInstance(false, true).print(e, getClass(), "save");
             returnMessage(view, false);
         } finally {
@@ -127,16 +135,26 @@ public class UserController extends AbstractDBViewController<OUser> implements D
                 return;
             }
             connection.setAutoCommit(false);
-            String id = view.getObjectSearch().getId();
-            boolean delete = connection.update("status", "3", "id = %s".formatted(id));
-//            rmessage(view, delete, _Const.INDEX_DELETE, LogBookFormats.USERS.formatted(
-//                    view.getObjectSearch().getId(),
-//                    view.getObjectSearch().getName(),
-//                    view.getObjectSearch().getLastName1(),
-//                    view.getObjectSearch().getLastName2()
-//            ));
-            //FUNCION EN DESARROLLO - Ocultar los resgitros de pago de un usuario
-            if (!AppConfig.isDevFunction()) {
+            OUser user = view.getObjectSearch();
+            boolean registro = connection.update("status", "3", "id = %s".formatted(user.getId()));
+            if (!registro) {
+                throw new SQLException("BORRADO LOGICO CORRUPTO");
+            }
+            registro = HysHistoryDAO.getINSTANCE().getHysUsersMovs().insertToUsers(
+                    DESCRIPTION_FORMAT.formatted(
+                            "BORRO LOGICAMENTE",
+                            user.getId(),
+                            user.getName(),
+                            user.getLastName1(),
+                            user.getLastName2()
+                    ));
+            //si no se registra en el historial lanzamos una excepcion para hacer un rollback
+            if (!registro) {
+                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+            }
+            boolean devFunction = AppConfig.isDevFunction();
+            if (!devFunction) {
+                connection.commit();
                 return;
             }
             int hidden_payments = JOptionPane.showConfirmDialog(view,
@@ -148,17 +166,28 @@ public class UserController extends AbstractDBViewController<OUser> implements D
                 return;
             }
             DBConnection<OServicePayments> payments = CacheFactory.SERVICE_PAYMENTS.getConnection();
-            boolean update = payments.update("status", "3", "user = %s".formatted(id));
-//            rmessage(view, update, _Const.LOGIC_DELETE_TO_SERVICE_PAYMENTS, LogBookFormats.USERS.formatted(
-//                    view.getObjectSearch().getId(),
-//                    view.getObjectSearch().getName(),
-//                    view.getObjectSearch().getLastName1(),
-//                    view.getObjectSearch().getLastName2()
-//            ));
+            registro = payments.update("status", "3", "user = %s".formatted(user.getId()));
+            if (!registro) {
+                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+            }
+            registro = HysHistoryDAO.getINSTANCE().delete(_Const.INDEX_PYM_SERVICE_PAYMENTS,
+                    "SE BORRARON LOGICAMENTE LOS PAGOS DEL USUARIO: %s - %s %s %s".formatted(
+                            user.getId(),
+                            user.getName(),
+                            user.getLastName1(),
+                            user.getLastName2()
+                    )
+            );
+            //si no se registra en el historial lanzamos una excepcion para hacer un rollback
+            if (!registro) {
+                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+            }
             connection.commit();
-            connection.setAutoCommit(true);
-        } catch (NullPointerException e) {
+        } catch (SQLException | HeadlessException ex) {
             connection.rollBack();
+            System.getLogger(UserController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } finally {
+            connection.setAutoCommit(true);
         }
     }
 
@@ -267,7 +296,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         return user_key;
     }
 
-    private void processOwnerRegister(Statement st, String user_key, Map<String, String> user_data, String process_type) throws SQLException, NullPointerException {
+    private String processOwnerRegister(Statement st, String user_key, Map<String, String> user_data, String process_type) throws SQLException, NullPointerException {
         boolean registro;
         //si es un titular se inicial el proceso de alta de toma
         String fields = "process_type,employee_start,president,user,status";
@@ -305,6 +334,12 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         if (!registro) {
             throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
         }
+        ResultSet rs = st.getGeneratedKeys();
+        if (!rs.next()) {
+            throw new SQLException("LLAVE CORRUPTA");
+        }
+        String process_key = rs.getString(1);
+        return process_key;
     }
 
 }

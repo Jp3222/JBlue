@@ -23,7 +23,7 @@ import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.dtos.OEmployee;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.views.EmployeesView;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
+import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.jexception.JExcp;
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;

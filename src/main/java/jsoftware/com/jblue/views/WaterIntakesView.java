@@ -26,20 +26,23 @@ import jsoftware.com.jblue.model.dtos.Objects;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
-import jsoftware.com.jblue.views.framework.DBValuesModel;
 import jsoftware.com.jblue.views.framework.DBView;
 import jsoftware.com.jblue.views.framework.TableSearchViewModel;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import jsoftware.com.jblue.model.dtos.OUser;
+import jsoftware.com.jblue.views.framework.DBValuesMapModel;
 
 /**
  *
  * @author juanp
  */
-public final class WaterIntakesView extends DBView implements DBValuesModel, TableSearchViewModel {
+public final class WaterIntakesView extends DBView implements DBValuesMapModel, TableSearchViewModel {
 
     private final CardLayout ly;
     private final JTableModel model;
@@ -47,6 +50,12 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
     private ComboBoxController<OStreet> street_cat_1;
     private ComboBoxController<OStreet> street_cat_2;
     private ComboBoxController<OWaterIntakeTypes> water_intake;
+    private OUser user_search;
+    private OWaterIntakeTypes water_intake_types_search;
+    private OStreet street1_search;
+    private OStreet street2_search;
+
+    private boolean process;
 
     /**
      * Creates new form WaterIntakesView
@@ -90,6 +99,11 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         cancel_button.addActionListener(controller);
         register_button.addActionListener(table_controller);
         search_button.addActionListener(table_controller);
+        //
+        search_user_button.addActionListener(controller);
+        search_street_button.addActionListener(controller);
+        search_street2_button.addActionListener(controller);
+        search_water_intake.addActionListener(controller);
     }
 
     @Override
@@ -142,21 +156,21 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         jPanel12 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         user_field = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        search_user_button = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        search_water_intake = new javax.swing.JButton();
         water_intake_types_field = new javax.swing.JComboBox<>();
         jPanel9 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         operation_cost_field = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        search_street_button = new javax.swing.JButton();
         street1_field = new javax.swing.JComboBox<>();
         jPanel13 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
+        search_street2_button = new javax.swing.JButton();
         street2_field = new javax.swing.JComboBox<>();
         jPanel14 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
@@ -255,10 +269,11 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         user_field.setName(""); // NOI18N
         jPanel12.add(user_field, java.awt.BorderLayout.CENTER);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        jButton3.setToolTipText("Seleccionar titular");
-        jButton3.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel12.add(jButton3, java.awt.BorderLayout.LINE_END);
+        search_user_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
+        search_user_button.setToolTipText("Seleccionar titular");
+        search_user_button.setActionCommand("search_user");
+        search_user_button.setPreferredSize(new java.awt.Dimension(50, 50));
+        jPanel12.add(search_user_button, java.awt.BorderLayout.LINE_END);
 
         panel_campos.add(jPanel12);
 
@@ -270,10 +285,11 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel8.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        jButton1.setToolTipText("Seleccionar Tipo de toma");
-        jButton1.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel8.add(jButton1, java.awt.BorderLayout.LINE_END);
+        search_water_intake.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
+        search_water_intake.setToolTipText("Seleccionar Tipo de toma");
+        search_water_intake.setActionCommand("search_water_intake_type");
+        search_water_intake.setPreferredSize(new java.awt.Dimension(50, 50));
+        jPanel8.add(search_water_intake, java.awt.BorderLayout.LINE_END);
 
         jPanel8.add(water_intake_types_field, java.awt.BorderLayout.CENTER);
 
@@ -301,10 +317,11 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel10.add(jLabel5, java.awt.BorderLayout.WEST);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        jButton4.setToolTipText("Seleccionar Calle 1");
-        jButton4.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel10.add(jButton4, java.awt.BorderLayout.LINE_END);
+        search_street_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
+        search_street_button.setToolTipText("Seleccionar Calle 1");
+        search_street_button.setActionCommand("search_street1");
+        search_street_button.setPreferredSize(new java.awt.Dimension(50, 50));
+        jPanel10.add(search_street_button, java.awt.BorderLayout.LINE_END);
 
         jPanel10.add(street1_field, java.awt.BorderLayout.CENTER);
 
@@ -318,10 +335,11 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
         jLabel7.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel13.add(jLabel7, java.awt.BorderLayout.WEST);
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        jButton5.setToolTipText("Seleccionar Calle 2");
-        jButton5.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel13.add(jButton5, java.awt.BorderLayout.LINE_END);
+        search_street2_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
+        search_street2_button.setToolTipText("Seleccionar Calle 2");
+        search_street2_button.setActionCommand("search_street2");
+        search_street2_button.setPreferredSize(new java.awt.Dimension(50, 50));
+        jPanel13.add(search_street2_button, java.awt.BorderLayout.LINE_END);
 
         jPanel13.add(street2_field, java.awt.BorderLayout.CENTER);
 
@@ -531,11 +549,7 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
     private javax.swing.JTextField date_register;
     private javax.swing.JTextField date_update_field;
     private javax.swing.JButton delete_button;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -583,6 +597,10 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
     private javax.swing.JButton search_button;
     private javax.swing.JTextField search_field;
     private javax.swing.JPanel search_panel;
+    private javax.swing.JButton search_street2_button;
+    private javax.swing.JButton search_street_button;
+    private javax.swing.JButton search_user_button;
+    private javax.swing.JButton search_water_intake;
     private javax.swing.JPanel status_bar_panel;
     private javax.swing.JComboBox<String> status_field;
     private javax.swing.JComboBox<OStreet> street1_field;
@@ -646,8 +664,89 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
     }
 
     @Override
-    public String[] getDbValues(boolean update) {
-        return null;
+    public Map<String, String> getValues(boolean update) {
+        Map<String, String> map;
+        String _user = user_search.getId();
+        String _water_inatke = water_intake_types_search.getId();
+        String _cost_procedure = operation_cost_field.getText();
+        String _street1 = street1_search.getId();
+        String _street2 = street2_search.getId();
+        String _location = location_field.getText();
+        String _description = "";
+        String _status = "1";
+        if (isProcess()) {
+            _status = status_field.getSelectedIndex() + "";
+        }
+        if (update) {
+            map = saveUpdate(object_search, _cost_procedure, _water_inatke, _user, user_search.toString(), _street1, _street2, _location, _description, _status);
+        } else {
+            map = saveInsert(_cost_procedure, _water_inatke, _user, user_search.toString(), _street1, _street2, _location, _description, _status);
+        }
+        return map;
+    }
+
+    public Map<String, String> saveInsert(
+            String _cost_procedure, String _water_inatke, String _user, String user_name,
+            String _street1, String _street2, String _location, String _description,
+            String _status) {
+
+        // Inicialización con capacidad inicial precisa (9 campos)
+        Map<String, String> map = new HashMap<>(10);
+
+        // 1. Campos que deben ser Obligatorios y No Vacíos (Usamos putIfPresentAndNotBlank)
+        // Aplicable a identificadores o valores centrales.
+        Filters.putIfPresentAndNotBlank(map, "cost_procedure", _cost_procedure);
+        Filters.putIfPresentAndNotBlank(map, "water_intake_id", _water_inatke);
+        Filters.putIfPresentAndNotBlank(map, "user_id", _user);
+        Filters.putIfPresentAndNotBlank(map, "user_name", user_name);
+        Filters.putIfPresentAndNotBlank(map, "street1", _street1);
+
+        // 2. Campos que podrían ser Opcionales o Aceptar Cadenas Vacías (Usamos putIfNotNull)
+        // Aplicable a direcciones secundarias, descripciones o estados.
+        Filters.putIfNotNull(map, "street2", _street2);
+        Filters.putIfNotNull(map, "location", _location);
+        Filters.putIfNotNull(map, "description", _description);
+        Filters.putIfNotNull(map, "status", _status);
+
+        return map;
+    }
+
+    public Map<String, String> saveUpdate(
+            OWaterIntakes originalProcedure, // Objeto con datos actuales
+            String _cost_procedure, String _water_inatke, String _user, String _user_name,
+            String _street1, String _street2, String _location, String _description,
+            String _status) {
+
+        // Verificar el objeto base (Fail-Fast)
+        if (originalProcedure == null) {
+            throw new NullPointerException("El objeto de procedimiento original (originalProcedure) no puede ser null para una actualización.");
+        }
+
+        Map<String, String> map = new HashMap<>();
+
+        // 1. Campos Obligatorios/Centrales
+        // Compara el valor nuevo (ej. _cost_procedure) con el valor original (originalProcedure.getCostProcedure())
+        Filters.addIfChanged(map, "cost_procedure", originalProcedure.getConstProcedure(), _cost_procedure);
+
+        // Asumiendo que el campo 'water_intake_id' es un String en el objeto original:
+        Filters.addIfChanged(map, "water_intake_id", originalProcedure.getWaterIntakeType(), _water_inatke);
+
+        // Asumiendo que el campo 'user_id' es un String en el objeto original:
+        Filters.addIfChanged(map, "user_id", originalProcedure.getUser(), _user);
+
+        // El parámetro 'toString' de tu función original fue renombrado a '_user_name' para ser claro.
+        // Asumiendo que el campo 'user_name' es un String en el objeto original:
+        Filters.addIfChanged(map, "user_name", originalProcedure.getUserName(), _user_name);
+
+        // 2. Campos Opcionales/Descriptivos
+        Filters.addIfChanged(map, "street1", originalProcedure.getStreet1(), _street1);
+        Filters.addIfChanged(map, "street2", originalProcedure.getStreet2(), _street2);
+        Filters.addIfChanged(map, "location", originalProcedure.getLocation(), _location);
+        Filters.addIfChanged(map, "description", originalProcedure.getDescription(), _description);
+
+        // Asumiendo que el estado se guarda como String:
+        Filters.addIfChanged(map, "status", String.valueOf(originalProcedure.getStatus()), _status);
+        return map;
     }
 
     @Override
@@ -659,7 +758,13 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
 
     @Override
     public void setScreenTableInfo() {
-        //
+        if (user_search != null) {
+            user_field.setText(user_search.toString());
+            water_intake_types_field.setSelectedItem(water_intake_types_search);
+            street1_field.setSelectedItem(street1_search);
+            street2_field.setSelectedItem(street2_search);
+            status_field.setSelectedIndex(1);
+        }
         save_button.setEnabled(false);
         update_button.setEnabled(true);
         delete_button.setEnabled(true);
@@ -668,4 +773,30 @@ public final class WaterIntakesView extends DBView implements DBValuesModel, Tab
     void hiddenNorthPanel(boolean b) {
         this.north_panel.setVisible(b);
     }
+
+    public void setUserSearch(OUser user_search) {
+        this.user_search = user_search;
+    }
+
+    public void setWater_intake_types_search(OWaterIntakeTypes water_intake_types_search) {
+        this.water_intake_types_search = water_intake_types_search;
+    }
+
+    public void setStreet1_search(OStreet street1_search) {
+        this.street1_search = street1_search;
+    }
+
+    public void setStreet2_search(OStreet street2_search) {
+        this.street2_search = street2_search;
+    }
+
+    public void setProcess(boolean procces) {
+        this.process = procces;
+        hiddenNorthPanel(false);
+    }
+
+    public boolean isProcess() {
+        return process;
+    }
+
 }

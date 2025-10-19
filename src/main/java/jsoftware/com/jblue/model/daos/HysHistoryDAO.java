@@ -19,7 +19,7 @@ package jsoftware.com.jblue.model.daos;
 import jsoftware.com.jblue.model.constants._Const;
 import jsoftware.com.jblue.model.dtos.OEmployee;
 import jsoftware.com.jblue.sys.SystemSession;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
+import jsoftware.com.jutil.db.JDBConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -64,6 +64,10 @@ public class HysHistoryDAO {
     public boolean save(int affected_table, int type_mov, String description) throws SQLException {
         OEmployee employee = SystemSession.getInstancia().getCurrentEmployee();
         return save(employee, affected_table, type_mov, description);
+    }
+    
+   public boolean SELECT(int affected_table, String description) throws SQLException {
+        return save(affected_table, _Const.INDEX_SELECT, description);
     }
 
     protected boolean save(OEmployee employee, int affected_table, int type_mov, String description) throws SQLException {

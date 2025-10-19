@@ -17,7 +17,7 @@
 package jsoftware.com.jblue.sys;
 
 import jsoftware.com.jblue.sys.app.AppFiles;
-import jsoftware.com.jutil.framework.LaunchApp;
+import jsoftware.com.jutil.sys.LaunchApp;
 import jsoftware.com.jutil.jexception.JExcp;
 import java.io.File;
 import java.io.FileNotFoundException;

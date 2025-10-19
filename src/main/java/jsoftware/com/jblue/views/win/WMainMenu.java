@@ -35,6 +35,7 @@ import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import jsoftware.com.jblue.views.AdministrationHistoryView;
 
 /**
  *
@@ -58,6 +59,7 @@ public final class WMainMenu extends AbstractAppWindows {
     //
     private final ParametersView flag_view;
     //
+    private final AdministrationHistoryView administration_history_view;
     private final LoginWindows LOGIN;
     private final AboutUs ABOUT;
     private final ProfileWindow PROFILE;
@@ -86,6 +88,7 @@ public final class WMainMenu extends AbstractAppWindows {
         surcharge_payments_view = new SurchargePaymentsView();
         process_view = new ProcessView();
         user_consumer = new UserConsumerView();
+        administration_history_view = new AdministrationHistoryView();
         //
         flag_view = ParametersView.getInstance();
         //
@@ -93,7 +96,7 @@ public final class WMainMenu extends AbstractAppWindows {
         updateTitle(shop_cart_view.getName());
         build();
     }
-
+    
     @Override
     public void build() {
         components();
@@ -101,7 +104,7 @@ public final class WMainMenu extends AbstractAppWindows {
         initialState();
         finalState();
     }
-
+    
     @Override
     public void components() {
         views_panel.add(shop_cart_view, shop_cart_view.getName());
@@ -115,9 +118,10 @@ public final class WMainMenu extends AbstractAppWindows {
         views_panel.add(flag_view, flag_view.getName());
         views_panel.add(process_view, process_view.getName());
         views_panel.add(user_consumer, user_consumer.getName());
+        views_panel.add(administration_history_view, administration_history_view.getName());
 
     }
-
+    
     @Override
     public void events() {
         controller = new MainController(this);
@@ -143,17 +147,19 @@ public final class WMainMenu extends AbstractAppWindows {
         //
         about_item_view.addActionListener(controller);
         profile_item_view.addActionListener(controller);
+        //
+        administration_history_view_item.addActionListener(controller);
     }
-
+    
     @Override
     public void initialState() {
-
+        
     }
-
+    
     @Override
     public void finalState() {
     }
-
+    
     public void goToHome() {
         ly.show(views_panel, shop_cart_view.getName());
     }
@@ -195,6 +201,7 @@ public final class WMainMenu extends AbstractAppWindows {
         jMenu1 = new javax.swing.JMenu();
         profile_item_view = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
+        administration_history_view_item = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         parameters_view_item = new javax.swing.JMenuItem();
@@ -367,6 +374,10 @@ public final class WMainMenu extends AbstractAppWindows {
         jMenuItem6.setToolTipText("Panel de Administracion");
         jMenu1.add(jMenuItem6);
 
+        administration_history_view_item.setText("Administracion");
+        administration_history_view_item.setName("Administracion"); // NOI18N
+        jMenu1.add(administration_history_view_item);
+
         jMenuItem8.setText("Exportar");
         jMenu1.add(jMenuItem8);
 
@@ -452,6 +463,7 @@ public final class WMainMenu extends AbstractAppWindows {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem about_item_view;
+    private javax.swing.JMenuItem administration_history_view_item;
     private javax.swing.JButton btn_calles;
     private javax.swing.JButton btn_home;
     private javax.swing.JButton btn_tipo_pagos;
@@ -504,7 +516,7 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JMenuItem water_intakes_view_item;
     // End of variables declaration//GEN-END:variables
     public static final String OUT = "OUT";
-
+    
     @Override
     public void dispose() {
         closeWindows();
@@ -512,36 +524,36 @@ public final class WMainMenu extends AbstractAppWindows {
         if (showVisor != null && showVisor.isVisible()) {
             showVisor.dispose();
         }
-
+        
         SystemSession.getInstancia().setUser(null);
         SwingUtilities.invokeLater(() -> {
             LOGIN.setVisible(true);
         });
     }
-
+    
     public CardLayout getCardLayout() {
         return ly;
     }
-
+    
     public JLabel getLabelTitle() {
         return label_title;
     }
-
+    
     public JPanel getViewsPanel() {
         return views_panel;
     }
-
+    
     public AboutUs getABOUT() {
         return ABOUT;
     }
-
+    
     public ProfileWindow getProfileWindow() {
         return PROFILE;
     }
-
+    
     public void closeWindows() {
         ABOUT.dispose();
         PROFILE.dispose();
     }
-
+    
 }

@@ -17,7 +17,7 @@
 package jsoftware.com.jblue.model;
 
 import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
+import jsoftware.com.jutil.db.JDBConnection;
 import java.util.List;
 import java.util.Optional;
 

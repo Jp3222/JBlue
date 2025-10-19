@@ -16,7 +16,7 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jutil.framework.ViewStates;
+import jsoftware.com.jutil.view.ViewStates;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import jsoftware.com.jblue.views.framework.OptionMenuModel;

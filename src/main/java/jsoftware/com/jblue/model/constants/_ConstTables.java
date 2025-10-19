@@ -16,7 +16,7 @@
  */
 package jsoftware.com.jblue.model.constants;
 
-import jsoftware.com.jutil.dbcon.tb.JDBTable;
+import jsoftware.com.jutil.db.JDBTable;
 
 /**
  *

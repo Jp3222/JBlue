@@ -50,8 +50,8 @@ public final class ListController<T extends Objects & StatusObject & ForeingKeyO
         this.filters_list = new ArrayList<>(15);
         this.view = view;
         model = view.getListModel();
-        view.getTextComponentList().addKeyListener((KeyListener) this);
-        view.getTextComponentList().addMouseListener((MouseListener) this);
+        view.getTextComponentList().addKeyListener(this);
+        view.getTextComponentList().addMouseListener(this);
         addFilterList((t) -> t.getId().equals(search_text));
         addFilterList((t) -> Filters.clearAndCheck(t.toString(), search_text));
     }

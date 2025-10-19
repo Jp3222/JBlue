@@ -26,14 +26,11 @@ import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.controllers.AbstractComponentController;
-import jsoftware.com.jblue.model.DBConnection;
-import java.util.ArrayList;
 import jsoftware.com.jblue.controllers.DBControllerModel;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.model.constants._Const;
 import jsoftware.com.jblue.model.daos.HysHistoryDAO;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
+import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.jexception.JExcp;
 import java.sql.SQLException;
 import java.sql.ResultSet;
@@ -135,7 +132,7 @@ public class StreetsController extends AbstractDBViewController<OStreet> impleme
             if (!delete) {
                 throw new SQLException("BORRADO LOGICO CORRUPTO");
             }
-            delete = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_CAT_STREET,
+            delete = HysHistoryDAO.getINSTANCE().delete(_Const.INDEX_CAT_STREET,
                     "SE ELIMINO LA CALLE: %s - %s".formatted(
                             view.getObjectSearch().getId(),
                             view.getObjectSearch().getNombre()
@@ -168,7 +165,7 @@ public class StreetsController extends AbstractDBViewController<OStreet> impleme
             if (!update) {
                 throw new SQLException("ERROR AL ACTUALIZAR");
             }
-            update = HysHistoryDAO.getINSTANCE().delete(_Const.INDEX_CAT_STREET, "SE ACTUALIZO LA CALLE");
+            update = HysHistoryDAO.getINSTANCE().update(_Const.INDEX_CAT_STREET, "SE ACTUALIZO LA CALLE");
             if (!update) {
                 throw new SQLException("ERROR AL REGISTRAR EL BITACORA");
             }

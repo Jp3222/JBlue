@@ -40,7 +40,7 @@ public class ProcessView extends SimpleView implements DBValuesMapModel {
         this.user_view = new UserView();
         user_view.setProcess(true);
         this.water_intake_view = new WaterIntakesView();
-        this.water_intake_view.hiddenNorthPanel(false);
+        this.water_intake_view.setProcess(true);
         this.root_panel.add(user_view, user_view.getName());
         this.root_panel.add(water_intake_view, water_intake_view.getName());
         next_panel_button.addActionListener((e) -> {

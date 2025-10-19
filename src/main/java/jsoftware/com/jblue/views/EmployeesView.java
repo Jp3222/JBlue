@@ -415,7 +415,6 @@ public final class EmployeesView extends DBView implements DBValuesMapModel {
         jLabel1.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_ncasa.add(jLabel1, java.awt.BorderLayout.WEST);
 
-        user_field.setEditable(false);
         user_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         user_field.setName("Usuario"); // NOI18N
         pc_ncasa.add(user_field, java.awt.BorderLayout.CENTER);
@@ -435,7 +434,6 @@ public final class EmployeesView extends DBView implements DBValuesMapModel {
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_estado.add(jLabel8, java.awt.BorderLayout.WEST);
 
-        password_field.setEditable(false);
         password_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         password_field.setName("Contraseña"); // NOI18N
         pc_estado.add(password_field, java.awt.BorderLayout.CENTER);

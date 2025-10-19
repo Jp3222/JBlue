@@ -17,8 +17,8 @@
 package jsoftware.com.jblue.sys.app;
 
 import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
-import jsoftware.com.jutil.framework.LaunchApp;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.sys.LaunchApp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;

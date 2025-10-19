@@ -17,7 +17,7 @@
 package jsoftware.com.jblue.model.factories;
 
 import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jutil.dbcon.tb.JDBTable;
+import jsoftware.com.jutil.db.JDBTable;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**

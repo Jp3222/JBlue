@@ -21,7 +21,7 @@ import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.dtos.OUser;
 import jsoftware.com.jblue.model.dtos.Objects;
 import jsoftware.com.jblue.util.cache.MemoListCache;
-import jsoftware.com.jutil.framework.ComponentStates;
+import jsoftware.com.jutil.view.ComponentStates;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;

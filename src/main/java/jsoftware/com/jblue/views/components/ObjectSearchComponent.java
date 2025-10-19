@@ -26,7 +26,7 @@ import jsoftware.com.jblue.model.dtos.StatusObject;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.framework.ListSearchViewModel;
-import jsoftware.com.jutil.framework.WindowStates;
+import jsoftware.com.jutil.view.WindowStates;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;

@@ -22,8 +22,8 @@ import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.win.ConfigWindow;
 import jsoftware.com.jblue.views.win.LoginWindows;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
-import jsoftware.com.jutil.framework.MainSystem;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.sys.MainSystem;
 import jsoftware.com.jutil.jexception.JExcp;
 import jsoftware.com.jutil.platf.So;
 import java.io.File;
@@ -74,7 +74,6 @@ public class JBlueMainSystem implements MainSystem {
                 null_connection = true;
             }
         }
-
         if (null_connection) {
             try {
                 ConfigWindow o = new ConfigWindow();

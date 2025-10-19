@@ -16,10 +16,10 @@
  */
 package jsoftware.com.jblue.model.dtos;
 
-import jsoftware.com.jutil.dbcon.cn.JDBObjectMapModel;
-import jsoftware.com.jutil.dbcon.cn.JDBObjectModel;
+import jsoftware.com.jutil.db.model.JDBObjectMapModel;
 
 import java.util.Arrays;
+import jsoftware.com.jutil.db.model.JDBObjectArrayModel;
 
 /**
  * Proporciona una implementación base abstracta para los objetos de
@@ -27,16 +27,16 @@ import java.util.Arrays;
  * <p>
  * Esta clase sirve como un punto de partida para todas las subclases que
  * representan registros de la base de datos con una estructura de array simple.
- * Implementa la interfaz {@link JDBObjectModel}, proporcionando
+ * Implementa la interfaz {@link JDBObjectArrayModel}, proporcionando
  * implementaciones por defecto para la gestión de datos, la comparación de
  * objetos, y la clonación, lo que simplifica la creación de DTOs concretos.
  *
  * @author juan-campos
- * @see JDBObjectModel
+ * @see JDBObjectArrayModel
  * @see JDBObjectMapModel
  * @since 1.0
  */
-public abstract class AbstractObject implements JDBObjectModel {
+public abstract class AbstractObject implements JDBObjectArrayModel {
 
     /**
      * Array que almacena los valores de los campos de un registro de la base de
@@ -176,5 +176,5 @@ public abstract class AbstractObject implements JDBObjectModel {
      * respectivamente menor que, igual a o mayor que el objeto especificado.
      */
     @Override
-    public abstract int compareTo(JDBObjectModel o);
+    public abstract int compareTo(JDBObjectArrayModel o);
 }

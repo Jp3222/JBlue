@@ -19,7 +19,6 @@ package jsoftware.com.jblue.controllers;
 import jsoftware.com.jblue.model.dtos.Objects;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.model.DBConnection;
-import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.views.framework.SimpleView;
 import javax.swing.JOptionPane;
 
@@ -35,19 +34,52 @@ public abstract class AbstractDBViewController<T extends Objects> extends Abstra
 
     public AbstractDBViewController(MemoListCache<T> memo_cache) {
         this.memo_cache = memo_cache;
-        this.connection = (DBConnection<T>) memo_cache.getConnection();
+        this.connection = memo_cache.getConnection();
     }
 
+    /**
+     * Este metodo reinicia la cache y la vista, define el estado de la
+     * operacion y lanza un mensaje
+     *
+     * @param view
+     * @param mov
+     */
+    protected void returnMessage(SimpleView view, boolean mov, String msg) {
+        if (mov) {
+            memo_cache.reLoadData();
+            view.initialState();
+        }
+        returnMessage(view, msg);
+    }
+
+    /**
+     * Este metodo reinicia la cache y la vista, define el estado de la
+     * operacion y lanza un mensaje
+     *
+     * @param view
+     * @param mov
+     */
     protected void returnMessage(SimpleView view, boolean mov) {
         String status = mov ? "Exitosa" : "Erronea";
         if (mov) {
             memo_cache.reLoadData();
             view.initialState();
         }
+        returnMessage(view, "Operacion %s".formatted(status));
+    }
+
+    /**
+     * Este metodo solo lanza un mensaje
+     *
+     * @param view
+     * @param msg
+     */
+    public void returnMessage(SimpleView view, String msg) {
         JOptionPane.showMessageDialog(view,
-                "Operacion %s".formatted(status),
+                msg,
                 "Estado de la operacion",
                 JOptionPane.INFORMATION_MESSAGE);
+
     }
 
 }

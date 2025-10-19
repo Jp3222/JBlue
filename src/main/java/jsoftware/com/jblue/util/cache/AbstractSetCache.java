@@ -19,7 +19,7 @@ package jsoftware.com.jblue.util.cache;
 import jsoftware.com.jblue.model.DBConnection;
 import jsoftware.com.jblue.model.dtos.Objects;
 import jsoftware.com.jblue.util.ObjectUtils;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
+import jsoftware.com.jutil.db.JDBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;

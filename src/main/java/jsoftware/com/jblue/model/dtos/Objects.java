@@ -4,11 +4,11 @@
  */
 package jsoftware.com.jblue.model.dtos;
 
-import jsoftware.com.jutil.dbcon.cn.JDBObjectMapModel;
-import jsoftware.com.jutil.dbcon.cn.JDBObjectModel;
+import jsoftware.com.jutil.db.model.JDBObjectMapModel;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jsoftware.com.jutil.db.model.JDBObjectArrayModel;
 
 /**
  * Representa un objeto de transferencia de datos (DTO) genérico y simple.
@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author jp
  * @see AbstractObject
- * @see JDBObjectModel
+ * @see JDBObjectArrayModel
  * @see JDBObjectMapModel
  * @since 1.0
  */
@@ -67,12 +67,12 @@ public class Objects extends AbstractObject {
      * Los identificadores son convertidos a enteros para realizar la
      * comparación.
      *
-     * @param o El objeto {@link JDBObjectModel} con el que se va a comparar.
+     * @param o El objeto {@link JDBObjectArrayModel} con el que se va a comparar.
      * @return Un valor negativo si este objeto es menor, cero si son iguales, o
      * un valor positivo si este objeto es mayor.
      */
     @Override
-    public int compareTo(JDBObjectModel o) {
+    public int compareTo(JDBObjectArrayModel o) {
         int x = Integer.parseInt(getId());
         int y = Integer.parseInt(o.getId());
         if (x > y) {

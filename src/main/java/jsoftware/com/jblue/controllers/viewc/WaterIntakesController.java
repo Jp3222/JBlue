@@ -21,6 +21,18 @@ import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.dtos.OWaterIntakes;
 import jsoftware.com.jblue.views.WaterIntakesView;
 import java.awt.event.ActionEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Map;
+import jsoftware.com.jblue.model.constants._Const;
+import jsoftware.com.jblue.model.daos.HysHistoryDAO;
+import jsoftware.com.jblue.model.dtos.OStreet;
+import jsoftware.com.jblue.model.dtos.OUser;
+import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
+import jsoftware.com.jblue.util.Formats;
+import jsoftware.com.jblue.views.components.ObjectSearchComponent;
+import jsoftware.com.jutil.db.JDBConnection;
 
 /**
  *
@@ -37,10 +49,64 @@ public class WaterIntakesController extends AbstractDBViewController<OWaterIntak
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()) {
+            case SAVE_COMMAND ->
+                save();
+            case UPDATE_COMMAND ->
+                update();
+            case DELETE_COMMAND ->
+                delete();
+            case CANCEL_COMMAND ->
+                cancel();
+            case "search_user" ->
+                search_user();
+            case "search_water_intake_type" ->
+                search_street1();
+            case "search_street1" ->
+                search_street2();
+            case "search_street2" ->
+                search_water_inatake_type();
+            default ->
+                throw new AssertionError();
+        }
     }
 
     @Override
     public void save() {
+        Map<String, String> values = view.getValues(false);
+        if (values.isEmpty()) {
+            returnMessage(view, false);
+            return;
+        }
+        //obtienen los datos
+        String[] insertFormats = Formats.getInsertFormats(values);
+        // se construye el query
+        String query = JDBConnection.INSERT_VAL.formatted(_Const.WKI_WATER_INTAKES_TABLE.getTableName(), insertFormats[0], insertFormats[1]);
+        connection.setAutoCommit(false);
+        try (Statement st = connection.getJDBConnection().getNewStament()) {
+            boolean register = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
+            if (!register) {
+                throw new SQLException("REGISTRO CORRUPTO");
+            }
+            ResultSet rs = st.getGeneratedKeys();
+            if (!rs.next()) {
+                throw new SQLException("LLAVE CORRUPTA");
+            }
+            register = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_WKI_WATER_INTAKES,
+                    "SE INSERTO LA TOMA DE AGUA DEL USUARIO: %s".formatted(
+                            values.get("user_name")
+                    )
+            );
+            if (!register) {
+                throw new SQLException("REGISTRO CORRUPTO");
+            }
+            returnMessage(view, true);
+        } catch (SQLException e) {
+            connection.rollBack();
+            returnMessage(view, false);
+        } finally {
+            connection.setAutoCommit(true);
+        }
     }
 
     @Override
@@ -53,5 +119,25 @@ public class WaterIntakesController extends AbstractDBViewController<OWaterIntak
 
     @Override
     public void cancel() {
+    }
+
+    private void search_user() {
+        OUser user = ObjectSearchComponent.getUser(null);
+        view.setUserSearch(user);
+    }
+
+    private void search_street1() {
+        OStreet street = ObjectSearchComponent.getStreet(null);
+        view.setStreet1_search(street);
+    }
+
+    private void search_street2() {
+        OStreet street = ObjectSearchComponent.getStreet(null);
+        view.setStreet2_search(street);
+    }
+
+    private void search_water_inatake_type() {
+        OWaterIntakeTypes water_inatke_type = ObjectSearchComponent.getWaterIntakeType(null);
+        view.setWater_intake_types_search(water_inatke_type);
     }
 }

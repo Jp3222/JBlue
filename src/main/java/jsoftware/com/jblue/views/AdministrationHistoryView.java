@@ -16,7 +16,10 @@
  */
 package jsoftware.com.jblue.views;
 
+import jsoftware.com.jblue.controllers.compc.ComboBoxController;
+import jsoftware.com.jblue.controllers.viewc.AdministrationHistoryController;
 import jsoftware.com.jblue.model.dtos.OEmployee;
+import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.views.framework.SimpleView;
 
 /**
@@ -30,20 +33,38 @@ public final class AdministrationHistoryView extends SimpleView {
      */
     public AdministrationHistoryView() {
         initComponents();
+        controller = new AdministrationHistoryController(this);
         build();
     }
 
     @Override
     public void build() {
-        
+        components();
+        events();
+        initComponents();
+        finalState();
     }
 
     @Override
     public void events() {
+        save_button.addActionListener(controller);
+        update_button.addActionListener(controller);
+        delete_button.addActionListener(controller);
+        cancel_button.addActionListener(controller);
+        
     }
 
     @Override
     public void components() {
+        ComboBoxController<OEmployee> root = new ComboBoxController(root_employee, CacheFactory.EMPLOYEES);
+        ComboBoxController<OEmployee> admin = new ComboBoxController(admin_employee, CacheFactory.EMPLOYEES);
+        ComboBoxController<OEmployee> president = new ComboBoxController(president_employee, CacheFactory.EMPLOYEES);
+        ComboBoxController<OEmployee> tesurer = new ComboBoxController(tesurer_employee, CacheFactory.EMPLOYEES);
+        //
+        root.loadData();
+        admin.loadData();
+        president.loadData();
+        tesurer.loadData();
     }
 
     @Override
@@ -85,16 +106,16 @@ public final class AdministrationHistoryView extends SimpleView {
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        root_employee = new javax.swing.JComboBox<>();
         jPanel13 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        jComboBox10 = new javax.swing.JComboBox<>();
+        admin_employee = new javax.swing.JComboBox<>();
         jPanel6 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        president_employee = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        tesurer_employee = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -140,6 +161,7 @@ public final class AdministrationHistoryView extends SimpleView {
         total = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(900, 700));
+        setName("Administracion"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
 
@@ -192,7 +214,6 @@ public final class AdministrationHistoryView extends SimpleView {
         jLabel12.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel15.add(jLabel12, java.awt.BorderLayout.LINE_START);
 
-        jSpinner1.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), new java.util.Date(), new java.util.Date(1759656412916L), java.util.Calendar.DAY_OF_MONTH));
         jSpinner1.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel15.add(jSpinner1, java.awt.BorderLayout.CENTER);
 
@@ -225,7 +246,7 @@ public final class AdministrationHistoryView extends SimpleView {
         jLabel1.setPreferredSize(new java.awt.Dimension(200, 30));
         jPanel4.add(jLabel1, java.awt.BorderLayout.LINE_START);
 
-        jPanel4.add(jComboBox1, java.awt.BorderLayout.CENTER);
+        jPanel4.add(root_employee, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel4);
 
@@ -235,7 +256,7 @@ public final class AdministrationHistoryView extends SimpleView {
         jLabel10.setPreferredSize(new java.awt.Dimension(200, 30));
         jPanel13.add(jLabel10, java.awt.BorderLayout.LINE_START);
 
-        jPanel13.add(jComboBox10, java.awt.BorderLayout.CENTER);
+        jPanel13.add(admin_employee, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel13);
 
@@ -245,7 +266,7 @@ public final class AdministrationHistoryView extends SimpleView {
         jLabel3.setPreferredSize(new java.awt.Dimension(200, 30));
         jPanel6.add(jLabel3, java.awt.BorderLayout.LINE_START);
 
-        jPanel6.add(jComboBox2, java.awt.BorderLayout.CENTER);
+        jPanel6.add(president_employee, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel6);
 
@@ -255,7 +276,7 @@ public final class AdministrationHistoryView extends SimpleView {
         jLabel2.setPreferredSize(new java.awt.Dimension(200, 30));
         jPanel3.add(jLabel2, java.awt.BorderLayout.LINE_START);
 
-        jPanel3.add(jComboBox3, java.awt.BorderLayout.CENTER);
+        jPanel3.add(tesurer_employee, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel3);
 
@@ -466,15 +487,12 @@ public final class AdministrationHistoryView extends SimpleView {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<OEmployee> admin_employee;
     private javax.swing.JButton back_button;
     private javax.swing.JButton cancel_button;
     private javax.swing.JLabel count;
     private javax.swing.JButton delete_button;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<OEmployee> jComboBox1;
-    private javax.swing.JComboBox<OEmployee> jComboBox10;
-    private javax.swing.JComboBox<OEmployee> jComboBox2;
-    private javax.swing.JComboBox<OEmployee> jComboBox3;
     private javax.swing.JComboBox<OEmployee> jComboBox4;
     private javax.swing.JComboBox<OEmployee> jComboBox5;
     private javax.swing.JComboBox<OEmployee> jComboBox6;
@@ -528,10 +546,12 @@ public final class AdministrationHistoryView extends SimpleView {
     private javax.swing.JTable objects_table;
     private javax.swing.JPanel option_panel;
     private javax.swing.JPanel panel_tabla;
+    private javax.swing.JComboBox<OEmployee> president_employee;
     private javax.swing.JLabel range;
     private javax.swing.JButton register_button;
     private javax.swing.JPanel register_panel;
     private javax.swing.JButton reload_button;
+    private javax.swing.JComboBox<OEmployee> root_employee;
     private javax.swing.JPanel root_panel;
     private javax.swing.JButton save_button;
     private javax.swing.JButton search_button;
@@ -539,6 +559,7 @@ public final class AdministrationHistoryView extends SimpleView {
     private javax.swing.JButton search_object;
     private javax.swing.JPanel search_panel;
     private javax.swing.JPanel status_bar_panel;
+    private javax.swing.JComboBox<OEmployee> tesurer_employee;
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables

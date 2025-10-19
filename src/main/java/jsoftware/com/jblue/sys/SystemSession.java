@@ -7,9 +7,9 @@ package jsoftware.com.jblue.sys;
 import jsoftware.com.jblue.model.daos.HysHistoryDAO;
 import jsoftware.com.jblue.model.dtos.AdministrationHistoryObject;
 import jsoftware.com.jblue.model.dtos.OEmployee;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
-import jsoftware.com.jutil.framework.LaunchApp;
-import jsoftware.com.jutil.framework.LocalSession;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.sys.LaunchApp;
+import jsoftware.com.jutil.sys.LocalSession;
 import jsoftware.com.jutil.jexception.JExcp;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -56,6 +56,9 @@ public class SystemSession implements LocalSession<OEmployee> {
         return current_administration;
     }
 
+    /**
+     * Metodo que lanza advertencias encontradas en el sistema
+     */
     public void getWarnings() {
         StringBuilder sb = new StringBuilder(255);
         if (getCurrentEmployee() == null) {
@@ -65,7 +68,7 @@ public class SystemSession implements LocalSession<OEmployee> {
         if (getCurrentAdministration() == null) {
             sb.append("La administracion actual no ha sido registrada, no podra hacer registro alguno");
         }
-        
+
         if (!sb.isEmpty()) {
             JOptionPane.showConfirmDialog(null,
                     sb.toString(),

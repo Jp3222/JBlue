@@ -22,7 +22,7 @@ import jsoftware.com.jblue.controllers.winc.ConfigController;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.views.framework.SimpleView;
 import jsoftware.com.jblue.views.win.ConfigWindow;
-import jsoftware.com.jutil.framework.LaunchApp;
+import jsoftware.com.jutil.sys.LaunchApp;
 import jsoftware.com.jutil.platf.So;
 import java.awt.CardLayout;
 import java.util.Properties;
@@ -40,7 +40,7 @@ public final class ConfigurationPanel extends SimpleView implements DBValuesMode
 
     private final CardLayout ly;
     private final Properties properties;
-    private ConfigWindow root;
+    private final ConfigWindow root;
 
     /**
      * Creates new form ConfigurationPanel
@@ -52,10 +52,8 @@ public final class ConfigurationPanel extends SimpleView implements DBValuesMode
         ly = (CardLayout) root_panel.getLayout();
         controller = new ConfigController(this);
         properties = (Properties) LaunchApp.getInstance().getResources("propierties");
-        if (root != null) {
-            this.root = root;
-            this.root.addWindowListener((WindowListener) controller);
-        }
+        this.root = root;
+        this.root.addWindowListener((WindowListener) controller);
         build();
 
     }

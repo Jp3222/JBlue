@@ -16,7 +16,7 @@
  */
 package jsoftware.com.jblue.model.daos;
 
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
+import jsoftware.com.jutil.db.JDBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

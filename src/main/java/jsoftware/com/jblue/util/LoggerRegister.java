@@ -16,13 +16,8 @@
  */
 package jsoftware.com.jblue.util;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import jsoftware.com.jblue.sys.app.AppFiles;
+import jsoftware.com.jutil.jexception.JExcpWritter;
 
 /**
  *
@@ -30,68 +25,21 @@ import java.time.format.DateTimeFormatter;
  */
 public class LoggerRegister {
 
-    public static LoggerRegister instance;
+    private static final String LOG = AppFiles.DIR_PROG_LOG;
 
-    public static synchronized LoggerRegister getInstance(String path, String module_name) {
-        if (instance == null) {
-            instance = getInstance(path, module_name);
-        }
-        return instance;
+    public static void logInfoWriter(String module_name, Class cls, String method, String msg) {
+        logWriter(module_name, JExcpWritter.INFO, cls, null, method, msg);
     }
 
-    private final String path;
-    private final String module_name;
-
-    private LoggerRegister(String path, String module_name) {
-        this.path = path;
-        this.module_name = module_name;
-
+    public static void logErrorWriter(String module_name, Class cls, Throwable error, String method) {
+        logWriter(module_name, JExcpWritter.ERROR, cls, error, method, error.getMessage());
     }
 
-    public void registerLog(Class cls, Throwable error, String method, String msg) {
-        StringBuilder sb = new StringBuilder(10000);
-        sb.append("Error {");
-        
-        if (cls != null) {
-
-        }
-        if (error != null) {
-            putStackTrace(sb, error);
-        }
-        sb.append("}");
-        String file_name = module_name + "_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd_MM_yyyy"));
-        writterLog(file_name, sb.toString());
+    public static void logWarning(String module_name, String type, Class cls, String method, String msg) {
+        logWriter(module_name, JExcpWritter.WARNING, cls, null, method, msg);
     }
 
-    private void putStackTrace(StringBuilder sb, Throwable e) {
-        for (StackTraceElement i : e.getStackTrace()) {
-            sb.append("     ").append(i.getClassName());
-            sb.append(": ").append(i.getMethodName());
-            sb.append("(line: ").append(i.getLineNumber()).append(")\n");
-        }
-    }
-
-    private void writterLog(String file_name, String txt) {
-        File file = createFile(file_name);
-        try (OutputStream os = new FileOutputStream(file, true); BufferedOutputStream bos = new BufferedOutputStream(os);) {
-            bos.write(txt.getBytes());
-            os.flush();
-            bos.flush();
-        } catch (IOException e) {
-            System.getLogger(LoggerRegister.class.getName()).log(System.Logger.Level.ERROR, "ESCRITURA ROTA");
-        }
-    }
-
-    private File createFile(String file_name) {
-        File file = null;
-        boolean rt = false;
-        try {
-            file = new File(path);
-            rt = file.exists() || file.createNewFile();
-            return rt ? file : null;
-        } catch (IOException e) {
-            System.getLogger(LoggerRegister.class.getName()).log(System.Logger.Level.ERROR, "ARCHIVO CORRUPTO");
-        }
-        return file;
+    public static void logWriter(String module_name, String type, Class cls, Throwable error, String method, String msg) {
+        JExcpWritter.getInstance(LOG, module_name).registerLog(type, cls, error, method, msg);
     }
 }

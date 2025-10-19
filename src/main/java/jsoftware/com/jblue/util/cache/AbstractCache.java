@@ -20,7 +20,7 @@ import jsoftware.com.jblue.model.DBConnection;
 import jsoftware.com.jblue.model.dtos.Objects;
 import jsoftware.com.jblue.sys.DevFlags;
 import jsoftware.com.jblue.util.ObjectUtils;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
+import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.jexception.JExcp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,7 +33,7 @@ import java.util.Map;
  * @author juan-campos
  * @param <T>
  */
-public class AbstractCache<T extends Objects> implements CacheModel<T> {
+public abstract class AbstractCache<T extends Objects> implements CacheModel<T> {
 
     protected final List<T> cache;
     protected final Map<String, List<T>> buffer_cache;

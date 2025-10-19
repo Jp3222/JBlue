@@ -21,7 +21,7 @@ import jsoftware.com.jblue.model.dtos.AbstractPayments;
 import jsoftware.com.jblue.model.dtos.OEmployee;
 import jsoftware.com.jblue.model.dtos.OUser;
 import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
+import jsoftware.com.jutil.db.JDBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;

@@ -27,7 +27,7 @@ import jsoftware.com.jblue.views.components.ChangePasswordComponent;
 import jsoftware.com.jblue.views.win.LoginWindows;
 import jsoftware.com.jblue.views.win.ConfigWindow;
 import jsoftware.com.jblue.views.win.WMainMenu;
-import jsoftware.com.jutil.framework.LaunchApp;
+import jsoftware.com.jutil.sys.LaunchApp;
 import jsoftware.com.jutil.jexception.Excp;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

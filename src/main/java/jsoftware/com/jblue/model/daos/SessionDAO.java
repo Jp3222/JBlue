@@ -18,7 +18,7 @@ package jsoftware.com.jblue.model.daos;
 
 import jsoftware.com.jblue.model.dtos.AdministrationHistoryObject;
 import jsoftware.com.jblue.model.dtos.OEmployee;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
+import jsoftware.com.jutil.db.JDBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;

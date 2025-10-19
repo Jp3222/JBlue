@@ -17,8 +17,8 @@
 package jsoftware.com.jblue.model;
 
 import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
-import jsoftware.com.jutil.dbcon.tb.JDBTable;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.db.JDBTable;
 import jsoftware.com.jutil.jexception.Excp;
 import java.sql.ResultSet;
 import java.sql.SQLException;

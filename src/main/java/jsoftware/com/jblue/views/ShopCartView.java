@@ -108,9 +108,9 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         //
         all_months_buttons.addActionListener(controller);
         //
-        search_field_list.addKeyListener((KeyListener) controller);
+        search_field_list.addKeyListener(controller);
         //
-        users_list.addMouseListener((MouseListener) controller);
+        users_list.addMouseListener(controller);
         //
 
         register_payment_button.addActionListener(table_controller);

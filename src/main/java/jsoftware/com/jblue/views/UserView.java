@@ -1244,7 +1244,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
 
     public void setProcess(boolean process) {
         this.process = process;
-        north_panel.setVisible(!process);
+        north_panel.setVisible(false);
     }
 
     public boolean isProcess() {

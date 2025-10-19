@@ -6,7 +6,7 @@ package jsoftware.com.jblue.views.framework;
 
 import jsoftware.com.jblue.controllers.Controller;
 import javax.swing.JPanel;
-import jsoftware.com.jutil.framework.ViewStates;
+import jsoftware.com.jutil.view.ViewStates;
 
 /**
  *

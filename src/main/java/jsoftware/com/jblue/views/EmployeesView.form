@@ -506,7 +506,6 @@
                         </Component>
                         <Component class="javax.swing.JPasswordField" name="user_field">
                           <Properties>
-                            <Property name="editable" type="boolean" value="false"/>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Liberation Sans" size="14" style="0"/>
                             </Property>
@@ -563,7 +562,6 @@
                         </Component>
                         <Component class="javax.swing.JPasswordField" name="password_field">
                           <Properties>
-                            <Property name="editable" type="boolean" value="false"/>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Liberation Sans" size="14" style="0"/>
                             </Property>

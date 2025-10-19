@@ -18,7 +18,7 @@ package jsoftware.com.jblue.model;
 
 import jsoftware.com.jblue.model.dtos.Objects;
 import jsoftware.com.jblue.util.ObjectUtils;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
+import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.jexception.JExcp;
 import java.util.ArrayList;
 import java.util.Arrays;

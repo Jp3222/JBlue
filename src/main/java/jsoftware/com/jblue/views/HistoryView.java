@@ -19,19 +19,16 @@ package jsoftware.com.jblue.views;
 import jsoftware.com.jblue.model.dtos.OHistory;
 import jsoftware.com.jblue.views.framework.DataBaseAccessView;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import jsoftware.com.jblue.controllers.viewc.HistoryController;
 
 /**
  *
  * @author juanp
  */
-public class HistoryView extends DataBaseAccessView {
+public final class HistoryView extends DataBaseAccessView {
 
-    private final JTableModel modelo;
+    private final JTableModel table_model;
     private List<OHistory> history_movs;
 
     /**
@@ -39,10 +36,14 @@ public class HistoryView extends DataBaseAccessView {
      */
     public HistoryView() {
         super();
-        this.modelo = new JTableModel(new String[]{"EMPLEADO", "TIPO DE MOVIMIENTO", "FECHA DE REGISTRO"}, 0);
+        this.table_model = new JTableModel(
+                new String[]{"EMPLEADO", "TIPO DE MOVIMIENTO", "DESCRIPCION","FECHA DE REGISTRO"},
+                0
+        );
         initComponents();
-        objects_table.setModel(modelo);
-        reload_button.addActionListener((e) -> dataLoad());
+        controller = new HistoryController(this);
+        objects_table.setModel(table_model);
+        build();
     }
 
     /**
@@ -113,7 +114,7 @@ public class HistoryView extends DataBaseAccessView {
         jPanel30.add(jPanel23, java.awt.BorderLayout.LINE_END);
 
         reload_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
-        reload_button.setActionCommand("reload");
+        reload_button.setActionCommand("load_history");
         reload_button.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel30.add(reload_button, java.awt.BorderLayout.LINE_START);
 
@@ -181,10 +182,15 @@ public class HistoryView extends DataBaseAccessView {
 
     @Override
     public void build() {
+        components();
+        events();
+        initialState();
+        finalState();
     }
 
     @Override
     public void events() {
+        reload_button.addActionListener(controller);
     }
 
     @Override
@@ -201,24 +207,6 @@ public class HistoryView extends DataBaseAccessView {
 
     @Override
     protected void dataLoad() {
-        try {
-            String query = """
-                        SELECT CONCAT(em.first_name, '_',em.last_names), name_mov, his.description, his.date_register FROM hys_program_history his
-                        INNER JOIN jblue_test.history_type_mov ty ON ty.id = his.type
-                        INNER JOIN jblue_test.employees em ON em.id = his.employee;
-                        """;
-            ResultSet rs = connection.query(query);
-            while (rs.next()) {
-
-                modelo.addRow(new Object[]{
-                    rs.getString(1),
-                    rs.getString(3),
-                    rs.getString(4)
-                });
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(HistoryView.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     @Override
@@ -247,4 +235,9 @@ public class HistoryView extends DataBaseAccessView {
     private javax.swing.JPanel status_bar_panel;
     private javax.swing.JLabel total;
     // End of variables declaration//GEN-END:variables
+
+    public JTableModel getModel() {
+        return table_model;
+    }
+
 }

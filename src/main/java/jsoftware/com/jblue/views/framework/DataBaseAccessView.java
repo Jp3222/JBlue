@@ -17,8 +17,8 @@
 package jsoftware.com.jblue.views.framework;
 
 import jsoftware.com.jblue.sys.JBlueMainSystem;
-import jsoftware.com.jutil.dbcon.connection.JDBConnection;
-import jsoftware.com.jutil.framework.LaunchApp;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.sys.LaunchApp;
 
 /**
  *

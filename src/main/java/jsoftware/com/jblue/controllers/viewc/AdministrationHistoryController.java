@@ -16,18 +16,62 @@
  */
 package jsoftware.com.jblue.controllers.viewc;
 
+import java.awt.event.ActionEvent;
+import jsoftware.com.jblue.controllers.AbstractDBViewController;
+import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.views.AdministrationHistoryView;
+import jsoftware.com.jutil.db.JDBConnection;
 
 /**
  *
  * @author juanp
  */
-public class AdministrationHistoryController {
+public class AdministrationHistoryController extends AbstractDBViewController {
 
     private final AdministrationHistoryView view;
 
+    /**
+     *
+     * @param view
+     */
     public AdministrationHistoryController(AdministrationHistoryView view) {
+        super(CacheFactory.EMPLOYEES);
         this.view = view;
     }
-    
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()) {
+            case SAVE_COMMAND ->
+                save();
+            case UPDATE_COMMAND ->
+                update();
+            case DELETE_COMMAND ->
+                delete();
+            case CANCEL_COMMAND ->
+                cancel();
+            default ->
+                throw new AssertionError();
+        }
+    }
+
+    @Override
+    public void save() {
+        JDBConnection conn = connection.getJDBConnection();
+        conn.setAutoCommit(false);
+
+    }
+
+    @Override
+    public void delete() {
+    }
+
+    @Override
+    public void update() {
+    }
+
+    @Override
+    public void cancel() {
+    }
+
 }

@@ -10,6 +10,8 @@ package jsoftware.com.jblue.views;
  */
 public class LoadDocumentsView extends javax.swing.JPanel {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Creates new form LoadDocumentsView
      */

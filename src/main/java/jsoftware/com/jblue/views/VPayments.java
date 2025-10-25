@@ -16,16 +16,18 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jutil.view.ViewStates;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import jsoftware.com.jblue.views.framework.OptionMenuModel;
+import jsoftware.com.jutil.view.ViewStates;
 
 /**
  *
  * @author juan-campos
  */
 public class VPayments extends javax.swing.JPanel implements ViewStates, OptionMenuModel {
+
+    private static final long serialVersionUID = 1L;
 
     private final JButton option;
 

@@ -24,6 +24,8 @@ import jsoftware.com.jblue.controllers.compc.TableController;
  */
 public abstract class DBView extends SimpleView implements TableSearchViewModel {
 
+    private static final long serialVersionUID = 1L;
+
     protected TableController table_controller;
     protected int view_show;
 

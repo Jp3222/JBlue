@@ -24,11 +24,13 @@ import jsoftware.com.jblue.model.dtos.OtherPaymentsType;
  */
 public class OtherPaymentsView extends javax.swing.JPanel {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Creates new form OtherPaymentsView
      */
     public OtherPaymentsView() {
-        initComponents();
+        this.initComponents();
     }
 
     /**

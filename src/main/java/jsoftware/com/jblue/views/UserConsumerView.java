@@ -27,6 +27,8 @@ import jsoftware.com.jblue.views.framework.SimpleView;
  */
 public class UserConsumerView extends SimpleView {
 
+    private static final long serialVersionUID = 1L;
+
     private OUser object_search;
 
     /**

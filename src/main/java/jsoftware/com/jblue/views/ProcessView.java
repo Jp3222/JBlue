@@ -16,16 +16,18 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.views.framework.DBValuesMapModel;
-import jsoftware.com.jblue.views.framework.SimpleView;
 import java.awt.CardLayout;
 import java.util.Map;
+import jsoftware.com.jblue.views.framework.DBValuesMapModel;
+import jsoftware.com.jblue.views.framework.SimpleView;
 
 /**
  *
  * @author juanp
  */
 public class ProcessView extends SimpleView implements DBValuesMapModel {
+
+    private static final long serialVersionUID = 1L;
 
     private final UserView user_view;
     private final WaterIntakesView water_intake_view;

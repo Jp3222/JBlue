@@ -4,13 +4,6 @@
  */
 package jsoftware.com.jblue.views.win;
 
-import jsoftware.com.jblue.controllers.FactoryController;
-import jsoftware.com.jblue.controllers.winc.WindowController;
-import jsoftware.com.jblue.sys.app.AppConfig;
-import jsoftware.com.jblue.views.framework.AbstractAppWindows;
-import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.sys.LaunchApp;
-import jsoftware.com.jutil.swingw.wrappers.TextFieldWrapper;
 import java.awt.Image;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -18,16 +11,25 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.SwingUtilities;
 import javax.swing.JCheckBox;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import jsoftware.com.jblue.controllers.FactoryController;
+import jsoftware.com.jblue.controllers.winc.WindowController;
+import jsoftware.com.jblue.sys.app.AppConfig;
+import jsoftware.com.jblue.views.framework.AbstractAppWindows;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.swingw.wrappers.TextFieldWrapper;
+import jsoftware.com.jutil.sys.LaunchApp;
 
 /**
  *
  * @author jp
  */
 public class LoginWindows extends AbstractAppWindows {
+
+    private static final long serialVersionUID = 1L;
 
     private final ConfigWindow MENU_CONFIG_BD;
     private final TextFieldWrapper FIELDS[];

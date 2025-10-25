@@ -26,6 +26,8 @@ import jsoftware.com.jutil.sys.LaunchApp;
  */
 public abstract class DataBaseAccessView extends SimpleView {
 
+    private static final long serialVersionUID = 1L;
+
     protected final JDBConnection connection;
 
     public DataBaseAccessView(JDBConnection connection) {

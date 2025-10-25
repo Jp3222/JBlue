@@ -16,13 +16,6 @@
  */
 package jsoftware.com.jblue.views.components;
 
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.util.cache.MemoListCache;
-import jsoftware.com.jutil.view.ComponentStates;
-import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -36,12 +29,21 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import jsoftware.com.jblue.model.constants._Const;
+import jsoftware.com.jblue.model.dtos.OUser;
+import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.factories.CacheFactory;
+import jsoftware.com.jblue.util.cache.MemoListCache;
+import jsoftware.com.jutil.swingw.modelos.JTableModel;
+import jsoftware.com.jutil.view.ComponentStates;
 
 /**
  *
  * @author jp
  */
 public final class UserViewComponent extends JDialog implements ComponentStates {
+
+    private static final long serialVersionUID = 1L;
 
     public static UserViewComponent showVisor(OUser obj) {
         if (obj == null) {

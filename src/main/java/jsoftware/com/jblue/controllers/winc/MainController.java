@@ -27,6 +27,8 @@ import javax.swing.JOptionPane;
  */
 public class MainController extends WindowController {
 
+    private static final long serialVersionUID = 1L;
+
     private final WMainMenu view;
 
     public MainController(WMainMenu view) {

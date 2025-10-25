@@ -40,6 +40,8 @@ import javax.swing.JPasswordField;
  */
 public class ConfigController extends WindowController {
 
+    private static final long serialVersionUID = 1L;
+
     private final ConfigurationPanel view;
     private final Properties properties;
 

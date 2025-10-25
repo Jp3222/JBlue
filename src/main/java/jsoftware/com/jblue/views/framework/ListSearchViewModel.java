@@ -16,24 +16,27 @@
  */
 package jsoftware.com.jblue.views.framework;
 
-import jsoftware.com.jblue.model.dtos.Objects;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JTextField;
+import jsoftware.com.jblue.model.dtos.ForeingKeyObject;
+import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.dtos.StatusObject;
 
 /**
  *
  * @author juan-campos
+ * @param <T>
  */
-public interface ListSearchViewModel {
+public interface ListSearchViewModel<T extends Objects & StatusObject & ForeingKeyObject> {
 
-    JList getList();
+    JList<T> getList();
 
     JTextField getTextComponentList();
 
     String getTextSearchList();
 
-    DefaultListModel getListModel();
+    DefaultListModel<T> getListModel();
 
     void setCountElements(int count);
 
@@ -43,6 +46,6 @@ public interface ListSearchViewModel {
 
     Objects getObjectSearch();
 
-    void setObjectSearch(Objects object);
+    void setObjectSearch(T object);
 
 }

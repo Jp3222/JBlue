@@ -16,17 +16,6 @@
  */
 package jsoftware.com.jblue.views.components;
 
-import jsoftware.com.jblue.controllers.compc.ListController;
-import jsoftware.com.jblue.model.dtos.ForeingKeyObject;
-import jsoftware.com.jblue.model.dtos.OStreet;
-import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.model.dtos.StatusObject;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.util.cache.MemoListCache;
-import jsoftware.com.jblue.views.framework.ListSearchViewModel;
-import jsoftware.com.jutil.view.WindowStates;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
@@ -34,50 +23,57 @@ import javax.swing.ActionMap;
 import javax.swing.DefaultListModel;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.KeyStroke;
-/**
- *
- * @author jp
- * @param <T>
- */
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import jsoftware.com.jblue.controllers.compc.ListController;
+import jsoftware.com.jblue.model.dtos.ForeingKeyObject;
+import jsoftware.com.jblue.model.dtos.OStreet;
+import jsoftware.com.jblue.model.dtos.OUser;
+import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
+import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.dtos.StatusObject;
+import jsoftware.com.jblue.model.factories.CacheFactory;
+import jsoftware.com.jblue.util.cache.MemoListCache;
+import jsoftware.com.jblue.views.framework.ListSearchViewModel;
+import jsoftware.com.jutil.view.WindowStates;
 
-public final class ObjectSearchComponent<T extends Objects & StatusObject & ForeingKeyObject> extends JDialog implements WindowStates, ListSearchViewModel {
+public final class ObjectSearchComponent<T extends Objects & StatusObject & ForeingKeyObject> extends JDialog implements WindowStates, ListSearchViewModel<T> {
+
+    private static final long serialVersionUID = 1L;
 
     public static OStreet getStreet(JFrame padre) {
-        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.STREETS);
+        final ObjectSearchComponent<OStreet> o = new ObjectSearchComponent<>(padre, true, CacheFactory.STREETS);
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;
         }
-        return (OStreet) o.getObjectSearch();
+        return o.getObjectSearch();
     }
 
     public static OUser getUser(JFrame padre) {
-        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.USERS);
+        ObjectSearchComponent<OUser> o = new ObjectSearchComponent<>(padre, true, CacheFactory.USERS);
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;
         }
-        return (OUser) o.getObjectSearch();
+        return o.getObjectSearch();
     }
 
     public static OWaterIntakeTypes getWaterIntakeType(JFrame padre) {
-        ObjectSearchComponent o = new ObjectSearchComponent(padre, true, CacheFactory.WATER_INTAKES_TYPES);
+        ObjectSearchComponent<OWaterIntakeTypes> o = new ObjectSearchComponent<>(padre, true, CacheFactory.WATER_INTAKES_TYPES);
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;
         }
-        return (OWaterIntakeTypes) o.getObjectSearch();
+        return o.getObjectSearch();
     }
 
-    private MemoListCache<T> _cache;
     private T object_search;
     //
-    private DefaultListModel<T> list_model;
+    private final DefaultListModel<T> list_model;
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -87,7 +83,7 @@ public final class ObjectSearchComponent<T extends Objects & StatusObject & Fore
      */
     public static final int RET_OK = 1;
 
-    private ListController<T> list_controller;
+    private final ListController<T> list_controller;
 
     /**
      * Creates new form NewOkCancelDialog
@@ -99,10 +95,9 @@ public final class ObjectSearchComponent<T extends Objects & StatusObject & Fore
     public ObjectSearchComponent(JFrame parent, boolean modal, MemoListCache<T> memo_list) {
         super(parent, modal);
         initComponents();
-        list_model = new DefaultListModel();
+        list_model = new DefaultListModel<>();
         objects_list.setModel(list_model);
-        System.out.println(memo_list.size());
-        this.list_controller = new ListController(this, memo_list);
+        this.list_controller = new ListController<>(this, memo_list);
         build();
     }
 
@@ -278,7 +273,7 @@ public final class ObjectSearchComponent<T extends Objects & StatusObject & Fore
     private int returnStatus = RET_CANCEL;
 
     @Override
-    public JList getList() {
+    public JList<T> getList() {
         return objects_list;
     }
 
@@ -298,7 +293,7 @@ public final class ObjectSearchComponent<T extends Objects & StatusObject & Fore
     }
 
     @Override
-    public DefaultListModel getListModel() {
+    public DefaultListModel<T> getListModel() {
         return list_model;
     }
 
@@ -324,7 +319,7 @@ public final class ObjectSearchComponent<T extends Objects & StatusObject & Fore
     }
 
     @Override
-    public void setObjectSearch(Objects o) {
-        object_search = (T) o;
+    public void setObjectSearch(T o) {
+        object_search = o;
     }
 }

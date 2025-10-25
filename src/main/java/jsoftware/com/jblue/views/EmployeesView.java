@@ -59,6 +59,8 @@ import javax.swing.JCheckBox;
  */
 public final class EmployeesView extends DBView implements DBValuesMapModel {
 
+    private static final long serialVersionUID = 1L;
+
     private final JTableModel model;
     private final CardLayout ly;
     private OEmployee object_search;

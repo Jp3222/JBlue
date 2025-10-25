@@ -14,6 +14,8 @@ import jsoftware.com.jutil.view.ViewStates;
  */
 public abstract class SimpleView extends JPanel implements ViewStates {
 
+    private static final long serialVersionUID = 1L;
+
     protected Controller controller;
 
     public SimpleView() {

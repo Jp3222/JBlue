@@ -16,33 +16,35 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.controllers.FactoryController;
-import jsoftware.com.jblue.controllers.compc.TableController;
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.factories.TableModelFactory;
-import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.util.Filters;
-import jsoftware.com.jblue.util.Formats;
-import jsoftware.com.jblue.views.framework.DBValuesMapModel;
-import jsoftware.com.jblue.views.framework.DBView;
-import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import jsoftware.com.jblue.views.framework.TableSearchViewModel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import jsoftware.com.jblue.controllers.FactoryController;
+import jsoftware.com.jblue.controllers.compc.TableController;
+import jsoftware.com.jblue.model.constants._Const;
+import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
+import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.factories.CacheFactory;
+import jsoftware.com.jblue.model.factories.TableModelFactory;
+import jsoftware.com.jblue.util.Filters;
+import jsoftware.com.jblue.util.Formats;
+import jsoftware.com.jblue.views.framework.DBValuesMapModel;
+import jsoftware.com.jblue.views.framework.DBView;
+import jsoftware.com.jblue.views.framework.TableSearchViewModel;
+import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
  *
  * @author juan-campos
  */
 public final class WaterIntakesTypesView extends DBView implements DBValuesMapModel, TableSearchViewModel {
+
+    private static final long serialVersionUID = 1L;
 
     private final CardLayout ly;
     private final JTableModel model;

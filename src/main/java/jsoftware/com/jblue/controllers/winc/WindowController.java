@@ -26,6 +26,8 @@ import java.awt.event.WindowListener;
  */
 public abstract class WindowController extends Controller implements WindowListener {
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     public void windowOpened(WindowEvent we) {
     }

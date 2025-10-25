@@ -38,6 +38,8 @@ import java.awt.event.WindowListener;
  */
 public final class ConfigurationPanel extends SimpleView implements DBValuesModel {
 
+    private static final long serialVersionUID = 1L;
+
     private final CardLayout ly;
     private final Properties properties;
     private final ConfigWindow root;

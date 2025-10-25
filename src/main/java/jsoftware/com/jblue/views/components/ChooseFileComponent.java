@@ -27,6 +27,7 @@ import javax.swing.JFrame;
 public class ChooseFileComponent extends javax.swing.JDialog {
 
     private static ChooseFileComponent instancia;
+    private static final long serialVersionUID = 1L;
 
     public static File seleccionarDocumento(JFrame padre) {
         initInstancia(padre);

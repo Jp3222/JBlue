@@ -37,6 +37,8 @@ import jsoftware.com.jblue.views.framework.DBValuesModel;
  */
 public final class OtherPaymentTypesView extends DBView implements DBValuesModel {
 
+    private static final long serialVersionUID = 1L;
+
     private JTableModel model;
     private OPaymentsTypes object_search;
     private final CardLayout ly;

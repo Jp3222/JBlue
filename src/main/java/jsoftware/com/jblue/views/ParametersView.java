@@ -39,6 +39,7 @@ import javax.swing.JOptionPane;
 public final class ParametersView extends SimpleView implements DBValuesMapModel {
 
     private static ParametersView instance;
+    private static final long serialVersionUID = 1L;
 
     public synchronized static ParametersView getInstance() {
         if (instance == null) {

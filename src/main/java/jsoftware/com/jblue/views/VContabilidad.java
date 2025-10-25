@@ -16,12 +16,12 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.controllers.viewc.ContableController;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import jsoftware.com.jblue.controllers.viewc.ContableController;
 import jsoftware.com.jblue.views.framework.OptionMenuModel;
 
 /**
@@ -29,6 +29,8 @@ import jsoftware.com.jblue.views.framework.OptionMenuModel;
  * @author juan-campos
  */
 public class VContabilidad extends javax.swing.JPanel implements OptionMenuModel {
+
+    private static final long serialVersionUID = 1L;
 
     public ContableController controller;
 

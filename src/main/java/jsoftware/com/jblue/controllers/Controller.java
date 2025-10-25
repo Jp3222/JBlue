@@ -21,13 +21,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.Serializable;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author juan-campos
  */
-public abstract class Controller implements ActionListener, KeyListener, MouseListener {
+public abstract class Controller implements ActionListener, KeyListener, MouseListener, Serializable {
 
     @Override
     public void keyPressed(KeyEvent ke) {

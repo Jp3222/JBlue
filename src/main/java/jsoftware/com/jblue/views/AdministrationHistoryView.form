@@ -198,7 +198,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JLabel" name="jLabel12">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="jLabel12"/>
+                            <Property name="text" type="java.lang.String" value="A&#xf1;o de la administracion"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[150, 30]"/>
                             </Property>

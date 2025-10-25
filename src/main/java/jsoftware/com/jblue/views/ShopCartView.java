@@ -16,24 +16,7 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.controllers.FactoryController;
-import jsoftware.com.jblue.controllers.compc.ListController;
-import jsoftware.com.jblue.controllers.compc.TableController;
-import jsoftware.com.jblue.controllers.viewc.ShopCartController;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.factories.TableModelFactory;
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
-import jsoftware.com.jblue.model.dtos.OWaterIntakes;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.util.Filters;
-import jsoftware.com.jblue.util.GraphicsUtils;
-import jsoftware.com.jblue.util.cache.MemoListCache;
-import jsoftware.com.jblue.views.framework.DBView;
-import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +27,22 @@ import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import jsoftware.com.jblue.controllers.FactoryController;
+import jsoftware.com.jblue.controllers.compc.ListController;
+import jsoftware.com.jblue.controllers.compc.TableController;
+import jsoftware.com.jblue.controllers.viewc.ShopCartController;
+import jsoftware.com.jblue.model.dtos.OUser;
+import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
+import jsoftware.com.jblue.model.dtos.OWaterIntakes;
+import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.factories.CacheFactory;
+import jsoftware.com.jblue.model.factories.TableModelFactory;
+import jsoftware.com.jblue.util.Filters;
+import jsoftware.com.jblue.util.GraphicsUtils;
+import jsoftware.com.jblue.util.cache.MemoListCache;
+import jsoftware.com.jblue.views.framework.DBView;
 import jsoftware.com.jblue.views.framework.ListSearchViewModel;
+import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
  *
@@ -52,6 +50,8 @@ import jsoftware.com.jblue.views.framework.ListSearchViewModel;
  * @version 1.0
  */
 public class ShopCartView extends DBView implements ListSearchViewModel {
+
+    private static final long serialVersionUID = 1L;
 
     private final CardLayout ly;
     private final JTableModel table_model;

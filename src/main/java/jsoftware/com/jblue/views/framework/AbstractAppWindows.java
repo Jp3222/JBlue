@@ -16,17 +16,19 @@
  */
 package jsoftware.com.jblue.views.framework;
 
-import jsoftware.com.jblue.sys.app.AppInfo;
-import jsoftware.com.jutil.view.WindowStates;
 import javax.swing.JFrame;
+import jsoftware.com.jblue.sys.app.AppInfo;
 import static jsoftware.com.jblue.sys.app.AppInfo.PROGRAM_NAME;
 import static jsoftware.com.jblue.sys.app.AppInfo.PROGRAM_VERSION;
+import jsoftware.com.jutil.view.WindowStates;
 
 /**
  *
  * @author jp
  */
 public abstract class AbstractAppWindows extends JFrame implements AppInfo, WindowStates {
+
+    private static final long serialVersionUID = 1L;
 
     public AbstractAppWindows() {
     }

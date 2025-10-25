@@ -24,6 +24,8 @@ import jsoftware.com.jblue.views.framework.SimpleView;
  */
 public class StatusTypeView extends SimpleView {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Creates new form StatusTypeView
      */

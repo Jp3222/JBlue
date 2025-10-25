@@ -22,6 +22,8 @@ package jsoftware.com.jblue.views;
  */
 public class CSVExport extends javax.swing.JPanel {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Creates new form CSVExport
      */

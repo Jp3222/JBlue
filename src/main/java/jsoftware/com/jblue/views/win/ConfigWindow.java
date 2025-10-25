@@ -4,15 +4,17 @@
  */
 package jsoftware.com.jblue.views.win;
 
-import jsoftware.com.jblue.views.framework.AbstractAppWindows;
-import jsoftware.com.jblue.views.ConfigurationPanel;
 import java.awt.BorderLayout;
+import jsoftware.com.jblue.views.ConfigurationPanel;
+import jsoftware.com.jblue.views.framework.AbstractAppWindows;
 
 /**
  *
  * @author jp
  */
 public final class ConfigWindow extends AbstractAppWindows {
+
+    private static final long serialVersionUID = 1L;
 
     private final ConfigurationPanel config;
 

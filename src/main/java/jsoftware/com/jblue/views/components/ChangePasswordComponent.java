@@ -16,10 +16,6 @@
  */
 package jsoftware.com.jblue.views.components;
 
-import jsoftware.com.jblue.model.DBConnection;
-import jsoftware.com.jblue.model.factories.ConnectionFactory;
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.util.EncriptadoAES;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.UnsupportedEncodingException;
@@ -39,12 +35,18 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import jsoftware.com.jblue.model.DBConnection;
+import jsoftware.com.jblue.model.dtos.OUser;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jblue.util.EncriptadoAES;
 
 /**
  *
  * @author juanp
  */
 public final class ChangePasswordComponent extends javax.swing.JDialog {
+
+    private static final long serialVersionUID = 1L;
 
     public static boolean getChangePasswordComponent(JFrame parent) {
         ChangePasswordComponent component = new ChangePasswordComponent(parent);

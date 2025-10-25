@@ -48,6 +48,8 @@ import javax.swing.JOptionPane;
  */
 public class LoginController extends WindowController {
 
+    private static final long serialVersionUID = 1L;
+
     private final LoginWindows view;
     private final ConfigWindow view_config;
     private WMainMenu WIN_MAIN_MENU;

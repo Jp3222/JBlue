@@ -10,7 +10,11 @@ import jsoftware.com.jblue.model.factories.CacheFactory;
  *
  * @author jp
  */
-public class OStreet extends Objects implements StatusObject {
+public class OStreet extends Objects implements StatusObject, ForeingKeyObject {
+
+    private static final long serialVersionUID = 1L;
+
+    private String[] infoFk;
 
     public OStreet(String... info) {
         super(info);
@@ -42,5 +46,17 @@ public class OStreet extends Objects implements StatusObject {
     @Override
     public String toString() {
         return getNombre();
+    }
+
+    @Override
+    public void setData(String[] info) {
+        super.setData(info); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        infoFk = info.clone();
+    }
+
+    @Override
+    public String[] getInfoSinFK() {
+        infoFk[2] = getStatusString();
+        return info;
     }
 }

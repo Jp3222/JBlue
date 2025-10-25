@@ -25,6 +25,8 @@ import java.awt.event.ActionEvent;
  */
 public class ProfileController extends WindowController {
 
+    private static final long serialVersionUID = 1L;
+
     private final ProfileWindow view;
 
     public ProfileController(ProfileWindow view) {

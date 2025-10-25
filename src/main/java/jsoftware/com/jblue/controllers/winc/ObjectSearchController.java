@@ -29,6 +29,8 @@ import java.awt.event.ActionEvent;
  */
 public class ObjectSearchController<T extends Objects & StatusObject & ForeingKeyObject> extends WindowController {
 
+    private static final long serialVersionUID = 1L;
+
     private ObjectSearchComponent<T> view;
 
     @Override

@@ -16,32 +16,34 @@
  */
 package jsoftware.com.jblue.views.win;
 
-import jsoftware.com.jblue.controllers.winc.MainController;
-import jsoftware.com.jblue.sys.SystemSession;
-import jsoftware.com.jblue.views.components.UserViewComponent;
-import jsoftware.com.jblue.views.framework.AbstractAppWindows;
-import jsoftware.com.jblue.views.ParametersView;
-import jsoftware.com.jblue.views.StreetsView;
-import jsoftware.com.jblue.views.OtherPaymentTypesView;
-import jsoftware.com.jblue.views.OtherPaymentsView;
-import jsoftware.com.jblue.views.ProcessView;
-import jsoftware.com.jblue.views.WaterIntakesTypesView;
-import jsoftware.com.jblue.views.UserView;
-import jsoftware.com.jblue.views.ShopCartView;
-import jsoftware.com.jblue.views.SurchargePaymentsView;
-import jsoftware.com.jblue.views.UserConsumerView;
-import jsoftware.com.jblue.views.WaterIntakesView;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import jsoftware.com.jblue.controllers.winc.MainController;
+import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.views.AdministrationHistoryView;
+import jsoftware.com.jblue.views.OtherPaymentTypesView;
+import jsoftware.com.jblue.views.OtherPaymentsView;
+import jsoftware.com.jblue.views.ParametersView;
+import jsoftware.com.jblue.views.ProcessView;
+import jsoftware.com.jblue.views.ShopCartView;
+import jsoftware.com.jblue.views.StreetsView;
+import jsoftware.com.jblue.views.SurchargePaymentsView;
+import jsoftware.com.jblue.views.UserConsumerView;
+import jsoftware.com.jblue.views.UserView;
+import jsoftware.com.jblue.views.WaterIntakesTypesView;
+import jsoftware.com.jblue.views.WaterIntakesView;
+import jsoftware.com.jblue.views.components.UserViewComponent;
+import jsoftware.com.jblue.views.framework.AbstractAppWindows;
 
 /**
  *
  * @author juan-campos
  */
 public final class WMainMenu extends AbstractAppWindows {
+
+    private static final long serialVersionUID = 1L;
 
     //
     private final CardLayout ly;

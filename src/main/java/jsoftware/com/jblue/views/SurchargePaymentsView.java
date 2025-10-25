@@ -16,20 +16,22 @@
  */
 package jsoftware.com.jblue.views;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JTextField;
 import jsoftware.com.jblue.model.dtos.OSurchargePayments;
 import jsoftware.com.jblue.model.dtos.Objects;
 import jsoftware.com.jblue.model.dtos.OtherPaymentsType;
 import jsoftware.com.jblue.views.framework.ListSearchViewModel;
 import jsoftware.com.jblue.views.framework.SimpleView;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.JTextField;
 
 /**
  *
  * @author juanp
  */
 public class SurchargePaymentsView extends SimpleView implements ListSearchViewModel {
+
+    private static final long serialVersionUID = 1L;
 
     DefaultListModel<OSurchargePayments> model;
 

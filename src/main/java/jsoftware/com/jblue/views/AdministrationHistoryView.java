@@ -28,6 +28,8 @@ import jsoftware.com.jblue.views.framework.SimpleView;
  */
 public final class AdministrationHistoryView extends SimpleView {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Creates new form AdministrationHistoryView
      */
@@ -210,7 +212,7 @@ public final class AdministrationHistoryView extends SimpleView {
         jPanel15.setPreferredSize(new java.awt.Dimension(200, 50));
         jPanel15.setLayout(new java.awt.BorderLayout());
 
-        jLabel12.setText("jLabel12");
+        jLabel12.setText("Año de la administracion");
         jLabel12.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel15.add(jLabel12, java.awt.BorderLayout.LINE_START);
 

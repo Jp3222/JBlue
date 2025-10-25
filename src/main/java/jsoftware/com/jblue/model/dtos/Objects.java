@@ -4,11 +4,10 @@
  */
 package jsoftware.com.jblue.model.dtos;
 
-import jsoftware.com.jutil.db.model.JDBObjectMapModel;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jsoftware.com.jutil.db.model.JDBObjectArrayModel;
+import jsoftware.com.jutil.db.model.JDBObjectMapModel;
 
 /**
  * Representa un objeto de transferencia de datos (DTO) genérico y simple.
@@ -25,6 +24,8 @@ import jsoftware.com.jutil.db.model.JDBObjectArrayModel;
  * @since 1.0
  */
 public class Objects extends AbstractObject {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Construye un nuevo objeto vacío.

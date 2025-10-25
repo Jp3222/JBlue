@@ -16,27 +16,27 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.controllers.FactoryController;
-import jsoftware.com.jblue.controllers.compc.ComboBoxController;
-import jsoftware.com.jblue.controllers.compc.TableController;
-import jsoftware.com.jblue.model.dtos.OStreet;
-import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
-import jsoftware.com.jblue.model.dtos.OWaterIntakes;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.factories.TableModelFactory;
-import jsoftware.com.jblue.util.Filters;
-import jsoftware.com.jblue.views.framework.DBView;
-import jsoftware.com.jblue.views.framework.TableSearchViewModel;
-import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import jsoftware.com.jblue.controllers.FactoryController;
+import jsoftware.com.jblue.controllers.compc.ComboBoxController;
+import jsoftware.com.jblue.controllers.compc.TableController;
+import jsoftware.com.jblue.model.dtos.OStreet;
 import jsoftware.com.jblue.model.dtos.OUser;
+import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
+import jsoftware.com.jblue.model.dtos.OWaterIntakes;
+import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.factories.CacheFactory;
+import jsoftware.com.jblue.model.factories.TableModelFactory;
+import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.views.framework.DBValuesMapModel;
+import jsoftware.com.jblue.views.framework.DBView;
+import jsoftware.com.jblue.views.framework.TableSearchViewModel;
+import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
  *
@@ -44,12 +44,14 @@ import jsoftware.com.jblue.views.framework.DBValuesMapModel;
  */
 public final class WaterIntakesView extends DBView implements DBValuesMapModel, TableSearchViewModel {
 
+    private static final long serialVersionUID = 1L;
+
     private final CardLayout ly;
     private final JTableModel model;
     private OWaterIntakes object_search;
-    private ComboBoxController<OStreet> street_cat_1;
-    private ComboBoxController<OStreet> street_cat_2;
-    private ComboBoxController<OWaterIntakeTypes> water_intake;
+    private final ComboBoxController<OStreet> street_cat_1;
+    private final ComboBoxController<OStreet> street_cat_2;
+    private final ComboBoxController<OWaterIntakeTypes> water_intake;
     private OUser user_search;
     private OWaterIntakeTypes water_intake_types_search;
     private OStreet street1_search;

@@ -16,27 +16,29 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.controllers.FactoryController;
-import jsoftware.com.jblue.controllers.compc.TableController;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.factories.TableModelFactory;
-import jsoftware.com.jblue.model.dtos.OStreet;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.util.Filters;
-import jsoftware.com.jblue.util.Formats;
-import jsoftware.com.jblue.views.framework.DBView;
-import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import jsoftware.com.jblue.controllers.FactoryController;
+import jsoftware.com.jblue.controllers.compc.TableController;
+import jsoftware.com.jblue.model.dtos.OStreet;
+import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.factories.CacheFactory;
+import jsoftware.com.jblue.model.factories.TableModelFactory;
+import jsoftware.com.jblue.util.Filters;
+import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.views.framework.DBValuesModel;
+import jsoftware.com.jblue.views.framework.DBView;
+import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
  *
  * @author juan-campos
  */
 public final class StreetsView extends DBView implements DBValuesModel {
+
+    private static final long serialVersionUID = 1L;
 
     private OStreet object_search;
     private final CardLayout ly;
@@ -53,6 +55,9 @@ public final class StreetsView extends DBView implements DBValuesModel {
         build();
     }
 
+    /**
+     *
+     */
     @Override
     public void build() {
         components();
@@ -61,6 +66,9 @@ public final class StreetsView extends DBView implements DBValuesModel {
         initialState();
     }
 
+    /**
+     *
+     */
     @Override
     public void components() {
         streed_name_field.setText(null);
@@ -70,6 +78,9 @@ public final class StreetsView extends DBView implements DBValuesModel {
         objects_table.setComponentPopupMenu(pop_menu);
     }
 
+    /**
+     *
+     */
     @Override
     public void events() {
         controller = FactoryController.getStreetsController(this);
@@ -91,6 +102,9 @@ public final class StreetsView extends DBView implements DBValuesModel {
 
     }
 
+    /**
+     *
+     */
     @Override
     public void initialState() {
         object_search = null;
@@ -102,6 +116,9 @@ public final class StreetsView extends DBView implements DBValuesModel {
         delete_button.setEnabled(false);
     }
 
+    /**
+     *
+     */
     @Override
     public void finalState() {
     }
@@ -440,6 +457,10 @@ public final class StreetsView extends DBView implements DBValuesModel {
     // End of variables declaration//GEN-END:variables
     private final JTableModel model;
 
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean isValuesOk() {
         boolean rt = Filters.isNullOrBlank(streed_name_field.getText());
@@ -450,32 +471,57 @@ public final class StreetsView extends DBView implements DBValuesModel {
         return !rt;
     }
 
+    /**
+     *
+     * @param update
+     * @return
+     */
     @Override
     public String[] getDbValues(boolean update) {
         String _name = streed_name_field.getText();
         return Formats.getDBFormatInputArray(_name);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public JTextField getTextComponenteTable() {
         return search_field;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getTextSearchTable() {
         return Filters.clearText(search_field.getText());
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public JTable getTable() {
         return objects_table;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public JTableModel getModel() {
         return model;
     }
 
+    /**
+     *
+     * @param view_show
+     */
     @Override
     public void setViewShow(int view_show) {
         this.view_show = view_show;
@@ -488,21 +534,37 @@ public final class StreetsView extends DBView implements DBValuesModel {
         ly.show(root_panel, op);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int getViewShow() {
         return view_show;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public OStreet getObjectSearch() {
         return object_search;
     }
 
+    /**
+     *
+     * @param o
+     */
     @Override
     public void setObjectSearch(Objects o) {
         object_search = (OStreet) o;
     }
 
+    /**
+     *
+     * @param info
+     */
     @Override
     public void setRowsData(String... info) {
         count.setText(info[0]);
@@ -510,6 +572,9 @@ public final class StreetsView extends DBView implements DBValuesModel {
         total.setText(info[2]);
     }
 
+    /**
+     *
+     */
     @Override
     public void setScreenTableInfo() {
         streed_name_field.setText(object_search.getNombre());

@@ -17,7 +17,6 @@
 package jsoftware.com.jblue.views;
 
 import jsoftware.com.jblue.views.components.ChooseFileComponent;
-import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.view.ViewStates;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import java.io.BufferedReader;
@@ -25,17 +24,17 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author juan-campos
  */
 public final class CSVImport extends javax.swing.JPanel implements ViewStates {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form CSVImport

@@ -31,11 +31,13 @@ import javax.swing.JPanel;
  */
 public final class ProfileWindow extends AbstractAppWindows {
 
+    private static final long serialVersionUID = 1L;
+
     private final EmployeesView employee_view;
     private final VPerfil profile_view;
     private final VContabilidad contabilidad;
     private final CardLayout ly;
-    private final ProfileController controller;
+    private ProfileController controller;
 
     //
     private final HistoryView history_view;
@@ -50,8 +52,6 @@ public final class ProfileWindow extends AbstractAppWindows {
         this.history_view = new HistoryView();
         initComponents();
         ly = (CardLayout) root_panel.getLayout();
-        this.controller = new ProfileController(this);
-
         build();
     }
 
@@ -73,6 +73,7 @@ public final class ProfileWindow extends AbstractAppWindows {
 
     @Override
     public void events() {
+        this.controller = new ProfileController(this);
         employee_view_button.addActionListener(controller);
         contable_view_button.addActionListener(controller);
         profile_view_button.addActionListener(controller);
@@ -145,7 +146,7 @@ public final class ProfileWindow extends AbstractAppWindows {
         jButton6.setText("Administracion de suministros");
         jPanel3.add(jButton6);
 
-        jButton7.setText("jButton1");
+        jButton7.setText("Administracion");
         jPanel3.add(jButton7);
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);

@@ -4,9 +4,6 @@
  */
 package jsoftware.com.jblue.views.win;
 
-import jsoftware.com.jblue.sys.app.AppInfo;
-import jsoftware.com.jblue.views.framework.AbstractAppWindows;
-import jsoftware.com.jutil.platf.JVMInfo;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -15,12 +12,17 @@ import java.util.logging.Logger;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import jsoftware.com.jblue.sys.app.AppInfo;
+import jsoftware.com.jblue.views.framework.AbstractAppWindows;
+import jsoftware.com.jutil.platf.JVMInfo;
 
 /**
  *
  * @author jp
  */
 public final class AboutUs extends AbstractAppWindows {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form AcercaDE

@@ -28,8 +28,9 @@ import jsoftware.com.jblue.controllers.viewc.HistoryController;
  */
 public final class HistoryView extends DataBaseAccessView {
 
+    private static final long serialVersionUID = 1L;
+
     private final JTableModel table_model;
-    private List<OHistory> history_movs;
 
     /**
      * Creates new form History

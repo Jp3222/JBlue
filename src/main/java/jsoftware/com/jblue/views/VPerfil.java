@@ -16,24 +16,25 @@
  */
 package jsoftware.com.jblue.views;
 
+import java.awt.event.ActionEvent;
+import java.time.ZoneId;
+import java.util.Date;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import jsoftware.com.jblue.model.constants._Const;
 import jsoftware.com.jblue.model.dtos.OEmployee;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.util.Fecha;
 import jsoftware.com.jblue.util.ObjectUtils;
 import jsoftware.com.jblue.views.framework.SimpleView;
-import java.time.format.DateTimeFormatter;
-import javax.swing.JOptionPane;
-import java.awt.event.ActionEvent;
-import java.time.ZoneId;
-import java.util.Date;
-import javax.swing.JCheckBox;
 
 /**
  *
  * @author juan-campos
  */
 public final class VPerfil extends SimpleView {
+
+    private static final long serialVersionUID = 1L;
 
     private final OEmployee current_employee;
 

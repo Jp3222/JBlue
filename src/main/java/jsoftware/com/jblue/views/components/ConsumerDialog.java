@@ -39,6 +39,7 @@ public class ConsumerDialog extends javax.swing.JDialog {
      * A return status code - returned if OK button has been pressed
      */
     public static final int RET_OK = 1;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form ConsumerDialog

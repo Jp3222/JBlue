@@ -14,11 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jsfotware.com.jblue.views;
-
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Map;
+package jsoftware.com.jblue.views;
 
 /**
  *
@@ -26,27 +22,13 @@ import java.util.Map;
  */
 public class LogsView extends javax.swing.JPanel {
 
-    private final Map<String, ArrayList<String>> logs;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form LogsView
      */
     public LogsView() {
-        initComponents();
-        logs = new Hashtable<>(50);
-        readFiles();
-        dir_logs_field.addActionListener((e) -> {
-            fil_log_field.removeAllItems();
-
-        });
-    }
-
-    private void readDirs() {
-
-    }
-
-    private void readFiles() {
-
+        this.initComponents();
     }
 
     /**

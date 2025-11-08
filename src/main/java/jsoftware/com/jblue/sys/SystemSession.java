@@ -4,15 +4,17 @@
  */
 package jsoftware.com.jblue.sys;
 
-import jsoftware.com.jblue.model.daos.HysHistoryDAO;
-import jsoftware.com.jblue.model.dtos.AdministrationHistoryObject;
-import jsoftware.com.jblue.model.dtos.OEmployee;
-import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.sys.LaunchApp;
-import jsoftware.com.jutil.sys.LocalSession;
-import jsoftware.com.jutil.jexception.JExcp;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.model.daos.AdministrationHistoryDAO;
+import jsoftware.com.jblue.model.daos.HysHistoryDAO;
+import jsoftware.com.jblue.model.dtos.HysAdministrationHistoryDTO;
+import jsoftware.com.jblue.model.dtos.OEmployee;
+import jsoftware.com.jblue.sys.app.AppConfig;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.jexception.JExcp;
+import jsoftware.com.jutil.sys.LaunchApp;
+import jsoftware.com.jutil.sys.LocalSession;
 
 /**
  * Esta clase define al personal de sesion actual, quien hace uso del programa,
@@ -40,7 +42,7 @@ public class SystemSession implements LocalSession<OEmployee> {
      * Empleado que ha iniciado session
      */
     private OEmployee current_employee;
-    private AdministrationHistoryObject current_administration;
+    private HysAdministrationHistoryDTO current_administration;
 
     private final JDBConnection connection;
 
@@ -52,7 +54,7 @@ public class SystemSession implements LocalSession<OEmployee> {
         return current_employee;
     }
 
-    public AdministrationHistoryObject getCurrentAdministration() {
+    public HysAdministrationHistoryDTO getCurrentAdministration() {
         return current_administration;
     }
 
@@ -62,13 +64,15 @@ public class SystemSession implements LocalSession<OEmployee> {
     public void getWarnings() {
         StringBuilder sb = new StringBuilder(255);
         if (getCurrentEmployee() == null) {
-            sb.append("El usuario no se ha registrado correctamente, No podra hacer registro algunos");
+            sb.append("El usuario no se ha registrado correctamente, No podra hacer registro algunos\n");
         }
 
         if (getCurrentAdministration() == null) {
-            sb.append("La administracion actual no ha sido registrada, no podra hacer registro alguno");
+            sb.append("La administracion actual no ha sido registrada, no podra hacer registro alguno\n");
         }
-
+        if (AppConfig.isAutoPay()) {
+            sb.append("El sistema tiene el modo de recargo automatico activado\n");
+        }
         if (!sb.isEmpty()) {
             JOptionPane.showConfirmDialog(null,
                     sb.toString(),
@@ -104,6 +108,7 @@ public class SystemSession implements LocalSession<OEmployee> {
                 throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
             }
             current_employee = user;
+            current_administration = new AdministrationHistoryDAO().getCurrentAdministration(connection);
         } catch (SQLException e) {
             connection.rollBack();
             JExcp.getInstance(false, true).print(e, getClass(), "setUser");

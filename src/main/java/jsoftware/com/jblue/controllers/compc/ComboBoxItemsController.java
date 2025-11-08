@@ -16,11 +16,11 @@
  */
 package jsoftware.com.jblue.controllers.compc;
 
-import jsoftware.com.jblue.controllers.AbstractComponentController;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import jsoftware.com.jblue.controllers.AbstractComponentController;
 
 /**
  *

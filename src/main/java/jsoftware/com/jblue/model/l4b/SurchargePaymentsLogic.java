@@ -1,14 +1,10 @@
 package jsoftware.com.jblue.model.l4b;
 
-import static jsoftware.com.jblue.model.l4b.AbsctractPayment.KEY_ERROR;
-import static jsoftware.com.jblue.model.l4b.AbsctractPayment.KEY_MOVS;
-import static jsoftware.com.jblue.model.l4b.AbsctractPayment.KEY_STATUS_OP;
-import static jsoftware.com.jblue.model.l4b.AbsctractPayment.STATUS_ERR;
-import static jsoftware.com.jblue.model.l4b.AbsctractPayment.STATUS_OK;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /*
  * Copyright (C) 2025 juan-campos
@@ -32,10 +28,11 @@ import java.util.logging.Logger;
  */
 public class SurchargePaymentsLogic extends AbsctractPayment {
 
+    private static final long serialVersionUID = 1L;
+
     public SurchargePaymentsLogic() {
         super();
         this.pay_query = "UPDATE surcharge_payments SET status = %d".formatted(PaymentModel.STATUS_PAY);
-        this.default_query = "INSERT INTO surcharge_payments(employee, user, price, month, status) VALUES %s";
     }
 
     @Override
@@ -45,29 +42,29 @@ public class SurchargePaymentsLogic extends AbsctractPayment {
 
     @Override
     public boolean execPayment() {
-        deuda = meses_pagados.size() * water_intake_type.getCurrentPrice();
+        deuda = month_paid_list.size() * water_intake_type.getCurrentPrice();
 
         if (!gameRulers()) {
             return false;
         }
-        System.out.println(Arrays.toString(personal.getData()));
+        System.out.println(Arrays.toString(current_employee.getData()));
         StringBuilder values = new StringBuilder();
         int i = 0;
         String col;
-        while (i < meses_pagados.size() - 1) {
-            col = "('" + personal.getId()
+        while (i < month_paid_list.size() - 1) {
+            col = "('" + current_employee.getId()
                     + "','"
-                    + usuario.getId() + "','"
+                    + user.getId() + "','"
                     + water_intake_type.getCurrentPrice() + "','"
-                    + meses_pagados.get(i) + "')";
+                    + month_paid_list.get(i) + "')";
             i++;
             values.append(col).append(",");
         }
-        col = "('" + personal.getId()
+        col = "('" + current_employee.getId()
                 + "','"
-                + usuario.getId() + "','"
+                + user.getId() + "','"
                 + water_intake_type.getCurrentPrice() + "','"
-                + meses_pagados.get(i) + "')";
+                + month_paid_list.get(i) + "')";
         i++;
         values.append(col);
         mov.put(KEY_MOVS, values.toString());
@@ -108,25 +105,25 @@ public class SurchargePaymentsLogic extends AbsctractPayment {
         int i = 0;
         String col;
         StringBuilder values = new StringBuilder(600);
-        while (i < meses_pagados.size() - 1) {
-            col = "('" + personal.getId()
+        while (i < month_paid_list.size() - 1) {
+            col = "('" + current_employee.getId()
                     + "','"
-                    + usuario.getId() + "','"
+                    + user.getId() + "','"
                     + water_intake_type.getCurrentPrice() + "','"
-                    + meses_pagados.get(i)
+                    + month_paid_list.get(i)
                     + PaymentModel.STATUS_NOT_PAY + "')";
             i++;
             values.append(col).append(",");
         }
-        col = "('" + personal.getId()
+        col = "('" + current_employee.getId()
                 + "','"
-                + usuario.getId() + "','"
+                + user.getId() + "','"
                 + water_intake_type.getCurrentPrice() + "','"
-                + meses_pagados.get(i) + "')";
+                + month_paid_list.get(i) + "')";
         i++;
         values.append(col);
         mov.put(KEY_MOVS, values.toString());
-        
+
         try {
             connection.execute(getQuery(values.toString()));
             mov.put(KEY_STATUS_OP, STATUS_OK);

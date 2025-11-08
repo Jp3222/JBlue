@@ -16,7 +16,7 @@
  */
 package jsoftware.com.jblue.model.daos;
 
-import jsoftware.com.jblue.model.dtos.AdministrationHistoryObject;
+import jsoftware.com.jblue.model.dtos.HysAdministrationHistoryDTO;
 import jsoftware.com.jblue.model.dtos.OEmployee;
 import jsoftware.com.jutil.db.JDBConnection;
 import java.sql.ResultSet;
@@ -39,12 +39,12 @@ public class SessionDAO {
         return LocalDateTime.now().isBefore(o.getDateEnd());
     }
     
-    public static AdministrationHistoryObject isAdministrarionRegister(JDBConnection connection) {
-        AdministrationHistoryObject o = null;
+    public static HysAdministrationHistoryDTO isAdministrarionRegister(JDBConnection connection) {
+        HysAdministrationHistoryDTO o = null;
         try {
             ResultSet rs = connection.query(getQuery());
             if (rs.next()) {
-                o = new AdministrationHistoryObject();
+                o = new HysAdministrationHistoryDTO();
                 String[] arr = new String[16];
                 for (int i = 0; i < 16; i++) {
                     arr[i] = rs.getString(i + 1);

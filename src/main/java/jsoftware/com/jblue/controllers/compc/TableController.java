@@ -16,20 +16,20 @@
  */
 package jsoftware.com.jblue.controllers.compc;
 
-import jsoftware.com.jblue.controllers.AbstractComponentController;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.util.Filters;
-import jsoftware.com.jblue.util.cache.MemoListCache;
-import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.List;
-import javax.swing.JOptionPane;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.AbstractComponentController;
 import jsoftware.com.jblue.model.dtos.ForeingKeyObject;
+import jsoftware.com.jblue.model.dtos.Objects;
 import jsoftware.com.jblue.model.dtos.StatusObject;
+import jsoftware.com.jblue.util.Filters;
+import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.framework.TableSearchViewModel;
+import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
  *
@@ -39,8 +39,16 @@ import jsoftware.com.jblue.views.framework.TableSearchViewModel;
 public class TableController<T extends Objects & ForeingKeyObject & StatusObject> extends AbstractComponentController<T> implements ComponentIterable {
 
     public static final String RELOAD_COMMAND = "reload";
+    private static final long serialVersionUID = 1L;
 
+    /**
+     *
+     */
     protected final TableSearchViewModel view;
+
+    /**
+     *
+     */
     protected TableObjectFilterModel<T> filters;
 
     public TableController(TableSearchViewModel view, MemoListCache<T> memo_cache) {

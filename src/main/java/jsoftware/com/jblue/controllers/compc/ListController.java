@@ -16,21 +16,19 @@
  */
 package jsoftware.com.jblue.controllers.compc;
 
-import jsoftware.com.jblue.controllers.AbstractComponentController;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.util.Filters;
-import jsoftware.com.jblue.util.cache.MemoListCache;
-import jsoftware.com.jblue.model.dtos.ForeingKeyObject;
-import jsoftware.com.jblue.model.dtos.StatusObject;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import javax.swing.DefaultListModel;
+import jsoftware.com.jblue.controllers.AbstractComponentController;
+import jsoftware.com.jblue.model.dtos.ForeingKeyObject;
+import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.dtos.StatusObject;
+import jsoftware.com.jblue.util.Filters;
+import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.framework.ListSearchViewModel;
 
 /**
@@ -38,22 +36,24 @@ import jsoftware.com.jblue.views.framework.ListSearchViewModel;
  * @author juan-campos
  * @param <T>
  */
-public final class ListController<T extends Objects & StatusObject & ForeingKeyObject> extends AbstractComponentController<T> {
+public class ListController<T extends Objects & StatusObject & ForeingKeyObject> extends AbstractComponentController<T> {
 
-    protected ListSearchViewModel view;
-    protected DefaultListModel<T> model;
-    protected String search_text;
+    private static final long serialVersionUID = 1L;
+
+    private final ListSearchViewModel<T> view;
+    private final DefaultListModel<T> model;
+    private String search_text;
     private final ArrayList<Predicate<T>> filters_list;
 
-    public ListController(ListSearchViewModel view, MemoListCache<T> memo_cache) {
+    public ListController(ListSearchViewModel<T> view, MemoListCache<T> memo_cache) {
         super(view.getList(), memo_cache, null);
+        view.getTextComponentList().addKeyListener(this);
+        view.getTextComponentList().addMouseListener(this);
         this.filters_list = new ArrayList<>(15);
         this.view = view;
         model = view.getListModel();
-        view.getTextComponentList().addKeyListener(this);
-        view.getTextComponentList().addMouseListener(this);
-        addFilterList((t) -> t.getId().equals(search_text));
-        addFilterList((t) -> Filters.clearAndCheck(t.toString(), search_text));
+        this.addFilterList((t) -> t.getId().equals(search_text));
+        this.addFilterList((t) -> Filters.clearAndCheck(t.toString(), search_text));
     }
 
     @Override
@@ -85,12 +85,10 @@ public final class ListController<T extends Objects & StatusObject & ForeingKeyO
     public void keyReleased(KeyEvent e) {
         search_text = view.getTextSearchList();
         dumpData();
-        
         if (Filters.isNullOrBlank(search_text)) {
             view.setCountElements(0);
             return;
         }
-
         List<T> list = memo_cache.getList(o -> {
             return isThis(o, search_text, false);
         });

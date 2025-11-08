@@ -16,16 +16,17 @@
  */
 package jsoftware.com.jblue.util.cache;
 
-import jsoftware.com.jblue.model.dtos.Objects;
+import java.io.Serializable;
 import java.util.List;
 import java.util.function.Predicate;
+import jsoftware.com.jblue.model.dtos.Objects;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public interface ListCacheModel<T extends Objects> {
+public interface ListCacheModel<T extends Objects> extends Serializable{
 
     /**
      * Consulta la lista con los datos de la base de datos

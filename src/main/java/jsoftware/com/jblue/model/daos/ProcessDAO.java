@@ -7,13 +7,18 @@ package jsoftware.com.jblue.model.daos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.dtos.AdministrationHistoryObject;
+import jsoftware.com.jblue.model.dtos.HysAdministrationHistoryDTO;
 import jsoftware.com.jblue.model.dtos.OEmployee;
 import jsoftware.com.jblue.model.dtos.ProcessDTO;
+import jsoftware.com.jblue.model.exp.ProcessException;
+import jsoftware.com.jblue.model.querys.ProcessQuery;
 import jsoftware.com.jblue.sys.SystemSession;
+import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**
@@ -22,69 +27,195 @@ import jsoftware.com.jutil.db.JDBConnection;
  */
 public class ProcessDAO {
 
-    private JDBConnection connection;
-    private OEmployee current_employee;
-    private AdministrationHistoryObject current_admini;
-    private String current_db_user;
+    private final JDBConnection connection;
+    private final OEmployee current_employee;
+    private final HysAdministrationHistoryDTO current_admin;
+    private final String current_db_user;
 
     public ProcessDAO(JDBConnection connection) {
         this.connection = connection;
         current_employee = SystemSession.getInstancia().getCurrentEmployee();
-        current_admini = SystemSession.getInstancia().getCurrentAdministration();
+        current_admin = SystemSession.getInstancia().getCurrentAdministration();
         current_db_user = "";
     }
 
-    public String insertStartProcess(String process_type, String user) throws SQLException {
-        String query = "INSERT INTO()";
-        return null;
+    public boolean startProcess(String process_type, String user) throws SQLException {
+        boolean rt = false;
+        if (connection == null) {
+            throw new SQLException("TRAMITE NO INICIADO");
+        }
+        if (Filters.isNullOrBlank(process_type, user)) {
+            throw new IllegalArgumentException("Paramentros erroneos: process_type: " + process_type + ", user: " + user);
+        }
+        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.INSERT_START_PROCESS);) {
+            connection.setAutoCommit(false);
+            ps.setString(1, process_type);
+            ps.setString(2, current_employee.getId());
+            ps.setString(3, current_admin.getId());
+            ps.setString(4, current_employee.getId());
+            ps.setString(5, current_db_user);
+            ps.setString(6, user);
+            ps.setString(7, "9");
+            rt = ps.executeUpdate() > 0;
+            if (!rt) {
+                throw new ProcessException(1, "TRAMITE NO INICIADO");
+            }
+            connection.commit();
+            return rt;
+        } catch (ProcessException ex) {
+            System.getLogger(ProcessDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (Exception ex) {
+            System.getLogger(ProcessDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } finally {
+            connection.setAutoCommit(true);
+        }
+        return rt;
     }
 
-    public String insertValidProcess() {
-        return null;
+    public boolean validProcess(String id) {
+        boolean rt = false;
+        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_VALID);) {
+            LocalDateTime ld = LocalDateTime.now();
+            connection.setAutoCommit(false);
+            ps.setString(1, current_employee.getId());
+            ps.setString(2, ld.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            ps.setString(3, current_employee.getId());
+            ps.setString(4, current_db_user);
+            ps.setString(5, "10");
+            ps.setString(6, id);
+            rt = ps.executeUpdate() > 0;
+            if (!rt) {
+                throw new ProcessException(1, "TRAMITE NO INICIADO");
+            }
+            connection.commit();
+            return rt;
+        } catch (Exception e) {
+            connection.rollBack();
+        } finally {
+            connection.setAutoCommit(true);
+        }
+        return rt;
+    }
+
+    public boolean payProcess(String id) {
+        boolean rt = false;
+        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_PAYMENT);) {
+            LocalDateTime ld = LocalDateTime.now();
+            connection.setAutoCommit(false);
+            ps.setString(1, current_employee.getId());
+            ps.setString(2, ld.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            ps.setString(3, current_employee.getId());
+            ps.setString(4, current_db_user);
+            ps.setString(5, "10");
+            ps.setString(6, id);
+            rt = ps.executeUpdate() > 0;
+            if (!rt) {
+                throw new ProcessException(1, "TRAMITE NO INICIADO");
+            }
+            connection.commit();
+            return rt;
+        } catch (Exception e) {
+            connection.rollBack();
+        } finally {
+            connection.setAutoCommit(true);
+        }
+        return rt;
+    }
+
+    public boolean endProcess(String id) {
+        boolean rt = false;
+        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_END);) {
+            LocalDateTime ld = LocalDateTime.now();
+            connection.setAutoCommit(false);
+            ps.setString(1, current_employee.getId());
+            ps.setString(2, ld.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            ps.setString(3, current_employee.getId());
+            ps.setString(4, current_db_user);
+            ps.setString(5, "10");
+            ps.setString(6, id);
+            rt = ps.executeUpdate() > 0;
+            if (!rt) {
+                throw new ProcessException(1, "TRAMITE NO INICIADO");
+            }
+            connection.commit();
+            return rt;
+        } catch (Exception e) {
+            connection.rollBack();
+        } finally {
+            connection.setAutoCommit(true);
+        }
+        return rt;
+    }
+
+    public boolean printProcess(String id) {
+        boolean rt = false;
+        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_PRINT);) {
+            LocalDateTime ld = LocalDateTime.now();
+            connection.setAutoCommit(false);
+            ps.setString(1, current_employee.getId());
+            ps.setString(2, ld.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            ps.setString(3, current_employee.getId());
+            ps.setString(4, current_db_user);
+            ps.setString(5, "10");
+            ps.setString(6, id);
+            rt = ps.executeUpdate() > 0;
+            if (!rt) {
+                throw new ProcessException(1, "TRAMITE NO INICIADO");
+            }
+            connection.commit();
+            return rt;
+        } catch (Exception e) {
+            connection.rollBack();
+        } finally {
+            connection.setAutoCommit(true);
+        }
+        return rt;
     }
 
     public List<ProcessDTO> getStartProcedures() {
-        ArrayList<ProcessDTO> list = new ArrayList<>(50);
-        return list;
+        return readProcess(1);
     }
 
     public List<ProcessDTO> getValidProcedures() {
-        ArrayList<ProcessDTO> list = new ArrayList<>(50);
-        return list;
+        return readProcess(2);
     }
 
     public List<ProcessDTO> getPaymentProcedures() {
-        ArrayList<ProcessDTO> list = new ArrayList<>(50);
-        return list;
+        return readProcess(3);
     }
 
     public List<ProcessDTO> getEndProcedures() {
-        ArrayList<ProcessDTO> list = new ArrayList<>(50);
-        return list;
+        return readProcess(4);
     }
 
     public List<ProcessDTO> getPrintProcedures() {
+        return readProcess(5);
+    }
+
+    public List<ProcessDTO> readProcess(int status) {
         ArrayList<ProcessDTO> list = new ArrayList<>(50);
-        try (PreparedStatement ps = connection.getNewPreparedStatement(getProcedure(5));) {
+        try (PreparedStatement ps = connection.getNewPreparedStatement(queryProcess(status));) {
             ResultSet rs = ps.executeQuery();
             String[] aux = new String[_Const.PRO_PROCESS_TABLE.getFields().length];
             int i;
+            ProcessDTO o;
             while (rs.next()) {
                 i = 0;
                 for (String j : _Const.PRO_PROCESS_TABLE.getFields()) {
                     aux[i] = j;
                 }
+                o = new ProcessDTO(aux);
+                list.add(o);
             }
-
         } catch (SQLException ex) {
             System.getLogger(ProcessDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return list;
     }
 
-    public String getProcedure(int status) {
+    public String queryProcess(int status) {
         StringBuilder sb = new StringBuilder(100);
-        sb.append("SELECT * FROM pro_process WHERE status != 15");
+        sb.append("SELECT * FROM pro_process WHERE status != 15 ");
         switch (status) {
             case 1 ->
                 sb.append("AND employee_start != NULL AND date_start != NULL");

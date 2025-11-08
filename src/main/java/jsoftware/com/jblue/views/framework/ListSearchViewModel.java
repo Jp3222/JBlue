@@ -16,6 +16,7 @@
  */
 package jsoftware.com.jblue.views.framework;
 
+import java.io.Serializable;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JTextField;
@@ -28,7 +29,7 @@ import jsoftware.com.jblue.model.dtos.StatusObject;
  * @author juan-campos
  * @param <T>
  */
-public interface ListSearchViewModel<T extends Objects & StatusObject & ForeingKeyObject> {
+public interface ListSearchViewModel<T extends Objects & StatusObject & ForeingKeyObject> extends Serializable {
 
     JList<T> getList();
 

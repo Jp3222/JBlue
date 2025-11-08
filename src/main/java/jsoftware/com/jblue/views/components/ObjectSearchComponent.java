@@ -124,7 +124,7 @@ public final class ObjectSearchComponent<T extends Objects & StatusObject & Fore
         });
 
         objects_list.addMouseListener(list_controller);
-        //ok_button.addActionListener(controller);
+        //ok_button.addActionListener();
     }
 
     @Override
@@ -279,16 +279,11 @@ public final class ObjectSearchComponent<T extends Objects & StatusObject & Fore
 
     @Override
     public JTextField getTextComponentList() {
-        System.out.println("componente:");
-        System.out.println(search_field.getText());
         return search_field;
     }
 
     @Override
     public String getTextSearchList() {
-        System.out.println();
-        System.out.println("texto");
-        System.out.println(search_field.getText());
         return search_field.getText().trim().toUpperCase().replace(" ", "");
     }
 

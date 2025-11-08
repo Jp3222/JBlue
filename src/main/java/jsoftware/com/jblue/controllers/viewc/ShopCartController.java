@@ -16,18 +16,6 @@
  */
 package jsoftware.com.jblue.controllers.viewc;
 
-import jsoftware.com.jblue.controllers.Controller;
-import jsoftware.com.jblue.model.l4b.PaymentFactory;
-import jsoftware.com.jblue.model.l4b.PaymentModel;
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.daos.HysHistoryDAO;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.util.cache.MemoListCache;
-import jsoftware.com.jblue.util.GraphicsUtils;
-import jsoftware.com.jblue.views.components.UserViewComponent;
-import jsoftware.com.jblue.views.ShopCartView;
-import jsoftware.com.jblue.views.components.ObjectSearchComponent;
 import java.awt.Component;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -40,12 +28,26 @@ import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import jsoftware.com.jblue.controllers.Controller;
+import jsoftware.com.jblue.model.constants._Const;
+import jsoftware.com.jblue.model.daos.HysHistoryDAO;
+import jsoftware.com.jblue.model.dtos.OUser;
+import jsoftware.com.jblue.model.factories.CacheFactory;
+import jsoftware.com.jblue.model.l4b.PaymentBuilder;
+import jsoftware.com.jblue.model.l4b.PaymentModel;
+import jsoftware.com.jblue.util.GraphicsUtils;
+import jsoftware.com.jblue.util.cache.MemoListCache;
+import jsoftware.com.jblue.views.ShopCartView;
+import jsoftware.com.jblue.views.components.ObjectSearchComponent;
+import jsoftware.com.jblue.views.components.UserViewComponent;
 
 /**
  *
  * @author juan-campos
  */
 public class ShopCartController extends Controller {
+
+    private static final long serialVersionUID = 1L;
 
     private final MemoListCache<OUser> memo_cache;
     private final ShopCartView view;
@@ -56,8 +58,8 @@ public class ShopCartController extends Controller {
     public ShopCartController(ShopCartView view) {
         this.view = view;
         memo_cache = CacheFactory.USERS;
-        this.service_payment = PaymentFactory.getServicePayment();
-        this.surcharge_payment = PaymentFactory.getSurchargePayment();
+        this.service_payment = PaymentBuilder.getServicePayment();
+        this.surcharge_payment = PaymentBuilder.getSurchargePayment();
         this.mov_book = new StringBuilder(3000);
         service_payment.setMovBook(mov_book);
     }
@@ -210,6 +212,7 @@ public class ShopCartController extends Controller {
     }
 
     private void total() {
+        
         double price = view.getObjectSearch().getWaterIntakeTypeObject().getCurrentPrice();
         double months_paids = view.getMonthPaidList().size();
         double total = price * months_paids;

@@ -16,24 +16,26 @@
  */
 package jsoftware.com.jblue.model.l4b;
 
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.model.dtos.OWaterIntakes;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import jsoftware.com.jblue.model.constants._Const;
+import jsoftware.com.jblue.model.dtos.OUser;
+import jsoftware.com.jblue.model.dtos.OWaterIntakes;
 
 /**
  *
  * @author juan-campos
  */
-public interface PaymentModel {
+public interface PaymentModel extends Serializable {
 
-    static final int SERVICE_PAYMENT = 1;
-    static final int SURCHARGE_PAYMENT = 2;
-    static final int OTHERS_PAYMENT = 3;
+    public static final int SERVICE_PAYMENT = _Const.INDEX_PYM_SERVICE_PAYMENTS;
+    static final int SURCHARGE_PAYMENT = _Const.INDEX_PYM_SURCHARGE_PAYMENTS;
+    static final int OTHERS_PAYMENT = _Const.INDEX_PYM_OTHER_PAYMENTS;
 
-    static final int STATUS_PAY = 4;
-    static final int STATUS_NOT_PAY = 5;
-    static final int STATUS_PENDING_PAY = 6;
+    static final int STATUS_PAY = 6;
+    static final int STATUS_NOT_PAY = 7;
+    static final int STATUS_PENDING_PAY = 8;
 
     static final String KEY_ERROR = "err_msg";
     static final String KEY_MOVS = "mov";

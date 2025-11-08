@@ -16,10 +16,10 @@
  */
 package jsoftware.com.jblue.controllers.compc;
 
-import jsoftware.com.jblue.controllers.AbstractComponentController;
-import jsoftware.com.jblue.model.dtos.Objects;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
+import jsoftware.com.jblue.controllers.AbstractComponentController;
+import jsoftware.com.jblue.model.dtos.Objects;
 
 /**
  *
@@ -27,6 +27,8 @@ import javax.swing.JSpinner;
  * @param <T>
  */
 public class SpinnerController<T extends Objects> extends AbstractComponentController<T> {
+
+    private static final long serialVersionUID = 1L;
 
     public SpinnerController(JSpinner component) {
         super(component, null, null);

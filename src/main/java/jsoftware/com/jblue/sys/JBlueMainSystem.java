@@ -16,16 +16,7 @@
  */
 package jsoftware.com.jblue.sys;
 
-import com.formdev.flatlaf.FlatLightLaf;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.sys.app.AppConfig;
-import jsoftware.com.jblue.sys.app.AppFiles;
-import jsoftware.com.jblue.views.win.ConfigWindow;
-import jsoftware.com.jblue.views.win.LoginWindows;
-import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.sys.MainSystem;
-import jsoftware.com.jutil.jexception.JExcp;
-import jsoftware.com.jutil.platf.So;
+import com.formdev.flatlaf.FlatDarculaLaf;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -35,6 +26,15 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jsoftware.com.jblue.model.factories.CacheFactory;
+import jsoftware.com.jblue.sys.app.AppConfig;
+import jsoftware.com.jblue.sys.app.AppFiles;
+import jsoftware.com.jblue.views.win.ConfigWindow;
+import jsoftware.com.jblue.views.win.LoginWindows;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.jexception.JExcp;
+import jsoftware.com.jutil.platf.So;
+import jsoftware.com.jutil.sys.MainSystem;
 
 /**
  *
@@ -59,7 +59,7 @@ public class JBlueMainSystem implements MainSystem {
         resources = new HashMap<>(5);
         resources.put("propierties", propiedades);
         resources.put("sys_flag_logs", true);
-        So.setDefaultLookAndFeel(new FlatLightLaf());
+        So.setDefaultLookAndFeel(new FlatDarculaLaf());
     }
 
     public Properties getPropiedades() {
@@ -98,6 +98,12 @@ public class JBlueMainSystem implements MainSystem {
                     propiedades.getProperty(AppConfig.DB_USER),
                     propiedades.getProperty(AppConfig.DB_PASSWORD)
             );
+//            connection = new JDBConnection.BuilderConnection()
+//                    .setTypeInstance(JDBConnection.INTANCE_POLL)
+//                    .setUser(propiedades.getProperty(AppConfig.DB_URL))
+//                    .setPassword(propiedades.getProperty(AppConfig.DB_URL))
+//                    .setUrl(propiedades.getProperty(AppConfig.DB_PASSWORD))
+//                    .build();
             resources.put("connection", connection);
             resources.put("sys_flag_logs", AppConfig.isLogsDB());
             resources.put(AppConfig.DB_USER, propiedades.getProperty(AppConfig.DB_USER));

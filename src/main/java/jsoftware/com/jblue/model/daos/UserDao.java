@@ -16,16 +16,9 @@
  */
 package jsoftware.com.jblue.model.daos;
 
-import jsoftware.com.jblue.model.scripts.UsersQuerys;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.sys.SystemLogs;
+import java.util.Map;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.sys.LaunchApp;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -35,20 +28,13 @@ public class UserDao {
 
     public static JDBConnection connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
 
-    public static List<String[]> getUsersNotPayed() {
-        ArrayList<String[]> list = new ArrayList<>((int) CacheFactory.USERS.count());
-        try {
-            LocalDate ly = LocalDate.now();
-            ResultSet rs = connection.query(UsersQuerys.users_not_paid.formatted(ly.getYear()));
-            String[] arr = new String[2];
-            while (rs.next()) {
-                arr[0] = rs.getString(1);
-                arr[1] = rs.getString(2);
-                list.add(arr.clone());
-            }
-        } catch (SQLException e) {
-            SystemLogs.severeDbLogs("ERROR: USUARIOS NO PAGADOS", e);
-        }
-        return list;
+    public void insertUser(Map<String, Object> map) {
+
     }
+
+    private void buildInsert(Map<String, Object> map) {
+        StringBuilder sb = new StringBuilder();
+        
+    }
+
 }

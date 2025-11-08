@@ -28,7 +28,7 @@ import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.model.DBConnection;
 import jsoftware.com.jblue.model.constants._Const;
 import jsoftware.com.jblue.model.daos.HysHistoryDAO;
-import jsoftware.com.jblue.model.dtos.AdministrationHistoryObject;
+import jsoftware.com.jblue.model.dtos.HysAdministrationHistoryDTO;
 import jsoftware.com.jblue.model.dtos.OEmployee;
 import jsoftware.com.jblue.model.dtos.OServicePayments;
 import jsoftware.com.jblue.sys.SystemSession;
@@ -85,7 +85,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
 
     @Override
     public void save() {
-        AdministrationHistoryObject currentAdministration = SystemSession.getInstancia().getCurrentAdministration();
+        HysAdministrationHistoryDTO currentAdministration = SystemSession.getInstancia().getCurrentAdministration();
         if (currentAdministration == null) {
             returnMessage(view, false, "[1] La administracion actual no ha sido registrada");
             return;
@@ -302,7 +302,7 @@ public class UserController extends AbstractDBViewController<OUser> implements D
         String fields = "process_type,employee_start,president,user,status";
 
         OEmployee current_employee = SystemSession.getInstancia().getCurrentEmployee();
-        AdministrationHistoryObject current_admin = SystemSession.getInstancia().getCurrentAdministration();
+        HysAdministrationHistoryDTO current_admin = SystemSession.getInstancia().getCurrentAdministration();
         if (current_employee == null) {
             throw new NullPointerException("El empleado actual esta corrupto");
         }

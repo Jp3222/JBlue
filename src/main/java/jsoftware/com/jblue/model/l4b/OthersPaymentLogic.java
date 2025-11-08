@@ -16,14 +16,10 @@
  */
 package jsoftware.com.jblue.model.l4b;
 
-import static jsoftware.com.jblue.model.l4b.AbsctractPayment.KEY_ERROR;
-import static jsoftware.com.jblue.model.l4b.AbsctractPayment.KEY_MOVS;
-import static jsoftware.com.jblue.model.l4b.AbsctractPayment.KEY_STATUS_OP;
-import static jsoftware.com.jblue.model.l4b.AbsctractPayment.STATUS_ERR;
-import static jsoftware.com.jblue.model.l4b.AbsctractPayment.STATUS_OK;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /**
  *
@@ -40,7 +36,7 @@ public class OthersPaymentLogic extends AbsctractPayment {
     @Override
     public boolean gameRulers() {
         mov.put(KEY_STATUS_OP, STATUS_OK);
-        if (meses_pagados.isEmpty()) {
+        if (this.month_paid_list.isEmpty()) {
             mov.put(KEY_ERROR, "NO HAY MESES SELECCIONADOS");
             mov.put(KEY_STATUS_OP, STATUS_ERR);
         }
@@ -56,7 +52,7 @@ public class OthersPaymentLogic extends AbsctractPayment {
             mov.put(KEY_ERROR, "ERROR INTERNO");
             mov.put(KEY_STATUS_OP, STATUS_ERR);
         }
-        if (!meses_pagados.isEmpty() && deuda == 0.0) {
+        if (!month_paid_list.isEmpty() && deuda == 0.0) {
             mov.put(KEY_ERROR, "ERROR INTERNO");
             mov.put(KEY_STATUS_OP, STATUS_ERR);
         }
@@ -73,7 +69,7 @@ public class OthersPaymentLogic extends AbsctractPayment {
 
     @Override
     public boolean execPayment() {
-        deuda = meses_pagados.size() * water_intake_type.getCurrentPrice();
+        deuda = month_paid_list.size() * water_intake_type.getCurrentPrice();
 
         if (!gameRulers()) {
             return false;
@@ -81,30 +77,30 @@ public class OthersPaymentLogic extends AbsctractPayment {
         StringBuilder values = new StringBuilder();
         int i = 0;
         String col;
-        while (i < meses_pagados.size() - 1) {
-            col = "('" + personal.getId()
+        while (i < month_paid_list.size() - 1) {
+            col = "('" + current_employee.getId()
                     + "','"
-                    + usuario.getId() + "','"
+                    + user.getId() + "','"
                     + water_intake_type.getCurrentPrice() + "','"
-                    + meses_pagados.get(i) + "')";
+                    + month_paid_list.get(i) + "')";
             i++;
             values.append(col).append(",");
 
             mov_book.append(i).append(" - ")
-                    .append(meses_pagados.get(i))
+                    .append(month_paid_list.get(i))
                     .append(" : ")
                     .append(water_intake_type.getCurrentPrice())
                     .append("\n");
         }
 
-        col = "('" + personal.getId()
+        col = "('" + current_employee.getId()
                 + "','"
-                + usuario.getId() + "','"
+                + user.getId() + "','"
                 + water_intake_type.getCurrentPrice() + "','"
-                + meses_pagados.get(i) + "')";
+                + month_paid_list.get(i) + "')";
 
         mov_book.append(i).append(" - ")
-                .append(meses_pagados.get(i))
+                .append(month_paid_list.get(i))
                 .append(" : ")
                 .append(water_intake_type.getCurrentPrice())
                 .append("\n");

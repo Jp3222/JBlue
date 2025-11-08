@@ -16,13 +16,13 @@
  */
 package jsoftware.com.jblue.controllers.compc;
 
-import jsoftware.com.jblue.controllers.AbstractComponentController;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.util.cache.MemoListCache;
 import java.awt.event.ActionEvent;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import jsoftware.com.jblue.controllers.AbstractComponentController;
+import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.util.cache.MemoListCache;
 
 /**
  *
@@ -30,6 +30,8 @@ import javax.swing.JComboBox;
  * @param <T>
  */
 public class ComboBoxController<T extends Objects> extends AbstractComponentController<T> {
+
+    private static final long serialVersionUID = 1L;
 
     private String format;
 
@@ -50,7 +52,6 @@ public class ComboBoxController<T extends Objects> extends AbstractComponentCont
                 return "Seleccione elemento";
             }
         });
-
         if (memo_cache != null) {
             memo_cache.getList().forEach((t) -> box.addItem(t));
         } else {

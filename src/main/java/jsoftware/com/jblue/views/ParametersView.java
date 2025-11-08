@@ -16,14 +16,6 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.sys.app.AppConfig;
-import jsoftware.com.jblue.views.framework.DBValuesMapModel;
-import jsoftware.com.jblue.views.framework.SimpleView;
-import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.sys.LaunchApp;
-import jsoftware.com.jutil.jexception.JExcp;
-import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
@@ -31,6 +23,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.model.constants._Const;
+import jsoftware.com.jblue.sys.app.AppConfig;
+import jsoftware.com.jblue.views.framework.DBValuesMapModel;
+import jsoftware.com.jblue.views.framework.SimpleView;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.jexception.JExcp;
+import jsoftware.com.jutil.swingw.modelos.JTableModel;
+import jsoftware.com.jutil.sys.LaunchApp;
 
 /**
  *
@@ -55,7 +55,7 @@ public final class ParametersView extends SimpleView implements DBValuesMapModel
      */
     private ParametersView() {
         initComponents();
-        parameters_map = new HashMap(20);
+        parameters_map = new HashMap<>(20);
         build();
     }
 

@@ -16,11 +16,11 @@
  */
 package jsoftware.com.jblue.controllers;
 
+import javax.swing.JOptionPane;
+import jsoftware.com.jblue.model.DBConnection;
 import jsoftware.com.jblue.model.dtos.Objects;
 import jsoftware.com.jblue.util.cache.MemoListCache;
-import jsoftware.com.jblue.model.DBConnection;
 import jsoftware.com.jblue.views.framework.SimpleView;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,7 +29,16 @@ import javax.swing.JOptionPane;
  */
 public abstract class AbstractDBViewController<T extends Objects> extends AbstractViewController implements DBControllerModel {
 
+    private static final long serialVersionUID = 1L;
+
+    /**
+     *
+     */
     protected final MemoListCache<T> memo_cache;
+
+    /**
+     *
+     */
     protected final DBConnection<T> connection;
 
     public AbstractDBViewController(MemoListCache<T> memo_cache) {

@@ -16,6 +16,7 @@
  */
 package jsoftware.com.jblue.util.cache;
 
+import java.io.Serializable;
 import jsoftware.com.jblue.model.dtos.Objects;
 
 /**
@@ -23,7 +24,7 @@ import jsoftware.com.jblue.model.dtos.Objects;
  * @author jp
  * @param <T>
  */
-public interface CacheModel<T extends Objects> {
+public interface CacheModel<T extends Objects> extends Serializable {
 
     static final int MIN = 1000;
     static final int MID = 2000;

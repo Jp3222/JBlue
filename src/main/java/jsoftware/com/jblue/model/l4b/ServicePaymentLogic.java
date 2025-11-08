@@ -16,18 +16,27 @@
  */
 package jsoftware.com.jblue.model.l4b;
 
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.daos.HysHistoryDAO;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jsoftware.com.jblue.model.constants._Const;
+import jsoftware.com.jblue.model.daos.HysHistoryDAO;
 
 public class ServicePaymentLogic extends AbsctractPayment {
 
     public ServicePaymentLogic() {
         super();
         this.pay_query = "INSERT INTO " + _Const.PYM_SERVICE_PAYMENTS_TABLE.getTableName() + " (employee, user, price, month_name) values %s";
-        this.default_query = "INSERT INTO service_payments (employee, user, price, month_name, status) values %s";
+    }
+
+    ServicePaymentLogic(PaymentBuilder.Builder builder, int type_payment) {
+        this.input_money = builder.getInput_money();
+        this.type_payment = type_payment;
+        this.user = builder.getUser();
+        this.water_intake = builder.getWater_intake();
+        this.water_intake_type = builder.getWater_intake_type();
+        this.pay_query = builder.getPay_query();
+
     }
 
     @Override
@@ -38,7 +47,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
     @Override
     public boolean gameRulers() {
         mov.put(KEY_STATUS_OP, STATUS_OK);
-        if (meses_pagados.isEmpty()) {
+        if (month_paid_list.isEmpty()) {
             mov.put(KEY_ERROR, "NO HAY MESES SELECCIONADOS");
             mov.put(KEY_STATUS_OP, STATUS_ERR);
         }
@@ -54,7 +63,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
             mov.put(KEY_ERROR, "ERROR INTERNO");
             mov.put(KEY_STATUS_OP, STATUS_ERR);
         }
-        if (!meses_pagados.isEmpty() && deuda == 0.0) {
+        if (!month_paid_list.isEmpty() && deuda == 0.0) {
             mov.put(KEY_ERROR, "ERROR INTERNO");
             mov.put(KEY_STATUS_OP, STATUS_ERR);
         }
@@ -71,7 +80,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
 
     @Override
     public boolean execPayment() {
-        deuda = meses_pagados.size() * water_intake_type.getCurrentPrice();
+        deuda = month_paid_list.size() * water_intake_type.getCurrentPrice();
 
         if (!gameRulers()) {
             return false;
@@ -79,29 +88,29 @@ public class ServicePaymentLogic extends AbsctractPayment {
         StringBuilder values = new StringBuilder();
         int i = 0;
         String col;
-        while (i < meses_pagados.size() - 1) {
-            col = "('" + personal.getId()
+        while (i < month_paid_list.size() - 1) {
+            col = "('" + current_employee.getId()
                     + "','"
-                    + usuario.getId() + "','"
+                    + user.getId() + "','"
                     + water_intake_type.getCurrentPrice() + "','"
-                    + meses_pagados.get(i) + "')";
+                    + month_paid_list.get(i) + "')";
             i++;
             values.append(col).append(",");
 
             mov_book.append(i).append(" - ")
-                    .append(meses_pagados.get(i))
+                    .append(month_paid_list.get(i))
                     .append(" : ")
                     .append(water_intake_type.getCurrentPrice())
                     .append("\n");
         }
-        col = "('" + personal.getId()
+        col = "('" + current_employee.getId()
                 + "','"
-                + usuario.getId() + "','"
+                + user.getId() + "','"
                 + water_intake_type.getCurrentPrice() + "','"
-                + meses_pagados.get(i) + "')";
+                + month_paid_list.get(i) + "')";
 
         mov_book.append(i).append(" - ")
-                .append(meses_pagados.get(i))
+                .append(month_paid_list.get(i))
                 .append(" : ")
                 .append(water_intake_type.getCurrentPrice())
                 .append("\n");
@@ -114,11 +123,11 @@ public class ServicePaymentLogic extends AbsctractPayment {
             mov.put(KEY_STATUS_OP, STATUS_OK);
             HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_PYM_SERVICE_PAYMENTS,
                     "PAGO DEL USUARIO: %s - %s %s %s, PAGO LOS MESES:%s".formatted(
-                            usuario.getId(),
-                            usuario.getName(),
-                            usuario.getLastName1(),
-                            usuario.getLastName2(),
-                            meses_pagados.toString()
+                            user.getId(),
+                            user.getName(),
+                            user.getLastName1(),
+                            user.getLastName2(),
+                            month_paid_list.toString()//
                     ));
             connection.getConnection().commit();
         } catch (SQLException ex) {
@@ -151,48 +160,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
      */
     @Override
     public boolean insertToDefault() {
-        StringBuilder values = new StringBuilder();
-        int i = 0;
-        String col;
-        while (i < meses_pagados.size() - 1) {
-            col = "('" + personal.getId()
-                    + "','"
-                    + usuario.getId() + "','"
-                    + water_intake_type.getCurrentPrice() + "','"
-                    + meses_pagados.get(i)
-                    + PaymentModel.STATUS_NOT_PAY + "')";
-            i++;
-            values.append(col).append(",");
-
-            mov_book.append(i).append(" - ")
-                    .append(meses_pagados.get(i))
-                    .append(" : ")
-                    .append(water_intake_type.getCurrentPrice())
-                    .append("\n");
-        }
-        col = "('" + personal.getId()
-                + "','"
-                + usuario.getId() + "','"
-                + water_intake_type.getCurrentPrice() + "','"
-                + meses_pagados.get(i) + "')";
-
-        mov_book.append(i).append(" - ")
-                .append(meses_pagados.get(i))
-                .append(" : ")
-                .append(water_intake_type.getCurrentPrice())
-                .append("\n");
-        i++;
-        values.append(col);
-        mov.put(KEY_MOVS, values.toString());
-        try {
-            connection.execute(default_query.formatted(values.toString()));
-            mov.put(KEY_STATUS_OP, STATUS_OK);
-        } catch (SQLException ex) {
-            mov.put(KEY_STATUS_OP, STATUS_ERR);
-            mov.put(KEY_ERROR, ex.getMessage());
-            Logger.getLogger(ServicePaymentLogic.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return mov.get(KEY_STATUS_OP).equals(STATUS_OK);
+        return true;
     }
 
 }

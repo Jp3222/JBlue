@@ -16,11 +16,13 @@
  */
 package jsoftware.com.jblue.util.cache;
 
+import java.io.Serializable;
+
 /**
  *
  * @author juan-campos
  */
-public interface Paginated {
+public interface Paginated extends Serializable{
 
     public static final int MOV_TO_BACK = -1;
     public static final int MOV_TO_NEXT = 1;

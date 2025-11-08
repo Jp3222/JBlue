@@ -16,16 +16,17 @@
  */
 package jsoftware.com.jblue.model.l4b;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import jsoftware.com.jblue.model.constants._Const;
 import jsoftware.com.jblue.model.dtos.OEmployee;
-import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
 import jsoftware.com.jblue.model.dtos.OUser;
+import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
 import jsoftware.com.jblue.model.dtos.OWaterIntakes;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.sys.LaunchApp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -33,58 +34,67 @@ import java.util.Map;
  */
 public abstract class AbsctractPayment implements PaymentModel {
 
+    private static final long serialVersionUID = 1L;
+    
+    private final String[] type_payments_table = {
+        _Const.PYM_SERVICE_PAYMENTS_TABLE.getTableName(),
+        _Const.PYM_SURCHARGE_PAYMENTS_TABLE.getTableName(),
+        _Const.PYM_OTHER_PAYMENTS_TABLE.getTableName()
+    };
+    
     protected final Map<String, String> mov;
-    protected final OEmployee personal;
-    protected OUser usuario;
+    protected final OEmployee current_employee;
+    protected final JDBConnection connection;
+    protected String pay_query;
+
+    protected OUser user;
     protected OWaterIntakes water_intake;
     protected OWaterIntakeTypes water_intake_type;
-    protected double dinero_ingresado;
+    protected String payment_method;
     protected double deuda;
-    protected double dinero_sobrante;
-    protected JDBConnection connection;
-    protected List<String> meses_pagados;
+    protected double input_money;
+    protected double output_money;
+    protected List<String> month_paid_list;
     protected int type_payment;
-    protected String pay_query;
-    protected String default_query;
 
     protected StringBuilder mov_book;
 
     public AbsctractPayment() {
         this.mov = new HashMap<>();
-        this.personal = SystemSession.getInstancia().getCurrentEmployee();
+        this.current_employee = SystemSession.getInstancia().getCurrentEmployee();
         this.connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
     }
 
     protected boolean isUserNull() {
-        return usuario == null;
+        return user == null;
     }
 
     protected boolean isPersonalNull() {
-        return personal == null;
+        return current_employee == null;
     }
 
     protected boolean isMontoMenor() {
-        return dinero_ingresado < deuda;
+        return input_money < deuda;
     }
 
     protected boolean isWaterIntakeNull() {
-        return usuario.getWaterIntakesObject() == null;
+        return user.getWaterIntakesObject() == null;
     }
 
     @Override
     public void setUser(OUser usuario) {
-        this.usuario = usuario;
+        this.user = usuario;
         this.water_intake_type = usuario.getWaterIntakesObject();
     }
 
     @Override
     public void setMoneyReceived(double dinero_ingresado) {
-        this.dinero_ingresado = dinero_ingresado;
+        this.input_money = dinero_ingresado;
     }
 
     @Override
     public void setMonthsPaid(List<String> meses_pagados) {
-        this.meses_pagados = meses_pagados;
+        this.month_paid_list = meses_pagados;
     }
 
     @Override
@@ -104,7 +114,7 @@ public abstract class AbsctractPayment implements PaymentModel {
 
     @Override
     public double getTotal() {
-        return usuario.getWaterIntakesObject().getCurrentPrice() * meses_pagados.size();
+        return user.getWaterIntakesObject().getCurrentPrice() * month_paid_list.size();
     }
 
     @Override
@@ -117,4 +127,12 @@ public abstract class AbsctractPayment implements PaymentModel {
         this.water_intake = o;
     }
 
+    public String getPayQuery(int type_payment) {
+        StringBuilder sb = new StringBuilder(200);
+        sb.append("INSERT INTO ");
+        sb.append(type_payments_table[type_payment]);
+        sb.append("(employee, user, water_intake, water_intake_type, price, month_name, month, status) ");
+        sb.append("VALUES('?,?,?,?,?,?,?,?,)");
+        return sb.toString();
+    }
 }

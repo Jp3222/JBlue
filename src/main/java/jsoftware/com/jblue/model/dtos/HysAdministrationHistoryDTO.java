@@ -24,7 +24,7 @@ import jsoftware.com.jblue.model.factories.CacheFactory;
  *
  * @author jp
  */
-public class AdministrationHistoryObject extends Objects implements StatusObject {
+public class HysAdministrationHistoryDTO extends Objects implements StatusObject {
 
     // --- Constructores ---
     /**
@@ -32,14 +32,14 @@ public class AdministrationHistoryObject extends Objects implements StatusObject
      *
      * @param info Arreglo de strings con los datos de los campos.
      */
-    public AdministrationHistoryObject(String... info) {
+    public HysAdministrationHistoryDTO(String... info) {
         super(info);
     }
 
     /**
      * Constructor por defecto.
      */
-    public AdministrationHistoryObject() {
+    public HysAdministrationHistoryDTO() {
         super();
     }
 

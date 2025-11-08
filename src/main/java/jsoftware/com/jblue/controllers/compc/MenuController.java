@@ -16,12 +16,9 @@
  */
 package jsoftware.com.jblue.controllers.compc;
 
-import jsoftware.com.jblue.controllers.AbstractComponentController;
-import jsoftware.com.jblue.controllers.Controller;
 import java.awt.event.ActionEvent;
 import java.util.Map;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
+import jsoftware.com.jblue.controllers.Controller;
 
 /**
  *

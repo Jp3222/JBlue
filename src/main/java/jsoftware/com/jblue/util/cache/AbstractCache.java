@@ -16,24 +16,25 @@
  */
 package jsoftware.com.jblue.util.cache;
 
-import jsoftware.com.jblue.model.DBConnection;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.sys.DevFlags;
-import jsoftware.com.jblue.util.ObjectUtils;
-import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.jexception.JExcp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import jsoftware.com.jblue.model.DBConnection;
+import jsoftware.com.jblue.model.dto.Objects;
+import jsoftware.com.jblue.sys.DevFlags;
+import jsoftware.com.jblue.util.ObjectUtils;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.db.model.JDBObject;
+import jsoftware.com.jutil.jexception.JExcp;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public abstract class AbstractCache<T extends Objects> implements CacheModel<T> {
+public abstract class AbstractCache<T extends JDBObject> implements CacheModel<T> {
 
     protected final List<T> cache;
     protected final Map<String, List<T>> buffer_cache;
@@ -95,11 +96,8 @@ public abstract class AbstractCache<T extends Objects> implements CacheModel<T> 
 
     public void load(ObjectAdapterModel<T> adapter, ResultSet rs_data, String aux, DBConnection<T> connection) {
         try {
-            while (rs_data.next()) {
-                Objects objeto = adapter.adapter(rs_data, connection);
-                cache.add((T) objeto);
-            }
-
+            JDBConnection conn = connection.getJDBConnection();
+            conn.getStorageProcedure();
             if (DevFlags.DEV_MSG_CODE) {
                 System.out.println("saving in the buffer......");
             }

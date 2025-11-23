@@ -16,22 +16,22 @@
  */
 package jsoftware.com.jblue.model;
 
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.db.JDBTable;
-import jsoftware.com.jutil.jexception.Excp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.db.JDBTable;
+import jsoftware.com.jutil.db.model.JDBObject;
+import jsoftware.com.jutil.jexception.Excp;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public class DBConnection<T extends Objects> extends AbstractDBConnection<T> {
+public class DBConnection<T extends JDBObject> extends AbstractDBConnection<T> {
 
     private JDBTable object_table;
 

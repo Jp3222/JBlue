@@ -17,7 +17,7 @@
 package jsoftware.com.jblue.util.cache;
 
 import jsoftware.com.jblue.model.DBConnection;
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.dto.Objects;
 import java.sql.ResultSet;
 /**
  *

@@ -26,9 +26,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.FactoryController;
 import jsoftware.com.jblue.controllers.compc.TableController;
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.constants.Const;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.Objects;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
@@ -48,7 +48,7 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesMapMo
 
     private final CardLayout ly;
     private final JTableModel model;
-    private OWaterIntakeTypes object_search;
+    private WaterIntakeTypesDTO object_search;
 
     /**
      * Creates new form NewTipoDeTomas
@@ -105,13 +105,13 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesMapMo
     }
 
     @Override
-    public OWaterIntakeTypes getObjectSearch() {
+    public WaterIntakeTypesDTO getObjectSearch() {
         return object_search;
     }
 
     @Override
     public void setObjectSearch(Objects o) {
-        object_search = (OWaterIntakeTypes) o;
+        object_search = (WaterIntakeTypesDTO) o;
     }
 
     /**
@@ -563,15 +563,15 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesMapMo
     public String[] getDbValues(boolean update) {
         String _type = type_name_field.getText();
 
-        double pp = 0;
-        if (update) {
-            pp = object_search == null ? 0.0 : object_search.getCurrentPrice();
+        String pp = "0.00";
+        if (update && object_search != null) {
+            pp = object_search.getCurrentPrice();
         }
         String _previus_price = String.valueOf(pp);
         String _cost = current_price_field.getText();
 
         String _fine = surcharge_field.getText();
-        String _date_update = LocalDateTime.now().format(DateTimeFormatter.ofPattern(_Const.DATE_TIME_FORMAT));
+        String _date_update = LocalDateTime.now().format(DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
 
         if (update) {
             return Formats.getDBFormatInputArray(_type,
@@ -632,7 +632,7 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesMapMo
     }
 
     private Map<String, String> saveUpdate(
-            OWaterIntakeTypes object_search, String _type_name, String _current_price,
+            WaterIntakeTypesDTO object_search, String _type_name, String _current_price,
             String _previous_price, String _surcharge) {
 
         if (object_search == null) {

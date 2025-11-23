@@ -17,20 +17,20 @@
 package jsoftware.com.jblue.views;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
-import jsoftware.com.jblue.controllers.Controller;
-import jsoftware.com.jblue.controllers.winc.ConfigController;
-import jsoftware.com.jblue.sys.app.AppConfig;
-import jsoftware.com.jblue.views.framework.SimpleView;
-import jsoftware.com.jblue.views.win.ConfigWindow;
-import jsoftware.com.jutil.sys.LaunchApp;
-import jsoftware.com.jutil.platf.So;
 import java.awt.CardLayout;
+import java.awt.event.WindowListener;
 import java.util.Properties;
 import javax.swing.JFileChooser;
 import javax.swing.JPasswordField;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import jsoftware.com.jblue.controllers.Controller;
+import jsoftware.com.jblue.controllers.winc.ConfigController;
+import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.views.framework.DBValuesModel;
-import java.awt.event.WindowListener;
+import jsoftware.com.jblue.views.framework.SimpleView;
+import jsoftware.com.jblue.views.win.ConfigWindow;
+import jsoftware.com.jutil.platf.So;
+import jsoftware.com.jutil.sys.LaunchApp;
 
 /**
  *
@@ -135,6 +135,17 @@ public final class ConfigurationPanel extends SimpleView implements DBValuesMode
         root_panel = new javax.swing.JPanel();
         program_info_panel = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        jTextField4 = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         db_user = new javax.swing.JPasswordField();
@@ -193,6 +204,41 @@ public final class ConfigurationPanel extends SimpleView implements DBValuesMode
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel15.setText("Base de datos");
         program_info_panel.add(jLabel15);
+
+        jPanel3.setPreferredSize(new java.awt.Dimension(800, 50));
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        jLabel8.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel8.setText("Clave");
+        jLabel8.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel3.add(jLabel8, java.awt.BorderLayout.WEST);
+
+        jPanel8.setPreferredSize(new java.awt.Dimension(50, 30));
+        jPanel8.setLayout(new java.awt.GridLayout(1, 8));
+        jPanel8.add(jTextField1);
+
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("-");
+        jPanel8.add(jLabel12);
+        jPanel8.add(jTextField2);
+
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("-");
+        jPanel8.add(jLabel13);
+        jPanel8.add(jTextField3);
+
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("-");
+        jPanel8.add(jLabel14);
+        jPanel8.add(jTextField4);
+
+        jPanel3.add(jPanel8, java.awt.BorderLayout.CENTER);
+
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel17.setPreferredSize(new java.awt.Dimension(50, 30));
+        jPanel3.add(jLabel17, java.awt.BorderLayout.EAST);
+
+        program_info_panel.add(jPanel3);
 
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 50));
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -394,8 +440,12 @@ public final class ConfigurationPanel extends SimpleView implements DBValuesMode
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -407,6 +457,7 @@ public final class ConfigurationPanel extends SimpleView implements DBValuesMode
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
@@ -416,10 +467,16 @@ public final class ConfigurationPanel extends SimpleView implements DBValuesMode
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     private javax.swing.JComboBox<String> motor;
     private javax.swing.JTextField name_db;
     private javax.swing.JPanel option_panel;

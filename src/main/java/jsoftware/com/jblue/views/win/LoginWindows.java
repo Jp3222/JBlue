@@ -315,12 +315,20 @@ public class LoginWindows extends AbstractAppWindows {
 
     }
 
+    public JTextField getUser() {
+        return user;
+    }
+
     public JPasswordField getPassword() {
         return password;
     }
 
-    public JTextField getUser() {
-        return user;
+    public String getPasswordString() {
+        return String.valueOf(password.getPassword());
+    }
+
+    public String getUserString() {
+        return user.getText();
     }
 
     public JButton getLoginButton() {

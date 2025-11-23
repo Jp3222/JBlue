@@ -16,18 +16,20 @@
  */
 package jsoftware.com.jblue.util.cache;
 
-import jsoftware.com.jblue.model.DBConnection;
-import jsoftware.com.jblue.model.dtos.Objects;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import jsoftware.com.jblue.model.DBConnection;
+import jsoftware.com.jutil.db.model.JDBObject;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public abstract class AbstractListCache<T extends Objects> extends AbstractCache<T> implements ListCacheModel<T> {
+public abstract class AbstractListCache<T extends JDBObject> extends AbstractCache<T> implements ListCacheModel<T> {
+
+    private static final long serialVersionUID = 1L;
 
     public AbstractListCache(int capacity, DBConnection conexion) {
         super(new ArrayList<>(capacity), capacity, conexion);

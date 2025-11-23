@@ -16,9 +16,9 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.model.dtos.OStreet;
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
+import jsoftware.com.jblue.model.dto.StreetDTO;
+import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
 import jsoftware.com.jblue.views.framework.SimpleView;
 
 /**
@@ -29,7 +29,7 @@ public class UserConsumerView extends SimpleView {
 
     private static final long serialVersionUID = 1L;
 
-    private OUser object_search;
+    private UserDTO object_search;
 
     /**
      * Creates new form UserConsumerView
@@ -489,7 +489,7 @@ public class UserConsumerView extends SimpleView {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList<OUser> jList1;
+    private javax.swing.JList<UserDTO> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
@@ -531,12 +531,12 @@ public class UserConsumerView extends SimpleView {
     private javax.swing.JButton search_object;
     private javax.swing.JPanel search_panel;
     private javax.swing.JPanel status_bar_panel;
-    private javax.swing.JComboBox<OStreet> street_filter;
+    private javax.swing.JComboBox<StreetDTO> street_filter;
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     private javax.swing.JTextField user_name_field;
     private javax.swing.JComboBox<String> water_intake_field;
-    private javax.swing.JComboBox<OWaterIntakeTypes> water_intakes_filter;
+    private javax.swing.JComboBox<WaterIntakeTypesDTO> water_intakes_filter;
     // End of variables declaration//GEN-END:variables
 
 }

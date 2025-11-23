@@ -23,12 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.AbstractComponentController;
-import jsoftware.com.jblue.model.dtos.ForeingKeyObject;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.model.dtos.StatusObject;
+import jsoftware.com.jblue.model.dto.ForeingKeyObject;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.framework.TableSearchViewModel;
+import jsoftware.com.jutil.db.JDBArrayObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
@@ -36,7 +35,7 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  * @author juan-campos
  * @param <T>
  */
-public class TableController<T extends Objects & ForeingKeyObject & StatusObject> extends AbstractComponentController<T> implements ComponentIterable {
+public class TableController<T extends JDBArrayObject> extends AbstractComponentController<T> implements ComponentIterable {
 
     public static final String RELOAD_COMMAND = "reload";
     private static final long serialVersionUID = 1L;
@@ -45,11 +44,6 @@ public class TableController<T extends Objects & ForeingKeyObject & StatusObject
      *
      */
     protected final TableSearchViewModel view;
-
-    /**
-     *
-     */
-    protected TableObjectFilterModel<T> filters;
 
     public TableController(TableSearchViewModel view, MemoListCache<T> memo_cache) {
         super(view.getTable(), memo_cache, null);

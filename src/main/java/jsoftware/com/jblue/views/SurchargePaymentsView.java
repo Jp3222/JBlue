@@ -19,9 +19,9 @@ package jsoftware.com.jblue.views;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JTextField;
-import jsoftware.com.jblue.model.dtos.OSurchargePayments;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.model.dtos.OtherPaymentsType;
+import jsoftware.com.jblue.model.dto.OSurchargePayments;
+import jsoftware.com.jblue.model.dto.Objects;
+import jsoftware.com.jblue.model.dto.OtherPaymentsType;
 import jsoftware.com.jblue.views.framework.ListSearchViewModel;
 import jsoftware.com.jblue.views.framework.SimpleView;
 

@@ -38,5 +38,5 @@ public interface DBValuesMapModel {
      * @param update indica si el metodo retornara datos para una actualizacion
      * @return los datos asignados
      */
-    Map<String, String> getValues(boolean update);
+    Map<String, Object> getValues(boolean update);
 }

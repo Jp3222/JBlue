@@ -1,7 +1,6 @@
 package jsoftware.com.jblue.model.l4b;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,56 +25,17 @@ import java.util.logging.Logger;
  *
  * @author juan-campos
  */
-public class SurchargePaymentsLogic extends AbsctractPayment {
+public class SurchargePaymentsLogic extends AbstractPayment {
 
     private static final long serialVersionUID = 1L;
 
     public SurchargePaymentsLogic() {
         super();
-        this.pay_query = "UPDATE surcharge_payments SET status = %d".formatted(PaymentModel.STATUS_PAY);
-    }
-
-    @Override
-    public String getQuery(String args) {
-        return "INSERT INTO surcharge_payments(employee, user, price, month) VALUES %s";
     }
 
     @Override
     public boolean execPayment() {
-        deuda = month_paid_list.size() * water_intake_type.getCurrentPrice();
 
-        if (!gameRulers()) {
-            return false;
-        }
-        System.out.println(Arrays.toString(current_employee.getData()));
-        StringBuilder values = new StringBuilder();
-        int i = 0;
-        String col;
-        while (i < month_paid_list.size() - 1) {
-            col = "('" + current_employee.getId()
-                    + "','"
-                    + user.getId() + "','"
-                    + water_intake_type.getCurrentPrice() + "','"
-                    + month_paid_list.get(i) + "')";
-            i++;
-            values.append(col).append(",");
-        }
-        col = "('" + current_employee.getId()
-                + "','"
-                + user.getId() + "','"
-                + water_intake_type.getCurrentPrice() + "','"
-                + month_paid_list.get(i) + "')";
-        i++;
-        values.append(col);
-        mov.put(KEY_MOVS, values.toString());
-        try {
-            connection.execute(getQuery(values.toString()));
-            mov.put(KEY_STATUS_OP, STATUS_OK);
-        } catch (SQLException ex) {
-            mov.put(KEY_STATUS_OP, STATUS_ERR);
-            mov.put(KEY_ERROR, ex.getMessage());
-            Logger.getLogger(ServicePaymentLogic.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return mov.get(KEY_STATUS_OP).equals(STATUS_OK);
     }
 
@@ -102,36 +62,7 @@ public class SurchargePaymentsLogic extends AbsctractPayment {
 
     @Override
     public boolean insertToDefault() {
-        int i = 0;
-        String col;
-        StringBuilder values = new StringBuilder(600);
-        while (i < month_paid_list.size() - 1) {
-            col = "('" + current_employee.getId()
-                    + "','"
-                    + user.getId() + "','"
-                    + water_intake_type.getCurrentPrice() + "','"
-                    + month_paid_list.get(i)
-                    + PaymentModel.STATUS_NOT_PAY + "')";
-            i++;
-            values.append(col).append(",");
-        }
-        col = "('" + current_employee.getId()
-                + "','"
-                + user.getId() + "','"
-                + water_intake_type.getCurrentPrice() + "','"
-                + month_paid_list.get(i) + "')";
-        i++;
-        values.append(col);
-        mov.put(KEY_MOVS, values.toString());
 
-        try {
-            connection.execute(getQuery(values.toString()));
-            mov.put(KEY_STATUS_OP, STATUS_OK);
-        } catch (SQLException ex) {
-            mov.put(KEY_STATUS_OP, STATUS_ERR);
-            mov.put(KEY_ERROR, ex.getMessage());
-            Logger.getLogger(ServicePaymentLogic.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return mov.get(KEY_STATUS_OP).equals(STATUS_OK);
     }
 

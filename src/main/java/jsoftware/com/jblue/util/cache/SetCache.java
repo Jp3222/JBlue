@@ -16,7 +16,7 @@
  */
 package jsoftware.com.jblue.util.cache;
 
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.dto.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 

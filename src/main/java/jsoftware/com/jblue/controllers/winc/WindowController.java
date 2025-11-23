@@ -16,9 +16,11 @@
  */
 package jsoftware.com.jblue.controllers.winc;
 
-import jsoftware.com.jblue.controllers.Controller;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.Controller;
+import jsoftware.com.jblue.views.framework.AbstractAppWindows;
 
 /**
  *
@@ -56,4 +58,17 @@ public abstract class WindowController extends Controller implements WindowListe
     public void windowDeactivated(WindowEvent we) {
     }
 
+    /**
+     * Este metodo solo lanza un mensaje
+     *
+     * @param view
+     * @param msg
+     */
+    public void returnMessage(AbstractAppWindows view, String msg) {
+        JOptionPane.showMessageDialog(view,
+                msg,
+                "Estado de la operacion",
+                JOptionPane.INFORMATION_MESSAGE);
+
+    }
 }

@@ -17,14 +17,14 @@
 package jsoftware.com.jblue.util.cache;
 
 import java.io.Serializable;
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jutil.db.model.JDBObject;
 
 /**
  *
  * @author jp
  * @param <T>
  */
-public interface CacheModel<T extends Objects> extends Serializable {
+public interface CacheModel<T extends JDBObject> extends Serializable {
 
     static final int MIN = 1000;
     static final int MID = 2000;

@@ -27,12 +27,13 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jsoftware.com.jblue.model.factories.CacheFactory;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.win.ConfigWindow;
 import jsoftware.com.jblue.views.win.LoginWindows;
 import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.jexception.JExcp;
+import jsoftware.com.jutil.db.JDBConnectionBuilder;
 import jsoftware.com.jutil.platf.So;
 import jsoftware.com.jutil.sys.MainSystem;
 
@@ -51,7 +52,6 @@ public class JBlueMainSystem implements MainSystem {
     private final Map<String, Object> resources;
     private final Properties propiedades;
     //private Conexion conexion;
-    private JDBConnection connection;
 
     public JBlueMainSystem() {
         propiedades = new Properties(20);
@@ -68,24 +68,25 @@ public class JBlueMainSystem implements MainSystem {
 
     @Override
     public boolean conectionDB() {
-        boolean null_connection = false;
-        for (String i : AppConfig.DB_KEYS) {
-            if (propiedades.getProperty(i) == null) {
-                null_connection = true;
-            }
-        }
-        if (null_connection) {
-            try {
-                ConfigWindow o = new ConfigWindow();
-                synchronized (o) {
-                    o.setVisible(true);
-                    o.wait();
-                }
-            } catch (InterruptedException ex) {
-                SystemLogs.infoDbLogs(ex.getMessage());
-            }
-        }
+        boolean res = false;
         try {
+            boolean null_properties = false;
+            for (String i : AppConfig.DB_KEYS) {
+                if (propiedades.getProperty(i) == null) {
+                    null_properties = true;
+                }
+            }
+            if (null_properties) {
+                try {
+                    ConfigWindow o = new ConfigWindow();
+                    synchronized (o) {
+                        o.setVisible(true);
+                        o.wait();
+                    }
+                } catch (InterruptedException ex) {
+                    SystemLogs.infoDbLogs(ex.getMessage());
+                }
+            }
             String database_url = "jdbc:%s://%s:%s/%s";
             propiedades.put(AppConfig.DB_URL, database_url.formatted(
                     propiedades.getProperty(AppConfig.DB_MOTOR),
@@ -93,31 +94,41 @@ public class JBlueMainSystem implements MainSystem {
                     propiedades.getProperty(AppConfig.DB_PORT),
                     propiedades.getProperty(AppConfig.DB_NAME)
             ));
-            connection = JDBConnection.getInstance(
-                    propiedades.getProperty(AppConfig.DB_URL),
-                    propiedades.getProperty(AppConfig.DB_USER),
-                    propiedades.getProperty(AppConfig.DB_PASSWORD)
+            
+            JDBConnectionBuilder builder = new JDBConnectionBuilder();
+            builder.setUser(propiedades.getProperty(AppConfig.DB_USER));
+            builder.setPassword(propiedades.getProperty(AppConfig.DB_PASSWORD));
+            String url = database_url.formatted(
+                    propiedades.getProperty(AppConfig.DB_MOTOR),
+                    propiedades.getProperty(AppConfig.DB_HOST),
+                    propiedades.getProperty(AppConfig.DB_PORT),
+                    propiedades.getProperty(AppConfig.DB_NAME)
             );
-//            connection = new JDBConnection.BuilderConnection()
-//                    .setTypeInstance(JDBConnection.INTANCE_POLL)
-//                    .setUser(propiedades.getProperty(AppConfig.DB_URL))
-//                    .setPassword(propiedades.getProperty(AppConfig.DB_URL))
-//                    .setUrl(propiedades.getProperty(AppConfig.DB_PASSWORD))
-//                    .build();
-            resources.put("connection", connection);
-            resources.put("sys_flag_logs", AppConfig.isLogsDB());
-            resources.put(AppConfig.DB_USER, propiedades.getProperty(AppConfig.DB_USER));
-            resources.put(AppConfig.DB_PASSWORD, propiedades.getProperty(AppConfig.DB_PASSWORD));
-            resources.put(AppConfig.DB_URL, propiedades.getProperty(AppConfig.DB_URL));
-            connection.setShowQuery((boolean) resources.get("sys_flag_logs"));
-        } catch (SQLException e) {
-            SystemLogs.severeSysLogs(e.getMessage(), e);
-            JExcp.getInstance(true, true).printAndShow(e, getClass());
-            SystemLogs.infoSysLogs("ERROR EN CONEXION");
-            return false;
+            builder.setUrl(url);
+            builder.setTimeOut(5000);
+            builder.setMinimumIdle(5000);
+            builder.setMaxPollSize(20);
+            JDBConnection generic_connection = builder.build();
+            if (generic_connection == null) {
+                throw new SQLException("LA CONFIGURACIONES DE BASE DE DATOS NO SE INICIARON CORRECTAMENTE");
+            }
+            ConnectionFactory intance = ConnectionFactory.getIntance(builder);
+            boolean openFactory = intance.openFactory();
+            if (!openFactory) {
+                throw new SQLException("LA FABRICA DE CONEXION NO ABRIO");
+            }
+
+            resources.put(SiystemConsts.DATA_BASE_KEY, generic_connection);
+            SystemLogs.infoSysLogs("BASE DE DATOS CONECTADA");
+            res = true;
+        } catch (SQLException ex) {
+            System.getLogger(JBlueMainSystem.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (NullPointerException ex) {
+            System.getLogger(JBlueMainSystem.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (Exception ex) {
+            System.getLogger(JBlueMainSystem.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-        SystemLogs.infoSysLogs("BASE DE DATOS CONECTADA");
-        return true;
+        return res;
     }
 
     @Override
@@ -194,13 +205,11 @@ public class JBlueMainSystem implements MainSystem {
 
     @Override
     public boolean closeSys() {
-        try {
-            connection.close();
-            SystemLogs.infoDbLogs("CLOSE SYSTEM");
-        } catch (SQLException ex) {
-            Logger.getLogger(JBlueMainSystem.class.getName()).log(Level.SEVERE, null, ex);
+        boolean close = ConnectionFactory.getIntance().close();
+        if (!close) {
+            SystemLogs.infoDbLogs("PROBLEMAS AL CERRAR CONEXION");
         }
-
+        SystemLogs.infoDbLogs("CLOSE SYSTEM");
         LOG.log(Level.INFO, "EXIT");
         System.exit(0);
 

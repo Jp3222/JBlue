@@ -29,23 +29,23 @@ import javax.swing.JList;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import jsoftware.com.jblue.controllers.compc.ListController;
-import jsoftware.com.jblue.model.dtos.ForeingKeyObject;
-import jsoftware.com.jblue.model.dtos.OStreet;
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.model.dtos.StatusObject;
+import jsoftware.com.jblue.model.dto.ForeingKeyObject;
+import jsoftware.com.jblue.model.dto.StreetDTO;
+import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.Objects;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.framework.ListSearchViewModel;
 import jsoftware.com.jutil.view.WindowStates;
+import jsoftware.com.jblue.model.dto.StatusObjectModel;
 
-public final class ObjectSearchComponent<T extends Objects & StatusObject & ForeingKeyObject> extends JDialog implements WindowStates, ListSearchViewModel<T> {
+public final class ObjectSearchComponent<T extends Objects & StatusObjectModel & ForeingKeyObject> extends JDialog implements WindowStates, ListSearchViewModel<T> {
 
     private static final long serialVersionUID = 1L;
 
-    public static OStreet getStreet(JFrame padre) {
-        final ObjectSearchComponent<OStreet> o = new ObjectSearchComponent<>(padre, true, CacheFactory.STREETS);
+    public static StreetDTO getStreet(JFrame padre) {
+        final ObjectSearchComponent<StreetDTO> o = new ObjectSearchComponent<>(padre, true, CacheFactory.STREETS);
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;
@@ -53,8 +53,8 @@ public final class ObjectSearchComponent<T extends Objects & StatusObject & Fore
         return o.getObjectSearch();
     }
 
-    public static OUser getUser(JFrame padre) {
-        ObjectSearchComponent<OUser> o = new ObjectSearchComponent<>(padre, true, CacheFactory.USERS);
+    public static UserDTO getUser(JFrame padre) {
+        ObjectSearchComponent<UserDTO> o = new ObjectSearchComponent<>(padre, true, CacheFactory.USERS);
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;
@@ -62,8 +62,8 @@ public final class ObjectSearchComponent<T extends Objects & StatusObject & Fore
         return o.getObjectSearch();
     }
 
-    public static OWaterIntakeTypes getWaterIntakeType(JFrame padre) {
-        ObjectSearchComponent<OWaterIntakeTypes> o = new ObjectSearchComponent<>(padre, true, CacheFactory.WATER_INTAKES_TYPES);
+    public static WaterIntakeTypesDTO getWaterIntakeType(JFrame padre) {
+        ObjectSearchComponent<WaterIntakeTypesDTO> o = new ObjectSearchComponent<>(padre, true, CacheFactory.WATER_INTAKES_TYPES);
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;

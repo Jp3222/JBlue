@@ -25,11 +25,11 @@ import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.FactoryController;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
 import jsoftware.com.jblue.controllers.compc.TableController;
-import jsoftware.com.jblue.model.dtos.OStreet;
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
-import jsoftware.com.jblue.model.dtos.OWaterIntakes;
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.dto.StreetDTO;
+import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.OWaterIntakes;
+import jsoftware.com.jblue.model.dto.Objects;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
@@ -49,13 +49,13 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
     private final CardLayout ly;
     private final JTableModel model;
     private OWaterIntakes object_search;
-    private final ComboBoxController<OStreet> street_cat_1;
-    private final ComboBoxController<OStreet> street_cat_2;
-    private final ComboBoxController<OWaterIntakeTypes> water_intake;
-    private OUser user_search;
-    private OWaterIntakeTypes water_intake_types_search;
-    private OStreet street1_search;
-    private OStreet street2_search;
+    private final ComboBoxController<StreetDTO> street_cat_1;
+    private final ComboBoxController<StreetDTO> street_cat_2;
+    private final ComboBoxController<WaterIntakeTypesDTO> water_intake;
+    private UserDTO user_search;
+    private WaterIntakeTypesDTO water_intake_types_search;
+    private StreetDTO street1_search;
+    private StreetDTO street2_search;
 
     private boolean process;
 
@@ -605,8 +605,8 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
     private javax.swing.JButton search_water_intake;
     private javax.swing.JPanel status_bar_panel;
     private javax.swing.JComboBox<String> status_field;
-    private javax.swing.JComboBox<OStreet> street1_field;
-    private javax.swing.JComboBox<OStreet> street2_field;
+    private javax.swing.JComboBox<StreetDTO> street1_field;
+    private javax.swing.JComboBox<StreetDTO> street2_field;
     private javax.swing.JScrollPane tabla_usuarios;
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
@@ -776,19 +776,19 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
         this.north_panel.setVisible(b);
     }
 
-    public void setUserSearch(OUser user_search) {
+    public void setUserSearch(UserDTO user_search) {
         this.user_search = user_search;
     }
 
-    public void setWater_intake_types_search(OWaterIntakeTypes water_intake_types_search) {
+    public void setWater_intake_types_search(WaterIntakeTypesDTO water_intake_types_search) {
         this.water_intake_types_search = water_intake_types_search;
     }
 
-    public void setStreet1_search(OStreet street1_search) {
+    public void setStreet1_search(StreetDTO street1_search) {
         this.street1_search = street1_search;
     }
 
-    public void setStreet2_search(OStreet street2_search) {
+    public void setStreet2_search(StreetDTO street2_search) {
         this.street2_search = street2_search;
     }
 

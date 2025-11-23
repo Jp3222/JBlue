@@ -16,18 +16,18 @@
  */
 package jsoftware.com.jblue.controllers.winc;
 
-import jsoftware.com.jblue.model.dtos.ForeingKeyObject;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.model.dtos.StatusObject;
+import jsoftware.com.jblue.model.dto.ForeingKeyObject;
+import jsoftware.com.jblue.model.dto.Objects;
 import jsoftware.com.jblue.views.components.ObjectSearchComponent;
 import java.awt.event.ActionEvent;
+import jsoftware.com.jblue.model.dto.StatusObjectModel;
 
 /**
  *
  * @author juanp
  * @param <T>
  */
-public class ObjectSearchController<T extends Objects & StatusObject & ForeingKeyObject> extends WindowController {
+public class ObjectSearchController<T extends Objects & StatusObjectModel & ForeingKeyObject> extends WindowController {
 
     private static final long serialVersionUID = 1L;
 

@@ -6,15 +6,14 @@ package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.util.cache.MemoListCache;
+import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.views.ParametersView;
 
 /**
  *
  * @author juanp
  */
-public class ParametersController extends AbstractDBViewController<OUser> {
+public class ParametersController extends AbstractDBViewController<UserDTO> {
 
     private static final long serialVersionUID = 1L;
     private final ParametersView view;
@@ -24,7 +23,7 @@ public class ParametersController extends AbstractDBViewController<OUser> {
      * @param memo_cache
      * @param view
      */
-    public ParametersController(MemoListCache<OUser> memo_cache, ParametersView view) {
+    public ParametersController(ParametersView view) {
         super(memo_cache);
         this.view = view;
     }

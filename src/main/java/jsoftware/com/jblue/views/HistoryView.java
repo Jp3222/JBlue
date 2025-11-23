@@ -16,7 +16,7 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.model.dtos.OHistory;
+import jsoftware.com.jblue.model.dto.HistoryDTO;
 import jsoftware.com.jblue.views.framework.DataBaseAccessView;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import java.util.List;

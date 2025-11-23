@@ -17,33 +17,29 @@
 package jsoftware.com.jblue.controllers;
 
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.model.DBConnection;
-import jsoftware.com.jblue.model.dtos.Objects;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.framework.SimpleView;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.db.model.JDBObject;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public abstract class AbstractDBViewController<T extends Objects> extends AbstractViewController implements DBControllerModel {
+public abstract class AbstractDBViewController<T extends JDBObject> extends AbstractViewController implements DBControllerModel {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     *
-     */
-    protected final MemoListCache<T> memo_cache;
-
-    /**
-     *
-     */
-    protected final DBConnection<T> connection;
+    protected JDBConnection conn;
+    protected MemoListCache<T> memo_cache;
 
     public AbstractDBViewController(MemoListCache<T> memo_cache) {
+        this(memo_cache.getConnection(), memo_cache);
+    }
+
+    public AbstractDBViewController(JDBConnection conn, MemoListCache<T> memo_cache) {
+        this.conn = conn;
         this.memo_cache = memo_cache;
-        this.connection = memo_cache.getConnection();
     }
 
     /**
@@ -90,5 +86,4 @@ public abstract class AbstractDBViewController<T extends Objects> extends Abstra
                 JOptionPane.INFORMATION_MESSAGE);
 
     }
-
 }

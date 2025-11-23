@@ -17,29 +17,26 @@
 package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.Component;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.math.BigDecimal;
+import java.util.List;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import jsoftware.com.jblue.controllers.Controller;
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.daos.HysHistoryDAO;
-import jsoftware.com.jblue.model.dtos.OUser;
+import jsoftware.com.jblue.model.dao.PaymentsDAO;
+import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.OWaterIntakes;
+import jsoftware.com.jblue.model.dto.PaymentDTO;
 import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.l4b.PaymentBuilder;
-import jsoftware.com.jblue.model.l4b.PaymentModel;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.util.GraphicsUtils;
+import jsoftware.com.jblue.util.PaymentsRulers;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.ShopCartView;
 import jsoftware.com.jblue.views.components.ObjectSearchComponent;
 import jsoftware.com.jblue.views.components.UserViewComponent;
+import jsoftware.com.jutil.db.JDBConnection;
 
 /**
  *
@@ -49,19 +46,16 @@ public class ShopCartController extends Controller {
 
     private static final long serialVersionUID = 1L;
 
-    private final MemoListCache<OUser> memo_cache;
+    private final MemoListCache<UserDTO> memo_cache;
     private final ShopCartView view;
-    private final PaymentModel service_payment;
-    private final PaymentModel surcharge_payment;
     private final StringBuilder mov_book;
+    private final PaymentsDAO payments_dao;
 
     public ShopCartController(ShopCartView view) {
         this.view = view;
-        memo_cache = CacheFactory.USERS;
-        this.service_payment = PaymentBuilder.getServicePayment();
-        this.surcharge_payment = PaymentBuilder.getSurchargePayment();
+        this.memo_cache = CacheFactory.USERS;
         this.mov_book = new StringBuilder(3000);
-        service_payment.setMovBook(mov_book);
+        this.payments_dao = new PaymentsDAO("ShopCartController");
     }
 
     @Override
@@ -109,32 +103,14 @@ public class ShopCartController extends Controller {
         UserViewComponent.showVisor(view.getObjectSearch().getUserObject());
     }
 
+    private void surcharges() {
+
+    }
+
     void payments() {
         try {
-            OUser user = view.getObjectSearch().getUserObject();
-            mov_book.setLength(0);
-            mov_book.setLength(3000);
-            mov_book.append("Usuario: ").append(user.toString());
-            mov_book.append("\nPAGOS POR EL SERVICIO\n");
-            if (view.getObjectSearch() == null) {
-                JOptionPane.showMessageDialog(view, "Usuario no valido", "Operacion Erronea", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            String in = JOptionPane.showInputDialog(view, "Dinero Ingresado", "Dinero ingresado", JOptionPane.INFORMATION_MESSAGE);
-            float dinero_in = Float.parseFloat(in.concat(".00"));
+        } catch (Exception e) {
 
-            service_payment.setUser(view.getObjectSearch().getUserObject());
-            service_payment.setMonthsPaid(view.getMonthPaidList());
-            service_payment.setMoneyReceived(dinero_in);
-            service_payment.setWaterIntake(view.getObjectSearch());
-            boolean execPayment = service_payment.execPayment();
-            mov_book.append("Total: ").append(service_payment.getTotal());
-            if (!execPayment) {
-                throw new SQLException("PAGO NO REALIZADO");
-            }
-            rmessage(execPayment);
-        } catch (HeadlessException | NumberFormatException | SQLException e) {
-            rmessage(false);
         } finally {
         }
     }
@@ -155,45 +131,6 @@ public class ShopCartController extends Controller {
 
     }
 
-    private void surcharges() {
-        try {
-            OUser user = view.getObjectSearch().getUserObject();
-            int i = JOptionPane.showConfirmDialog(view,
-                    "¿Desea generarle un recargo a este usuario?",
-                    "Recargos",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE
-            );
-
-            if (i == JOptionPane.YES_OPTION) {
-                mov_book.setLength(0);
-                mov_book.setLength(3000);
-                mov_book.append("Usuario: ").append(user.toString());
-                mov_book.append("\nRECARGOS POR PAGOS TARDIOS\n");
-                if (view.getObjectSearch() == null) {
-                    JOptionPane.showMessageDialog(view, "Usuario no valido", "Operacion Erronea", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                surcharge_payment.setUser(view.getObjectSearch().getUserObject());
-                surcharge_payment.setMonthsPaid(view.getMonthPaidList());
-                boolean execPayment = service_payment.insertToDefault();
-                mov_book.append("Total: ").append(service_payment.getTotal());
-                if (execPayment) {
-                    HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_PYM_SURCHARGE_PAYMENTS,
-                            "RECARGO AL USUARIO: %s %s %s".formatted(
-                                    user.getName(),
-                                    user.getLastName1(),
-                                    user.getLastName2()
-                            )
-                    );
-                }
-                rmessage(execPayment);
-            }
-        } catch (HeadlessException | SQLException e) {
-        } finally {
-        }
-    }
-
     private void latePayments() {
     }
 
@@ -212,10 +149,11 @@ public class ShopCartController extends Controller {
     }
 
     private void total() {
-        
-        double price = view.getObjectSearch().getWaterIntakeTypeObject().getCurrentPrice();
-        double months_paids = view.getMonthPaidList().size();
-        double total = price * months_paids;
+        OWaterIntakes o = view.getObjectSearch();
+        String total = PaymentsRulers.calculateBaseTotal(
+                view.getMonthPaidList().size(),
+                new BigDecimal(o.getWaterIntakeTypeObject().getCurrentPrice())
+        ).toPlainString();
         view.setTotalField(total);
     }
 
@@ -231,38 +169,23 @@ public class ShopCartController extends Controller {
         }
     }
 
-    public void setPaymentsInfo(OUser user) {
-        try {
-            LocalDate ld = LocalDate.now();
-            String query = "SELECT month_name FROM %s WHERE user = '%s' AND YEAR(NOW()) = '%s' AND status != 3"
-                    .formatted(
-                            _Const.PYM_SERVICE_PAYMENTS_TABLE.getTableName(),
-                            user.getId(),
-                            ld.getYear());
+    public void setPaymentsInfo(UserDTO user) {
+        JDBConnection connection = ConnectionFactory.getIntance().getPaymentsConnection();
+        List<PaymentDTO> paymentList = payments_dao.getPaymentList(connection);
+        paymentList.stream().filter((t) -> t.)
+        ArrayList<JCheckBox> check_box = view.getMonthList();
+        boolean contains = false;
+        for (JCheckBox i : check_box) {
+            contains = list.contains(i.getText());
+            i.setSelected(contains);
+            i.setEnabled(!contains);
 
-            ResultSet res = CacheFactory.SERVICE_PAYMENTS
-                    .getConnection().getJDBConnection().query(query);
-            ArrayList<String> list = new ArrayList<>();
-            while (res.next()) {
-                list.add(res.getString(1));
-            }
-
-            ArrayList<JCheckBox> check_box = view.getMonthList();
-            boolean contains = false;
-            for (JCheckBox i : check_box) {
-                contains = list.contains(i.getText());
-                i.setSelected(contains);
-                i.setEnabled(!contains);
-
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ShopCartController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
     private void mov_book() {
-        String book = service_payment.getMovBook().toString();
+        String book = mov_book.toString();
         if (book == null || book.isBlank()) {
             book = "Sin Movimientos";
         }
@@ -270,7 +193,7 @@ public class ShopCartController extends Controller {
     }
 
     private void searchUser() {
-        OUser o = ObjectSearchComponent.getUser(null);
+        UserDTO o = ObjectSearchComponent.getUser(null);
         if (o == null) {
             JOptionPane.showMessageDialog(view, "Usuario no encontrado");
             return;

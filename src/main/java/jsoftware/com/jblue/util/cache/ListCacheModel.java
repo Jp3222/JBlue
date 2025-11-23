@@ -19,7 +19,7 @@ package jsoftware.com.jblue.util.cache;
 import java.io.Serializable;
 import java.util.List;
 import java.util.function.Predicate;
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.dto.Objects;
 
 /**
  *

@@ -6,7 +6,7 @@ package jsoftware.com.jblue.util;
 
 import java.io.File;
 import java.util.ArrayList;
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.dto.Objects;
 
 /**
  *

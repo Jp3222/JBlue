@@ -16,32 +16,23 @@
  */
 package jsoftware.com.jblue.model.l4b;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.daos.HysHistoryDAO;
+import jsoftware.com.jblue.model.constants.Const;
+import jsoftware.com.jblue.model.dao.HysHistoryDAO;
+import jsoftware.com.jblue.model.exp.PaymentExeption;
+import jsoftware.com.jblue.util.PaymentsRulers;
+import jsoftware.com.jblue.views.components.UserMessagesFactory;
 
-public class ServicePaymentLogic extends AbsctractPayment {
+public class ServicePaymentLogic extends AbstractPayment {
+
+    private static final long serialVersionUID = 1L;
 
     public ServicePaymentLogic() {
         super();
-        this.pay_query = "INSERT INTO " + _Const.PYM_SERVICE_PAYMENTS_TABLE.getTableName() + " (employee, user, price, month_name) values %s";
     }
 
-    ServicePaymentLogic(PaymentBuilder.Builder builder, int type_payment) {
-        this.input_money = builder.getInput_money();
-        this.type_payment = type_payment;
-        this.user = builder.getUser();
-        this.water_intake = builder.getWater_intake();
-        this.water_intake_type = builder.getWater_intake_type();
-        this.pay_query = builder.getPay_query();
-
-    }
-
-    @Override
-    public String getQuery(String args) {
-        return pay_query.formatted(args);
+    ServicePaymentLogic(PaymentBuilder builder, int type_payment) {
     }
 
     @Override
@@ -63,7 +54,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
             mov.put(KEY_ERROR, "ERROR INTERNO");
             mov.put(KEY_STATUS_OP, STATUS_ERR);
         }
-        if (!month_paid_list.isEmpty() && deuda == 0.0) {
+        if (!month_paid_list.isEmpty() && total_cost.equals(BigDecimal.ZERO)) {
             mov.put(KEY_ERROR, "ERROR INTERNO");
             mov.put(KEY_STATUS_OP, STATUS_ERR);
         }
@@ -80,77 +71,60 @@ public class ServicePaymentLogic extends AbsctractPayment {
 
     @Override
     public boolean execPayment() {
-        deuda = month_paid_list.size() * water_intake_type.getCurrentPrice();
-
+        boolean res = false;
         if (!gameRulers()) {
-            return false;
+            return res;
         }
-        StringBuilder values = new StringBuilder();
-        int i = 0;
-        String col;
-        while (i < month_paid_list.size() - 1) {
-            col = "('" + current_employee.getId()
-                    + "','"
-                    + user.getId() + "','"
-                    + water_intake_type.getCurrentPrice() + "','"
-                    + month_paid_list.get(i) + "')";
-            i++;
-            values.append(col).append(",");
-
-            mov_book.append(i).append(" - ")
-                    .append(month_paid_list.get(i))
-                    .append(" : ")
-                    .append(water_intake_type.getCurrentPrice())
-                    .append("\n");
-        }
-        col = "('" + current_employee.getId()
-                + "','"
-                + user.getId() + "','"
-                + water_intake_type.getCurrentPrice() + "','"
-                + month_paid_list.get(i) + "')";
-
-        mov_book.append(i).append(" - ")
-                .append(month_paid_list.get(i))
-                .append(" : ")
-                .append(water_intake_type.getCurrentPrice())
-                .append("\n");
-        i++;
-        values.append(col);
-        mov.put(KEY_MOVS, values.toString());
         try {
-            connection.getConnection().setAutoCommit(false);
-            connection.execute(getQuery(values.toString()));
-            mov.put(KEY_STATUS_OP, STATUS_OK);
-            HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_PYM_SERVICE_PAYMENTS,
-                    "PAGO DEL USUARIO: %s - %s %s %s, PAGO LOS MESES:%s".formatted(
-                            user.getId(),
-                            user.getName(),
-                            user.getLastName1(),
-                            user.getLastName2(),
-                            month_paid_list.toString()//
-                    ));
-            connection.getConnection().commit();
+            //SE DEHABILITA EL AUTOCOMMIT
+            connection.setAutoCommit(false);
+            //SE CALCULA EL TOTAL BASE
+            this.total_cost = PaymentsRulers.calculateBaseTotal(
+                    month_paid_list.size(),
+                    new BigDecimal(water_intake_type.getCurrentPrice())
+            );
+            // SE REGISTRA EL PAGO Y SE GENERA EL ID
+            int key = payment(PaymentModel.EFECTIVO, PAGADO);
+            res = key > 0;
+            if (!res) {
+                throw new PaymentExeption(1001, "EL PAGO NO SE GENERO CORRECTAMENTE", "REGISTRO CORRUPTO");
+            }
+            //SE REGISTRA LA LISTA DE ITEMS PAGADOS
+            res = payments_list_dao.insertPaymentList(
+                    connection,
+                    key,
+                    month_paid_list,
+                    new BigDecimal(water_intake_type.getCurrentPrice()),
+                    PAGADO
+            );
+            if (!res) {
+                throw new PaymentExeption(1001, "LA LISTA DE CONCEPTOS NO SE REGISTRO CORRECTAMENTE", "REGISTRO CORRUPTO");
+            }
+            //SE REGISTRA EN EL HISTORIAL
+            res = HysHistoryDAO.getINSTANCE().insert(
+                    Const.INDEX_PYM_PAYMENT,
+                    "SE GENERO EL PAGO: %s".formatted(key)
+            );
+            if (!res) {
+                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+            }
+            //SE GUARDAN LOS CAMBIOS HECHOS, FIN DE LA TRANSACCION
+
+        } catch (PaymentExeption ex) {
+            UserMessagesFactory.showPaymentErr(null, ex.getUserMessage());
+            connection.rollBack();
+            System.getLogger(ServicePaymentLogic.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         } catch (SQLException ex) {
-            try {
-                connection.getConnection().rollback();
-            } catch (SQLException ex1) {
-                mov.put(KEY_STATUS_OP, STATUS_ERR);
-                mov.put(KEY_ERROR, ex.getMessage());
-                System.getLogger(ServicePaymentLogic.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex1);
-            }
-            mov.put(KEY_STATUS_OP, STATUS_ERR);
-            mov.put(KEY_ERROR, ex.getMessage());
-            Logger.getLogger(ServicePaymentLogic.class.getName()).log(Level.SEVERE, null, ex);
+            connection.rollBack();
+            System.getLogger(ServicePaymentLogic.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (Exception ex) {
+            connection.rollBack();
+            System.getLogger(ServicePaymentLogic.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         } finally {
-            try {
-                connection.getConnection().setAutoCommit(true);
-            } catch (SQLException ex) {
-                mov.put(KEY_STATUS_OP, STATUS_ERR);
-                mov.put(KEY_ERROR, ex.getMessage());
-                System.getLogger(ServicePaymentLogic.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            }
+            connection.commit();
+            connection.setAutoCommit(true);
         }
-        return mov.get(KEY_STATUS_OP).equals(STATUS_OK);
+        return res;
     }
 
     /**
@@ -160,7 +134,7 @@ public class ServicePaymentLogic extends AbsctractPayment {
      */
     @Override
     public boolean insertToDefault() {
-        return true;
+        return payment(EFECTIVO, PENDIENTE) > 0;
     }
 
 }

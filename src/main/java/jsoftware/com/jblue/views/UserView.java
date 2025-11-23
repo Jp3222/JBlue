@@ -27,18 +27,18 @@ import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.FactoryController;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
 import jsoftware.com.jblue.controllers.compc.TableController;
-import jsoftware.com.jblue.model.dtos.OStreet;
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.dto.StreetDTO;
+import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.sys.SystemLogs;
+import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.util.Filters;
-import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.GraphicsUtils;
 import jsoftware.com.jblue.views.framework.DBValuesMapModel;
 import jsoftware.com.jblue.views.framework.DBView;
+import jsoftware.com.jutil.db.model.JDBObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
@@ -51,15 +51,20 @@ public final class UserView extends DBView implements DBValuesMapModel {
 
     private CardLayout ly;
     private final JTableModel model;
-    private OUser object_search;
+    private UserDTO object_search;
     private String user_key;
     private boolean process;
+    private String process_id;
+    private String module_name;
 
     /**
      * Creates new form NewUsuarios
      */
-    public UserView() {
+    public UserView(boolean process, String process_id, String module_name) {
         initComponents();
+        this.process = process;
+        this.process_id = process_id;
+        this.module_name = module_name;
         model = TableModelFactory.getUserTableModel();
         objects_table.setModel(model);
         ly = (CardLayout) root_panel.getLayout();
@@ -96,11 +101,11 @@ public final class UserView extends DBView implements DBValuesMapModel {
         //
         register_button.addActionListener(table_controller);
         search_button.addActionListener(table_controller);
-        ComboBoxController<OWaterIntakeTypes> c1 = new ComboBoxController(water_intakes, CacheFactory.WATER_INTAKES_TYPES);
-        ComboBoxController<OStreet> c2 = new ComboBoxController(street1_field, CacheFactory.STREETS);
-        ComboBoxController<OStreet> c5 = new ComboBoxController(street2_field, CacheFactory.STREETS);
-        ComboBoxController<OWaterIntakeTypes> c3 = new ComboBoxController(water_intakes_filter, CacheFactory.WATER_INTAKES_TYPES);
-        ComboBoxController<OStreet> c4 = new ComboBoxController(street_filter, CacheFactory.STREETS);
+        ComboBoxController<WaterIntakeTypesDTO> c1 = new ComboBoxController(water_intakes_field, CacheFactory.WATER_INTAKES_TYPES);
+        ComboBoxController<StreetDTO> c2 = new ComboBoxController(street1_field, CacheFactory.STREETS);
+        ComboBoxController<StreetDTO> c5 = new ComboBoxController(street2_field, CacheFactory.STREETS);
+        ComboBoxController<WaterIntakeTypesDTO> c3 = new ComboBoxController(water_intakes_filter, CacheFactory.WATER_INTAKES_TYPES);
+        ComboBoxController<StreetDTO> c4 = new ComboBoxController(street_filter, CacheFactory.STREETS);
         add_file_button.addActionListener(controller);
         add_photo_button.addActionListener(controller);
         c1.loadData();
@@ -117,12 +122,12 @@ public final class UserView extends DBView implements DBValuesMapModel {
     @Override
     public void initialState() {
         // Campos ya existentes
-        first_name.setText(null);
-        last_name_1.setText(null);
-        last_name_2.setText(null);
+        first_name_field.setText(null);
+        last_name1_field.setText(null);
+        last_name2_field.setText(null);
         inside_number_field.setText(null);
         street1_field.setSelectedIndex(0);
-        water_intakes.setSelectedIndex(0);
+        water_intakes_field.setSelectedIndex(0);
         user_status_field.setSelectedIndex(0);
         // --- Campos añadidos ---
         // Suponiendo que tienes un campo de texto para el ID y la CURP
@@ -187,15 +192,15 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jRadioButton2 = new javax.swing.JRadioButton();
         pc_nombre = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        first_name = new javax.swing.JTextField();
+        first_name_field = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         pc_ap = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        last_name_1 = new javax.swing.JTextField();
+        last_name1_field = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         pc_am = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        last_name_2 = new javax.swing.JTextField();
+        last_name2_field = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
@@ -203,7 +208,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jLabel26 = new javax.swing.JLabel();
         pc_tipo_toma = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        water_intakes = new javax.swing.JComboBox<>();
+        water_intakes_field = new javax.swing.JComboBox<>();
         man_tipo_toma = new javax.swing.JCheckBox();
         pc_calle = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -278,8 +283,8 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jPanel31 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         filtro_Titular = new javax.swing.JTextField();
-        panel_tabla = new javax.swing.JPanel();
-        jPanel30 = new javax.swing.JPanel();
+        table_panel = new javax.swing.JPanel();
+        search_items_table = new javax.swing.JPanel();
         search_field = new javax.swing.JTextField();
         jPanel23 = new javax.swing.JPanel();
         back_button = new javax.swing.JButton();
@@ -289,12 +294,12 @@ public final class UserView extends DBView implements DBValuesMapModel {
         objects_table = new javax.swing.JTable();
         status_bar_panel = new javax.swing.JPanel();
         jPanel32 = new javax.swing.JPanel();
-        jLabel18 = new javax.swing.JLabel();
-        count = new javax.swing.JLabel();
-        range = new javax.swing.JLabel();
+        count_label = new javax.swing.JLabel();
+        count_field = new javax.swing.JLabel();
+        range_field = new javax.swing.JLabel();
         jPanel29 = new javax.swing.JPanel();
-        jLabel17 = new javax.swing.JLabel();
-        total = new javax.swing.JLabel();
+        total_label = new javax.swing.JLabel();
+        total_field = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(450, 350));
         setName("Usuarios"); // NOI18N
@@ -369,11 +374,11 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_nombre.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        first_name.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        first_name.setToolTipText("<html>\nCampo: Nombre\n<br>valores admitidos: Solo texto\n<br>tamaño maximo: 32 Caracteres");
-        first_name.setName("Nombre"); // NOI18N
-        first_name.setPreferredSize(new java.awt.Dimension(100, 30));
-        pc_nombre.add(first_name, java.awt.BorderLayout.CENTER);
+        first_name_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        first_name_field.setToolTipText("<html>\nCampo: Nombre\n<br>valores admitidos: Solo texto\n<br>tamaño maximo: 32 Caracteres");
+        first_name_field.setName("Nombre"); // NOI18N
+        first_name_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_nombre.add(first_name_field, java.awt.BorderLayout.CENTER);
 
         jLabel7.setPreferredSize(new java.awt.Dimension(60, 30));
         pc_nombre.add(jLabel7, java.awt.BorderLayout.LINE_END);
@@ -388,11 +393,11 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jLabel3.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_ap.add(jLabel3, java.awt.BorderLayout.WEST);
 
-        last_name_1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        last_name_1.setToolTipText("<html>\nCampos: Apellido Paterno\n<br>Valor: Solo texto \n<br>Longitud: 32 Caracteres");
-        last_name_1.setName("A. Paterno"); // NOI18N
-        last_name_1.setPreferredSize(new java.awt.Dimension(100, 30));
-        pc_ap.add(last_name_1, java.awt.BorderLayout.CENTER);
+        last_name1_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        last_name1_field.setToolTipText("<html>\nCampos: Apellido Paterno\n<br>Valor: Solo texto \n<br>Longitud: 32 Caracteres");
+        last_name1_field.setName("A. Paterno"); // NOI18N
+        last_name1_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_ap.add(last_name1_field, java.awt.BorderLayout.CENTER);
 
         jLabel9.setPreferredSize(new java.awt.Dimension(60, 30));
         pc_ap.add(jLabel9, java.awt.BorderLayout.LINE_END);
@@ -407,11 +412,11 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jLabel4.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_am.add(jLabel4, java.awt.BorderLayout.WEST);
 
-        last_name_2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        last_name_2.setToolTipText("<html> Campos: Apellido Materno\n<br>Valor: Solo texto <br>Longitud: 32 Caracteres");
-        last_name_2.setName("A. Materno"); // NOI18N
-        last_name_2.setPreferredSize(new java.awt.Dimension(100, 30));
-        pc_am.add(last_name_2, java.awt.BorderLayout.CENTER);
+        last_name2_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        last_name2_field.setToolTipText("<html> Campos: Apellido Materno\n<br>Valor: Solo texto <br>Longitud: 32 Caracteres");
+        last_name2_field.setName("A. Materno"); // NOI18N
+        last_name2_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_am.add(last_name2_field, java.awt.BorderLayout.CENTER);
 
         jLabel10.setPreferredSize(new java.awt.Dimension(60, 30));
         pc_am.add(jLabel10, java.awt.BorderLayout.LINE_END);
@@ -441,10 +446,10 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_tipo_toma.add(jLabel5, java.awt.BorderLayout.WEST);
 
-        water_intakes.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        water_intakes.setName("Tipo de toma"); // NOI18N
-        water_intakes.setPreferredSize(new java.awt.Dimension(100, 30));
-        pc_tipo_toma.add(water_intakes, java.awt.BorderLayout.CENTER);
+        water_intakes_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        water_intakes_field.setName("Tipo de toma"); // NOI18N
+        water_intakes_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_tipo_toma.add(water_intakes_field, java.awt.BorderLayout.CENTER);
 
         man_tipo_toma.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         man_tipo_toma.setText("M.");
@@ -790,15 +795,15 @@ public final class UserView extends DBView implements DBValuesMapModel {
 
         search_panel.add(panel_filtros, java.awt.BorderLayout.NORTH);
 
-        panel_tabla.setPreferredSize(new java.awt.Dimension(1000, 500));
-        panel_tabla.setLayout(new java.awt.BorderLayout(5, 5));
+        table_panel.setPreferredSize(new java.awt.Dimension(1000, 500));
+        table_panel.setLayout(new java.awt.BorderLayout(5, 5));
 
-        jPanel30.setMinimumSize(new java.awt.Dimension(980, 30));
-        jPanel30.setPreferredSize(new java.awt.Dimension(500, 30));
-        jPanel30.setLayout(new java.awt.BorderLayout(5, 5));
+        search_items_table.setMinimumSize(new java.awt.Dimension(980, 30));
+        search_items_table.setPreferredSize(new java.awt.Dimension(500, 30));
+        search_items_table.setLayout(new java.awt.BorderLayout(5, 5));
 
         search_field.setName("buscador"); // NOI18N
-        jPanel30.add(search_field, java.awt.BorderLayout.CENTER);
+        search_items_table.add(search_field, java.awt.BorderLayout.CENTER);
 
         jPanel23.setPreferredSize(new java.awt.Dimension(200, 30));
         jPanel23.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
@@ -813,14 +818,14 @@ public final class UserView extends DBView implements DBValuesMapModel {
         next_button.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel23.add(next_button);
 
-        jPanel30.add(jPanel23, java.awt.BorderLayout.LINE_END);
+        search_items_table.add(jPanel23, java.awt.BorderLayout.LINE_END);
 
         reload_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
         reload_button.setActionCommand("reload");
         reload_button.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel30.add(reload_button, java.awt.BorderLayout.LINE_START);
+        search_items_table.add(reload_button, java.awt.BorderLayout.LINE_START);
 
-        panel_tabla.add(jPanel30, java.awt.BorderLayout.NORTH);
+        table_panel.add(search_items_table, java.awt.BorderLayout.NORTH);
 
         objects_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -835,9 +840,9 @@ public final class UserView extends DBView implements DBValuesMapModel {
         objects_table.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(objects_table);
 
-        panel_tabla.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+        table_panel.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
-        search_panel.add(panel_tabla, java.awt.BorderLayout.CENTER);
+        search_panel.add(table_panel, java.awt.BorderLayout.CENTER);
 
         status_bar_panel.setPreferredSize(new java.awt.Dimension(100, 30));
         status_bar_panel.setLayout(new java.awt.BorderLayout());
@@ -845,35 +850,35 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jPanel32.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel32.setLayout(new java.awt.BorderLayout());
 
-        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel18.setText("No.");
-        jPanel32.add(jLabel18, java.awt.BorderLayout.CENTER);
+        count_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        count_label.setText("No.");
+        jPanel32.add(count_label, java.awt.BorderLayout.CENTER);
 
-        count.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        count.setText("0");
-        count.setToolTipText("Numero de pagos hechos.");
-        count.setPreferredSize(new java.awt.Dimension(50, 16));
-        jPanel32.add(count, java.awt.BorderLayout.LINE_END);
+        count_field.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        count_field.setText("0");
+        count_field.setToolTipText("Numero de pagos hechos.");
+        count_field.setPreferredSize(new java.awt.Dimension(50, 16));
+        jPanel32.add(count_field, java.awt.BorderLayout.LINE_END);
 
         status_bar_panel.add(jPanel32, java.awt.BorderLayout.WEST);
 
-        range.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        range.setText("0 - 0");
-        range.setToolTipText("");
-        status_bar_panel.add(range, java.awt.BorderLayout.CENTER);
+        range_field.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        range_field.setText("0 - 0");
+        range_field.setToolTipText("");
+        status_bar_panel.add(range_field, java.awt.BorderLayout.CENTER);
 
         jPanel29.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel29.setLayout(new java.awt.BorderLayout());
 
-        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel17.setText("Total:");
-        jPanel29.add(jLabel17, java.awt.BorderLayout.CENTER);
+        total_label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        total_label.setText("Total:");
+        jPanel29.add(total_label, java.awt.BorderLayout.CENTER);
 
-        total.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        total.setText("0");
-        total.setToolTipText("Numero de pagos hechos.");
-        total.setPreferredSize(new java.awt.Dimension(50, 16));
-        jPanel29.add(total, java.awt.BorderLayout.LINE_END);
+        total_field.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total_field.setText("0");
+        total_field.setToolTipText("Numero de pagos hechos.");
+        total_field.setPreferredSize(new java.awt.Dimension(50, 16));
+        jPanel29.add(total_field, java.awt.BorderLayout.LINE_END);
 
         status_bar_panel.add(jPanel29, java.awt.BorderLayout.EAST);
 
@@ -893,7 +898,8 @@ public final class UserView extends DBView implements DBValuesMapModel {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton cancel_button;
     private javax.swing.JPanel complement_data_panel;
-    private javax.swing.JLabel count;
+    private javax.swing.JLabel count_field;
+    private javax.swing.JLabel count_label;
     private javax.swing.JTextField curp_field;
     private javax.swing.JTextField date_last_update_field;
     private javax.swing.JTextField date_register_field;
@@ -905,7 +911,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
     private javax.swing.JCheckBox filtro_is_titular;
     private javax.swing.JButton filtro_quitar;
     private javax.swing.JCheckBox filtros;
-    private javax.swing.JTextField first_name;
+    private javax.swing.JTextField first_name_field;
     private javax.swing.JComboBox<String> gender_field;
     private javax.swing.JTextField inside_number_field;
     private javax.swing.JButton jButton3;
@@ -917,8 +923,6 @@ public final class UserView extends DBView implements DBValuesMapModel {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
@@ -947,7 +951,6 @@ public final class UserView extends DBView implements DBValuesMapModel {
     private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
     private javax.swing.JPanel jPanel32;
     private javax.swing.JPanel jPanel4;
@@ -959,8 +962,8 @@ public final class UserView extends DBView implements DBValuesMapModel {
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField last_name_1;
-    private javax.swing.JTextField last_name_2;
+    private javax.swing.JTextField last_name1_field;
+    private javax.swing.JTextField last_name2_field;
     private javax.swing.JCheckBox man_calle;
     private javax.swing.JCheckBox man_estado;
     private javax.swing.JCheckBox man_estado1;
@@ -975,7 +978,6 @@ public final class UserView extends DBView implements DBValuesMapModel {
     private javax.swing.JPanel option_panel;
     private javax.swing.JTextField outside_number_field;
     private javax.swing.JPanel panel_filtros;
-    private javax.swing.JPanel panel_tabla;
     private javax.swing.JPanel pc_am;
     private javax.swing.JPanel pc_ap;
     private javax.swing.JPanel pc_calle;
@@ -990,7 +992,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
     private javax.swing.JPanel pf_filtros;
     private javax.swing.JTextField phone_number1_field;
     private javax.swing.JTextField phone_number2_field;
-    private javax.swing.JLabel range;
+    private javax.swing.JLabel range_field;
     private javax.swing.JButton register_button;
     private javax.swing.JPanel register_panel;
     private javax.swing.JButton reload_button;
@@ -998,23 +1000,26 @@ public final class UserView extends DBView implements DBValuesMapModel {
     private javax.swing.JButton save_button;
     private javax.swing.JButton search_button;
     private javax.swing.JTextField search_field;
+    private javax.swing.JPanel search_items_table;
     private javax.swing.JButton search_object;
     private javax.swing.JPanel search_panel;
     private javax.swing.JButton show_consumer_list_button;
     private javax.swing.JCheckBox sn_numero;
     private javax.swing.JPanel status_bar_panel;
-    private javax.swing.JComboBox<OStreet> street1_field;
-    private javax.swing.JComboBox<OStreet> street2_field;
-    private javax.swing.JComboBox<OStreet> street_filter;
-    private javax.swing.JLabel total;
+    private javax.swing.JComboBox<StreetDTO> street1_field;
+    private javax.swing.JComboBox<StreetDTO> street2_field;
+    private javax.swing.JComboBox<StreetDTO> street_filter;
+    private javax.swing.JPanel table_panel;
+    private javax.swing.JLabel total_field;
+    private javax.swing.JLabel total_label;
     private javax.swing.JButton update_button;
     private javax.swing.JPanel user_data_panel;
     private javax.swing.JComboBox<String> user_status_field;
-    private javax.swing.JComboBox<OWaterIntakeTypes> water_intakes;
-    private javax.swing.JComboBox<OWaterIntakeTypes> water_intakes_filter;
+    private javax.swing.JComboBox<WaterIntakeTypesDTO> water_intakes_field;
+    private javax.swing.JComboBox<WaterIntakeTypesDTO> water_intakes_filter;
     // End of variables declaration//GEN-END:variables
 
-    public OUser getObject() {
+    public UserDTO getObject() {
         return object_search;
     }
 
@@ -1060,7 +1065,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
         boolean ok = true;
         String messages = "El campo: %s no es valido";
         JTextField[] text_fields = {
-            first_name, last_name_1, last_name_2
+            first_name_field, last_name1_field, last_name2_field
         };
         for (JTextField i : text_fields) {
             if (Filters.isNullOrBlank(i.getText())) {
@@ -1070,7 +1075,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
             }
         }
         JComboBox[] combo_boxes_fields = {
-            water_intakes, street1_field, user_status_field
+            water_intakes_field, street1_field, user_status_field
         };
 
         for (JComboBox i : combo_boxes_fields) {
@@ -1087,13 +1092,13 @@ public final class UserView extends DBView implements DBValuesMapModel {
     }
 
     @Override
-    public Map<String, String> getValues(boolean update) {
+    public Map<String, Object> getValues(boolean update) {
         Map<String, String> map = Map.of();
         try {
             String _curp = curp_field.getText();
-            String _first_name = first_name.getText();
-            String _last_name1 = last_name_1.getText();
-            String _last_name2 = last_name_2.getText();
+            String _first_name = first_name_field.getText();
+            String _last_name1 = last_name1_field.getText();
+            String _last_name2 = last_name2_field.getText();
             String _email = email_field.getText();
             String _phone_number1 = phone_number1_field.getText();
             String _phone_number2 = phone_number2_field.getText();
@@ -1102,27 +1107,28 @@ public final class UserView extends DBView implements DBValuesMapModel {
                     ? null : street2_field.getItemAt(street2_field.getSelectedIndex()).getId();
             String _inside_number = inside_number_field.getText();
             String _outside_number = outside_number_field.getText();
-            String _water_intakes = water_intakes.getItemAt(water_intakes.getSelectedIndex()).getId();
+            String _water_intakes = water_intakes_field.getItemAt(water_intakes_field.getSelectedIndex()).getId();
             String _type = buttonGroup1.getSelection().getActionCommand();
             String _status = String.valueOf(user_status_field.getSelectedIndex());
             String _gender = String.valueOf(gender_field.getSelectedIndex());
+            String _employee_last_update = SystemSession.getInstancia().getCurrentEmployee().getId();
             if (update) {
                 map = saveUpdate(object_search, _curp, _first_name, _last_name1, _last_name2,
                         _email, _phone_number1, _phone_number2,
                         _street1, _street2, _inside_number, _outside_number,
-                        _water_intakes, _type, _status, _gender);
+                        _water_intakes, _type, _status, _gender, _employee_last_update);
             } else {
                 map = saveInsert(_curp, _first_name, _last_name1, _last_name2,
                         _email, _phone_number1, _phone_number2, _street1, _street2,
-                        _inside_number, _outside_number, _water_intakes, _type, _status, _gender);
+                        _inside_number, _outside_number, _water_intakes, _type, _status, _gender, _employee_last_update);
             }
         } catch (NullPointerException e) {
             SystemLogs.severeDbLogs("Datos Ingresados Nulos", e);
         }
-        return Formats.getDBFormatInputMap(map);
+        return map;
     }
 
-    private Map<String, String> saveInsert(String _curp, String _first_name, String _last_name1, String _last_name2, String _email, String _phone_number1, String _phone_number2, String _street1, String _street2, String _inside_number, String _outside_number, String _water_intakes, String _type, String _status, String _gender) {
+    private Map<String, String> saveInsert(String _curp, String _first_name, String _last_name1, String _last_name2, String _email, String _phone_number1, String _phone_number2, String _street1, String _street2, String _inside_number, String _outside_number, String _water_intakes, String _type, String _status, String _gender, String _employee_last_update) {
         Map<String, String> map = new HashMap<>(15); // Tamaño inicial más preciso
 
         // Usando un método auxiliar para validar y agregar
@@ -1147,58 +1153,59 @@ public final class UserView extends DBView implements DBValuesMapModel {
         return map;
     }
 
-    private Map<String, String> saveUpdate(OUser object_search, String _curp, String _first_name, String _last_name1, String _last_name2, String _email, String _phone_number1, String _phone_number2, String _street1, String _street2, String _inside_number, String _outside_number, String _water_intakes, String _type, String _status, String _gender) {
+    private Map<String, String> saveUpdate(UserDTO object_search, String _curp, String _first_name, String _last_name1, String _last_name2, String _email, String _phone_number1, String _phone_number2, String _street1, String _street2, String _inside_number, String _outside_number, String _water_intakes, String _type, String _status, String _gender, String _employee_last_update) {
         if (object_search == null) {
             throw new NullPointerException("Objeto buscado null");
         }
         Map<String, String> map = new HashMap<>();
 
         // Usando un método auxiliar para validar y agregar al mapa
-        Filters.addIfChanged(map, "curp", object_search.getCURP(), _curp);
-        Filters.addIfChanged(map, "first_name", object_search.getName(), _first_name);
+        Filters.addIfChanged(map, "curp", object_search.getCurp(), _curp);
+        Filters.addIfChanged(map, "first_name", object_search.getFirstName(), _first_name);
         Filters.addIfChanged(map, "last_name1", object_search.getLastName1(), _last_name1);
         Filters.addIfChanged(map, "last_name2", object_search.getLastName2(), _last_name2);
         Filters.addIfChanged(map, "email", object_search.getEmail(), _email);
         Filters.addIfChanged(map, "phone_number1", object_search.getPhoneNumber1(), _phone_number1);
         Filters.addIfChanged(map, "phone_number2", object_search.getPhoneNumber2(), _phone_number2);
         Filters.addIfChanged(map, "inside_number", object_search.getInsideNumber(), _inside_number);
-        Filters.addIfChanged(map, "outside_number", object_search.getOutSideNumber(), _outside_number);
-        Filters.addIfChanged(map, "street1", object_search.getStreetObject() != null ? object_search.getStreetObject().toString() : null, _street1);
+        Filters.addIfChanged(map, "outside_number", object_search.getOutsideNumber(), _outside_number);
+        Filters.addIfChanged(map, "street1", object_search.get("street1_object") != null ? object_search.getStreetObject().toString() : null, _street1);
         Filters.addIfChanged(map, "street2", object_search.getStreet2(), _street2);
         Filters.addIfChanged(map, "water_intake_type", object_search.getWaterIntakesObject() != null ? object_search.getWaterIntakesObject().toString() : null, _water_intakes);
         Filters.addIfChanged(map, "user_type", String.valueOf(object_search.getUserType()), _type);
         Filters.addIfChanged(map, "status", String.valueOf(object_search.getStatus()), _status);
         //
         Filters.addIfChanged(map, "gender", String.valueOf(object_search.getGender()), _gender);
+        Filters.addIfChanged(map, "employee_last_update", object_search.getEmployeeLastUpdate(), _employee_last_update);
         return map;
     }
 
     @Override
-    public OUser getObjectSearch() {
+    public UserDTO getObjectSearch() {
         return object_search;
     }
 
     @Override
-    public void setObjectSearch(Objects o) {
-        object_search = (OUser) o;
+    public void setObjectSearch(JDBObject o) {
+        object_search = (UserDTO) o;
     }
 
     @Override
     public void setRowsData(String... info) {
-        count.setText(info[0]);
-        range.setText(info[1]);
-        total.setText(info[2]);
+        count_field.setText(info[0]);
+        range_field.setText(info[1]);
+        total_field.setText(info[2]);
     }
 
     @Override
     public void setScreenTableInfo() {
         // Campos ya existentes
-        first_name.setText(object_search.getName());
-        last_name_1.setText(object_search.getLastName1());
-        last_name_2.setText(object_search.getLastName2());
+        first_name_field.setText(object_search.getName());
+        last_name1_field.setText(object_search.getLastName1());
+        last_name2_field.setText(object_search.getLastName2());
         inside_number_field.setText(object_search.getInsideNumber());
         street1_field.setSelectedItem(object_search.getStreetObject());
-        water_intakes.setSelectedItem(object_search.getWaterIntakesObject());
+        water_intakes_field.setSelectedItem(object_search.getWaterIntakesObject());
         user_status_field.setSelectedIndex(object_search.getStatus());
 
         // --- Campos añadidos ---
@@ -1211,13 +1218,13 @@ public final class UserView extends DBView implements DBValuesMapModel {
         phone_number2_field.setText(object_search.getPhoneNumber2());
         gender_field.setSelectedIndex(object_search.getGender() - 1);
         // Suponiendo que tienes campos de texto para la calle 2 y el número exterior
-        if (object_search.getStreetObject2() == null) {
+        if (object_search.getStreet2() == null) {
             street2_field.setSelectedIndex(0);
         } else {
             street2_field.setSelectedItem(object_search.getStreet2());
         }
 
-        outside_number_field.setText(object_search.getOutSideNumber());
+        outside_number_field.setText(object_search.getOutsideNumber());
 
         // Suponiendo que tienes un campo para el tipo de usuario
         //user_type_field.setText(object_search.getUserType());
@@ -1227,13 +1234,13 @@ public final class UserView extends DBView implements DBValuesMapModel {
         man_tipo_toma.setSelected(false);
         man_calle.setSelected(false);
         man_estado.setSelected(false);
-        JRadioButton o = object_search.isTitular() ? jRadioButton1 : jRadioButton2;
+        JRadioButton o = object_search.getUserType().equals("1") ? jRadioButton1 : jRadioButton2;
         buttonGroup1.setSelected(o.getModel(), true);
         save_button.setEnabled(false);
         update_button.setEnabled(true);
         delete_button.setEnabled(true);
-        add_consumer_button.setEnabled(object_search.isTitular());
-        show_consumer_list_button.setEnabled(object_search.isTitular());
+        add_consumer_button.setEnabled(object_search.getUserType().equals("1"));
+        show_consumer_list_button.setEnabled(object_search.getUserType().equals("1"));
     }
 
     public String getUserKey() {
@@ -1251,6 +1258,10 @@ public final class UserView extends DBView implements DBValuesMapModel {
 
     public boolean isProcess() {
         return process;
+    }
+
+    public String getProcessId() {
+        return process_id;
     }
 
 }

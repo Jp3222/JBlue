@@ -21,15 +21,16 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import jsoftware.com.jblue.controllers.AbstractComponentController;
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.dto.Objects;
 import jsoftware.com.jblue.util.cache.MemoListCache;
+import jsoftware.com.jutil.db.model.JDBObject;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public class ComboBoxController<T extends Objects> extends AbstractComponentController<T> {
+public class ComboBoxController<T extends JDBObject> extends AbstractComponentController<T> {
 
     private static final long serialVersionUID = 1L;
 

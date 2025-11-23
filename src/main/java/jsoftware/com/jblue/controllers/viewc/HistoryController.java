@@ -8,9 +8,9 @@ import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import jsoftware.com.jblue.controllers.AbstractViewController;
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.daos.HysHistoryDAO;
-import jsoftware.com.jblue.model.dtos.OEmployee;
+import jsoftware.com.jblue.model.constants.Const;
+import jsoftware.com.jblue.model.dao.HysHistoryDAO;
+import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.views.HistoryView;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -43,9 +43,8 @@ public class HistoryController extends AbstractViewController {
     private void load() {
         connection.setAutoCommit(false);
         try {
-            OEmployee currentEmployee = SystemSession.getInstancia().getCurrentEmployee();
-            boolean insert = HysHistoryDAO.getINSTANCE().SELECT(
-                    _Const.INDEX_HYS_PROGRAM_HISTORY,
+            EmployeeDTO currentEmployee = SystemSession.getInstancia().getCurrentEmployee();
+            boolean insert = HysHistoryDAO.getINSTANCE().SELECT(Const.INDEX_HYS_PROGRAM_HISTORY,
                     "EL USUARIO %s - %s %s %s CONSULTO EL HISTORIAL".formatted(
                             currentEmployee.getId(),
                             currentEmployee.getFirstName(),

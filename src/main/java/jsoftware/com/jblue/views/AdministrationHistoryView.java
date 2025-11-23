@@ -18,7 +18,7 @@ package jsoftware.com.jblue.views;
 
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
 import jsoftware.com.jblue.controllers.viewc.AdministrationHistoryController;
-import jsoftware.com.jblue.model.dtos.OEmployee;
+import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.views.framework.SimpleView;
 
@@ -58,10 +58,10 @@ public final class AdministrationHistoryView extends SimpleView {
 
     @Override
     public void components() {
-        ComboBoxController<OEmployee> root = new ComboBoxController(root_employee, CacheFactory.EMPLOYEES);
-        ComboBoxController<OEmployee> admin = new ComboBoxController(admin_employee, CacheFactory.EMPLOYEES);
-        ComboBoxController<OEmployee> president = new ComboBoxController(president_employee, CacheFactory.EMPLOYEES);
-        ComboBoxController<OEmployee> tesurer = new ComboBoxController(tesurer_employee, CacheFactory.EMPLOYEES);
+        ComboBoxController<EmployeeDTO> root = new ComboBoxController(root_employee, CacheFactory.EMPLOYEES);
+        ComboBoxController<EmployeeDTO> admin = new ComboBoxController(admin_employee, CacheFactory.EMPLOYEES);
+        ComboBoxController<EmployeeDTO> president = new ComboBoxController(president_employee, CacheFactory.EMPLOYEES);
+        ComboBoxController<EmployeeDTO> tesurer = new ComboBoxController(tesurer_employee, CacheFactory.EMPLOYEES);
         //
         root.loadData();
         admin.loadData();
@@ -489,18 +489,18 @@ public final class AdministrationHistoryView extends SimpleView {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<OEmployee> admin_employee;
+    private javax.swing.JComboBox<EmployeeDTO> admin_employee;
     private javax.swing.JButton back_button;
     private javax.swing.JButton cancel_button;
     private javax.swing.JLabel count;
     private javax.swing.JButton delete_button;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<OEmployee> jComboBox4;
-    private javax.swing.JComboBox<OEmployee> jComboBox5;
-    private javax.swing.JComboBox<OEmployee> jComboBox6;
-    private javax.swing.JComboBox<OEmployee> jComboBox7;
-    private javax.swing.JComboBox<OEmployee> jComboBox8;
-    private javax.swing.JComboBox<OEmployee> jComboBox9;
+    private javax.swing.JComboBox<EmployeeDTO> jComboBox4;
+    private javax.swing.JComboBox<EmployeeDTO> jComboBox5;
+    private javax.swing.JComboBox<EmployeeDTO> jComboBox6;
+    private javax.swing.JComboBox<EmployeeDTO> jComboBox7;
+    private javax.swing.JComboBox<EmployeeDTO> jComboBox8;
+    private javax.swing.JComboBox<EmployeeDTO> jComboBox9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -548,12 +548,12 @@ public final class AdministrationHistoryView extends SimpleView {
     private javax.swing.JTable objects_table;
     private javax.swing.JPanel option_panel;
     private javax.swing.JPanel panel_tabla;
-    private javax.swing.JComboBox<OEmployee> president_employee;
+    private javax.swing.JComboBox<EmployeeDTO> president_employee;
     private javax.swing.JLabel range;
     private javax.swing.JButton register_button;
     private javax.swing.JPanel register_panel;
     private javax.swing.JButton reload_button;
-    private javax.swing.JComboBox<OEmployee> root_employee;
+    private javax.swing.JComboBox<EmployeeDTO> root_employee;
     private javax.swing.JPanel root_panel;
     private javax.swing.JButton save_button;
     private javax.swing.JButton search_button;
@@ -561,7 +561,7 @@ public final class AdministrationHistoryView extends SimpleView {
     private javax.swing.JButton search_object;
     private javax.swing.JPanel search_panel;
     private javax.swing.JPanel status_bar_panel;
-    private javax.swing.JComboBox<OEmployee> tesurer_employee;
+    private javax.swing.JComboBox<EmployeeDTO> tesurer_employee;
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables

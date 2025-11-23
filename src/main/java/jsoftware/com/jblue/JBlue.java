@@ -4,7 +4,7 @@
  */
 package jsoftware.com.jblue;
 
-import jsoftware.com.jblue.model.constants.ConstainsMod;
+import jsoftware.com.jblue.model.constants.des.ConstainsMod;
 import jsoftware.com.jblue.sys.JBlueMainSystem;
 import jsoftware.com.jblue.util.LoggerRegister;
 import jsoftware.com.jutil.sys.LaunchApp;
@@ -15,7 +15,7 @@ import jsoftware.com.jutil.sys.LaunchApp;
  * Nota 1: En esta clase se puede alterar la version de las clases debido a la
  * migracion a maven
  * <br>
- * Nota 2: Esta version es semi funcional, recuerda revisar los demas artefactos
+ * Nota 2: Esta version esta totalmente rota, no usar
  * 1 - JUtilidades
  *
  * @author jp

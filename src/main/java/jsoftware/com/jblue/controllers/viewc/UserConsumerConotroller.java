@@ -18,7 +18,7 @@ package jsoftware.com.jblue.controllers.viewc;
 
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.controllers.DBControllerModel;
-import jsoftware.com.jblue.model.dtos.OUser;
+import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.views.UserConsumerView;
 import java.awt.event.ActionEvent;
@@ -27,7 +27,7 @@ import java.awt.event.ActionEvent;
  *
  * @author juanp
  */
-public class UserConsumerConotroller extends AbstractDBViewController<OUser> implements DBControllerModel {
+public class UserConsumerConotroller extends AbstractDBViewController<UserDTO> implements DBControllerModel {
 
     private UserConsumerView view;
 

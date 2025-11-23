@@ -24,19 +24,19 @@ import java.util.List;
 import java.util.function.Predicate;
 import javax.swing.DefaultListModel;
 import jsoftware.com.jblue.controllers.AbstractComponentController;
-import jsoftware.com.jblue.model.dtos.ForeingKeyObject;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.model.dtos.StatusObject;
+import jsoftware.com.jblue.model.dto.ForeingKeyObject;
+import jsoftware.com.jblue.model.dto.Objects;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.framework.ListSearchViewModel;
+import jsoftware.com.jblue.model.dto.StatusObjectModel;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public class ListController<T extends Objects & StatusObject & ForeingKeyObject> extends AbstractComponentController<T> {
+public class ListController<T extends Objects & StatusObjectModel & ForeingKeyObject> extends AbstractComponentController<T> {
 
     private static final long serialVersionUID = 1L;
 
@@ -107,7 +107,7 @@ public class ListController<T extends Objects & StatusObject & ForeingKeyObject>
     }
 
     public boolean isThis(Objects o, String txt, boolean validateIsTitular) {
-        if (o instanceof StatusObject a && !a.isActive()) {
+        if (o instanceof StatusObjectModel a && !a.isActive()) {
             return false;
         }
         return Filters.clearAndCheck(o.getId(), txt)

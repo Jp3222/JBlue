@@ -31,10 +31,10 @@ import jsoftware.com.jblue.controllers.FactoryController;
 import jsoftware.com.jblue.controllers.compc.ListController;
 import jsoftware.com.jblue.controllers.compc.TableController;
 import jsoftware.com.jblue.controllers.viewc.ShopCartController;
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
-import jsoftware.com.jblue.model.dtos.OWaterIntakes;
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.OWaterIntakes;
+import jsoftware.com.jblue.model.dto.Objects;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
@@ -58,7 +58,7 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
     private final DefaultListModel<OWaterIntakes> list_model;
     private OWaterIntakes object_search;
     ArrayList<JCheckBox> month_paid_list;
-    private final ListController<OUser> list_controller;
+    private final ListController<UserDTO> list_controller;
     private int count_elements;
 
     /**
@@ -67,7 +67,7 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
     public ShopCartView() {
         initComponents();
         list_model = new DefaultListModel();
-        table_model = TableModelFactory.getServicePaymentTableModel();
+        table_model = TableModelFactory.getPayment();
         month_paid_list = new ArrayList<>(12);
         month_paid_list.addAll(Arrays.asList(
                 ene, feb, mar,
@@ -795,9 +795,9 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
     }//GEN-LAST:event_recargos_buttonActionPerformed
 
     private void other_pay_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_other_pay_buttonActionPerformed
-        MemoListCache<OUser> USERS = CacheFactory.USERS;
+        MemoListCache<UserDTO> USERS = CacheFactory.USERS;
         ArrayList<String[]> us = new ArrayList<>(USERS.size());
-        for (OUser i : USERS.getList()) {
+        for (UserDTO i : USERS.getList()) {
             us.add(i.getInfoSinFK());
         }
         //Export.fastXlsxExport(So.USER_HOME, "PRUEBA.xlsx", "USUARIOS", _Const.USR_USERS_FIELDS_GS, us);
@@ -974,8 +974,8 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
 
     @Override
     public void setScreenListInfo() {
-        OUser user_search = object_search.getUserObject();
-        OWaterIntakeTypes water_intake_type = object_search.getWaterIntakeTypeObject();
+        UserDTO user_search = object_search.getUserObject();
+        WaterIntakeTypesDTO water_intake_type = object_search.getWaterIntakeTypeObject();
         int index = users_list.getSelectedIndex();
         object_search = list_model.get(index);
         user_type_field.setText(user_search.getUserTypeString());
@@ -1008,7 +1008,7 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         return lista;
     }
 
-    public void setTotalField(double total_field) {
+    public void setTotalField(String total_field) {
         this.total_field.setText(String.valueOf(total_field));
         GraphicsUtils.setEnable(true, pay_button, clear_button, cancel_button);
     }

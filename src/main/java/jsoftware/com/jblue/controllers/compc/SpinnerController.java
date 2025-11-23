@@ -19,7 +19,7 @@ package jsoftware.com.jblue.controllers.compc;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import jsoftware.com.jblue.controllers.AbstractComponentController;
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.dto.Objects;
 
 /**
  *

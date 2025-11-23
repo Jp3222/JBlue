@@ -16,24 +16,24 @@
  */
 package jsoftware.com.jblue.model;
 
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.util.ObjectUtils;
-import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.jexception.JExcp;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.sql.SQLException;
-import java.sql.ResultSet;
-import java.sql.Connection;
+import jsoftware.com.jblue.util.ObjectUtils;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.db.model.JDBObject;
+import jsoftware.com.jutil.jexception.JExcp;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public abstract class AbstractDBConnection<T extends Objects> implements DBConnectionModel {
+public abstract class AbstractDBConnection<T extends JDBObject> implements DBConnectionModel {
 
     public static final int FIELDS = 1;
     public static final int VALUES = 2;

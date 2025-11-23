@@ -6,7 +6,7 @@ package jsoftware.com.jblue.model.documents;
 
 import java.sql.Connection;
 import java.util.List;
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.dto.Objects;
 
 /**
  *

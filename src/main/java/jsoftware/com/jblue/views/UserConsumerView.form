@@ -315,7 +315,7 @@
                         </Property>
                       </Properties>
                       <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;OUser&gt;"/>
+                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;jsoftware.com.jblue.model.dto.UserDTO&gt;"/>
                       </AuxValues>
                     </Component>
                   </SubComponents>
@@ -539,7 +539,7 @@
                               </Properties>
                               <AuxValues>
                                 <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="UserView_streed"/>
-                                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;OStreet&gt;"/>
+                                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;jsoftware.com.jblue.model.dto.StreetDTO&gt;"/>
                               </AuxValues>
                               <Constraints>
                                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -574,7 +574,7 @@
                                 <Property name="name" type="java.lang.String" value="ttoma" noResource="true"/>
                               </Properties>
                               <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;OWaterIntakeTypes&gt;"/>
+                                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO&gt;"/>
                               </AuxValues>
                               <Constraints>
                                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">

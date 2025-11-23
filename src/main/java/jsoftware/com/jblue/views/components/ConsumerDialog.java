@@ -23,7 +23,7 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
-import jsoftware.com.jblue.model.dtos.OUser;
+import jsoftware.com.jblue.model.dto.UserDTO;
 
 /**
  *
@@ -217,7 +217,7 @@ public class ConsumerDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<OUser> jList1;
+    private javax.swing.JList<UserDTO> jList1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton okButton;

@@ -16,17 +16,17 @@
  */
 package jsoftware.com.jblue.controllers.compc;
 
-import jsoftware.com.jblue.model.dtos.ForeingKeyObject;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.model.dtos.StatusObject;
+import jsoftware.com.jblue.model.dto.ForeingKeyObject;
+import jsoftware.com.jblue.model.dto.Objects;
 import java.util.function.Predicate;
+import jsoftware.com.jblue.model.dto.StatusObjectModel;
 
 /**
  *
  * @author juanp
  * @param <T>
  */
-public interface TableObjectFilterModel<T extends Objects & ForeingKeyObject & StatusObject> {
+public interface TableObjectFilterModel<T extends Objects & ForeingKeyObject & StatusObjectModel> {
     
     void add(Predicate<T> item);
 

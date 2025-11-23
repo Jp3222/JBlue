@@ -16,6 +16,10 @@
  */
 package jsoftware.com.jblue.util;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +33,30 @@ public class Formats {
     public static String TIME_FORMAT = "hh:mm:ss";
     public static String DATE_FORMAT = "dd-MM-yyyy";
     public static String DATE_TIME_FORMAT = "dd-MM-yyyy hh:mm:ss";
+
+    public static LocalDateTime getLocalDateTime(String date) {
+        return LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);
+    }
+
+    public static LocalDate getLocalDate(String date) {
+        return LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
+    }
+
+    public static LocalTime getLocalTime(String time) {
+        return LocalTime.parse(time, DateTimeFormatter.ISO_TIME);
+    }
+
+    public static String getLocalDateTime(LocalDateTime date) {
+        return date.format(DateTimeFormatter.ISO_DATE);
+    }
+
+    public static String getLocalDate(LocalDateTime date) {
+        return date.format(DateTimeFormatter.ISO_DATE);
+    }
+
+    public static String getLocalTime(LocalDateTime time) {
+        return time.format(DateTimeFormatter.ISO_DATE);
+    }
 
     public static String[] getDBFormatInputArray(String... args) {
         String a;

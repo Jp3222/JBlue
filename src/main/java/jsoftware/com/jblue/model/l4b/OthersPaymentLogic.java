@@ -16,27 +16,22 @@
  */
 package jsoftware.com.jblue.model.l4b;
 
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import java.math.BigDecimal;
+import static jsoftware.com.jblue.model.l4b.PaymentModel.KEY_ERROR;
+import static jsoftware.com.jblue.model.l4b.PaymentModel.KEY_STATUS_OP;
+import static jsoftware.com.jblue.model.l4b.PaymentModel.STATUS_ERR;
+import static jsoftware.com.jblue.model.l4b.PaymentModel.STATUS_OK;
 
 /**
  *
  * @author juan-campos
  */
-public class OthersPaymentLogic extends AbsctractPayment {
-
-    @Override
-    public String getQuery(String args) {
-        return "INSERT INTO service_others (employee, user, price, month) values %s"
-                .formatted(args);
-    }
+public class OthersPaymentLogic extends AbstractPayment {
 
     @Override
     public boolean gameRulers() {
         mov.put(KEY_STATUS_OP, STATUS_OK);
-        if (this.month_paid_list.isEmpty()) {
+        if (month_paid_list.isEmpty()) {
             mov.put(KEY_ERROR, "NO HAY MESES SELECCIONADOS");
             mov.put(KEY_STATUS_OP, STATUS_ERR);
         }
@@ -52,7 +47,7 @@ public class OthersPaymentLogic extends AbsctractPayment {
             mov.put(KEY_ERROR, "ERROR INTERNO");
             mov.put(KEY_STATUS_OP, STATUS_ERR);
         }
-        if (!month_paid_list.isEmpty() && deuda == 0.0) {
+        if (!month_paid_list.isEmpty() && total_cost.equals(BigDecimal.ZERO)) {
             mov.put(KEY_ERROR, "ERROR INTERNO");
             mov.put(KEY_STATUS_OP, STATUS_ERR);
         }
@@ -69,52 +64,6 @@ public class OthersPaymentLogic extends AbsctractPayment {
 
     @Override
     public boolean execPayment() {
-        deuda = month_paid_list.size() * water_intake_type.getCurrentPrice();
-
-        if (!gameRulers()) {
-            return false;
-        }
-        StringBuilder values = new StringBuilder();
-        int i = 0;
-        String col;
-        while (i < month_paid_list.size() - 1) {
-            col = "('" + current_employee.getId()
-                    + "','"
-                    + user.getId() + "','"
-                    + water_intake_type.getCurrentPrice() + "','"
-                    + month_paid_list.get(i) + "')";
-            i++;
-            values.append(col).append(",");
-
-            mov_book.append(i).append(" - ")
-                    .append(month_paid_list.get(i))
-                    .append(" : ")
-                    .append(water_intake_type.getCurrentPrice())
-                    .append("\n");
-        }
-
-        col = "('" + current_employee.getId()
-                + "','"
-                + user.getId() + "','"
-                + water_intake_type.getCurrentPrice() + "','"
-                + month_paid_list.get(i) + "')";
-
-        mov_book.append(i).append(" - ")
-                .append(month_paid_list.get(i))
-                .append(" : ")
-                .append(water_intake_type.getCurrentPrice())
-                .append("\n");
-        i++;
-        values.append(col);
-        mov.put(KEY_MOVS, values.toString());
-        try {
-            connection.execute(getQuery(values.toString()));
-            mov.put(KEY_STATUS_OP, STATUS_OK);
-        } catch (SQLException ex) {
-            mov.put(KEY_STATUS_OP, STATUS_ERR);
-            mov.put(KEY_ERROR, ex.getMessage());
-            Logger.getLogger(ServicePaymentLogic.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return mov.get(KEY_STATUS_OP).equals(STATUS_OK);
     }
 

@@ -16,17 +16,17 @@
  */
 package jsoftware.com.jblue.controllers;
 
-import jsoftware.com.jblue.model.dtos.Objects;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import java.util.List;
 import javax.swing.JComponent;
+import jsoftware.com.jutil.db.model.JDBObject;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public abstract class AbstractComponentController<T extends Objects> extends Controller {
+public abstract class AbstractComponentController<T extends JDBObject> extends Controller {
 
     private final JComponent component;
     protected final MemoListCache<T> memo_cache;

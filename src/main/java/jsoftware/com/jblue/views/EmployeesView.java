@@ -18,9 +18,8 @@ package jsoftware.com.jblue.views;
 
 import jsoftware.com.jblue.controllers.FactoryController;
 import jsoftware.com.jblue.controllers.compc.TableController;
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.dtos.OEmployee;
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.constants.Const;
+import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
@@ -52,6 +51,7 @@ import javax.swing.JTextField;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JCheckBox;
+import jsoftware.com.jutil.db.model.JDBObject;
 
 /**
  *
@@ -63,7 +63,7 @@ public final class EmployeesView extends DBView implements DBValuesMapModel {
 
     private final JTableModel model;
     private final CardLayout ly;
-    private OEmployee object_search;
+    private EmployeeDTO object_search;
 
     /**
      * Creates new form PersonalC
@@ -844,12 +844,12 @@ public final class EmployeesView extends DBView implements DBValuesMapModel {
     }
 
     @Override
-    public void setObjectSearch(Objects o) {
-        this.object_search = (OEmployee) o;
+    public void setObjectSearch(JDBObject o) {
+        this.object_search = (EmployeeDTO) o;
     }
 
     @Override
-    public OEmployee getObjectSearch() {
+    public EmployeeDTO getObjectSearch() {
         return object_search;
     }
 
@@ -878,8 +878,8 @@ public final class EmployeesView extends DBView implements DBValuesMapModel {
         status_type_field.setSelectedItem(ObjectUtils.getDescriptionStatusCAT(object_search.getStatus()));
         user_field.setText(object_search.getUser());
         password_field.setText(object_search.getPassword());
-        date_last_update_field.setText(_Const.getLocalDateTimeToString(object_search.getDateUpdate()));
-        date_register_field.setText(_Const.getLocalDateTimeToString(object_search.getDateRegister()));
+        date_last_update_field.setText(Const.getLocalDateTimeToString(object_search.getDateUpdate()));
+        date_register_field.setText(Const.getLocalDateTimeToString(object_search.getDateRegister()));
         date_end_check_field.setSelected(object_search.getDateEnd() != null);
         date_end_field.setEditable(object_search.getDateEnd() != null);
         if (object_search.getDateEnd() != null) {
@@ -972,7 +972,7 @@ public final class EmployeesView extends DBView implements DBValuesMapModel {
         return map;
     }
 
-    private Map<String, String> saveUpdate(OEmployee object_search,
+    private Map<String, String> saveUpdate(EmployeeDTO object_search,
             String curp, String first_name, String last_name1,
             String last_name2, String gender, String email,
             String date_birday, String phone_number1, String phone_number2,
@@ -995,7 +995,7 @@ public final class EmployeesView extends DBView implements DBValuesMapModel {
         Filters.addIfChanged(map, "employee_type", String.valueOf(object_search.getEmployeeType()), employee_type);
         Filters.addIfChanged(map, "status", String.valueOf(object_search.getStatus()), status);
         LocalDateTime dateEnd = object_search.getDateEnd();
-        Filters.addIfChanged(map, "date_end", date_end != null ? dateEnd.format(_Const.DATE_TIME) : null, date_end);
+        Filters.addIfChanged(map, "date_end", date_end != null ? dateEnd.format(Const.DATE_TIME) : null, date_end);
         return map;
     }
 

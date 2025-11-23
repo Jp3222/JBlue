@@ -29,9 +29,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.constants.Const;
+import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.Objects;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
@@ -45,7 +45,7 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
 
     private static final long serialVersionUID = 1L;
 
-    public static UserViewComponent showVisor(OUser obj) {
+    public static UserViewComponent showVisor(UserDTO obj) {
         if (obj == null) {
             return null;
         }
@@ -56,7 +56,7 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
         return o;
     }
 
-    private OUser usuario;
+    private UserDTO usuario;
 
     private final JTextField[] campos;
     private final JTableModel modelo_pagos_x_servicio;
@@ -95,9 +95,9 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
             dato_codigo
         };
         //
-        modelo_pagos_x_servicio = new JTableModel(_Const.PYM_SERVICE_PAYMENTS_TABLE.getFields(), 0);
-        modelo_pagos_x_recargo = new JTableModel(_Const.PYM_SURCHARGE_PAYMENTS_TABLE.getFields(), 0);
-        modelo_pagos_x_otros = new JTableModel(_Const.PYM_OTHER_PAYMENTS_TABLE.getFields(), 0);
+        modelo_pagos_x_servicio = new JTableModel(Const.PYM_PAYMENTS_TABLE.getFields(), 0);
+        modelo_pagos_x_recargo = new JTableModel(Const.PYM_PAYMENTS_TABLE.getFields(), 0);
+        modelo_pagos_x_otros = new JTableModel(Const.PYM_PAYMENTS_TABLE.getFields(), 0);
         //
         service_payments.setModel(modelo_pagos_x_servicio);
         surcharge_payments.setModel(modelo_pagos_x_recargo);
@@ -682,21 +682,21 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
         dispose();
     }
 
-    public OUser getUsuario() {
+    public UserDTO getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(OUser usuario) {
+    public void setUsuario(UserDTO usuario) {
         this.usuario = usuario;
         loadUserInformation();
     }
 
     private void loadUserInformation() {
         id_field.setText(usuario.getId());
-        name_field.setText(usuario.getName());
+        name_field.setText(usuario.getFirstName());
         last_name1_field.setText(usuario.getLastName1());
         last_name2_field.setText(usuario.getLastName2());
-        street_field.setText(usuario.getStreetObject().getNombre());
+        street_field.setText(usuario.getStreet1().getNombre());
         house_number_field.setText(usuario.getInsideNumber());
         water_intake_type_field.setText(usuario.getWaterIntakesObject().getTypeName());
         date_register_field.setText(usuario.getLastName2());
@@ -707,20 +707,10 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
 
     private void loadUserPayments() {
         loadServicePayment();
-        loadSurchagePayment();
-        loadOtherPayment();
     }
 
     private void loadServicePayment() {
         load(modelo_pagos_x_servicio, CacheFactory.SERVICE_PAYMENTS);
-    }
-
-    private void loadOtherPayment() {
-        load(modelo_pagos_x_otros, CacheFactory.OTHER_PAYMENTS);
-    }
-
-    private void loadSurchagePayment() {
-        load(modelo_pagos_x_recargo, CacheFactory.SURCHARGE_PAYMENTS);
     }
 
     private <T extends Objects> void load(JTableModel model, MemoListCache<T> cache) {

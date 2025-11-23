@@ -17,7 +17,7 @@
 package jsoftware.com.jblue.controllers.viewc;
 
 import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.dtos.OStreet;
+import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.views.StreetsView;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
@@ -28,8 +28,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.DBControllerModel;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.daos.HysHistoryDAO;
+import jsoftware.com.jblue.model.constants.Const;
+import jsoftware.com.jblue.model.dao.HysHistoryDAO;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.jexception.JExcp;
 import java.sql.SQLException;
@@ -42,7 +42,7 @@ import java.time.format.DateTimeFormatter;
  *
  * @author juan-campos
  */
-public class StreetsController extends AbstractDBViewController<OStreet> implements DBControllerModel {
+public class StreetsController extends AbstractDBViewController<StreetDTO> implements DBControllerModel {
 
     private final StreetsView view;
 
@@ -83,8 +83,7 @@ public class StreetsController extends AbstractDBViewController<OStreet> impleme
             return;
         }
         String[] values = view.getDbValues(false);
-        String query = JDBConnection.INSERT_VAL.formatted(
-                _Const.CAT_STREET_TABLE.getTableName(),
+        String query = JDBConnection.INSERT_VAL.formatted(Const.CAT_STREET_TABLE.getTableName(),
                 "street_name",
                 values[0]
         );
@@ -100,7 +99,7 @@ public class StreetsController extends AbstractDBViewController<OStreet> impleme
             if (!insert) {
                 throw new SQLException("ERROR AL GENERAL LAS LLAVES");
             }
-            insert = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_CAT_STREET,
+            insert = HysHistoryDAO.getINSTANCE().insert(Const.INDEX_CAT_STREET,
                     "SE INSERTO LA CALLE: %s - %s".formatted(rs.getString(1), values[0])
             );
             if (!insert) {
@@ -132,7 +131,7 @@ public class StreetsController extends AbstractDBViewController<OStreet> impleme
             if (!delete) {
                 throw new SQLException("BORRADO LOGICO CORRUPTO");
             }
-            delete = HysHistoryDAO.getINSTANCE().delete(_Const.INDEX_CAT_STREET,
+            delete = HysHistoryDAO.getINSTANCE().delete(Const.INDEX_CAT_STREET,
                     "SE ELIMINO LA CALLE: %s - %s".formatted(
                             view.getObjectSearch().getId(),
                             view.getObjectSearch().getNombre()
@@ -165,7 +164,7 @@ public class StreetsController extends AbstractDBViewController<OStreet> impleme
             if (!update) {
                 throw new SQLException("ERROR AL ACTUALIZAR");
             }
-            update = HysHistoryDAO.getINSTANCE().update(_Const.INDEX_CAT_STREET, "SE ACTUALIZO LA CALLE");
+            update = HysHistoryDAO.getINSTANCE().update(Const.INDEX_CAT_STREET, "SE ACTUALIZO LA CALLE");
             if (!update) {
                 throw new SQLException("ERROR AL REGISTRAR EL BITACORA");
             }

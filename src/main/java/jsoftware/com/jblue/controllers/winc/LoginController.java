@@ -16,31 +16,28 @@
  */
 package jsoftware.com.jblue.controllers.winc;
 
-import jsoftware.com.jblue.model.DBConnection;
-import jsoftware.com.jblue.model.dtos.OEmployee;
-import jsoftware.com.jblue.util.Filters;
-import jsoftware.com.jblue.util.EncriptadoAES;
-import jsoftware.com.jblue.model.factories.ConnectionFactory;
-import jsoftware.com.jblue.model.grs.LoginRulers;
-import jsoftware.com.jblue.sys.SystemSession;
-import jsoftware.com.jblue.views.components.ChangePasswordComponent;
-import jsoftware.com.jblue.views.win.LoginWindows;
-import jsoftware.com.jblue.views.win.ConfigWindow;
-import jsoftware.com.jblue.views.win.WMainMenu;
-import jsoftware.com.jutil.sys.LaunchApp;
-import jsoftware.com.jutil.jexception.Excp;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.model.dao.EmployeeDAO;
+import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jblue.model.l4b.LoginRulers;
+import jsoftware.com.jblue.sys.SystemSession;
+import jsoftware.com.jblue.util.EncriptadoAES;
+import jsoftware.com.jblue.views.win.ConfigWindow;
+import jsoftware.com.jblue.views.win.LoginWindows;
+import jsoftware.com.jblue.views.win.WMainMenu;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.sys.LaunchApp;
 
 /**
  *
@@ -78,25 +75,55 @@ public class LoginController extends WindowController {
     private final String WHERE = "user = '%s' and password = '%s'";
 
     public synchronized void login() {
-        if (view.isSesionActive()) {
-            return;
-        }
-        if (!start()) {
-            return;
-        }
+        try {
+            if (view.isSesionActive()) {
+                return;
+            }
+            if (!LoginRulers.isWorkTime()) {
+                returnMessage(view, "NO ES TIMPO DE TRABAJAR");
+            }
+            JDBConnection connection = ConnectionFactory.getIntance().getMain_connection();
+            EmployeeDAO dao = new EmployeeDAO();
+            String user = view.getUserString();
+            String password = view.getPasswordString();
+            EmployeeDTO employee = dao.get(connection,
+                    EncriptadoAES.doEncrypt(user, password),
+                    EncriptadoAES.doEncrypt(password, user)
+            );
+            if (LoginRulers.isEmployeeNull(employee)) {
+                returnMessage(view, "USUARIO Y/O CONTRASEÑA INCORRECTAS");
+            }
+            if (LoginRulers.isDateEnd(employee)) {
+                returnMessage(view, "EL USUARIO INGRESADO HA EXPIRADO");
+            }
+            SystemSession sesion = SystemSession.getInstancia();
+            sesion.setUser(employee);
+            sesion.getWarnings();
+            // Las caches deberan cargarse solo cuando se requieran
+            if (!LaunchApp.getInstance().cache()) {
+                System.out.println("ERROR EN LA CACHE");
+            }
+            System.out.println("MEMORIA CACHE LISTA");
 
-        // Las caches deberan cargarse solo cuando se requieran
-        if (!LaunchApp.getInstance().cache()) {
-            System.out.println("ERROR EN LA CACHE");
+            view.dispose();
+
+            //Nuevo menu estandarizado a las aplicaciones
+            WIN_MAIN_MENU = new WMainMenu(view);
+            WIN_MAIN_MENU.setVisible(true);
+            view.setSesionActive(false);
+        } catch (UnsupportedEncodingException ex) {
+            System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (InvalidKeyException ex) {
+            System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (NoSuchPaddingException ex) {
+            System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (BadPaddingException ex) {
+            System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-        System.out.println("MEMORIA CACHE LISTA");
-
-        view.dispose();
-
-        //Nuevo menu estandarizado a las aplicaciones 
-        WIN_MAIN_MENU = new WMainMenu(view);
-        WIN_MAIN_MENU.setVisible(true);
-        view.setSesionActive(false);
 
     }
 
@@ -118,56 +145,6 @@ public class LoginController extends WindowController {
         o.setToolTipText(message);
     }
 
-    public boolean start() {
-        if (LoginRulers.isWorkTime()) {
-            rmessage("No es hora de Trabajar", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        Optional<OEmployee> res = query(view.getUser().getText(),
-                String.valueOf(view.getPassword().getPassword())
-        );
-
-        if (res.isEmpty()) {
-            rmessage("Usuario y/o contraseña no validos", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        if (LoginRulers.isDateEnd(res.get())) {
-            rmessage("Periodo de acceso finalizado", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        SystemSession sesion = SystemSession.getInstancia();
-        sesion.setUser(res.get());
-        sesion.getWarnings();
-        return true;
-    }
-
-    public Optional<OEmployee> query(String user, String password) {
-        Optional<OEmployee> res = Optional.empty();
-        if (Filters.isNullOrBlank(user, password)) {
-            return res;
-        }
-        DBConnection<OEmployee> op = ConnectionFactory.getEmployees();
-        try {
-            String encrypt_user = EncriptadoAES.doEncrypt(user, password);
-            String encrypt_password = EncriptadoAES.doEncrypt(password, user);
-
-            res = op.get("*", WHERE.formatted(
-                    encrypt_user, encrypt_password
-            ));
-            if (res.isEmpty()) {
-                return Optional.empty();
-            }
-        } catch (UnsupportedEncodingException
-                | NoSuchAlgorithmException
-                | InvalidKeyException
-                | NoSuchPaddingException
-                | IllegalBlockSizeException
-                | BadPaddingException ex) {
-            Excp.impTerminal(ex, getClass(), true);
-        }
-        return res;
-    }
-
     @Override
     public void keyPressed(KeyEvent e) {
         boolean key_pressed = e.getKeyCode() == KeyEvent.VK_ENTER;
@@ -182,16 +159,10 @@ public class LoginController extends WindowController {
         }
     }
 
-    private void changePassword() {
-        boolean changePassword = ChangePasswordComponent.getChangePasswordComponent(view);
-        if (!changePassword) {
-            JOptionPane.showMessageDialog(view, "La contraseña no se pudo cambiar");
-            return;
-        }
-        JOptionPane.showMessageDialog(view, "Contraseña Cambiada");
-    }
-
     void rmessage(String msg, int type) {
         JOptionPane.showMessageDialog(view, msg, "Inicio de sesion", type);
+    }
+
+    private void changePassword() {
     }
 }

@@ -18,8 +18,8 @@ package jsoftware.com.jblue.views;
 
 import jsoftware.com.jblue.controllers.compc.ComboBoxItemsController;
 import jsoftware.com.jblue.controllers.compc.TableController;
-import jsoftware.com.jblue.model.dtos.OPaymentsTypes;
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.dto.OPaymentsTypes;
+import jsoftware.com.jblue.model.dto.Objects;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.util.Fecha;
 import jsoftware.com.jblue.util.GraphicsUtils;

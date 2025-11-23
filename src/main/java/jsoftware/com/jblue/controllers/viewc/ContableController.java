@@ -16,17 +16,16 @@
  */
 package jsoftware.com.jblue.controllers.viewc;
 
-import jsoftware.com.jblue.controllers.AbstractViewController;
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.dtos.OServicePayments;
-import jsoftware.com.jblue.util.cache.MemoListCache;
-import jsoftware.com.jblue.views.VContabilidad;
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jsoftware.com.jblue.controllers.AbstractViewController;
+import jsoftware.com.jblue.model.dto.OServicePayments;
+import jsoftware.com.jblue.model.factories.CacheFactory;
+import jsoftware.com.jblue.util.cache.MemoListCache;
+import jsoftware.com.jblue.views.VContabilidad;
 
 /**
  *
@@ -53,18 +52,9 @@ public final class ContableController extends AbstractViewController {
 
     private void totalOfDay() {
         double res = 0;
-        StringBuilder query = new StringBuilder(sum_query);
-        query.append("DAY(")
-                .append(_Const.PYM_SERVICE_PAYMENTS_TABLE.getFields()[date_register_index])
-                .append(") = DAY(NOW())");
-        query.append("AND MONTH(")
-                .append(_Const.PYM_SERVICE_PAYMENTS_TABLE.getFields()[date_register_index])
-                .append(") = MONTH(NOW())");
-        query.append("AND YEAR(")
-                .append(_Const.PYM_SERVICE_PAYMENTS_TABLE.getFields()[date_register_index])
-                .append(") = YEAR(NOW())");
+        String query = sum_total(true, true);
         try {
-            ResultSet rs = cache.getConnection().getJDBConnection().query(query.toString());
+            ResultSet rs = cache.getConnection().getJDBConnection().query(query);
             if (rs.next()) {
                 res = rs.getDouble(1);
                 total += res;
@@ -77,15 +67,9 @@ public final class ContableController extends AbstractViewController {
 
     private void totalOfMonth() {
         double res = 0;
-        StringBuilder query = new StringBuilder(sum_query);
-        query.append("MONTH(")
-                .append(_Const.PYM_SERVICE_PAYMENTS_TABLE.getFields()[date_register_index])
-                .append(") = MONTH(NOW())");
-        query.append("AND YEAR(")
-                .append(_Const.PYM_SERVICE_PAYMENTS_TABLE.getFields()[date_register_index])
-                .append(") = YEAR(NOW())");
+        String query = sum_total(true, false);
         try {
-            ResultSet rs = cache.getConnection().getJDBConnection().query(query.toString());
+            ResultSet rs = cache.getConnection().getJDBConnection().query(query);
             if (rs.next()) {
                 res = rs.getDouble(1);
                 total += res;
@@ -98,12 +82,9 @@ public final class ContableController extends AbstractViewController {
 
     private void totalOfYear() {
         double res = 0;
-        StringBuilder query = new StringBuilder(sum_query);
-        query.append("YEAR(")
-                .append(_Const.PYM_SERVICE_PAYMENTS_TABLE.getFields()[date_register_index])
-                .append(") = YEAR(NOW())");
+        String query = sum_total(false, false);
         try {
-            ResultSet rs = cache.getConnection().getJDBConnection().query(query.toString());
+            ResultSet rs = cache.getConnection().getJDBConnection().query(query);
             if (rs.next()) {
                 res = rs.getDouble(1);
                 total += res;
@@ -113,8 +94,18 @@ public final class ContableController extends AbstractViewController {
         }
         view.setYear_field(res);
     }
-    private final String sum_query = "SELECT SUM(price) FROM pym_service_payments WHERE ";
-    private final int date_register_index = 7;
+
+    public String sum_total(boolean month, boolean day) {
+        StringBuilder sb = new StringBuilder("SELECT SUM(price) FROM pym_service_payments WHERE ");
+        sb.append("YEAR(date_register) = YEAR(NOW()) \n");
+        if (month) {
+            sb.append("MONTH(date_register) = YEAR(NOW()) \n");
+        }
+        if (day) {
+            sb.append("DAY(date_register) = YEAR(NOW())");
+        }
+        return sb.toString();
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.model.constants._Const;
+import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.views.framework.DBValuesMapModel;
 import jsoftware.com.jblue.views.framework.SimpleView;
@@ -75,7 +75,7 @@ public final class ParametersView extends SimpleView implements DBValuesMapModel
     @Override
     public void events() {
         update_button.addActionListener((e) -> {
-            final String query = "UPDATE " + _Const.DEV_PARAMETERS_TABLE.getTableName() + " SET value = ? WHERE parameter = ?";
+            final String query = "UPDATE " + Const.DEV_PARAMETERS_TABLE.getTableName() + " SET value = ? WHERE parameter = ?";
             JDBConnection connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
             String mess = "Parametros Actualizados";
             Map<String, String> values = getValues(true);
@@ -108,8 +108,8 @@ public final class ParametersView extends SimpleView implements DBValuesMapModel
 
     @Override
     public void initialState() {
-        open_hour_field.setText(AppConfig.getOpenHour().format(DateTimeFormatter.ofPattern(_Const.TIME_FORMAT)));
-        close_hour_field.setText(AppConfig.getCloseHour().format(DateTimeFormatter.ofPattern(_Const.TIME_FORMAT)));
+        open_hour_field.setText(AppConfig.getOpenHour().format(DateTimeFormatter.ofPattern(Const.TIME_FORMAT)));
+        close_hour_field.setText(AppConfig.getCloseHour().format(DateTimeFormatter.ofPattern(Const.TIME_FORMAT)));
         last_pay_day_field.setValue(AppConfig.getPayDay());
         auto_pay_field.setSelected(AppConfig.isPayDay());
         hour_validate_field.setSelected(AppConfig.isHourValidate());

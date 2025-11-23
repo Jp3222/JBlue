@@ -16,27 +16,27 @@
  */
 package jsoftware.com.jblue.controllers.viewc;
 
-import jsoftware.com.jblue.controllers.AbstractDBViewController;
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.daos.HysHistoryDAO;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.dtos.OEmployee;
-import jsoftware.com.jblue.util.Formats;
-import jsoftware.com.jblue.views.EmployeesView;
-import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.jexception.JExcp;
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.AbstractDBViewController;
+import jsoftware.com.jblue.model.constants.Const;
+import jsoftware.com.jblue.model.dao.HysHistoryDAO;
+import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.model.factories.CacheFactory;
+import jsoftware.com.jblue.util.Formats;
+import jsoftware.com.jblue.views.EmployeesView;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.jexception.JExcp;
 
 /**
  *
  * @author juanp
  */
-public class EmployeeController extends AbstractDBViewController<OEmployee> {
+public class EmployeeController extends AbstractDBViewController<EmployeeDTO> {
 
     private final EmployeesView view;
 
@@ -73,8 +73,7 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
         System.out.println("Valido");
         Map<String, String> values = view.getValues(false);
         String[] info = Formats.getInsertFormats(values);
-        String query = JDBConnection.INSERT_VAL.formatted(
-                _Const.EMP_EMPLOYEES_TABLE.getTableName(),// NOMBRE DE LA TABLA
+        String query = JDBConnection.INSERT_VAL.formatted(Const.EMP_EMPLOYEE_TABLE.getTableName(),// NOMBRE DE LA TABLA
                 info[0],// CAMPOS
                 info[1]// DATOS
         );
@@ -118,7 +117,7 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
 
     @Override
     public void delete() {
-        OEmployee employee = view.getObjectSearch();
+        EmployeeDTO employee = view.getObjectSearch();
         if (employee == null) {
             return;
         }
@@ -153,7 +152,7 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
     @Override
     public void update() {
         try {
-            OEmployee employee = view.getObjectSearch();
+            EmployeeDTO employee = view.getObjectSearch();
             Map<String, String> values = view.getValues(true);
             String updateFormats = Formats.getUpdateFormats(values);
             connection.setAutoCommit(false);
@@ -196,7 +195,7 @@ public class EmployeeController extends AbstractDBViewController<OEmployee> {
     }
 
     private void searchObject() {
-        OEmployee objectSearch = view.getObjectSearch();
+        EmployeeDTO objectSearch = view.getObjectSearch();
     }
 
 }

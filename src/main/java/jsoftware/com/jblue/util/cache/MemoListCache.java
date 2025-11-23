@@ -16,17 +16,20 @@
  */
 package jsoftware.com.jblue.util.cache;
 
-import jsoftware.com.jblue.model.DBConnection;
-import jsoftware.com.jblue.model.dtos.Objects;
 import java.util.List;
 import java.util.function.Predicate;
+import jsoftware.com.jblue.model.DBConnection;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.db.model.JDBObject;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public class MemoListCache<T extends Objects> extends AbstractListCache<T> implements Paginated {
+public class MemoListCache<T extends JDBObject> extends AbstractListCache<T> implements Paginated {
+
+    private static final long serialVersionUID = 1L;
 
     private int page;
 
@@ -85,8 +88,8 @@ public class MemoListCache<T extends Objects> extends AbstractListCache<T> imple
 
     private int buffer_direc;
 
-    public DBConnection<T> getConnection() {
-        return conexion;
+    public JDBConnection getConnection() {
+        return conexion.getJDBConnection();
     }
 
 }

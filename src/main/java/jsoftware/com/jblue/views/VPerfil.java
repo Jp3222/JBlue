@@ -21,8 +21,8 @@ import java.time.ZoneId;
 import java.util.Date;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.dtos.OEmployee;
+import jsoftware.com.jblue.model.constants.Const;
+import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.util.Fecha;
 import jsoftware.com.jblue.util.ObjectUtils;
@@ -36,7 +36,7 @@ public final class VPerfil extends SimpleView {
 
     private static final long serialVersionUID = 1L;
 
-    private final OEmployee current_employee;
+    private final EmployeeDTO current_employee;
 
     /**
      * Creates new form VPerfil
@@ -469,8 +469,8 @@ public final class VPerfil extends SimpleView {
         status_type_field.setSelectedItem(ObjectUtils.getDescriptionStatusCAT(current_employee.getStatus()));
         user_field.setText(current_employee.getUser());
         password_field.setText(current_employee.getPassword());
-        date_last_update_field.setText(_Const.getLocalDateTimeToString(current_employee.getDateUpdate()));
-        date_register_field.setText(_Const.getLocalDateTimeToString(current_employee.getDateRegister()));
+        date_last_update_field.setText(Const.getLocalDateTimeToString(current_employee.getDateUpdate()));
+        date_register_field.setText(Const.getLocalDateTimeToString(current_employee.getDateRegister()));
         date_end_check_field.setSelected(current_employee.getDateEnd() != null);
         date_end_field.setEditable(current_employee.getDateEnd() != null);
         if (current_employee.getDateEnd() != null) {

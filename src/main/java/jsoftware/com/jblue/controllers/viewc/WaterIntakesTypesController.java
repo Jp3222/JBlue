@@ -17,15 +17,15 @@
 package jsoftware.com.jblue.controllers.viewc;
 
 import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
 import jsoftware.com.jblue.views.WaterIntakesTypesView;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.DBControllerModel;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.daos.HysHistoryDAO;
-import jsoftware.com.jblue.model.dtos.OUser;
+import jsoftware.com.jblue.model.constants.Const;
+import jsoftware.com.jblue.model.dao.HysHistoryDAO;
+import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jutil.db.JDBConnection;
 import java.sql.ResultSet;
@@ -41,7 +41,7 @@ import jsoftware.com.jutil.jexception.JExcp;
  *
  * @author juan-campos
  */
-public class WaterIntakesTypesController extends AbstractDBViewController<OWaterIntakeTypes> implements DBControllerModel {
+public class WaterIntakesTypesController extends AbstractDBViewController<WaterIntakeTypesDTO> implements DBControllerModel {
 
     private final WaterIntakesTypesView view;
 
@@ -77,8 +77,7 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
         Map<String, String> values = view.getValues(false);//leer datos
         String[] arr = Formats.getInsertFormats(values);//dar formato de entrada
         //Estructuramos el query
-        String query = JDBConnection.INSERT_VAL.formatted(
-                _Const.WKI_WATER_INTAKE_TYPE_TABLE.getTableName(),
+        String query = JDBConnection.INSERT_VAL.formatted(Const.WKI_WATER_INTAKE_TYPE_TABLE.getTableName(),
                 arr[0],
                 arr[1]
         );
@@ -97,7 +96,7 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
                     throw new SQLException("[2] Primary Key no generada");
                 }
                 //registro en bitacora
-                registro = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_WKI_WATER_INTAKE_TYPE,
+                registro = HysHistoryDAO.getINSTANCE().insert(Const.INDEX_WKI_WATER_INTAKE_TYPE,
                         "SE INSERTO LA TIPO DE TOMA: %s - %s".formatted(
                                 rs.getString(1),
                                 values.get("type_name")
@@ -127,7 +126,7 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
         connection.setAutoCommit(false);
         try {
             //comprobamos si hay usuarios usando este tipo de toma
-            List<OUser> list = CacheFactory.USERS.getList((t) -> t.getWaterIntakeType().equals(view.getObjectSearch().getId()));
+            List<UserDTO> list = CacheFactory.USERS.getList((t) -> t.getWaterIntakeType().equals(view.getObjectSearch().getId()));
             if (!list.isEmpty()) {
                 JOptionPane.showMessageDialog(view, "Hay %s usando este registro".formatted(list.size()));
                 return;
@@ -146,7 +145,7 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
             if (!registro) {
                 throw new SQLException("BORRADO LOGICO CORRUPTO");
             }
-            registro = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_WKI_WATER_INTAKE_TYPE,
+            registro = HysHistoryDAO.getINSTANCE().insert(Const.INDEX_WKI_WATER_INTAKE_TYPE,
                     "SE ELIMINO LOGICAMENTE EL TIPO DE TOMA: %s - %s".formatted(
                             view.getObjectSearch().getId(),
                             view.getObjectSearch().getTypeName()
@@ -174,7 +173,7 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
         connection.setAutoCommit(false);
         Map<String, String> values = view.getValues(false);
         String arr = Formats.getUpdateFormats(values);
-        String query = JDBConnection.UPDATE_COL.formatted(_Const.WKI_WATER_INTAKE_TYPE_TABLE.getTableName(), arr,
+        String query = JDBConnection.UPDATE_COL.formatted(Const.WKI_WATER_INTAKE_TYPE_TABLE.getTableName(), arr,
                 "id = %s".formatted(view.getObjectSearch().getId()));
 
         try (Statement st = connection.getConnection().createStatement();) {
@@ -182,7 +181,7 @@ public class WaterIntakesTypesController extends AbstractDBViewController<OWater
             if (!registro) {
                 throw new SQLException("NO SE PUDO ELIMINAR LOGICAMENTE EL REGISTRO");
             }
-            registro = HysHistoryDAO.getINSTANCE().insert(_Const.INDEX_WKI_WATER_INTAKE_TYPE,
+            registro = HysHistoryDAO.getINSTANCE().insert(Const.INDEX_WKI_WATER_INTAKE_TYPE,
                     "SE ACTUALIZO EL TIPO DE TOMA: %s - %s".formatted(
                             view.getObjectSearch().getId(),
                             view.getObjectSearch().getTypeName()

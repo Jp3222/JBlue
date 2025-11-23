@@ -19,9 +19,8 @@ package jsoftware.com.jblue.model.l4b;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.model.dtos.OWaterIntakes;
+import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.OWaterIntakes;
 
 /**
  *
@@ -29,26 +28,21 @@ import jsoftware.com.jblue.model.dtos.OWaterIntakes;
  */
 public interface PaymentModel extends Serializable {
 
-    public static final int SERVICE_PAYMENT = _Const.INDEX_PYM_SERVICE_PAYMENTS;
-    static final int SURCHARGE_PAYMENT = _Const.INDEX_PYM_SURCHARGE_PAYMENTS;
-    static final int OTHERS_PAYMENT = _Const.INDEX_PYM_OTHER_PAYMENTS;
-
-    static final int STATUS_PAY = 6;
-    static final int STATUS_NOT_PAY = 7;
-    static final int STATUS_PENDING_PAY = 8;
+    public static final int PAGADO = 7;
+    public static final int PENDIENTE = 8;
+    public static final int EN_PROCESO = 9;
+    //
+    public static final int DEPOSITO = 5;
+    public static final int EFECTIVO = 1;
+    public static final int TARJETA_DE_CREDITO = 4;
+    public static final int TARJETA_DE_DEBITO = 3;
+    public static final int TRANFERENCIA = 2;
 
     static final String KEY_ERROR = "err_msg";
     static final String KEY_MOVS = "mov";
     static final String KEY_STATUS_OP = "status";
     static final String STATUS_OK = "ok";
     static final String STATUS_ERR = "err";
-
-    /**
-     *
-     * @param args
-     * @return
-     */
-    String getQuery(String args);
 
     /**
      *
@@ -87,7 +81,7 @@ public interface PaymentModel extends Serializable {
      *
      * @param o
      */
-    void setUser(OUser o);
+    void setUser(UserDTO o);
 
     void setWaterIntake(OWaterIntakes o);
 

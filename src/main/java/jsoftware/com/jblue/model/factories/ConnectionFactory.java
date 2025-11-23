@@ -16,51 +16,110 @@
  */
 package jsoftware.com.jblue.model.factories;
 
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.DBConnection;
-import jsoftware.com.jblue.model.dtos.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.db.JDBConnectionBuilder;
 
 /**
  *
  * @author juan-campos
  */
 public class ConnectionFactory {
-
-    public static DBConnection<OEmployee> getEmployees() {
-        return new DBConnection(_Const.EMP_EMPLOYEES_TABLE);
-    }
-
-    public static DBConnection<OUser> getUser() {
-        return new DBConnection(_Const.USR_USERS_TABLE);
-    }
-
-    public static DBConnection<OStreet> getStreets() {
-        return new DBConnection(_Const.CAT_STREET_TABLE);
-    }
-
-    public static DBConnection<OWaterIntakeTypes> getWaterIntakesTypes() {
-        return new DBConnection(_Const.WKI_WATER_INTAKE_TYPE_TABLE);
-    }
-
-    public static DBConnection<OServicePayments> getServicePayments() {
-        return new DBConnection(_Const.PYM_SERVICE_PAYMENTS_TABLE);
-    }
-
-    public static DBConnection<OServicePayments> getSurchargePayments() {
-        return new DBConnection(_Const.PYM_SURCHARGE_PAYMENTS_TABLE);
-    }
-
-    public static DBConnection<OtherPaymentsType> getOtherPayments() {
-        return new DBConnection(_Const.PYM_OTHER_PAYMENTS_TABLE);
-    }
-
-    public static DBConnection<OWaterIntakes> getWaterIntakes() {
-        return new DBConnection(_Const.WKI_WATER_INTAKES_TABLE);
-    }
-
-    public static DBConnection<OEmployeeTypes> getEmployeeTypes() {
-        return new DBConnection(_Const.EMP_EMPLOYEE_TYPES_TABLE);
+    
+    private static ConnectionFactory intance;
+    
+    public static synchronized ConnectionFactory getIntance(JDBConnectionBuilder builder) {
+        if (intance == null) {
+            intance = new ConnectionFactory(builder);
+        }
+        return intance;
     }
     
+    public static ConnectionFactory getIntance() {
+        return intance;
+    }
     
+    private JDBConnection payments_connection;
+    private JDBConnection water_intake_connection;
+    private JDBConnection history_connection;
+    private JDBConnection main_connection;
+    private JDBConnectionBuilder builder;
+    private List<JDBConnection> connection_list;
+    
+    private ConnectionFactory(JDBConnectionBuilder builder) {
+        connection_list = new ArrayList<>(4);
+        connection_list.add(payments_connection);
+        connection_list.add(water_intake_connection);
+        connection_list.add(history_connection);
+        connection_list.add(main_connection);
+    }
+    
+    public boolean openFactory() throws SQLException {
+        for (JDBConnection i : connection_list) {
+            i = new JDBConnection(builder);
+            if (i == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public JDBConnection getPaymentsConnection() {
+        if (payments_connection == null) {
+            try {
+                payments_connection = new JDBConnection(builder);
+            } catch (SQLException ex) {
+                System.getLogger(ConnectionFactory.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        }
+        return payments_connection;
+    }
+    
+    public JDBConnection getWater_intake_connection() {
+        if (water_intake_connection == null) {
+            try {
+                water_intake_connection = new JDBConnection(builder);
+            } catch (SQLException ex) {
+                System.getLogger(ConnectionFactory.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        }
+        return water_intake_connection;
+    }
+    
+    public JDBConnection getHistory_connection() {
+        if (history_connection == null) {
+            try {
+                history_connection = new JDBConnection(builder);
+            } catch (SQLException ex) {
+                System.getLogger(ConnectionFactory.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        }
+        return history_connection;
+    }
+    
+    public JDBConnection getMain_connection() {
+        if (main_connection == null) {
+            try {
+                main_connection = new JDBConnection(builder);
+            } catch (SQLException ex) {
+                System.getLogger(ConnectionFactory.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        }
+        return main_connection;
+    }
+    
+    public boolean close() {
+        boolean res = false;
+        try {
+            for (JDBConnection i : connection_list) {
+                i.closePool();
+            }
+            res = true;
+        } catch (Exception e) {
+            throw e;
+        }
+        return res;
+    }
 }

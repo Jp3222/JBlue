@@ -16,7 +16,7 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.model.dtos.OtherPaymentsType;
+import jsoftware.com.jblue.model.dto.OtherPaymentsType;
 
 /**
  *

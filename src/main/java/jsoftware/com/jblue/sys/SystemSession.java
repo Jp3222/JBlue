@@ -1,35 +1,36 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jsoftware.com.jblue.sys;
 
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.model.daos.AdministrationHistoryDAO;
-import jsoftware.com.jblue.model.daos.HysHistoryDAO;
-import jsoftware.com.jblue.model.dtos.HysAdministrationHistoryDTO;
-import jsoftware.com.jblue.model.dtos.OEmployee;
+import jsoftware.com.jblue.model.dao.AdministrationHistoryDAO;
+import jsoftware.com.jblue.model.dao.HysHistoryDAO;
+import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.model.dto.HysAdministrationHistoryDTO;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.jexception.JExcp;
-import jsoftware.com.jutil.sys.LaunchApp;
 import jsoftware.com.jutil.sys.LocalSession;
 
 /**
- * Esta clase define al personal de sesion actual, quien hace uso del programa,
- * por lo cual esta clase solo se puede instanciar una vez
+ * Esta clase define al personal de sesión actual, gestionando quién utiliza el
+ * programa y el contexto administrativo activo. Implementa el patrón Singleton
+ * para asegurar una única instancia de sesión a nivel de aplicación (o hilo).
  *
  * @author jp
+ * @version 1.0
+ * @since 2025-11-22
  */
-public class SystemSession implements LocalSession<OEmployee> {
+public class SystemSession implements LocalSession<EmployeeDTO> {
 
     private static SystemSession instancia;
 
     /**
-     * Retorna una unica instancia de la clase Sesion
+     * Retorna una única instancia de la clase Sesión (Patrón Singleton). El
+     * método está sincronizado para garantizar la seguridad en entornos
+     * multihilo.
      *
-     * @return
+     * @return La instancia única de SystemSession.
      */
     public static synchronized SystemSession getInstancia() {
         if (instancia == null) {
@@ -39,86 +40,153 @@ public class SystemSession implements LocalSession<OEmployee> {
     }
 
     /**
-     * Empleado que ha iniciado session
+     * Empleado DTO que ha iniciado sesión actualmente.
      */
-    private OEmployee current_employee;
+    private EmployeeDTO current_employee;
+    /**
+     * Registro de la administración activa actual (del año en curso).
+     */
     private HysAdministrationHistoryDTO current_administration;
-
+    /**
+     * La conexión a la base de datos utilizada para transacciones de sesión.
+     */
     private final JDBConnection connection;
 
+    /**
+     * Constructor privado que obtiene la conexión a la base de datos al
+     * inicializar la única instancia de la sesión.
+     */
     private SystemSession() {
-        connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
+        // Se asume que "connection" es la clave correcta para obtener el recurso.
+        connection = ConnectionFactory.getIntance().getMain_connection();
     }
 
-    public OEmployee getCurrentEmployee() {
+    /**
+     * Obtiene el DTO del empleado actualmente autenticado.
+     *
+     * @return El DTO del empleado en sesión, o {@code null} si no hay sesión
+     * abierta.
+     */
+    public EmployeeDTO getCurrentEmployee() {
         return current_employee;
     }
 
+    /**
+     * Obtiene el registro de la administración activa (presidente, tesorero,
+     * etc.) para el contexto actual.
+     *
+     * @return El DTO de la historia de administración.
+     */
     public HysAdministrationHistoryDTO getCurrentAdministration() {
         return current_administration;
     }
 
     /**
-     * Metodo que lanza advertencias encontradas en el sistema
+     * Muestra advertencias críticas del sistema mediante un cuadro de diálogo
+     * (JOptionPane). Verifica el estado del empleado, la administración y la
+     * configuración de pagos automáticos.
      */
     public void getWarnings() {
         StringBuilder sb = new StringBuilder(255);
+
         if (getCurrentEmployee() == null) {
-            sb.append("El usuario no se ha registrado correctamente, No podra hacer registro algunos\n");
+            sb.append("El usuario no se ha registrado correctamente. No podrá realizar algunos registros.\n");
         }
 
         if (getCurrentAdministration() == null) {
-            sb.append("La administracion actual no ha sido registrada, no podra hacer registro alguno\n");
+            sb.append("La administración actual no ha sido registrada. No podrá realizar ningún registro administrativo.\n");
         }
+
         if (AppConfig.isAutoPay()) {
-            sb.append("El sistema tiene el modo de recargo automatico activado\n");
+            sb.append("Advertencia: El sistema tiene el modo de recargo automático activado.\n");
         }
+
         if (!sb.isEmpty()) {
-            JOptionPane.showConfirmDialog(null,
+            JOptionPane.showMessageDialog(
+                    null,
                     sb.toString(),
-                    "Advertencias",
-                    JOptionPane.YES_NO_OPTION,
+                    "Advertencias del Sistema",
                     JOptionPane.WARNING_MESSAGE
             );
         }
     }
 
+    /**
+     * {@inheritDoc} Verifica si la sesión está abierta (si existe un empleado
+     * autenticado).
+     *
+     * @return {@code true} si {@code current_employee} no es nulo.
+     */
     @Override
     public boolean isOpen() {
         return current_employee != null;
     }
 
+    /**
+     * Método placeholder de la interfaz {@code LocalSession}. Actualmente no
+     * realiza ninguna acción.
+     */
     @Override
     public void writer() {
+        // Método sin implementar/funcionalidad
     }
 
+    /**
+     * Inicia o cierra una sesión de empleado, registrando la acción en la
+     * bitácora de movimientos del empleado de forma transaccional.
+     *
+     * @param user El DTO del empleado que inicia sesión, o {@code null} para
+     * cerrar sesión.
+     * @throws RuntimeException Si el registro en la bitácora o la actualización
+     * de estado falla.
+     */
     @Override
-    public void setUser(OEmployee user) {
+    public void setUser(EmployeeDTO user) {
+        // Deshabilita el auto-commit para manejar la transacción manualmente.
         connection.setAutoCommit(false);
-        try {
-            String description = user == null ? "FIN DE SESION" : "INICIO DE SESIÓN";
-            boolean register;
-            if (user == null) {
-                register = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogOut(current_employee, description);
-            } else {
-                register = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogin(user, description);
 
+        try {
+            boolean registerSuccess;
+            String description = user == null ? "FIN DE SESION" : "INICIO DE SESIÓN";
+
+            if (user == null) {
+                // Registro de salida
+                registerSuccess = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogOut(current_employee, description);
+                current_employee = null;
+                current_administration = null;
+            } else {
+                // Registro de entrada
+                registerSuccess = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogin(user, description);
+                current_employee = user;
+                // Obtiene el contexto administrativo tras un login exitoso.
+                current_administration = new AdministrationHistoryDAO().getCurrentAdministration(connection);
             }
-            if (!register) {
-                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+
+            if (!registerSuccess) {
+                throw new SQLException("El registro de auditoría en bitácora ha fallado o fue corrupto.");
             }
-            current_employee = user;
-            current_administration = new AdministrationHistoryDAO().getCurrentAdministration(connection);
+
+            // CRÍTICO: Commit explícito para asegurar que los registros de bitácora se guarden.
+            connection.commit();
+
         } catch (SQLException e) {
+            // Si hay un error, deshace todos los cambios.
             connection.rollBack();
             JExcp.getInstance(false, true).print(e, getClass(), "setUser");
+            // Se re-lanza como RuntimeException para notificación.
+            throw new RuntimeException("Fallo transaccional durante el inicio/cierre de sesión.", e);
         } finally {
+            // Siempre restaurar el modo AutoCommit.
             connection.setAutoCommit(true);
         }
     }
 
+    /**
+     * Método placeholder para la lógica de carga de la sesión. Actualmente no
+     * implementado.
+     */
     public void load() {
-
+        // Lógica de precarga de sesión si es necesario
     }
 
 }

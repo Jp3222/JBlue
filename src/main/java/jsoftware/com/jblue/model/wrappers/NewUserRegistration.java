@@ -16,8 +16,8 @@
  */
 package jsoftware.com.jblue.model.wrappers;
 
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.model.dtos.OWaterIntakes;
+import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.OWaterIntakes;
 
 /**
  *
@@ -25,10 +25,10 @@ import jsoftware.com.jblue.model.dtos.OWaterIntakes;
  */
 public class NewUserRegistration {
     
-    private OUser user;
+    private UserDTO user;
     private OWaterIntakes water_intake;
 
-    public NewUserRegistration(OUser user, OWaterIntakes water_intake) {
+    public NewUserRegistration(UserDTO user, OWaterIntakes water_intake) {
         this.user = user;
         this.water_intake = water_intake;
     }

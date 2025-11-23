@@ -20,16 +20,16 @@ import java.io.Serializable;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JTextField;
-import jsoftware.com.jblue.model.dtos.ForeingKeyObject;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.model.dtos.StatusObject;
+import jsoftware.com.jblue.model.dto.ForeingKeyObject;
+import jsoftware.com.jblue.model.dto.Objects;
+import jsoftware.com.jblue.model.dto.StatusObjectModel;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public interface ListSearchViewModel<T extends Objects & StatusObject & ForeingKeyObject> extends Serializable {
+public interface ListSearchViewModel<T extends Objects & StatusObjectModel & ForeingKeyObject> extends Serializable {
 
     JList<T> getList();
 

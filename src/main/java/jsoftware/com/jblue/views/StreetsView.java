@@ -22,8 +22,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.FactoryController;
 import jsoftware.com.jblue.controllers.compc.TableController;
-import jsoftware.com.jblue.model.dtos.OStreet;
-import jsoftware.com.jblue.model.dtos.Objects;
+import jsoftware.com.jblue.model.dto.StreetDTO;
+import jsoftware.com.jblue.model.dto.Objects;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
@@ -40,7 +40,7 @@ public final class StreetsView extends DBView implements DBValuesModel {
 
     private static final long serialVersionUID = 1L;
 
-    private OStreet object_search;
+    private StreetDTO object_search;
     private final CardLayout ly;
 
     /**
@@ -548,7 +548,7 @@ public final class StreetsView extends DBView implements DBValuesModel {
      * @return
      */
     @Override
-    public OStreet getObjectSearch() {
+    public StreetDTO getObjectSearch() {
         return object_search;
     }
 
@@ -558,7 +558,7 @@ public final class StreetsView extends DBView implements DBValuesModel {
      */
     @Override
     public void setObjectSearch(Objects o) {
-        object_search = (OStreet) o;
+        object_search = (StreetDTO) o;
     }
 
     /**

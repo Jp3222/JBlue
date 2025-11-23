@@ -16,7 +16,7 @@
  */
 package jsoftware.com.jblue.model.factories;
 
-import jsoftware.com.jblue.model.constants._Const;
+import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jutil.db.JDBTable;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
@@ -27,35 +27,27 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
 public final class TableModelFactory {
 
     public static JTableModel getUserTableModel() {
-        return getTableModel(_Const.USR_USERS_TABLE);
+        return getTableModel(Const.USR_USER_TABLE);
     }
 
     public static JTableModel getStreetTableModel() {
-        return getTableModel(_Const.CAT_STREET_TABLE);
+        return getTableModel(Const.CAT_STREET_TABLE);
     }
 
     public static JTableModel getWaterIntakeTypesTableModel() {
-        return getTableModel(_Const.WKI_WATER_INTAKE_TYPE_TABLE);
+        return getTableModel(Const.WKI_WATER_INTAKE_TYPE_TABLE);
     }
 
     public static JTableModel getWaterIntakesTableModel() {
-        return getTableModel(_Const.WKI_WATER_INTAKES_TABLE);
+        return getTableModel(Const.WKI_WATER_INTAKES_TABLE);
     }
 
     public static JTableModel getEmployeesTableModel() {
-        return getTableModel(_Const.EMP_EMPLOYEES_TABLE);
+        return getTableModel(Const.EMP_EMPLOYEE_TABLE);
     }
 
-    public static JTableModel getServicePaymentTableModel() {
-        return getTableModel(_Const.PYM_SERVICE_PAYMENTS_TABLE);
-    }
-
-    public static JTableModel getSurchargePaymentTableModel() {
-        return getTableModel(_Const.PYM_SURCHARGE_PAYMENTS_TABLE);
-    }
-
-    public static JTableModel getOtherPaymentTableModel() {
-        return getTableModel(_Const.PYM_OTHER_PAYMENTS_TABLE);
+    public static JTableModel getPayment() {
+        return getTableModel(Const.PYM_PAYMENTS_TABLE);
     }
 
     private static JTableModel getTableModel(JDBTable table) {

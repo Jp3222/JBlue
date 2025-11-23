@@ -16,25 +16,25 @@
  */
 package jsoftware.com.jblue.util;
 
-import jsoftware.com.jblue.model.dtos.OtherPaymentsType;
-import jsoftware.com.jblue.model.dtos.OStreet;
-import jsoftware.com.jblue.model.dtos.Objects;
-import jsoftware.com.jblue.model.dtos.OWaterIntakeTypes;
-import jsoftware.com.jblue.model.dtos.OWaterIntakes;
-import jsoftware.com.jblue.model.dtos.OUser;
-import jsoftware.com.jblue.model.dtos.OEmployee;
-import jsoftware.com.jblue.model.dtos.OSurchargePayments;
-import jsoftware.com.jblue.model.dtos.OHistory;
-import jsoftware.com.jblue.model.dtos.OServicePayments;
-import jsoftware.com.jblue.model.constants._Const;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.util.cache.MemoListCache;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jsoftware.com.jblue.model.constants.Const;
+import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.model.dto.HistoryDTO;
+import jsoftware.com.jblue.model.dto.OServicePayments;
+import jsoftware.com.jblue.model.dto.StreetDTO;
+import jsoftware.com.jblue.model.dto.OSurchargePayments;
+import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.OWaterIntakes;
+import jsoftware.com.jblue.model.dto.Objects;
+import jsoftware.com.jblue.model.dto.OtherPaymentsType;
+import jsoftware.com.jblue.model.factories.CacheFactory;
+import jsoftware.com.jblue.util.cache.MemoListCache;
 
 /**
  *
@@ -46,15 +46,15 @@ public class ObjectUtils {
 
     static {
         mapa = new HashMap<>(10);
-        mapa.put(_Const.EMP_EMPLOYEES_TABLE.getTableName(), new OEmployee());
-        mapa.put(_Const.USR_USERS_TABLE.getTableName(), new OUser());
-        mapa.put(_Const.CAT_STREET_TABLE.getTableName(), new OStreet());
-        mapa.put(_Const.WKI_WATER_INTAKE_TYPE_TABLE.getTableName(), new OWaterIntakeTypes());
-        mapa.put(_Const.WKI_WATER_INTAKES_TABLE.getTableName(), new OWaterIntakes());
-        mapa.put(_Const.PYM_SERVICE_PAYMENTS_TABLE.getTableName(), new OServicePayments());
-        mapa.put(_Const.PYM_SURCHARGE_PAYMENTS_TABLE.getTableName(), new OSurchargePayments());
-        mapa.put(_Const.PYM_OTHER_PAYMENTS_TABLE.getTableName(), new OtherPaymentsType());
-        mapa.put("history", new OHistory());
+        mapa.put(Const.EMP_EMPLOYEE_TABLE.getTableName(), new EmployeeDTO());
+        mapa.put(Const.USR_USER_TABLE.getTableName(), new UserDTO());
+        mapa.put(Const.CAT_STREET_TABLE.getTableName(), new StreetDTO());
+        mapa.put(Const.WKI_WATER_INTAKE_TYPE_TABLE.getTableName(), new WaterIntakeTypesDTO());
+        mapa.put(Const.WKI_WATER_INTAKES_TABLE.getTableName(), new OWaterIntakes());
+        mapa.put(Const.PYM_PAYMENTS_TABLE.getTableName(), new OServicePayments());
+        mapa.put(Const.PYM_PAYMENTS_TABLE.getTableName(), new OSurchargePayments());
+        mapa.put(Const.PYM_PAYMENTS_TABLE.getTableName(), new OtherPaymentsType());
+        mapa.put("history", new HistoryDTO());
     }
 
     public static <T extends Objects> T getObjeto(String tabla, String[] info) {
@@ -78,7 +78,7 @@ public class ObjectUtils {
         return null;
     }
 
-    public static OWaterIntakeTypes getTipoToma(String id) {
+    public static WaterIntakeTypesDTO getTipoToma(String id) {
         return getObjetoById(CacheFactory.WATER_INTAKES_TYPES, id);
     }
 
@@ -90,22 +90,22 @@ public class ObjectUtils {
         return cache.get(o -> o.getId().equals(id));
     }
 
-    public static OStreet getStreedObject(String street_id) {
+    public static StreetDTO getStreedObject(String street_id) {
         if (street_id == null) {
             return null;
         }
         return searchInCacheObject(CacheFactory.STREETS, street_id);
     }
 
-    public static OWaterIntakeTypes getWaterIntakeTypeObject(String water_intakes_id) {
+    public static WaterIntakeTypesDTO getWaterIntakeTypeObject(String water_intakes_id) {
         return searchInCacheObject(CacheFactory.WATER_INTAKES_TYPES, water_intakes_id);
     }
 
-    public static OEmployee getEmployee(String employee_id) {
+    public static EmployeeDTO getEmployee(String employee_id) {
         return searchInCacheObject(CacheFactory.EMPLOYEES, employee_id);
     }
 
-    public static OUser getUser(String user_id) {
+    public static UserDTO getUser(String user_id) {
         return searchInCacheObject(CacheFactory.USERS, user_id);
     }
 
@@ -122,11 +122,11 @@ public class ObjectUtils {
     }
 
     public static int getIndexStatusCAT(String value) {
-        return getIndexCAT(value, CacheFactory.ITEMS_STATUS_CAT);
+        return getIndexCAT(value, CacheFactory.CAT_STATUS);
     }
     
     public static String getDescriptionStatusCAT(int index){
-        return getDescriptionCAT(index, CacheFactory.ITEMS_STATUS_CAT);
+        return getDescriptionCAT(index, CacheFactory.CAT_STATUS);
     
     }
     public static String getDescriptionCAT(int index, String[] cataloge) {

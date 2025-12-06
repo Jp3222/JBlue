@@ -66,7 +66,7 @@ public class EmployeeDAO {
      * @return El objeto EmployeeDTO o {@code null} si no se encuentra.
      */
     public EmployeeDTO get(JDBConnection connection, String user, String password) {
-        String query = "SELECT * FROM emp_employee WHERE user = ? AND password = ? AND status == ?";
+        String query = "SELECT * FROM emp_employee WHERE user = ? AND password = ? AND status = ?";
         try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
             ps.setString(1, user);
             ps.setString(2, password);

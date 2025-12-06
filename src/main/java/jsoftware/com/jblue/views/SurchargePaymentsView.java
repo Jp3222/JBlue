@@ -19,11 +19,10 @@ package jsoftware.com.jblue.views;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JTextField;
-import jsoftware.com.jblue.model.dto.OSurchargePayments;
-import jsoftware.com.jblue.model.dto.Objects;
-import jsoftware.com.jblue.model.dto.OtherPaymentsType;
+import jsoftware.com.jblue.model.dto.PaymentDTO;
 import jsoftware.com.jblue.views.framework.ListSearchViewModel;
 import jsoftware.com.jblue.views.framework.SimpleView;
+import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  *
@@ -32,8 +31,6 @@ import jsoftware.com.jblue.views.framework.SimpleView;
 public class SurchargePaymentsView extends SimpleView implements ListSearchViewModel {
 
     private static final long serialVersionUID = 1L;
-
-    DefaultListModel<OSurchargePayments> model;
 
     /**
      * Creates new form OtherPaymentsView
@@ -60,6 +57,7 @@ public class SurchargePaymentsView extends SimpleView implements ListSearchViewM
 
     @Override
     public void finalState() {
+        
     }
 
     /**
@@ -395,8 +393,8 @@ public class SurchargePaymentsView extends SimpleView implements ListSearchViewM
     private javax.swing.JPanel options_panel;
     private javax.swing.JPanel panel_campos;
     private javax.swing.JPanel panel_izq;
-    private javax.swing.JList<String> payments_paid_list;
-    private javax.swing.JList<OtherPaymentsType> pending_payments_list;
+    private javax.swing.JList<PaymentDTO> payments_paid_list;
+    private javax.swing.JList<PaymentDTO> pending_payments_list;
     private javax.swing.JLabel range;
     private javax.swing.JButton register_button;
     private javax.swing.JPanel register_panel;
@@ -449,12 +447,12 @@ public class SurchargePaymentsView extends SimpleView implements ListSearchViewM
     }
 
     @Override
-    public Objects getObjectSearch() {
+    public JDBMapObject getObjectSearch() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void setObjectSearch(Objects object) {
+    public void setObjectSearch(JDBMapObject object) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

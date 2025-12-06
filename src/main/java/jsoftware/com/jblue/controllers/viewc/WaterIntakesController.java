@@ -16,23 +16,14 @@
  */
 package jsoftware.com.jblue.controllers.viewc;
 
-import jsoftware.com.jblue.controllers.AbstractDBViewController;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.dto.OWaterIntakes;
-import jsoftware.com.jblue.views.WaterIntakesView;
 import java.awt.event.ActionEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Map;
-import jsoftware.com.jblue.model.constants.Const;
-import jsoftware.com.jblue.model.dao.HysHistoryDAO;
+import jsoftware.com.jblue.controllers.AbstractDBViewController;
+import jsoftware.com.jblue.model.dto.OWaterIntakes;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
-import jsoftware.com.jblue.util.Formats;
+import jsoftware.com.jblue.views.WaterIntakesView;
 import jsoftware.com.jblue.views.components.ObjectSearchComponent;
-import jsoftware.com.jutil.db.JDBConnection;
 
 /**
  *
@@ -43,7 +34,6 @@ public class WaterIntakesController extends AbstractDBViewController<OWaterIntak
     private WaterIntakesView view;
 
     public WaterIntakesController(WaterIntakesView view) {
-        super(CacheFactory.WATER_INTAKES);
         this.view = view;
     }
 
@@ -73,40 +63,7 @@ public class WaterIntakesController extends AbstractDBViewController<OWaterIntak
 
     @Override
     public void save() {
-        Map<String, String> values = view.getValues(false);
-        if (values.isEmpty()) {
-            returnMessage(view, false);
-            return;
-        }
-        //obtienen los datos
-        String[] insertFormats = Formats.getInsertFormats(values);
-        // se construye el query
-        String query = JDBConnection.INSERT_VAL.formatted(Const.WKI_WATER_INTAKES_TABLE.getTableName(), insertFormats[0], insertFormats[1]);
-        connection.setAutoCommit(false);
-        try (Statement st = connection.getJDBConnection().getNewStament()) {
-            boolean register = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
-            if (!register) {
-                throw new SQLException("REGISTRO CORRUPTO");
-            }
-            ResultSet rs = st.getGeneratedKeys();
-            if (!rs.next()) {
-                throw new SQLException("LLAVE CORRUPTA");
-            }
-            register = HysHistoryDAO.getINSTANCE().insert(Const.INDEX_WKI_WATER_INTAKES,
-                    "SE INSERTO LA TOMA DE AGUA DEL USUARIO: %s".formatted(
-                            values.get("user_name")
-                    )
-            );
-            if (!register) {
-                throw new SQLException("REGISTRO CORRUPTO");
-            }
-            returnMessage(view, true);
-        } catch (SQLException e) {
-            connection.rollBack();
-            returnMessage(view, false);
-        } finally {
-            connection.setAutoCommit(true);
-        }
+        
     }
 
     @Override

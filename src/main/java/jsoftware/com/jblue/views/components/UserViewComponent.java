@@ -19,7 +19,7 @@ package jsoftware.com.jblue.views.components;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.List;
+import java.util.Objects;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -31,9 +31,6 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.Objects;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import jsoftware.com.jutil.view.ComponentStates;
 
@@ -670,7 +667,6 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
     }//GEN-LAST:event_payments_infoActionPerformed
 
     private void pl_fotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pl_fotoMouseClicked
-
         if (evt.getClickCount() == 2) {
             JOptionPane.showConfirmDialog(this, "Quiere agregar una foto a este usuario", "Foto de usuario", JOptionPane.CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         }
@@ -696,12 +692,12 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
         name_field.setText(usuario.getFirstName());
         last_name1_field.setText(usuario.getLastName1());
         last_name2_field.setText(usuario.getLastName2());
-        street_field.setText(usuario.getStreet1().getNombre());
+        street_field.setText(usuario.getStreet1());
         house_number_field.setText(usuario.getInsideNumber());
-        water_intake_type_field.setText(usuario.getWaterIntakesObject().getTypeName());
+        water_intake_type_field.setText(usuario.getWaterIntakeType());
         date_register_field.setText(usuario.getLastName2());
         status_field.setText(usuario.getStatusString());
-        user_type_field.setText(usuario.getUserTypeString());
+        user_type_field.setText(usuario.getUserType());
         loadUserPayments();
     }
 
@@ -710,15 +706,10 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
     }
 
     private void loadServicePayment() {
-        load(modelo_pagos_x_servicio, CacheFactory.SERVICE_PAYMENTS);
+
     }
 
-    private <T extends Objects> void load(JTableModel model, MemoListCache<T> cache) {
-        List<T> select = cache.getConnection().select("*", "user = %s".formatted(usuario.getId()));
-        for (T i : select) {
-            model.addRow(i.getData());
-        }
-    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottom_panel;
     private javax.swing.JPanel card_panel;

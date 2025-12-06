@@ -19,23 +19,20 @@ package jsoftware.com.jblue.views;
 import java.awt.CardLayout;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.FactoryController;
-import jsoftware.com.jblue.controllers.compc.TableController;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
-import jsoftware.com.jblue.model.dto.Objects;
-import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.views.framework.DBValuesMapModel;
 import jsoftware.com.jblue.views.framework.DBView;
 import jsoftware.com.jblue.views.framework.TableSearchViewModel;
+import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
@@ -59,7 +56,6 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesMapMo
         ly.show(root_panel, register_panel.getName());
         model = TableModelFactory.getWaterIntakeTypesTableModel();
         controller = FactoryController.getWaterIntakeTypesController(this);
-        table_controller = new TableController(this, CacheFactory.WATER_INTAKES_TYPES);
         build();
     }
 
@@ -110,7 +106,7 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesMapMo
     }
 
     @Override
-    public void setObjectSearch(Objects o) {
+    public void setObjectSearch(JDBMapObject o) {
         object_search = (WaterIntakeTypesDTO) o;
     }
 
@@ -601,51 +597,10 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesMapMo
     }
 
     @Override
-    public Map<String, String> getValues(boolean update) {
-        Map<String, String> map;
-        String _type_name = type_name_field.getText();
-        String _current_price = current_price_field.getText();
-        String _previous_price = "0.00";
-        String _surcharge = surcharge_field.getText();
-        if (update) {
-            _current_price = String.valueOf(object_search.getCurrentPrice());
-            map = saveUpdate(object_search, _type_name, _current_price, _previous_price, _surcharge);
-        } else {
-            map = saveInsert(_type_name, _current_price, _previous_price, _surcharge);
-        }
-        return Formats.getDBFormatInputMap(map);
-    }
+    public Map<String, Object> getValues(boolean update) {
+        Map<String, Object> map;
 
-    private Map<String, String> saveInsert(
-            String _type_name, String _current_price, String _previous_price,
-            String _surcharge) {
-        Map<String, String> map = new HashMap<>(6); // Se adapta el tamaño inicial a la cantidad de campos
-        // Campos que no deben estar en blanco
-        Filters.putIfPresentAndNotBlank(map, "type_name", _type_name);
-        Filters.putIfPresentAndNotBlank(map, "current_price", _current_price);
-        Filters.putIfPresentAndNotBlank(map, "previous_price", _previous_price);
-        Filters.putIfPresentAndNotBlank(map, "surcharge", _surcharge);
-        // Campos que pueden ser nulos o en blanco, pero que son manejados por el sistema de la BD
-        // Ojo: los campos de fecha en tu tabla tienen DEFAULT, así que no necesitan validación aquí.
-        // Si no tuvieran DEFAULT, se usaría putIfNotNull.
-        return map;
-    }
-
-    private Map<String, String> saveUpdate(
-            WaterIntakeTypesDTO object_search, String _type_name, String _current_price,
-            String _previous_price, String _surcharge) {
-
-        if (object_search == null) {
-            throw new NullPointerException("Objeto buscado null");
-        }
-
-        Map<String, String> map = new HashMap<>();
-        // Usando un método auxiliar para validar y agregar los cambios al mapa
-        Filters.addIfChanged(map, "type_name", object_search.getTypeName(), _type_name);
-        Filters.addIfChanged(map, "current_price", String.valueOf(object_search.getCurrentPrice()), _current_price);
-        Filters.addIfChanged(map, "previous_price", String.valueOf(object_search.getPreviousPrice()), _previous_price);
-        Filters.addIfChanged(map, "surcharge", String.valueOf(object_search.getSurcharge()), _surcharge);
-        return map;
+        return null;
     }
 
 }

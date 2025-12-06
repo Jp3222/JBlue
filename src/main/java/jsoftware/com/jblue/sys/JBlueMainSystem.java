@@ -20,7 +20,6 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -30,9 +29,9 @@ import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
+import jsoftware.com.jblue.util.DTOFactory;
 import jsoftware.com.jblue.views.win.ConfigWindow;
 import jsoftware.com.jblue.views.win.LoginWindows;
-import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.db.JDBConnectionBuilder;
 import jsoftware.com.jutil.platf.So;
 import jsoftware.com.jutil.sys.MainSystem;
@@ -94,7 +93,7 @@ public class JBlueMainSystem implements MainSystem {
                     propiedades.getProperty(AppConfig.DB_PORT),
                     propiedades.getProperty(AppConfig.DB_NAME)
             ));
-            
+
             JDBConnectionBuilder builder = new JDBConnectionBuilder();
             builder.setUser(propiedades.getProperty(AppConfig.DB_USER));
             builder.setPassword(propiedades.getProperty(AppConfig.DB_PASSWORD));
@@ -108,21 +107,10 @@ public class JBlueMainSystem implements MainSystem {
             builder.setTimeOut(5000);
             builder.setMinimumIdle(5000);
             builder.setMaxPollSize(20);
-            JDBConnection generic_connection = builder.build();
-            if (generic_connection == null) {
-                throw new SQLException("LA CONFIGURACIONES DE BASE DE DATOS NO SE INICIARON CORRECTAMENTE");
-            }
+            builder.setFactory(new DTOFactory());
             ConnectionFactory intance = ConnectionFactory.getIntance(builder);
-            boolean openFactory = intance.openFactory();
-            if (!openFactory) {
-                throw new SQLException("LA FABRICA DE CONEXION NO ABRIO");
-            }
-
-            resources.put(SiystemConsts.DATA_BASE_KEY, generic_connection);
             SystemLogs.infoSysLogs("BASE DE DATOS CONECTADA");
             res = true;
-        } catch (SQLException ex) {
-            System.getLogger(JBlueMainSystem.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         } catch (NullPointerException ex) {
             System.getLogger(JBlueMainSystem.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         } catch (Exception ex) {
@@ -176,7 +164,7 @@ public class JBlueMainSystem implements MainSystem {
 
     @Override
     public boolean cache() {
-        boolean rs = CacheFactory.cache_list || CacheFactory.loadCaches();
+        boolean rs = CacheFactory.isLoaded || CacheFactory.loadCaches();
         if (rs) {
             SystemLogs.infoSysLogs("MEMORIA CACHE LISTA");
         }
@@ -205,14 +193,10 @@ public class JBlueMainSystem implements MainSystem {
 
     @Override
     public boolean closeSys() {
-        boolean close = ConnectionFactory.getIntance().close();
-        if (!close) {
-            SystemLogs.infoDbLogs("PROBLEMAS AL CERRAR CONEXION");
-        }
+        ConnectionFactory.getIntance().close();
         SystemLogs.infoDbLogs("CLOSE SYSTEM");
         LOG.log(Level.INFO, "EXIT");
         System.exit(0);
-
         return true;
     }
     private final String log_messages = "EL DIRECTORIO: %s %s";

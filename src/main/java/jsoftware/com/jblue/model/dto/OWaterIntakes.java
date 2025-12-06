@@ -16,102 +16,59 @@
  */
 package jsoftware.com.jblue.model.dto;
 
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.util.ObjectUtils;
+import java.util.Map;
 
 /**
  *
  * @author juanp
  */
-public class OWaterIntakes extends Objects implements ForeingKeyObject, StatusObjectModel {
+public class OWaterIntakes extends AuditableObjectMap {
 
-    private String[] infoFk;
+    public OWaterIntakes(Map<String, Object> map) {
+        super(map);
+    }
 
-    public OWaterIntakes(String[] info) {
-        super(info);
-        infoFk = info.clone();
+    public OWaterIntakes(int size) {
+        super(size);
     }
 
     public OWaterIntakes() {
-        super();
-        infoFk = null;
     }
 
     public String getConstProcedure() {
-        return values[1];
+        return get("cost_procedure").toString();
     }
 
     public String getWaterIntakeType() {
-        return values[2];
-    }
-
-    public WaterIntakeTypesDTO getWaterIntakeTypeObject() {
-        return ObjectUtils.getWaterIntakeTypeObject(getWaterIntakeType());
+        return get("water_intake_type").toString();
     }
 
     public String getUser() {
-        return values[3];
-    }
-
-    public UserDTO getUserObject() {
-        return ObjectUtils.getUser(getUser());
+        return get("user").toString();
     }
 
     public String getUserName() {
-        return values[4];
+        return get("user_name").toString();
     }
 
     public String getStreet1() {
-        return values[5];
+        return get("street1").toString();
     }
 
     public String getStreet2() {
-        return values[6];
+        return get("street2").toString();
     }
 
     public String getLocation() {
-        return values[7];
+        return get("location").toString();
     }
 
     public String getDescription() {
-        return values[8];
+        return get("description").toString();
     }
 
-    @Override
-    public int getStatus() {
-        return Integer.parseInt(values[9]);
-    }
-
-    @Override
-    public String getStatusString() {
-        return CacheFactory.CAT_STATUS[getStatus()];
-    }
-
-    @Override
-    public boolean isActive() {
-        return getStatus() == 1;
-    }
-
-    public String getDateUpdate() {
-        return values[10];
-    }
-
-    public String getDateRegister() {
-        return values[11];
-    }
-
-    public String getDateEnd() {
-        return values[12];
-    }
-
-    @Override
-    public String[] getInfoSinFK() {
-        return infoFk;
-    }
-
-    @Override
-    public String toString() {
-        return getUserName();
+    public String getLastEmployeeUpdate() {
+        return get("last_employee_update").toString();
     }
 
 }

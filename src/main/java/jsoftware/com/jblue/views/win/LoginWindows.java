@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import jsoftware.com.jblue.controllers.FactoryController;
 import jsoftware.com.jblue.controllers.winc.WindowController;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.views.framework.AbstractAppWindows;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -107,9 +108,9 @@ public class LoginWindows extends AbstractAppWindows {
             icon_image.setIcon(i);
         }
         //
-        JDBConnection conn = (JDBConnection) LaunchApp.getInstance().getResources("connection");
+        
         String status_db;
-        try {
+        try (JDBConnection conn = ConnectionFactory.getIntance().getMainConnection()){
             status_db = conn.getConnection().isClosed() ? "Desconectado" : "Conectado";
             db_status_field.setText(status_db);
         } catch (SQLException ex) {

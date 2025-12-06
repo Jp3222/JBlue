@@ -13,39 +13,39 @@ public class PersonObject extends AuditableObjectMap {
     private static final long serialVersionUID = 1L;
 
     public String getCurp() {
-        return values.get("curp").toString();
+        return get("curp").toString();
     }
 
     public String getFirstName() {
-        return values.get("first_name").toString();
+        return get("first_name").toString();
     }
 
     public String getLastName1() {
-        return values.get("last_name1").toString();
+        return get("last_name1").toString();
     }
 
     public String getLastName2() {
-        return values.get("last_name2").toString();
+        return get("last_name2").toString();
     }
 
     public String getGender() {
-        return values.get("Gender").toString();
+        return get("Gender").toString();
     }
 
     public String getEmail() {
-        return values.get("Email").toString();
+        return get("Email").toString();
     }
 
     public String getBirthdate() {
-        return values.get("birthdate").toString();
+        return get("birthdate").toString();
     }
 
     public String getPhoneNumber1() {
-        return values.get("phone_number1").toString();
+        return get("phone_number1").toString();
     }
 
     public String getPhoneNumber2() {
-        return values.get("phone_number2").toString();
+        return get("phone_number2").toString();
     }
 
 }

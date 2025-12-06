@@ -17,9 +17,7 @@
 package jsoftware.com.jblue.controllers;
 
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.framework.SimpleView;
-import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.db.model.JDBObject;
 
 /**
@@ -30,17 +28,7 @@ import jsoftware.com.jutil.db.model.JDBObject;
 public abstract class AbstractDBViewController<T extends JDBObject> extends AbstractViewController implements DBControllerModel {
 
     private static final long serialVersionUID = 1L;
-    protected JDBConnection conn;
-    protected MemoListCache<T> memo_cache;
 
-    public AbstractDBViewController(MemoListCache<T> memo_cache) {
-        this(memo_cache.getConnection(), memo_cache);
-    }
-
-    public AbstractDBViewController(JDBConnection conn, MemoListCache<T> memo_cache) {
-        this.conn = conn;
-        this.memo_cache = memo_cache;
-    }
 
     /**
      * Este metodo reinicia la cache y la vista, define el estado de la
@@ -51,7 +39,6 @@ public abstract class AbstractDBViewController<T extends JDBObject> extends Abst
      */
     protected void returnMessage(SimpleView view, boolean mov, String msg) {
         if (mov) {
-            memo_cache.reLoadData();
             view.initialState();
         }
         returnMessage(view, msg);
@@ -67,7 +54,6 @@ public abstract class AbstractDBViewController<T extends JDBObject> extends Abst
     protected void returnMessage(SimpleView view, boolean mov) {
         String status = mov ? "Exitosa" : "Erronea";
         if (mov) {
-            memo_cache.reLoadData();
             view.initialState();
         }
         returnMessage(view, "Operacion %s".formatted(status));

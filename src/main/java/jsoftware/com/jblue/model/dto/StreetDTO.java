@@ -13,6 +13,6 @@ public class StreetDTO extends AuditableObjectMap {
     private static final long serialVersionUID = 1L;
     
     public String getStreetName(){
-        return values.get("street_name").toString();
+        return get("street_name").toString();
     }
 }

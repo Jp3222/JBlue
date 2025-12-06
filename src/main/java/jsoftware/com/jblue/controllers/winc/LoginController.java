@@ -22,6 +22,7 @@ import java.awt.event.WindowEvent;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -75,14 +76,14 @@ public class LoginController extends WindowController {
     private final String WHERE = "user = '%s' and password = '%s'";
 
     public synchronized void login() {
-        try {
+        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
             if (view.isSesionActive()) {
                 return;
             }
             if (!LoginRulers.isWorkTime()) {
                 returnMessage(view, "NO ES TIMPO DE TRABAJAR");
             }
-            JDBConnection connection = ConnectionFactory.getIntance().getMain_connection();
+
             EmployeeDAO dao = new EmployeeDAO();
             String user = view.getUserString();
             String password = view.getPasswordString();
@@ -111,17 +112,9 @@ public class LoginController extends WindowController {
             WIN_MAIN_MENU = new WMainMenu(view);
             WIN_MAIN_MENU.setVisible(true);
             view.setSesionActive(false);
-        } catch (UnsupportedEncodingException ex) {
-            System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        } catch (InvalidKeyException ex) {
-            System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        } catch (NoSuchPaddingException ex) {
-            System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        } catch (BadPaddingException ex) {
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException 
+                | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException 
+                | SQLException ex) {
             System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
 

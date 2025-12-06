@@ -17,20 +17,10 @@
 package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Map;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
-import jsoftware.com.jblue.model.constants.Const;
-import jsoftware.com.jblue.model.dao.HysHistoryDAO;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.views.EmployeesView;
-import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.jexception.JExcp;
 
 /**
  *
@@ -41,7 +31,6 @@ public class EmployeeController extends AbstractDBViewController<EmployeeDTO> {
     private final EmployeesView view;
 
     public EmployeeController(EmployeesView view) {
-        super(CacheFactory.EMPLOYEES);
         this.view = view;
     }
 
@@ -66,119 +55,17 @@ public class EmployeeController extends AbstractDBViewController<EmployeeDTO> {
 
     @Override
     public void save() {
-        System.out.println("Entro al metodo");
-        if (!view.isValuesOk()) {
-            return;
-        }
-        System.out.println("Valido");
-        Map<String, String> values = view.getValues(false);
-        String[] info = Formats.getInsertFormats(values);
-        String query = JDBConnection.INSERT_VAL.formatted(Const.EMP_EMPLOYEE_TABLE.getTableName(),// NOMBRE DE LA TABLA
-                info[0],// CAMPOS
-                info[1]// DATOS
-        );
-        System.out.println(query);
-        System.out.println("se armaron los valores");
-        try (Statement st = connection.getConnection().createStatement();) {
-            connection.setAutoCommit(false);
-            boolean execute = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) > 0;
-            if (!execute) {
-                throw new SQLException("UPDATE FALLIDO");
-            }
-            try (ResultSet rs = st.getGeneratedKeys()) {
-                if (rs == null || !rs.next()) {
-                    throw new SQLException("UPDATE FALLIDO");
-                }
-                String employee_id = rs.getString(1);
-                if (employee_id != null) {
-                    // Lógica para el historial
-                }
-                boolean hys = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().insertToEmployee(
-                        "SE INSERTO AL EMPLEADO: %s - %s %s %s".formatted(
-                                employee_id,
-                                values.get("first_name"),
-                                values.get("last_name1"),
-                                values.get("last_name2")
-                        ));
-                if (!hys) {
-                    throw new SQLException("UPDATE FALLIDO");
-                }
-            }
-            connection.commit();
-            returnMessage(view, true);
-        } catch (SQLException ex) {
-            connection.rollBack();
-            JExcp.getInstance(false, true).print(ex, getClass(), "save");
-            returnMessage(view, false);
-        } finally {
-            connection.setAutoCommit(true);
-        }
+
     }
 
     @Override
     public void delete() {
-        EmployeeDTO employee = view.getObjectSearch();
-        if (employee == null) {
-            return;
-        }
-        try {
-            connection.setAutoCommit(false);
-            boolean update = connection.update("status", "3", "id = %s".formatted(employee.getId()));
-            if (!update) {
-                returnMessage(view, false);
-                return;
-            }
-            boolean hys = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().deleteToEmployee(
-                    "SE OCULTO AL EMPLEADO: %s - %s %s %s".formatted(
-                            employee.getId(),
-                            employee.getFirstName(),
-                            employee.getLastName1(),
-                            employee.getLastName2()
-                    ));
-            if (!hys) {
-                returnMessage(view, false);
-                return;
-            }
-            connection.commit();
-        } catch (SQLException ex) {
-            connection.rollBack();
-            JExcp.getInstance(false, true).print(ex, getClass(), "delete");
-            returnMessage(view, false);
-        } finally {
-            connection.setAutoCommit(true);
-        }
+
     }
 
     @Override
     public void update() {
-        try {
-            EmployeeDTO employee = view.getObjectSearch();
-            Map<String, String> values = view.getValues(true);
-            String updateFormats = Formats.getUpdateFormats(values);
-            connection.setAutoCommit(false);
-            boolean update = connection.update(updateFormats, "id = %s".formatted(employee.getId()));
-            if (!update) {
-                throw new SQLException("UPDATE FALLIDO");
-            }
-            boolean hys = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().updateToEmployee(
-                    "SE ACTUALIZO EL USUARIO: %s - %s %s %s".formatted(
-                            employee.getId(),
-                            employee.getFirstName(),
-                            employee.getLastName1(),
-                            employee.getLastName2()
-                    ));
-            if (!hys) {
-                throw new SQLException("INSETR EN EL HISTORIAL FALLIDO");
-            }
-            connection.commit();
-            returnMessage(view, true);
-        } catch (SQLException ex) {
-            connection.rollBack();
-            JExcp.getInstance(false, true).print(ex, getClass(), "update");
-            returnMessage(view, false);
-        } finally {
-            connection.setAutoCommit(true);
-        }
+
     }
 
     @Override

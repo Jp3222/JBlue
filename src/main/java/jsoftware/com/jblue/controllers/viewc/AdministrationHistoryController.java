@@ -18,9 +18,7 @@ package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
-import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.views.AdministrationHistoryView;
-import jsoftware.com.jutil.db.JDBConnection;
 
 /**
  *
@@ -35,7 +33,6 @@ public class AdministrationHistoryController extends AbstractDBViewController {
      * @param view
      */
     public AdministrationHistoryController(AdministrationHistoryView view) {
-        super(CacheFactory.EMPLOYEES);
         this.view = view;
     }
 
@@ -57,8 +54,6 @@ public class AdministrationHistoryController extends AbstractDBViewController {
 
     @Override
     public void save() {
-        JDBConnection conn = connection.getJDBConnection();
-        conn.setAutoCommit(false);
 
     }
 

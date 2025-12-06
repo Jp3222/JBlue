@@ -16,26 +16,32 @@
  */
 package jsoftware.com.jblue.controllers;
 
-import jsoftware.com.jblue.util.cache.MemoListCache;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
-import jsoftware.com.jutil.db.model.JDBObject;
+import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public abstract class AbstractComponentController<T extends JDBObject> extends Controller {
+public abstract class AbstractComponentController<T extends JDBMapObject> extends Controller {
 
-    private final JComponent component;
-    protected final MemoListCache<T> memo_cache;
-    protected final List<T> list_items;
+    protected final JComponent componente;
+    protected final List<T> list;
 
-    public AbstractComponentController(JComponent component, MemoListCache<T> memo_cache, List<T> list_items) {
-        this.component = component;
-        this.memo_cache = memo_cache;
-        this.list_items = list_items;
+    public AbstractComponentController(JComponent componente) {
+        this(componente, new ArrayList<>(20));
+    }
+
+    public AbstractComponentController(JComponent componente, List<T> list) {
+        this.componente = componente;
+        this.list = list;
+    }
+
+    public <T extends JComponent> T getComponent() {
+        return (T) componente;
     }
 
     public abstract void loadData();
@@ -43,9 +49,5 @@ public abstract class AbstractComponentController<T extends JDBObject> extends C
     public abstract void dumpData();
 
     public abstract void updateData();
-
-    public <C extends JComponent> C getComponent() {
-        return (C) component;
-    }
 
 }

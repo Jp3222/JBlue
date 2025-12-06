@@ -25,46 +25,46 @@ package jsoftware.com.jblue.model.dto;
 public class HysAdministrationHistoryDTO extends AuditableObjectMap {
 
     public String getYearOfAdministration() {
-        return values.get("year_of_administration").toString();
+        return get("year_of_administration").toString();
     }
 
     public String getRoot() {
-        return values.get("root").toString();
+        return get("root").toString();
     }
 
     public String getAdministrator() {
-        return values.get("administrator").toString();
+        return get("administrator").toString();
     }
 
     public String getPresident() {
-        return values.get("president").toString();
+        return get("president").toString();
     }
 
     public String getTeasurer() {
-        return values.get("treasurer").toString();
+        return get("treasurer").toString();
     }
 
     public String getSecretary() {
-        return values.get("secretary").toString();
+        return get("secretary").toString();
     }
 
     public String getPlumber() {
-        return values.get("plumber").toString();
+        return get("plumber").toString();
     }
 
     public String getInternt1() {
-        return values.get("intern_1").toString();
+        return get("intern_1").toString();
     }
 
     public String getInternt2() {
-        return values.get("intern_2").toString();
+        return get("intern_2").toString();
     }
 
     public String getInternt3() {
-        return values.get("intern_3").toString();
+        return get("intern_3").toString();
     }
 
     public String getDescription() {
-        return values.get("description").toString();
+        return get("description").toString();
     }
 }

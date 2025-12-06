@@ -16,27 +16,19 @@
  */
 package jsoftware.com.jblue.views;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JOptionPane;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.sys.app.AppConfig;
-import jsoftware.com.jblue.views.framework.DBValuesMapModel;
 import jsoftware.com.jblue.views.framework.SimpleView;
-import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.jexception.JExcp;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
-import jsoftware.com.jutil.sys.LaunchApp;
 
 /**
  *
  * @author juanp
  */
-public final class ParametersView extends SimpleView implements DBValuesMapModel {
+public final class ParametersView extends SimpleView {
 
     private static ParametersView instance;
     private static final long serialVersionUID = 1L;
@@ -74,36 +66,7 @@ public final class ParametersView extends SimpleView implements DBValuesMapModel
 
     @Override
     public void events() {
-        update_button.addActionListener((e) -> {
-            final String query = "UPDATE " + Const.DEV_PARAMETERS_TABLE.getTableName() + " SET value = ? WHERE parameter = ?";
-            JDBConnection connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
-            String mess = "Parametros Actualizados";
-            Map<String, String> values = getValues(true);
-            System.out.println(values.toString());
-            connection.setAutoCommit(false);
-            try (var st = connection.getNewPreparedStatement(query)) {
-                for (Map.Entry<String, String> entry : values.entrySet()) {
-                    String key = entry.getKey();
-                    String val = entry.getValue();
-                    st.setString(1, val);
-                    st.setString(2, key);
-                    st.addBatch();
-                }
-                int[] executeBatch = st.executeBatch();
-                System.out.println(Arrays.toString(executeBatch));
-                connection.commit();
-                st.clearBatch();
-                loadData();
-            } catch (SQLException ex) {
-                connection.rollBack();
-                System.getLogger(ParametersView.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            } finally {
-                connection.setAutoCommit(true);
-                int icon = JOptionPane.INFORMATION_MESSAGE;
-                JOptionPane.showMessageDialog(this, mess, "Parametros", icon);
 
-            }
-        });
     }
 
     @Override
@@ -128,23 +91,7 @@ public final class ParametersView extends SimpleView implements DBValuesMapModel
     }
 
     public void loadData() {
-        JDBConnection conn = JDBConnection.getInstance();
-        String query = JDBConnection.SELECT.formatted("parameter, value, description", "dev_parameters", "status = 1");
-        try (ResultSet rs = conn.query(query)) {
-            model.removeAllRows();
-            while (rs.next()) {
-                String[] data = {
-                    rs.getString("parameter"),
-                    rs.getString("value"),
-                    rs.getString("description")
-                };
-                parameters_map.put(data[0], data[1]);
-                model.addRow(data);
-            }
 
-        } catch (SQLException ex) {
-            JExcp.getInstance(false, true).print(ex, getClass(), "load_data");
-        }
     }
 
     @Override
@@ -535,48 +482,5 @@ public final class ParametersView extends SimpleView implements DBValuesMapModel
     private javax.swing.JCheckBox test_messages;
     private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public boolean isValuesOk() {
-        return true;
-    }
-
-    @Override
-    public Map<String, String> getValues(boolean update) {
-        Map<String, String> currentValues = new HashMap<>();
-
-        // Mapeo directo de cada campo de la UI a su nombre de parámetro
-        // Esto hace que el código sea legible y robusto.
-        currentValues.put("open_hour".toUpperCase(), open_hour_field.getText());
-        currentValues.put("close_hour".toUpperCase(), close_hour_field.getText());
-        currentValues.put("last_pay_day".toUpperCase(), String.valueOf(last_pay_day_field.getValue()));
-        currentValues.put("auto_pay".toUpperCase(), String.valueOf(auto_pay_field.isSelected()));
-        currentValues.put("master_user".toUpperCase(), master_user_field.getText());
-        currentValues.put("master_password".toUpperCase(), master_password_field.getText());
-        currentValues.put("hour_validate".toUpperCase(), String.valueOf(hour_validate_field.isSelected()));
-        currentValues.put("dev_messages".toUpperCase(), String.valueOf(dev_messages.isSelected()));
-        currentValues.put("dev_function".toUpperCase(), String.valueOf(dev_function.isSelected()));
-        currentValues.put("test_messages".toUpperCase(), String.valueOf(test_messages.isSelected()));
-        currentValues.put("test_function".toUpperCase(), String.valueOf(test_function.isSelected()));
-        currentValues.put("db_messages".toUpperCase(), String.valueOf(db_messages.isSelected()));
-        currentValues.put("dev_logs".toUpperCase(), String.valueOf(dev_logs.isSelected()));
-        currentValues.put("test_logs".toUpperCase(), String.valueOf(test_logs.isSelected()));
-        currentValues.put("db_logs".toUpperCase(), String.valueOf(db_logs.isSelected()));
-
-        Map<String, String> map = new HashMap<>(20);
-
-        // Iterar sobre los valores actuales para verificar cambios
-        for (Map.Entry<String, String> entry : currentValues.entrySet()) {
-            String paramName = entry.getKey();
-            String currentValue = entry.getValue();
-            String originalValue = parameters_map.get(paramName);
-            System.out.println(currentValue + "!=" + (originalValue));
-            // Lógica de filtro: añadir al mapa solo si el valor ha cambiado.
-            if (!currentValue.equals(originalValue)) {
-                map.put(paramName, currentValue);
-            }
-        }
-        return map;
-    }
 
 }

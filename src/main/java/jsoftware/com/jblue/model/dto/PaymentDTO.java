@@ -15,51 +15,47 @@ public class PaymentDTO extends AuditableObjectMap implements AuditableModel, JD
     private static final long serialVersionUID = 1L;
 
     public String getPaymentType() {
-        return values.get("payment_type").toString();
+        return get("payment_type").toString();
     }
 
     public String getUDDI() {
-        return values.get("uddi").toString();
+        return get("uddi").toString();
     }
 
     public String getEmployee() {
-        return values.get("employee").toString();
+        return get("employee").toString();
     }
 
     public String getUser() {
-        return values.get("user").toString();
+        return get("user").toString();
     }
 
     public String getWaterInatkeType() {
-        return values.get("water_intake_type").toString();
+        return get("water_intake_type").toString();
     }
 
     public String getPaymentMethod() {
-        return values.get("payment_method").toString();
+        return get("payment_method").toString();
     }
 
     public String getPaymentConcept() {
-        if (values.containsKey("date_end")) {
-            return values.get("payment_concept").toString();
-        }
-        return "";
-
+        return get("payment_concept").toString();
     }
 
     public String getTotalCost() {
-        return values.get("total_cost").toString();
+        return get("total_cost").toString();
     }
 
     public String getAmountPaid() {
-        return values.get("amount_paid").toString();
+        return get("amount_paid").toString();
     }
 
     public String getChangeAmount() {
-        return values.get("change_paid").toString();
+        return get("change_paid").toString();
     }
 
     public String getMonthsPaid() {
-        return values.get("month_paid").toString();
+        return get("month_paid").toString();
     }
 
 }

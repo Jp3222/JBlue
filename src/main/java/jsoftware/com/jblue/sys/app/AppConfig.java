@@ -16,9 +16,6 @@
  */
 package jsoftware.com.jblue.sys.app;
 
-import jsoftware.com.jblue.model.constants.Const;
-import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.sys.LaunchApp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -26,6 +23,9 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jsoftware.com.jblue.model.constants.Const;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jutil.db.JDBConnection;
 
 /**
  *
@@ -207,8 +207,7 @@ public final class AppConfig {
     }
 
     private static Object getParameter(String name) {
-        try {
-            JDBConnection connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
+        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection();) {
             String query = "SELECT value,data_type FROM %s WHERE parameter = '%s' AND status = 1"
                     .formatted(Const.DEV_PARAMETERS_TABLE.getTableName(), name);
             ResultSet rs = connection.query(query);

@@ -35,26 +35,44 @@ public class Formats {
     public static String DATE_TIME_FORMAT = "dd-MM-yyyy hh:mm:ss";
 
     public static LocalDateTime getLocalDateTime(String date) {
+        if (Filters.isNullOrBlank(date)) {
+            return null;
+        }
         return LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);
     }
 
     public static LocalDate getLocalDate(String date) {
+        if (Filters.isNullOrBlank(date)) {
+            return null;
+        }
         return LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
     }
 
     public static LocalTime getLocalTime(String time) {
+        if (Filters.isNullOrBlank(time)) {
+            return null;
+        }
         return LocalTime.parse(time, DateTimeFormatter.ISO_TIME);
     }
 
     public static String getLocalDateTime(LocalDateTime date) {
+        if (Filters.isNull(date)) {
+            return null;
+        }
         return date.format(DateTimeFormatter.ISO_DATE);
     }
 
     public static String getLocalDate(LocalDateTime date) {
+        if (Filters.isNull(date)) {
+            return null;
+        }
         return date.format(DateTimeFormatter.ISO_DATE);
     }
 
     public static String getLocalTime(LocalDateTime time) {
+        if (Filters.isNull(time)) {
+            return null;
+        }
         return time.format(DateTimeFormatter.ISO_DATE);
     }
 

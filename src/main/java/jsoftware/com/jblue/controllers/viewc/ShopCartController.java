@@ -16,27 +16,18 @@
  */
 package jsoftware.com.jblue.controllers.viewc;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.math.BigDecimal;
-import java.util.List;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.model.dao.PaymentsDAO;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.OWaterIntakes;
-import jsoftware.com.jblue.model.dto.PaymentDTO;
 import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.util.GraphicsUtils;
-import jsoftware.com.jblue.util.PaymentsRulers;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.ShopCartView;
 import jsoftware.com.jblue.views.components.ObjectSearchComponent;
 import jsoftware.com.jblue.views.components.UserViewComponent;
-import jsoftware.com.jutil.db.JDBConnection;
 
 /**
  *
@@ -100,7 +91,7 @@ public class ShopCartController extends Controller {
             JOptionPane.showMessageDialog(view, "Usuario no encontrado");
             return;
         }
-        UserViewComponent.showVisor(view.getObjectSearch().getUserObject());
+        UserViewComponent.showVisor((UserDTO) view.getObjectSearch().get("user"));
     }
 
     private void surcharges() {
@@ -138,23 +129,10 @@ public class ShopCartController extends Controller {
     }
 
     private void allMonths(JCheckBox all) {
-        SwingUtilities.invokeLater(() -> {
-            for (Component i : view.getMonthList()) {
-                if (i instanceof JCheckBox o) {
-                    o.setSelected(o.isEnabled() && all.isSelected());
-                }
-            }
-            total();
-        });
+
     }
 
     private void total() {
-        OWaterIntakes o = view.getObjectSearch();
-        String total = PaymentsRulers.calculateBaseTotal(
-                view.getMonthPaidList().size(),
-                new BigDecimal(o.getWaterIntakeTypeObject().getCurrentPrice())
-        ).toPlainString();
-        view.setTotalField(total);
     }
 
     public void rmessage(boolean op) {
@@ -170,17 +148,6 @@ public class ShopCartController extends Controller {
     }
 
     public void setPaymentsInfo(UserDTO user) {
-        JDBConnection connection = ConnectionFactory.getIntance().getPaymentsConnection();
-        List<PaymentDTO> paymentList = payments_dao.getPaymentList(connection);
-        paymentList.stream().filter((t) -> t.)
-        ArrayList<JCheckBox> check_box = view.getMonthList();
-        boolean contains = false;
-        for (JCheckBox i : check_box) {
-            contains = list.contains(i.getText());
-            i.setSelected(contains);
-            i.setEnabled(!contains);
-
-        }
 
     }
 
@@ -199,6 +166,5 @@ public class ShopCartController extends Controller {
             return;
         }
         view.setObjectSearch(o);
-        UserViewComponent.showVisor(view.getObjectSearch().getUserObject());
     }
 }

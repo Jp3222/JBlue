@@ -17,45 +17,41 @@
 package jsoftware.com.jblue.model.dto;
 
 import java.time.LocalDate;
+import java.util.Map;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.util.Formats;
-import jsoftware.com.jutil.db.JDBArrayObject;
+import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  *
  * @author juanp
  */
-public class OEmployeeTypes extends JDBArrayObject implements ForeingKeyObject, StatusObjectModel {
+public class EmployeeTypesDTO extends JDBMapObject implements StatusObjectModel {
 
-    private String[] infoFK;
-
-    public OEmployeeTypes(String[] info) {
-        super(info);
-        this.infoFK = info.clone();
-    }
-
-    public OEmployeeTypes() {
+    public EmployeeTypesDTO() {
         super();
-        this.infoFK = null;
     }
 
-    @Override
-    public String[] getInfoSinFK() {
-        return infoFK;
+    public EmployeeTypesDTO(Map<String, Object> map) {
+        super(map);
+    }
+
+    public EmployeeTypesDTO(int size) {
+        super(size);
     }
 
     public String getEmployeeType() {
-        return values[1].toString();
+        return get("employee_type").toString();
     }
 
     @Override
     public int getStatus() {
-        return Integer.parseInt(values[2].toString());
+        return Integer.valueOf(get("status").toString());
     }
 
     @Override
     public String getStatusString() {
-        return CacheFactory.EMPLOYEE_TYPES.getList().get(getStatus()).getEmployeeType();
+        return CacheFactory.CAT_STATUS[getStatus()];
     }
 
     @Override
@@ -64,6 +60,6 @@ public class OEmployeeTypes extends JDBArrayObject implements ForeingKeyObject, 
     }
 
     public LocalDate getDateRegister() {
-        return Formats.getLocalDate(values[3].toString());
+        return Formats.getLocalDate(get("date_register").toString());
     }
 }

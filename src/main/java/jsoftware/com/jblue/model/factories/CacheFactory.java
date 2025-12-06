@@ -8,16 +8,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.model.dto.OEmployeeTypes;
+import jsoftware.com.jblue.model.dto.EmployeeTypesDTO;
+import jsoftware.com.jblue.model.dto.OWaterIntakes;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
-import jsoftware.com.jblue.model.dto.OWaterIntakes;
-import jsoftware.com.jblue.sys.JBlueMainSystem;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.jexception.JExcp;
-import jsoftware.com.jutil.sys.LaunchApp;
 
 /**
  * Clase Factory responsable de inicializar y contener todos los catálogos
@@ -138,7 +136,6 @@ public final class CacheFactory {
      * @throws RuntimeException Si {@code sizeCat} o {@code readCat} fallan.
      */
     public static boolean loadCataloges(JDBConnection connection) {
-
         // Las llamadas a sizeCat pueden lanzar RuntimeException si fallan.
         int usr_size = sizeCat(connection, "id", Const.USR_USER_TYPE_TABLE.getTableName());
         int hys_size = sizeCat(connection, "id", Const.CAT_HISTORY_TYPE_MOV_TABLE.getTableName());
@@ -161,27 +158,27 @@ public final class CacheFactory {
     /**
      * Caché de tipos de empleado.
      */
-    public static final MemoListCache<OEmployeeTypes> EMPLOYEE_TYPES = new MemoListCache<>(ConnectionFactory.getEmployeeTypes());
+    public static final MemoListCache<EmployeeTypesDTO> EMPLOYEE_TYPES = new MemoListCache(Const.EMP_EMPLOYEE_TYPE_TABLE, EmployeeDTO.class);
     /**
      * Caché de tipos de tomas de agua.
      */
-    public static final MemoListCache<WaterIntakeTypesDTO> WATER_INTAKES_TYPES = new MemoListCache<>(ConnectionFactory.getWaterIntakesTypes());
+    public static final MemoListCache<WaterIntakeTypesDTO> WATER_INTAKES_TYPES = new MemoListCache<>(Const.WKI_WATER_INTAKE_TYPE_TABLE, WaterIntakeTypesDTO.class);
     /**
      * Caché de calles.
      */
-    public static final MemoListCache<StreetDTO> STREETS = new MemoListCache<>(ConnectionFactory.getStreets());
+    public static final MemoListCache<StreetDTO> STREETS = new MemoListCache<>(Const.CAT_STREET_TABLE, StreetDTO.class);
     /**
      * Caché de empleados.
      */
-    public static final MemoListCache<EmployeeDTO> EMPLOYEES = new MemoListCache<>(ConnectionFactory.getEmployees());
+    public static final MemoListCache<EmployeeDTO> EMPLOYEES = new MemoListCache<>(Const.EMP_EMPLOYEE_TABLE, EmployeeDTO.class);
     /**
      * Caché de usuarios.
      */
-    public static final MemoListCache<UserDTO> USERS = new MemoListCache<>(ConnectionFactory.getUser());
+    public static final MemoListCache<UserDTO> USERS = new MemoListCache<>(Const.USR_USER_TABLE, WaterIntakeTypesDTO.class);
     /**
      * Caché de tomas de agua (medidores).
      */
-    public static final MemoListCache<OWaterIntakes> WATER_INTAKES = new MemoListCache<>(ConnectionFactory.getWaterIntakes());
+    public static final MemoListCache<OWaterIntakes> WATER_INTAKES = new MemoListCache<>(Const.WKI_WATER_INTAKES_TABLE, OWaterIntakes.class);
 
     /**
      * Array de todas las cachés de MemoListCache a ser cargadas
@@ -193,8 +190,7 @@ public final class CacheFactory {
         STREETS,
         EMPLOYEES,
         USERS,
-        WATER_INTAKES,
-    };
+        WATER_INTAKES,};
 
     /**
      * Realiza la carga completa de todos los catálogos estáticos y las cachés
@@ -206,21 +202,24 @@ public final class CacheFactory {
      */
     public static boolean loadCaches() {
         // Obtener la conexión
-        JDBConnection connection = (JDBConnection) LaunchApp.getInstance().getResources(JBlueMainSystem.DATA_BASE_KEY);
+        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection();) {
+            // 1. Cargar Catálogos (puede lanzar RuntimeException)
+            boolean catalogsLoaded = loadCataloges(connection);
 
-        // 1. Cargar Catálogos (puede lanzar RuntimeException)
-        boolean catalogsLoaded = loadCataloges(connection);
-
-        // 2. Cargar Cachés de Entidades
-        if (catalogsLoaded) {
-            for (MemoListCache i : CACHES) {
-                // Se asume que i.loadData() contiene su propia lógica de manejo de errores o lanza excepción.
-                i.loadData();
+            // 2. Cargar Cachés de Entidades
+            if (catalogsLoaded) {
+                for (MemoListCache i : CACHES) {
+                    // Se asume que i.loadData() contiene su propia lógica de manejo de errores o lanza excepción.
+                    i.loadData();
+                }
             }
+
+            // Actualizar la bandera de éxito (Renombrado de cache_list)
+            isLoaded = catalogsLoaded;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        // Actualizar la bandera de éxito (Renombrado de cache_list)
-        isLoaded = catalogsLoaded;
         return isLoaded;
     }
 

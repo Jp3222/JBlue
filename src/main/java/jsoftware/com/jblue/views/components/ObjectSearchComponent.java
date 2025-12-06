@@ -28,19 +28,16 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import jsoftware.com.jblue.controllers.compc.ListController;
-import jsoftware.com.jblue.model.dto.ForeingKeyObject;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
-import jsoftware.com.jblue.model.dto.Objects;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.framework.ListSearchViewModel;
+import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.view.WindowStates;
-import jsoftware.com.jblue.model.dto.StatusObjectModel;
 
-public final class ObjectSearchComponent<T extends Objects & StatusObjectModel & ForeingKeyObject> extends JDialog implements WindowStates, ListSearchViewModel<T> {
+public final class ObjectSearchComponent<T extends JDBMapObject> extends JDialog implements WindowStates, ListSearchViewModel<T> {
 
     private static final long serialVersionUID = 1L;
 
@@ -83,7 +80,6 @@ public final class ObjectSearchComponent<T extends Objects & StatusObjectModel &
      */
     public static final int RET_OK = 1;
 
-    private final ListController<T> list_controller;
 
     /**
      * Creates new form NewOkCancelDialog
@@ -97,7 +93,6 @@ public final class ObjectSearchComponent<T extends Objects & StatusObjectModel &
         initComponents();
         list_model = new DefaultListModel<>();
         objects_list.setModel(list_model);
-        this.list_controller = new ListController<>(this, memo_list);
         build();
     }
 
@@ -122,8 +117,6 @@ public final class ObjectSearchComponent<T extends Objects & StatusObjectModel &
                 doClose(RET_CANCEL);
             }
         });
-
-        objects_list.addMouseListener(list_controller);
         //ok_button.addActionListener();
     }
 

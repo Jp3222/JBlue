@@ -17,120 +17,41 @@
 package jsoftware.com.jblue.controllers.compc;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
-import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
 import jsoftware.com.jblue.controllers.AbstractComponentController;
-import jsoftware.com.jblue.model.dto.ForeingKeyObject;
-import jsoftware.com.jblue.model.dto.Objects;
-import jsoftware.com.jblue.util.Filters;
-import jsoftware.com.jblue.util.cache.MemoListCache;
-import jsoftware.com.jblue.views.framework.ListSearchViewModel;
-import jsoftware.com.jblue.model.dto.StatusObjectModel;
+import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public class ListController<T extends Objects & StatusObjectModel & ForeingKeyObject> extends AbstractComponentController<T> {
+public class ListController<T extends JDBMapObject> extends AbstractComponentController<T> {
 
     private static final long serialVersionUID = 1L;
 
-    private final ListSearchViewModel<T> view;
-    private final DefaultListModel<T> model;
-    private String search_text;
-    private final ArrayList<Predicate<T>> filters_list;
-
-    public ListController(ListSearchViewModel<T> view, MemoListCache<T> memo_cache) {
-        super(view.getList(), memo_cache, null);
-        view.getTextComponentList().addKeyListener(this);
-        view.getTextComponentList().addMouseListener(this);
-        this.filters_list = new ArrayList<>(15);
-        this.view = view;
-        model = view.getListModel();
-        this.addFilterList((t) -> t.getId().equals(search_text));
-        this.addFilterList((t) -> Filters.clearAndCheck(t.toString(), search_text));
+    public ListController(JComponent componente) {
+        super(componente);
     }
 
     @Override
     public void loadData() {
-        memo_cache.getList().forEach((o) -> {
-            model.addElement(o);
-        });
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void dumpData() {
-        if (model.isEmpty()) {
-            return;
-        }
-        model.clear();
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void updateData() {
-        dumpData();
-        loadData();
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        search_text = view.getTextSearchList();
-        dumpData();
-        if (Filters.isNullOrBlank(search_text)) {
-            view.setCountElements(0);
-            return;
-        }
-        List<T> list = memo_cache.getList(o -> {
-            return isThis(o, search_text, false);
-        });
-
-        if (list.isEmpty()) {
-            dumpData();
-            view.setCountElements(0);
-            return;
-        }
-
-        view.setCountElements(list.size());
-
-        list.forEach((i) -> {
-            model.addElement(i);
-        });
-    }
-
-    public boolean isThis(Objects o, String txt, boolean validateIsTitular) {
-        if (o instanceof StatusObjectModel a && !a.isActive()) {
-            return false;
-        }
-        return Filters.clearAndCheck(o.getId(), txt)
-                || Filters.clearAndCheck(o.toString(), txt);
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() != 2) {
-            return;
-        }
-        int index = view.getList().getSelectedIndex();
-        if (index < 0 || index >= view.getList().getModel().getSize()) {
-            return;
-        }
-        view.setObjectSearch(model.get(index));
-        view.setScreenListInfo();
-        view.getListModel().removeAllElements();
-        view.getTextComponentList().setText(null);
-    }
-
-    public void addFilterList(Predicate<T> o) {
-        filters_list.add(o);
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

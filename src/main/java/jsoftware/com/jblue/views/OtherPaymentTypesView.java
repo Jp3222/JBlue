@@ -16,20 +16,18 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.controllers.compc.ComboBoxItemsController;
-import jsoftware.com.jblue.controllers.compc.TableController;
-import jsoftware.com.jblue.model.dto.OPaymentsTypes;
-import jsoftware.com.jblue.model.dto.Objects;
-import jsoftware.com.jblue.util.Filters;
-import jsoftware.com.jblue.util.Fecha;
-import jsoftware.com.jblue.util.GraphicsUtils;
-import jsoftware.com.jblue.views.framework.DBView;
-import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 import java.time.LocalDate;
+import java.util.Objects;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import jsoftware.com.jblue.model.dto.PaymentDTO;
+import jsoftware.com.jblue.util.GraphicsUtils;
 import jsoftware.com.jblue.views.framework.DBValuesModel;
+import jsoftware.com.jblue.views.framework.DBView;
+import jsoftware.com.jutil.db.JDBMapObject;
+import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
  *
@@ -40,7 +38,7 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
     private static final long serialVersionUID = 1L;
 
     private JTableModel model;
-    private OPaymentsTypes object_search;
+    private PaymentDTO object_search;
     private final CardLayout ly;
 
     /**
@@ -49,7 +47,6 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
     public OtherPaymentTypesView() {
         initComponents();
         ly = (CardLayout) root_panel.getLayout();
-        table_controller = new TableController(this, null);
         build();
     }
 
@@ -422,20 +419,7 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
     }// </editor-fold>//GEN-END:initComponents
 
     private void setDate() {
-        LocalDate date = LocalDate.now();
-        ComboBoxItemsController day_controller = ComboBoxItemsController.getNumbericItems(day_field,
-                1,
-                date.getMonth().length(date.isLeapYear())
-        );
-        ComboBoxItemsController year_controller = ComboBoxItemsController.getNumbericItems(year_field,
-                date.getYear(),
-                date.getYear() + 5
-        );
-        ComboBoxItemsController month = new ComboBoxItemsController(month_field, Fecha.MESES);
 
-        day_field.setSelectedIndex(date.getDayOfMonth() - 1);
-        month_field.setSelectedIndex(date.getMonthValue() - 1);
-        year_field.setSelectedIndex(0);
     }
 
     public LocalDate getDate() {
@@ -508,76 +492,64 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public boolean isValuesOk() {
-
-        return LocalDate.now().compareTo(getDate()) == 1;
-    }
-
-    @Override
-    public String[] getDbValues(boolean update) {
-        return null;
-    }
-
-    public Objects getObject() {
-        return object_search;
-    }
-
-    @Override
     public JTextField getTextComponenteTable() {
-        return search_field;
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public String getTextSearchTable() {
-        return Filters.clearText(search_field.getText());
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public JTable getTable() {
-        return objects_table;
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public JTableModel getModel() {
-        return model;
+    public DefaultTableModel getModel() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void setViewShow(int view_show) {
-        this.view_show = view_show;
-        String op = switch (view_show) {
-            case 2:
-                yield search_panel.getName();
-            default:
-                yield register_panel.getName();
-        };
-        ly.show(root_panel, op);
+    public void setViewShow(int i) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public int getViewShow() {
-        return view_show;
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public OPaymentsTypes getObjectSearch() {
-        return object_search;
+    public void setObjectSearch(JDBMapObject o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void setObjectSearch(Objects o) {
-        object_search = (OPaymentsTypes) o;
+    public <T extends JDBMapObject> T getObjectSearch() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void setRowsData(String... info) {
-        count.setText(info[0]);
-        range.setText(info[1]);
-        total.setText(info[2]);
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void setScreenTableInfo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    @Override
+    public boolean isValuesOk() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String[] getDbValues(boolean update) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 
 }

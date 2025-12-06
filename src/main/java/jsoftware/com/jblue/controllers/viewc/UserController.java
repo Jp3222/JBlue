@@ -16,7 +16,6 @@
  */
 package jsoftware.com.jblue.controllers.viewc;
 
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.sql.SQLException;
@@ -24,15 +23,12 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.controllers.DBControllerModel;
-import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.HysHistoryDAO;
 import jsoftware.com.jblue.model.dao.PaymentsDAO;
 import jsoftware.com.jblue.model.dao.ProcessDAO;
 import jsoftware.com.jblue.model.dao.UserDao;
-import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.dto.HysAdministrationHistoryDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
@@ -60,7 +56,6 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
     private PaymentsDAO payment;
 
     public UserController(UserView view) {
-        super(CacheFactory.USERS);
         this.view = view;
         user_dao = new UserDao(AppConfig.isLogsDev(), "user");
         process_dao = new ProcessDAO(AppConfig.isLogsDev(), "user");
@@ -106,180 +101,26 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
             return;
         }
         user.setMap(values);
-        JDBConnection connection = ConnectionFactory.getIntance().getMain_connection();
-        boolean res;
-        connection.setAutoCommit(false);
-        try {
-            int user_key = user_dao.insertUser(connection, user);
-            res = user_key > 0;
-            if (!res) {
-                throw new SQLException("REGISTRO DE USUARIO CORRUPTO");
-            }
-            res = history_dao.getHysUsersMovs().insertToUsers(DESCRIPTION_FORMAT.formatted(
-                    "INSERTO",
-                    user_key,
-                    user.getFirstName(),
-                    user.getLastName1(),
-                    user.getLastName2()
-            ));
-            if (!res) {
-                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-            }
-            if (view.isProcess()) {
-                res = process_dao.startProcess(connection, view.getProcessId(), String.valueOf(user_key));
-                if (!res) {
-                    throw new SQLException("REGISTRO DEL TRAMITE CORRUPTO");
-                }
-                res = history_dao.insert(Const.INDEX_PRO_CONTRACT_PROCEDURE,
-                        "SE REGISTRO EL TRAMITE DEL USUARIO: %s - %s %s %s".formatted(user_key,
-                                user.getFirstName(),
-                                user.getLastName1(),
-                                user.getLastName2()
-                        ));
-                //si no se registra en el historial lanzamos una excepcion para hacer un rollback
-                if (!res) {
-                    throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-                }
-            }
-            connection.commit();
-        } catch (Exception e) {
-            connection.rollBack();
-        } finally {
-            connection.setAutoCommit(true);
+
+        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection();) {
+            save(connection, user);
+        } catch (SQLException ex) {
+            System.getLogger(UserController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
+    }
+
+    private void save(JDBConnection connection, UserDTO user) {
+
     }
 
     @Override
     public void delete() {
-        if (!view.isValuesOk()) {
-            return;
-        }
-        boolean res = false;
-        UserDTO user = view.getObjectSearch();
-        EmployeeDTO employee = SystemSession.getInstancia().getCurrentEmployee();
-        JDBConnection connection = ConnectionFactory.getIntance().getMain_connection();
-        try {
-            connection.setAutoCommit(false);
-            res = user_dao.logicalDeleteUser(connection,
-                    Integer.parseInt(user.getId()),
-                    Integer.parseInt(employee.getId())
-            );
-            if (!res) {
-                throw new SQLException("BORRADO LOGICO CORRUPTO");
-            }
-            res = HysHistoryDAO.getINSTANCE().getHysUsersMovs().insertToUsers(
-                    DESCRIPTION_FORMAT.formatted(
-                            "BORRO LOGICAMENTE",
-                            user.getId(),
-                            user.getFirstName(),
-                            user.getLastName1(),
-                            user.getLastName2()
-                    ));
-            //si no se registra en el historial lanzamos una excepcion para hacer un rollback
-            if (!res) {
-                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-            }
-            if (view.isProcess()) {
-                res = process_dao.startProcess(connection, view.getProcessId(), user.getId());
-                if (!res) {
-                    throw new SQLException("REGISTRO DEL TRAMITE CORRUPTO");
-                }
-                res = history_dao.insert(Const.INDEX_PRO_CONTRACT_PROCEDURE,
-                        "SE REGISTRO EL TRAMITE DEL USUARIO: %s - %s %s %s".formatted(
-                                user.getId(),
-                                user.getFirstName(),
-                                user.getLastName1(),
-                                user.getLastName2()
-                        ));
-                //si no se registra en el historial lanzamos una excepcion para hacer un rollback
-                if (!res) {
-                    throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-                }
-            }
-            boolean devFunction = AppConfig.isDevFunction();
-            if (devFunction) {
-                int hidden_payments = JOptionPane.showConfirmDialog(view,
-                        "¿Desea eliminar los pagos hechos por esta persona?",
-                        "Eliminar - Pagos",
-                        JOptionPane.YES_NO_OPTION
-                );
-                if (hidden_payments == JOptionPane.YES_OPTION) {
-                    res = payment.deleteWC(connection, Integer.parseInt(user.getId()));
-                    if (!res) {
-                        throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-                    }
-                    res = HysHistoryDAO.getINSTANCE().delete(Const.INDEX_PYM_SERVICE_PAYMENTS,
-                            "SE BORRARON LOGICAMENTE LOS PAGOS DEL USUARIO: %s - %s %s %s".formatted(
-                                    user.getId(),
-                                    user.getFirstName(),
-                                    user.getLastName1(),
-                                    user.getLastName2()
-                            )
-                    );
-                    //si no se registra en el historial lanzamos una excepcion para hacer un rollback
-                    if (!res) {
-                        throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-                    }
-                }
-            }
-            connection.commit();
-        } catch (SQLException | HeadlessException ex) {
-            connection.rollBack();
-            System.getLogger(UserController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        } finally {
-            connection.setAutoCommit(true);
-        }
+
     }
 
     @Override
     public void update() {
-        if (!view.isValuesOk()) {
-            return;
-        }
-        boolean res = false;
-        JDBConnection connection = ConnectionFactory.getIntance().getMain_connection();
-        try {
-            UserDTO old_user = view.getObjectSearch();
-            UserDTO new_user = new UserDTO();
-            Map<String, Object> values = view.getValues(true);
-            new_user.setMap(values);
-            res = user_dao.updateUserDynamic(connection, old_user, new_user);
-            if (!res) {
-                throw new SQLException("ACTUALIZACION DE USUARIO CORRUPTA");
-            }
-            res = history_dao.getHysUsersMovs().updateToUsers(DESCRIPTION_FORMAT.formatted(
-                    "ACTUALIZO",
-                    new_user.getId(),
-                    new_user.getFirstName(),
-                    new_user.getLastName1(),
-                    new_user.getLastName2()
-            ));
-            if (!res) {
-                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-            }
-            if (view.isProcess()) {
-                res = process_dao.startProcess(connection, view.getProcessId(), new_user.getId());
-                if (!res) {
-                    throw new SQLException("REGISTRO DEL TRAMITE CORRUPTO");
-                }
-                res = history_dao.insert(Const.INDEX_PRO_CONTRACT_PROCEDURE,
-                        "SE REGISTRO EL TRAMITE DEL USUARIO: %s - %s %s %s".formatted(
-                                new_user.getId(),
-                                new_user.getFirstName(),
-                                new_user.getLastName1(),
-                                new_user.getLastName2()
-                        ));
-                //si no se registra en el historial lanzamos una excepcion para hacer un rollback
-                if (!res) {
-                    throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-                }
-            }
-            connection.commit();
-        } catch (SQLException ex) {
-            connection.rollBack();
-        } finally {
-            connection.setAutoCommit(true);
-        }
+
     }
 
     @Override

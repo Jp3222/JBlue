@@ -19,7 +19,6 @@ package jsoftware.com.jblue.views;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -28,20 +27,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import jsoftware.com.jblue.controllers.FactoryController;
-import jsoftware.com.jblue.controllers.compc.ListController;
-import jsoftware.com.jblue.controllers.compc.TableController;
-import jsoftware.com.jblue.controllers.viewc.ShopCartController;
-import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
 import jsoftware.com.jblue.model.dto.OWaterIntakes;
-import jsoftware.com.jblue.model.dto.Objects;
-import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
-import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.util.GraphicsUtils;
-import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.framework.DBView;
 import jsoftware.com.jblue.views.framework.ListSearchViewModel;
+import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
@@ -57,8 +48,8 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
     private final JTableModel table_model;
     private final DefaultListModel<OWaterIntakes> list_model;
     private OWaterIntakes object_search;
-    ArrayList<JCheckBox> month_paid_list;
-    private final ListController<UserDTO> list_controller;
+    private ArrayList<JCheckBox> month_paid_list;
+
     private int count_elements;
 
     /**
@@ -78,9 +69,6 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         objects_table.setModel(table_model);
         users_list.setModel(list_model);
         ly = (CardLayout) root_panel.getLayout();
-
-        table_controller = new TableController(this, CacheFactory.SERVICE_PAYMENTS);
-        list_controller = new ListController(this, CacheFactory.WATER_INTAKES);
         build();
     }
 
@@ -95,35 +83,32 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
     @Override
     public void events() {
         controller = FactoryController.getShopCartController(this);
-        pay_button.addActionListener(controller);
-        cancel_button.addActionListener(controller);
-        clear_button.addActionListener(controller);
-        recargos_button.addActionListener(controller);
-        other_pay_button.addActionListener(controller);
-        pay_last_button.addActionListener(controller);
-        info_button.addActionListener(controller);
-        lock_button.addActionListener(controller);
-        search_user_button.addActionListener(controller);
-        mov_book_button.addActionListener(controller);
-        //
-        all_months_buttons.addActionListener(controller);
-        //
-        search_field_list.addKeyListener(controller);
-        //
-        users_list.addMouseListener(controller);
-        //
-
-        register_payment_button.addActionListener(table_controller);
-        search_payment_buttons.addActionListener(table_controller);
-        reload_button.addActionListener(table_controller);
-        back_button.addActionListener(table_controller);
-        next_button.addActionListener(table_controller);
-        //objects_table.addMouseListener(table_controller);
-        users_list.addMouseListener(list_controller);
-        //
-        for (JCheckBox i : month_paid_list) {
-            i.addActionListener(controller);
-        }
+//        pay_button.addActionListener(controller);
+//        cancel_button.addActionListener(controller);
+//        clear_button.addActionListener(controller);
+//        recargos_button.addActionListener(controller);
+//        other_pay_button.addActionListener(controller);
+//        pay_last_button.addActionListener(controller);
+//        info_button.addActionListener(controller);
+//        lock_button.addActionListener(controller);
+//        search_user_button.addActionListener(controller);
+//        mov_book_button.addActionListener(controller);
+//        //
+//        all_months_buttons.addActionListener(controller);
+//        //
+//        search_field_list.addKeyListener(controller);
+//        //
+//        users_list.addMouseListener(controller);
+//        //
+//
+//        register_payment_button.addActionListener(table_controller);
+//        search_payment_buttons.addActionListener(table_controller);
+//        reload_button.addActionListener(table_controller);
+//        back_button.addActionListener(table_controller);
+//        next_button.addActionListener(table_controller);
+//        for (JCheckBox i : month_paid_list) {
+//            i.addActionListener(controller);
+//        }
     }
 
     @Override
@@ -659,21 +644,11 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         recargos_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         recargos_button.setText("Recargos");
         recargos_button.setActionCommand("surcharges");
-        recargos_button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                recargos_buttonActionPerformed(evt);
-            }
-        });
         jPanel8.add(recargos_button);
 
         other_pay_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         other_pay_button.setText("Otros Pagos");
         other_pay_button.setActionCommand("other_payments");
-        other_pay_button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                other_pay_buttonActionPerformed(evt);
-            }
-        });
         jPanel8.add(other_pay_button);
 
         pay_last_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
@@ -790,19 +765,6 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void recargos_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recargos_buttonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_recargos_buttonActionPerformed
-
-    private void other_pay_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_other_pay_buttonActionPerformed
-        MemoListCache<UserDTO> USERS = CacheFactory.USERS;
-        ArrayList<String[]> us = new ArrayList<>(USERS.size());
-        for (UserDTO i : USERS.getList()) {
-            us.add(i.getInfoSinFK());
-        }
-        //Export.fastXlsxExport(So.USER_HOME, "PRUEBA.xlsx", "USUARIOS", _Const.USR_USERS_FIELDS_GS, us);
-    }//GEN-LAST:event_other_pay_buttonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Jlabel1;
@@ -894,128 +856,87 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
 
     @Override
     public JTextField getTextComponenteTable() {
-        return search_field_table;
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public String getTextSearchTable() {
-        return Filters.clearText(search_field_table.getText());
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public JTable getTable() {
-        return objects_table;
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public DefaultTableModel getModel() {
-        return table_model;
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void setViewShow(int view_show) {
-        this.view_show = view_show;
-        String op = switch (view_show) {
-            case 2:
-                yield search_panel.getName();
-            default:
-                yield register_panel.getName();
-        };
-        ly.show(root_panel, op);
+    public void setViewShow(int i) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public int getViewShow() {
-        return view_show;
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public JList getList() {
-        return users_list;
-    }
-
-    @Override
-    public DefaultListModel<OWaterIntakes> getListModel() {
-        return list_model;
-    }
-
-    @Override
-    public JTextField getTextComponentList() {
-        return search_field_list;
-    }
-
-    @Override
-    public String getTextSearchList() {
-        return Filters.clearText(search_field_list.getText());
-    }
-
-    @Override
-    public void setCountElements(int i) {
-        count_elements = i;
-        users_list.setEnabled((i > 0));
-        users_list.setSelectedIndex(0);
-        count_elements_label.setText(String.valueOf(i));
-    }
-
-    @Override
-    public int getCountElements() {
-        return count_elements;
+    public void setObjectSearch(JDBMapObject o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public OWaterIntakes getObjectSearch() {
-        return object_search;
-    }
-
-    @Override
-    public void setObjectSearch(Objects o) {
-        object_search = (OWaterIntakes) o;
-    }
-
-    @Override
-    public void setScreenListInfo() {
-        UserDTO user_search = object_search.getUserObject();
-        WaterIntakeTypesDTO water_intake_type = object_search.getWaterIntakeTypeObject();
-        int index = users_list.getSelectedIndex();
-        object_search = list_model.get(index);
-        user_type_field.setText(user_search.getUserTypeString());
-        name_user_field.setText(user_search.toString());
-        type_toma_field.setText(water_intake_type.getTypeName());
-        cost_field.setText(String.valueOf(water_intake_type.getCurrentPrice()));
-        ((ShopCartController) controller).setPaymentsInfo(user_search);
-        all_months_buttons.setEnabled(true);
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void setRowsData(String... info) {
-        count.setText(info[0]);
-        range.setText(info[1]);
-        total_register_field.setText(info[2]);
-        GraphicsUtils.setEnable(true, pay_button, clear_button, cancel_button);
-    }
-
-    public ArrayList<JCheckBox> getMonthList() {
-        return month_paid_list;
-    }
-
-    public List<String> getMonthPaidList() {
-        List<String> lista = new ArrayList<>(12);
-        for (JCheckBox i : month_paid_list) {
-            if (i.isSelected() && i.isEnabled()) {
-                lista.add(i.getText());
-            }
-        }
-        return lista;
-    }
-
-    public void setTotalField(String total_field) {
-        this.total_field.setText(String.valueOf(total_field));
-        GraphicsUtils.setEnable(true, pay_button, clear_button, cancel_button);
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void setScreenTableInfo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
+    @Override
+    public JList getList() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public JTextField getTextComponentList() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getTextSearchList() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public DefaultListModel getListModel() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void setCountElements(int count) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public int getCountElements() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void setScreenListInfo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

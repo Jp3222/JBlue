@@ -19,40 +19,39 @@ package jsoftware.com.jblue.controllers.compc;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import jsoftware.com.jblue.controllers.AbstractComponentController;
-import jsoftware.com.jblue.model.dto.Objects;
+import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public class SpinnerController<T extends Objects> extends AbstractComponentController<T> {
+public class SpinnerController<T extends JDBMapObject> extends AbstractComponentController<T> {
 
     private static final long serialVersionUID = 1L;
 
-    public SpinnerController(JSpinner component) {
-        super(component, null, null);
+    public SpinnerController(JSpinner componente) {
+        super(componente);
     }
 
     @Override
     public void loadData() {
-        JSpinner o = getComponent();
-
-        memo_cache.getList().forEach(e -> {
-
-        });
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void dumpData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void updateData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void actionPerformed(ActionEvent ae) {
+    public void actionPerformed(ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

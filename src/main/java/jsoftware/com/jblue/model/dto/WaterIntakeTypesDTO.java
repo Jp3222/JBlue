@@ -11,19 +11,19 @@ package jsoftware.com.jblue.model.dto;
 public class WaterIntakeTypesDTO extends AuditableObjectMap {
 
     public String getTypeName() {
-        return values.get("type_name").toString();
+        return get("type_name").toString();
     }
 
     public String getCurrentPrice() {
-        return values.get("current_price").toString();
+        return get("current_price").toString();
     }
 
     public String getPreviousPrice() {
-        return values.get("previous_price").toString();
+        return get("previous_price").toString();
     }
 
     public String getSurcharge() {
-        return values.get("surcharge").toString();
+        return get("surcharge").toString();
     }
 
 }

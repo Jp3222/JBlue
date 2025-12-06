@@ -5,6 +5,7 @@
 package jsoftware.com.jblue.model.dto;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jutil.db.JDBMapObject;
@@ -27,15 +28,25 @@ public class AuditableObjectMap extends JDBMapObject implements AuditableModel {
 
     private static final long serialVersionUID = 1L;
 
+    public AuditableObjectMap(Map<String, Object> map) {
+        super(map);
+    }
+
+    public AuditableObjectMap(int size) {
+        super(size);
+    }
+
+    public AuditableObjectMap() {
+        super();
+    }
+
     @Override
     public int getStatus() {
-        return Integer.parseInt(values.get("status").toString());
+        return Integer.parseInt(get("status").toString());
     }
 
     @Override
     public String getStatusString() {
-        // Se asume que CacheFactory es accesible
-        // El driver Javadoc ignorará este contenido al generar la documentación
         return CacheFactory.CAT_STATUS[getStatus()];
     }
 
@@ -46,18 +57,18 @@ public class AuditableObjectMap extends JDBMapObject implements AuditableModel {
 
     @Override
     public LocalDateTime getDateUpdate() {
-        return Formats.getLocalDateTime(values.get("date_update").toString());
+        return Formats.getLocalDateTime(get("date_update").toString());
     }
 
     @Override
     public LocalDateTime getDateRegister() {
-        return Formats.getLocalDateTime(values.get("date_register").toString());
+        return Formats.getLocalDateTime(get("date_register").toString());
     }
 
     @Override
     public LocalDateTime getDateEnd() {
         if (values.containsKey("date_end")) {
-            return Formats.getLocalDateTime(values.get("date_end").toString());
+            return Formats.getLocalDateTime(get("date_end").toString());
         }
         return null;
     }

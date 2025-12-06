@@ -16,37 +16,24 @@
  */
 package jsoftware.com.jblue.util.cache;
 
-import java.util.List;
-import java.util.function.Predicate;
-import jsoftware.com.jblue.model.DBConnection;
-import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.db.model.JDBObject;
+import jsoftware.com.jutil.db.JDBMapObject;
+import jsoftware.com.jutil.db.JDBTable;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public class MemoListCache<T extends JDBObject> extends AbstractListCache<T> implements Paginated {
+public class MemoListCache<T extends JDBMapObject> extends AbstractListCache<T> implements Paginated {
 
     private static final long serialVersionUID = 1L;
 
-    private int page;
-
-    public MemoListCache(int capacity, DBConnection conexion) {
-        super(capacity, conexion);
+    public MemoListCache(JDBTable table, Class cls) {
+        super(table, cls);
     }
 
-    public MemoListCache(DBConnection conexion) {
-        super(conexion);
-    }
-
-    public T get(Predicate<T> filter) {
-        List<T> list = getList(filter);
-        if (list.isEmpty()) {
-            return null;
-        }
-        return list.getFirst();
+    public MemoListCache(JDBTable table, Class cls, int range) {
+        super(table, cls, range);
     }
 
     @Override
@@ -60,36 +47,22 @@ public class MemoListCache<T extends JDBObject> extends AbstractListCache<T> imp
     }
 
     @Override
-    public boolean movData(int mov) {
-        if (mov == MOV_TO_BACK) {
-            this.index_min -= steps;
-            this.index_max -= steps;
-        }
-        if (mov == MOV_TO_NEXT) {
-            this.index_min += steps;
-            this.index_max += steps;
-        }
-        reLoadData();
-        return !cache.isEmpty();
+    public boolean movBuffer(int mov) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public boolean movBuffer(int page) {
-        return true;
-    }
-
-    public boolean isBufferBack() {
-        return buffer_direc == MOV_TO_BACK;
-    }
-
-    public boolean isBufferNext() {
-        return buffer_direc == MOV_TO_NEXT;
-    }
-
-    private int buffer_direc;
-
-    public JDBConnection getConnection() {
-        return conexion.getJDBConnection();
+    public boolean movData(int mov) {
+        if (mov == MOV_TO_BACK) {
+            this.min_id -= range;
+            this.max_id -= range;
+        }
+        if (mov == MOV_TO_NEXT) {
+            this.min_id += range;
+            this.max_id += range;
+        }
+        reLoadData();
+        return !cache.isEmpty();
     }
 
 }

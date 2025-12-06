@@ -23,19 +23,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.FactoryController;
-import jsoftware.com.jblue.controllers.compc.ComboBoxController;
-import jsoftware.com.jblue.controllers.compc.TableController;
+import jsoftware.com.jblue.model.dto.OWaterIntakes;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
-import jsoftware.com.jblue.model.dto.OWaterIntakes;
-import jsoftware.com.jblue.model.dto.Objects;
-import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.views.framework.DBValuesMapModel;
 import jsoftware.com.jblue.views.framework.DBView;
 import jsoftware.com.jblue.views.framework.TableSearchViewModel;
+import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
@@ -49,9 +46,6 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
     private final CardLayout ly;
     private final JTableModel model;
     private OWaterIntakes object_search;
-    private final ComboBoxController<StreetDTO> street_cat_1;
-    private final ComboBoxController<StreetDTO> street_cat_2;
-    private final ComboBoxController<WaterIntakeTypesDTO> water_intake;
     private UserDTO user_search;
     private WaterIntakeTypesDTO water_intake_types_search;
     private StreetDTO street1_search;
@@ -68,10 +62,6 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
         ly.show(root_panel, register_panel.getName());
         model = TableModelFactory.getWaterIntakesTableModel();
         controller = FactoryController.getWaterIntakesController(this);
-        table_controller = new TableController(this, CacheFactory.WATER_INTAKES);
-        water_intake = new ComboBoxController(water_intake_types_field, CacheFactory.WATER_INTAKES_TYPES);
-        street_cat_1 = new ComboBoxController(street1_field, CacheFactory.STREETS);
-        street_cat_2 = new ComboBoxController(street2_field, CacheFactory.STREETS);
         build();
     }
 
@@ -121,9 +111,6 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
 
     @Override
     public void finalState() {
-        street_cat_1.loadData();
-        street_cat_2.loadData();
-        water_intake.loadData();
     }
 
     @Override
@@ -132,7 +119,7 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
     }
 
     @Override
-    public void setObjectSearch(Objects o) {
+    public void setObjectSearch(JDBMapObject o) {
         object_search = (OWaterIntakes) o;
     }
 
@@ -666,8 +653,8 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
     }
 
     @Override
-    public Map<String, String> getValues(boolean update) {
-        Map<String, String> map;
+    public Map<String, Object> getValues(boolean update) {
+        Map<String, Object> map;
         String _user = user_search.getId();
         String _water_inatke = water_intake_types_search.getId();
         String _cost_procedure = operation_cost_field.getText();
@@ -687,13 +674,13 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
         return map;
     }
 
-    public Map<String, String> saveInsert(
+    public Map<String, Object> saveInsert(
             String _cost_procedure, String _water_inatke, String _user, String user_name,
             String _street1, String _street2, String _location, String _description,
             String _status) {
 
         // Inicialización con capacidad inicial precisa (9 campos)
-        Map<String, String> map = new HashMap<>(10);
+        Map<String, Object> map = new HashMap<>(10);
 
         // 1. Campos que deben ser Obligatorios y No Vacíos (Usamos putIfPresentAndNotBlank)
         // Aplicable a identificadores o valores centrales.
@@ -713,7 +700,7 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
         return map;
     }
 
-    public Map<String, String> saveUpdate(
+    public Map<String, Object> saveUpdate(
             OWaterIntakes originalProcedure, // Objeto con datos actuales
             String _cost_procedure, String _water_inatke, String _user, String _user_name,
             String _street1, String _street2, String _location, String _description,
@@ -724,7 +711,7 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
             throw new NullPointerException("El objeto de procedimiento original (originalProcedure) no puede ser null para una actualización.");
         }
 
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
         // 1. Campos Obligatorios/Centrales
         // Compara el valor nuevo (ej. _cost_procedure) con el valor original (originalProcedure.getCostProcedure())

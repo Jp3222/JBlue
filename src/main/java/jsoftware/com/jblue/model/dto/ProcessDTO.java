@@ -1,8 +1,10 @@
 package jsoftware.com.jblue.model.dto;
 
-import jsoftware.com.jblue.model.constants.Const;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import jsoftware.com.jblue.model.factories.CacheFactory;
+import jsoftware.com.jblue.util.Formats;
+import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  * DTO para representar la información de un Proceso. Implementación basada en
@@ -10,158 +12,100 @@ import java.time.format.DateTimeFormatter;
  *
  * @author Gemini
  */
-public class ProcessDTO extends Objects { // Se asume que extiende 'Objects' como OUser
+public class ProcessDTO extends JDBMapObject implements StatusObjectModel {
 
-    // Definición de índices (basada en el orden de los campos solicitados)
-    /*
-    * 0: id
-    * 1: process_type (int)
-    * 2: employee_start
-    * 3: date_start (LocalDateTime)
-    * 4: employee_valid
-    * 5: date_valid (LocalDateTime)
-    * 6: employee_payment
-    * 7: date_payment (LocalDateTime)
-    * 8: employee_ends
-    * 9: date_end (LocalDateTime)
-    * 10: employee_print
-    * 11: date_print (LocalDateTime)
-    * 12: administration
-    * 13: last_employee_update
-    * 14: current_db_user
-    * 15: original_user
-    * 16: water_intake
-    * 17: status (int)
-    * 18: date_register (LocalDateTime)
-     */
-    public ProcessDTO(String[] info) {
-        super(info);
+    public ProcessDTO(Map<String, Object> map) {
+        super(map);
+    }
+
+    public ProcessDTO(int size) {
+        super(size);
     }
 
     public ProcessDTO() {
         super();
     }
 
-    // --- Métodos Getters ---
-    /**
-     * Retorna el ID del proceso.
-     *
-     * @return El ID (values[0])
-     */
-    public String getId() {
-        return values[0];
+    public String getProcessType() {
+        return get("process_type").toString();
     }
 
-    /**
-     * Retorna el tipo de proceso.
-     *
-     * @return El tipo de proceso como entero (values[1])
-     */
-    public int getProcessType() {
-        return Integer.parseInt(values[1]);
-    }
-
-    // --- Empleados y Fechas de Etapas ---
     public String getEmployeeStart() {
-        return values[2];
+        return get("employee_start").toString();
     }
 
-    public LocalDateTime getDateStart() {
-        return LocalDateTime.parse(values[3], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
+    public String getDateStart() {
+        return get("date_start").toString();
     }
 
     public String getEmployeeValid() {
-        return values[4];
+        return get("employee_valid").toString();
     }
 
-    public LocalDateTime getDateValid() {
-        return LocalDateTime.parse(values[5], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
+    public String getDateValid() {
+        return get("date_valid").toString();
     }
 
     public String getEmployeePayment() {
-        return values[6];
+        return get("employee_payment").toString();
     }
 
-    public LocalDateTime getDatePayment() {
-        return LocalDateTime.parse(values[7], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
+    public String getDatePayment() {
+        return get("date_payment").toString();
     }
 
-    public String getEmployeeEnds() {
-        return values[8];
+    public String getEmployeeEnd() {
+        return get("employee_ends").toString();
     }
 
-    public LocalDateTime getDateEnd() {
-        return LocalDateTime.parse(values[9], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
+    public String getDateEnd() {
+        return get("date_end").toString();
     }
 
     public String getEmployeePrint() {
-        return values[10];
+        return get("employe_print").toString();
     }
 
-    public LocalDateTime getDatePrint() {
-        return LocalDateTime.parse(values[11], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
+    public String getDatePrint() {
+        return get("date_print").toString();
     }
 
-    // --- Campos Administrativos y de Auditoría ---
     public String getAdministration() {
-        return values[12];
+        return get("administration").toString();
     }
 
     public String getLastEmployeeUpdate() {
-        return values[13];
+        return get("last_employee_update").toString();
     }
 
     public String getCurrentDbUser() {
-        return values[14];
+        return get("current_db_user").toString();
     }
 
     public String getOriginalUser() {
-        return values[15];
+        return get("original_user").toString();
     }
 
-    // --- Llave Foránea y Estado ---
-    /**
-     * Retorna el ID de la toma de agua asociada.
-     *
-     * @return El ID de la toma de agua (values[16])
-     */
     public String getWaterIntake() {
-        return values[16];
-    }
-
-    // Asumiendo que necesitas resolver el objeto de la toma de agua, similar a OUser
-    /*
-    public OWaterIntake getWaterIntakeObject() {
-        // Se asume la existencia de un método similar en ObjectUtils
-        return ObjectUtils.getWaterIntakeObject(getWaterIntake());
-    }
-     */
-    /**
-     * Retorna el estado del proceso.
-     *
-     * @return El estado como entero (values[17])
-     */
-    public int getStatus() {
-        return Integer.parseInt(values[17]);
-    }
-
-    /**
-     * Retorna la fecha de registro.
-     *
-     * @return La fecha de registro (values[18])
-     */
-    public LocalDateTime getDateRegister() {
-        return LocalDateTime.parse(values[18], DateTimeFormatter.ofPattern(Const.DATE_TIME_FORMAT));
-    }
-
-    // --- Métodos de Conveniencia (Similar a OUser) ---
-    public boolean isStarted() {
-        // Un ejemplo de lógica de estado simple
-        return getDateStart() != null;
+        return get("water_intake").toString();
     }
 
     @Override
-    public String toString() {
-        return "Processo ID: " + getId() + ", Tipo: " + getProcessType() + ", Inicio: " + getDateStart();
+    public int getStatus() {
+        return Integer.parseInt(get("status").toString());
+    }
+
+    @Override
+    public String getStatusString() {
+        return CacheFactory.CAT_STATUS[getStatus()];
+    }
+
+    @Override
+    public boolean isActive() {
+        return getStatus() != 3;
+    }
+
+    public LocalDateTime getDateRegister() {
+        return Formats.getLocalDateTime(get("date_register").toString());
     }
 }

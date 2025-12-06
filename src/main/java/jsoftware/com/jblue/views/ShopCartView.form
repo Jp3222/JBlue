@@ -1019,9 +1019,6 @@
                         <Property name="text" type="java.lang.String" value="Recargos"/>
                         <Property name="actionCommand" type="java.lang.String" value="surcharges"/>
                       </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="recargos_buttonActionPerformed"/>
-                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="other_pay_button">
                       <Properties>
@@ -1031,9 +1028,6 @@
                         <Property name="text" type="java.lang.String" value="Otros Pagos"/>
                         <Property name="actionCommand" type="java.lang.String" value="other_payments"/>
                       </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="other_pay_buttonActionPerformed"/>
-                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="pay_last_button">
                       <Properties>

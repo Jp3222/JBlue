@@ -19,7 +19,7 @@ package jsoftware.com.jblue.views.framework;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import jsoftware.com.jutil.db.model.JDBObject;
+import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  *
@@ -43,9 +43,9 @@ public interface TableSearchViewModel {
 
     int getViewShow();
 
-    void setObjectSearch(JDBObject o);
+    void setObjectSearch(JDBMapObject o);
 
-    <T extends JDBObject> T getObjectSearch();
+    <T extends JDBMapObject> T getObjectSearch();
     
     public void setRowsData(String... info);
     

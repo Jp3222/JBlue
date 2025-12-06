@@ -19,14 +19,14 @@ package jsoftware.com.jblue.util.cache;
 import java.io.Serializable;
 import java.util.List;
 import java.util.function.Predicate;
-import jsoftware.com.jblue.model.dto.Objects;
+import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public interface ListCacheModel<T extends Objects> extends Serializable{
+public interface ListCacheModel<T extends JDBMapObject> extends Serializable {
 
     /**
      * Consulta la lista con los datos de la base de datos

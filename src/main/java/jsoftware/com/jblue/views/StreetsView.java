@@ -21,15 +21,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.FactoryController;
-import jsoftware.com.jblue.controllers.compc.TableController;
 import jsoftware.com.jblue.model.dto.StreetDTO;
-import jsoftware.com.jblue.model.dto.Objects;
-import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.views.framework.DBValuesModel;
 import jsoftware.com.jblue.views.framework.DBView;
+import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
@@ -84,7 +82,6 @@ public final class StreetsView extends DBView implements DBValuesModel {
     @Override
     public void events() {
         controller = FactoryController.getStreetsController(this);
-        table_controller = new TableController(this, CacheFactory.STREETS);
         back_button.addActionListener(table_controller);
         next_button.addActionListener(table_controller);
         reload_button.addActionListener(table_controller);
@@ -557,7 +554,7 @@ public final class StreetsView extends DBView implements DBValuesModel {
      * @param o
      */
     @Override
-    public void setObjectSearch(Objects o) {
+    public void setObjectSearch(JDBMapObject o) {
         object_search = (StreetDTO) o;
     }
 
@@ -577,7 +574,6 @@ public final class StreetsView extends DBView implements DBValuesModel {
      */
     @Override
     public void setScreenTableInfo() {
-        streed_name_field.setText(object_search.getNombre());
         save_button.setEnabled(false);
         update_button.setEnabled(true);
         delete_button.setEnabled(true);

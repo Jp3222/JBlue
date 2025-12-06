@@ -27,26 +27,26 @@ public class HistoryDTO extends JDBMapObject {
     private static final long serialVersionUID = 1L;
 
     public String getEmployee() {
-        return values.get("employee").toString();
+        return get("employee").toString();
     }
 
     public String getDbUser() {
-        return values.get("db_user").toString();
+        return get("db_user").toString();
     }
 
     public String getAffectedTable() {
-        return values.get("affected_table").toString();
+        return get("affected_table").toString();
     }
 
     public String getTypeMov() {
-        return values.get("type_mov").toString();
+        return get("type_mov").toString();
     }
 
     public String getDescription() {
-        return values.get("description").toString();
+        return get("description").toString();
     }
 
     public String getDateRegister() {
-        return values.get("date_register").toString();
+        return get("date_register").toString();
     }
 }

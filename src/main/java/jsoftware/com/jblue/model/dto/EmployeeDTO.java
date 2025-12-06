@@ -13,14 +13,14 @@ package jsoftware.com.jblue.model.dto;
 public class EmployeeDTO extends PersonObject {
 
     public String getEmployeeType() {
-        return values.get("employee_type").toString();
+        return get("employee_type").toString();
     }
 
     public String getUser() {
-        return values.get("user").toString();
+        return get("user").toString();
     }
 
     public String getPassword() {
-        return values.get("password").toString();
+        return get("password").toString();
     }
 }

@@ -24,6 +24,7 @@ public interface ComponentIterable {
 
     public static final String BACK_COMMAND = "back";
     public static final String NEXT_COMMAND = "next";
+    public static final String RELOAD_COMMAND = "reload";
 
     void next();
 

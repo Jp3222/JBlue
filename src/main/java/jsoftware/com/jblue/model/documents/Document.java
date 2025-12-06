@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import static jsoftware.com.jblue.model.documents.DocumentModel.EXCEL;
-import jsoftware.com.jblue.model.dto.Objects;
+import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  *
@@ -22,7 +22,7 @@ public abstract class Document implements DocumentModel {
     private final String file_name;
     private final String query;
     private final Connection connection;
-    private final List<Objects> data_list;
+    private final List<JDBMapObject> data_list;
     private final String[] headers;
     private final int document_type;
     private final Map<String, Object> properties;
@@ -71,7 +71,7 @@ public abstract class Document implements DocumentModel {
     }
 
     @Override
-    public List<Objects> getList() {
+    public List<JDBMapObject> getList() {
         return data_list;
     }
 
@@ -104,7 +104,7 @@ public abstract class Document implements DocumentModel {
         private String file_name;
         private String query;
         private Connection connection;
-        private List<Objects> data_list;
+        private List<JDBMapObject> data_list;
         private String[] headers;
         private int document_type;
         private final Map<String, Object> properties;
@@ -138,7 +138,7 @@ public abstract class Document implements DocumentModel {
             return this;
         }
 
-        public DocumentsBuilder setData_list(List<Objects> data_list) {
+        public DocumentsBuilder setData_list(List<JDBMapObject> data_list) {
             this.data_list = data_list;
             return this;
         }

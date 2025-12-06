@@ -15,41 +15,31 @@ public class UserDTO extends PersonObject implements Cloneable {
     private static final long serialVersionUID = 1L;
 
     public String getStreet1() {
-        return values.get("street1").toString();
+        return get("street1").toString();
     }
 
     public String getStreet2() {
-        return values.get("street2").toString();
+        return get("street2").toString();
     }
 
     public String getInsideNumber() {
-        return values.get("inside_number").toString();
+        return get("inside_number").toString();
     }
 
     public String getOutsideNumber() {
-        return values.get("outside_number").toString();
+        return get("outside_number").toString();
     }
 
     public String getWaterIntakeType() {
-        return values.get("water_intake_type").toString();
+        return get("water_intake_type").toString();
     }
 
     public String getUserType() {
-        return values.get("user_type").toString();
+        return get("user_type").toString();
     }
 
     public String getLastEmployeeUpdate() {
-        return values.get("last_employee_ppdate").toString();
-    }
-
-    @Override
-    public UserDTO clone()  {
-        try {
-            return (UserDTO) super.clone(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        } catch (CloneNotSupportedException ex) {
-            System.getLogger(UserDTO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-        return null;
+        return get("last_employee_ppdate").toString();
     }
 
 }

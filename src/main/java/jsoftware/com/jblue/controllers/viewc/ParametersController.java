@@ -24,7 +24,6 @@ public class ParametersController extends AbstractDBViewController<UserDTO> {
      * @param view
      */
     public ParametersController(ParametersView view) {
-        super(memo_cache);
         this.view = view;
     }
 

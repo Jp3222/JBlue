@@ -16,10 +16,8 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.controllers.compc.ComboBoxController;
 import jsoftware.com.jblue.controllers.viewc.AdministrationHistoryController;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.views.framework.SimpleView;
 
 /**
@@ -53,21 +51,12 @@ public final class AdministrationHistoryView extends SimpleView {
         update_button.addActionListener(controller);
         delete_button.addActionListener(controller);
         cancel_button.addActionListener(controller);
-        
+
     }
 
     @Override
     public void components() {
-        ComboBoxController<EmployeeDTO> root = new ComboBoxController(root_employee, CacheFactory.EMPLOYEES);
-        ComboBoxController<EmployeeDTO> admin = new ComboBoxController(admin_employee, CacheFactory.EMPLOYEES);
-        ComboBoxController<EmployeeDTO> president = new ComboBoxController(president_employee, CacheFactory.EMPLOYEES);
-        ComboBoxController<EmployeeDTO> tesurer = new ComboBoxController(tesurer_employee, CacheFactory.EMPLOYEES);
-        //
-        root.loadData();
-        admin.loadData();
-        president.loadData();
-        tesurer.loadData();
-    }
+}
 
     @Override
     public void initialState() {

@@ -16,12 +16,6 @@
  */
 package jsoftware.com.jblue.controllers.winc;
 
-import jsoftware.com.jblue.sys.SystemSession;
-import jsoftware.com.jblue.sys.app.AppConfig;
-import jsoftware.com.jblue.sys.app.AppFiles;
-import jsoftware.com.jblue.views.ConfigurationPanel;
-import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.sys.LaunchApp;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.io.FileOutputStream;
@@ -33,6 +27,13 @@ import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jblue.sys.SystemSession;
+import jsoftware.com.jblue.sys.app.AppConfig;
+import jsoftware.com.jblue.sys.app.AppFiles;
+import jsoftware.com.jblue.views.ConfigurationPanel;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.sys.LaunchApp;
 
 /**
  *
@@ -101,9 +102,7 @@ public class ConfigController extends WindowController {
     }
 
     void testDB() {
-        try (JDBConnection connection = JDBConnection.getNewInstance(
-                view.getURL(), view.getSUser(), view.getSPassword())) {
-
+        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
             boolean valid = connection.getConnection().isValid(1000);
             if (!valid) {
                 JOptionPane.showMessageDialog(view, "Connexion no establecida");

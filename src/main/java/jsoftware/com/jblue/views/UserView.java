@@ -17,28 +17,21 @@
 package jsoftware.com.jblue.views;
 
 import java.awt.CardLayout;
-import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.FactoryController;
-import jsoftware.com.jblue.controllers.compc.ComboBoxController;
-import jsoftware.com.jblue.controllers.compc.TableController;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
-import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
-import jsoftware.com.jblue.sys.SystemLogs;
-import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.util.GraphicsUtils;
 import jsoftware.com.jblue.views.framework.DBValuesMapModel;
 import jsoftware.com.jblue.views.framework.DBView;
-import jsoftware.com.jutil.db.model.JDBObject;
+import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
@@ -70,7 +63,6 @@ public final class UserView extends DBView implements DBValuesMapModel {
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
         controller = FactoryController.getUserController(this);
-        table_controller = new TableController(this, CacheFactory.USERS);
         build();
     }
 
@@ -84,35 +76,25 @@ public final class UserView extends DBView implements DBValuesMapModel {
 
     @Override
     public void events() {
-        buttonGroup1.add(jRadioButton1);
-        buttonGroup1.add(jRadioButton2);
-
-        objects_table.addMouseListener(table_controller);
-        //
-        save_button.addActionListener(controller);
-        update_button.addActionListener(controller);
-        delete_button.addActionListener(controller);
-        cancel_button.addActionListener(controller);
-        search_object.addActionListener(controller);
-        //
-        back_button.addActionListener(table_controller);
-        next_button.addActionListener(table_controller);
-        reload_button.addActionListener(table_controller);
-        //
-        register_button.addActionListener(table_controller);
-        search_button.addActionListener(table_controller);
-        ComboBoxController<WaterIntakeTypesDTO> c1 = new ComboBoxController(water_intakes_field, CacheFactory.WATER_INTAKES_TYPES);
-        ComboBoxController<StreetDTO> c2 = new ComboBoxController(street1_field, CacheFactory.STREETS);
-        ComboBoxController<StreetDTO> c5 = new ComboBoxController(street2_field, CacheFactory.STREETS);
-        ComboBoxController<WaterIntakeTypesDTO> c3 = new ComboBoxController(water_intakes_filter, CacheFactory.WATER_INTAKES_TYPES);
-        ComboBoxController<StreetDTO> c4 = new ComboBoxController(street_filter, CacheFactory.STREETS);
-        add_file_button.addActionListener(controller);
-        add_photo_button.addActionListener(controller);
-        c1.loadData();
-        c2.loadData();
-        c3.loadData();
-        c4.loadData();
-        c5.loadData();
+//        buttonGroup1.add(jRadioButton1);
+//        buttonGroup1.add(jRadioButton2);
+//
+//        objects_table.addMouseListener(table_controller);
+//        //
+//        save_button.addActionListener(controller);
+//        update_button.addActionListener(controller);
+//        delete_button.addActionListener(controller);
+//        cancel_button.addActionListener(controller);
+//        search_object.addActionListener(controller);
+//        //
+//        back_button.addActionListener(table_controller);
+//        next_button.addActionListener(table_controller);
+//        reload_button.addActionListener(table_controller);
+//        //
+//        register_button.addActionListener(table_controller);
+//        search_button.addActionListener(table_controller);
+//        add_file_button.addActionListener(controller);
+//        add_photo_button.addActionListener(controller);
     }
 
     @Override
@@ -1093,90 +1075,8 @@ public final class UserView extends DBView implements DBValuesMapModel {
 
     @Override
     public Map<String, Object> getValues(boolean update) {
-        Map<String, String> map = Map.of();
-        try {
-            String _curp = curp_field.getText();
-            String _first_name = first_name_field.getText();
-            String _last_name1 = last_name1_field.getText();
-            String _last_name2 = last_name2_field.getText();
-            String _email = email_field.getText();
-            String _phone_number1 = phone_number1_field.getText();
-            String _phone_number2 = phone_number2_field.getText();
-            String _street1 = street1_field.getItemAt(street1_field.getSelectedIndex()).getId();
-            String _street2 = street2_field.getSelectedIndex() == 0
-                    ? null : street2_field.getItemAt(street2_field.getSelectedIndex()).getId();
-            String _inside_number = inside_number_field.getText();
-            String _outside_number = outside_number_field.getText();
-            String _water_intakes = water_intakes_field.getItemAt(water_intakes_field.getSelectedIndex()).getId();
-            String _type = buttonGroup1.getSelection().getActionCommand();
-            String _status = String.valueOf(user_status_field.getSelectedIndex());
-            String _gender = String.valueOf(gender_field.getSelectedIndex());
-            String _employee_last_update = SystemSession.getInstancia().getCurrentEmployee().getId();
-            if (update) {
-                map = saveUpdate(object_search, _curp, _first_name, _last_name1, _last_name2,
-                        _email, _phone_number1, _phone_number2,
-                        _street1, _street2, _inside_number, _outside_number,
-                        _water_intakes, _type, _status, _gender, _employee_last_update);
-            } else {
-                map = saveInsert(_curp, _first_name, _last_name1, _last_name2,
-                        _email, _phone_number1, _phone_number2, _street1, _street2,
-                        _inside_number, _outside_number, _water_intakes, _type, _status, _gender, _employee_last_update);
-            }
-        } catch (NullPointerException e) {
-            SystemLogs.severeDbLogs("Datos Ingresados Nulos", e);
-        }
-        return map;
-    }
+        Map<String, Object> map = Map.of();
 
-    private Map<String, String> saveInsert(String _curp, String _first_name, String _last_name1, String _last_name2, String _email, String _phone_number1, String _phone_number2, String _street1, String _street2, String _inside_number, String _outside_number, String _water_intakes, String _type, String _status, String _gender, String _employee_last_update) {
-        Map<String, String> map = new HashMap<>(15); // Tamaño inicial más preciso
-
-        // Usando un método auxiliar para validar y agregar
-        Filters.putIfPresentAndNotBlank(map, "curp", _curp);
-        Filters.putIfPresentAndNotBlank(map, "first_name", _first_name);
-        Filters.putIfPresentAndNotBlank(map, "last_name1", _last_name1);
-        Filters.putIfPresentAndNotBlank(map, "last_name2", _last_name2);
-        Filters.putIfPresentAndNotBlank(map, "email", _email);
-        Filters.putIfPresentAndNotBlank(map, "phone_number1", _phone_number1);
-        Filters.putIfPresentAndNotBlank(map, "phone_number2", _phone_number2);
-        Filters.putIfPresentAndNotBlank(map, "inside_number", _inside_number);
-        Filters.putIfPresentAndNotBlank(map, "outside_number", _outside_number);
-
-        // Estos campos no tienen la validación isBlank(), así que se manejan por separado
-        Filters.putIfNotNull(map, "street1", _street1);
-        Filters.putIfNotNull(map, "street2", _street2);
-        Filters.putIfNotNull(map, "water_intake_type", _water_intakes);
-        Filters.putIfNotNull(map, "user_type", _type);
-        Filters.putIfNotNull(map, "status", _status);
-        //
-        Filters.putIfNotNull(map, "gender", _gender);
-        return map;
-    }
-
-    private Map<String, String> saveUpdate(UserDTO object_search, String _curp, String _first_name, String _last_name1, String _last_name2, String _email, String _phone_number1, String _phone_number2, String _street1, String _street2, String _inside_number, String _outside_number, String _water_intakes, String _type, String _status, String _gender, String _employee_last_update) {
-        if (object_search == null) {
-            throw new NullPointerException("Objeto buscado null");
-        }
-        Map<String, String> map = new HashMap<>();
-
-        // Usando un método auxiliar para validar y agregar al mapa
-        Filters.addIfChanged(map, "curp", object_search.getCurp(), _curp);
-        Filters.addIfChanged(map, "first_name", object_search.getFirstName(), _first_name);
-        Filters.addIfChanged(map, "last_name1", object_search.getLastName1(), _last_name1);
-        Filters.addIfChanged(map, "last_name2", object_search.getLastName2(), _last_name2);
-        Filters.addIfChanged(map, "email", object_search.getEmail(), _email);
-        Filters.addIfChanged(map, "phone_number1", object_search.getPhoneNumber1(), _phone_number1);
-        Filters.addIfChanged(map, "phone_number2", object_search.getPhoneNumber2(), _phone_number2);
-        Filters.addIfChanged(map, "inside_number", object_search.getInsideNumber(), _inside_number);
-        Filters.addIfChanged(map, "outside_number", object_search.getOutsideNumber(), _outside_number);
-        Filters.addIfChanged(map, "street1", object_search.get("street1_object") != null ? object_search.getStreetObject().toString() : null, _street1);
-        Filters.addIfChanged(map, "street2", object_search.getStreet2(), _street2);
-        Filters.addIfChanged(map, "water_intake_type", object_search.getWaterIntakesObject() != null ? object_search.getWaterIntakesObject().toString() : null, _water_intakes);
-        Filters.addIfChanged(map, "user_type", String.valueOf(object_search.getUserType()), _type);
-        Filters.addIfChanged(map, "status", String.valueOf(object_search.getStatus()), _status);
-        //
-        Filters.addIfChanged(map, "gender", String.valueOf(object_search.getGender()), _gender);
-        Filters.addIfChanged(map, "employee_last_update", object_search.getEmployeeLastUpdate(), _employee_last_update);
         return map;
     }
 
@@ -1186,7 +1086,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
     }
 
     @Override
-    public void setObjectSearch(JDBObject o) {
+    public void setObjectSearch(JDBMapObject o) {
         object_search = (UserDTO) o;
     }
 
@@ -1199,48 +1099,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
 
     @Override
     public void setScreenTableInfo() {
-        // Campos ya existentes
-        first_name_field.setText(object_search.getName());
-        last_name1_field.setText(object_search.getLastName1());
-        last_name2_field.setText(object_search.getLastName2());
-        inside_number_field.setText(object_search.getInsideNumber());
-        street1_field.setSelectedItem(object_search.getStreetObject());
-        water_intakes_field.setSelectedItem(object_search.getWaterIntakesObject());
-        user_status_field.setSelectedIndex(object_search.getStatus());
 
-        // --- Campos añadidos ---
-        // Suponiendo que tienes un campo de texto para el ID y la CURP
-        curp_field.setText(object_search.getCURP());
-
-        // Suponiendo que tienes campos de texto para el email y los números de teléfono
-        email_field.setText(object_search.getEmail());
-        phone_number1_field.setText(object_search.getPhoneNumber1());
-        phone_number2_field.setText(object_search.getPhoneNumber2());
-        gender_field.setSelectedIndex(object_search.getGender() - 1);
-        // Suponiendo que tienes campos de texto para la calle 2 y el número exterior
-        if (object_search.getStreet2() == null) {
-            street2_field.setSelectedIndex(0);
-        } else {
-            street2_field.setSelectedItem(object_search.getStreet2());
-        }
-
-        outside_number_field.setText(object_search.getOutsideNumber());
-
-        // Suponiendo que tienes un campo para el tipo de usuario
-        //user_type_field.setText(object_search.getUserType());
-        // Suponiendo que tienes campos para las fechas
-        date_last_update_field.setText(object_search.getDateUpdate().toString());
-        date_register_field.setText(object_search.getDateRegister().toString());
-        man_tipo_toma.setSelected(false);
-        man_calle.setSelected(false);
-        man_estado.setSelected(false);
-        JRadioButton o = object_search.getUserType().equals("1") ? jRadioButton1 : jRadioButton2;
-        buttonGroup1.setSelected(o.getModel(), true);
-        save_button.setEnabled(false);
-        update_button.setEnabled(true);
-        delete_button.setEnabled(true);
-        add_consumer_button.setEnabled(object_search.getUserType().equals("1"));
-        show_consumer_list_button.setEnabled(object_search.getUserType().equals("1"));
     }
 
     public String getUserKey() {

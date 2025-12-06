@@ -16,48 +16,25 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.controllers.FactoryController;
-import jsoftware.com.jblue.controllers.compc.TableController;
-import jsoftware.com.jblue.model.constants.Const;
-import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.factories.TableModelFactory;
-import jsoftware.com.jblue.util.Filters;
-import jsoftware.com.jblue.util.EncriptadoAES;
-import jsoftware.com.jblue.util.Fecha;
-import jsoftware.com.jblue.util.Formats;
-import jsoftware.com.jblue.util.GraphicsUtils;
-import jsoftware.com.jblue.util.ObjectUtils;
-import jsoftware.com.jblue.views.framework.DBValuesMapModel;
-import jsoftware.com.jblue.views.framework.DBView;
-import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
+import javax.swing.JCheckBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import java.util.HashMap;
-import java.util.Map;
-import javax.swing.JCheckBox;
-import jsoftware.com.jutil.db.model.JDBObject;
+import jsoftware.com.jblue.controllers.FactoryController;
+import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.model.factories.TableModelFactory;
+import jsoftware.com.jblue.util.Filters;
+import jsoftware.com.jblue.util.GraphicsUtils;
+import jsoftware.com.jblue.views.framework.DBView;
+import jsoftware.com.jutil.db.JDBMapObject;
+import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
  *
  * @author jp
  */
-public final class EmployeesView extends DBView implements DBValuesMapModel {
+public final class EmployeesView extends DBView {
 
     private static final long serialVersionUID = 1L;
 
@@ -77,7 +54,6 @@ public final class EmployeesView extends DBView implements DBValuesMapModel {
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
         controller = FactoryController.getEmployeeController(this);
-        table_controller = new TableController(this, CacheFactory.EMPLOYEES);
         build();
     }
 
@@ -844,11 +820,6 @@ public final class EmployeesView extends DBView implements DBValuesMapModel {
     }
 
     @Override
-    public void setObjectSearch(JDBObject o) {
-        this.object_search = (EmployeeDTO) o;
-    }
-
-    @Override
     public EmployeeDTO getObjectSearch() {
         return object_search;
     }
@@ -862,161 +833,12 @@ public final class EmployeesView extends DBView implements DBValuesMapModel {
 
     @Override
     public void setScreenTableInfo() {
-        save_button.setEnabled(false);
-        GraphicsUtils.setEnable(true, update_button, delete_button);
-        //
-        curp_field.setText(object_search.getCURP());
-        first_name_field.setText(object_search.getFirstName());
-        last_name_1_field.setText(object_search.getLastName1());
-        last_name_2_field.setText(object_search.getLastName2());
-        gender_field.setSelectedIndex(object_search.getGender());
-        email_field.setText(object_search.getEmail());
-        date_birday_field.setValue(Fecha.getStringToDate(object_search.getDateBirday()));
-        phone_number1_field.setText(object_search.getPhoneNumber1());
-        phone_number2_field.setText(object_search.getPhoneNumber2());
-        employee_type_field.setSelectedItem(ObjectUtils.getDescriptionEmployeeTypeCAT(object_search.getEmployeeType()));
-        status_type_field.setSelectedItem(ObjectUtils.getDescriptionStatusCAT(object_search.getStatus()));
-        user_field.setText(object_search.getUser());
-        password_field.setText(object_search.getPassword());
-        date_last_update_field.setText(Const.getLocalDateTimeToString(object_search.getDateUpdate()));
-        date_register_field.setText(Const.getLocalDateTimeToString(object_search.getDateRegister()));
-        date_end_check_field.setSelected(object_search.getDateEnd() != null);
-        date_end_field.setEditable(object_search.getDateEnd() != null);
-        if (object_search.getDateEnd() != null) {
-            date_end_field.setValue(Date.from(
-                    object_search.getDateEnd().atZone(ZoneId.systemDefault()).toInstant()
-            ));
-        }
+
     }
 
     @Override
-    public boolean isValuesOk() {
-        JTextField[] arr = {
-            first_name_field, last_name_1_field, last_name_2_field, user_field, password_field
-        };
-        for (JTextField i : arr) {
-
-            if (Filters.isNullOrBlank(i.getText())) {
-                JOptionPane.showMessageDialog(register_panel, "El campo: \"%s\" no es valido".formatted(i.getName()));
-                return false;
-            }
-        }
-        JComboBox[] arr2 = {
-            gender_field, employee_type_field, status_type_field
-        };
-        for (JComboBox i : arr2) {
-            if (i.getSelectedIndex() == 0) {
-                JOptionPane.showMessageDialog(register_panel, "El campo: \"%s\" no es valido".formatted(i.getName()));
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public Map<String, String> getValues(boolean update) {
-        Map<String, String> map;
-        String _curp = curp_field.getText();
-        String _first_name = first_name_field.getText();
-        String _last_name1 = last_name_1_field.getText();
-        String _last_name2 = last_name_2_field.getText();
-        String _gender = String.valueOf(gender_field.getSelectedIndex());
-        String _email = email_field.getText();
-        String _date_birday = date_birday_field.getText();
-        String _phone_number1 = phone_number1_field.getText();
-        String _phone_number2 = phone_number2_field.getText();
-        String _employee_type = String.valueOf(
-                ObjectUtils.getIndexEmployeeCAT(employee_type_field.getSelectedItem().toString())
-        );
-        String _status = String.valueOf(
-                ObjectUtils.getIndexStatusCAT(status_type_field.getSelectedItem().toString())
-        );
-        String _date_end = null;
-        if (date_end_check_field.isSelected()) {
-            _date_end = date_end_field.getText();
-        }
-        if (update) {
-            map = saveUpdate(object_search, _curp, _first_name, _last_name1, _last_name2, _gender, _email, _date_birday, _phone_number1, _phone_number2, _employee_type, _status, _date_end);
-        } else {
-            String[] crd = credentials();
-            String _user = crd[0];
-            String _password = crd[0];
-            map = saveInsert(_curp, _first_name, _last_name1, _last_name2, _gender, _email, _date_birday, _phone_number1, _phone_number2, _employee_type, _status, _date_end, _user, _password);
-        }
-        map = Formats.getDBFormatInputMap(map);
-        //Se añaden despues de darle formato para no alterar las contraseñas encriptadas
-        return map;
-    }
-
-    private Map<String, String> saveInsert(String curp, String first_name, String last_name1, String last_name2,
-            String gender, String email, String date_birday, String phone_number1,
-            String phone_number2, String employee_type, String status, String date_end, String user, String password) {
-
-        Map<String, String> map = new HashMap<>();
-
-        // Campos que tienen validación de no nulo y no en blanco
-        Filters.putIfPresentAndNotBlank(map, "curp", curp);
-        Filters.putIfPresentAndNotBlank(map, "first_name", first_name);
-        Filters.putIfPresentAndNotBlank(map, "last_name1", last_name1);
-        Filters.putIfPresentAndNotBlank(map, "last_name2", last_name2);
-        Filters.putIfPresentAndNotBlank(map, "gender", gender);
-        Filters.putIfPresentAndNotBlank(map, "email", email);
-        Filters.putIfPresentAndNotBlank(map, "date_birday", date_birday);
-        Filters.putIfPresentAndNotBlank(map, "phone_number1", phone_number1);
-        Filters.putIfPresentAndNotBlank(map, "phone_number2", phone_number2);
-        Filters.putIfPresentAndNotBlank(map, "employee_type", employee_type);
-        Filters.putIfPresentAndNotBlank(map, "status", status);
-        Filters.putIfPresentAndNotBlank(map, "date_end", date_end);
-        Filters.putIfPresentAndNotBlank(map, "user", user);
-        Filters.putIfPresentAndNotBlank(map, "password", password);
-        return map;
-    }
-
-    private Map<String, String> saveUpdate(EmployeeDTO object_search,
-            String curp, String first_name, String last_name1,
-            String last_name2, String gender, String email,
-            String date_birday, String phone_number1, String phone_number2,
-            String employee_type, String status, String date_end) {
-        if (object_search == null) {
-            throw new NullPointerException("Objeto buscado null");
-        }
-        Map<String, String> map = new HashMap<>();
-
-        // Usando un método auxiliar para validar y agregar al mapa
-        Filters.addIfChanged(map, "curp", object_search.getCURP(), curp);
-        Filters.addIfChanged(map, "first_name", object_search.getFirstName(), first_name);
-        Filters.addIfChanged(map, "last_name1", object_search.getLastName1(), last_name1);
-        Filters.addIfChanged(map, "last_name2", object_search.getLastName2(), last_name2);
-        Filters.addIfChanged(map, "gender", String.valueOf(object_search.getGender()), gender);
-        Filters.addIfChanged(map, "email", object_search.getEmail(), email);
-        Filters.addIfChanged(map, "date_birday", object_search.getDateBirday(), date_birday);
-        Filters.addIfChanged(map, "phone_number1", object_search.getPhoneNumber1(), phone_number1);
-        Filters.addIfChanged(map, "phone_number2", object_search.getPhoneNumber2(), phone_number2);
-        Filters.addIfChanged(map, "employee_type", String.valueOf(object_search.getEmployeeType()), employee_type);
-        Filters.addIfChanged(map, "status", String.valueOf(object_search.getStatus()), status);
-        LocalDateTime dateEnd = object_search.getDateEnd();
-        Filters.addIfChanged(map, "date_end", date_end != null ? dateEnd.format(Const.DATE_TIME) : null, date_end);
-        return map;
-    }
-
-    private String[] credentials() {
-        String _user = null;
-        String _password = null;
-
-        try {
-            _user = EncriptadoAES.doEncrypt(String.valueOf(user_field.getPassword()),
-                    String.valueOf(password_field.getPassword()));
-
-            _password = EncriptadoAES.doEncrypt(String.valueOf(password_field.getPassword()),
-                    String.valueOf(user_field.getPassword()));
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException
-                | InvalidKeyException | NoSuchPaddingException
-                | IllegalBlockSizeException | BadPaddingException ex) {
-            Logger.getLogger(EmployeesView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return new String[]{
-            _user, _password
-        };
+    public void setObjectSearch(JDBMapObject o) {
+        this.object_search = (EmployeeDTO) o;
     }
 
 }

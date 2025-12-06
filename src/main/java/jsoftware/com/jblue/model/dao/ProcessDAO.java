@@ -6,12 +6,12 @@ package jsoftware.com.jblue.model.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.dto.HysAdministrationHistoryDTO;
 import jsoftware.com.jblue.model.dto.ProcessDTO;
@@ -20,6 +20,7 @@ import jsoftware.com.jblue.model.querys.ProcessQuery;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.jexception.JExcp;
 import jsoftware.com.jutil.model.AbstractDAO;
 
 /**
@@ -173,63 +174,48 @@ public class ProcessDAO extends AbstractDAO {
     }
 
     public List<ProcessDTO> getStartProcedures(JDBConnection connection) {
-        return readProcess(connection, 1);
+        return getProcess(connection, 10);
     }
 
     public List<ProcessDTO> getValidProcedures(JDBConnection connection) {
-        return readProcess(connection, 2);
+        return getProcess(connection, 11);
     }
 
     public List<ProcessDTO> getPaymentProcedures(JDBConnection connection) {
-        return readProcess(connection, 3);
+        return getProcess(connection, 12);
     }
 
     public List<ProcessDTO> getEndProcedures(JDBConnection connection) {
-        return readProcess(connection, 4);
+        return getProcess(connection, 13);
     }
 
     public List<ProcessDTO> getPrintProcedures(JDBConnection connection) {
-        return readProcess(connection, 5);
+        return getProcess(connection, 14);
     }
 
-    public List<ProcessDTO> readProcess(JDBConnection connection, int status) {
+    public List<ProcessDTO> getProcess(JDBConnection connection, int status) {
         ArrayList<ProcessDTO> list = new ArrayList<>(50);
-        try (PreparedStatement ps = connection.getNewPreparedStatement(queryProcess(status));) {
-            ResultSet rs = ps.executeQuery();
-            String[] aux = new String[Const.PRO_PROCESS_TABLE.getFields().length];
-            int i;
-            ProcessDTO o;
-            while (rs.next()) {
-                i = 0;
-                for (String j : Const.PRO_PROCESS_TABLE.getFields()) {
-                    aux[i] = j;
+        String query = "SELECT * FROM pro_process WHERE status = ?";
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query);) {
+            ps.setInt(1, status);
+            try (ResultSet rs = ps.executeQuery();) {
+                ResultSetMetaData md = rs.getMetaData();
+                int size = md.getColumnCount();
+                while (rs.next()) {
+                    ProcessDTO process = new ProcessDTO(size);
+                    for (int i = 1; i <= size; i++) {
+                        process.getMap().put(
+                                md.getColumnLabel(i),
+                                rs.getString(md.getColumnLabel(i))
+                        );
+                    }
+                    list.add(process);
                 }
-                o = new ProcessDTO(aux);
-                list.add(o);
             }
         } catch (SQLException ex) {
-            System.getLogger(ProcessDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            JExcp.getInstance(false, true).print(ex, getClass(), "getProcess");
         }
         return list;
     }
 
-    public String queryProcess(int status) {
-        StringBuilder sb = new StringBuilder(100);
-        sb.append("SELECT * FROM pro_process WHERE status != 15 ");
-        switch (status) {
-            case 1 ->
-                sb.append("AND employee_start != NULL AND date_start != NULL");
-            case 2 ->
-                sb.append("AND employee_valid != NULL AND date_valid != NULL");
-            case 3 ->
-                sb.append("AND employee_payment != NULL AND date_payment != NULL");
-            case 4 ->
-                sb.append("AND employee_ends != NULL AND date_end != NULL");
-            case 5 ->
-                sb.append("AND employee_print != NULL AND date_print != NULL");
-            default ->
-                throw new AssertionError();
-        }
-        return sb.toString();
-    }
 }

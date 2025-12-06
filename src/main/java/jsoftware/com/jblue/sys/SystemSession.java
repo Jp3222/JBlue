@@ -47,18 +47,12 @@ public class SystemSession implements LocalSession<EmployeeDTO> {
      * Registro de la administración activa actual (del año en curso).
      */
     private HysAdministrationHistoryDTO current_administration;
-    /**
-     * La conexión a la base de datos utilizada para transacciones de sesión.
-     */
-    private final JDBConnection connection;
 
     /**
      * Constructor privado que obtiene la conexión a la base de datos al
      * inicializar la única instancia de la sesión.
      */
     private SystemSession() {
-        // Se asume que "connection" es la clave correcta para obtener el recurso.
-        connection = ConnectionFactory.getIntance().getMain_connection();
     }
 
     /**
@@ -143,38 +137,38 @@ public class SystemSession implements LocalSession<EmployeeDTO> {
     @Override
     public void setUser(EmployeeDTO user) {
         // Deshabilita el auto-commit para manejar la transacción manualmente.
-        connection.setAutoCommit(false);
+        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
+            saveSession(connection, user);
+        } catch (SQLException e) {
 
+        }
+    }
+
+    private void saveSession(JDBConnection connection, EmployeeDTO user) {
+        boolean res;
         try {
-            boolean registerSuccess;
+            connection.setAutoCommit(false);
             String description = user == null ? "FIN DE SESION" : "INICIO DE SESIÓN";
-
             if (user == null) {
                 // Registro de salida
-                registerSuccess = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogOut(current_employee, description);
+                res = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogOut(current_employee, description);
                 current_employee = null;
                 current_administration = null;
             } else {
                 // Registro de entrada
-                registerSuccess = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogin(user, description);
+                res = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogin(user, description);
                 current_employee = user;
                 // Obtiene el contexto administrativo tras un login exitoso.
                 current_administration = new AdministrationHistoryDAO().getCurrentAdministration(connection);
             }
-
-            if (!registerSuccess) {
+            if (!res) {
                 throw new SQLException("El registro de auditoría en bitácora ha fallado o fue corrupto.");
             }
-
-            // CRÍTICO: Commit explícito para asegurar que los registros de bitácora se guarden.
             connection.commit();
-
         } catch (SQLException e) {
-            // Si hay un error, deshace todos los cambios.
             connection.rollBack();
             JExcp.getInstance(false, true).print(e, getClass(), "setUser");
-            // Se re-lanza como RuntimeException para notificación.
-            throw new RuntimeException("Fallo transaccional durante el inicio/cierre de sesión.", e);
+
         } finally {
             // Siempre restaurar el modo AutoCommit.
             connection.setAutoCommit(true);

@@ -16,12 +16,11 @@
  */
 package jsoftware.com.jblue.controllers.viewc;
 
+import java.awt.event.ActionEvent;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.controllers.DBControllerModel;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.views.UserConsumerView;
-import java.awt.event.ActionEvent;
 
 /**
  *
@@ -32,7 +31,6 @@ public class UserConsumerConotroller extends AbstractDBViewController<UserDTO> i
     private UserConsumerView view;
 
     public UserConsumerConotroller(UserConsumerView view) {
-        super(CacheFactory.USERS);
         this.view = view;
     }
 

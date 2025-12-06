@@ -62,7 +62,11 @@ public class Filters {
     }
 
     public static boolean isNullOrBlank(String txt) {
-        return txt == null || txt.isEmpty()|| txt.isBlank();
+        return txt == null || txt.isEmpty() || txt.isBlank();
+    }
+
+    public static boolean isNull(Object o) {
+        return o == null;
     }
 
     public static boolean isNullOrBlank(String... txt) {
@@ -93,7 +97,7 @@ public class Filters {
     }
 
     // Método auxiliar
-    public static void addIfChanged(Map<String, String> map, String key, String oldValue, String newValue) {
+    public static void addIfChanged(Map<String, Object> map, String key, String oldValue, String newValue) {
         if (oldValue == null && newValue != null && !newValue.isBlank()) {
             map.put(key, newValue);
         } else if (oldValue != null && newValue != null && !newValue.isBlank() && !oldValue.equals(newValue)) {
@@ -109,8 +113,8 @@ public class Filters {
      * @param key
      * @param value
      */
-    public static void putIfPresentAndNotBlank(Map<String, String> map, String key, String value) {
-        if (value != null && !value.isBlank()) {
+    public static void putIfPresentAndNotBlank(Map<String, Object> map, String key, String value) {
+        if (value != null && !value.toString().isBlank()) {
             map.put(key, value);
         }
     }
@@ -122,7 +126,7 @@ public class Filters {
      * @param key
      * @param value
      */
-    public static void putIfNotNull(Map<String, String> map, String key, String value) {
+    public static void putIfNotNull(Map<String, Object> map, String key, String value) {
         if (value != null) {
             map.put(key, value);
         }

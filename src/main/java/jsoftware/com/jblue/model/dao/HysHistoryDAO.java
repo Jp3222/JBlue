@@ -43,7 +43,6 @@ public class HysHistoryDAO extends AbstractDAO {
         return INSTANCE;
     }
 
-    private final JDBConnection connection;
     private final String query;
     //
     private final HysEmployeeMovs INSTANCE2;
@@ -51,7 +50,6 @@ public class HysHistoryDAO extends AbstractDAO {
 
     public HysHistoryDAO(boolean flag_dev_log, String name_module) {
         super(flag_dev_log, name_module);
-        this.connection = ConnectionFactory.getIntance().getHistory_connection();
         this.INSTANCE3 = new HysUsersMovs();
         this.INSTANCE2 = new HysEmployeeMovs();
         this.query = "INSERT INTO hys_program_history(employee, db_user, affected_table, type_mov, description) VALUES(?,?,?,?,?)";
@@ -80,7 +78,7 @@ public class HysHistoryDAO extends AbstractDAO {
 
     protected boolean save(EmployeeDTO employee, int affected_table, int type_mov, String description) throws SQLException {
         boolean rt = false;
-        try (PreparedStatement ps = connection.getConnection().prepareStatement(query)) {
+        try (JDBConnection c = connection(); PreparedStatement ps = c.getConnection().prepareStatement(query)) {
             ps.setString(1, employee.getId());
             ps.setString(2, currentUser());
             ps.setInt(3, affected_table);
@@ -91,10 +89,14 @@ public class HysHistoryDAO extends AbstractDAO {
         return rt;
     }
 
+    public JDBConnection connection() throws SQLException {
+        return ConnectionFactory.getIntance().getHistoryConnection();
+    }
+
     public String currentUser() {
         String q = "SELECT CURRENT_USER";
         String curus = null;
-        try (ResultSet rs = connection.query(q);) {
+        try (JDBConnection c = connection(); ResultSet rs = c.query(q);) {
             if (rs.next()) {
                 curus = rs.getString(1);
             }

@@ -16,73 +16,100 @@
  */
 package jsoftware.com.jblue.util.cache;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
-import jsoftware.com.jblue.model.DBConnection;
-import jsoftware.com.jutil.db.model.JDBObject;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.db.JDBMapObject;
+import jsoftware.com.jutil.db.JDBTable;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public abstract class AbstractListCache<T extends JDBObject> extends AbstractCache<T> implements ListCacheModel<T> {
+public class AbstractListCache<T extends JDBMapObject> extends AbstractCache<T> implements ListCacheModel<T> {
 
     private static final long serialVersionUID = 1L;
+    private final List<T> current_cache;
 
-    public AbstractListCache(int capacity, DBConnection conexion) {
-        super(new ArrayList<>(capacity), capacity, conexion);
+    public AbstractListCache(JDBTable table, Class cls) {
+        super(table, cls);
+        this.current_cache = new ArrayList<>();
     }
 
-    public AbstractListCache(DBConnection conexion) {
-        this(MIN, conexion);
-    }
-
-    @Override
-    public int size() {
-        return cache.size();
+    public AbstractListCache(JDBTable table, Class cls, int range) {
+        super(table, range, cls);
+        this.current_cache = new ArrayList<>();
     }
 
     @Override
     public int getSteps() {
-        return steps;
+        return range;
+    }
+
+    @Override
+    public void loadData() {
+        String query = current_query.formatted(getMinId(), getMaxId());
+        if (cache.containsKey(query)) {
+            current_cache.clear();
+            current_cache.addAll(cache.get(query));
+            return;
+        }
+        try (JDBConnection c = connection(); PreparedStatement ps = c.getNewPreparedStatement(query); ResultSet rs = ps.executeQuery();) {
+            ResultSetMetaData md = rs.getMetaData();
+            int size_field = md.getColumnCount();
+            while (rs.next()) {
+                Map<String, Object> map = new HashMap<>(table.getFields().length);
+                for (int i = 1; i <= size_field; i++) {
+                    map.put(md.getColumnLabel(i), rs.getString(md.getColumnLabel(i)));
+                }
+                T t = (T) c.getFactory().getMapObject(cls);
+                t.setMap(map);
+                current_cache.add(t);
+            }
+
+            List copy = new ArrayList(range);
+            copy.addAll(current_cache);
+            cache.put(query, copy);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void dumpData() {
-        if (cache.isEmpty()) {
+        if (current_cache.isEmpty()) {
             return;
         }
-        cache.clear();
+        current_cache.clear();
     }
 
     @Override
     public void reLoadData() {
         dumpData();
-        dumpBuffer();
         loadData();
     }
 
-    public void dumpBuffer() {
-        buffer_cache.clear();
+    @Override
+    public int size() {
+        return current_cache.size();
     }
 
     @Override
-    public ArrayList<T> getList() {
-        return (ArrayList<T>) cache;
+    public List<T> getList() {
+        return current_cache;
     }
 
     @Override
     public List<T> getList(Predicate<T> filter) {
-        return cache.stream().filter(filter).toList();
+        return current_cache.stream().filter(filter).toList();
     }
 
-    public int getIndexMax() {
-        return index_max;
-    }
-
-    public int getIndexMin() {
-        return index_min;
-    }
 }

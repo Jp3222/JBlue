@@ -21,42 +21,28 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import jsoftware.com.jblue.controllers.AbstractComponentController;
-import jsoftware.com.jblue.model.dto.Objects;
-import jsoftware.com.jblue.util.cache.MemoListCache;
-import jsoftware.com.jutil.db.model.JDBObject;
+import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public class ComboBoxController<T extends JDBObject> extends AbstractComponentController<T> {
+public class ComboBoxController<T extends JDBMapObject> extends AbstractComponentController<T> {
 
     private static final long serialVersionUID = 1L;
 
     private String format;
 
     public ComboBoxController(JComboBox<T> component, List<T> list_items) {
-        super(component, null, list_items);
-    }
-
-    public ComboBoxController(JComboBox<T> component, MemoListCache<T> memo_cache) {
-        super(component, memo_cache, null);
+        super(component, list_items);
     }
 
     @Override
     public void loadData() {
         JComboBox<T> box = getComponent();
-        box.addItem((T) new Objects() {
-            @Override
-            public String toString() {
-                return "Seleccione elemento";
-            }
-        });
-        if (memo_cache != null) {
-            memo_cache.getList().forEach((t) -> box.addItem(t));
-        } else {
-            list_items.forEach(t -> box.addItem(t));
+        for (T i : list) {
+            box.addItem(i);
         }
     }
 
@@ -87,5 +73,6 @@ public class ComboBoxController<T extends JDBObject> extends AbstractComponentCo
     public String getFormat() {
         return format;
     }
+
 
 }

@@ -17,15 +17,10 @@
 package jsoftware.com.jblue.views;
 
 import java.awt.event.ActionEvent;
-import java.time.ZoneId;
-import java.util.Date;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.sys.SystemSession;
-import jsoftware.com.jblue.util.Fecha;
-import jsoftware.com.jblue.util.ObjectUtils;
 import jsoftware.com.jblue.views.framework.SimpleView;
 
 /**
@@ -456,28 +451,7 @@ public final class VPerfil extends SimpleView {
         if (!isInfoValid()) {
             return;
         }
-        curp_field.setText(current_employee.getCURP());
-        first_name_field.setText(current_employee.getFirstName());
-        last_name_1_field.setText(current_employee.getLastName1());
-        last_name_2_field.setText(current_employee.getLastName2());
-        gender_field.setSelectedIndex(current_employee.getGender());
-        email_field.setText(current_employee.getEmail());
-        date_birday_field.setValue(Fecha.getStringToDate(current_employee.getDateBirday()));
-        phone_number1_field.setText(current_employee.getPhoneNumber1());
-        phone_number2_field.setText(current_employee.getPhoneNumber2());
-        employee_type_field.setSelectedItem(ObjectUtils.getDescriptionEmployeeTypeCAT(current_employee.getEmployeeType()));
-        status_type_field.setSelectedItem(ObjectUtils.getDescriptionStatusCAT(current_employee.getStatus()));
-        user_field.setText(current_employee.getUser());
-        password_field.setText(current_employee.getPassword());
-        date_last_update_field.setText(Const.getLocalDateTimeToString(current_employee.getDateUpdate()));
-        date_register_field.setText(Const.getLocalDateTimeToString(current_employee.getDateRegister()));
-        date_end_check_field.setSelected(current_employee.getDateEnd() != null);
-        date_end_field.setEditable(current_employee.getDateEnd() != null);
-        if (current_employee.getDateEnd() != null) {
-            date_end_field.setValue(Date.from(
-                    current_employee.getDateEnd().atZone(ZoneId.systemDefault()).toInstant()
-            ));
-        }
+        
     }
 
     public boolean isInfoValid() {

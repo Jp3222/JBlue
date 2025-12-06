@@ -17,15 +17,13 @@
 package jsoftware.com.jblue.views;
 
 import java.awt.CardLayout;
-import java.util.Map;
-import jsoftware.com.jblue.views.framework.DBValuesMapModel;
 import jsoftware.com.jblue.views.framework.SimpleView;
 
 /**
  *
  * @author juanp
  */
-public class ProcessView extends SimpleView implements DBValuesMapModel {
+public class ProcessView extends SimpleView {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,7 +37,7 @@ public class ProcessView extends SimpleView implements DBValuesMapModel {
     public ProcessView() {
         initComponents();
         this.ly = (CardLayout) root_panel.getLayout();
-        this.user_view = new UserView();
+        this.user_view = new UserView(true, "process", "user");
         user_view.setProcess(true);
         this.water_intake_view = new WaterIntakesView();
         this.water_intake_view.setProcess(true);
@@ -134,16 +132,6 @@ public class ProcessView extends SimpleView implements DBValuesMapModel {
         root_panel.setLayout(new java.awt.CardLayout());
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    @Override
-    public boolean isValuesOk() {
-        return false;
-    }
-
-    @Override
-    public Map<String, String> getValues(boolean update) {
-        return null;
-    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

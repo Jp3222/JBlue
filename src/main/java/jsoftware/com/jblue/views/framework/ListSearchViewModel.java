@@ -20,16 +20,14 @@ import java.io.Serializable;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JTextField;
-import jsoftware.com.jblue.model.dto.ForeingKeyObject;
-import jsoftware.com.jblue.model.dto.Objects;
-import jsoftware.com.jblue.model.dto.StatusObjectModel;
+import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  *
  * @author juan-campos
  * @param <T>
  */
-public interface ListSearchViewModel<T extends Objects & StatusObjectModel & ForeingKeyObject> extends Serializable {
+public interface ListSearchViewModel<T extends JDBMapObject> extends Serializable {
 
     JList<T> getList();
 
@@ -45,7 +43,7 @@ public interface ListSearchViewModel<T extends Objects & StatusObjectModel & For
 
     void setScreenListInfo();
 
-    Objects getObjectSearch();
+    T getObjectSearch();
 
     void setObjectSearch(T object);
 

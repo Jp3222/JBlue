@@ -6,7 +6,7 @@ package jsoftware.com.jblue.model.documents;
 
 import java.sql.Connection;
 import java.util.List;
-import jsoftware.com.jblue.model.dto.Objects;
+import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  *
@@ -26,7 +26,7 @@ public interface DocumentModel {
 
     public String getQuery();
 
-    public List<Objects> getList();
+    public List<JDBMapObject> getList();
 
     public String[] getHeaders();
 

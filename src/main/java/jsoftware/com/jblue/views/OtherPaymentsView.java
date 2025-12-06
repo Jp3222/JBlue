@@ -16,7 +16,7 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.model.dto.OtherPaymentsType;
+import jsoftware.com.jblue.model.dto.PaymentDTO;
 
 /**
  *
@@ -372,8 +372,8 @@ public class OtherPaymentsView extends javax.swing.JPanel {
     private javax.swing.JPanel options_panel;
     private javax.swing.JPanel panel_campos;
     private javax.swing.JPanel panel_izq;
-    private javax.swing.JList<String> payments_paid_list;
-    private javax.swing.JList<OtherPaymentsType> pending_payments_list;
+    private javax.swing.JList<PaymentDTO> payments_paid_list;
+    private javax.swing.JList<PaymentDTO> pending_payments_list;
     private javax.swing.JLabel range;
     private javax.swing.JButton register_button;
     private javax.swing.JPanel register_panel;

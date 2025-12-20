@@ -1,5 +1,7 @@
 package jsoftware.com.jblue.model.dto;
 
+import java.util.Map;
+
 /**
  * Data Transfer Object (DTO) para la tabla usr_user que almacena todos los
  * datos como pares clave-valor dentro de un Map. Las claves son los nombres
@@ -13,6 +15,20 @@ package jsoftware.com.jblue.model.dto;
 public class UserDTO extends PersonObject implements Cloneable {
 
     private static final long serialVersionUID = 1L;
+
+    public UserDTO(Map<String, Object> map) {
+        super(map);
+    }
+
+    public UserDTO(int size) {
+        super(size);
+    }
+
+    public UserDTO() {
+        super(21);
+    }
+
+   
 
     public String getStreet1() {
         return get("street1").toString();

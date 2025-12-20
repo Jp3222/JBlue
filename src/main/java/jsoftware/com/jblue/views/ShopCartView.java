@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2024 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  * @version 1.0
  */
 public class ShopCartView extends DBView implements ListSearchViewModel {

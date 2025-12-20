@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 juan-campos
+ * Copyright (C) 2025 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ import jsoftware.com.jblue.model.dto.OWaterIntakes;
 
 /**
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  */
 public interface PaymentModel extends Serializable {
 

@@ -16,11 +16,10 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.model.dto.HistoryDTO;
+import javax.swing.JTable;
+import jsoftware.com.jblue.controllers.viewc.HistoryController;
 import jsoftware.com.jblue.views.framework.DataBaseAccessView;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
-import java.util.List;
-import jsoftware.com.jblue.controllers.viewc.HistoryController;
 
 /**
  *
@@ -38,7 +37,7 @@ public final class HistoryView extends DataBaseAccessView {
     public HistoryView() {
         super();
         this.table_model = new JTableModel(
-                new String[]{"EMPLEADO", "TIPO DE MOVIMIENTO", "DESCRIPCION","FECHA DE REGISTRO"},
+                new String[]{"EMPLEADO", "TIPO DE MOVIMIENTO", "DESCRIPCION", "FECHA DE REGISTRO"},
                 0
         );
         initComponents();
@@ -239,6 +238,10 @@ public final class HistoryView extends DataBaseAccessView {
 
     public JTableModel getModel() {
         return table_model;
+    }
+
+    public JTable getObjectsTable() {
+        return objects_table;
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2024 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,24 +22,18 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import jsoftware.com.jblue.controllers.winc.MainController;
 import jsoftware.com.jblue.sys.SystemSession;
-import jsoftware.com.jblue.views.AdministrationHistoryView;
-import jsoftware.com.jblue.views.OtherPaymentTypesView;
-import jsoftware.com.jblue.views.OtherPaymentsView;
-import jsoftware.com.jblue.views.ParametersView;
-import jsoftware.com.jblue.views.ProcessView;
+import jsoftware.com.jblue.views.PaymentConceptView;
 import jsoftware.com.jblue.views.ShopCartView;
 import jsoftware.com.jblue.views.StreetsView;
-import jsoftware.com.jblue.views.SurchargePaymentsView;
-import jsoftware.com.jblue.views.UserConsumerView;
 import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.WaterIntakesTypesView;
-import jsoftware.com.jblue.views.WaterIntakesView;
 import jsoftware.com.jblue.views.components.UserViewComponent;
 import jsoftware.com.jblue.views.framework.AbstractAppWindows;
+import jsoftware.com.jblue.views.process.UserRegisterProcessView;
 
 /**
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  */
 public final class WMainMenu extends AbstractAppWindows {
 
@@ -49,19 +43,21 @@ public final class WMainMenu extends AbstractAppWindows {
     private final CardLayout ly;
     //Vistas de la base de datos
     private final ShopCartView shop_cart_view;
+    private final UserRegisterProcessView process_view;
     private final UserView users_view;
     private final StreetsView street_view;
     private final WaterIntakesTypesView water_intakes_type_view;
-    private final WaterIntakesView water_intakes;
-    private final OtherPaymentTypesView other_payments_types_view;
-    private final OtherPaymentsView other_payments_view;
-    private final SurchargePaymentsView surcharge_payments_view;
-    private final ProcessView process_view;
-    private final UserConsumerView user_consumer;
-    //
-    private final ParametersView flag_view;
-    //
-    private final AdministrationHistoryView administration_history_view;
+    private final PaymentConceptView payment_concept_view;
+//    private final WaterIntakesView water_intakes;
+//    private final OtherPaymentTypesView other_payments_types_view;
+//    private final OtherPaymentsView other_payments_view;
+//    private final SurchargePaymentsView surcharge_payments_view;
+
+//    private final UserConsumerView user_consumer;
+//    //
+//    private final ParametersView flag_view;
+//    //
+//    private final AdministrationHistoryView administration_history_view;
     private final LoginWindows LOGIN;
     private final AboutUs ABOUT;
     private final ProfileWindow PROFILE;
@@ -81,24 +77,26 @@ public final class WMainMenu extends AbstractAppWindows {
         this.ABOUT = new AboutUs();
         this.PROFILE = new ProfileWindow();
         shop_cart_view = new ShopCartView();
+        process_view = new UserRegisterProcessView();
         users_view = new UserView(false, "", PROGRAM_NAME);
         street_view = new StreetsView();
         water_intakes_type_view = new WaterIntakesTypesView();
-        water_intakes = new WaterIntakesView();
-        other_payments_types_view = new OtherPaymentTypesView();
-        other_payments_view = new OtherPaymentsView();
-        surcharge_payments_view = new SurchargePaymentsView();
-        process_view = new ProcessView();
-        user_consumer = new UserConsumerView();
-        administration_history_view = new AdministrationHistoryView();
+        this.payment_concept_view = new PaymentConceptView();
+//        water_intakes = new WaterIntakesView();
+//        other_payments_types_view = new OtherPaymentTypesView();
+//        other_payments_view = new OtherPaymentsView();
+//        surcharge_payments_view = new SurchargePaymentsView();
+
+//        user_consumer = new UserConsumerView();
+//        administration_history_view = new AdministrationHistoryView();
         //
-        flag_view = ParametersView.getInstance();
+        //flag_view = ParametersView.getInstance();
         //
         ly = (CardLayout) views_panel.getLayout();
         updateTitle(shop_cart_view.getName());
         build();
     }
-    
+
     @Override
     public void build() {
         components();
@@ -106,24 +104,25 @@ public final class WMainMenu extends AbstractAppWindows {
         initialState();
         finalState();
     }
-    
+
     @Override
     public void components() {
         views_panel.add(shop_cart_view, shop_cart_view.getName());
-        views_panel.add(users_view, users_view.getName());
+        views_panel.add(process_view, process_view.getName());
         views_panel.add(street_view, street_view.getName());
         views_panel.add(water_intakes_type_view, water_intakes_type_view.getName());
-        views_panel.add(water_intakes, water_intakes.getName());
-        views_panel.add(other_payments_types_view, other_payments_types_view.getName());
-        views_panel.add(other_payments_view, other_payments_view.getName());
-        views_panel.add(surcharge_payments_view, surcharge_payments_view.getName());
-        views_panel.add(flag_view, flag_view.getName());
-        views_panel.add(process_view, process_view.getName());
-        views_panel.add(user_consumer, user_consumer.getName());
-        views_panel.add(administration_history_view, administration_history_view.getName());
+        views_panel.add(users_view, users_view.getName());
+        views_panel.add(payment_concept_view, payment_concept_view.getName());
+        //        views_panel.add(water_intakes, water_intakes.getName());
+        //        views_panel.add(other_payments_types_view, other_payments_types_view.getName());
+        //        views_panel.add(other_payments_view, other_payments_view.getName());
+        //        views_panel.add(surcharge_payments_view, surcharge_payments_view.getName());
+        //        views_panel.add(flag_view, flag_view.getName());
+        //        views_panel.add(user_consumer, user_consumer.getName());
+        //        views_panel.add(administration_history_view, administration_history_view.getName());
 
     }
-    
+
     @Override
     public void events() {
         controller = new MainController(this);
@@ -152,16 +151,16 @@ public final class WMainMenu extends AbstractAppWindows {
         //
         administration_history_view_item.addActionListener(controller);
     }
-    
+
     @Override
     public void initialState() {
-        
+
     }
-    
+
     @Override
     public void finalState() {
     }
-    
+
     public void goToHome() {
         ly.show(views_panel, shop_cart_view.getName());
     }
@@ -325,6 +324,7 @@ public final class WMainMenu extends AbstractAppWindows {
         btn_tipo_pagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/tipo de pago.png"))); // NOI18N
         btn_tipo_pagos.setText("Otros tipos de pagos");
         btn_tipo_pagos.setToolTipText("Tipo de pagos");
+        btn_tipo_pagos.setActionCommand("Conceptos de pago");
         btn_tipo_pagos.setHideActionText(true);
         btn_tipo_pagos.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btn_tipo_pagos.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -464,11 +464,6 @@ public final class WMainMenu extends AbstractAppWindows {
         jMenu6.add(jMenuItem5);
 
         jMenuItem9.setText("Pagos por el servicio");
-        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem9ActionPerformed(evt);
-            }
-        });
         jMenu6.add(jMenuItem9);
 
         jMenuItem10.setText("Pagos por recargos");
@@ -491,10 +486,6 @@ public final class WMainMenu extends AbstractAppWindows {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem9ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -558,7 +549,7 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JMenuItem water_intakes_view_item;
     // End of variables declaration//GEN-END:variables
     public static final String OUT = "OUT";
-    
+
     @Override
     public void dispose() {
         closeWindows();
@@ -566,36 +557,36 @@ public final class WMainMenu extends AbstractAppWindows {
         if (showVisor != null && showVisor.isVisible()) {
             showVisor.dispose();
         }
-        
+
         SystemSession.getInstancia().setUser(null);
         SwingUtilities.invokeLater(() -> {
             LOGIN.setVisible(true);
         });
     }
-    
+
     public CardLayout getCardLayout() {
         return ly;
     }
-    
+
     public JLabel getLabelTitle() {
         return label_title;
     }
-    
+
     public JPanel getViewsPanel() {
         return views_panel;
     }
-    
+
     public AboutUs getABOUT() {
         return ABOUT;
     }
-    
+
     public ProfileWindow getProfileWindow() {
         return PROFILE;
     }
-    
+
     public void closeWindows() {
         ABOUT.dispose();
         PROFILE.dispose();
     }
-    
+
 }

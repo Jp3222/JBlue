@@ -4,7 +4,6 @@
  */
 package jsoftware.com.jblue.model.dao;
 
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -12,9 +11,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
-import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
@@ -23,22 +21,22 @@ import jsoftware.com.jutil.model.AbstractDAO;
  *
  * @author juanp
  */
-public class WaterIntakeDAO extends AbstractDAO implements ListComponentDAO<WaterIntakeTypesDTO> {
+public class StreetDAO extends AbstractDAO implements ListComponentDAO<StreetDTO> {
 
-    public WaterIntakeDAO(boolean flag_dev_log, String name_module) {
+    public StreetDAO(boolean flag_dev_log, String name_module) {
         super(flag_dev_log, name_module);
     }
 
     @Override
-    public List<WaterIntakeTypesDTO> getList() {
-        List<WaterIntakeTypesDTO> list = new ArrayList<>(15);
-        String query = "SELECT * FROM wki_water_intake_type WHERE status = 1";
+    public List<StreetDTO> getList() {
+        List<StreetDTO> list = new ArrayList<>(15);
+        String query = "SELECT * FROM cat_street WHERE status = 1";
         try (JDBConnection c = ConnectionFactory.getIntance().getCacheConnection(); PreparedStatement ps = c.getNewPreparedStatement(query)) {
             try (ResultSet rs = ps.executeQuery();) {
                 ResultSetMetaData md = rs.getMetaData();
                 int size = md.getColumnCount();
                 while (rs.next()) {
-                    WaterIntakeTypesDTO o = new WaterIntakeTypesDTO();
+                    StreetDTO o = new StreetDTO();
                     for (int i = 1; i <= size; i++) {
                         String key = md.getColumnLabel(i);
                         o.put(key, rs.getString(key));
@@ -52,17 +50,14 @@ public class WaterIntakeDAO extends AbstractDAO implements ListComponentDAO<Wate
         return list;
     }
 
-    public int insert(JDBConnection connection, WaterIntakeTypesDTO o) {
-        String query = "INSERT INTO wki_water_intake_type(type_name, current_price, surcharge, last_employee_update) VALUES(?,?,?,?)";
+    public int insert(JDBConnection connection, StreetDTO o) {
+        String query = "INSERT INTO cat_street(street_name) VALUES(?)";
         int key = -1;
         // El try-with-resources es correcto
         try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);) {
 
             // **CORRECCIÓN 1: Establecer el parámetro del DTO**
-            ps.setString(1, o.getTypeName());
-            ps.setBigDecimal(2, new BigDecimal(o.getCurrentPrice()));
-            ps.setString(3, o.getSurcharge());
-            ps.setString(4, SystemSession.getInstancia().getCurrentEmployee().getId());
+            ps.setString(1, o.getStreetName());
 
             // **CORRECCIÓN 2: Usar executeUpdate (o simplemente ejecutar)**
             int res = ps.executeUpdate(); // Ejecuta la inserción
@@ -82,7 +77,7 @@ public class WaterIntakeDAO extends AbstractDAO implements ListComponentDAO<Wate
         return key;
     }
 
-    public boolean update(JDBConnection connection, WaterIntakeTypesDTO old_dto, WaterIntakeTypesDTO new_dto) {
+    public boolean update(JDBConnection connection, StreetDTO old_dto, StreetDTO new_dto) {
         boolean res = false;
         Map<String, Object> diff_map = Func.getChangedStringEntries(old_dto.getMap(), new_dto.getMap());
         if (diff_map.isEmpty()) {
@@ -116,7 +111,7 @@ public class WaterIntakeDAO extends AbstractDAO implements ListComponentDAO<Wate
             throw new IllegalArgumentException("El mapa de campos a actualizar no puede ser nulo o vacío.");
         }
         StringBuilder sb = new StringBuilder(100);
-        sb.append("UPDATE wki_water_intake_type SET ");
+        sb.append("UPDATE cat_street SET ");
         // 2. Iterar solo sobre las claves que NO deben estar en el SET (ej: id)
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             String key = entry.getKey();
@@ -127,7 +122,7 @@ public class WaterIntakeDAO extends AbstractDAO implements ListComponentDAO<Wate
             }
         }
         // 3. Manejo de mapa con solo campos excluidos (e.g., solo pasó el ID)
-        // Si la longitud de sb es la misma que la inicial ("UPDATE wki_water_intake_type SET "), significa que no se agregaron campos.
+        // Si la longitud de sb es la misma que la inicial ("UPDATE cat_street SET "), significa que no se agregaron campos.
         if (sb.toString().endsWith("SET ")) {
             throw new IllegalArgumentException("El mapa solo contiene campos excluidos de la actualización.");
         }
@@ -140,11 +135,11 @@ public class WaterIntakeDAO extends AbstractDAO implements ListComponentDAO<Wate
         sb.append("WHERE id = ? AND status = 1");
         return sb.toString();
     }
-
-    // Asumiendo que WaterIntakeTypesDTO.getId() devuelve un Long. Si devuelve String, ajustar el setX
-    public boolean delete(JDBConnection connection, WaterIntakeTypesDTO o) throws SQLException { // Propagar SQLException para un manejo superior
+    
+    // Asumiendo que StreetDTO.getId() devuelve un Long. Si devuelve String, ajustar el setX
+    public boolean delete(JDBConnection connection, StreetDTO o) throws SQLException { // Propagar SQLException para un manejo superior
         // CORRECCIÓN 1: Error tipográfico en la función SQL
-        String query = "UPDATE wki_water_intake_type SET status = 3, date_end = CURRENT_TIMESTAMP WHERE id = ? AND status = 1";
+        String query = "UPDATE cat_street SET status = 3, date_end = CURRENT_TIMESTAMP WHERE id = ? AND status = 1";
         boolean res = false;
 
         try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
@@ -172,5 +167,4 @@ public class WaterIntakeDAO extends AbstractDAO implements ListComponentDAO<Wate
 
         return res;
     }
-
 }

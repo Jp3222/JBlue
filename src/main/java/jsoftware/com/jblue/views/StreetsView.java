@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2024 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
 package jsoftware.com.jblue.views;
 
 import java.awt.CardLayout;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.FactoryController;
@@ -25,16 +24,16 @@ import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.util.Formats;
-import jsoftware.com.jblue.views.framework.DBValuesModel;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.DBView;
 import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  */
-public final class StreetsView extends DBView implements DBValuesModel {
+public final class StreetsView extends DBView implements DBObjectValues<StreetDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -92,7 +91,6 @@ public final class StreetsView extends DBView implements DBValuesModel {
         update_button.addActionListener(controller);
         delete_button.addActionListener(controller);
         cancel_button.addActionListener(controller);
-        maps_button.addActionListener(controller);
         //
         objects_table.addMouseListener(table_controller);
         //
@@ -106,7 +104,6 @@ public final class StreetsView extends DBView implements DBValuesModel {
     public void initialState() {
         object_search = null;
         streed_name_field.setText(null);
-        streed_location_field.setText(null);
         view_show = 1;
         save_button.setEnabled(true);
         update_button.setEnabled(false);
@@ -145,10 +142,6 @@ public final class StreetsView extends DBView implements DBValuesModel {
         jPanel8 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         streed_name_field = new javax.swing.JTextField();
-        jPanel13 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        streed_location_field = new javax.swing.JTextField();
-        maps_button = new javax.swing.JButton();
         option_panel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         save_button = new javax.swing.JButton();
@@ -241,24 +234,6 @@ public final class StreetsView extends DBView implements DBValuesModel {
         jPanel8.add(streed_name_field, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel8);
-
-        jPanel13.setLayout(new java.awt.BorderLayout());
-
-        jLabel5.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel5.setText("Ubicacion:");
-        jLabel5.setOpaque(true);
-        jLabel5.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel13.add(jLabel5, java.awt.BorderLayout.WEST);
-
-        streed_location_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        streed_location_field.setName("Numero"); // NOI18N
-        jPanel13.add(streed_location_field, java.awt.BorderLayout.CENTER);
-
-        maps_button.setText("maps");
-        maps_button.setActionCommand("google-maps");
-        jPanel13.add(maps_button, java.awt.BorderLayout.LINE_END);
-
-        jPanel1.add(jPanel13);
 
         register_panel.add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -417,10 +392,8 @@ public final class StreetsView extends DBView implements DBValuesModel {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel29;
@@ -429,7 +402,6 @@ public final class StreetsView extends DBView implements DBValuesModel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JToggleButton jToggleButton2;
-    private javax.swing.JButton maps_button;
     private javax.swing.JButton next_button;
     private javax.swing.JTable objects_table;
     private javax.swing.JPanel option_panel;
@@ -445,7 +417,6 @@ public final class StreetsView extends DBView implements DBValuesModel {
     private javax.swing.JTextField search_field;
     private javax.swing.JPanel search_panel;
     private javax.swing.JPanel status_bar_panel;
-    private javax.swing.JTextField streed_location_field;
     private javax.swing.JTextField streed_name_field;
     private javax.swing.JScrollPane tabla_usuarios;
     private javax.swing.JPanel tools_panel;
@@ -454,29 +425,22 @@ public final class StreetsView extends DBView implements DBValuesModel {
     // End of variables declaration//GEN-END:variables
     private final JTableModel model;
 
-    /**
-     *
-     * @return
-     */
     @Override
-    public boolean isValuesOk() {
-        boolean rt = Filters.isNullOrBlank(streed_name_field.getText());
-        String mess = "El campo %s no es valido";
-        if (rt) {
-            JOptionPane.showMessageDialog(this, mess, "Campos Validos", JOptionPane.ERROR_MESSAGE);
+    public StreetDTO getValues(boolean update) {
+        StreetDTO o = new StreetDTO();
+        if (update) {
+            o.put("street_name", Formats.getTextFormat(streed_name_field.getText()));
+        } else {
+            o.put("street_name", Formats.getTextFormat(streed_name_field.getText()));
         }
-        return !rt;
+        return o;
     }
 
-    /**
-     *
-     * @param update
-     * @return
-     */
     @Override
-    public String[] getDbValues(boolean update) {
-        String _name = streed_name_field.getText();
-        return Formats.getDBFormatInputArray(_name);
+    public boolean isValuesOK() {
+        boolean res = false;
+        res = !Filters.isNullOrBlank(streed_name_field.getText());
+        return res;
     }
 
     /**

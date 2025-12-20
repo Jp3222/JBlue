@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2024 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,33 +18,34 @@ package jsoftware.com.jblue.views;
 
 import java.awt.CardLayout;
 import java.time.LocalDate;
-import java.util.Objects;
+import java.util.Map;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import jsoftware.com.jblue.model.dto.PaymentDTO;
+import jsoftware.com.jblue.model.dto.PaymentConceptDTO;
 import jsoftware.com.jblue.util.GraphicsUtils;
-import jsoftware.com.jblue.views.framework.DBValuesModel;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.DBView;
 import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
+import org.apache.commons.collections4.map.HashedMap;
 
 /**
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  */
-public final class OtherPaymentTypesView extends DBView implements DBValuesModel {
+public final class PaymentConceptView extends DBView implements DBObjectValues<PaymentConceptDTO> {
 
     private static final long serialVersionUID = 1L;
 
     private JTableModel model;
-    private PaymentDTO object_search;
+    private PaymentConceptDTO object_search;
     private final CardLayout ly;
 
     /**
      * Creates new form NewTipoDePagos
      */
-    public OtherPaymentTypesView() {
+    public PaymentConceptView() {
         initComponents();
         ly = (CardLayout) root_panel.getLayout();
         build();
@@ -100,17 +101,16 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
         root_panel = new javax.swing.JPanel();
         register_panel = new javax.swing.JPanel();
         panel_campos = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         type_field = new javax.swing.JTextField();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        price_field = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         description_fiel = new javax.swing.JTextArea();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        price_field = new javax.swing.JTextField();
         date_end_field = new javax.swing.JCheckBox();
         date_panel_field = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -145,14 +145,14 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
         status_bar_panel = new javax.swing.JPanel();
         jPanel32 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
-        count = new javax.swing.JLabel();
-        range = new javax.swing.JLabel();
+        count_field = new javax.swing.JLabel();
+        range_field = new javax.swing.JLabel();
         jPanel29 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
-        total = new javax.swing.JLabel();
+        total_field = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(900, 500));
-        setName("Otros tipos de pagos"); // NOI18N
+        setName("Conceptos de pago"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
 
@@ -193,12 +193,6 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
         panel_campos.setPreferredSize(new java.awt.Dimension(500, 620));
         panel_campos.setLayout(new java.awt.GridLayout(13, 1, 0, 10));
 
-        jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Otros tipos de pago");
-        jLabel4.setPreferredSize(new java.awt.Dimension(500, 100));
-        panel_campos.add(jLabel4);
-
         jPanel8.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
@@ -211,19 +205,6 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
         jPanel8.add(type_field, java.awt.BorderLayout.CENTER);
 
         panel_campos.add(jPanel8);
-
-        jPanel9.setLayout(new java.awt.BorderLayout());
-
-        jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel3.setText("Monto: ");
-        jLabel3.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel9.add(jLabel3, java.awt.BorderLayout.WEST);
-
-        price_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        price_field.setName("Costo"); // NOI18N
-        jPanel9.add(price_field, java.awt.BorderLayout.CENTER);
-
-        panel_campos.add(jPanel9);
 
         jPanel10.setLayout(new java.awt.BorderLayout());
 
@@ -240,6 +221,19 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
         jPanel10.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         panel_campos.add(jPanel10);
+
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel3.setText("Monto: ");
+        jLabel3.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel9.add(jLabel3, java.awt.BorderLayout.WEST);
+
+        price_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        price_field.setName("Costo"); // NOI18N
+        jPanel9.add(price_field, java.awt.BorderLayout.CENTER);
+
+        panel_campos.add(jPanel9);
 
         date_end_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         date_end_field.setText("Poner fecha limite");
@@ -360,7 +354,7 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
         panel_izq.setLayout(new java.awt.BorderLayout(10, 10));
 
         objects_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Objects [][] {
+            new Object [][] {
 
             },
             new String [] {
@@ -383,18 +377,18 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
         jLabel18.setText("No.");
         jPanel32.add(jLabel18, java.awt.BorderLayout.CENTER);
 
-        count.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        count.setText("0");
-        count.setToolTipText("Numero de pagos hechos.");
-        count.setPreferredSize(new java.awt.Dimension(50, 16));
-        jPanel32.add(count, java.awt.BorderLayout.LINE_END);
+        count_field.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        count_field.setText("0");
+        count_field.setToolTipText("Numero de pagos hechos.");
+        count_field.setPreferredSize(new java.awt.Dimension(50, 16));
+        jPanel32.add(count_field, java.awt.BorderLayout.LINE_END);
 
         status_bar_panel.add(jPanel32, java.awt.BorderLayout.WEST);
 
-        range.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        range.setText("0 - 0");
-        range.setToolTipText("");
-        status_bar_panel.add(range, java.awt.BorderLayout.CENTER);
+        range_field.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        range_field.setText("0 - 0");
+        range_field.setToolTipText("");
+        status_bar_panel.add(range_field, java.awt.BorderLayout.CENTER);
 
         jPanel29.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel29.setLayout(new java.awt.BorderLayout());
@@ -403,11 +397,11 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
         jLabel17.setText("Total:");
         jPanel29.add(jLabel17, java.awt.BorderLayout.CENTER);
 
-        total.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        total.setText("0");
-        total.setToolTipText("Numero de pagos hechos.");
-        total.setPreferredSize(new java.awt.Dimension(50, 16));
-        jPanel29.add(total, java.awt.BorderLayout.LINE_END);
+        total_field.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total_field.setText("0");
+        total_field.setToolTipText("Numero de pagos hechos.");
+        total_field.setPreferredSize(new java.awt.Dimension(50, 16));
+        jPanel29.add(total_field, java.awt.BorderLayout.LINE_END);
 
         status_bar_panel.add(jPanel29, java.awt.BorderLayout.EAST);
 
@@ -435,7 +429,7 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
     private javax.swing.JButton btn_recargar;
     private javax.swing.JButton btn_sig;
     private javax.swing.JButton cancel_button;
-    private javax.swing.JLabel count;
+    private javax.swing.JLabel count_field;
     private javax.swing.JCheckBox date_end_field;
     private javax.swing.JPanel date_panel_field;
     private javax.swing.JComboBox<String> day_field;
@@ -448,7 +442,6 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -473,7 +466,7 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
     private javax.swing.JPanel panel_campos;
     private javax.swing.JPanel panel_izq;
     private javax.swing.JTextField price_field;
-    private javax.swing.JLabel range;
+    private javax.swing.JLabel range_field;
     private javax.swing.JButton register_button;
     private javax.swing.JPanel register_panel;
     private javax.swing.JPanel root_panel;
@@ -485,7 +478,7 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
     private javax.swing.JPanel status_bar_panel;
     private javax.swing.JScrollPane tabla_usuarios;
     private javax.swing.JPanel tools_panel;
-    private javax.swing.JLabel total;
+    private javax.swing.JLabel total_field;
     private javax.swing.JTextField type_field;
     private javax.swing.JButton update_button;
     private javax.swing.JComboBox<String> year_field;
@@ -493,63 +486,76 @@ public final class OtherPaymentTypesView extends DBView implements DBValuesModel
 
     @Override
     public JTextField getTextComponenteTable() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return search_field;
     }
 
     @Override
     public String getTextSearchTable() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return search_field.getText().trim().replace(" ", "");
     }
 
     @Override
     public JTable getTable() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return objects_table;
     }
 
     @Override
     public DefaultTableModel getModel() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return model;
     }
 
     @Override
-    public void setViewShow(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void setViewShow(int view_show) {
+        this.view_show = view_show;
+        String op = switch (view_show) {
+            case 2:
+                yield search_panel.getName();
+            default:
+                yield register_panel.getName();
+        };
+        ly.show(root_panel, op);
     }
 
     @Override
     public int getViewShow() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return view_show;
     }
 
     @Override
     public void setObjectSearch(JDBMapObject o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.object_search = (PaymentConceptDTO) o;
     }
 
     @Override
-    public <T extends JDBMapObject> T getObjectSearch() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public PaymentConceptDTO getObjectSearch() {
+        return object_search;
     }
 
     @Override
     public void setRowsData(String... info) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        count_field.setText(info[0]);
+        range_field.setText(info[1]);
+        total_field.setText(info[2]);
+
     }
 
     @Override
     public void setScreenTableInfo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
     }
 
     @Override
-    public boolean isValuesOk() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean isValuesOK() {
+        return true;
     }
 
     @Override
-    public String[] getDbValues(boolean update) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public PaymentConceptDTO getValues(boolean update) {
+        Map<String, Object> map = new HashedMap<>(7);
+        if (update) {
+        } else {
+        }
+        return new PaymentConceptDTO(map);
     }
-
 
 }

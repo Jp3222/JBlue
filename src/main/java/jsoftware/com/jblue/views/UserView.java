@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2024 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,28 +17,36 @@
 package jsoftware.com.jblue.views;
 
 import java.awt.CardLayout;
+import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.FactoryController;
+import jsoftware.com.jblue.controllers.compc.ComboBoxController;
+import jsoftware.com.jblue.controllers.compc.TableController;
+import jsoftware.com.jblue.model.dao.StreetDAO;
+import jsoftware.com.jblue.model.dao.UserDAO;
+import jsoftware.com.jblue.model.dao.WaterIntakeTypeDAO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
+import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.GraphicsUtils;
-import jsoftware.com.jblue.views.framework.DBValuesMapModel;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.DBView;
 import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
+import jsoftware.com.jutil.util.Func;
 
 /**
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  */
-public final class UserView extends DBView implements DBValuesMapModel {
+public final class UserView extends DBView implements DBObjectValues<UserDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,12 +57,17 @@ public final class UserView extends DBView implements DBValuesMapModel {
     private boolean process;
     private String process_id;
     private String module_name;
+    private ComboBoxController<StreetDTO> combo_box1;
+    private ComboBoxController<StreetDTO> combo_box2;
+    private ComboBoxController<WaterIntakeTypesDTO> combo_box3;
 
     /**
      * Creates new form NewUsuarios
      */
     public UserView(boolean process, String process_id, String module_name) {
         initComponents();
+        controller = FactoryController.getUserController(this);
+        table_controller = new TableController(this, new UserDAO(true, ""));
         this.process = process;
         this.process_id = process_id;
         this.module_name = module_name;
@@ -62,7 +75,12 @@ public final class UserView extends DBView implements DBValuesMapModel {
         objects_table.setModel(model);
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
-        controller = FactoryController.getUserController(this);
+        combo_box1 = new ComboBoxController(street1_field, new StreetDAO(true, module_name));
+        combo_box2 = new ComboBoxController(street2_field, new StreetDAO(true, module_name));
+        combo_box3 = new ComboBoxController(water_intakes_type_field, new WaterIntakeTypeDAO(true, module_name));
+        combo_box1.loadData();
+        combo_box2.loadData();
+        combo_box3.loadData();
         build();
     }
 
@@ -76,25 +94,25 @@ public final class UserView extends DBView implements DBValuesMapModel {
 
     @Override
     public void events() {
-//        buttonGroup1.add(jRadioButton1);
-//        buttonGroup1.add(jRadioButton2);
-//
-//        objects_table.addMouseListener(table_controller);
-//        //
-//        save_button.addActionListener(controller);
-//        update_button.addActionListener(controller);
-//        delete_button.addActionListener(controller);
-//        cancel_button.addActionListener(controller);
-//        search_object.addActionListener(controller);
-//        //
-//        back_button.addActionListener(table_controller);
-//        next_button.addActionListener(table_controller);
-//        reload_button.addActionListener(table_controller);
-//        //
-//        register_button.addActionListener(table_controller);
-//        search_button.addActionListener(table_controller);
-//        add_file_button.addActionListener(controller);
-//        add_photo_button.addActionListener(controller);
+        buttonGroup1.add(jRadioButton1);
+        buttonGroup1.add(jRadioButton2);
+
+        objects_table.addMouseListener(table_controller);
+        //
+        save_button.addActionListener(controller);
+        update_button.addActionListener(controller);
+        delete_button.addActionListener(controller);
+        cancel_button.addActionListener(controller);
+        search_object.addActionListener(controller);
+        //
+        back_button.addActionListener(table_controller);
+        next_button.addActionListener(table_controller);
+        reload_button.addActionListener(table_controller);
+        //
+        register_button.addActionListener(table_controller);
+        search_button.addActionListener(table_controller);
+        add_file_button.addActionListener(controller);
+        add_photo_button.addActionListener(controller);
     }
 
     @Override
@@ -109,7 +127,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
         last_name2_field.setText(null);
         inside_number_field.setText(null);
         street1_field.setSelectedIndex(0);
-        water_intakes_field.setSelectedIndex(0);
+        water_intakes_type_field.setSelectedIndex(0);
         user_status_field.setSelectedIndex(0);
         // --- Campos añadidos ---
         // Suponiendo que tienes un campo de texto para el ID y la CURP
@@ -190,7 +208,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jLabel26 = new javax.swing.JLabel();
         pc_tipo_toma = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        water_intakes_field = new javax.swing.JComboBox<>();
+        water_intakes_type_field = new javax.swing.JComboBox<>();
         man_tipo_toma = new javax.swing.JCheckBox();
         pc_calle = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -236,6 +254,9 @@ public final class UserView extends DBView implements DBValuesMapModel {
         add_file_button = new javax.swing.JButton();
         add_consumer_button = new javax.swing.JButton();
         show_consumer_list_button = new javax.swing.JButton();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel27 = new javax.swing.JLabel();
+        date_birday_field = new javax.swing.JTextField();
         option_panel = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         save_button = new javax.swing.JButton();
@@ -428,10 +449,10 @@ public final class UserView extends DBView implements DBValuesMapModel {
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_tipo_toma.add(jLabel5, java.awt.BorderLayout.WEST);
 
-        water_intakes_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        water_intakes_field.setName("Tipo de toma"); // NOI18N
-        water_intakes_field.setPreferredSize(new java.awt.Dimension(100, 30));
-        pc_tipo_toma.add(water_intakes_field, java.awt.BorderLayout.CENTER);
+        water_intakes_type_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        water_intakes_type_field.setName("Tipo de toma"); // NOI18N
+        water_intakes_type_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_tipo_toma.add(water_intakes_type_field, java.awt.BorderLayout.CENTER);
 
         man_tipo_toma.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         man_tipo_toma.setText("M.");
@@ -640,6 +661,17 @@ public final class UserView extends DBView implements DBValuesMapModel {
 
         show_consumer_list_button.setText("Consumidores");
         complement_data_panel.add(show_consumer_list_button);
+
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jLabel27.setText("Fecha de Cumpleaños");
+        jLabel27.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel9.add(jLabel27, java.awt.BorderLayout.WEST);
+
+        date_birday_field.setName("Numero Exterior"); // NOI18N
+        jPanel9.add(date_birday_field, java.awt.BorderLayout.CENTER);
+
+        complement_data_panel.add(jPanel9);
 
         jTabbedPane1.addTab("Informacion complementaria.", complement_data_panel);
 
@@ -883,6 +915,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
     private javax.swing.JLabel count_field;
     private javax.swing.JLabel count_label;
     private javax.swing.JTextField curp_field;
+    private javax.swing.JTextField date_birday_field;
     private javax.swing.JTextField date_last_update_field;
     private javax.swing.JTextField date_register_field;
     private javax.swing.JButton delete_button;
@@ -914,6 +947,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -940,6 +974,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -990,15 +1025,15 @@ public final class UserView extends DBView implements DBValuesMapModel {
     private javax.swing.JPanel status_bar_panel;
     private javax.swing.JComboBox<StreetDTO> street1_field;
     private javax.swing.JComboBox<StreetDTO> street2_field;
-    private javax.swing.JComboBox<StreetDTO> street_filter;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.StreetDTO> street_filter;
     private javax.swing.JPanel table_panel;
     private javax.swing.JLabel total_field;
     private javax.swing.JLabel total_label;
     private javax.swing.JButton update_button;
     private javax.swing.JPanel user_data_panel;
     private javax.swing.JComboBox<String> user_status_field;
-    private javax.swing.JComboBox<WaterIntakeTypesDTO> water_intakes_field;
-    private javax.swing.JComboBox<WaterIntakeTypesDTO> water_intakes_filter;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO> water_intakes_filter;
+    private javax.swing.JComboBox<WaterIntakeTypesDTO> water_intakes_type_field;
     // End of variables declaration//GEN-END:variables
 
     public UserDTO getObject() {
@@ -1041,45 +1076,7 @@ public final class UserView extends DBView implements DBValuesMapModel {
     public int getViewShow() {
         return view_show;
     }
-
-    @Override
-    public boolean isValuesOk() {
-        boolean ok = true;
-        String messages = "El campo: %s no es valido";
-        JTextField[] text_fields = {
-            first_name_field, last_name1_field, last_name2_field
-        };
-        for (JTextField i : text_fields) {
-            if (Filters.isNullOrBlank(i.getText())) {
-                messages = messages.formatted(i.getName());
-                ok = false;
-                break;
-            }
-        }
-        JComboBox[] combo_boxes_fields = {
-            water_intakes_field, street1_field, user_status_field
-        };
-
-        for (JComboBox i : combo_boxes_fields) {
-            if (i.getSelectedIndex() == 0) {
-                messages = messages.formatted(i.getName());
-                ok = false;
-                break;
-            }
-        }
-        if (!ok) {
-            JOptionPane.showMessageDialog(register_panel, messages);
-        }
-        return ok;
-    }
-
-    @Override
-    public Map<String, Object> getValues(boolean update) {
-        Map<String, Object> map = Map.of();
-
-        return map;
-    }
-
+    
     @Override
     public UserDTO getObjectSearch() {
         return object_search;
@@ -1099,6 +1096,25 @@ public final class UserView extends DBView implements DBValuesMapModel {
 
     @Override
     public void setScreenTableInfo() {
+        if (object_search.getUserType().equals("1")) {
+            jRadioButton1.setSelected(true);
+        } else {
+            jRadioButton2.setSelected(true);
+        }
+        curp_field.setText(object_search.getCurp());
+        first_name_field.setText(object_search.getFirstName());
+        last_name1_field.setText(object_search.getLastName1());
+        last_name2_field.setText(object_search.getLastName2());
+        gender_field.setSelectedIndex(Integer.parseInt(object_search.getGender()));
+        water_intakes_type_field.setSelectedItem((WaterIntakeTypesDTO) object_search.get("water_inatke_type_object"));
+        street1_field.setSelectedItem((StreetDTO) object_search.get("street1_object"));
+        street2_field.setSelectedItem((StreetDTO) object_search.get("street2_object"));
+        inside_number_field.setText(object_search.getInsideNumber());
+        outside_number_field.setText(object_search.getOutsideNumber());
+        phone_number1_field.setText(object_search.getPhoneNumber1());
+        phone_number2_field.setText(object_search.getPhoneNumber2());
+        email_field.setText(object_search.getEmail());
+        date_birday_field.setText(object_search.getBirthdate());
 
     }
 
@@ -1121,6 +1137,89 @@ public final class UserView extends DBView implements DBValuesMapModel {
 
     public String getProcessId() {
         return process_id;
+    }
+
+    @Override
+    public boolean isValuesOK() {
+        boolean res = false;
+        String msg = "EL CAMPO '%s' NO ES VALIDO";
+        JTextField[] required = {
+            first_name_field,
+            last_name1_field,
+            last_name2_field,
+            curp_field
+        };
+        for (JTextField i : required) {
+            res = !Filters.isNullOrBlank(i.getText());
+            if (!res) {
+                JOptionPane.showMessageDialog(this, msg, "CAMPOS ERRONEOS", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        JComboBox[] requiered2 = {
+            gender_field,
+            water_intakes_type_field,
+            street1_field
+        };
+        for (JComboBox i : requiered2) {
+            res = i.getSelectedIndex() > 0;
+            if (!res) {
+                JOptionPane.showMessageDialog(this, msg, "CAMPOS ERRONEOS", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public UserDTO getValues(boolean update) {
+        Map<String, Object> map = new HashMap<>(18);
+        if (update) {
+            Func.addIfChanged(map, "curp", object_search.getCurp(), Formats.getTextFormat(curp_field.getText()));
+            Func.addIfChanged(map, "first_name", object_search.getCurp(), Formats.getTextFormat(first_name_field.getText()));
+            Func.addIfChanged(map, "last_name1", object_search.getCurp(), Formats.getTextFormat(last_name1_field.getText()));
+            Func.addIfChanged(map, "last_name2", object_search.getCurp(), Formats.getTextFormat(last_name2_field.getText()));
+            Func.addIfChanged(map, "gender", object_search.getCurp(), Formats.getTextFormat(String.valueOf(gender_field.getSelectedIndex())));
+            Func.addIfChanged(map, "email", object_search.getCurp(), Formats.getTextFormat(email_field.getText()));
+            Func.addIfChanged(map, "birthdate", object_search.getCurp(), Formats.getTextFormat(date_birday_field.getText()));
+            Func.addIfChanged(map, "phone_number1", object_search.getCurp(), Formats.getTextFormat(phone_number1_field.getText()));
+            Func.addIfChanged(map, "phone_number2", object_search.getCurp(), Formats.getTextFormat(phone_number2_field.getText()));
+            StreetDTO str1 = street1_field.getItemAt(street1_field.getSelectedIndex());
+            Func.addIfChanged(map, "street1", object_search.getCurp(), Formats.getTextFormat(str1.getId()));
+
+            StreetDTO str2 = street2_field.getItemAt(street2_field.getSelectedIndex());
+            Func.addIfChanged(map, "street2", object_search.getCurp(), Formats.getTextFormat(str2.getId()));
+
+            Func.addIfChanged(map, "inside_number", object_search.getCurp(), Formats.getTextFormat(inside_number_field.getText()));
+            Func.addIfChanged(map, "outside_number", object_search.getCurp(), Formats.getTextFormat(outside_number_field.getText()));
+            WaterIntakeTypesDTO wki = water_intakes_type_field.getItemAt(water_intakes_type_field.getSelectedIndex());
+            Func.addIfChanged(map, "water_intake_type", object_search.getCurp(), Formats.getTextFormat(wki.getId()));
+            String user_type = buttonGroup1.getSelection().getActionCommand();
+            Func.addIfChanged(map, "user_type", object_search.getCurp(), Formats.getTextFormat(user_type));
+
+        } else {
+            Func.putIfPresentAndNotBlank(map, "curp", Formats.getTextFormat(curp_field.getText()));
+            Func.putIfPresentAndNotBlank(map, "first_name", Formats.getTextFormat(first_name_field.getText()));
+            Func.putIfPresentAndNotBlank(map, "last_name1", Formats.getTextFormat(last_name1_field.getText()));
+            Func.putIfPresentAndNotBlank(map, "last_name2", Formats.getTextFormat(last_name2_field.getText()));
+            Func.putIfPresentAndNotBlank(map, "gender", Formats.getTextFormat(String.valueOf(gender_field.getSelectedIndex())));
+            Func.putIfPresentAndNotBlank(map, "email", Formats.getTextFormat(email_field.getText()));
+            Func.putIfPresentAndNotBlank(map, "birthdate", Formats.getTextFormat(date_birday_field.getText()));
+            Func.putIfPresentAndNotBlank(map, "phone_number1", Formats.getTextFormat(phone_number1_field.getText()));
+            Func.putIfPresentAndNotBlank(map, "phone_number2", Formats.getTextFormat(phone_number2_field.getText()));
+            StreetDTO str1 = street1_field.getItemAt(street1_field.getSelectedIndex());
+            Func.putIfPresentAndNotBlank(map, "street1", Formats.getTextFormat(str1.getId()));
+
+            StreetDTO str2 = street2_field.getItemAt(street2_field.getSelectedIndex());
+            Func.putIfPresentAndNotBlank(map, "street2", Formats.getTextFormat(str2.getId()));
+
+            Func.putIfPresentAndNotBlank(map, "inside_number", Formats.getTextFormat(inside_number_field.getText()));
+            Func.putIfPresentAndNotBlank(map, "outside_number", Formats.getTextFormat(outside_number_field.getText()));
+            WaterIntakeTypesDTO wki = water_intakes_type_field.getItemAt(water_intakes_type_field.getSelectedIndex());
+            Func.putIfPresentAndNotBlank(map, "water_intake_type", Formats.getTextFormat(wki.getId()));
+            String user_type = buttonGroup1.getSelection().getActionCommand();
+            Func.putIfPresentAndNotBlank(map, "user_type", Formats.getTextFormat(user_type));
+        }
+        return new UserDTO(map);
     }
 
 }

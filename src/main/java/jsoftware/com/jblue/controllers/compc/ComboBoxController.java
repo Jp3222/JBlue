@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2024 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,25 +22,38 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import jsoftware.com.jblue.controllers.AbstractComponentController;
 import jsoftware.com.jutil.db.JDBMapObject;
+import jsoftware.com.jblue.model.dao.ListComponentDAO;
 
 /**
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  * @param <T>
  */
 public class ComboBoxController<T extends JDBMapObject> extends AbstractComponentController<T> {
 
     private static final long serialVersionUID = 1L;
 
-    private String format;
-
     public ComboBoxController(JComboBox<T> component, List<T> list_items) {
         super(component, list_items);
+    }
+
+    public ComboBoxController(JComboBox<T> componente, ListComponentDAO<T> dao) {
+        super(componente, dao);
     }
 
     @Override
     public void loadData() {
         JComboBox<T> box = getComponent();
+        if (list == null) {
+            list = dao.getList();
+        }
+        box.addItem((T) new JDBMapObject(){
+            @Override
+            public String toString() {
+                return "SELECCIONE UN ELEMENTO";
+            }
+            
+        });
         for (T i : list) {
             box.addItem(i);
         }
@@ -65,14 +78,5 @@ public class ComboBoxController<T extends JDBMapObject> extends AbstractComponen
     @Override
     public void actionPerformed(ActionEvent ae) {
     }
-
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
 
 }

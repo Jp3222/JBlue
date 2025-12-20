@@ -4,11 +4,25 @@
  */
 package jsoftware.com.jblue.model.dto;
 
+import java.util.Map;
+
 /**
  *
  * @author jp
  */
 public class WaterIntakeTypesDTO extends AuditableObjectMap {
+
+    public WaterIntakeTypesDTO(Map<String, Object> map) {
+        super(map);
+    }
+
+    public WaterIntakeTypesDTO(int size) {
+        super(size);
+    }
+
+    public WaterIntakeTypesDTO() {
+        super();
+    }
 
     public String getTypeName() {
         return get("type_name").toString();
@@ -24,6 +38,15 @@ public class WaterIntakeTypesDTO extends AuditableObjectMap {
 
     public String getSurcharge() {
         return get("surcharge").toString();
+    }
+
+    public String getLastEmployeeUpdate() {
+        return get("last_employee_update").toString();
+    }
+
+    @Override
+    public String toString() {
+        return getTypeName();
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 juan-campos
+ * Copyright (C) 2025 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import jsoftware.com.jutil.db.model.JDBObject;
 
 /**
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  * @param <T>
  */
 public abstract class AbstractCache<T extends JDBObject> implements CacheModel<T> {

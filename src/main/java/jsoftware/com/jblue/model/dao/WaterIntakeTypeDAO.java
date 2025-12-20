@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
@@ -16,13 +17,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.model.AbstractDAO;
 
 /**
  *
  * @author juanp
  */
-public class WaterIntakeTypeDAO {
+public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<WaterIntakeTypesDTO> {
 
     private static final String TABLE = "wki_water_intake_type";
     private static final String SELECT_ALL = "SELECT * FROM " + TABLE;
@@ -34,6 +37,10 @@ public class WaterIntakeTypeDAO {
 
     // Estado de borrado lógico
     private static final int LOGICAL_DELETE_STATUS = 3;
+
+    public WaterIntakeTypeDAO(boolean flag_dev_log, String name_module) {
+        super(flag_dev_log, name_module);
+    }
 
     // --- Auxiliar: Mapeo de ResultSet a Map-based DTO ---
     private WaterIntakeTypesDTO mapResultSetToDTO(ResultSet rs) throws SQLException {
@@ -188,5 +195,28 @@ public class WaterIntakeTypeDAO {
 
             return ps.executeUpdate() > 0;
         }
+    }
+
+    @Override
+    public List<WaterIntakeTypesDTO> getList() {
+        List<WaterIntakeTypesDTO >list = new ArrayList<>(15);
+        String query = "SELECT * FROM wki_water_intake_type WHERE status = 1";
+        try (JDBConnection c = ConnectionFactory.getIntance().getCacheConnection(); PreparedStatement ps = c.getNewCallableStatement(query)) {
+            try (ResultSet rs = ps.executeQuery();) {
+                ResultSetMetaData md = rs.getMetaData();
+                int size = md.getColumnCount();
+                while (rs.next()) {
+                    WaterIntakeTypesDTO o = new WaterIntakeTypesDTO();
+                    for (int i = 1; i <= size; i++) {
+                        String key = md.getColumnLabel(i);
+                        o.put(key, rs.getString(key));
+                    }
+                    list.add(o);
+                }
+            }
+        } catch (Exception e) {
+            System.getLogger(StreetDAO.class.getName()).log(System.Logger.Level.ALL, e.getMessage());
+        }
+        return list;
     }
 }

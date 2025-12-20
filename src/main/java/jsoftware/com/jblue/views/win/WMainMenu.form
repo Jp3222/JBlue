@@ -158,9 +158,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Pagos por el servicio"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem9ActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem10">
               <Properties>
@@ -445,6 +442,7 @@
                         </Property>
                         <Property name="text" type="java.lang.String" value="Otros tipos de pagos"/>
                         <Property name="toolTipText" type="java.lang.String" value="Tipo de pagos"/>
+                        <Property name="actionCommand" type="java.lang.String" value="Conceptos de pago"/>
                         <Property name="hideActionText" type="boolean" value="true"/>
                         <Property name="horizontalAlignment" type="int" value="10"/>
                         <Property name="horizontalTextPosition" type="int" value="4"/>

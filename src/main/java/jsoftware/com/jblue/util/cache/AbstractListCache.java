@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2024 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ import jsoftware.com.jutil.db.JDBTable;
 
 /**
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  * @param <T>
  */
 public class AbstractListCache<T extends JDBMapObject> extends AbstractCache<T> implements ListCacheModel<T> {

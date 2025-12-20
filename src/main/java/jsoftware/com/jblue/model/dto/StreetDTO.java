@@ -15,4 +15,11 @@ public class StreetDTO extends AuditableObjectMap {
     public String getStreetName(){
         return get("street_name").toString();
     }
+
+    @Override
+    public String toString() {
+        return getStreetName();
+    }
+    
+    
 }

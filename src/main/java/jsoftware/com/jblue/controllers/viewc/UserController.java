@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2024 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,18 +19,14 @@ package jsoftware.com.jblue.controllers.viewc;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.sql.SQLException;
-import java.util.Map;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.controllers.DBControllerModel;
 import jsoftware.com.jblue.model.dao.HysHistoryDAO;
-import jsoftware.com.jblue.model.dao.PaymentsDAO;
 import jsoftware.com.jblue.model.dao.ProcessDAO;
-import jsoftware.com.jblue.model.dao.UserDao;
-import jsoftware.com.jblue.model.dto.HysAdministrationHistoryDTO;
+import jsoftware.com.jblue.model.dao.UserDAO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
-import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.UserView;
@@ -40,7 +36,7 @@ import jsoftware.com.jutil.db.JDBConnection;
 
 /**
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  */
 public class UserController extends AbstractDBViewController<UserDTO> implements DBControllerModel {
 
@@ -50,17 +46,15 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
      * Movimiento, id, nombre, a paterno, a materno
      */
     private String DESCRIPTION_FORMAT = "SE %s EL USUARIO: %s - %s %s %s";
-    private UserDao user_dao;
-    private ProcessDAO process_dao;
-    private HysHistoryDAO history_dao;
-    private PaymentsDAO payment;
+    private final UserDAO user_dao;
+    private final ProcessDAO process_dao;
+    private final HysHistoryDAO history_dao;
 
     public UserController(UserView view) {
         this.view = view;
-        user_dao = new UserDao(AppConfig.isLogsDev(), "user");
+        user_dao = new UserDAO(AppConfig.isLogsDev(), "user");
         process_dao = new ProcessDAO(AppConfig.isLogsDev(), "user");
         history_dao = new HysHistoryDAO(AppConfig.isLogsDev(), "user");
-        payment = new PaymentsDAO(AppConfig.isDevMessages(), "user");
     }
 
     @Override
@@ -86,31 +80,72 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
 
     @Override
     public void save() {
-        HysAdministrationHistoryDTO currentAdministration = SystemSession.getInstancia().getCurrentAdministration();
-        if (currentAdministration == null) {
-            returnMessage(view, false, "[1] La administracion actual no ha sido registrada");
+        boolean res = false;
+        res = view.isValuesOK();
+        if (!res) {
             return;
         }
-        if (!view.isValuesOk()) {
+        
+        UserDTO user = view.getValues(false);
+        
+        res = user != null;
+        if (!res) {
+            returnMessage(view, "HA OCURRIDO UN ERROR INTERNO");
             return;
         }
-        UserDTO user = new UserDTO();
-        Map<String, Object> values = view.getValues(false);
-        if (values.isEmpty()) {
-            returnMessage(view, false);
-            return;
-        }
-        user.setMap(values);
+        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
 
-        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection();) {
-            save(connection, user);
-        } catch (SQLException ex) {
-            System.getLogger(UserController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            res = save(connection, user);
+            returnMessage(view, res);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    private void save(JDBConnection connection, UserDTO user) {
-
+    private boolean save(JDBConnection connection, UserDTO user) {
+        boolean res = false;
+        try {
+            connection.setAutoCommit(false);
+            //registrar el usuario
+            int key = user_dao.insertUser(connection, user);
+            res = key > 0;
+            if (!res) {
+                throw new SQLException("REGISTRO DE USUARIO ERRONEO");
+            }
+            //registrar el bitacora
+            res = history_dao.getHysUsersMovs().insertToUsers("SE REGISTRO EL USUARIO: %s - %s %s %s".formatted(
+                    key,
+                    user.getFirstName(),
+                    user.getLastName1(),
+                    user.getLastName2()
+            ));
+            if (!res) {
+                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+            }
+            //registrar el proceso
+            res = process_dao.startProcess(connection, view.getProcessId(), String.valueOf(key));
+            if (!res) {
+                throw new SQLException("REGISTRO DEL PROCESO CORRUPTO");
+            }
+            //registrar en bitacora
+            res = history_dao.insert(42, "SE REGISTRO EL TRAMITE DEL USUARIO: %s - %s %s %s".formatted(
+                    key,
+                    user.getFirstName(),
+                    user.getLastName1(),
+                    user.getLastName2()
+            ));
+            if (!res) {
+                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+            }
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollBack();
+        } catch (Exception e) {
+            connection.rollBack();
+        } finally {
+            connection.setAutoCommit(true);
+        }
+        return res;
     }
 
     @Override

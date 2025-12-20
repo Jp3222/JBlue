@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 juan-campos
+ * Copyright (C) 2025 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,9 +24,11 @@ import static jsoftware.com.jblue.model.l4b.PaymentModel.STATUS_OK;
 
 /**
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  */
 public class OthersPaymentLogic extends AbstractPayment {
+
+    private static final long serialVersionUID = 1L;
 
     @Override
     public boolean gameRulers() {

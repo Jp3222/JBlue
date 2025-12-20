@@ -40,13 +40,13 @@ public class ProcessDAO extends AbstractDAO {
         current_db_user = null;
     }
 
-    public boolean startProcess(JDBConnection connection, String process_type, String user) throws SQLException {
+    public boolean startProcess(JDBConnection connection, String process_type, String user_id) throws SQLException {
         boolean rt = false;
         if (connection == null) {
             throw new SQLException("TRAMITE NO INICIADO");
         }
-        if (Filters.isNullOrBlank(process_type, user)) {
-            throw new IllegalArgumentException("Paramentros erroneos: process_type: " + process_type + ", user: " + user);
+        if (Filters.isNullOrBlank(process_type, user_id)) {
+            throw new IllegalArgumentException("Paramentros erroneos: process_type: " + process_type + ", user: " + user_id);
         }
         try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.INSERT_START_PROCESS);) {
             connection.setAutoCommit(false);
@@ -55,7 +55,7 @@ public class ProcessDAO extends AbstractDAO {
             ps.setString(3, current_admin.getId());
             ps.setString(4, current_employee.getId());
             ps.setString(5, current_db_user);
-            ps.setString(6, user);
+            ps.setString(6, user_id);
             ps.setString(7, "9");
             rt = ps.executeUpdate() > 0;
             if (!rt) {
@@ -73,7 +73,7 @@ public class ProcessDAO extends AbstractDAO {
         return rt;
     }
 
-    public boolean validProcess(JDBConnection connection, String id) {
+    public boolean validProcess(JDBConnection connection, String user_id) {
         boolean rt = false;
         try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_VALID);) {
             LocalDateTime ld = LocalDateTime.now();
@@ -83,7 +83,7 @@ public class ProcessDAO extends AbstractDAO {
             ps.setString(3, current_employee.getId());
             ps.setString(4, current_db_user);
             ps.setString(5, "10");
-            ps.setString(6, id);
+            ps.setString(6, user_id);
             rt = ps.executeUpdate() > 0;
             if (!rt) {
                 throw new ProcessException(1, "TRAMITE NO INICIADO");

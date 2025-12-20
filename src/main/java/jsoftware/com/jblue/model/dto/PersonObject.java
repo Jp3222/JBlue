@@ -4,6 +4,8 @@
  */
 package jsoftware.com.jblue.model.dto;
 
+import java.util.Map;
+
 /**
  *
  * @author juanp
@@ -11,6 +13,18 @@ package jsoftware.com.jblue.model.dto;
 public class PersonObject extends AuditableObjectMap {
 
     private static final long serialVersionUID = 1L;
+
+    public PersonObject(Map<String, Object> map) {
+        super(map);
+    }
+
+    public PersonObject(int size) {
+        super(size);
+    }
+
+    public PersonObject() {
+        super();
+    }
 
     public String getCurp() {
         return get("curp").toString();

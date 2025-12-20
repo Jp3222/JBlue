@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2024 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ import jsoftware.com.jblue.sys.app.AppConfig;
  * "ALL_FLAGS" o darle un valor a cada una de ellas segun las necesidades
  *
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  */
 public final class DevFlags {
 

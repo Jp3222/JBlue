@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2024 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@ package jsoftware.com.jblue.views;
 import java.awt.CardLayout;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Hashtable;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -29,17 +30,17 @@ import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.util.Formats;
-import jsoftware.com.jblue.views.framework.DBValuesMapModel;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.DBView;
-import jsoftware.com.jblue.views.framework.TableSearchViewModel;
 import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
+import jsoftware.com.jutil.util.Func;
 
 /**
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  */
-public final class WaterIntakesTypesView extends DBView implements DBValuesMapModel, TableSearchViewModel {
+public final class WaterIntakesTypesView extends DBView implements DBObjectValues<WaterIntakeTypesDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -540,22 +541,6 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesMapMo
         return view_show;
     }
 
-    @Override
-    public boolean isValuesOk() {
-        boolean ok = true;
-        JTextField[] text_fields = {
-            type_name_field, current_price_field, surcharge_field
-        };
-        for (JTextField i : text_fields) {
-            if (Filters.isNullOrBlank(i.getText())) {
-                JOptionPane.showMessageDialog(this, "El campo %s no es valido", "Campo no valido", JOptionPane.ERROR_MESSAGE);
-                ok = false;
-                break;
-            }
-        }
-        return ok;
-    }
-
     public String[] getDbValues(boolean update) {
         String _type = type_name_field.getText();
 
@@ -597,10 +582,42 @@ public final class WaterIntakesTypesView extends DBView implements DBValuesMapMo
     }
 
     @Override
-    public Map<String, Object> getValues(boolean update) {
-        Map<String, Object> map;
+    public boolean isValuesOK() {
+        boolean res = false;
+        JTextField[] arr = {
+            type_name_field,
+            current_price_field,
+            surcharge_field
+        };
+        String msg = "El campo '%s' no es valido";
+        for (JTextField i : arr) {
+            res = !Filters.isNullOrBlank(Formats.getTextFormat(i.getText()));
+            if (!res) {
+                msg.formatted(i.getName());
+                break;
+            }
+        }
+        if (!res) {
+            JOptionPane.showMessageDialog(this, msg, "Campos erroneos", JOptionPane.ERROR_MESSAGE);
+        }
+        return res;
+    }
 
-        return null;
+    @Override
+    public WaterIntakeTypesDTO getValues(boolean update) {
+        Map<String, Object> map = new Hashtable<>();
+        if (update) {
+            Func.addIfChanged(map, "type_name", object_search.getTypeName(), Formats.getTextFormat(type_name_field.getText()));
+            Func.addIfChanged(map, "current_price", object_search.getCurrentPrice(), Formats.getTextFormat(current_price_field.getText()));
+            Func.addIfChanged(map, "previous_price", object_search.getPreviousPrice(), object_search.getCurrentPrice());
+            Func.addIfChanged(map, "surcharge", object_search.getSurcharge(), Formats.getTextFormat(surcharge_field.getText()));
+        } else {
+            Func.putIfPresentAndNotBlank(map, "type_name", Formats.getTextFormat(type_name_field.getText()));
+            Func.putIfPresentAndNotBlank(map, "current_price", Formats.getTextFormat(current_price_field.getText()));
+            Func.putIfPresentAndNotBlank(map, "surcharge", Formats.getTextFormat(surcharge_field.getText()));
+        }
+        WaterIntakeTypesDTO o = new WaterIntakeTypesDTO(map);
+        return o;
     }
 
 }

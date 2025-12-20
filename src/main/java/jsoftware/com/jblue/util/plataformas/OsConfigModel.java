@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2024 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ import java.io.FileNotFoundException;
  * los diccionarios son los nombres que maneja el sistema operativo para las
  * carpetas del mismo
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  */
 public interface OsConfigModel {
 

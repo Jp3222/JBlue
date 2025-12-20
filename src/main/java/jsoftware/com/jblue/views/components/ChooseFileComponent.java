@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 juan-campos
+ * Copyright (C) 2023 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  */
 public class ChooseFileComponent extends javax.swing.JDialog {
 

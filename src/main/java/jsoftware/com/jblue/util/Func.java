@@ -7,6 +7,7 @@ package jsoftware.com.jblue.util;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.Map;
 import jsoftware.com.jblue.sys.app.AppConfig;
 
@@ -158,4 +159,61 @@ public class Func {
         return str.equals("true") || str.equals("1") || str.equals("yes") || str.equals("si");
     }
 
+    /**
+     * Compara dos mapas (Map<String, Object>) y devuelve un nuevo mapa con las
+     * entradas que han cambiado o que son nuevas.
+     *
+     * La comparación de valores se realiza convirtiéndolos a String e ignorando
+     * la capitalización (comportamiento similar al original, pero seguro).
+     *
+     * @param oldMap El mapa de referencia (valores antiguos).
+     * @param newMap El mapa con los valores más recientes (valores nuevos).
+     * @return Un mapa que contiene solo las entradas actualizadas o insertadas.
+     */
+    public static Map<String, Object> getChangedStringEntries(
+            Map<String, Object> oldMap, Map<String, Object> newMap) {
+
+        if (newMap == null || newMap.isEmpty()) {
+            return new HashMap<>(); // Si el nuevo mapa está vacío, no hay cambios para reportar.
+        }
+
+        // Creamos el mapa de resultados (delta)
+        Map<String, Object> changes = new HashMap<>();
+
+        // Iteramos sobre el mapa más reciente (newMap) para detectar INSERCIONES y ACTUALIZACIONES
+        for (Map.Entry<String, Object> newEntry : newMap.entrySet()) {
+            String key = newEntry.getKey();
+            Object newValue = newEntry.getValue();
+
+            // 1. Caso de Adición (INSERT)
+            if (!oldMap.containsKey(key)) {
+                changes.put(key, newValue);
+                continue; // Pasamos a la siguiente entrada
+            }
+
+            // 2. Caso de Actualización (UPDATE)
+            Object oldValue = oldMap.get(key);
+
+            // --- COMPARACIÓN SEGURA Y CASO-INSENSIBLE ---
+            // Seguridad Nulo 1: Si ambos son nulos, no hay cambio.
+            if (oldValue == null && newValue == null) {
+                continue;
+            }
+
+            // Seguridad Nulo 2: Si solo uno es nulo, hay un cambio. (Se usa Objects.equals() para simplificar)
+            // Ya que el código original usaba String, forzaremos la comparación case-insensitive:
+            // Convertir a String, tratando nulo como cadena vacía para la comparación insensible
+            String oldValStr = (oldValue != null) ? oldValue.toString() : "";
+            String newValStr = (newValue != null) ? newValue.toString() : "";
+
+            // Corregimos la lógica: Si las representaciones String NO son iguales, hay un cambio.
+            if (!oldValStr.equalsIgnoreCase(newValStr)) {
+                changes.put(key, newValue);
+            }
+        }
+
+        // NOTA: Este método ignora las "Eliminaciones" (claves en oldMap que ya no están en newMap),
+        // que es el comportamiento esperado para una función que prepara datos para un INSERT/UPDATE.
+        return changes;
+    }
 }

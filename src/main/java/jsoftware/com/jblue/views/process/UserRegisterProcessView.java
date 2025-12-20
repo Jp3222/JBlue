@@ -14,34 +14,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jsoftware.com.jblue.views;
+package jsoftware.com.jblue.views.process;
 
 import java.awt.CardLayout;
+import jsoftware.com.jblue.views.UserView;
+import jsoftware.com.jblue.views.ValidationProcessView;
+import jsoftware.com.jblue.views.WaterIntakesView;
 import jsoftware.com.jblue.views.framework.SimpleView;
 
 /**
  *
  * @author juanp
  */
-public class ProcessView extends SimpleView {
+public class UserRegisterProcessView extends SimpleView {
 
     private static final long serialVersionUID = 1L;
 
     private final UserView user_view;
+    private final ValidationProcessView validation_process_view;
     private final WaterIntakesView water_intake_view;
     private final CardLayout ly;
 
     /**
      * Creates new form ProcessView
      */
-    public ProcessView() {
+    public UserRegisterProcessView() {
         initComponents();
         this.ly = (CardLayout) root_panel.getLayout();
         this.user_view = new UserView(true, "process", "user");
         user_view.setProcess(true);
+        this.validation_process_view = new ValidationProcessView();
         this.water_intake_view = new WaterIntakesView();
         this.water_intake_view.setProcess(true);
+        //
         this.root_panel.add(user_view, user_view.getName());
+        this.root_panel.add(validation_process_view, validation_process_view.getName());
         this.root_panel.add(water_intake_view, water_intake_view.getName());
         next_panel_button.addActionListener((e) -> {
             ly.next(root_panel);

@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 
 /*
- * Copyright (C) 2025 juan-campos
+ * Copyright (C) 2025 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 /**
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  */
 public class SurchargePaymentsLogic extends AbstractPayment {
 

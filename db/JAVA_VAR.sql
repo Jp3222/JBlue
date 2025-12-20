@@ -1,3 +1,7 @@
+USE jblue;
+SELECT CONCAT('public static final int INDEX_', UPPER(description),' = ', id,';') FROM cat_status ORDER BY id;
+
+
 USE jblue_local;
 SELECT * FROM information_schema.TABLES WHERE table_schema = 'jblue_local';
 -- TABLE INDEX

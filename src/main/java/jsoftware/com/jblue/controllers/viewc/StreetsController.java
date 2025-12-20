@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 juan-campos
+ * Copyright (C) 2024 juan pablo campos casasanero
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,24 +20,32 @@ import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URI;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.controllers.DBControllerModel;
+import jsoftware.com.jblue.model.constants.Const;
+import jsoftware.com.jblue.model.dao.HysHistoryDAO;
+import jsoftware.com.jblue.model.dao.StreetDAO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.views.StreetsView;
+import jsoftware.com.jutil.db.JDBConnection;
 
 /**
  *
- * @author juan-campos
+ * @author juan pablo campos casasanero
  */
 public class StreetsController extends AbstractDBViewController<StreetDTO> implements DBControllerModel {
 
     private final StreetsView view;
+    private final StreetDAO dao;
 
     public StreetsController(StreetsView view) {
         this.view = view;
+        this.dao = new StreetDAO(true, "calles");
 
     }
 
@@ -68,17 +76,57 @@ public class StreetsController extends AbstractDBViewController<StreetDTO> imple
 
     @Override
     public void save() {
-
+        if (!view.isValuesOK()) {
+            return;
+        }
+        StreetDTO o = view.getValues(false);
+        if (o == null || o.getMap().isEmpty()) {
+            returnMessage(view, "HA OCURRIDO UN ERROR INTERNO");
+            return;
+        }
+        try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
+            boolean save = save(c, o);
+            returnMessage(view, save);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void delete() {
-
+        if (!view.isValuesOK()) {
+            return;
+        }
+        StreetDTO o = view.getObjectSearch();
+        if (o == null || o.getMap().isEmpty()) {
+            returnMessage(view, "HA OCURRIDO UN ERROR INTERNO");
+            return;
+        }
+        try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
+            boolean save = delete(c, o);
+            returnMessage(view, save);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void update() {
-
+        if (!view.isValuesOK()) {
+            return;
+        }
+        StreetDTO new_dto = view.getValues(false);
+        StreetDTO old_dto = view.getObjectSearch();
+        if (new_dto == null || new_dto.getMap().isEmpty()) {
+            returnMessage(view, "HA OCURRIDO UN ERROR INTERNO");
+            return;
+        }
+        try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
+            boolean save = update(c, old_dto, new_dto);
+            returnMessage(view, save);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -94,4 +142,83 @@ public class StreetsController extends AbstractDBViewController<StreetDTO> imple
         }
     }
 
+    private boolean save(JDBConnection connection, StreetDTO o) {
+        boolean res = false;
+        int key = -1;
+        try {
+            connection.setAutoCommit(false);
+
+            key = dao.insert(connection, o);
+            res = key > 0;
+            if (!res) {
+                throw new SQLException("REGISTRO DE CALLE CORRUPTO");
+            }
+            res = HysHistoryDAO.getINSTANCE().save(
+                    Const.INDEX_CAT_STREET,
+                    Const.INDEX_INSERT,
+                    "SE REGISTRO LA CALLE: %s - %s".formatted(key, o.getStreetName())
+            );
+            if (!res) {
+                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+            }
+            connection.commit();
+        } catch (Exception e) {
+            connection.rollBack();
+        } finally {
+            connection.setAutoCommit(true);
+        }
+        return res;
+    }
+
+    public boolean delete(JDBConnection connection, StreetDTO o) {
+        boolean res = false;
+        try {
+            connection.setAutoCommit(false);
+
+            res = dao.delete(connection, o);
+            if (!res) {
+                throw new SQLException("REGISTRO DE CALLE CORRUPTO");
+            }
+            res = HysHistoryDAO.getINSTANCE().save(
+                    Const.INDEX_CAT_STREET,
+                    Const.INDEX_INSERT,
+                    "SE REGISTRO LA CALLE: %s - %s".formatted(o.getId(), o.getStreetName())
+            );
+            if (!res) {
+                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+            }
+            connection.commit();
+        } catch (Exception e) {
+            connection.rollBack();
+        } finally {
+            connection.setAutoCommit(true);
+        }
+        return res;
+    }
+
+    public boolean update(JDBConnection connection, StreetDTO old_dto, StreetDTO new_dto) {
+        boolean res = false;
+        try {
+            connection.setAutoCommit(false);
+
+            res = dao.update(connection, old_dto, new_dto);
+            if (!res) {
+                throw new SQLException("REGISTRO DE CALLE CORRUPTO");
+            }
+            res = HysHistoryDAO.getINSTANCE().save(
+                    Const.INDEX_CAT_STREET,
+                    Const.INDEX_INSERT,
+                    "SE ACTUALIZO LA CALLE: %s - %s".formatted(new_dto.getId(), new_dto.getStreetName())
+            );
+            if (!res) {
+                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+            }
+            connection.commit();
+        } catch (Exception e) {
+            connection.rollBack();
+        } finally {
+            connection.setAutoCommit(true);
+        }
+        return res;
+    }
 }

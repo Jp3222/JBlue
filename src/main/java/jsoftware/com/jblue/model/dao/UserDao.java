@@ -30,14 +30,17 @@ import java.util.Optional;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
+import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
  *
  * @author juanp
  */
-public class UserDao extends AbstractDAO {
+public class UserDAO extends AbstractDAO implements TableComponentDAO<UserDTO>{
 
-    public UserDao(boolean flag_dev_log, String name_module) {
+    private static final long serialVersionUID = 1L;
+
+    public UserDAO(boolean flag_dev_log, String name_module) {
         super(flag_dev_log, name_module);
     }
 
@@ -264,4 +267,10 @@ public class UserDao extends AbstractDAO {
         }
         return user;
     }
+
+    @Override
+    public List<UserDTO> getList(JDBConnection connection, JTableModel model) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

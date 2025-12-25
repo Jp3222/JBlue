@@ -27,6 +27,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.swing.table.DefaultTableModel;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
@@ -36,11 +37,11 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  *
  * @author juanp
  */
-public class UserDAO extends AbstractDAO implements TableComponentDAO<UserDTO>{
+public class UserDAO2 extends AbstractDAO implements TableComponentDAO<UserDTO> {
 
     private static final long serialVersionUID = 1L;
 
-    public UserDAO(boolean flag_dev_log, String name_module) {
+    public UserDAO2(boolean flag_dev_log, String name_module) {
         super(flag_dev_log, name_module);
     }
 
@@ -270,7 +271,56 @@ public class UserDAO extends AbstractDAO implements TableComponentDAO<UserDTO>{
 
     @Override
     public List<UserDTO> getList(JDBConnection connection, JTableModel model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<UserDTO> userList = new ArrayList<>();
+
+        // 1. Construir la consulta con StringBuilder
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ");
+        sb.append("  id, first_name, last_name1, last_name2, status, date_register ");
+        sb.append("FROM usr_user");
+
+        // 2. Ejecutar la consulta
+        try (Connection conn = connection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sb.toString()); ResultSet rs = pstmt.executeQuery()) {
+
+            // Limpiar el modelo de la tabla antes de cargar nuevos datos
+            if (model instanceof DefaultTableModel) {
+                ((DefaultTableModel) model).setRowCount(0);
+            }
+
+            while (rs.next()) {
+                // --- A. Crear el DTO (Capa de Datos) ---
+                UserDTO user = new UserDTO();
+                user.getMap().put("id", rs.getInt("id"));
+                user.getMap().put("first_name", rs.getString("first_name"));
+                user.getMap().put("last_name1", rs.getString("last_name1"));
+                user.getMap().put("last_name2", rs.getString("last_name2"));
+                user.getMap().put("status", rs.getInt("status"));
+                user.getMap().put("date_register", rs.getTimestamp("date_register"));
+
+                userList.add(user);
+
+                // --- B. Añadir al JTableModel (Capa de UI) ---
+                // Creamos un array de objetos para representar la fila en la tabla
+                Object[] row = {
+                    rs.getInt("id"),
+                    rs.getString("first_name") + " " + rs.getString("last_name1"), // Nombre combinado si prefieres
+                    rs.getInt("status"),
+                    rs.getTimestamp("date_register")
+                };
+
+                // Si tu JTableModel extiende de DefaultTableModel o tiene addRow
+                if (model instanceof DefaultTableModel) {
+                    ((DefaultTableModel) model).addRow(row);
+                }
+            }
+
+            System.out.println("Consulta exitosa: " + userList.size() + " registros cargados.");
+
+        } catch (SQLException ex) {
+            System.getLogger(this.getClass().getName()).log(System.Logger.Level.ERROR, "Error en getList", ex);
+        }
+
+        return userList;
     }
 
 }

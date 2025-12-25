@@ -24,7 +24,7 @@ import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.controllers.DBControllerModel;
 import jsoftware.com.jblue.model.dao.HysHistoryDAO;
 import jsoftware.com.jblue.model.dao.ProcessDAO;
-import jsoftware.com.jblue.model.dao.UserDAO;
+import jsoftware.com.jblue.model.dao.UserDAO2;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.sys.app.AppConfig;
@@ -46,13 +46,13 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
      * Movimiento, id, nombre, a paterno, a materno
      */
     private String DESCRIPTION_FORMAT = "SE %s EL USUARIO: %s - %s %s %s";
-    private final UserDAO user_dao;
+    private final UserDAO2 user_dao;
     private final ProcessDAO process_dao;
     private final HysHistoryDAO history_dao;
 
     public UserController(UserView view) {
         this.view = view;
-        user_dao = new UserDAO(AppConfig.isLogsDev(), "user");
+        user_dao = new UserDAO2(AppConfig.isLogsDev(), "user");
         process_dao = new ProcessDAO(AppConfig.isLogsDev(), "user");
         history_dao = new HysHistoryDAO(AppConfig.isLogsDev(), "user");
     }

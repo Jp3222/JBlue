@@ -8,12 +8,12 @@ package jsoftware.com.jblue.views;
  *
  * @author juanp
  */
-public class PaymentProcess extends javax.swing.JPanel {
+public class EndProcessView extends javax.swing.JPanel {
 
     /**
-     * Creates new form PaymentProcess
+     * Creates new form EndProcessView
      */
-    public PaymentProcess() {
+    public EndProcessView() {
         initComponents();
     }
 
@@ -26,7 +26,9 @@ public class PaymentProcess extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        setMinimumSize(new java.awt.Dimension(900, 700));
         setName("Form"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
 

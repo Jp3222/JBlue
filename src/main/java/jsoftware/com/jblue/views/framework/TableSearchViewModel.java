@@ -16,6 +16,7 @@
  */
 package jsoftware.com.jblue.views.framework;
 
+import java.io.Serializable;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -25,7 +26,7 @@ import jsoftware.com.jutil.db.JDBMapObject;
  *
  * @author juan pablo campos casasanero
  */
-public interface TableSearchViewModel {
+public interface TableSearchViewModel extends Serializable {
 
     static int REGISTER_VIEW = 1;
 

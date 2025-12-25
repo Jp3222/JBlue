@@ -1,18 +1,6 @@
 /*
- * Copyright (C) 2025 juanp
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package jsoftware.com.jblue.views.process;
 
@@ -28,10 +16,9 @@ import jsoftware.com.jblue.views.framework.AbstractProcessView;
  *
  * @author juanp
  */
-public final class UserRegisterProcessView extends AbstractProcessView<UserDTO> {
+public final class ConsumerRegisterProcessView extends AbstractProcessView<UserDTO> {
 
     private static final long serialVersionUID = 1L;
-
     private final UserView user_view;
     private final ValidationProcessView validation_process_view;
     private final PaymentProcessView payment_concepts_view;
@@ -41,7 +28,7 @@ public final class UserRegisterProcessView extends AbstractProcessView<UserDTO> 
     /**
      * Creates new form ProcessView
      */
-    public UserRegisterProcessView(ProcessViewBuilder builder) {
+    public ConsumerRegisterProcessView(AbstractProcessView.ProcessViewBuilder builder) {
         super(builder);
         this.user_view = new UserView(builder);
         this.validation_process_view = new ValidationProcessView(builder);
@@ -75,8 +62,9 @@ public final class UserRegisterProcessView extends AbstractProcessView<UserDTO> 
         this.ly = (CardLayout) root_panel.getLayout();
         this.root_panel.add(user_view, user_view.getName());
         this.root_panel.add(validation_process_view, validation_process_view.getName());
-        this.root_panel.add(payment_concepts_view, payment_concepts_view.getName());
         this.root_panel.add(water_intake_view, water_intake_view.getName());
+        this.root_panel.add(payment_concepts_view, payment_concepts_view.getName());
+
     }
 
     @Override
@@ -106,46 +94,56 @@ public final class UserRegisterProcessView extends AbstractProcessView<UserDTO> 
         jButton3 = new javax.swing.JButton();
         root_panel = new javax.swing.JPanel();
 
-        setName("Registro de titular"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(900, 300));
+        setName("Registro de consumidor"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
 
+        north_panel.setName("north_panel"); // NOI18N
         north_panel.setPreferredSize(new java.awt.Dimension(900, 30));
         north_panel.setLayout(new java.awt.BorderLayout(10, 10));
 
+        np_cp_center.setName("np_cp_center"); // NOI18N
         np_cp_center.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
 
         last_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        last_panel_button.setText("Regresar");
-        last_panel_button.setActionCommand("register_view");
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/process/Bundle"); // NOI18N
+        last_panel_button.setText(bundle.getString("ConsumerRegisterProcessView.last_panel_button.text")); // NOI18N
+        last_panel_button.setActionCommand(bundle.getString("ConsumerRegisterProcessView.last_panel_button.actionCommand")); // NOI18N
+        last_panel_button.setName("last_panel_button"); // NOI18N
         np_cp_center.add(last_panel_button);
 
         next_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        next_panel_button.setText("Siguiente");
-        next_panel_button.setActionCommand("search_view");
+        next_panel_button.setText(bundle.getString("ConsumerRegisterProcessView.next_panel_button.text")); // NOI18N
+        next_panel_button.setActionCommand(bundle.getString("ConsumerRegisterProcessView.next_panel_button.actionCommand")); // NOI18N
+        next_panel_button.setName("next_panel_button"); // NOI18N
         np_cp_center.add(next_panel_button);
 
         north_panel.add(np_cp_center, java.awt.BorderLayout.CENTER);
 
+        np_cp_west.setName("np_cp_west"); // NOI18N
         np_cp_west.setPreferredSize(new java.awt.Dimension(100, 30));
         np_cp_west.setLayout(new java.awt.BorderLayout());
 
         search_object.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        search_object.setActionCommand("search_object");
+        search_object.setActionCommand(bundle.getString("ConsumerRegisterProcessView.search_object.actionCommand")); // NOI18N
+        search_object.setName("search_object"); // NOI18N
         np_cp_west.add(search_object, java.awt.BorderLayout.CENTER);
 
         north_panel.add(np_cp_west, java.awt.BorderLayout.WEST);
 
+        np_cp_east.setName("np_cp_east"); // NOI18N
         np_cp_east.setPreferredSize(new java.awt.Dimension(100, 30));
         np_cp_east.setLayout(new java.awt.BorderLayout());
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/configuraciones.png"))); // NOI18N
+        jButton3.setName("jButton3"); // NOI18N
         np_cp_east.add(jButton3, java.awt.BorderLayout.CENTER);
 
         north_panel.add(np_cp_east, java.awt.BorderLayout.EAST);
 
         add(north_panel, java.awt.BorderLayout.NORTH);
 
+        root_panel.setName("root_panel"); // NOI18N
         root_panel.setLayout(new java.awt.CardLayout());
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -162,5 +160,4 @@ public final class UserRegisterProcessView extends AbstractProcessView<UserDTO> 
     private javax.swing.JPanel root_panel;
     private javax.swing.JButton search_object;
     // End of variables declaration//GEN-END:variables
-
 }

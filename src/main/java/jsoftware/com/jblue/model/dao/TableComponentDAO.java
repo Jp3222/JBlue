@@ -4,7 +4,9 @@
  */
 package jsoftware.com.jblue.model.dao;
 
+import java.io.Serializable;
 import java.util.List;
+import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.dto.DtoMapModel;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
@@ -12,8 +14,8 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  *
  * @author juanp
  */
-public interface TableComponentDAO<T extends DtoMapModel> {
+public interface TableComponentDAO<T extends DtoMapModel> extends Serializable {
 
-    List<T> getList(JTableModel model);
+    List<T> getList(JDBConnection connection, JTableModel model);
 
 }

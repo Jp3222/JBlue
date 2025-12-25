@@ -17,7 +17,6 @@
 package jsoftware.com.jblue.views;
 
 import java.awt.CardLayout;
-import java.time.LocalDate;
 import java.util.Map;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -34,7 +33,7 @@ import org.apache.commons.collections4.map.HashedMap;
  *
  * @author juan pablo campos casasanero
  */
-public final class PaymentConceptView extends DBView implements DBObjectValues<PaymentConceptDTO> {
+public final class PaymentConceptView extends DBView<PaymentConceptDTO> implements DBObjectValues<PaymentConceptDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -66,16 +65,15 @@ public final class PaymentConceptView extends DBView implements DBObjectValues<P
 
     @Override
     public void events() {
-        setDate();
         date_end_field.addItemListener((e) -> {
-            GraphicsUtils.disableTreeLock(!(date_end_field.isSelected()), date_panel_field);
+            GraphicsUtils.disableTreeLock(date_end_field.isSelected(), date_panel_field);
         });
 
     }
 
     @Override
     public void initialState() {
-        GraphicsUtils.disableTreeLock(!(date_end_field.isSelected()), date_panel_field);
+        GraphicsUtils.disableTreeLock(date_end_field.isSelected(), date_panel_field);
     }
 
     @Override
@@ -100,30 +98,31 @@ public final class PaymentConceptView extends DBView implements DBObjectValues<P
         jButton2 = new javax.swing.JButton();
         root_panel = new javax.swing.JPanel();
         register_panel = new javax.swing.JPanel();
-        panel_campos = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
+        p_fields = new javax.swing.JPanel();
+        p_fields_1 = new javax.swing.JPanel();
+        p_concept = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         type_field = new javax.swing.JTextField();
-        jPanel10 = new javax.swing.JPanel();
+        p_current_price = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        price_field = new javax.swing.JTextField();
+        p_previous_price = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        price_field1 = new javax.swing.JTextField();
+        p_mandatory_payment = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        p_module = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        date_end_field = new javax.swing.JCheckBox();
+        date_panel_field = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        p_description = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         description_fiel = new javax.swing.JTextArea();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        price_field = new javax.swing.JTextField();
-        date_end_field = new javax.swing.JCheckBox();
-        date_panel_field = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        day_field = new javax.swing.JComboBox<>();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        month_field = new javax.swing.JComboBox<>();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        year_field = new javax.swing.JComboBox<>();
-        add_docs_button = new javax.swing.JButton();
-        show_docs_button = new javax.swing.JButton();
         options_panel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         save_button = new javax.swing.JButton();
@@ -190,103 +189,108 @@ public final class PaymentConceptView extends DBView implements DBObjectValues<P
         register_panel.setName("register"); // NOI18N
         register_panel.setLayout(new java.awt.BorderLayout(10, 10));
 
-        panel_campos.setPreferredSize(new java.awt.Dimension(500, 620));
-        panel_campos.setLayout(new java.awt.GridLayout(13, 1, 0, 10));
+        p_fields.setPreferredSize(new java.awt.Dimension(500, 620));
+        p_fields.setLayout(new java.awt.BorderLayout());
 
-        jPanel8.setLayout(new java.awt.BorderLayout());
+        p_fields_1.setLayout(new java.awt.GridLayout(12, 0));
+
+        p_concept.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel2.setText("Motivo: ");
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel8.add(jLabel2, java.awt.BorderLayout.WEST);
+        p_concept.add(jLabel2, java.awt.BorderLayout.WEST);
 
         type_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         type_field.setName("Tipo de toma"); // NOI18N
-        jPanel8.add(type_field, java.awt.BorderLayout.CENTER);
+        p_concept.add(type_field, java.awt.BorderLayout.CENTER);
 
-        panel_campos.add(jPanel8);
+        p_fields_1.add(p_concept);
 
-        jPanel10.setLayout(new java.awt.BorderLayout());
+        p_current_price.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel3.setText("Precio Actual:");
+        jLabel3.setPreferredSize(new java.awt.Dimension(150, 20));
+        p_current_price.add(jLabel3, java.awt.BorderLayout.WEST);
+
+        price_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        price_field.setName("Costo"); // NOI18N
+        p_current_price.add(price_field, java.awt.BorderLayout.CENTER);
+
+        p_fields_1.add(p_current_price);
+
+        p_previous_price.setLayout(new java.awt.BorderLayout());
+
+        jLabel6.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel6.setText("Precio Anterior:");
+        jLabel6.setPreferredSize(new java.awt.Dimension(150, 20));
+        p_previous_price.add(jLabel6, java.awt.BorderLayout.WEST);
+
+        price_field1.setEditable(false);
+        price_field1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        price_field1.setName("Costo"); // NOI18N
+        p_previous_price.add(price_field1, java.awt.BorderLayout.CENTER);
+
+        p_fields_1.add(p_previous_price);
+
+        p_mandatory_payment.setLayout(new java.awt.BorderLayout());
+
+        jLabel7.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel7.setText("Pago Obligatorio:");
+        jLabel7.setPreferredSize(new java.awt.Dimension(150, 20));
+        p_mandatory_payment.add(jLabel7, java.awt.BorderLayout.WEST);
+        p_mandatory_payment.add(jCheckBox1, java.awt.BorderLayout.CENTER);
+
+        p_fields_1.add(p_mandatory_payment);
+
+        p_module.setLayout(new java.awt.BorderLayout());
+
+        jLabel8.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel8.setText("Modulo Asignado:");
+        jLabel8.setPreferredSize(new java.awt.Dimension(150, 20));
+        p_module.add(jLabel8, java.awt.BorderLayout.WEST);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        p_module.add(jComboBox1, java.awt.BorderLayout.CENTER);
+
+        p_fields_1.add(p_module);
+
+        date_end_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        date_end_field.setText("Poner fecha limite");
+        date_end_field.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        p_fields_1.add(date_end_field);
+
+        date_panel_field.setLayout(new java.awt.BorderLayout());
+
+        jLabel4.setText("F. Limite");
+        jLabel4.setPreferredSize(new java.awt.Dimension(150, 30));
+        date_panel_field.add(jLabel4, java.awt.BorderLayout.WEST);
+
+        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        date_panel_field.add(jFormattedTextField1, java.awt.BorderLayout.CENTER);
+
+        p_fields_1.add(date_panel_field);
+
+        p_fields.add(p_fields_1, java.awt.BorderLayout.CENTER);
+
+        p_description.setLayout(new java.awt.BorderLayout());
 
         jLabel5.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel5.setText("Descripcion");
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel10.add(jLabel5, java.awt.BorderLayout.WEST);
+        p_description.add(jLabel5, java.awt.BorderLayout.WEST);
 
         description_fiel.setColumns(20);
         description_fiel.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         description_fiel.setRows(5);
         jScrollPane1.setViewportView(description_fiel);
 
-        jPanel10.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        p_description.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        panel_campos.add(jPanel10);
+        p_fields.add(p_description, java.awt.BorderLayout.SOUTH);
 
-        jPanel9.setLayout(new java.awt.BorderLayout());
-
-        jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel3.setText("Monto: ");
-        jLabel3.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel9.add(jLabel3, java.awt.BorderLayout.WEST);
-
-        price_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        price_field.setName("Costo"); // NOI18N
-        jPanel9.add(price_field, java.awt.BorderLayout.CENTER);
-
-        panel_campos.add(jPanel9);
-
-        date_end_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        date_end_field.setText("Poner fecha limite");
-        date_end_field.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        panel_campos.add(date_end_field);
-
-        date_panel_field.setLayout(new java.awt.GridLayout(1, 3));
-
-        jPanel1.setLayout(new java.awt.BorderLayout());
-
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel8.setText("Dia: ");
-        jLabel8.setPreferredSize(new java.awt.Dimension(80, 20));
-        jPanel1.add(jLabel8, java.awt.BorderLayout.LINE_START);
-
-        jPanel1.add(day_field, java.awt.BorderLayout.CENTER);
-
-        date_panel_field.add(jPanel1);
-
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel9.setText("Mes: ");
-        jLabel9.setPreferredSize(new java.awt.Dimension(80, 20));
-        jPanel2.add(jLabel9, java.awt.BorderLayout.LINE_START);
-
-        jPanel2.add(month_field, java.awt.BorderLayout.CENTER);
-
-        date_panel_field.add(jPanel2);
-
-        jPanel4.setLayout(new java.awt.BorderLayout());
-
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel10.setText("Año: ");
-        jLabel10.setPreferredSize(new java.awt.Dimension(80, 20));
-        jPanel4.add(jLabel10, java.awt.BorderLayout.LINE_START);
-
-        year_field.setMaximumRowCount(0);
-        jPanel4.add(year_field, java.awt.BorderLayout.CENTER);
-
-        date_panel_field.add(jPanel4);
-
-        panel_campos.add(date_panel_field);
-
-        add_docs_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        add_docs_button.setText("Adjuntar Documentos");
-        panel_campos.add(add_docs_button);
-
-        show_docs_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        show_docs_button.setText("Ver archivos adjuntos");
-        panel_campos.add(show_docs_button);
-
-        register_panel.add(panel_campos, java.awt.BorderLayout.CENTER);
+        register_panel.add(p_fields, java.awt.BorderLayout.CENTER);
 
         options_panel.setPreferredSize(new java.awt.Dimension(500, 80));
         options_panel.setLayout(new java.awt.GridLayout(2, 0, 10, 10));
@@ -412,19 +416,7 @@ public final class PaymentConceptView extends DBView implements DBObjectValues<P
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void setDate() {
-
-    }
-
-    public LocalDate getDate() {
-        int day = day_field.getSelectedIndex() + 1;
-        int month = month_field.getSelectedIndex() + 1;
-        int year = Integer.parseInt(year_field.getItemAt(year_field.getSelectedIndex()));
-        return LocalDate.of(year, month, day);
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton add_docs_button;
     private javax.swing.JButton btn_ant;
     private javax.swing.JButton btn_recargar;
     private javax.swing.JButton btn_sig;
@@ -432,40 +424,44 @@ public final class PaymentConceptView extends DBView implements DBObjectValues<P
     private javax.swing.JLabel count_field;
     private javax.swing.JCheckBox date_end_field;
     private javax.swing.JPanel date_panel_field;
-    private javax.swing.JComboBox<String> day_field;
     private javax.swing.JButton delete_button;
     private javax.swing.JTextArea description_fiel;
     private javax.swing.JButton jButton2;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel32;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToggleButton jToggleButton2;
-    private javax.swing.JComboBox<String> month_field;
     private javax.swing.JTable objects_table;
     private javax.swing.JPanel options_panel;
-    private javax.swing.JPanel panel_campos;
+    private javax.swing.JPanel p_concept;
+    private javax.swing.JPanel p_current_price;
+    private javax.swing.JPanel p_description;
+    private javax.swing.JPanel p_fields;
+    private javax.swing.JPanel p_fields_1;
+    private javax.swing.JPanel p_mandatory_payment;
+    private javax.swing.JPanel p_module;
+    private javax.swing.JPanel p_previous_price;
     private javax.swing.JPanel panel_izq;
     private javax.swing.JTextField price_field;
+    private javax.swing.JTextField price_field1;
     private javax.swing.JLabel range_field;
     private javax.swing.JButton register_button;
     private javax.swing.JPanel register_panel;
@@ -474,14 +470,12 @@ public final class PaymentConceptView extends DBView implements DBObjectValues<P
     private javax.swing.JButton search_button;
     private javax.swing.JTextField search_field;
     private javax.swing.JPanel search_panel;
-    private javax.swing.JButton show_docs_button;
     private javax.swing.JPanel status_bar_panel;
     private javax.swing.JScrollPane tabla_usuarios;
     private javax.swing.JPanel tools_panel;
     private javax.swing.JLabel total_field;
     private javax.swing.JTextField type_field;
     private javax.swing.JButton update_button;
-    private javax.swing.JComboBox<String> year_field;
     // End of variables declaration//GEN-END:variables
 
     @Override

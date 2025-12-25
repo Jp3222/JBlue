@@ -23,14 +23,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.FactoryController;
-import jsoftware.com.jblue.model.dto.OWaterIntakes;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
+import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.DBValuesMapModel;
-import jsoftware.com.jblue.views.framework.DBView;
 import jsoftware.com.jblue.views.framework.TableSearchViewModel;
 import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
@@ -39,13 +39,13 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  *
  * @author juanp
  */
-public final class WaterIntakesView extends DBView implements DBValuesMapModel, TableSearchViewModel {
+public final class WaterIntakesView extends AbstractProcessView<WaterIntakeTypesDTO> implements DBValuesMapModel, TableSearchViewModel {
 
     private static final long serialVersionUID = 1L;
 
     private final CardLayout ly;
     private final JTableModel model;
-    private OWaterIntakes object_search;
+    private WaterIntakesDTO object_search;
     private UserDTO user_search;
     private WaterIntakeTypesDTO water_intake_types_search;
     private StreetDTO street1_search;
@@ -56,7 +56,8 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
     /**
      * Creates new form WaterIntakesView
      */
-    public WaterIntakesView() {
+    public WaterIntakesView(ProcessViewBuilder builder) {
+        super(builder);
         initComponents();
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
@@ -100,8 +101,6 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
 
     @Override
     public void initialState() {
-
-        //
         object_search = null;
         view_show = 1;
         save_button.setEnabled(true);
@@ -111,16 +110,23 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
 
     @Override
     public void finalState() {
+        System.out.println("ES UN PROCESO?: " + isProcess() + " - " + getProcessId());
+        if (isProcess()) {
+            this.remove(north_panel);
+            p_fields.remove(p_status);
+            p_fields.remove(p_date_register);
+            p_fields.remove(p_date_update);
+        }
     }
 
     @Override
-    public OWaterIntakes getObjectSearch() {
+    public WaterIntakesDTO getObjectSearch() {
         return object_search;
     }
 
     @Override
     public void setObjectSearch(JDBMapObject o) {
-        object_search = (OWaterIntakes) o;
+        object_search = (WaterIntakesDTO) o;
     }
 
     /**
@@ -140,7 +146,7 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
         jButton2 = new javax.swing.JButton();
         root_panel = new javax.swing.JPanel();
         register_panel = new javax.swing.JPanel();
-        panel_campos = new javax.swing.JPanel();
+        p_fields = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -164,13 +170,13 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
         jPanel14 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         location_field = new javax.swing.JTextField();
-        jPanel16 = new javax.swing.JPanel();
+        p_status = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         status_field = new javax.swing.JComboBox<>();
-        jPanel17 = new javax.swing.JPanel();
+        p_date_update = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         date_update_field = new javax.swing.JTextField();
-        jPanel18 = new javax.swing.JPanel();
+        p_date_register = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         date_register = new javax.swing.JTextField();
         options_panel = new javax.swing.JPanel();
@@ -237,14 +243,14 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
         register_panel.setName("register"); // NOI18N
         register_panel.setLayout(new java.awt.BorderLayout());
 
-        panel_campos.setPreferredSize(new java.awt.Dimension(500, 620));
-        panel_campos.setLayout(new java.awt.GridLayout(13, 0, 0, 10));
+        p_fields.setPreferredSize(new java.awt.Dimension(500, 620));
+        p_fields.setLayout(new java.awt.GridLayout(13, 0, 0, 10));
 
         jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Datos del tipo de toma");
         jLabel4.setPreferredSize(new java.awt.Dimension(500, 100));
-        panel_campos.add(jLabel4);
+        p_fields.add(jLabel4);
 
         jPanel12.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanel12.setLayout(new java.awt.BorderLayout());
@@ -264,7 +270,7 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
         search_user_button.setPreferredSize(new java.awt.Dimension(50, 50));
         jPanel12.add(search_user_button, java.awt.BorderLayout.LINE_END);
 
-        panel_campos.add(jPanel12);
+        p_fields.add(jPanel12);
 
         jPanel8.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanel8.setLayout(new java.awt.BorderLayout());
@@ -282,7 +288,7 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
 
         jPanel8.add(water_intake_types_field, java.awt.BorderLayout.CENTER);
 
-        panel_campos.add(jPanel8);
+        p_fields.add(jPanel8);
 
         jPanel9.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanel9.setLayout(new java.awt.BorderLayout());
@@ -296,7 +302,7 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
         operation_cost_field.setName(""); // NOI18N
         jPanel9.add(operation_cost_field, java.awt.BorderLayout.CENTER);
 
-        panel_campos.add(jPanel9);
+        p_fields.add(jPanel9);
 
         jPanel10.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanel10.setLayout(new java.awt.BorderLayout());
@@ -314,7 +320,7 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
 
         jPanel10.add(street1_field, java.awt.BorderLayout.CENTER);
 
-        panel_campos.add(jPanel10);
+        p_fields.add(jPanel10);
 
         jPanel13.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanel13.setLayout(new java.awt.BorderLayout());
@@ -332,7 +338,7 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
 
         jPanel13.add(street2_field, java.awt.BorderLayout.CENTER);
 
-        panel_campos.add(jPanel13);
+        p_fields.add(jPanel13);
 
         jPanel14.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanel14.setLayout(new java.awt.BorderLayout());
@@ -346,53 +352,53 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
         location_field.setName(""); // NOI18N
         jPanel14.add(location_field, java.awt.BorderLayout.CENTER);
 
-        panel_campos.add(jPanel14);
+        p_fields.add(jPanel14);
 
-        jPanel16.setPreferredSize(new java.awt.Dimension(100, 35));
-        jPanel16.setLayout(new java.awt.BorderLayout());
+        p_status.setPreferredSize(new java.awt.Dimension(100, 35));
+        p_status.setLayout(new java.awt.BorderLayout());
 
         jLabel9.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel9.setText("Estado: ");
         jLabel9.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel16.add(jLabel9, java.awt.BorderLayout.WEST);
+        p_status.add(jLabel9, java.awt.BorderLayout.WEST);
 
         status_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar Estado.", "Activo.", "Inactivo." }));
         status_field.setName(""); // NOI18N
-        jPanel16.add(status_field, java.awt.BorderLayout.CENTER);
+        p_status.add(status_field, java.awt.BorderLayout.CENTER);
 
-        panel_campos.add(jPanel16);
+        p_fields.add(p_status);
 
-        jPanel17.setPreferredSize(new java.awt.Dimension(100, 35));
-        jPanel17.setLayout(new java.awt.BorderLayout());
+        p_date_update.setPreferredSize(new java.awt.Dimension(100, 35));
+        p_date_update.setLayout(new java.awt.BorderLayout());
 
         jLabel10.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel10.setText("Fecha de actualizacion");
         jLabel10.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel17.add(jLabel10, java.awt.BorderLayout.WEST);
+        p_date_update.add(jLabel10, java.awt.BorderLayout.WEST);
 
         date_update_field.setEditable(false);
         date_update_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         date_update_field.setName(""); // NOI18N
-        jPanel17.add(date_update_field, java.awt.BorderLayout.CENTER);
+        p_date_update.add(date_update_field, java.awt.BorderLayout.CENTER);
 
-        panel_campos.add(jPanel17);
+        p_fields.add(p_date_update);
 
-        jPanel18.setPreferredSize(new java.awt.Dimension(100, 35));
-        jPanel18.setLayout(new java.awt.BorderLayout());
+        p_date_register.setPreferredSize(new java.awt.Dimension(100, 35));
+        p_date_register.setLayout(new java.awt.BorderLayout());
 
         jLabel11.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel11.setText("Fecha de registro.");
         jLabel11.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel18.add(jLabel11, java.awt.BorderLayout.WEST);
+        p_date_register.add(jLabel11, java.awt.BorderLayout.WEST);
 
         date_register.setEditable(false);
         date_register.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         date_register.setName(""); // NOI18N
-        jPanel18.add(date_register, java.awt.BorderLayout.CENTER);
+        p_date_register.add(date_register, java.awt.BorderLayout.CENTER);
 
-        panel_campos.add(jPanel18);
+        p_fields.add(p_date_register);
 
-        register_panel.add(panel_campos, java.awt.BorderLayout.CENTER);
+        register_panel.add(p_fields, java.awt.BorderLayout.CENTER);
 
         options_panel.setPreferredSize(new java.awt.Dimension(500, 80));
         options_panel.setLayout(new java.awt.GridLayout(2, 0, 10, 10));
@@ -558,9 +564,6 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel17;
-    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel32;
@@ -575,7 +578,10 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
     private javax.swing.JTable objects_table;
     private javax.swing.JTextField operation_cost_field;
     private javax.swing.JPanel options_panel;
-    private javax.swing.JPanel panel_campos;
+    private javax.swing.JPanel p_date_register;
+    private javax.swing.JPanel p_date_update;
+    private javax.swing.JPanel p_fields;
+    private javax.swing.JPanel p_status;
     private javax.swing.JPanel panel_izq;
     private javax.swing.JLabel range;
     private javax.swing.JButton register_button;
@@ -592,13 +598,13 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
     private javax.swing.JButton search_water_intake;
     private javax.swing.JPanel status_bar_panel;
     private javax.swing.JComboBox<String> status_field;
-    private javax.swing.JComboBox<StreetDTO> street1_field;
-    private javax.swing.JComboBox<StreetDTO> street2_field;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.StreetDTO> street1_field;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.StreetDTO> street2_field;
     private javax.swing.JScrollPane tabla_usuarios;
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     private javax.swing.JTextField user_field;
-    private javax.swing.JComboBox<OWaterIntakes> water_intake_types_field;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.WaterIntakesDTO> water_intake_types_field;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -701,7 +707,7 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
     }
 
     public Map<String, Object> saveUpdate(
-            OWaterIntakes originalProcedure, // Objeto con datos actuales
+            WaterIntakesDTO originalProcedure, // Objeto con datos actuales
             String _cost_procedure, String _water_inatke, String _user, String _user_name,
             String _street1, String _street2, String _location, String _description,
             String _status) {
@@ -759,10 +765,6 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
         delete_button.setEnabled(true);
     }
 
-    void hiddenNorthPanel(boolean b) {
-        this.north_panel.setVisible(b);
-    }
-
     public void setUserSearch(UserDTO user_search) {
         this.user_search = user_search;
     }
@@ -779,11 +781,12 @@ public final class WaterIntakesView extends DBView implements DBValuesMapModel, 
         this.street2_search = street2_search;
     }
 
+    @Override
     public void setProcess(boolean procces) {
         this.process = procces;
-        hiddenNorthPanel(false);
     }
 
+    @Override
     public boolean isProcess() {
         return process;
     }

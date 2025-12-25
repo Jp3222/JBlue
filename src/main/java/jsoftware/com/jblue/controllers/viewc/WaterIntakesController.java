@@ -18,7 +18,7 @@ package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
-import jsoftware.com.jblue.model.dto.OWaterIntakes;
+import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
@@ -29,7 +29,7 @@ import jsoftware.com.jblue.views.components.ObjectSearchComponent;
  *
  * @author juanp
  */
-public class WaterIntakesController extends AbstractDBViewController<OWaterIntakes> {
+public class WaterIntakesController extends AbstractDBViewController<WaterIntakesDTO> {
 
     private WaterIntakesView view;
 

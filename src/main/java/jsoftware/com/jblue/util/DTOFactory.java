@@ -6,7 +6,7 @@ package jsoftware.com.jblue.util;
 
 import java.lang.reflect.InvocationTargetException;
 import jsoftware.com.jblue.model.dto.HysAdministrationHistoryDTO;
-import jsoftware.com.jblue.model.dto.OWaterIntakes;
+import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
 import jsoftware.com.jblue.model.dto.PaymentDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
@@ -32,8 +32,8 @@ public class DTOFactory implements ObjectsFactory<JDBMapObject, JDBArrayObject> 
             if (cls.getName().equals(WaterIntakeTypesDTO.class.getName())) {
                 return new WaterIntakeTypesDTO();
             }
-            if (cls.getName().equals(OWaterIntakes.class.getName())) {
-                return new OWaterIntakes();
+            if (cls.getName().equals(WaterIntakesDTO.class.getName())) {
+                return new WaterIntakesDTO();
             }
             if (cls.getName().equals(HysAdministrationHistoryDTO.class.getName())) {
                 return new HysAdministrationHistoryDTO();

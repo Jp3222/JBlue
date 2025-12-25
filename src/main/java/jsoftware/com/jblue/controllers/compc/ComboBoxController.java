@@ -21,8 +21,8 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import jsoftware.com.jblue.controllers.AbstractComponentController;
-import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jblue.model.dao.ListComponentDAO;
+import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  *
@@ -32,27 +32,29 @@ import jsoftware.com.jblue.model.dao.ListComponentDAO;
 public class ComboBoxController<T extends JDBMapObject> extends AbstractComponentController<T> {
 
     private static final long serialVersionUID = 1L;
+    private ListComponentDAO<T> dao;
 
     public ComboBoxController(JComboBox<T> component, List<T> list_items) {
         super(component, list_items);
     }
 
     public ComboBoxController(JComboBox<T> componente, ListComponentDAO<T> dao) {
-        super(componente, dao);
+        super(componente);
+        this.dao = dao;
     }
 
     @Override
     public void loadData() {
         JComboBox<T> box = getComponent();
-        if (list == null) {
-            list = dao.getList();
+        if (list == null || list.isEmpty()) {
+            list.addAll(dao.getList());
         }
-        box.addItem((T) new JDBMapObject(){
+        box.addItem((T) new JDBMapObject() {
             @Override
             public String toString() {
-                return "SELECCIONE UN ELEMENTO";
+                return "SELECCIONA ELEMENTO";
             }
-            
+
         });
         for (T i : list) {
             box.addItem(i);

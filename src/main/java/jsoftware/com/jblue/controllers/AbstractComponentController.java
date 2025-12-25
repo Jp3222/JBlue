@@ -19,7 +19,6 @@ package jsoftware.com.jblue.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
-import jsoftware.com.jblue.model.dao.ListComponentDAO;
 import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
@@ -32,22 +31,15 @@ public abstract class AbstractComponentController<T extends JDBMapObject> extend
     private static final long serialVersionUID = 1L;
 
     protected final JComponent componente;
-    protected List<T> list;
-    protected ListComponentDAO<T> dao;
+    protected final List<T> list;
 
     public AbstractComponentController(JComponent componente) {
-        this(componente, new ArrayList<>(20));
+        this(componente, new ArrayList<>());
     }
 
     public AbstractComponentController(JComponent componente, List<T> list) {
         this.componente = componente;
         this.list = list;
-    }
-
-    public AbstractComponentController(JComponent componente, ListComponentDAO<T> dao) {
-        this.componente = componente;
-        this.list = null;
-        this.dao = dao;
     }
 
     public <T extends JComponent> T getComponent() {

@@ -22,17 +22,17 @@ import java.util.Map;
  *
  * @author juanp
  */
-public class OWaterIntakes extends AuditableObjectMap {
+public class WaterIntakesDTO extends AuditableObjectMap {
 
-    public OWaterIntakes(Map<String, Object> map) {
+    public WaterIntakesDTO(Map<String, Object> map) {
         super(map);
     }
 
-    public OWaterIntakes(int size) {
+    public WaterIntakesDTO(int size) {
         super(size);
     }
 
-    public OWaterIntakes() {
+    public WaterIntakesDTO() {
     }
 
     public String getConstProcedure() {

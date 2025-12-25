@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.model.dto.OWaterIntakes;
+import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
 import jsoftware.com.jblue.model.dto.PaymentDTO;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.querys.PaymentQuerys;
@@ -72,7 +72,7 @@ public class PaymentsDAO extends AbstractDAO implements Serializable {
      */
     public int insertServicePayment(JDBConnection connection,
             String uudi,
-            OWaterIntakes wk,
+            WaterIntakesDTO wk,
             BigDecimal total_cost,
             BigDecimal amount_paid,
             BigDecimal change_amount,
@@ -84,7 +84,7 @@ public class PaymentsDAO extends AbstractDAO implements Serializable {
 
     public int insertSurchargePayment(JDBConnection connection,
             String uudi,
-            OWaterIntakes wk,
+            WaterIntakesDTO wk,
             BigDecimal total_cost,
             BigDecimal amount_paid,
             BigDecimal change_amount,
@@ -96,7 +96,7 @@ public class PaymentsDAO extends AbstractDAO implements Serializable {
 
     public int insertOtherPayment(JDBConnection connection,
             String uudi,
-            OWaterIntakes wk,
+            WaterIntakesDTO wk,
             int payment_concept_id,
             BigDecimal total_cost,
             BigDecimal amount_paid,
@@ -107,7 +107,7 @@ public class PaymentsDAO extends AbstractDAO implements Serializable {
         return insertPayment(connection, uudi, wk, payment_concept_id, total_cost, amount_paid, change_amount, months_paid_date, 3, status_id);
     }
 
-// Asumimos que JDBConnection, OWaterIntakes, JExcp existen.
+// Asumimos que JDBConnection, WaterIntakesDTO, JExcp existen.
     /**
      * Inserta un registro en pym_payments y recupera el ID generado. NOTA: La
      * conexión debe tener auto-commit deshabilitado externamente.
@@ -117,7 +117,7 @@ public class PaymentsDAO extends AbstractDAO implements Serializable {
     public int insertPayment(
             JDBConnection connection,
             String uudi,
-            OWaterIntakes wk,
+            WaterIntakesDTO wk,
             int payment_concept_id,
             BigDecimal total_cost,
             BigDecimal amount_paid,

@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import jsoftware.com.jblue.controllers.winc.MainController;
+import jsoftware.com.jblue.model.factories.ProcessViewFactory;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.views.PaymentConceptView;
 import jsoftware.com.jblue.views.ShopCartView;
@@ -29,6 +30,7 @@ import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.WaterIntakesTypesView;
 import jsoftware.com.jblue.views.components.UserViewComponent;
 import jsoftware.com.jblue.views.framework.AbstractAppWindows;
+import jsoftware.com.jblue.views.process.ConsumerRegisterProcessView;
 import jsoftware.com.jblue.views.process.UserRegisterProcessView;
 
 /**
@@ -43,7 +45,8 @@ public final class WMainMenu extends AbstractAppWindows {
     private final CardLayout ly;
     //Vistas de la base de datos
     private final ShopCartView shop_cart_view;
-    private final UserRegisterProcessView process_view;
+    private final UserRegisterProcessView owner_process_view;
+    private final ConsumerRegisterProcessView consumer_process_view;
     private final UserView users_view;
     private final StreetsView street_view;
     private final WaterIntakesTypesView water_intakes_type_view;
@@ -77,8 +80,9 @@ public final class WMainMenu extends AbstractAppWindows {
         this.ABOUT = new AboutUs();
         this.PROFILE = new ProfileWindow();
         shop_cart_view = new ShopCartView();
-        process_view = new UserRegisterProcessView();
-        users_view = new UserView(false, "", PROGRAM_NAME);
+        owner_process_view = ProcessViewFactory.getIntance().getUserRegisterProcess();
+        consumer_process_view = ProcessViewFactory.getIntance().getConsumerRegisterProcess();
+        users_view = ProcessViewFactory.getIntance().getUserProcess();
         street_view = new StreetsView();
         water_intakes_type_view = new WaterIntakesTypesView();
         this.payment_concept_view = new PaymentConceptView();
@@ -108,7 +112,8 @@ public final class WMainMenu extends AbstractAppWindows {
     @Override
     public void components() {
         views_panel.add(shop_cart_view, shop_cart_view.getName());
-        views_panel.add(process_view, process_view.getName());
+        views_panel.add(owner_process_view, owner_process_view.getName());
+        views_panel.add(consumer_process_view, consumer_process_view.getName());
         views_panel.add(street_view, street_view.getName());
         views_panel.add(water_intakes_type_view, water_intakes_type_view.getName());
         views_panel.add(users_view, users_view.getName());
@@ -128,7 +133,7 @@ public final class WMainMenu extends AbstractAppWindows {
         controller = new MainController(this);
         exit_button.addActionListener(controller);
         btn_home.addActionListener(controller);
-        btn_usuarios.addActionListener(controller);
+        //btn_usuarios.addActionListener(controller);
         btn_calles.addActionListener(controller);
         btn_tipo_tomas.addActionListener(controller);
         btn_tipo_pagos.addActionListener(controller);
@@ -142,7 +147,8 @@ public final class WMainMenu extends AbstractAppWindows {
         surcharge_payments_view_item.addActionListener(controller);
         service_payments_view_item.addActionListener(controller);
         user_consumer_item.addActionListener(controller);
-        process_item.addActionListener(controller);
+        owner_register_process_item.addActionListener(controller);
+        consumer_register_process_item.addActionListener(controller);
         //
         parameters_view_item.addActionListener(controller);
         //
@@ -182,8 +188,6 @@ public final class WMainMenu extends AbstractAppWindows {
         jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btn_home = new javax.swing.JButton();
-        jPanel6 = new javax.swing.JPanel();
-        btn_usuarios = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         btn_calles = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
@@ -222,8 +226,9 @@ public final class WMainMenu extends AbstractAppWindows {
         other_type_payments_view_item = new javax.swing.JMenuItem();
         other_payments_view_item = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        process_item = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        owner_register_process_item = new javax.swing.JMenuItem();
+        consumer_register_process_item = new javax.swing.JMenuItem();
+        owner_change_process_item = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -274,20 +279,6 @@ public final class WMainMenu extends AbstractAppWindows {
 
         jPanel5.add(jPanel2);
 
-        jPanel6.setPreferredSize(new java.awt.Dimension(100, 50));
-        jPanel6.setLayout(new java.awt.BorderLayout());
-
-        btn_usuarios.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        btn_usuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/user_x32.png"))); // NOI18N
-        btn_usuarios.setText("Usuarios");
-        btn_usuarios.setToolTipText("Usuarios");
-        btn_usuarios.setHideActionText(true);
-        btn_usuarios.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
-        btn_usuarios.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jPanel6.add(btn_usuarios, java.awt.BorderLayout.CENTER);
-
-        jPanel5.add(jPanel6);
-
         jPanel7.setPreferredSize(new java.awt.Dimension(100, 50));
         jPanel7.setLayout(new java.awt.BorderLayout());
 
@@ -322,7 +313,7 @@ public final class WMainMenu extends AbstractAppWindows {
 
         btn_tipo_pagos.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         btn_tipo_pagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/tipo de pago.png"))); // NOI18N
-        btn_tipo_pagos.setText("Otros tipos de pagos");
+        btn_tipo_pagos.setText("Conceptos de pagos");
         btn_tipo_pagos.setToolTipText("Tipo de pagos");
         btn_tipo_pagos.setActionCommand("Conceptos de pago");
         btn_tipo_pagos.setHideActionText(true);
@@ -447,11 +438,16 @@ public final class WMainMenu extends AbstractAppWindows {
 
         jMenu4.setText("Tramites");
 
-        process_item.setText("Alta de toma");
-        jMenu4.add(process_item);
+        owner_register_process_item.setText("Alta de nuevo titular");
+        owner_register_process_item.setActionCommand("Registro de titular");
+        jMenu4.add(owner_register_process_item);
 
-        jMenuItem2.setText("Cambio de titular");
-        jMenu4.add(jMenuItem2);
+        consumer_register_process_item.setText("Alta de nuevo consumidor");
+        consumer_register_process_item.setActionCommand("Registro de consumidor");
+        jMenu4.add(consumer_register_process_item);
+
+        owner_change_process_item.setText("Cambio de titular");
+        jMenu4.add(owner_change_process_item);
 
         jMenuBar1.add(jMenu4);
 
@@ -495,8 +491,8 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JButton btn_home;
     private javax.swing.JButton btn_tipo_pagos;
     private javax.swing.JButton btn_tipo_tomas;
-    private javax.swing.JButton btn_usuarios;
     private javax.swing.JPanel center_panel;
+    private javax.swing.JMenuItem consumer_register_process_item;
     private javax.swing.JButton exit_button;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -512,7 +508,6 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem19;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
@@ -526,7 +521,6 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
@@ -536,8 +530,9 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JPanel left_panel;
     private javax.swing.JMenuItem other_payments_view_item;
     private javax.swing.JMenuItem other_type_payments_view_item;
+    private javax.swing.JMenuItem owner_change_process_item;
+    private javax.swing.JMenuItem owner_register_process_item;
     private javax.swing.JMenuItem parameters_view_item;
-    private javax.swing.JMenuItem process_item;
     private javax.swing.JMenuItem profile_item_view;
     private javax.swing.JMenuItem service_payments_view_item;
     private javax.swing.JMenuItem street_view_item;

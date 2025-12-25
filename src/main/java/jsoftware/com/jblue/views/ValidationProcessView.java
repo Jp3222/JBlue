@@ -15,20 +15,23 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.model.dto.UserDocumentDTO;
 import jsoftware.com.jblue.sys.app.AppFiles;
+import jsoftware.com.jblue.views.framework.AbstractProcessView;
 
 /**
  *
  * @author juanp
  */
-public class ValidationProcessView extends javax.swing.JPanel {
+public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> {
 
     private DefaultListModel<File> model;
 
     /**
      * Creates new form ValidationProcess
      */
-    public ValidationProcessView() {
+    public ValidationProcessView(ProcessViewBuilder builder) {
+        super(builder);
         initComponents();
         this.model = new DefaultListModel<>();
         document_list.setModel(model);

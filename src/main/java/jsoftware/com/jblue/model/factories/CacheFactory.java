@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.dto.EmployeeTypesDTO;
-import jsoftware.com.jblue.model.dto.OWaterIntakes;
+import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
@@ -178,7 +178,7 @@ public final class CacheFactory {
     /**
      * Caché de tomas de agua (medidores).
      */
-    public static final MemoListCache<OWaterIntakes> WATER_INTAKES = new MemoListCache<>(Const.WKI_WATER_INTAKES_TABLE, OWaterIntakes.class);
+    public static final MemoListCache<WaterIntakesDTO> WATER_INTAKES = new MemoListCache<>(Const.WKI_WATER_INTAKES_TABLE, WaterIntakesDTO.class);
 
     /**
      * Array de todas las cachés de MemoListCache a ser cargadas

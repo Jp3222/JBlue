@@ -19,7 +19,9 @@ package jsoftware.com.jblue.controllers.compc;
 import java.awt.event.ActionEvent;
 import jsoftware.com.jblue.controllers.AbstractComponentController;
 import jsoftware.com.jblue.model.dao.TableComponentDAO;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.views.framework.TableSearchViewModel;
+import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
@@ -32,11 +34,11 @@ public class TableController<T extends JDBMapObject> extends AbstractComponentCo
 
     private static final long serialVersionUID = 1L;
 
-    private TableSearchViewModel view;
-    private JTableModel model;
-    private TableComponentDAO<T> dao;
+    private final TableSearchViewModel view;
+    private final JTableModel model;
+    private final TableComponentDAO<T> dao;
 
-    public TableController(TableSearchViewModel view, TableComponentDAO dao) {
+    public TableController(TableSearchViewModel view, TableComponentDAO<T> dao) {
         super(view.getTable());
         this.model = new JTableModel(new String[]{}, 0);
         this.view = view;
@@ -63,17 +65,26 @@ public class TableController<T extends JDBMapObject> extends AbstractComponentCo
 
     @Override
     public void loadData() {
-        dao.getList(model);
-        view.getTable().setModel(model);
-        view.getTable().updateUI();
+        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
+            dao.getList(connection, model);
+            view.getTable().setModel(model);
+            view.getTable().updateUI();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void dumpData() {
+        if (!model.isRowsEmpty()) {
+            model.removeAllRows();
+        }
     }
 
     @Override
     public void updateData() {
+        dumpData();
+        loadData();
     }
 
     @Override

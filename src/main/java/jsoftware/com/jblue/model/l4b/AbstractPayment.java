@@ -23,7 +23,7 @@ import java.util.Map;
 import jsoftware.com.jblue.model.dao.PaymentListDAO;
 import jsoftware.com.jblue.model.dao.PaymentsDAO;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.model.dto.OWaterIntakes;
+import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
 import jsoftware.com.jblue.sys.SystemSession;
@@ -46,7 +46,7 @@ public abstract class AbstractPayment implements PaymentModel {
 
     protected int payment_concept;
     protected UserDTO user;
-    protected OWaterIntakes water_intake;
+    protected WaterIntakesDTO water_intake;
     protected WaterIntakeTypesDTO water_intake_type;
     protected String payment_method;
 
@@ -171,7 +171,7 @@ public abstract class AbstractPayment implements PaymentModel {
     }
 
     @Override
-    public void setWaterIntake(OWaterIntakes o) {
+    public void setWaterIntake(WaterIntakesDTO o) {
         this.water_intake = o;
     }
 

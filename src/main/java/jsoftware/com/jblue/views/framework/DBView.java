@@ -17,16 +17,17 @@
 package jsoftware.com.jblue.views.framework;
 
 import jsoftware.com.jblue.controllers.compc.TableController;
+import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  *
  * @author jp
  */
-public abstract class DBView extends SimpleView implements TableSearchViewModel {
+public abstract class DBView<T extends JDBMapObject> extends SimpleView implements TableSearchViewModel {
 
     private static final long serialVersionUID = 1L;
 
-    protected TableController table_controller;
+    protected TableController<T> table_controller;
     protected int view_show;
 
     @Override

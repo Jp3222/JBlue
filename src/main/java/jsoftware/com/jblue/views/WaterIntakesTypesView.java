@@ -25,7 +25,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.FactoryController;
+import jsoftware.com.jblue.controllers.compc.TableController;
 import jsoftware.com.jblue.model.constants.Const;
+import jsoftware.com.jblue.model.dao.WaterIntakeTypeDAO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
@@ -40,14 +42,14 @@ import jsoftware.com.jutil.util.Func;
  *
  * @author juan pablo campos casasanero
  */
-public final class WaterIntakesTypesView extends DBView implements DBObjectValues<WaterIntakeTypesDTO> {
+public final class WaterIntakesTypesView extends DBView<WaterIntakeTypesDTO> implements DBObjectValues<WaterIntakeTypesDTO> {
 
     private static final long serialVersionUID = 1L;
 
     private final CardLayout ly;
     private final JTableModel model;
     private WaterIntakeTypesDTO object_search;
-
+ 
     /**
      * Creates new form NewTipoDeTomas
      */
@@ -57,6 +59,7 @@ public final class WaterIntakesTypesView extends DBView implements DBObjectValue
         ly.show(root_panel, register_panel.getName());
         model = TableModelFactory.getWaterIntakeTypesTableModel();
         controller = FactoryController.getWaterIntakeTypesController(this);
+        table_controller = new TableController(this, new WaterIntakeTypeDAO(true, ""));
         build();
     }
 

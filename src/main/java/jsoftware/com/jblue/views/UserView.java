@@ -36,8 +36,8 @@ import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.GraphicsUtils;
+import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
-import jsoftware.com.jblue.views.framework.DBView;
 import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import jsoftware.com.jutil.util.Func;
@@ -46,7 +46,7 @@ import jsoftware.com.jutil.util.Func;
  *
  * @author juan pablo campos casasanero
  */
-public final class UserView extends DBView implements DBObjectValues<UserDTO> {
+public final class UserView extends AbstractProcessView<UserDTO> implements DBObjectValues<UserDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -54,9 +54,6 @@ public final class UserView extends DBView implements DBObjectValues<UserDTO> {
     private final JTableModel model;
     private UserDTO object_search;
     private String user_key;
-    private boolean process;
-    private String process_id;
-    private String module_name;
     private ComboBoxController<StreetDTO> combo_box1;
     private ComboBoxController<StreetDTO> combo_box2;
     private ComboBoxController<WaterIntakeTypesDTO> combo_box3;
@@ -64,20 +61,19 @@ public final class UserView extends DBView implements DBObjectValues<UserDTO> {
     /**
      * Creates new form NewUsuarios
      */
-    public UserView(boolean process, String process_id, String module_name) {
+    public UserView(AbstractProcessView.ProcessViewBuilder builder) {
+        super(builder);
+        this.initComponents();
         initComponents();
         controller = FactoryController.getUserController(this);
-        table_controller = new TableController(this, new UserDAO(true, ""));
-        this.process = process;
-        this.process_id = process_id;
-        this.module_name = module_name;
+        table_controller = new TableController<>(this, new UserDAO(true, getProcessName()));
         model = TableModelFactory.getUserTableModel();
         objects_table.setModel(model);
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
-        combo_box1 = new ComboBoxController(street1_field, new StreetDAO(true, module_name));
-        combo_box2 = new ComboBoxController(street2_field, new StreetDAO(true, module_name));
-        combo_box3 = new ComboBoxController(water_intakes_type_field, new WaterIntakeTypeDAO(true, module_name));
+        combo_box1 = new ComboBoxController<>(street1_field, new StreetDAO(true, getProcessName()));
+        combo_box2 = new ComboBoxController<>(street2_field, new StreetDAO(true, getProcessName()));
+        combo_box3 = new ComboBoxController<>(water_intakes_type_field, new WaterIntakeTypeDAO(true, getProcessName()));
         combo_box1.loadData();
         combo_box2.loadData();
         combo_box3.loadData();
@@ -163,6 +159,21 @@ public final class UserView extends DBView implements DBObjectValues<UserDTO> {
 
     @Override
     public void finalState() {
+        if (getProcessId().equals("1")) {
+            jRadioButton1.setSelected(true);
+            jRadioButton2.setSelected(false);
+        } else {
+            jRadioButton1.setSelected(false);
+            jRadioButton2.setSelected(true);
+        }
+        user_status_field.setSelectedIndex(1);
+        System.out.println("ES UN PROCESO?: " + isProcess() + " - " + getProcessId());
+        if (isProcess()) {
+            this.remove(north_panel);
+            user_data_panel.remove(p_user_type);
+            user_data_panel.remove(p_date_update);
+            user_data_panel.remove(p_date_register);
+        }
     }
 
     /**
@@ -187,7 +198,7 @@ public final class UserView extends DBView implements DBObjectValues<UserDTO> {
         register_panel = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         user_data_panel = new javax.swing.JPanel();
-        pc_tipo = new javax.swing.JPanel();
+        p_user_type = new javax.swing.JPanel();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         pc_nombre = new javax.swing.JPanel();
@@ -218,15 +229,15 @@ public final class UserView extends DBView implements DBObjectValues<UserDTO> {
         jLabel1 = new javax.swing.JLabel();
         inside_number_field = new javax.swing.JTextField();
         sn_numero = new javax.swing.JCheckBox();
-        pc_estado = new javax.swing.JPanel();
+        p_status = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         user_status_field = new javax.swing.JComboBox<>();
         man_estado = new javax.swing.JCheckBox();
-        pc_estado1 = new javax.swing.JPanel();
+        p_date_update = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
         man_estado1 = new javax.swing.JCheckBox();
         date_last_update_field = new javax.swing.JTextField();
-        pc_estado2 = new javax.swing.JPanel();
+        p_date_register = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
         man_estado2 = new javax.swing.JCheckBox();
         date_register_field = new javax.swing.JTextField();
@@ -249,14 +260,14 @@ public final class UserView extends DBView implements DBObjectValues<UserDTO> {
         jPanel6 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         outside_number_field = new javax.swing.JTextField();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel27 = new javax.swing.JLabel();
+        date_birday_field = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         add_photo_button = new javax.swing.JButton();
         add_file_button = new javax.swing.JButton();
         add_consumer_button = new javax.swing.JButton();
         show_consumer_list_button = new javax.swing.JButton();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel27 = new javax.swing.JLabel();
-        date_birday_field = new javax.swing.JTextField();
         option_panel = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         save_button = new javax.swing.JButton();
@@ -354,20 +365,20 @@ public final class UserView extends DBView implements DBObjectValues<UserDTO> {
         user_data_panel.setPreferredSize(new java.awt.Dimension(500, 600));
         user_data_panel.setLayout(new java.awt.GridLayout(11, 1, 0, 10));
 
-        pc_tipo.setLayout(new java.awt.GridLayout(1, 2));
+        p_user_type.setLayout(new java.awt.GridLayout(1, 2));
 
         jRadioButton1.setSelected(true);
         jRadioButton1.setText("Titular");
         jRadioButton1.setActionCommand("1");
         jRadioButton1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        pc_tipo.add(jRadioButton1);
+        p_user_type.add(jRadioButton1);
 
         jRadioButton2.setText("Afiliado");
         jRadioButton2.setActionCommand("2");
         jRadioButton2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        pc_tipo.add(jRadioButton2);
+        p_user_type.add(jRadioButton2);
 
-        user_data_panel.add(pc_tipo);
+        user_data_panel.add(p_user_type);
 
         pc_nombre.setLayout(new java.awt.BorderLayout());
 
@@ -507,70 +518,70 @@ public final class UserView extends DBView implements DBObjectValues<UserDTO> {
 
         user_data_panel.add(pc_ncasa);
 
-        pc_estado.setPreferredSize(new java.awt.Dimension(500, 50));
-        pc_estado.setLayout(new java.awt.BorderLayout());
+        p_status.setPreferredSize(new java.awt.Dimension(500, 50));
+        p_status.setLayout(new java.awt.BorderLayout());
 
         jLabel8.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel8.setText("Estado: ");
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 25));
-        pc_estado.add(jLabel8, java.awt.BorderLayout.WEST);
+        p_status.add(jLabel8, java.awt.BorderLayout.WEST);
 
         user_status_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         user_status_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona Elemento.", "Activo.", "Inactivo." }));
         user_status_field.setName("Estado"); // NOI18N
         user_status_field.setPreferredSize(new java.awt.Dimension(100, 30));
-        pc_estado.add(user_status_field, java.awt.BorderLayout.CENTER);
+        p_status.add(user_status_field, java.awt.BorderLayout.CENTER);
 
         man_estado.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         man_estado.setText("M.");
         man_estado.setToolTipText("Mantener el estado del usuario seleccionado\n");
         man_estado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         man_estado.setPreferredSize(new java.awt.Dimension(60, 30));
-        pc_estado.add(man_estado, java.awt.BorderLayout.EAST);
+        p_status.add(man_estado, java.awt.BorderLayout.EAST);
 
-        user_data_panel.add(pc_estado);
+        user_data_panel.add(p_status);
 
-        pc_estado1.setPreferredSize(new java.awt.Dimension(500, 50));
-        pc_estado1.setLayout(new java.awt.BorderLayout());
+        p_date_update.setPreferredSize(new java.awt.Dimension(500, 50));
+        p_date_update.setLayout(new java.awt.BorderLayout());
 
         jLabel23.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel23.setText("F. de actualizacion");
         jLabel23.setPreferredSize(new java.awt.Dimension(150, 25));
-        pc_estado1.add(jLabel23, java.awt.BorderLayout.WEST);
+        p_date_update.add(jLabel23, java.awt.BorderLayout.WEST);
 
         man_estado1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         man_estado1.setText("M.");
         man_estado1.setToolTipText("Mantener el estado del usuario seleccionado\n");
         man_estado1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         man_estado1.setPreferredSize(new java.awt.Dimension(60, 30));
-        pc_estado1.add(man_estado1, java.awt.BorderLayout.EAST);
+        p_date_update.add(man_estado1, java.awt.BorderLayout.EAST);
 
         date_last_update_field.setEditable(false);
         date_last_update_field.setName("Fecha de Actualizacion"); // NOI18N
-        pc_estado1.add(date_last_update_field, java.awt.BorderLayout.CENTER);
+        p_date_update.add(date_last_update_field, java.awt.BorderLayout.CENTER);
 
-        user_data_panel.add(pc_estado1);
+        user_data_panel.add(p_date_update);
 
-        pc_estado2.setPreferredSize(new java.awt.Dimension(500, 50));
-        pc_estado2.setLayout(new java.awt.BorderLayout());
+        p_date_register.setPreferredSize(new java.awt.Dimension(500, 50));
+        p_date_register.setLayout(new java.awt.BorderLayout());
 
         jLabel24.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel24.setText("F. de registro");
         jLabel24.setPreferredSize(new java.awt.Dimension(150, 25));
-        pc_estado2.add(jLabel24, java.awt.BorderLayout.WEST);
+        p_date_register.add(jLabel24, java.awt.BorderLayout.WEST);
 
         man_estado2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         man_estado2.setText("M.");
         man_estado2.setToolTipText("Mantener el estado del usuario seleccionado\n");
         man_estado2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         man_estado2.setPreferredSize(new java.awt.Dimension(60, 30));
-        pc_estado2.add(man_estado2, java.awt.BorderLayout.EAST);
+        p_date_register.add(man_estado2, java.awt.BorderLayout.EAST);
 
         date_register_field.setEditable(false);
         date_register_field.setName("Fecha de Registro"); // NOI18N
-        pc_estado2.add(date_register_field, java.awt.BorderLayout.CENTER);
+        p_date_register.add(date_register_field, java.awt.BorderLayout.CENTER);
 
-        user_data_panel.add(pc_estado2);
+        user_data_panel.add(p_date_register);
 
         jTabbedPane1.addTab("Datos de usuario", user_data_panel);
 
@@ -642,6 +653,17 @@ public final class UserView extends DBView implements DBObjectValues<UserDTO> {
 
         complement_data_panel.add(jPanel6);
 
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jLabel27.setText("F. de nacimiento");
+        jLabel27.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel9.add(jLabel27, java.awt.BorderLayout.WEST);
+
+        date_birday_field.setName("Numero Exterior"); // NOI18N
+        jPanel9.add(date_birday_field, java.awt.BorderLayout.CENTER);
+
+        complement_data_panel.add(jPanel9);
+
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         add_photo_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/agregar-archivo.png"))); // NOI18N
@@ -661,17 +683,6 @@ public final class UserView extends DBView implements DBObjectValues<UserDTO> {
 
         show_consumer_list_button.setText("Consumidores");
         complement_data_panel.add(show_consumer_list_button);
-
-        jPanel9.setLayout(new java.awt.BorderLayout());
-
-        jLabel27.setText("Fecha de Cumpleaños");
-        jLabel27.setPreferredSize(new java.awt.Dimension(100, 25));
-        jPanel9.add(jLabel27, java.awt.BorderLayout.WEST);
-
-        date_birday_field.setName("Numero Exterior"); // NOI18N
-        jPanel9.add(date_birday_field, java.awt.BorderLayout.CENTER);
-
-        complement_data_panel.add(jPanel9);
 
         jTabbedPane1.addTab("Informacion complementaria.", complement_data_panel);
 
@@ -994,16 +1005,16 @@ public final class UserView extends DBView implements DBObjectValues<UserDTO> {
     private javax.swing.JTable objects_table;
     private javax.swing.JPanel option_panel;
     private javax.swing.JTextField outside_number_field;
+    private javax.swing.JPanel p_date_register;
+    private javax.swing.JPanel p_date_update;
+    private javax.swing.JPanel p_status;
+    private javax.swing.JPanel p_user_type;
     private javax.swing.JPanel panel_filtros;
     private javax.swing.JPanel pc_am;
     private javax.swing.JPanel pc_ap;
     private javax.swing.JPanel pc_calle;
-    private javax.swing.JPanel pc_estado;
-    private javax.swing.JPanel pc_estado1;
-    private javax.swing.JPanel pc_estado2;
     private javax.swing.JPanel pc_ncasa;
     private javax.swing.JPanel pc_nombre;
-    private javax.swing.JPanel pc_tipo;
     private javax.swing.JPanel pc_tipo_toma;
     private javax.swing.JPanel pf_bar_super;
     private javax.swing.JPanel pf_filtros;
@@ -1076,7 +1087,7 @@ public final class UserView extends DBView implements DBObjectValues<UserDTO> {
     public int getViewShow() {
         return view_show;
     }
-    
+
     @Override
     public UserDTO getObjectSearch() {
         return object_search;
@@ -1124,19 +1135,6 @@ public final class UserView extends DBView implements DBObjectValues<UserDTO> {
 
     public void setUserKey(String user_key) {
         this.user_key = user_key;
-    }
-
-    public void setProcess(boolean process) {
-        this.process = process;
-        north_panel.setVisible(false);
-    }
-
-    public boolean isProcess() {
-        return process;
-    }
-
-    public String getProcessId() {
-        return process_id;
     }
 
     @Override

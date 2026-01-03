@@ -6,6 +6,7 @@ package jsoftware.com.jblue.views;
 
 import jsoftware.com.jblue.model.dto.PaymentDTO;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
+import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 
 /**
  *

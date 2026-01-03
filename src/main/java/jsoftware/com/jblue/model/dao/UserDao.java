@@ -36,11 +36,11 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  *
  * @author juanp
  */
-public class UserDAO2 extends AbstractDAO implements TableComponentDAO<UserDTO> {
+public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO> {
 
     private static final long serialVersionUID = 1L;
 
-    public UserDAO2(boolean flag_dev_log, String name_module) {
+    public UserDao(boolean flag_dev_log, String name_module) {
         super(flag_dev_log, name_module);
     }
 

@@ -66,7 +66,7 @@
                     <Property name="text" type="java.lang.String" value="Tipo de usuarios"/>
                   </Properties>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+                <MenuItem class="javax.swing.JMenuItem" name="status_type_item">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Tipo de status"/>
                   </Properties>
@@ -127,6 +127,11 @@
             <Property name="text" type="java.lang.String" value="Tramites"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Tramites"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="owner_register_process_item">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Alta de nuevo titular"/>

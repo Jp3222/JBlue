@@ -11,6 +11,7 @@ import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.ValidationProcessView;
 import jsoftware.com.jblue.views.WaterIntakesView;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
+import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 
 /**
  *
@@ -28,7 +29,7 @@ public final class ConsumerRegisterProcessView extends AbstractProcessView<UserD
     /**
      * Creates new form ProcessView
      */
-    public ConsumerRegisterProcessView(AbstractProcessView.ProcessViewBuilder builder) {
+    public ConsumerRegisterProcessView(ProcessViewBuilder builder) {
         super(builder);
         this.user_view = new UserView(builder);
         this.validation_process_view = new ValidationProcessView(builder);

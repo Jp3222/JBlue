@@ -49,6 +49,10 @@ public final class TableModelFactory {
     public static JTableModel getPayment() {
         return getTableModel(Const.PYM_PAYMENTS_TABLE);
     }
+    
+    public static JTableModel getStatus(){
+        return getTableModel(Const.CAT_STATUS_TABLE);
+    }
 
     private static JTableModel getTableModel(JDBTable table) {
         return new JTableModel(table.getGraphicsField(), 0);

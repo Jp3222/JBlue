@@ -68,7 +68,6 @@ public class TableController<T extends JDBMapObject> extends AbstractComponentCo
         try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
             dao.getList(connection, model);
             view.getTable().setModel(model);
-            view.getTable().updateUI();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -6,7 +6,7 @@ package jsoftware.com.jblue.views.process;
 
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
-import jsoftware.com.jblue.views.framework.AbstractProcessView.ProcessViewBuilder;
+import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 
 /**
  *

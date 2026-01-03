@@ -21,8 +21,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import jsoftware.com.jblue.controllers.winc.MainController;
+import jsoftware.com.jblue.model.dto.StatusDTO;
 import jsoftware.com.jblue.model.factories.ProcessViewFactory;
 import jsoftware.com.jblue.sys.SystemSession;
+import jsoftware.com.jblue.views.CatalogViewFactory;
+import jsoftware.com.jblue.views.CatalogViewerView;
 import jsoftware.com.jblue.views.PaymentConceptView;
 import jsoftware.com.jblue.views.ShopCartView;
 import jsoftware.com.jblue.views.StreetsView;
@@ -31,6 +34,7 @@ import jsoftware.com.jblue.views.WaterIntakesTypesView;
 import jsoftware.com.jblue.views.components.UserViewComponent;
 import jsoftware.com.jblue.views.framework.AbstractAppWindows;
 import jsoftware.com.jblue.views.process.ConsumerRegisterProcessView;
+import jsoftware.com.jblue.views.process.OwnerChangerProcessView;
 import jsoftware.com.jblue.views.process.UserRegisterProcessView;
 
 /**
@@ -45,12 +49,14 @@ public final class WMainMenu extends AbstractAppWindows {
     private final CardLayout ly;
     //Vistas de la base de datos
     private final ShopCartView shop_cart_view;
-    private final UserRegisterProcessView owner_process_view;
-    private final ConsumerRegisterProcessView consumer_process_view;
-    private final UserView users_view;
+    private final UserRegisterProcessView owner_register_process_view;
+    private final ConsumerRegisterProcessView consumer_register_process_view;
+    private final OwnerChangerProcessView owner_changer_process_view;
+    private final UserView user_process_view;
     private final StreetsView street_view;
     private final WaterIntakesTypesView water_intakes_type_view;
     private final PaymentConceptView payment_concept_view;
+    private final CatalogViewerView<StatusDTO> status_type_view;
 //    private final WaterIntakesView water_intakes;
 //    private final OtherPaymentTypesView other_payments_types_view;
 //    private final OtherPaymentsView other_payments_view;
@@ -80,12 +86,22 @@ public final class WMainMenu extends AbstractAppWindows {
         this.ABOUT = new AboutUs();
         this.PROFILE = new ProfileWindow();
         shop_cart_view = new ShopCartView();
-        owner_process_view = ProcessViewFactory.getIntance().getUserRegisterProcess();
-        consumer_process_view = ProcessViewFactory.getIntance().getConsumerRegisterProcess();
-        users_view = ProcessViewFactory.getIntance().getUserProcess();
+        //PROCESO DE REGISTRO DE TITULAR
+        owner_register_process_view = ProcessViewFactory.getIntance().getUserRegisterProcess();
+        //PROCESO DE REGISTRO DE CONSUMIDOR
+        consumer_register_process_view = ProcessViewFactory.getIntance().getConsumerRegisterProcess();
+        //PROCESO DE CAMBIO DE PROPIETARIO
+        owner_changer_process_view = ProcessViewFactory.getIntance().getOwnerChangerProcess();
+        //PROCESO DE USUARIO
+        user_process_view = ProcessViewFactory.getIntance().getUserProcess();
+        //PROCESO DE CALLES
         street_view = new StreetsView();
+        //PROCESO DE TIPO DE TOMAS DE AGUA POTABLE
         water_intakes_type_view = new WaterIntakesTypesView();
-        this.payment_concept_view = new PaymentConceptView();
+        //PROCESO DE CONCEPTOS DE COBRO
+        payment_concept_view = new PaymentConceptView();
+        //
+        status_type_view = CatalogViewFactory.getStatusType(false, "Tipo de status");
 //        water_intakes = new WaterIntakesView();
 //        other_payments_types_view = new OtherPaymentTypesView();
 //        other_payments_view = new OtherPaymentsView();
@@ -112,12 +128,14 @@ public final class WMainMenu extends AbstractAppWindows {
     @Override
     public void components() {
         views_panel.add(shop_cart_view, shop_cart_view.getName());
-        views_panel.add(owner_process_view, owner_process_view.getName());
-        views_panel.add(consumer_process_view, consumer_process_view.getName());
+        views_panel.add(owner_register_process_view, owner_register_process_view.getName());
+        views_panel.add(consumer_register_process_view, consumer_register_process_view.getName());
+        views_panel.add(owner_changer_process_view, owner_changer_process_view.getName());
         views_panel.add(street_view, street_view.getName());
         views_panel.add(water_intakes_type_view, water_intakes_type_view.getName());
-        views_panel.add(users_view, users_view.getName());
+        views_panel.add(user_process_view, user_process_view.getName());
         views_panel.add(payment_concept_view, payment_concept_view.getName());
+        views_panel.add(status_type_view, status_type_view.getName());
         //        views_panel.add(water_intakes, water_intakes.getName());
         //        views_panel.add(other_payments_types_view, other_payments_types_view.getName());
         //        views_panel.add(other_payments_view, other_payments_view.getName());
@@ -149,6 +167,7 @@ public final class WMainMenu extends AbstractAppWindows {
         user_consumer_item.addActionListener(controller);
         owner_register_process_item.addActionListener(controller);
         consumer_register_process_item.addActionListener(controller);
+        status_type_item.addActionListener(controller);
         //
         parameters_view_item.addActionListener(controller);
         //
@@ -215,7 +234,7 @@ public final class WMainMenu extends AbstractAppWindows {
         jMenu2 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        status_type_item = new javax.swing.JMenuItem();
         users_view_item = new javax.swing.JMenuItem();
         user_consumer_item = new javax.swing.JMenuItem();
         water_intakes_view_item = new javax.swing.JMenuItem();
@@ -226,6 +245,7 @@ public final class WMainMenu extends AbstractAppWindows {
         other_type_payments_view_item = new javax.swing.JMenuItem();
         other_payments_view_item = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
         owner_register_process_item = new javax.swing.JMenuItem();
         consumer_register_process_item = new javax.swing.JMenuItem();
         owner_change_process_item = new javax.swing.JMenuItem();
@@ -400,8 +420,8 @@ public final class WMainMenu extends AbstractAppWindows {
         jMenuItem1.setText("Tipo de usuarios");
         jMenu5.add(jMenuItem1);
 
-        jMenuItem3.setText("Tipo de status");
-        jMenu5.add(jMenuItem3);
+        status_type_item.setText("Tipo de status");
+        jMenu5.add(status_type_item);
 
         jMenu2.add(jMenu5);
 
@@ -437,6 +457,9 @@ public final class WMainMenu extends AbstractAppWindows {
         jMenuBar1.add(jMenu2);
 
         jMenu4.setText("Tramites");
+
+        jMenuItem2.setText("Tramites");
+        jMenu4.add(jMenuItem2);
 
         owner_register_process_item.setText("Alta de nuevo titular");
         owner_register_process_item.setActionCommand("Registro de titular");
@@ -508,7 +531,7 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem19;
-    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
@@ -535,6 +558,7 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JMenuItem parameters_view_item;
     private javax.swing.JMenuItem profile_item_view;
     private javax.swing.JMenuItem service_payments_view_item;
+    private javax.swing.JMenuItem status_type_item;
     private javax.swing.JMenuItem street_view_item;
     private javax.swing.JMenuItem surcharge_payments_view_item;
     private javax.swing.JMenuItem user_consumer_item;

@@ -23,6 +23,7 @@ import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.ValidationProcessView;
 import jsoftware.com.jblue.views.WaterIntakesView;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
+import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 
 /**
  *

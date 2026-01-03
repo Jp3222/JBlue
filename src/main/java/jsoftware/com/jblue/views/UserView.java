@@ -38,6 +38,7 @@ import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.GraphicsUtils;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
+import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import jsoftware.com.jutil.util.Func;
@@ -61,7 +62,7 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
     /**
      * Creates new form NewUsuarios
      */
-    public UserView(AbstractProcessView.ProcessViewBuilder builder) {
+    public UserView(ProcessViewBuilder builder) {
         super(builder);
         this.initComponents();
         initComponents();
@@ -167,7 +168,7 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
             jRadioButton2.setSelected(true);
         }
         user_status_field.setSelectedIndex(1);
-        System.out.println("ES UN PROCESO?: " + isProcess() + " - " + getProcessId());
+        //System.out.println("ES UN PROCESO?: " + isProcess() + " - " + getProcessId());
         if (isProcess()) {
             this.remove(north_panel);
             user_data_panel.remove(p_user_type);

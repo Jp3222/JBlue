@@ -31,6 +31,7 @@ import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.DBValuesMapModel;
+import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 import jsoftware.com.jblue.views.framework.TableSearchViewModel;
 import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
@@ -110,9 +111,10 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakeTypes
 
     @Override
     public void finalState() {
+        System.out.println(getProcessName() + ":");
         System.out.println("ES UN PROCESO?: " + isProcess() + " - " + getProcessId());
         if (isProcess()) {
-            this.remove(north_panel);
+            north_panel.setVisible(false);
             p_fields.remove(p_status);
             p_fields.remove(p_date_register);
             p_fields.remove(p_date_update);
@@ -779,16 +781,6 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakeTypes
 
     public void setStreet2_search(StreetDTO street2_search) {
         this.street2_search = street2_search;
-    }
-
-    @Override
-    public void setProcess(boolean procces) {
-        this.process = procces;
-    }
-
-    @Override
-    public boolean isProcess() {
-        return process;
     }
 
 }

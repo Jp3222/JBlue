@@ -19,13 +19,14 @@ package jsoftware.com.jblue.views;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
-import jsoftware.com.jblue.views.framework.SimpleView;
+import jsoftware.com.jblue.views.framework.AbstractProcessView;
+import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 
 /**
  *
  * @author juanp
  */
-public class UserConsumerView extends SimpleView {
+public class UserConsumerView extends AbstractProcessView<UserDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,7 +35,8 @@ public class UserConsumerView extends SimpleView {
     /**
      * Creates new form UserConsumerView
      */
-    public UserConsumerView() {
+    public UserConsumerView(ProcessViewBuilder i) {
+        super(i);
         initComponents();
     }
 

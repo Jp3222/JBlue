@@ -4,12 +4,14 @@
  */
 package jsoftware.com.jblue.model.factories;
 
+import java.util.HashMap;
+import java.util.Map;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.views.UserView;
-import jsoftware.com.jblue.views.framework.AbstractProcessView.ProcessViewBuilder;
+import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 import jsoftware.com.jblue.views.process.ConsumerRegisterProcessView;
 import jsoftware.com.jblue.views.process.OwnerChangerProcessView;
 import jsoftware.com.jblue.views.process.UserRegisterProcessView;
@@ -18,18 +20,21 @@ import jsoftware.com.jblue.views.process.UserRegisterProcessView;
  *
  * @author juanp
  */
-public class ProcessViewFactory {
+public final class ProcessViewFactory {
 
     public static final ProcessViewFactory intance = new ProcessViewFactory();
 
     public static ProcessViewFactory getIntance() {
         return intance;
+
     }
 
     private final ProcessViewBuilder init;
     private final EmployeeDTO current_employee;
+    private final Map<String, ViewProvider<?, ?>> factory;
 
     public ProcessViewFactory() {
+        this.factory = new HashMap<>();
         this.current_employee = SystemSession.getInstancia().getCurrentEmployee();
         this.init = new ProcessViewBuilder()
                 .setDev_flag(AppConfig.isDevMessages())
@@ -38,32 +43,38 @@ public class ProcessViewFactory {
     }
 
     public UserRegisterProcessView getUserRegisterProcess() {
-        return new ProcessViewBuilder(init)
+        ProcessViewBuilder o = new ProcessViewBuilder(init)
                 .setProcess_name("REGISTRO DE TITULAR")
-                .setProcess_id("1")
-                .builder(UserRegisterProcessView.class);
+                .setProcess(true)
+                .setProcess_id("1");
+        return (UserRegisterProcessView) o.builder(UserRegisterProcessView.class.getName(), o);
     }
 
     public ConsumerRegisterProcessView getConsumerRegisterProcess() {
-        return new ProcessViewBuilder(init)
+        ProcessViewBuilder o = new ProcessViewBuilder(init)
                 .setProcess_name("REGISTRO DE CONSUMIDOR")
-                .setProcess_id("2")
-                .builder(ConsumerRegisterProcessView.class);
+                .setProcess(true)
+                .setProcess_id("2");
+        return (ConsumerRegisterProcessView) o.builder(ConsumerRegisterProcessView.class.getName(), o);
     }
 
     public UserView getUserProcess() {
-        return new ProcessViewBuilder(init)
+        ProcessViewBuilder o = new ProcessViewBuilder(init)
                 .setProcess(false)
                 .setProcess_name("ACTUALIZACION DE USUARIO")
-                .setProcess_id("10")
-                .builder(UserView.class);
+                .setProcess_id("10");
+        return (UserView) o.builder(UserView.class.getName(), o);
     }
 
     public OwnerChangerProcessView getOwnerChangerProcess() {
-        return new ProcessViewBuilder(init)
+        ProcessViewBuilder o = new ProcessViewBuilder(init)
                 .setProcess_name("ACTUALIZACION DE USUARIO")
-                .setProcess_id("11")
-                .builder(OwnerChangerProcessView.class);
+                .setProcess_id("11");
+        return (OwnerChangerProcessView) o.builder(OwnerChangerProcessView.class.getName(), o);
+    }
+
+    public Map<String, ViewProvider<?, ?>> getFactory() {
+        return factory;
     }
 
 }

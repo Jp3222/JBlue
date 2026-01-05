@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package jsoftware.com.jblue.views;
+package jsoftware.com.jblue.views.proviews;
 
 import jsoftware.com.jblue.model.dto.PaymentDTO;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
@@ -55,7 +55,7 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
         jPanel1.setPreferredSize(new java.awt.Dimension(700, 30));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/Bundle"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/proviews/Bundle"); // NOI18N
         jLabel1.setText(bundle.getString("PaymentProcessView.jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
         jLabel1.setPreferredSize(new java.awt.Dimension(200, 30));

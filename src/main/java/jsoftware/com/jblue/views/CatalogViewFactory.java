@@ -17,10 +17,10 @@ public class CatalogViewFactory {
 
     public static CatalogViewerView<StatusDTO> getStatusType(boolean dev_flag, String name_module) {
         JTableModel table = TableModelFactory.getStatus();
-        StatusDAO statusDAO = new StatusDAO(dev_flag, name_module);
+        StatusDAO dao = new StatusDAO(dev_flag, name_module);
         CatalogViewerView<StatusDTO> view = new CatalogViewerView<>(
                 table,
-                statusDAO
+                dao
         );
         view.setName(name_module);
         return view;

@@ -14,6 +14,8 @@ import jsoftware.com.jutil.db.JDBMapObject;
  */
 public class ProcessWrapperDTO extends JDBMapObject {
 
+    private static final long serialVersionUID = 1L;
+
     private EmployeeDTO current_employee;
     private UserDTO user;
     private WaterIntakeTypesDTO water_intake_type;

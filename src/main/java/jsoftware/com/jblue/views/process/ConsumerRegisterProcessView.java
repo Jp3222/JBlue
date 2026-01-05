@@ -6,9 +6,9 @@ package jsoftware.com.jblue.views.process;
 
 import java.awt.CardLayout;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.views.PaymentProcessView;
+import jsoftware.com.jblue.views.proviews.PaymentProcessView;
 import jsoftware.com.jblue.views.UserView;
-import jsoftware.com.jblue.views.ValidationProcessView;
+import jsoftware.com.jblue.views.proviews.ValidationProcessView;
 import jsoftware.com.jblue.views.WaterIntakesView;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
@@ -65,7 +65,6 @@ public final class ConsumerRegisterProcessView extends AbstractProcessView<UserD
         this.root_panel.add(validation_process_view, validation_process_view.getName());
         this.root_panel.add(water_intake_view, water_intake_view.getName());
         this.root_panel.add(payment_concepts_view, payment_concepts_view.getName());
-
     }
 
     @Override

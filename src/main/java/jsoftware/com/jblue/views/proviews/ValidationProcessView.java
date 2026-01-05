@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package jsoftware.com.jblue.views;
+package jsoftware.com.jblue.views.proviews;
 
 import java.awt.Component;
 import java.io.File;
@@ -26,6 +26,8 @@ import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
  */
 public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> {
 
+    private static final long serialVersionUID = 1L;
+
     private DefaultListModel<File> model;
 
     /**
@@ -38,16 +40,26 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
         document_list.setModel(model);
         this.add_doc1.addActionListener((e) -> {
             File file = getSelectFile();
+            if (file == null) {
+                return;
+            }
             addItem(add_doc1, file);
             System.out.println(file.getAbsoluteFile());
         });
         this.add_doc2.addActionListener((e) -> {
+
             File file = getSelectFile();
+            if (file == null) {
+                return;
+            }
             addItem(add_doc2, file);
             System.out.println(file.getAbsoluteFile());
         });
         this.add_doc3.addActionListener((e) -> {
             File file = getSelectFile();
+            if (file == null) {
+                return;
+            }
             addItem(add_doc3, file);
             System.out.println(file.getAbsoluteFile());
         });
@@ -96,7 +108,7 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
         jPanel1.setPreferredSize(new java.awt.Dimension(900, 40));
         jPanel1.setLayout(new java.awt.BorderLayout(10, 10));
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/Bundle"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/proviews/Bundle"); // NOI18N
         jLabel1.setText(bundle.getString("ValidationProcessView.jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
         jPanel1.add(jLabel1, java.awt.BorderLayout.LINE_START);
@@ -120,12 +132,13 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
         jPanel3.setName("jPanel3"); // NOI18N
         jPanel3.setLayout(new java.awt.GridLayout(12, 0));
 
-        add_doc1.setText(bundle.getString("ValidationProcessView.Añadir.text")); // NOI18N
+        java.util.ResourceBundle bundle1 = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/Bundle"); // NOI18N
+        add_doc1.setText(bundle1.getString("ValidationProcessView.Añadir.text")); // NOI18N
         add_doc1.setActionCommand(bundle.getString("ValidationProcessView.add_doc1.actionCommand")); // NOI18N
         add_doc1.setName("Añadir"); // NOI18N
         jPanel3.add(add_doc1);
 
-        add_doc2.setText(bundle.getString("ValidationProcessView.Quitar.text")); // NOI18N
+        add_doc2.setText(bundle1.getString("ValidationProcessView.Quitar.text")); // NOI18N
         add_doc2.setActionCommand(bundle.getString("ValidationProcessView.add_doc2.actionCommand")); // NOI18N
         add_doc2.setName("Quitar"); // NOI18N
         jPanel3.add(add_doc2);
@@ -135,35 +148,35 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
         add_doc3.setName("add_doc3"); // NOI18N
         jPanel3.add(add_doc3);
 
-        jLabel2.setText(bundle.getString("ValidationProcessView.text")); // NOI18N
+        jLabel2.setText(bundle1.getString("ValidationProcessView.text")); // NOI18N
         jLabel2.setName(""); // NOI18N
         jPanel3.add(jLabel2);
 
-        jLabel4.setText(bundle.getString("ValidationProcessView.text")); // NOI18N
+        jLabel4.setText(bundle1.getString("ValidationProcessView.text")); // NOI18N
         jLabel4.setName(""); // NOI18N
         jPanel3.add(jLabel4);
 
-        jLabel5.setText(bundle.getString("ValidationProcessView.text")); // NOI18N
+        jLabel5.setText(bundle1.getString("ValidationProcessView.text")); // NOI18N
         jLabel5.setName(""); // NOI18N
         jPanel3.add(jLabel5);
 
-        jLabel6.setText(bundle.getString("ValidationProcessView.text")); // NOI18N
+        jLabel6.setText(bundle1.getString("ValidationProcessView.text")); // NOI18N
         jLabel6.setName(""); // NOI18N
         jPanel3.add(jLabel6);
 
-        jLabel7.setText(bundle.getString("ValidationProcessView.text")); // NOI18N
+        jLabel7.setText(bundle1.getString("ValidationProcessView.text")); // NOI18N
         jLabel7.setName(""); // NOI18N
         jPanel3.add(jLabel7);
 
-        jLabel8.setText(bundle.getString("ValidationProcessView.text")); // NOI18N
+        jLabel8.setText(bundle1.getString("ValidationProcessView.text")); // NOI18N
         jLabel8.setName(""); // NOI18N
         jPanel3.add(jLabel8);
 
-        jLabel9.setText(bundle.getString("ValidationProcessView.text")); // NOI18N
+        jLabel9.setText(bundle1.getString("ValidationProcessView.text")); // NOI18N
         jLabel9.setName(""); // NOI18N
         jPanel3.add(jLabel9);
 
-        jLabel10.setText(bundle.getString("ValidationProcessView.text")); // NOI18N
+        jLabel10.setText(bundle1.getString("ValidationProcessView.text")); // NOI18N
         jLabel10.setName(""); // NOI18N
         jPanel3.add(jLabel10);
 

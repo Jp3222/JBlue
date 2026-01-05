@@ -24,6 +24,8 @@ import java.util.Map;
  */
 public class WaterIntakesDTO extends AuditableObjectMap {
 
+    private static final long serialVersionUID = 1L;
+
     public WaterIntakesDTO(Map<String, Object> map) {
         super(map);
     }

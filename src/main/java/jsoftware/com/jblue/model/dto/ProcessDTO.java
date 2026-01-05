@@ -14,6 +14,8 @@ import jsoftware.com.jutil.db.JDBMapObject;
  */
 public class ProcessDTO extends JDBMapObject implements StatusObjectModel {
 
+    private static final long serialVersionUID = 1L;
+
     public ProcessDTO(Map<String, Object> map) {
         super(map);
     }

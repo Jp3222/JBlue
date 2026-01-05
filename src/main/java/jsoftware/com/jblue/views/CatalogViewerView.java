@@ -23,17 +23,17 @@ public final class CatalogViewerView<T extends JDBMapObject> extends SimpleView 
     private static final long serialVersionUID = 1L;
 
     private final JTableModel model;
-    private final TableController<T> controller;
+    private final TableController<T> table_controller;
 
     /**
      * Creates new form CatalogViewerView
      */
     public CatalogViewerView(JTableModel model, TableComponentDAO<T> dao) {
         initComponents();
-        this.controller = new TableController<>(this, dao);
-        this.controller.loadData();
+        this.table_controller = new TableController<>(this, dao);
         this.model = model;
         this.objects_table.setModel(model);
+        build();
     }
 
     /**
@@ -178,10 +178,18 @@ public final class CatalogViewerView<T extends JDBMapObject> extends SimpleView 
 
     @Override
     public void build() {
+        components();
+        events();
+        initComponents();
+        finalState();
     }
 
     @Override
     public void events() {
+        back_button.addActionListener(table_controller);
+        next_button.addActionListener(table_controller);
+        reload_button.addActionListener(table_controller);
+        search_field.addKeyListener(controller);
     }
 
     @Override
@@ -190,11 +198,6 @@ public final class CatalogViewerView<T extends JDBMapObject> extends SimpleView 
 
     @Override
     public void initialState() {
-        if (isVisible()) {
-            controller.loadData();
-        } else {
-            model.removeAllRows();
-        }
     }
 
     @Override

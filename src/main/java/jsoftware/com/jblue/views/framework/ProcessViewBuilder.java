@@ -4,6 +4,7 @@
  */
 package jsoftware.com.jblue.views.framework;
 
+import java.io.Serializable;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.process.ConsumerRegisterProcessView;
@@ -14,7 +15,9 @@ import jsoftware.com.jblue.views.process.UserRegisterProcessView;
  *
  * @author juanp
  */
-public class ProcessViewBuilder {
+public class ProcessViewBuilder implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String process_id;
     private boolean process;

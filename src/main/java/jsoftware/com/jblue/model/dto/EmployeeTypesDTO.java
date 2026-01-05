@@ -28,6 +28,8 @@ import jsoftware.com.jutil.db.JDBMapObject;
  */
 public class EmployeeTypesDTO extends JDBMapObject implements StatusObjectModel {
 
+    private static final long serialVersionUID = 1L;
+
     public EmployeeTypesDTO() {
         super();
     }

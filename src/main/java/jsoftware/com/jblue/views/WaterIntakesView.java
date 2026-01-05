@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.FactoryController;
+import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
@@ -40,7 +41,7 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  *
  * @author juanp
  */
-public final class WaterIntakesView extends AbstractProcessView<WaterIntakeTypesDTO> implements DBValuesMapModel, TableSearchViewModel {
+public final class WaterIntakesView extends AbstractProcessView<WaterIntakesDTO> implements DBValuesMapModel, TableSearchViewModel {
 
     private static final long serialVersionUID = 1L;
 
@@ -113,12 +114,15 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakeTypes
     public void finalState() {
         System.out.println(getProcessName() + ":");
         System.out.println("ES UN PROCESO?: " + isProcess() + " - " + getProcessId());
-        if (isProcess()) {
-            north_panel.setVisible(false);
-            p_fields.remove(p_status);
-            p_fields.remove(p_date_register);
-            p_fields.remove(p_date_update);
-        }
+        north_panel.setVisible(!isProcess());
+        p_status.setVisible(!isProcess());
+        p_date_register.setVisible(!isProcess());
+        p_date_update.setVisible(!isProcess());
+        options_panel.setVisible(!isProcess());
+        search_street2_button.setVisible(!isProcess());
+        search_street_button.setVisible(!isProcess());
+        search_user_button.setVisible(!isProcess());
+        search_water_intake.setVisible(!isProcess());
     }
 
     @Override
@@ -755,6 +759,23 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakeTypes
 
     @Override
     public void setScreenTableInfo() {
+        if (!isProcess()) {
+            setInfo();
+        } else {
+            setInfoProcess();
+        }
+    }
+
+    public void setInfoProcess() {
+        ProcessWrapperDTO wp = getProcessWrapper();
+        if (wp == null) {
+            return;
+        }
+        UserDTO user = wp.getUser();
+
+    }
+
+    protected void setInfo() {
         if (user_search != null) {
             user_field.setText(user_search.toString());
             water_intake_types_field.setSelectedItem(water_intake_types_search);

@@ -18,9 +18,9 @@ package jsoftware.com.jblue.views.process;
 
 import java.awt.CardLayout;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.views.PaymentProcessView;
+import jsoftware.com.jblue.views.proviews.PaymentProcessView;
 import jsoftware.com.jblue.views.UserView;
-import jsoftware.com.jblue.views.ValidationProcessView;
+import jsoftware.com.jblue.views.proviews.ValidationProcessView;
 import jsoftware.com.jblue.views.WaterIntakesView;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;

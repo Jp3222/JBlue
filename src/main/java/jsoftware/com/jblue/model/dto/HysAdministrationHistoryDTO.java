@@ -24,6 +24,8 @@ package jsoftware.com.jblue.model.dto;
  */
 public class HysAdministrationHistoryDTO extends AuditableObjectMap {
 
+    private static final long serialVersionUID = 1L;
+
     public String getYearOfAdministration() {
         return get("year_of_administration").toString();
     }

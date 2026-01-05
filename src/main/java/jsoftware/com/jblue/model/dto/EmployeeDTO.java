@@ -12,6 +12,8 @@ package jsoftware.com.jblue.model.dto;
  */
 public class EmployeeDTO extends PersonObject {
 
+    private static final long serialVersionUID = 1L;
+
     public String getEmployeeType() {
         return get("employee_type").toString();
     }

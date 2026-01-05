@@ -28,9 +28,11 @@ import jsoftware.com.jblue.controllers.compc.ComboBoxController;
 import jsoftware.com.jblue.controllers.compc.TableController;
 import jsoftware.com.jblue.model.dao.StreetDAO;
 import jsoftware.com.jblue.model.dao.UserDAO2;
+import jsoftware.com.jblue.model.dao.UserTypeDAO;
 import jsoftware.com.jblue.model.dao.WaterIntakeTypeDAO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.UserTypeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
@@ -58,6 +60,7 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
     private ComboBoxController<StreetDTO> combo_box1;
     private ComboBoxController<StreetDTO> combo_box2;
     private ComboBoxController<WaterIntakeTypesDTO> combo_box3;
+    private ComboBoxController<UserTypeDTO> combo_box4;
 
     /**
      * Creates new form NewUsuarios
@@ -72,12 +75,14 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
         objects_table.setModel(model);
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
-        combo_box1 = new ComboBoxController<>(street1_field, new StreetDAO(true, getProcessName()));
-        combo_box2 = new ComboBoxController<>(street2_field, new StreetDAO(true, getProcessName()));
-        combo_box3 = new ComboBoxController<>(water_intakes_type_field, new WaterIntakeTypeDAO(true, getProcessName()));
+        combo_box1 = new ComboBoxController<>(street1_field, new StreetDAO(isDev_flag(), getProcessName()));
+        combo_box2 = new ComboBoxController<>(street2_field, new StreetDAO(isDev_flag(), getProcessName()));
+        combo_box3 = new ComboBoxController<>(water_intakes_type_field, new WaterIntakeTypeDAO(isDev_flag(), getProcessName()));
+        combo_box4 = new ComboBoxController<>(user_type_field, new UserTypeDAO(isDev_flag(), getProcessName()));
         combo_box1.loadData();
         combo_box2.loadData();
         combo_box3.loadData();
+        combo_box4.loadData();
         build();
     }
 
@@ -91,25 +96,22 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
 
     @Override
     public void events() {
-        buttonGroup1.add(jRadioButton1);
-        buttonGroup1.add(jRadioButton2);
-
-        objects_table.addMouseListener(table_controller);
-        //
+        //Componentes controlador por el controlador de la vista
         save_button.addActionListener(controller);
         update_button.addActionListener(controller);
         delete_button.addActionListener(controller);
         cancel_button.addActionListener(controller);
         search_object.addActionListener(controller);
-        //
+        add_file_button.addActionListener(controller);
+        add_photo_button.addActionListener(controller);
+        //Objectos controlados por el controlador "TableController"
+        objects_table.addMouseListener(table_controller);
         back_button.addActionListener(table_controller);
         next_button.addActionListener(table_controller);
         reload_button.addActionListener(table_controller);
-        //
         register_button.addActionListener(table_controller);
         search_button.addActionListener(table_controller);
-        add_file_button.addActionListener(controller);
-        add_photo_button.addActionListener(controller);
+
     }
 
     @Override
@@ -145,7 +147,6 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
         man_tipo_toma.setSelected(false);
         man_calle.setSelected(false);
         man_estado.setSelected(false);
-        buttonGroup1.setSelected(jRadioButton1.getModel(), true);
         save_button.setEnabled(true);
         GraphicsUtils.setEnable(false,
                 update_button,
@@ -161,20 +162,23 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
     @Override
     public void finalState() {
         if (getProcessId().equals("1")) {
-            jRadioButton1.setSelected(true);
-            jRadioButton2.setSelected(false);
+            user_type_field.setSelectedIndex(1);
+            p_user_type.setVisible(!isProcess());
         } else {
-            jRadioButton1.setSelected(false);
-            jRadioButton2.setSelected(true);
+            user_type_field.removeItemAt(1);
         }
         user_status_field.setSelectedIndex(1);
         //System.out.println("ES UN PROCESO?: " + isProcess() + " - " + getProcessId());
-        if (isProcess()) {
-            this.remove(north_panel);
-            user_data_panel.remove(p_user_type);
-            user_data_panel.remove(p_date_update);
-            user_data_panel.remove(p_date_register);
-        }
+        north_panel.setVisible(!isProcess());
+
+        p_date_update.setVisible(!isProcess());
+        p_date_register.setVisible(!isProcess());
+        option_panel.setVisible(!isProcess());
+        man_calle.setVisible(!isProcess());
+        man_estado.setVisible(!isProcess());
+        man_estado1.setVisible(!isProcess());
+        man_estado2.setVisible(!isProcess());
+        man_tipo_toma.setVisible(!isProcess());
     }
 
     /**
@@ -200,8 +204,9 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
         jTabbedPane1 = new javax.swing.JTabbedPane();
         user_data_panel = new javax.swing.JPanel();
         p_user_type = new javax.swing.JPanel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        jLabel17 = new javax.swing.JLabel();
+        user_type_field = new javax.swing.JComboBox<>();
+        jLabel18 = new javax.swing.JLabel();
         pc_nombre = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         first_name_field = new javax.swing.JTextField();
@@ -366,18 +371,16 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
         user_data_panel.setPreferredSize(new java.awt.Dimension(500, 600));
         user_data_panel.setLayout(new java.awt.GridLayout(11, 1, 0, 10));
 
-        p_user_type.setLayout(new java.awt.GridLayout(1, 2));
+        p_user_type.setLayout(new java.awt.BorderLayout());
 
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Titular");
-        jRadioButton1.setActionCommand("1");
-        jRadioButton1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        p_user_type.add(jRadioButton1);
+        jLabel17.setText("Tipo de Usuario");
+        jLabel17.setPreferredSize(new java.awt.Dimension(150, 30));
+        p_user_type.add(jLabel17, java.awt.BorderLayout.LINE_START);
 
-        jRadioButton2.setText("Afiliado");
-        jRadioButton2.setActionCommand("2");
-        jRadioButton2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        p_user_type.add(jRadioButton2);
+        p_user_type.add(user_type_field, java.awt.BorderLayout.CENTER);
+
+        jLabel18.setPreferredSize(new java.awt.Dimension(60, 30));
+        p_user_type.add(jLabel18, java.awt.BorderLayout.LINE_END);
 
         user_data_panel.add(p_user_type);
 
@@ -950,6 +953,8 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
@@ -987,8 +992,6 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField last_name1_field;
@@ -1044,6 +1047,7 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
     private javax.swing.JButton update_button;
     private javax.swing.JPanel user_data_panel;
     private javax.swing.JComboBox<String> user_status_field;
+    private javax.swing.JComboBox<UserTypeDTO> user_type_field;
     private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO> water_intakes_filter;
     private javax.swing.JComboBox<WaterIntakeTypesDTO> water_intakes_type_field;
     // End of variables declaration//GEN-END:variables
@@ -1108,11 +1112,6 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
 
     @Override
     public void setScreenTableInfo() {
-        if (object_search.getUserType().equals("1")) {
-            jRadioButton1.setSelected(true);
-        } else {
-            jRadioButton2.setSelected(true);
-        }
         curp_field.setText(object_search.getCurp());
         first_name_field.setText(object_search.getFirstName());
         last_name1_field.setText(object_search.getLastName1());

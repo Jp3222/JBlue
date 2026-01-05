@@ -19,10 +19,10 @@ public abstract class AbstractProcessView<T extends JDBMapObject> extends DBView
     private static final long serialVersionUID = 1L;
 
     private final String process_id;
+    private final boolean dev_flag;
     private boolean process;
     private String process_name;
     private ProcessWrapperDTO process_wrapper;
-    private boolean dev_flag;
     private ProcessViewBuilder builder;
 
     public AbstractProcessView(ProcessViewBuilder builder) {

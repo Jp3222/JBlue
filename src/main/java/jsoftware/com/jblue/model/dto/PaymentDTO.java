@@ -14,8 +14,8 @@ public class PaymentDTO extends AuditableObjectMap implements AuditableModel, JD
 
     private static final long serialVersionUID = 1L;
 
-    public String getPaymentType() {
-        return get("payment_type").toString();
+    public int getPaymentType() {
+        return Integer.parseInt(get("payment_type").toString());
     }
 
     public String getUDDI() {
@@ -30,16 +30,20 @@ public class PaymentDTO extends AuditableObjectMap implements AuditableModel, JD
         return get("user").toString();
     }
 
-    public String getWaterInatkeType() {
+    public String getWaterInatke() {
+        return get("water_intake").toString();
+    }
+
+    public String getWaterIntakeType() {
         return get("water_intake_type").toString();
     }
 
-    public String getPaymentMethod() {
-        return get("payment_method").toString();
+    public int getPaymentMethod() {
+        return Integer.parseInt(get("payment_method").toString());
     }
 
-    public String getPaymentConcept() {
-        return get("payment_concept").toString();
+    public int getPaymentConcept() {
+        return Integer.parseInt(get("payment_concept").toString());
     }
 
     public String getTotalCost() {
@@ -54,8 +58,8 @@ public class PaymentDTO extends AuditableObjectMap implements AuditableModel, JD
         return get("change_paid").toString();
     }
 
-    public String getMonthsPaid() {
-        return get("month_paid").toString();
+    public int getMonthsPaid() {
+        return Integer.parseInt(get("month_paid").toString());
     }
 
 }

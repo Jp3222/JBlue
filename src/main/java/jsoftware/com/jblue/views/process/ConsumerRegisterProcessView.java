@@ -6,12 +6,12 @@ package jsoftware.com.jblue.views.process;
 
 import java.awt.CardLayout;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.views.proviews.PaymentProcessView;
 import jsoftware.com.jblue.views.UserView;
-import jsoftware.com.jblue.views.proviews.ValidationProcessView;
 import jsoftware.com.jblue.views.WaterIntakesView;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
+import jsoftware.com.jblue.views.proviews.PaymentProcessView;
+import jsoftware.com.jblue.views.proviews.ValidationProcessView;
 
 /**
  *
@@ -160,4 +160,9 @@ public final class ConsumerRegisterProcessView extends AbstractProcessView<UserD
     private javax.swing.JPanel root_panel;
     private javax.swing.JButton search_object;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void getDataView() {
+
+    }
 }

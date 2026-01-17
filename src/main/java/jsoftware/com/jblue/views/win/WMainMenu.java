@@ -35,7 +35,7 @@ import jsoftware.com.jblue.views.components.UserViewComponent;
 import jsoftware.com.jblue.views.framework.AbstractAppWindows;
 import jsoftware.com.jblue.views.process.ConsumerRegisterProcessView;
 import jsoftware.com.jblue.views.process.OwnerChangerProcessView;
-import jsoftware.com.jblue.views.process.UserRegisterProcessView;
+import jsoftware.com.jblue.views.process.OwnerRegisterProcessView;
 
 /**
  *
@@ -49,7 +49,7 @@ public final class WMainMenu extends AbstractAppWindows {
     private final CardLayout ly;
     //Vistas de la base de datos
     private final ShopCartView shop_cart_view;
-    private final UserRegisterProcessView owner_register_process_view;
+    private final OwnerRegisterProcessView owner_register_process_view;
     private final ConsumerRegisterProcessView consumer_register_process_view;
     private final OwnerChangerProcessView owner_changer_process_view;
     private final UserView user_process_view;

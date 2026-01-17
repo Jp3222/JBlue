@@ -14,7 +14,7 @@ import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 import jsoftware.com.jblue.views.process.ConsumerRegisterProcessView;
 import jsoftware.com.jblue.views.process.OwnerChangerProcessView;
-import jsoftware.com.jblue.views.process.UserRegisterProcessView;
+import jsoftware.com.jblue.views.process.OwnerRegisterProcessView;
 
 /**
  *
@@ -42,12 +42,12 @@ public final class ProcessViewFactory {
                 .setProcess_wrapper(new ProcessWrapperDTO(current_employee));
     }
 
-    public UserRegisterProcessView getUserRegisterProcess() {
+    public OwnerRegisterProcessView getUserRegisterProcess() {
         ProcessViewBuilder o = new ProcessViewBuilder(init)
                 .setProcess_name("REGISTRO DE TITULAR")
                 .setProcess(true)
                 .setProcess_id("1");
-        return (UserRegisterProcessView) o.builder(UserRegisterProcessView.class.getName(), o);
+        return (OwnerRegisterProcessView) o.builder(OwnerRegisterProcessView.class.getName(), o);
     }
 
     public ConsumerRegisterProcessView getConsumerRegisterProcess() {

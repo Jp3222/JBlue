@@ -541,4 +541,8 @@ public class UserConsumerView extends AbstractProcessView<UserDTO> {
     private javax.swing.JComboBox<WaterIntakeTypesDTO> water_intakes_filter;
     // End of variables declaration//GEN-END:variables
 
+    @Override
+    public void getDataView() {
+
+    }
 }

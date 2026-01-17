@@ -72,7 +72,7 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO> {
 
             // Manejo de campo NULLable: street2
             if (user.getStreet2() == null) {
-                pstmt.setNull(10, java.sql.Types.INTEGER);
+                pstmt.setNull(10, Types.INTEGER);
             } else {
                 pstmt.setString(10, user.getStreet2());
             }

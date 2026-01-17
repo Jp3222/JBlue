@@ -38,6 +38,7 @@ public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<
 
     // Estado de borrado lógico
     private static final int LOGICAL_DELETE_STATUS = 3;
+    private static final long serialVersionUID = 1L;
 
     public WaterIntakeTypeDAO(boolean flag_dev_log, String name_module) {
         super(flag_dev_log, name_module);
@@ -242,5 +243,13 @@ public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<
             System.getLogger(StreetDAO.class.getName()).log(System.Logger.Level.ALL, e.getMessage());
         }
         return list;
+    }
+
+    public boolean delete(JDBConnection connection, WaterIntakeTypesDTO o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public boolean update(JDBConnection connection, WaterIntakeTypesDTO old_dto, WaterIntakeTypesDTO new_dto) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

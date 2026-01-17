@@ -155,4 +155,9 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void getDataView() {
+
+    }
 }

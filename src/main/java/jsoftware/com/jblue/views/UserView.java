@@ -1220,4 +1220,9 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
         return new UserDTO(map);
     }
 
+    @Override
+    public void getDataView() {
+
+    }
+
 }

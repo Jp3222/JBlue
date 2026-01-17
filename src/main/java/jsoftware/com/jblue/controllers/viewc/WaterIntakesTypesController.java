@@ -23,7 +23,7 @@ import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.controllers.DBControllerModel;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.HysHistoryDAO;
-import jsoftware.com.jblue.model.dao.WaterIntakeDAO;
+import jsoftware.com.jblue.model.dao.WaterIntakeTypeDAO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.views.WaterIntakesTypesView;
@@ -35,12 +35,14 @@ import jsoftware.com.jutil.db.JDBConnection;
  */
 public class WaterIntakesTypesController extends AbstractDBViewController<WaterIntakeTypesDTO> implements DBControllerModel {
 
+    private static final long serialVersionUID = 1L;
+
     private final WaterIntakesTypesView view;
-    private final WaterIntakeDAO dao;
+    private final WaterIntakeTypeDAO dao;
 
     public WaterIntakesTypesController(WaterIntakesTypesView view) {
         this.view = view;
-        this.dao = new WaterIntakeDAO(true, "TIPO DE TOMAS");
+        this.dao = new WaterIntakeTypeDAO(true, "TIPO DE TOMAS");
     }
 
     @Override

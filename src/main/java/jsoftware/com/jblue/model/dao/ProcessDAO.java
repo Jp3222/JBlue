@@ -29,6 +29,13 @@ import jsoftware.com.jutil.model.AbstractDAO;
  */
 public class ProcessDAO extends AbstractDAO {
 
+    public static int STATUS_INICIADO = 10;
+    public static int STATUS_VALIDADO = 11;
+    public static int STATUS_PAGADO = 12;
+    public static int STATUS_FINALIZADO = 13;
+    public static int STATUS_CADUCADO = 14;
+    public static int STATUS_CANCELADO = 5;
+
     private final EmployeeDTO current_employee;
     private final HysAdministrationHistoryDTO current_admin;
     private final String current_db_user;
@@ -61,13 +68,13 @@ public class ProcessDAO extends AbstractDAO {
             if (!rt) {
                 throw new ProcessException(1, "TRAMITE NO INICIADO");
             }
-            connection.commit();
             return rt;
         } catch (ProcessException ex) {
             System.getLogger(ProcessDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         } catch (Exception ex) {
             System.getLogger(ProcessDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         } finally {
+            connection.commit();
             connection.setAutoCommit(true);
         }
         return rt;
@@ -79,7 +86,7 @@ public class ProcessDAO extends AbstractDAO {
             LocalDateTime ld = LocalDateTime.now();
             connection.setAutoCommit(false);
             ps.setString(1, current_employee.getId());
-            ps.setString(2, ld.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            ps.setString(2, current_admin.getId());
             ps.setString(3, current_employee.getId());
             ps.setString(4, current_db_user);
             ps.setString(5, "10");
@@ -104,7 +111,7 @@ public class ProcessDAO extends AbstractDAO {
             LocalDateTime ld = LocalDateTime.now();
             connection.setAutoCommit(false);
             ps.setString(1, current_employee.getId());
-            ps.setString(2, ld.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            ps.setString(2, current_admin.getId());
             ps.setString(3, current_employee.getId());
             ps.setString(4, current_db_user);
             ps.setString(5, "10");
@@ -123,17 +130,17 @@ public class ProcessDAO extends AbstractDAO {
         return rt;
     }
 
-    public boolean endProcess(JDBConnection connection, String id) {
+    public boolean endProcess(JDBConnection connection, String user_id, String water_inatke_id) {
         boolean rt = false;
         try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_END);) {
             LocalDateTime ld = LocalDateTime.now();
             connection.setAutoCommit(false);
             ps.setString(1, current_employee.getId());
-            ps.setString(2, ld.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            ps.setString(2, current_admin.getId());
             ps.setString(3, current_employee.getId());
             ps.setString(4, current_db_user);
             ps.setString(5, "10");
-            ps.setString(6, id);
+            ps.setString(6, user_id);
             rt = ps.executeUpdate() > 0;
             if (!rt) {
                 throw new ProcessException(1, "TRAMITE NO INICIADO");
@@ -148,6 +155,13 @@ public class ProcessDAO extends AbstractDAO {
         return rt;
     }
 
+    /**
+     * se lanza si el usuario pride su tarjeta fisica
+     *
+     * @param connection
+     * @param id
+     * @return
+     */
     public boolean printProcess(JDBConnection connection, String id) {
         boolean rt = false;
         try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_PRINT);) {
@@ -159,6 +173,67 @@ public class ProcessDAO extends AbstractDAO {
             ps.setString(4, current_db_user);
             ps.setString(5, "10");
             ps.setString(6, id);
+            rt = ps.executeUpdate() > 0;
+            if (!rt) {
+                throw new ProcessException(1, "TRAMITE NO INICIADO");
+            }
+            connection.commit();
+            return rt;
+        } catch (Exception e) {
+            connection.rollBack();
+        } finally {
+            connection.setAutoCommit(true);
+        }
+        return rt;
+    }
+
+    /**
+     * se lanza si el empleado decide cancelar el tramite, no se ha validado o
+     * no se ha realizado un pago dentro de los proximos 30 dias
+     *
+     * @param connection
+     * @param payment_id
+     * @return
+     */
+    public boolean cancelProcess(JDBConnection connection, String payment_id) {
+        boolean rt = false;
+        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_CANCEL);) {
+            LocalDateTime ld = LocalDateTime.now();
+            connection.setAutoCommit(false);
+            ps.setString(1, current_employee.getId());
+            ps.setString(2, current_db_user);
+            ps.setInt(3, STATUS_CANCELADO);
+            ps.setString(4, payment_id);
+            rt = ps.executeUpdate() > 0;
+            if (!rt) {
+                throw new ProcessException(1, "TRAMITE NO INICIADO");
+            }
+            connection.commit();
+            return rt;
+        } catch (Exception e) {
+            connection.rollBack();
+        } finally {
+            connection.setAutoCommit(true);
+        }
+        return rt;
+    }
+
+    /**
+     * Se lanza cuando han transcurrido 30 dias despues de inicial el tramite
+     *
+     * @param connection
+     * @param payment_id
+     * @return
+     */
+    public boolean caducateProcess(JDBConnection connection, String payment_id) {
+        boolean rt = false;
+        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_CADUCATE);) {
+            LocalDateTime ld = LocalDateTime.now();
+            connection.setAutoCommit(false);
+            ps.setString(1, current_employee.getId());
+            ps.setString(2, current_db_user);
+            ps.setInt(3, STATUS_CADUCADO);
+            ps.setString(4, payment_id);
             rt = ps.executeUpdate() > 0;
             if (!rt) {
                 throw new ProcessException(1, "TRAMITE NO INICIADO");

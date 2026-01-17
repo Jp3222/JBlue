@@ -109,4 +109,9 @@ public class OwnerChangerProcessView extends AbstractProcessView<UserDTO> {
     private javax.swing.JPanel root_panel;
     private javax.swing.JButton search_object;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void getDataView() {
+
+    }
 }

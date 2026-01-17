@@ -18,18 +18,18 @@ package jsoftware.com.jblue.views.process;
 
 import java.awt.CardLayout;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.views.proviews.PaymentProcessView;
 import jsoftware.com.jblue.views.UserView;
-import jsoftware.com.jblue.views.proviews.ValidationProcessView;
 import jsoftware.com.jblue.views.WaterIntakesView;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
+import jsoftware.com.jblue.views.proviews.PaymentProcessView;
+import jsoftware.com.jblue.views.proviews.ValidationProcessView;
 
 /**
  *
  * @author juanp
  */
-public final class UserRegisterProcessView extends AbstractProcessView<UserDTO> {
+public final class OwnerRegisterProcessView extends AbstractProcessView<UserDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,7 +42,7 @@ public final class UserRegisterProcessView extends AbstractProcessView<UserDTO> 
     /**
      * Creates new form ProcessView
      */
-    public UserRegisterProcessView(ProcessViewBuilder builder) {
+    public OwnerRegisterProcessView(ProcessViewBuilder builder) {
         super(builder);
         this.user_view = new UserView(builder);
         this.validation_process_view = new ValidationProcessView(builder);
@@ -164,4 +164,8 @@ public final class UserRegisterProcessView extends AbstractProcessView<UserDTO> 
     private javax.swing.JButton search_object;
     // End of variables declaration//GEN-END:variables
 
+    @Override
+    public void getDataView() {
+
+    }
 }

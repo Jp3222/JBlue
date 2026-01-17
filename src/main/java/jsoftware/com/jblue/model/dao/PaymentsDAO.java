@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
 import jsoftware.com.jblue.model.dto.PaymentDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.querys.PaymentQuerys;
 import jsoftware.com.jblue.model.scripts.PaymentsQuerys;
@@ -107,7 +107,7 @@ public class PaymentsDAO extends AbstractDAO implements Serializable {
         return insertPayment(connection, uudi, wk, payment_concept_id, total_cost, amount_paid, change_amount, months_paid_date, 3, status_id);
     }
 
-// Asumimos que JDBConnection, WaterIntakesDTO, JExcp existen.
+    // Asumimos que JDBConnection, WaterIntakesDTO, JExcp existen.
     /**
      * Inserta un registro en pym_payments y recupera el ID generado. NOTA: La
      * conexión debe tener auto-commit deshabilitado externamente.
@@ -176,6 +176,58 @@ public class PaymentsDAO extends AbstractDAO implements Serializable {
         return res;
     }
 
+    public int insert(JDBConnection connection, PaymentDTO dto) {
+        int res = 0;
+        String query = PaymentQuerys.PAYMENT_INSERT; // Se espera: INSERT INTO pym_payments (...) VALUES (?, ?, ..., ?)
+
+        // El setAutoCommit(false) debe hacerse ANTES del conjunto de transacciones. 
+        // Lo he eliminado del método.
+        try (PreparedStatement ps = connection.getConnection().prepareStatement(
+                query,
+                Statement.RETURN_GENERATED_KEYS // Solicita las claves autogeneradas
+        )) {
+            // 1. Asignación de parámetros con tipado correcto
+            ps.setInt(1, dto.getPaymentType());
+            ps.setString(2, dto.getUDDI());
+            ps.setString(3, current_employee.getId()); // Asumiendo que getId() retorna el ID del empleado como String
+            ps.setString(4, dto.getUser());
+            ps.setString(5, dto.getWaterInatke());
+            ps.setString(6, dto.getWaterIntakeType());
+            ps.setInt(7, dto.getPaymentMethod()); // payment_method: 1 = EFECTIVO
+            ps.setInt(8, dto.getPaymentConcept());
+            ps.setBigDecimal(9, new BigDecimal(dto.getTotalCost()));
+            ps.setBigDecimal(10, new BigDecimal(dto.getAmountPaid()));
+            ps.setBigDecimal(11, new BigDecimal(dto.getChangeAmount()));
+            ps.setInt(12, dto.getMonthsPaid()); // Usar setDate(12, new java.sql.Date(long)) si es tipo Date
+            ps.setInt(13, dto.getStatus());
+
+            // 2. Ejecutar la sentencia INSERT
+            int filasAfectadas = ps.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                // 3. Recuperar el ID auto-generado
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        res = rs.getInt(1); // El ID es la primera columna del ResultSet
+                    }
+                }
+            }
+
+            if (res <= 0) {
+                // Si la inserción fue exitosa pero no se recuperó el ID (posiblemente la DB no soporta getGeneratedKeys)
+                throw new SQLException("Inserción exitosa (" + filasAfectadas + " filas) pero ID no generado/recuperado.");
+            }
+
+        } catch (SQLException e) {
+            // En un flujo de transacción, la lógica aquí debería incluir un ROLLBACK
+            // Ejemplo de ROLLBACK: connection.getConnection().rollback(); 
+            // Uso del logger JExcp proporcionado por el código original
+            JExcp.getInstance(false, flag_dev_log).print(e, getClass(), "insertPayment");
+            res = 0; // Asegurar que el método retorna 0 en caso de error
+        }
+        return res;
+    }
+
     // Constante para el estado de borrado lógico (STATUS = 3)
     private static final int STATUS_DELETED = 3;
 
@@ -185,8 +237,7 @@ public class PaymentsDAO extends AbstractDAO implements Serializable {
      *
      * @param connection La conexión JDBC activa.
      * @param user El ID del pago a eliminar lógicamente.
-     * @return true si se borro logicamente
-     * encontró).
+     * @return true si se borro logicamente encontró).
      * @throws RuntimeException Si ocurre un error de SQL durante la ejecución.
      */
     public boolean deleteWC(JDBConnection connection, int user) {

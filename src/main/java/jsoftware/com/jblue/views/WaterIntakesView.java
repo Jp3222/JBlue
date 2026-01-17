@@ -804,4 +804,9 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakesDTO>
         this.street2_search = street2_search;
     }
 
+    @Override
+    public void getDataView() {
+
+    }
+    
 }

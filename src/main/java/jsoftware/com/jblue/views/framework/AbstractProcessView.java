@@ -149,4 +149,6 @@ public abstract class AbstractProcessView<T extends JDBMapObject> extends DBView
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    public abstract void getDataView();
+
 }

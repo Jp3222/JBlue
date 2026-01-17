@@ -17,7 +17,7 @@ public class UserTypeDTO extends AuditableObjectMap {
     }
 
     public String getUserType() {
-        return get("").toString();
+        return get("user_type").toString();
     }
     
     public String getDescriptionLong(){

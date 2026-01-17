@@ -23,6 +23,10 @@ public class ProcessWrapperDTO extends JDBMapObject {
     private PaymentDTO payment;
     private ArrayList<PaymentConceptDTO> payment_concept_list;
 
+    /**/
+    private UserDTO user_copy;
+    private WaterIntakesDTO water_intake_copy;
+
     public ProcessWrapperDTO(EmployeeDTO employee) {
         this.current_employee = new EmployeeDTO();
     }
@@ -75,6 +79,22 @@ public class ProcessWrapperDTO extends JDBMapObject {
         this.payment_concept_list = payment_concept_list;
     }
 
+    public UserDTO getUser_copy() {
+        return user_copy;
+    }
+
+    public void setUser_copy(UserDTO user_copy) {
+        this.user_copy = user_copy;
+    }
+
+    public WaterIntakesDTO getWater_intake_copy() {
+        return water_intake_copy;
+    }
+
+    public void setWater_intake_copy(WaterIntakesDTO water_intake_copy) {
+        this.water_intake_copy = water_intake_copy;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;
@@ -116,7 +136,7 @@ public class ProcessWrapperDTO extends JDBMapObject {
         }
         return Objects.equals(this.payment_concept_list, other.payment_concept_list);
     }
-
+    
     @Override
     public String toString() {
         return "ProcessWrapperDTO{" + "current_employee=" + current_employee + ", user=" + user + ", water_intake_type=" + water_intake_type + ", water_intake=" + water_intake + ", payment=" + payment + ", payment_concept_list=" + payment_concept_list + '}';

@@ -9,7 +9,7 @@ import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.process.ConsumerRegisterProcessView;
 import jsoftware.com.jblue.views.process.OwnerChangerProcessView;
-import jsoftware.com.jblue.views.process.UserRegisterProcessView;
+import jsoftware.com.jblue.views.process.OwnerRegisterProcessView;
 
 /**
  *
@@ -91,8 +91,8 @@ public class ProcessViewBuilder implements Serializable {
         if (UserView.class.getName().equals(cls)) {
             return new UserView(i);
         }
-        if (UserRegisterProcessView.class.getName().equals(cls)) {
-            return new UserRegisterProcessView(i);
+        if (OwnerRegisterProcessView.class.getName().equals(cls)) {
+            return new OwnerRegisterProcessView(i);
         }
         if (ConsumerRegisterProcessView.class.getName().equals(cls)) {
             return new ConsumerRegisterProcessView(i);

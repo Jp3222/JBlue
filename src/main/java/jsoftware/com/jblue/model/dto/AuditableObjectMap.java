@@ -9,6 +9,7 @@ import java.util.Map;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jutil.db.JDBMapObject;
+import jsoftware.com.jutil.util.JFunc;
 
 /**
  * Clase de Objeto de Transferencia de Datos (DTO) que extiende un objeto basado
@@ -67,7 +68,7 @@ public class AuditableObjectMap extends JDBMapObject implements AuditableModel {
 
     @Override
     public LocalDateTime getDateEnd() {
-        if (values.containsKey("date_end")) {
+        if (JFunc.isNotNull(get("date_end"))&&JFunc.isNotNullEmptyBlank(get("date_end").toString())) {
             return Formats.getLocalDateTime(get("date_end").toString());
         }
         return null;

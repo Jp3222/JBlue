@@ -316,4 +316,9 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
             return null;
         }
     }
+
+    @Override
+    public void getDataView() {
+
+    }
 }

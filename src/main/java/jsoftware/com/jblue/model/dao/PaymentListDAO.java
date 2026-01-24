@@ -7,7 +7,9 @@ package jsoftware.com.jblue.model.dao;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
+import jsoftware.com.jblue.model.dto.PaymentListDTO;
 import jsoftware.com.jblue.model.querys.PaymentListQuery;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
@@ -63,4 +65,37 @@ public class PaymentListDAO extends AbstractDAO implements Serializable {
         }
         return res;
     }
+
+    public boolean insert(JDBConnection connection, List<PaymentListDTO> list) {
+        boolean res = false;
+        String query = "INSERT INTO pym_payment_list(payment, payment_concept, item_name, cost, status) VALUES(?,?,?,?,?)";
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
+            // 1. Iniciamos la transacción manual
+            connection.setAutoCommit(false);
+            for (PaymentListDTO i : list) {
+                ps.setString(1, i.getPayment());
+                ps.setString(2, i.getPaymentConcept());
+                ps.setString(3, i.getItemName());
+                ps.setString(4, i.getCost());
+                ps.setString(5, i.getStatus());
+                ps.addBatch();
+            }
+            // 2. Ejecutamos el lote
+            int[] results = ps.executeBatch();
+            // 3. Validamos que el tamaño del resultado coincida con el de la lista enviada
+            // Si ps.executeBatch() no lanza excepción, es que el proceso terminó.
+            res = results.length == list.size();
+            if (!res) {
+                throw new SQLException("REGISTRO DE CONCEPTOS PAGO CORRUPTO");
+            }
+            connection.commit(); // Confirmamos solo si el lote está completo
+        } catch (SQLException e) {
+            connection.rollBack();
+            e.printStackTrace();
+        } finally {
+            connection.setAutoCommit(true);
+        }
+        return res;
+    }
+
 }

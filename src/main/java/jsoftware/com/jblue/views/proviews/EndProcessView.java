@@ -79,6 +79,7 @@ public final class EndProcessView extends AbstractProcessView<ProcessWrapperDTO>
         label1.setText(bundle.getString("EndProcessView.label1.text")); // NOI18N
         jPanel1.add(label1);
 
+        jButton1.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jButton1.setText(bundle.getString("EndProcessView.jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
         jPanel1.add(jButton1);

@@ -18,8 +18,7 @@ package jsoftware.com.jblue.model.l4b;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import jsoftware.com.jblue.model.constants.Const;
-import jsoftware.com.jblue.model.dao.HysHistoryDAO;
+import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.exp.PaymentExeption;
 import jsoftware.com.jblue.util.PaymentsRulers;
 import jsoftware.com.jblue.views.components.UserMessagesFactory;
@@ -101,8 +100,7 @@ public class ServicePaymentLogic extends AbstractPayment {
                 throw new PaymentExeption(1001, "LA LISTA DE CONCEPTOS NO SE REGISTRO CORRECTAMENTE", "REGISTRO CORRUPTO");
             }
             //SE REGISTRA EN EL HISTORIAL
-            res = HysHistoryDAO.getINSTANCE().insert(
-                    Const.INDEX_PYM_PAYMENT,
+            res = HistoryDAO.PaymentHistoryDAO.getInstance().insert(connection,
                     "SE GENERO EL PAGO: %s".formatted(key)
             );
             if (!res) {

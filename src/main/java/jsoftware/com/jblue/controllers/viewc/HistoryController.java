@@ -56,7 +56,7 @@ public class HistoryController extends AbstractViewController {
         connection.setAutoCommit(false);
         EmployeeDTO dto = SystemSession.getInstancia().getCurrentEmployee();
         try {
-            boolean res = HysHistoryDAO.getINSTANCE().SELECT(
+            boolean res = HysHistoryDAO.getINSTANCE().select(
                     Const.INDEX_HYS_PROGRAM_HISTORY,
                     "EL EMPLEADO: %s %s %s CONSULTO EL HISTORIAL".formatted(
                             dto.getFirstName(),

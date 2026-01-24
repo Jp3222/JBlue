@@ -4,16 +4,19 @@
  */
 package jsoftware.com.jblue.model.dao;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
+import jsoftware.com.jutil.util.JFunc;
 
 /**
  *
@@ -25,55 +28,57 @@ public class WaterIntakeDAO extends AbstractDAO implements ListComponentDAO<Wate
         super(flag_dev_log, name_module);
     }
 
-    public int insert(JDBConnection connection, WaterIntakesDTO dto) {
+    public int insert(JDBConnection connection, WaterIntakesDTO dto) throws SQLException {
         String query = """
-                   INSERT INTO wki_water_intakes 
-                   (cost_procedure, water_intake_type, user, user_name, street1, street2, location, description, status, last_employee_update)
-                   VALUES
-                   (?,?,?,?,?,?,?,?,?,?)
-                   """;
-        try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            // 1. Iniciar transacción
-            connection.setAutoCommit(false);
+               INSERT INTO wki_water_intakes 
+               (cost_procedure, water_intake_type, user, user_name, street1, street2, location, description, status, last_employee_update)
+               VALUES (?,?,?,?,?,?,?,?,?,?)
+               """;
 
-            ps.setString(1, dto.getConstProcedure());
-            ps.setString(2, dto.getWaterIntakeType());
-            ps.setString(3, dto.getUser());
+        // Nota: Eliminamos el manejo de transacciones de aquí para que el Service lo controle
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+            // 1. DECIMAL -> BigDecimal
+            if (JFunc.isNull(dto.getConstProcedure())) {
+                ps.setNull(1, Types.DECIMAL);
+            } else {
+                ps.setBigDecimal(1, new BigDecimal(dto.getConstProcedure()));
+            }
+
+            // 2. INT -> setInt
+            ps.setInt(2, Integer.parseInt(dto.getWaterIntakeType()));
+            ps.setInt(3, Integer.parseInt(dto.getUser()));
             ps.setString(4, dto.getUserName());
-            ps.setString(5, dto.getStreet1());
-            ps.setString(6, dto.getStreet2());
+
+            // 3. Calles (IDs de cat_street)
+            ps.setInt(5, Integer.parseInt(dto.getStreet1()));
+
+            if (JFunc.isNull(dto.getStreet2())) {
+                ps.setNull(6, Types.INTEGER);
+            } else {
+                ps.setInt(6, Integer.parseInt(dto.getStreet2()));
+            }
+
+            // 4. Textos
             ps.setString(7, dto.getLocation());
             ps.setString(8, dto.getDescription());
-            ps.setString(9, dto.getStatusString());
-            ps.setString(10, dto.getLastEmployeeUpdate());
 
-            // 2. Usar executeUpdate() y validar que afectó al menos 1 fila
-            int rowsAffected = ps.executeUpdate();
+            // 5. Status e ID de Empleado (Ambos INT)
+            ps.setInt(9, Integer.parseInt(dto.getStatusString())); // Asegúrate que devuelva el ID
 
-            if (rowsAffected == 0) {
-                throw new SQLException("No se insertó ningún registro, inserción fallida.");
+            if (JFunc.isNull(dto.getLastEmployeeUpdate())) {
+                ps.setNull(10, Types.INTEGER);
+            } else {
+                ps.setInt(10, Integer.parseInt(dto.getLastEmployeeUpdate()));
             }
 
-            // 3. Recuperar el ID generado
-            try (ResultSet gk = ps.getGeneratedKeys()) {
-                if (gk.next()) {
-                    int generatedId = gk.getInt(1);
-
-                    // 4. SI TODO SALIÓ BIEN, HACEMOS COMMIT AQUÍ
-                    connection.commit();
-                    return generatedId;
-                } else {
-                    throw new SQLException("Inserción exitosa pero no se pudo recuperar el ID.");
+            if (ps.executeUpdate() > 0) {
+                try (ResultSet gk = ps.getGeneratedKeys()) {
+                    if (gk.next()) {
+                        return gk.getInt(1);
+                    }
                 }
             }
-
-        } catch (SQLException e) {
-            // 5. Solo hacemos rollback si hubo un error
-            connection.rollBack();
-            e.printStackTrace();
-        } finally {
-            // 6. Siempre regresamos al estado original
-            connection.setAutoCommit(true);
         }
         return -1;
     }

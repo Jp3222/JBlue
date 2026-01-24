@@ -54,14 +54,17 @@ public class ConstDES extends ConstTable {
     public static final int INDEX_CAT_GROUP_PREFIX = 29;
     public static final int INDEX_HYS_ADMINISTRATION_HISTORY = 30;
     public static final int INDEX_LOGBOOK_TO_PARAMETERS = 31;
-    public static final int INDEX_PYM_PAYMENT = 36;
-    public static final int INDEX_PYM_PAYMENT_LIST = 37;
-    public static final int INDEX_PYM_PAYMENT_CONCEPT = 38;
-    public static final int INDEX_PAYMENT_TYPE = 39;
-    public static final int INDEX_PAYMENT_METHOD = 40;
-    public static final int INDEX_PROCESS_TYPE = 41;
-    public static final int INDEX_CAT_USER_CATEGORY_DOCUMENTS = 42;
-    public static final int INDEX_USR_BLOCKED_USER = 43;
-    public static final int INDEX_USR_USER_DOCUMENT = 44;
+    public static final int INDEX_CAT_PAYMENT_METHOD = 36;
+    public static final int INDEX_CAT_PAYMENT_TYPE = 37;
+    public static final int INDEX_CAT_USER_TYPE_DOCUMENT = 38;
+    public static final int INDEX_CAT_USER_CATEGORY_DOCUMENTS = 39;
+    public static final int INDEX_PYM_PAYMENTS = 40;
+    public static final int INDEX_PYM_PAYMENT_CONCEPT = 41;
+    public static final int INDEX_PRO_PROCESS = 42;
+    public static final int INDEX_CAT_MODULE = 43;
+    public static final int INDEX_PYM_PAYMENT_LIST = 44;
+    public static final int INDEX_USR_DOCUMENT = 45;
+    public static final int INDEX_USR_BLOCKED_USER = 46;
+    public static final int INDEX_LOGBOOK_TO_PAYMENT_CONCEPT = 47;
 
 }

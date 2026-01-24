@@ -12,14 +12,14 @@ import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
  *
  * @author juanp
  */
-public class WaterInatkeDataView extends AbstractProcessView<UserDocumentDTO> {
+public class WaterIntakeDataView extends AbstractProcessView<UserDocumentDTO> {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form WaterInatkeDataView
      */
-    public WaterInatkeDataView(ProcessViewBuilder builder) {
+    public WaterIntakeDataView(ProcessViewBuilder builder) {
         super(builder);
         initComponents();
     }
@@ -60,12 +60,6 @@ public class WaterInatkeDataView extends AbstractProcessView<UserDocumentDTO> {
         p_status = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         status_field = new javax.swing.JComboBox<>();
-        p_date_update = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        date_update_field = new javax.swing.JTextField();
-        p_date_register = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        date_register = new javax.swing.JTextField();
 
         setMinimumSize(new java.awt.Dimension(900, 700));
         setName("Form"); // NOI18N
@@ -79,7 +73,7 @@ public class WaterInatkeDataView extends AbstractProcessView<UserDocumentDTO> {
         jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/proviews/Bundle"); // NOI18N
-        jLabel4.setText(bundle.getString("WaterInatkeDataView.jLabel4.text")); // NOI18N
+        jLabel4.setText(bundle.getString("WaterIntakeDataView.jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
         jLabel4.setPreferredSize(new java.awt.Dimension(500, 100));
         p_fields.add(jLabel4);
@@ -89,7 +83,7 @@ public class WaterInatkeDataView extends AbstractProcessView<UserDocumentDTO> {
         jPanel12.setLayout(new java.awt.BorderLayout());
 
         jLabel6.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel6.setText(bundle.getString("WaterInatkeDataView.jLabel6.text")); // NOI18N
+        jLabel6.setText(bundle.getString("WaterIntakeDataView.jLabel6.text")); // NOI18N
         jLabel6.setName("jLabel6"); // NOI18N
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel12.add(jLabel6, java.awt.BorderLayout.WEST);
@@ -99,8 +93,8 @@ public class WaterInatkeDataView extends AbstractProcessView<UserDocumentDTO> {
         jPanel12.add(user_field, java.awt.BorderLayout.CENTER);
 
         search_user_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        search_user_button.setToolTipText(bundle.getString("WaterInatkeDataView.search_user_button.toolTipText")); // NOI18N
-        search_user_button.setActionCommand(bundle.getString("WaterInatkeDataView.search_user_button.actionCommand")); // NOI18N
+        search_user_button.setToolTipText(bundle.getString("WaterIntakeDataView.search_user_button.toolTipText")); // NOI18N
+        search_user_button.setActionCommand(bundle.getString("WaterIntakeDataView.search_user_button.actionCommand")); // NOI18N
         search_user_button.setName("search_user_button"); // NOI18N
         search_user_button.setPreferredSize(new java.awt.Dimension(50, 50));
         jPanel12.add(search_user_button, java.awt.BorderLayout.LINE_END);
@@ -112,14 +106,14 @@ public class WaterInatkeDataView extends AbstractProcessView<UserDocumentDTO> {
         jPanel8.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel2.setText(bundle.getString("WaterInatkeDataView.jLabel2.text")); // NOI18N
+        jLabel2.setText(bundle.getString("WaterIntakeDataView.jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel8.add(jLabel2, java.awt.BorderLayout.WEST);
 
         search_water_intake.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        search_water_intake.setToolTipText(bundle.getString("WaterInatkeDataView.search_water_intake.toolTipText")); // NOI18N
-        search_water_intake.setActionCommand(bundle.getString("WaterInatkeDataView.search_water_intake.actionCommand")); // NOI18N
+        search_water_intake.setToolTipText(bundle.getString("WaterIntakeDataView.search_water_intake.toolTipText")); // NOI18N
+        search_water_intake.setActionCommand(bundle.getString("WaterIntakeDataView.search_water_intake.actionCommand")); // NOI18N
         search_water_intake.setName("search_water_intake"); // NOI18N
         search_water_intake.setPreferredSize(new java.awt.Dimension(50, 50));
         jPanel8.add(search_water_intake, java.awt.BorderLayout.LINE_END);
@@ -134,7 +128,7 @@ public class WaterInatkeDataView extends AbstractProcessView<UserDocumentDTO> {
         jPanel9.setLayout(new java.awt.BorderLayout());
 
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel3.setText(bundle.getString("WaterInatkeDataView.jLabel3.text")); // NOI18N
+        jLabel3.setText(bundle.getString("WaterIntakeDataView.jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
         jLabel3.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel9.add(jLabel3, java.awt.BorderLayout.WEST);
@@ -150,14 +144,14 @@ public class WaterInatkeDataView extends AbstractProcessView<UserDocumentDTO> {
         jPanel10.setLayout(new java.awt.BorderLayout());
 
         jLabel5.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel5.setText(bundle.getString("WaterInatkeDataView.jLabel5.text")); // NOI18N
+        jLabel5.setText(bundle.getString("WaterIntakeDataView.jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel10.add(jLabel5, java.awt.BorderLayout.WEST);
 
         search_street_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        search_street_button.setToolTipText(bundle.getString("WaterInatkeDataView.search_street_button.toolTipText")); // NOI18N
-        search_street_button.setActionCommand(bundle.getString("WaterInatkeDataView.search_street_button.actionCommand")); // NOI18N
+        search_street_button.setToolTipText(bundle.getString("WaterIntakeDataView.search_street_button.toolTipText")); // NOI18N
+        search_street_button.setActionCommand(bundle.getString("WaterIntakeDataView.search_street_button.actionCommand")); // NOI18N
         search_street_button.setName("search_street_button"); // NOI18N
         search_street_button.setPreferredSize(new java.awt.Dimension(50, 50));
         jPanel10.add(search_street_button, java.awt.BorderLayout.LINE_END);
@@ -172,14 +166,14 @@ public class WaterInatkeDataView extends AbstractProcessView<UserDocumentDTO> {
         jPanel13.setLayout(new java.awt.BorderLayout());
 
         jLabel7.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel7.setText(bundle.getString("WaterInatkeDataView.jLabel7.text")); // NOI18N
+        jLabel7.setText(bundle.getString("WaterIntakeDataView.jLabel7.text")); // NOI18N
         jLabel7.setName("jLabel7"); // NOI18N
         jLabel7.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel13.add(jLabel7, java.awt.BorderLayout.WEST);
 
         search_street2_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        search_street2_button.setToolTipText(bundle.getString("WaterInatkeDataView.search_street2_button.toolTipText")); // NOI18N
-        search_street2_button.setActionCommand(bundle.getString("WaterInatkeDataView.search_street2_button.actionCommand")); // NOI18N
+        search_street2_button.setToolTipText(bundle.getString("WaterIntakeDataView.search_street2_button.toolTipText")); // NOI18N
+        search_street2_button.setActionCommand(bundle.getString("WaterIntakeDataView.search_street2_button.actionCommand")); // NOI18N
         search_street2_button.setName("search_street2_button"); // NOI18N
         search_street2_button.setPreferredSize(new java.awt.Dimension(50, 50));
         jPanel13.add(search_street2_button, java.awt.BorderLayout.LINE_END);
@@ -194,7 +188,7 @@ public class WaterInatkeDataView extends AbstractProcessView<UserDocumentDTO> {
         jPanel14.setLayout(new java.awt.BorderLayout());
 
         jLabel8.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel8.setText(bundle.getString("WaterInatkeDataView.jLabel8.text")); // NOI18N
+        jLabel8.setText(bundle.getString("WaterIntakeDataView.jLabel8.text")); // NOI18N
         jLabel8.setName("jLabel8"); // NOI18N
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 20));
         jPanel14.add(jLabel8, java.awt.BorderLayout.WEST);
@@ -210,7 +204,7 @@ public class WaterInatkeDataView extends AbstractProcessView<UserDocumentDTO> {
         p_status.setLayout(new java.awt.BorderLayout());
 
         jLabel9.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel9.setText(bundle.getString("WaterInatkeDataView.jLabel9.text")); // NOI18N
+        jLabel9.setText(bundle.getString("WaterIntakeDataView.jLabel9.text")); // NOI18N
         jLabel9.setName("jLabel9"); // NOI18N
         jLabel9.setPreferredSize(new java.awt.Dimension(150, 20));
         p_status.add(jLabel9, java.awt.BorderLayout.WEST);
@@ -221,49 +215,11 @@ public class WaterInatkeDataView extends AbstractProcessView<UserDocumentDTO> {
 
         p_fields.add(p_status);
 
-        p_date_update.setName("p_date_update"); // NOI18N
-        p_date_update.setPreferredSize(new java.awt.Dimension(100, 35));
-        p_date_update.setLayout(new java.awt.BorderLayout());
-
-        jLabel10.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel10.setText(bundle.getString("WaterInatkeDataView.jLabel10.text")); // NOI18N
-        jLabel10.setName("jLabel10"); // NOI18N
-        jLabel10.setPreferredSize(new java.awt.Dimension(150, 20));
-        p_date_update.add(jLabel10, java.awt.BorderLayout.WEST);
-
-        date_update_field.setEditable(false);
-        date_update_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        date_update_field.setName(""); // NOI18N
-        p_date_update.add(date_update_field, java.awt.BorderLayout.CENTER);
-
-        p_fields.add(p_date_update);
-
-        p_date_register.setName("p_date_register"); // NOI18N
-        p_date_register.setPreferredSize(new java.awt.Dimension(100, 35));
-        p_date_register.setLayout(new java.awt.BorderLayout());
-
-        jLabel11.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel11.setText(bundle.getString("WaterInatkeDataView.jLabel11.text")); // NOI18N
-        jLabel11.setName("jLabel11"); // NOI18N
-        jLabel11.setPreferredSize(new java.awt.Dimension(150, 20));
-        p_date_register.add(jLabel11, java.awt.BorderLayout.WEST);
-
-        date_register.setEditable(false);
-        date_register.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        date_register.setName(""); // NOI18N
-        p_date_register.add(date_register, java.awt.BorderLayout.CENTER);
-
-        p_fields.add(p_date_register);
-
         add(p_fields, "card2");
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField date_register;
-    private javax.swing.JTextField date_update_field;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -280,8 +236,6 @@ public class WaterInatkeDataView extends AbstractProcessView<UserDocumentDTO> {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JTextField location_field;
     private javax.swing.JTextField operation_cost_field;
-    private javax.swing.JPanel p_date_register;
-    private javax.swing.JPanel p_date_update;
     private javax.swing.JPanel p_fields;
     private javax.swing.JPanel p_status;
     private javax.swing.JButton search_street2_button;

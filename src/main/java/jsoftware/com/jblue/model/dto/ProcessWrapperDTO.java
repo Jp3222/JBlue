@@ -4,7 +4,7 @@
  */
 package jsoftware.com.jblue.model.dto;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import jsoftware.com.jutil.db.JDBMapObject;
 
@@ -18,10 +18,11 @@ public class ProcessWrapperDTO extends JDBMapObject {
 
     private EmployeeDTO current_employee;
     private UserDTO user;
+    private List<UserDocumentDTO> user_document_list;
     private WaterIntakeTypesDTO water_intake_type;
     private WaterIntakesDTO water_intake;
     private PaymentDTO payment;
-    private ArrayList<PaymentConceptDTO> payment_concept_list;
+    private List<PaymentListDTO> payment_concept_list;
 
     /**/
     private UserDTO user_copy;
@@ -45,6 +46,14 @@ public class ProcessWrapperDTO extends JDBMapObject {
 
     public void setUser(UserDTO user) {
         this.user = user;
+    }
+
+    public List<UserDocumentDTO> getUser_document_list() {
+        return user_document_list;
+    }
+
+    public void setUser_document_list(List<UserDocumentDTO> user_document_list) {
+        this.user_document_list = user_document_list;
     }
 
     public WaterIntakeTypesDTO getWater_intake_type() {
@@ -71,11 +80,11 @@ public class ProcessWrapperDTO extends JDBMapObject {
         this.payment = payment;
     }
 
-    public ArrayList<PaymentConceptDTO> getPayment_concept_list() {
+    public List<PaymentListDTO> getPayment_concept_list() {
         return payment_concept_list;
     }
 
-    public void setPayment_concept_list(ArrayList<PaymentConceptDTO> payment_concept_list) {
+    public void setPayment_concept_list(List<PaymentListDTO> payment_concept_list) {
         this.payment_concept_list = payment_concept_list;
     }
 
@@ -97,13 +106,16 @@ public class ProcessWrapperDTO extends JDBMapObject {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 97 * hash + Objects.hashCode(this.current_employee);
-        hash = 97 * hash + Objects.hashCode(this.user);
-        hash = 97 * hash + Objects.hashCode(this.water_intake_type);
-        hash = 97 * hash + Objects.hashCode(this.water_intake);
-        hash = 97 * hash + Objects.hashCode(this.payment);
-        hash = 97 * hash + Objects.hashCode(this.payment_concept_list);
+        int hash = 3;
+        hash = 37 * hash + Objects.hashCode(this.current_employee);
+        hash = 37 * hash + Objects.hashCode(this.user);
+        hash = 37 * hash + Objects.hashCode(this.user_document_list);
+        hash = 37 * hash + Objects.hashCode(this.water_intake_type);
+        hash = 37 * hash + Objects.hashCode(this.water_intake);
+        hash = 37 * hash + Objects.hashCode(this.payment);
+        hash = 37 * hash + Objects.hashCode(this.payment_concept_list);
+        hash = 37 * hash + Objects.hashCode(this.user_copy);
+        hash = 37 * hash + Objects.hashCode(this.water_intake_copy);
         return hash;
     }
 
@@ -125,6 +137,9 @@ public class ProcessWrapperDTO extends JDBMapObject {
         if (!Objects.equals(this.user, other.user)) {
             return false;
         }
+        if (!Objects.equals(this.user_document_list, other.user_document_list)) {
+            return false;
+        }
         if (!Objects.equals(this.water_intake_type, other.water_intake_type)) {
             return false;
         }
@@ -134,12 +149,13 @@ public class ProcessWrapperDTO extends JDBMapObject {
         if (!Objects.equals(this.payment, other.payment)) {
             return false;
         }
-        return Objects.equals(this.payment_concept_list, other.payment_concept_list);
-    }
-    
-    @Override
-    public String toString() {
-        return "ProcessWrapperDTO{" + "current_employee=" + current_employee + ", user=" + user + ", water_intake_type=" + water_intake_type + ", water_intake=" + water_intake + ", payment=" + payment + ", payment_concept_list=" + payment_concept_list + '}';
+        if (!Objects.equals(this.payment_concept_list, other.payment_concept_list)) {
+            return false;
+        }
+        if (!Objects.equals(this.user_copy, other.user_copy)) {
+            return false;
+        }
+        return Objects.equals(this.water_intake_copy, other.water_intake_copy);
     }
 
 }

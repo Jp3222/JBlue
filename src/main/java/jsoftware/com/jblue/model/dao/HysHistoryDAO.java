@@ -16,6 +16,7 @@
  */
 package jsoftware.com.jblue.model.dao;
 
+import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,6 +33,8 @@ import jsoftware.com.jutil.model.AbstractDAO;
  */
 public class HysHistoryDAO extends AbstractDAO {
 
+    private static final long serialVersionUID = 1L;
+
     private static final HysHistoryDAO INSTANCE = new HysHistoryDAO(false, "HysHistoryDAO");
 
     public static HysHistoryDAO getINSTANCE(boolean flag_dev_log, String name_module) {
@@ -43,8 +46,8 @@ public class HysHistoryDAO extends AbstractDAO {
         return INSTANCE;
     }
 
-    private final String query;
-    //
+    private final String INSERT = "INSERT INTO hys_program_history(employee, db_user, affected_table, type_mov, description) VALUES(?,?,?,?,?)";
+
     private final HysEmployeeMovs INSTANCE2;
     private final HysUsersMovs INSTANCE3;
 
@@ -52,7 +55,6 @@ public class HysHistoryDAO extends AbstractDAO {
         super(flag_dev_log, name_module);
         this.INSTANCE3 = new HysUsersMovs();
         this.INSTANCE2 = new HysEmployeeMovs();
-        this.query = "INSERT INTO hys_program_history(employee, db_user, affected_table, type_mov, description) VALUES(?,?,?,?,?)";
     }
 
     public boolean insert(int affected_table, String description) throws SQLException {
@@ -67,43 +69,60 @@ public class HysHistoryDAO extends AbstractDAO {
         return save(affected_table, Const.INDEX_LOGIC_DELETE, description);
     }
 
-    public boolean save(int affected_table, int type_mov, String description) throws SQLException {
-        EmployeeDTO employee = SystemSession.getInstancia().getCurrentEmployee();
-        return save(employee, affected_table, type_mov, description);
-    }
-
-    public boolean SELECT(int affected_table, String description) throws SQLException {
+    public boolean select(int affected_table, String description) throws SQLException {
         return save(affected_table, Const.INDEX_SELECT, description);
     }
 
-    protected boolean save(EmployeeDTO employee, int affected_table, int type_mov, String description) throws SQLException {
+    public boolean save(int affected_table, int type_mov, String description) throws SQLException {
+        boolean res;
+        try (JDBConnection connection = ConnectionFactory.getIntance().getHistoryConnection()) {
+            EmployeeDTO employee = SystemSession.getInstancia().getCurrentEmployee();
+            String current_user = currentUser(connection);
+            res = save(connection, current_user, employee, affected_table, type_mov, description);
+        } catch (SQLException e) {
+            throw e;
+        }
+        return res;
+    }
+
+    private boolean save(EmployeeDTO employee, int affected_table, int type_mov, String description) throws SQLException {
+        boolean res;
+        try (JDBConnection connection = ConnectionFactory.getIntance().getHistoryConnection()) {
+            String current_user = currentUser(connection);
+            res = save(connection, current_user, employee, affected_table, type_mov, description);
+        } catch (SQLException e) {
+            throw e;
+        }
+        return res;
+    }
+
+    protected boolean save(JDBConnection connection, String current_user, EmployeeDTO employee, int affected_table, int type_mov, String description) throws SQLException {
         boolean rt = false;
-        try (JDBConnection c = connection(); PreparedStatement ps = c.getConnection().prepareStatement(query)) {
+        try (PreparedStatement ps = connection.getNewCallableStatement(INSERT)) {
             ps.setString(1, employee.getId());
-            ps.setString(2, currentUser());
+            ps.setString(2, current_user);
             ps.setInt(3, affected_table);
             ps.setInt(4, type_mov);
             ps.setString(5, description);
             rt = ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw e;
         }
         return rt;
     }
 
-    public JDBConnection connection() throws SQLException {
-        return ConnectionFactory.getIntance().getHistoryConnection();
-    }
-
-    public String currentUser() {
+    public String currentUser(JDBConnection connection) {
         String q = "SELECT CURRENT_USER";
-        String curus = null;
-        try (JDBConnection c = connection(); ResultSet rs = c.query(q);) {
+        String current_user = null;
+        try (PreparedStatement ps = connection.getNewPreparedStatement(q)) {
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                curus = rs.getString(1);
+                current_user = rs.getString(1);
             }
         } catch (SQLException ex) {
             System.getLogger(HysHistoryDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-        return curus;
+        return current_user;
     }
 
     public HysEmployeeMovs getHysEmployeeMovs() {
@@ -138,7 +157,9 @@ public class HysHistoryDAO extends AbstractDAO {
 
     }
 
-    public class HysUsersMovs {
+    public class HysUsersMovs implements Serializable {
+
+        private static final long serialVersionUID = 1L;
 
         public boolean insertToUsers(String description) throws SQLException {
             return insert(Const.INDEX_USR_USERS, description);

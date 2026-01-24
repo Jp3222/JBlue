@@ -4,9 +4,16 @@
  */
 package jsoftware.com.jblue.views.proviews;
 
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import jsoftware.com.jblue.model.dao.PaymentConceptDAO;
 import jsoftware.com.jblue.model.dto.PaymentDTO;
+import jsoftware.com.jblue.model.dto.PaymentListDTO;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
+import jsoftware.com.jutil.db.JDBConnection;
 
 /**
  *
@@ -15,6 +22,7 @@ import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
 
     private static final long serialVersionUID = 1L;
+    private final DefaultTableModel model;
 
     /**
      * Creates new form PaymentProcess
@@ -22,6 +30,28 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
     public PaymentProcessView(ProcessViewBuilder builder) {
         super(builder);
         this.initComponents();
+        this.model = new DefaultTableModel(new String[]{"No.", "Concepto", "Costo", "Tipo"}, 0);
+        jTable1.setModel(model);
+        load();
+    }
+
+    public void load() {
+        PaymentConceptDAO dao = new PaymentConceptDAO(true, getName());
+        try (JDBConnection c = connection();) {
+            List<String[]> paymentConcep = dao.getPaymentConcep(c, getProcessId());
+            for (String[] i : paymentConcep) {
+                if (i[i.length - 1].equals("1")) {
+                    i[i.length - 1] = "OBLIGATORIO";
+                }
+                model.addRow(i);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    JDBConnection connection() throws SQLException {
+        return ConnectionFactory.getIntance().getMainConnection();
     }
 
     /**
@@ -88,11 +118,11 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
 
             },
             new String [] {
-                "No.", "Concepto de pago", "Precio"
+                "No.", "Concepto de pago", "Precio", "Tipo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -158,6 +188,7 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
 
     @Override
     public void getDataView() {
+        List<PaymentListDTO> payment_concept_list = getProcessWrapper().getPayment_concept_list();
 
     }
 }

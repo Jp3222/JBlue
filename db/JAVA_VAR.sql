@@ -5,7 +5,7 @@ SELECT CONCAT('public static final int INDEX_', UPPER(description),' = ', id,';'
 USE jblue_local;
 SELECT * FROM information_schema.TABLES WHERE table_schema = 'jblue_local';
 -- TABLE INDEX
-USE jblue_local;
+USE jblue;
 SELECT CONCAT('public static final int INDEX_', UPPER(table_name),' = ', id,';') FROM cat_tables_db ORDER BY id;
 
 -- 

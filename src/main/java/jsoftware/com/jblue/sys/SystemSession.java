@@ -48,6 +48,8 @@ public class SystemSession implements LocalSession<EmployeeDTO> {
      */
     private HysAdministrationHistoryDTO current_administration;
 
+    private String current_db_user;
+
     /**
      * Constructor privado que obtiene la conexión a la base de datos al
      * inicializar la única instancia de la sesión.
@@ -75,6 +77,10 @@ public class SystemSession implements LocalSession<EmployeeDTO> {
         return current_administration;
     }
 
+    public String getCurrentDbUser() {
+        return current_db_user;
+    }
+
     /**
      * Muestra advertencias críticas del sistema mediante un cuadro de diálogo
      * (JOptionPane). Verifica el estado del empleado, la administración y la
@@ -94,7 +100,6 @@ public class SystemSession implements LocalSession<EmployeeDTO> {
         if (AppConfig.isAutoPay()) {
             sb.append("Advertencia: El sistema tiene el modo de recargo automático activado.\n");
         }
-
         if (!sb.isEmpty()) {
             JOptionPane.showMessageDialog(
                     null,
@@ -152,14 +157,18 @@ public class SystemSession implements LocalSession<EmployeeDTO> {
             if (user == null) {
                 // Registro de salida
                 res = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogOut(current_employee, description);
+                //las variables de sesion se quitan
                 current_employee = null;
                 current_administration = null;
+                current_db_user = null;
             } else {
                 // Registro de entrada
                 res = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogin(user, description);
                 current_employee = user;
-                // Obtiene el contexto administrativo tras un login exitoso.
+                //Obtiene el contexto administrativo tras un login exitoso.
                 current_administration = new AdministrationHistoryDAO().getCurrentAdministration(connection);
+                //Usuario de base de datos actual
+                current_db_user = HysHistoryDAO.getINSTANCE().currentUser(connection);
             }
             if (!res) {
                 throw new SQLException("El registro de auditoría en bitácora ha fallado o fue corrupto.");

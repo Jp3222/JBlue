@@ -60,6 +60,14 @@ public class ConnectionFactory {
         return new JDBConnection(builder, data_source.getConnection());
     }
 
+    public synchronized JDBConnection getUserConnection() throws SQLException {
+        return new JDBConnection(builder, data_source.getConnection());
+    }
+
+    public synchronized JDBConnection getProcessConnection() throws SQLException {
+        return new JDBConnection(builder, data_source.getConnection());
+    }
+
     public synchronized JDBConnection getMainConnection() throws SQLException {
         return new JDBConnection(builder, data_source.getConnection());
     }

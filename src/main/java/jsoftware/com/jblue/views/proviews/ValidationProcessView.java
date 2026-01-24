@@ -11,6 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -38,30 +40,29 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
         initComponents();
         this.model = new DefaultListModel<>();
         document_list.setModel(model);
+
         this.add_doc1.addActionListener((e) -> {
             File file = getSelectFile();
             if (file == null) {
                 return;
             }
-            addItem(add_doc1, file);
-            System.out.println(file.getAbsoluteFile());
+            addItem(this.add_doc1, file);
         });
-        this.add_doc2.addActionListener((e) -> {
 
+        add_doc2.addActionListener((e) -> {
             File file = getSelectFile();
             if (file == null) {
                 return;
             }
             addItem(add_doc2, file);
-            System.out.println(file.getAbsoluteFile());
         });
-        this.add_doc3.addActionListener((e) -> {
+
+        add_doc3.addActionListener((e) -> {
             File file = getSelectFile();
             if (file == null) {
                 return;
             }
             addItem(add_doc3, file);
-            System.out.println(file.getAbsoluteFile());
         });
     }
 
@@ -258,7 +259,7 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
 
         // 3. Crear el nombre final, incluyendo la extensión original.
         String extension = getFileExtension(file);
-        String finalName = namePrefix + count + (extension.isEmpty() ? "" : "." + extension);
+        String finalName = namePrefix + "_" + count + (extension.isEmpty() ? "" : "." + extension);
 
         // 4. Llamar al método de copia, pasando el nombre deseado
         File f = copySelectedFileToProgramDirectory(this, file_chooser, file, finalName);
@@ -319,6 +320,17 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
 
     @Override
     public void getDataView() {
-
+        List<UserDocumentDTO> user_document_list = getProcessWrapper().getUser_document_list();
+        if (user_document_list == null) {
+            user_document_list = new ArrayList<>();
+        }
+        for (int i = 0; i < model.getSize(); i++) {
+            File j = model.elementAt(i);
+            UserDocumentDTO o = new UserDocumentDTO();
+            o.put("doc_file", j);
+            o.put("document_name", j.getName());
+            o.put("document_path", j.getPath());
+            user_document_list.add(o);
+        }
     }
 }

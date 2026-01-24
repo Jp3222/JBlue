@@ -29,6 +29,8 @@ import jsoftware.com.jutil.model.AbstractDAO;
  */
 public class ProcessDAO extends AbstractDAO {
 
+    private static final long serialVersionUID = 1L;
+
     public static int STATUS_INICIADO = 10;
     public static int STATUS_VALIDADO = 11;
     public static int STATUS_PAGADO = 12;
@@ -47,16 +49,20 @@ public class ProcessDAO extends AbstractDAO {
         current_db_user = null;
     }
 
-    public boolean startProcess(JDBConnection connection, String process_type, String user_id) throws SQLException {
-        boolean rt = false;
+    public int startProcess(JDBConnection connection, String process_type, String user_id) throws SQLException {
+        int generatedId = 0; // Cambiamos el retorno a int para devolver el ID
         if (connection == null) {
-            throw new SQLException("TRAMITE NO INICIADO");
+            throw new SQLException("CONEXIÓN NO DISPONIBLE");
         }
         if (Filters.isNullOrBlank(process_type, user_id)) {
-            throw new IllegalArgumentException("Paramentros erroneos: process_type: " + process_type + ", user: " + user_id);
+            throw new IllegalArgumentException("Parámetros erróneos: process_type: " + process_type + ", user: " + user_id);
         }
-        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.INSERT_START_PROCESS);) {
-            connection.setAutoCommit(false);
+
+        // 1. IMPORTANTE: Solicitar que se retornen las llaves generadas
+        try (PreparedStatement ps = connection.getNewPreparedStatement(
+                ProcessQuery.INSERT_START_PROCESS,
+                java.sql.Statement.RETURN_GENERATED_KEYS)) {
+
             ps.setString(1, process_type);
             ps.setString(2, current_employee.getId());
             ps.setString(3, current_admin.getId());
@@ -64,23 +70,30 @@ public class ProcessDAO extends AbstractDAO {
             ps.setString(5, current_db_user);
             ps.setString(6, user_id);
             ps.setString(7, "9");
-            rt = ps.executeUpdate() > 0;
-            if (!rt) {
-                throw new ProcessException(1, "TRAMITE NO INICIADO");
+
+            int affectedRows = ps.executeUpdate();
+
+            if (affectedRows > 0) {
+                // 2. Recuperar el conjunto de llaves generadas
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        generatedId = rs.getInt(1); // Obtenemos el ID generado
+                    }
+                }
+            } else {
+                throw new SQLException("TRAMITE NO INICIADO: No se insertó ningún registro.");
             }
-            return rt;
-        } catch (ProcessException ex) {
-            System.getLogger(ProcessDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+
         } catch (Exception ex) {
-            System.getLogger(ProcessDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        } finally {
-            connection.commit();
-            connection.setAutoCommit(true);
+            // Logueamos el error
+            System.getLogger(ProcessDAO.class.getName()).log(System.Logger.Level.ERROR, "Error en startProcess", ex);
+            throw ex; // Re-lanzamos para que el Service pueda hacer rollback
         }
-        return rt;
+
+        return generatedId; // Retorna el ID (o 0 si falló)
     }
 
-    public boolean validProcess(JDBConnection connection, String user_id) {
+    public boolean validProcess(JDBConnection connection, int process_id) {
         boolean rt = false;
         try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_VALID);) {
             LocalDateTime ld = LocalDateTime.now();
@@ -90,7 +103,7 @@ public class ProcessDAO extends AbstractDAO {
             ps.setString(3, current_employee.getId());
             ps.setString(4, current_db_user);
             ps.setString(5, "10");
-            ps.setString(6, user_id);
+            ps.setInt(6, process_id);
             rt = ps.executeUpdate() > 0;
             if (!rt) {
                 throw new ProcessException(1, "TRAMITE NO INICIADO");

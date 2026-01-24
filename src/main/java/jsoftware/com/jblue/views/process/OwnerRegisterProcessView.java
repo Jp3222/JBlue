@@ -18,12 +18,12 @@ package jsoftware.com.jblue.views.process;
 
 import java.awt.CardLayout;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.views.UserView;
-import jsoftware.com.jblue.views.WaterIntakesView;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 import jsoftware.com.jblue.views.proviews.PaymentProcessView;
+import jsoftware.com.jblue.views.proviews.UserDataView;
 import jsoftware.com.jblue.views.proviews.ValidationProcessView;
+import jsoftware.com.jblue.views.proviews.WaterIntakeDataView;
 
 /**
  *
@@ -33,10 +33,10 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<UserDTO>
 
     private static final long serialVersionUID = 1L;
 
-    private final UserView user_view;
+    private final UserDataView user_view;
     private final ValidationProcessView validation_process_view;
     private final PaymentProcessView payment_concepts_view;
-    private final WaterIntakesView water_intake_view;
+    private final WaterIntakeDataView water_intake_view;
     private CardLayout ly;
 
     /**
@@ -44,10 +44,10 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<UserDTO>
      */
     public OwnerRegisterProcessView(ProcessViewBuilder builder) {
         super(builder);
-        this.user_view = new UserView(builder);
+        this.user_view = new UserDataView(builder);
         this.validation_process_view = new ValidationProcessView(builder);
         this.payment_concepts_view = new PaymentProcessView(builder);
-        this.water_intake_view = new WaterIntakesView(builder);
+        this.water_intake_view = new WaterIntakeDataView(builder);
         initComponents();
         build();
     }
@@ -118,11 +118,13 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<UserDTO>
 
         last_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         last_panel_button.setText("Regresar");
+        last_panel_button.setToolTipText("Seccion Anterior");
         last_panel_button.setActionCommand("register_view");
         np_cp_center.add(last_panel_button);
 
         next_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         next_panel_button.setText("Siguiente");
+        next_panel_button.setToolTipText("Siguiente Seccion");
         next_panel_button.setActionCommand("search_view");
         np_cp_center.add(next_panel_button);
 
@@ -131,7 +133,8 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<UserDTO>
         np_cp_west.setPreferredSize(new java.awt.Dimension(100, 30));
         np_cp_west.setLayout(new java.awt.BorderLayout());
 
-        search_object.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
+        search_object.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
+        search_object.setToolTipText("Cancelar Tramite");
         search_object.setActionCommand("search_object");
         np_cp_west.add(search_object, java.awt.BorderLayout.CENTER);
 
@@ -141,6 +144,7 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<UserDTO>
         np_cp_east.setLayout(new java.awt.BorderLayout());
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/configuraciones.png"))); // NOI18N
+        jButton3.setToolTipText("Guardar Informacion Actual");
         np_cp_east.add(jButton3, java.awt.BorderLayout.CENTER);
 
         north_panel.add(np_cp_east, java.awt.BorderLayout.EAST);

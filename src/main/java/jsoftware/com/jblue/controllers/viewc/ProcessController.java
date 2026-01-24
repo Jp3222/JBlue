@@ -5,19 +5,12 @@
 package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
+import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
-import jsoftware.com.jblue.model.dao.HysHistoryDAO;
-import jsoftware.com.jblue.model.dao.PaymentListDAO;
-import jsoftware.com.jblue.model.dao.PaymentsDAO;
-import jsoftware.com.jblue.model.dao.ProcessDAO;
-import jsoftware.com.jblue.model.dao.UserDao;
-import jsoftware.com.jblue.model.dao.WaterIntakeDAO;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.exp.ProcessException;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
-import jsoftware.com.jblue.model.service.UserService;
-import jsoftware.com.jblue.model.service.WaterIntakeService;
+import jsoftware.com.jblue.model.service.OwnerRegisterProcessService;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -31,27 +24,12 @@ public class ProcessController extends AbstractDBViewController<ProcessWrapperDT
     private static final long serialVersionUID = 1L;
 
     private final AbstractProcessView<UserDTO> view;
-
-    private final UserDao user_dao;
-    private final WaterIntakeDAO wki_dao;
-    private final PaymentListDAO pym_list_dao;
-    private final PaymentsDAO pym_dao;
-    private final ProcessDAO process_dao;
-    private final HysHistoryDAO hys_dao;
-    private final UserService usr_service;
-    private final WaterIntakeService wki_service;
+    private final OwnerRegisterProcessService service;
 
     public ProcessController(AbstractProcessView<UserDTO> view) {
         this.view = view;
-        this.user_dao = new UserDao(AppConfig.isDevMessages(), view.getProcessName());
-        this.wki_dao = new WaterIntakeDAO(AppConfig.isDevMessages(), view.getProcessName());
-        this.pym_list_dao = new PaymentListDAO(AppConfig.isDevMessages(), view.getProcessName());
-        this.pym_dao = new PaymentsDAO(AppConfig.isDevMessages(), view.getProcessName());
-        this.process_dao = new ProcessDAO(AppConfig.isDevMessages(), view.getProcessName());
-        hys_dao = new HysHistoryDAO(AppConfig.isDevMessages(), view.getProcessName());
-        this.usr_service = new UserService(view.getProcessId(), user_dao, hys_dao, process_dao);
-        this.wki_service = new WaterIntakeService(view.getProcessId(), wki_dao, hys_dao, process_dao);
-    
+        this.service = new OwnerRegisterProcessService(AppConfig.isDevMessages(), view.getProcessName());
+
     }
 
     @Override
@@ -62,16 +40,12 @@ public class ProcessController extends AbstractDBViewController<ProcessWrapperDT
     @Override
     public void save() {
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
-            c.setAutoCommit(false);
-            ProcessWrapperDTO pw = view.getProcessWrapper();
-            boolean res = usr_service.save(c, pw.getUser());
-            if (res) {
-                throw new ProcessException(1, "El tramite no ha podido ser capturado");
+            boolean res = service.save(c, view.getProcessId(), view.getProcessWrapper());
+            if (!res) {
             }
-
-            res = wki_service.save(c, pw.getWater_intake());
-            if (res) {
-                throw new ProcessException(4, "El tramite no ha podido ser finalizado");
+            int showConfirmDialog = JOptionPane.showConfirmDialog(view, "¿DESEAS EXPORTAR LOS FORMATOS?");
+            if (showConfirmDialog == JOptionPane.YES_OPTION) {
+                
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -31,6 +31,7 @@ import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
+import jsoftware.com.jutil.util.JFunc;
 
 /**
  *
@@ -225,6 +226,72 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO> {
 
     // Consulta SQL que selecciona todas las columnas de la tabla usr_user
     private static final String SELECT_BY_ID_SQL = "SELECT * FROM usr_user WHERE id = ?";
+
+    /**
+     *
+     * @param connection
+     * @param dto
+     * @return -1 si no existe(se puede insertar), 0 si hubo un fallo interno(no
+     * se puede insertar), un numero mayor a 0(status del usuario, no se puede
+     * insertar)
+     */
+    public int exists(JDBConnection connection, UserDTO dto) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT status FROM usr_user WHERE ");
+        int search_count = 0;
+        if (JFunc.isNotNullEmptyBlank(dto.getId())) {
+            sb.append("id = ?");
+            search_count++;
+        }
+        if (JFunc.isNotNullEmptyBlank(dto.getCurp())) {
+            if (search_count > 0) {
+                sb.append(" AND ");
+            }
+            sb.append("curp = ?");
+            search_count++;
+
+        }
+        if (JFunc.isNotNullEmptyBlank(dto.getFirstName()) && JFunc.isNotNullEmptyBlank(dto.getLastName1()) && JFunc.isNotNullEmptyBlank(dto.getLastName2())) {
+            if (search_count > 0) {
+                sb.append(" AND ");
+            }
+            sb.append("first_name = ? AND last_name1 = ? AND last_name2 = ?");
+            search_count++;
+        }
+        try (PreparedStatement ps = connection.getNewPreparedStatement(sb.toString())) {
+            search_count = 1;
+            if (JFunc.isNotNullEmptyBlank(dto.getId())) {
+                ps.setString(search_count, dto.getId());
+                search_count++;
+            }
+            if (JFunc.isNotNullEmptyBlank(dto.getCurp())) {
+                ps.setString(search_count, dto.getCurp());
+                search_count++;
+            }
+            if (JFunc.isNotNullEmptyBlank(dto.getFirstName()) && JFunc.isNotNullEmptyBlank(dto.getLastName1()) && JFunc.isNotNullEmptyBlank(dto.getLastName2())) {
+                ps.setString(search_count, dto.getFirstName());
+                search_count++;
+                ps.setString(search_count, dto.getLastName1());
+                search_count++;
+                ps.setString(search_count, dto.getLastName2());
+            }
+            int status = 0;
+            try (ResultSet rs = ps.executeQuery();) {
+                if (rs.next()) {
+                    status = rs.getInt("status");
+                    return status;
+                }
+            }
+            //no existe
+            if (status == 0) {
+                return -1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //si hubo un error en el proceso retorna 0
+        return 0;
+    }
 
     /**
      * Mapea una fila completa del ResultSet al objeto DTO basado en Map.

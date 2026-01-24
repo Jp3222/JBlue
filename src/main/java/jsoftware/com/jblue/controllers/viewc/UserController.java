@@ -47,7 +47,7 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
 
     public UserController(UserView view) {
         this.view = view;
-        user_service = new UserService(view.getProcessId(), AppConfig.isDevMessages(), view.getProcessName());
+        user_service = new UserService(AppConfig.isDevMessages(), view.getProcessName());
     }
 
     @Override
@@ -88,7 +88,8 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
         }
         try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
 
-            res = user_service.save(connection, user);
+            int pro = user_service.save(connection, view.getProcessId(), user, null);
+            res = pro > 0;
             returnMessage(view, res);
         } catch (Exception e) {
             e.printStackTrace();

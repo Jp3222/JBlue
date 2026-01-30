@@ -5,6 +5,7 @@
 package jsoftware.com.jblue.model.dao;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.List;
 import jsoftware.com.jutil.model.dto.DtoMapModel;
 
@@ -14,5 +15,5 @@ import jsoftware.com.jutil.model.dto.DtoMapModel;
  */
 public interface ListComponentDAO <T extends DtoMapModel> extends Serializable {
 
-    public List<T> getList();
+    public List<T> getList() throws SQLException, Exception;
 }

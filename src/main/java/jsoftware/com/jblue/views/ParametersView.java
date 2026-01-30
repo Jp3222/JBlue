@@ -177,20 +177,24 @@ public final class ParametersView extends SimpleView {
         north_panel.setPreferredSize(new java.awt.Dimension(900, 30));
         north_panel.setLayout(new java.awt.BorderLayout(10, 10));
 
+        jButton8.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jButton8.setText("jButton8");
         jButton8.setPreferredSize(new java.awt.Dimension(100, 30));
         north_panel.add(jButton8, java.awt.BorderLayout.WEST);
 
         jPanel3.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
 
+        jButton1.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jButton1.setText("Actualizar");
         jPanel3.add(jButton1);
 
+        jButton2.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jButton2.setText("Consultar");
         jPanel3.add(jButton2);
 
         north_panel.add(jPanel3, java.awt.BorderLayout.CENTER);
 
+        jButton9.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jButton9.setText("jButton9");
         jButton9.setPreferredSize(new java.awt.Dimension(100, 30));
         north_panel.add(jButton9, java.awt.BorderLayout.EAST);
@@ -199,30 +203,39 @@ public final class ParametersView extends SimpleView {
 
         root_panel.setLayout(new java.awt.BorderLayout());
 
+        jTabbedPane1.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
+
         register_panel.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setMinimumSize(new java.awt.Dimension(200, 100));
         jPanel1.setLayout(new java.awt.GridLayout(15, 0));
 
+        jLabel3.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel3.setText("HORA DE APERTURA");
         jLabel3.setPreferredSize(new java.awt.Dimension(200, 30));
         jPanel1.add(jLabel3);
 
+        jLabel4.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel4.setText("HORA DE CIERRE");
         jPanel1.add(jLabel4);
 
+        jLabel5.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel5.setText("DÍA DE COBRO");
         jPanel1.add(jLabel5);
 
+        jLabel6.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel6.setText("COBRO AUTOMATICO");
         jPanel1.add(jLabel6);
 
+        jLabel7.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel7.setText("USUARIO MAESTRO");
         jPanel1.add(jLabel7);
 
+        jLabel8.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel8.setText("CONTRASEÑA MAESTRA");
         jPanel1.add(jLabel8);
 
+        jLabel9.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel9.setText("VALIDAR HORA");
         jPanel1.add(jLabel9);
 
@@ -231,29 +244,36 @@ public final class ParametersView extends SimpleView {
         jPanel2.setLayout(new java.awt.GridLayout(15, 0));
 
         open_hour_field.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("kk:mm:ss"))));
+        open_hour_field.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         open_hour_field.setName("HORA_DE_APERTURA"); // NOI18N
         jPanel2.add(open_hour_field);
 
         close_hour_field.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("kk:mm:ss"))));
+        close_hour_field.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         close_hour_field.setName("HORA_DE_CIERRE"); // NOI18N
         jPanel2.add(close_hour_field);
 
+        last_pay_day_field.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         last_pay_day_field.setModel(new javax.swing.SpinnerNumberModel(1, 1, 31, 1));
         last_pay_day_field.setName("ULTIMO_DIA_DE_PAGO"); // NOI18N
         jPanel2.add(last_pay_day_field);
 
+        auto_pay_field.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         auto_pay_field.setToolTipText("");
         auto_pay_field.setName("RECARGO_AUTOMATICO"); // NOI18N
         jPanel2.add(auto_pay_field);
 
         master_user_field.setEditable(false);
+        master_user_field.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         master_user_field.setName("USUARIO_MAESTRO"); // NOI18N
         jPanel2.add(master_user_field);
 
         master_password_field.setEditable(false);
+        master_password_field.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         master_password_field.setName("CONTRASEÑA_MAESTRA"); // NOI18N
         jPanel2.add(master_password_field);
 
+        hour_validate_field.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         hour_validate_field.setName("VALIDAR_HORA_DE_ENTRADA"); // NOI18N
         jPanel2.add(hour_validate_field);
 
@@ -406,9 +426,11 @@ public final class ParametersView extends SimpleView {
         jPanel4.setPreferredSize(new java.awt.Dimension(200, 50));
         jPanel4.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
 
+        update_button.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         update_button.setText("Actualizar");
         jPanel4.add(update_button);
 
+        cancel_button.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         cancel_button.setText("Cancelar");
         jPanel4.add(cancel_button);
 

@@ -91,6 +91,7 @@ public class StatusTypeView extends SimpleView {
         jPanel30.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel30.setLayout(new java.awt.BorderLayout(5, 5));
 
+        search_field.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         search_field.setName("buscador"); // NOI18N
         jPanel30.add(search_field, java.awt.BorderLayout.CENTER);
 
@@ -116,6 +117,7 @@ public class StatusTypeView extends SimpleView {
 
         panel_tabla.add(jPanel30, java.awt.BorderLayout.NORTH);
 
+        objects_table.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         objects_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -139,10 +141,12 @@ public class StatusTypeView extends SimpleView {
         jPanel32.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel32.setLayout(new java.awt.BorderLayout());
 
+        jLabel18.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel18.setText("No.");
         jPanel32.add(jLabel18, java.awt.BorderLayout.CENTER);
 
+        count.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         count.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         count.setText("0");
         count.setToolTipText("Numero de pagos hechos.");
@@ -151,6 +155,7 @@ public class StatusTypeView extends SimpleView {
 
         status_bar_panel.add(jPanel32, java.awt.BorderLayout.WEST);
 
+        range.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         range.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         range.setText("0 - 0");
         range.setToolTipText("");
@@ -159,10 +164,12 @@ public class StatusTypeView extends SimpleView {
         jPanel29.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel29.setLayout(new java.awt.BorderLayout());
 
+        jLabel17.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel17.setText("Total:");
         jPanel29.add(jLabel17, java.awt.BorderLayout.CENTER);
 
+        total.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         total.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         total.setText("0");
         total.setToolTipText("Numero de pagos hechos.");

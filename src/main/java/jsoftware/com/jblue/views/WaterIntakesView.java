@@ -292,6 +292,7 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakesDTO>
         search_water_intake.setPreferredSize(new java.awt.Dimension(50, 50));
         jPanel8.add(search_water_intake, java.awt.BorderLayout.LINE_END);
 
+        water_intake_types_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jPanel8.add(water_intake_types_field, java.awt.BorderLayout.CENTER);
 
         p_fields.add(jPanel8);
@@ -324,6 +325,7 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakesDTO>
         search_street_button.setPreferredSize(new java.awt.Dimension(50, 50));
         jPanel10.add(search_street_button, java.awt.BorderLayout.LINE_END);
 
+        street1_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jPanel10.add(street1_field, java.awt.BorderLayout.CENTER);
 
         p_fields.add(jPanel10);
@@ -342,6 +344,7 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakesDTO>
         search_street2_button.setPreferredSize(new java.awt.Dimension(50, 50));
         jPanel13.add(search_street2_button, java.awt.BorderLayout.LINE_END);
 
+        street2_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jPanel13.add(street2_field, java.awt.BorderLayout.CENTER);
 
         p_fields.add(jPanel13);
@@ -368,6 +371,7 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakesDTO>
         jLabel9.setPreferredSize(new java.awt.Dimension(150, 20));
         p_status.add(jLabel9, java.awt.BorderLayout.WEST);
 
+        status_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         status_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar Estado.", "Activo.", "Inactivo." }));
         status_field.setName(""); // NOI18N
         p_status.add(status_field, java.awt.BorderLayout.CENTER);

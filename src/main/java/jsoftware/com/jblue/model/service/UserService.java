@@ -54,7 +54,17 @@ public class UserService implements Serializable {
         try {
             connection.setAutoCommit(false);
             //[1] REGISTRO DE DATOS DE USUARIO
-            int key = user_dao.insertUser(connection, user);
+            int[] exists = user_dao.exists(connection, user);
+            int key;
+            if (exists[0] > 0) {
+                if (exists[1] != 1) {
+                    throw new SQLException("USUARIO YA EXISTENTE");
+                }
+                key = exists[0];
+            } else {
+                key = user_dao.insert(connection, user);
+            }
+            user_dao.insert(connection, user);
             res = key > 0;
             if (!res) {
                 throw new SQLException("REGISTRO DE USUARIO ERRONEO");

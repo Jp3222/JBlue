@@ -87,42 +87,49 @@ public class VContabilidad extends javax.swing.JPanel implements OptionMenuModel
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
+        jLabel1.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel1.setText("Saldo del dia acumulado: ");
         jLabel1.setToolTipText("");
         jLabel1.setPreferredSize(new java.awt.Dimension(200, 19));
         jPanel1.add(jLabel1, java.awt.BorderLayout.WEST);
 
         total_day_field.setEditable(false);
+        total_day_field.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jPanel1.add(total_day_field, java.awt.BorderLayout.CENTER);
 
         add(jPanel1);
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
+        jLabel2.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel2.setText("Saldo del mes acumulado: ");
         jLabel2.setToolTipText("");
         jLabel2.setPreferredSize(new java.awt.Dimension(200, 19));
         jPanel2.add(jLabel2, java.awt.BorderLayout.WEST);
 
         total_month_field.setEditable(false);
+        total_month_field.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jPanel2.add(total_month_field, java.awt.BorderLayout.CENTER);
 
         add(jPanel2);
 
         jPanel3.setLayout(new java.awt.BorderLayout());
 
+        jLabel3.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel3.setText("Saldo del año acumulado: ");
         jLabel3.setToolTipText("");
         jLabel3.setPreferredSize(new java.awt.Dimension(200, 19));
         jPanel3.add(jLabel3, java.awt.BorderLayout.WEST);
 
         total_year_field.setEditable(false);
+        total_year_field.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jPanel3.add(total_year_field, java.awt.BorderLayout.CENTER);
 
         add(jPanel3);
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
+        jLabel4.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel4.setText("Consultar Fecha");
         jLabel4.setToolTipText("");
         jLabel4.setPreferredSize(new java.awt.Dimension(150, 19));
@@ -132,10 +139,12 @@ public class VContabilidad extends javax.swing.JPanel implements OptionMenuModel
 
         jPanel7.setLayout(new java.awt.BorderLayout());
 
+        jLabel6.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel6.setText("Dia");
         jLabel6.setPreferredSize(new java.awt.Dimension(10, 15));
         jPanel7.add(jLabel6, java.awt.BorderLayout.NORTH);
 
+        day_field.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         day_field.setPreferredSize(new java.awt.Dimension(50, 30));
         jPanel7.add(day_field, java.awt.BorderLayout.CENTER);
 
@@ -143,10 +152,12 @@ public class VContabilidad extends javax.swing.JPanel implements OptionMenuModel
 
         jPanel8.setLayout(new java.awt.BorderLayout());
 
+        Mes.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         Mes.setText("Mes");
         Mes.setPreferredSize(new java.awt.Dimension(10, 15));
         jPanel8.add(Mes, java.awt.BorderLayout.NORTH);
 
+        month_field.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         month_field.setPreferredSize(new java.awt.Dimension(50, 30));
         jPanel8.add(month_field, java.awt.BorderLayout.CENTER);
 
@@ -154,10 +165,12 @@ public class VContabilidad extends javax.swing.JPanel implements OptionMenuModel
 
         jPanel9.setLayout(new java.awt.BorderLayout());
 
+        jLabel8.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel8.setText("Año");
         jLabel8.setPreferredSize(new java.awt.Dimension(10, 15));
         jPanel9.add(jLabel8, java.awt.BorderLayout.NORTH);
 
+        year_field.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         year_field.setPreferredSize(new java.awt.Dimension(50, 30));
         jPanel9.add(year_field, java.awt.BorderLayout.CENTER);
 
@@ -165,6 +178,7 @@ public class VContabilidad extends javax.swing.JPanel implements OptionMenuModel
 
         jPanel4.add(jPanel6, java.awt.BorderLayout.CENTER);
 
+        jButton1.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jButton1.setText("Consultar");
         jPanel4.add(jButton1, java.awt.BorderLayout.EAST);
 
@@ -172,10 +186,13 @@ public class VContabilidad extends javax.swing.JPanel implements OptionMenuModel
 
         jPanel5.setLayout(new java.awt.BorderLayout());
 
+        jLabel5.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jLabel5.setText("Saldo Total:");
         jLabel5.setToolTipText("");
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 19));
         jPanel5.add(jLabel5, java.awt.BorderLayout.WEST);
+
+        total_field.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jPanel5.add(total_field, java.awt.BorderLayout.CENTER);
 
         add(jPanel5);

@@ -240,6 +240,8 @@ public final class PaymentConceptView extends DBView<PaymentConceptDTO> implemen
         jLabel7.setText("Pago Obligatorio:");
         jLabel7.setPreferredSize(new java.awt.Dimension(150, 20));
         p_mandatory_payment.add(jLabel7, java.awt.BorderLayout.WEST);
+
+        jCheckBox1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         p_mandatory_payment.add(jCheckBox1, java.awt.BorderLayout.CENTER);
 
         p_fields_1.add(p_mandatory_payment);
@@ -251,6 +253,7 @@ public final class PaymentConceptView extends DBView<PaymentConceptDTO> implemen
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 20));
         p_module.add(jLabel8, java.awt.BorderLayout.WEST);
 
+        jComboBox1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         p_module.add(jComboBox1, java.awt.BorderLayout.CENTER);
 
@@ -263,11 +266,13 @@ public final class PaymentConceptView extends DBView<PaymentConceptDTO> implemen
 
         date_panel_field.setLayout(new java.awt.BorderLayout());
 
+        jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel4.setText("F. Limite");
         jLabel4.setPreferredSize(new java.awt.Dimension(150, 30));
         date_panel_field.add(jLabel4, java.awt.BorderLayout.WEST);
 
         jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        jFormattedTextField1.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         date_panel_field.add(jFormattedTextField1, java.awt.BorderLayout.CENTER);
 
         p_fields_1.add(date_panel_field);
@@ -297,20 +302,24 @@ public final class PaymentConceptView extends DBView<PaymentConceptDTO> implemen
 
         jPanel3.setLayout(new java.awt.GridLayout(1, 3, 10, 10));
 
+        save_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         save_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
         save_button.setText("Guardar");
         jPanel3.add(save_button);
 
+        update_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         update_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/sincronizar.png"))); // NOI18N
         update_button.setText("Actualizar");
         jPanel3.add(update_button);
 
+        delete_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         delete_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/eliminar.png"))); // NOI18N
         delete_button.setText("Eliminar");
         jPanel3.add(delete_button);
 
         options_panel.add(jPanel3);
 
+        cancel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         cancel_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
         cancel_button.setText("Cancelar");
         options_panel.add(cancel_button);

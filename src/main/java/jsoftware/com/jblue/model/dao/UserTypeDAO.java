@@ -29,9 +29,9 @@ public class UserTypeDAO extends AbstractDAO implements ListComponentDAO<UserTyp
     @Override
     public List<UserTypeDTO> getList() {
         List<UserTypeDTO> list = new ArrayList<>(0);
-        String query = "SELECT * FROM usr_user_type";
+        String query = "SELECT * FROM usr_user_type WHERE status = 1";
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
-            try (PreparedStatement ps = c.getNewCallableStatement(query); ResultSet rs = ps.executeQuery()) {
+            try (PreparedStatement ps = c.getNewPreparedStatement(query); ResultSet rs = ps.executeQuery()) {
                 ResultSetMetaData md = rs.getMetaData();
                 String[] fields = new String[md.getColumnCount()];
                 for (int i = 0; i < fields.length; i++) {

@@ -35,11 +35,15 @@ public class StreetDAO extends AbstractDAO implements ListComponentDAO<StreetDTO
             try (ResultSet rs = ps.executeQuery();) {
                 ResultSetMetaData md = rs.getMetaData();
                 int size = md.getColumnCount();
+                String[] fields = new String[size];
+                for (int i = 0; i < fields.length; i++) {
+                    fields[i] = md.getColumnLabel(i + 1);
+                }
+                StreetDTO o;
                 while (rs.next()) {
-                    StreetDTO o = new StreetDTO();
-                    for (int i = 1; i <= size; i++) {
-                        String key = md.getColumnLabel(i);
-                        o.put(key, rs.getString(key));
+                    o = new StreetDTO();
+                    for (String i : fields) {
+                        o.getMap().put(i, rs.getString(i));
                     }
                     list.add(o);
                 }
@@ -135,7 +139,7 @@ public class StreetDAO extends AbstractDAO implements ListComponentDAO<StreetDTO
         sb.append("WHERE id = ? AND status = 1");
         return sb.toString();
     }
-    
+
     // Asumiendo que StreetDTO.getId() devuelve un Long. Si devuelve String, ajustar el setX
     public boolean delete(JDBConnection connection, StreetDTO o) throws SQLException { // Propagar SQLException para un manejo superior
         // CORRECCIÓN 1: Error tipográfico en la función SQL

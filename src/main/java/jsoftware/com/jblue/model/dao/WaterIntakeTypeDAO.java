@@ -203,15 +203,19 @@ public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<
     public List<WaterIntakeTypesDTO> getList() {
         List<WaterIntakeTypesDTO> list = new ArrayList<>(15);
         String query = "SELECT * FROM wki_water_intake_type WHERE status = 1";
-        try (JDBConnection c = ConnectionFactory.getIntance().getCacheConnection(); PreparedStatement ps = c.getNewCallableStatement(query)) {
+        try (JDBConnection c = ConnectionFactory.getIntance().getCacheConnection(); PreparedStatement ps = c.getNewPreparedStatement(query)) {
             try (ResultSet rs = ps.executeQuery();) {
                 ResultSetMetaData md = rs.getMetaData();
                 int size = md.getColumnCount();
+                String[] fields = new String[size];
+                for (int i = 0; i < fields.length; i++) {
+                    fields[i] = md.getColumnLabel(i + 1);
+                }
+                WaterIntakeTypesDTO o;
                 while (rs.next()) {
-                    WaterIntakeTypesDTO o = new WaterIntakeTypesDTO();
-                    for (int i = 1; i <= size; i++) {
-                        String key = md.getColumnLabel(i);
-                        o.put(key, rs.getString(key));
+                    o = new WaterIntakeTypesDTO();
+                    for (String i : fields) {
+                        o.getMap().put(i, rs.getString(i));
                     }
                     list.add(o);
                 }
@@ -224,25 +228,7 @@ public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<
 
     @Override
     public List<WaterIntakeTypesDTO> getList(JDBConnection connection, JTableModel model) {
-        List<WaterIntakeTypesDTO> list = new ArrayList<>(15);
-        String query = "SELECT * FROM wki_water_intake_type WHERE status = 1";
-        try (JDBConnection c = ConnectionFactory.getIntance().getCacheConnection(); PreparedStatement ps = c.getNewCallableStatement(query)) {
-            try (ResultSet rs = ps.executeQuery();) {
-                ResultSetMetaData md = rs.getMetaData();
-                int size = md.getColumnCount();
-                while (rs.next()) {
-                    WaterIntakeTypesDTO o = new WaterIntakeTypesDTO();
-                    for (int i = 1; i <= size; i++) {
-                        String key = md.getColumnLabel(i);
-                        o.put(key, rs.getString(key));
-                    }
-                    list.add(o);
-                }
-            }
-        } catch (Exception e) {
-            System.getLogger(StreetDAO.class.getName()).log(System.Logger.Level.ALL, e.getMessage());
-        }
-        return list;
+        return null;
     }
 
     public boolean delete(JDBConnection connection, WaterIntakeTypesDTO o) {

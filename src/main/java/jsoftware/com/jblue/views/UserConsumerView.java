@@ -16,9 +16,7 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 
@@ -196,13 +194,16 @@ public class UserConsumerView extends AbstractProcessView<UserDTO> {
 
         jPanel3.setLayout(new java.awt.BorderLayout());
 
+        jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel1.setText("Titular");
         jLabel1.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel3.add(jLabel1, java.awt.BorderLayout.LINE_START);
 
         user_name_field.setEditable(false);
+        user_name_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jPanel3.add(user_name_field, java.awt.BorderLayout.CENTER);
 
+        jButton1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
         jButton1.setPreferredSize(new java.awt.Dimension(50, 50));
         jPanel3.add(jButton1, java.awt.BorderLayout.LINE_END);
@@ -211,10 +212,12 @@ public class UserConsumerView extends AbstractProcessView<UserDTO> {
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
+        jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel2.setText("Toma de Agua");
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel2.add(jLabel2, java.awt.BorderLayout.LINE_START);
 
+        water_intake_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         water_intake_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel2.add(water_intake_field, java.awt.BorderLayout.CENTER);
 
@@ -222,11 +225,13 @@ public class UserConsumerView extends AbstractProcessView<UserDTO> {
 
         jPanel5.setLayout(new java.awt.BorderLayout());
 
+        jButton2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jButton2.setText("Añadir Consumidor");
         jPanel5.add(jButton2, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel5);
 
+        jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Usuarios aderidos.");
         jPanel1.add(jLabel3);
@@ -235,6 +240,7 @@ public class UserConsumerView extends AbstractProcessView<UserDTO> {
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
+        jList1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jScrollPane1.setViewportView(jList1);
 
         jPanel4.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -491,7 +497,7 @@ public class UserConsumerView extends AbstractProcessView<UserDTO> {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList<UserDTO> jList1;
+    private javax.swing.JList<jsoftware.com.jblue.model.dto.UserDTO> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
@@ -533,12 +539,12 @@ public class UserConsumerView extends AbstractProcessView<UserDTO> {
     private javax.swing.JButton search_object;
     private javax.swing.JPanel search_panel;
     private javax.swing.JPanel status_bar_panel;
-    private javax.swing.JComboBox<StreetDTO> street_filter;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.StreetDTO> street_filter;
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     private javax.swing.JTextField user_name_field;
     private javax.swing.JComboBox<String> water_intake_field;
-    private javax.swing.JComboBox<WaterIntakeTypesDTO> water_intakes_filter;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO> water_intakes_filter;
     // End of variables declaration//GEN-END:variables
 
     @Override

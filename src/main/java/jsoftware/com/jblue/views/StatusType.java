@@ -58,6 +58,7 @@ public final class StatusType extends SimpleView {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
+        jTable1.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},

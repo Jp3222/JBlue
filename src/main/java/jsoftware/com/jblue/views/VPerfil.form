@@ -40,7 +40,7 @@
         <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Liberation Sans" size="14" style="1"/>
+              <Font name="Liberation Sans" size="14" style="0"/>
             </Property>
           </Properties>
           <Constraints>

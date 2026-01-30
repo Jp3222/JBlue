@@ -7,6 +7,9 @@ package jsoftware.com.jblue.views.proviews;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import jsoftware.com.jblue.controllers.compc.ComboBoxController;
+import jsoftware.com.jblue.model.dao.StreetDAO;
+import jsoftware.com.jblue.model.dao.WaterIntakeTypeDAO;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
@@ -14,6 +17,7 @@ import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
 import jsoftware.com.jblue.sys.SystemSession;
+import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
@@ -24,7 +28,7 @@ import jsoftware.com.jutil.util.Func;
  *
  * @author juanp
  */
-public class UserDataView extends AbstractProcessView<UserDocumentDTO> implements DBObjectValues<UserDTO> {
+public final class UserDataView extends AbstractProcessView<UserDocumentDTO> implements DBObjectValues<UserDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,6 +38,48 @@ public class UserDataView extends AbstractProcessView<UserDocumentDTO> implement
     public UserDataView(ProcessViewBuilder builder) {
         super(builder);
         initComponents();
+        build();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        initialState();
+        finalState();
+    }
+
+    @Override
+    public void components() {
+        super.components(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    @Override
+    public void events() {
+        StreetDAO street_dao = new StreetDAO(AppConfig.isDevMessages(), getProcessName());
+        WaterIntakeTypeDAO water_intake_dao = new WaterIntakeTypeDAO(AppConfig.isDevMessages(), getProcessName());
+        ComboBoxController<StreetDTO> street_1 = new ComboBoxController<>(street1_field, street_dao);
+        ComboBoxController<StreetDTO> street_2 = new ComboBoxController<>(street2_field, street_dao);
+        ComboBoxController<WaterIntakeTypesDTO> wki_type = new ComboBoxController<>(water_intakes_type_field, water_intake_dao);
+        comboBoxInit(street_1, street1_field.getItemCount() <= 0);
+        comboBoxInit(street_2, street2_field.getItemCount() <= 0);
+        comboBoxInit(wki_type, water_intakes_type_field.getItemCount() <= 0);
+    }
+
+    public void comboBoxInit(ComboBoxController<?> c, boolean empty) {
+        if (empty) {
+            c.loadData();
+        }
+    }
+
+    @Override
+    public void initialState() {
+        super.initialState(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    @Override
+    public void finalState() {
+        super.finalState(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
     /**
@@ -82,8 +128,8 @@ public class UserDataView extends AbstractProcessView<UserDocumentDTO> implement
         jLabel36 = new javax.swing.JLabel();
         p_born_date = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
-        date_birday_field = new javax.swing.JTextField();
         jLabel38 = new javax.swing.JLabel();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
         p_in_number = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         inside_number_field = new javax.swing.JTextField();
@@ -291,12 +337,13 @@ public class UserDataView extends AbstractProcessView<UserDocumentDTO> implement
         jLabel27.setPreferredSize(new java.awt.Dimension(150, 25));
         p_born_date.add(jLabel27, java.awt.BorderLayout.WEST);
 
-        date_birday_field.setName("Numero Exterior"); // NOI18N
-        p_born_date.add(date_birday_field, java.awt.BorderLayout.CENTER);
-
         jLabel38.setName("jLabel38"); // NOI18N
         jLabel38.setPreferredSize(new java.awt.Dimension(60, 30));
         p_born_date.add(jLabel38, java.awt.BorderLayout.LINE_END);
+
+        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        jFormattedTextField1.setName("jFormattedTextField1"); // NOI18N
+        p_born_date.add(jFormattedTextField1, java.awt.BorderLayout.CENTER);
 
         user_data_panel.add(p_born_date);
 
@@ -427,11 +474,11 @@ public class UserDataView extends AbstractProcessView<UserDocumentDTO> implement
     private javax.swing.JButton add_photo_button;
     private javax.swing.JPanel complement_data_panel;
     private javax.swing.JTextField curp_field;
-    private javax.swing.JTextField date_birday_field;
     private javax.swing.JTextField email_field;
     private javax.swing.JTextField first_name_field;
     private javax.swing.JComboBox<String> gender_field;
     private javax.swing.JTextField inside_number_field;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

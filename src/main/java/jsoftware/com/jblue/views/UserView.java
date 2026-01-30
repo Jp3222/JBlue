@@ -368,15 +368,19 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
         register_panel.setName("register"); // NOI18N
         register_panel.setLayout(new java.awt.BorderLayout());
 
+        jTabbedPane1.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
+
         user_data_panel.setPreferredSize(new java.awt.Dimension(500, 600));
         user_data_panel.setLayout(new java.awt.GridLayout(11, 1, 0, 10));
 
         p_user_type.setLayout(new java.awt.BorderLayout());
 
+        jLabel17.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel17.setText("Tipo de Usuario");
         jLabel17.setPreferredSize(new java.awt.Dimension(150, 30));
         p_user_type.add(jLabel17, java.awt.BorderLayout.LINE_START);
 
+        user_type_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         p_user_type.add(user_type_field, java.awt.BorderLayout.CENTER);
 
         jLabel18.setPreferredSize(new java.awt.Dimension(60, 30));
@@ -443,10 +447,12 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
 
         jPanel8.setLayout(new java.awt.BorderLayout());
 
+        jLabel25.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel25.setText("Genero");
         jLabel25.setPreferredSize(new java.awt.Dimension(150, 25));
         jPanel8.add(jLabel25, java.awt.BorderLayout.LINE_START);
 
+        gender_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         gender_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No. Definido", "Masculino.", "Femenino." }));
         gender_field.setName("Genero"); // NOI18N
         jPanel8.add(gender_field, java.awt.BorderLayout.CENTER);
@@ -561,6 +567,7 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
         p_date_update.add(man_estado1, java.awt.BorderLayout.EAST);
 
         date_last_update_field.setEditable(false);
+        date_last_update_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         date_last_update_field.setName("Fecha de Actualizacion"); // NOI18N
         p_date_update.add(date_last_update_field, java.awt.BorderLayout.CENTER);
 
@@ -582,6 +589,7 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
         p_date_register.add(man_estado2, java.awt.BorderLayout.EAST);
 
         date_register_field.setEditable(false);
+        date_register_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         date_register_field.setName("Fecha de Registro"); // NOI18N
         p_date_register.add(date_register_field, java.awt.BorderLayout.CENTER);
 

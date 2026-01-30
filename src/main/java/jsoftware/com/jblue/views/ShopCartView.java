@@ -311,6 +311,7 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         search_field_list.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jPanel6.add(search_field_list, java.awt.BorderLayout.CENTER);
 
+        count_elements_label.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         count_elements_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         count_elements_label.setText("0");
         count_elements_label.setPreferredSize(new java.awt.Dimension(100, 20));
@@ -575,13 +576,13 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         jPanel21.setOpaque(false);
         jPanel21.setLayout(new java.awt.BorderLayout(10, 0));
 
-        jLabel2.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel2.setText("Total: $");
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel21.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        total_field.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
+        total_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         total_field.setText("0.0");
         jPanel21.add(total_field, java.awt.BorderLayout.CENTER);
 
@@ -597,13 +598,13 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
         jPanel22.setOpaque(false);
         jPanel22.setLayout(new java.awt.BorderLayout(10, 0));
 
-        Jlabel1.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
+        Jlabel1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         Jlabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         Jlabel1.setText("Cambio: $");
         Jlabel1.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel22.add(Jlabel1, java.awt.BorderLayout.LINE_START);
 
-        cambio_field.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
+        cambio_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         cambio_field.setText("0.0");
         jPanel22.add(cambio_field, java.awt.BorderLayout.CENTER);
 
@@ -851,7 +852,7 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
     private javax.swing.JTextField type_toma_field;
     private javax.swing.JPanel user_info_panel;
     private javax.swing.JTextField user_type_field;
-    private javax.swing.JList<WaterIntakesDTO> users_list;
+    private javax.swing.JList<jsoftware.com.jblue.model.dto.WaterIntakesDTO> users_list;
     // End of variables declaration//GEN-END:variables
 
     @Override

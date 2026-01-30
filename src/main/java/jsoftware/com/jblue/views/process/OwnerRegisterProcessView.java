@@ -17,7 +17,8 @@
 package jsoftware.com.jblue.views.process;
 
 import java.awt.CardLayout;
-import jsoftware.com.jblue.model.dto.UserDTO;
+import javax.swing.JOptionPane;
+import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 import jsoftware.com.jblue.views.proviews.PaymentProcessView;
@@ -29,25 +30,41 @@ import jsoftware.com.jblue.views.proviews.WaterIntakeDataView;
  *
  * @author juanp
  */
-public final class OwnerRegisterProcessView extends AbstractProcessView<UserDTO> {
+public final class OwnerRegisterProcessView extends AbstractProcessView<ProcessWrapperDTO> {
 
     private static final long serialVersionUID = 1L;
 
+    // Arreglo polimórfico para gestión escalable de pasos
+    private final AbstractProcessView[] views;
+
+    // Sub-vistas (Componentes del Wizard)
     private final UserDataView user_view;
     private final ValidationProcessView validation_process_view;
     private final PaymentProcessView payment_concepts_view;
     private final WaterIntakeDataView water_intake_view;
+
+    private int current_view;
     private CardLayout ly;
 
-    /**
-     * Creates new form ProcessView
-     */
     public OwnerRegisterProcessView(ProcessViewBuilder builder) {
         super(builder);
+
+        // 1. Instanciación de sub-vistas compartiendo el builder (y el DTO)
         this.user_view = new UserDataView(builder);
         this.validation_process_view = new ValidationProcessView(builder);
         this.payment_concepts_view = new PaymentProcessView(builder);
         this.water_intake_view = new WaterIntakeDataView(builder);
+
+        // 2. Organización en arreglo para navegación polimórfica
+        this.views = new AbstractProcessView[]{
+            user_view,
+            validation_process_view,
+            payment_concepts_view,
+            water_intake_view
+        };
+
+        this.current_view = 0;
+
         initComponents();
         build();
     }
@@ -61,31 +78,106 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<UserDTO>
     }
 
     @Override
-    public void events() {
-        next_panel_button.addActionListener((e) -> {
-            ly.next(root_panel);
-        });
-        last_panel_button.addActionListener((e) -> {
-            ly.previous(root_panel);
-        });
+    public void components() {
+        this.ly = (CardLayout) root_panel.getLayout();
 
+        // Agregamos las vistas al CardLayout usando su nombre como identificador
+        for (AbstractProcessView view : views) {
+            this.root_panel.add(view, view.getName());
+        }
     }
 
     @Override
-    public void components() {
-        this.ly = (CardLayout) root_panel.getLayout();
-        this.root_panel.add(user_view, user_view.getName());
-        this.root_panel.add(validation_process_view, validation_process_view.getName());
-        this.root_panel.add(payment_concepts_view, payment_concepts_view.getName());
-        this.root_panel.add(water_intake_view, water_intake_view.getName());
+    public void events() {
+        // Evento SIGUIENTE / FINALIZAR
+        next_panel_button.addActionListener((e) -> {
+            // Recolectamos datos de la vista actual antes de movernos
+            getDataView();
+
+            if (current_view < views.length - 1) {
+                ly.next(root_panel);
+                current_view++;
+                updateNavigationUI();
+            } else {
+                // Si estamos en el último paso, disparamos el proceso de guardado
+                executeFinalSave();
+            }
+        });
+
+        // Evento REGRESAR
+        last_panel_button.addActionListener((e) -> {
+            if (current_view > 0) {
+                ly.previous(root_panel);
+                current_view--;
+                updateNavigationUI();
+            }
+        });
+
+        // Botón CANCELAR (search_object según tu initComponents)
+        save_process_button.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "¿Está seguro de cancelar el trámite actual? Se perderán los datos no guardados.",
+                    "Confirmar Cancelación", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                // Lógica para cerrar o resetear la vista
+                this.setVisible(false);
+            }
+        });
+    }
+
+    /**
+     * Sincroniza el estado de los botones con el paso actual del proceso.
+     */
+    private void updateNavigationUI() {
+        last_panel_button.setEnabled(current_view > 0);
+
+        if (current_view == views.length - 1) {
+            next_panel_button.setText("Finalizar Registro");
+        } else {
+            next_panel_button.setText("Siguiente");
+        }
+    }
+
+    /**
+     * Recolecta polimórficamente los datos de la vista activa.
+     */
+    @Override
+    public void getDataView() {
+        try {
+            if (current_view >= 0 && current_view < views.length) {
+                views[current_view].getDataView();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al capturar datos: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Método encargado de invocar al Service para persistir toda la
+     * información.
+     */
+    private void executeFinalSave() {
+        // 1. Aseguramos que todos los datos de todas las vistas estén en el DTO
+        for (AbstractProcessView v : views) {
+            v.getDataView();
+        }
+
+        // 2. Aquí llamarías a tu Service: userService.save(...)
+        JOptionPane.showMessageDialog(this, "Iniciando persistencia de datos en base de datos...");
     }
 
     @Override
     public void initialState() {
+        current_view = 0;
+        ly.first(root_panel);
+        updateNavigationUI();
     }
 
     @Override
     public void finalState() {
+        // Bloquear controles tras un guardado exitoso
+        next_panel_button.setEnabled(false);
+        last_panel_button.setEnabled(false);
     }
 
     /**
@@ -102,9 +194,9 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<UserDTO>
         last_panel_button = new javax.swing.JButton();
         next_panel_button = new javax.swing.JButton();
         np_cp_west = new javax.swing.JPanel();
-        search_object = new javax.swing.JButton();
+        cancel_process_button = new javax.swing.JButton();
         np_cp_east = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
+        save_process_button = new javax.swing.JButton();
         root_panel = new javax.swing.JPanel();
 
         setName("Registro de titular"); // NOI18N
@@ -133,19 +225,19 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<UserDTO>
         np_cp_west.setPreferredSize(new java.awt.Dimension(100, 30));
         np_cp_west.setLayout(new java.awt.BorderLayout());
 
-        search_object.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
-        search_object.setToolTipText("Cancelar Tramite");
-        search_object.setActionCommand("search_object");
-        np_cp_west.add(search_object, java.awt.BorderLayout.CENTER);
+        cancel_process_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
+        cancel_process_button.setToolTipText("Cancelar Tramite");
+        cancel_process_button.setActionCommand("search_object");
+        np_cp_west.add(cancel_process_button, java.awt.BorderLayout.CENTER);
 
         north_panel.add(np_cp_west, java.awt.BorderLayout.WEST);
 
         np_cp_east.setPreferredSize(new java.awt.Dimension(100, 30));
         np_cp_east.setLayout(new java.awt.BorderLayout());
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/configuraciones.png"))); // NOI18N
-        jButton3.setToolTipText("Guardar Informacion Actual");
-        np_cp_east.add(jButton3, java.awt.BorderLayout.CENTER);
+        save_process_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/configuraciones.png"))); // NOI18N
+        save_process_button.setToolTipText("Guardar Informacion Actual");
+        np_cp_east.add(save_process_button, java.awt.BorderLayout.CENTER);
 
         north_panel.add(np_cp_east, java.awt.BorderLayout.EAST);
 
@@ -157,7 +249,7 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<UserDTO>
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton cancel_process_button;
     private javax.swing.JButton last_panel_button;
     private javax.swing.JButton next_panel_button;
     private javax.swing.JPanel north_panel;
@@ -165,11 +257,7 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<UserDTO>
     private javax.swing.JPanel np_cp_east;
     private javax.swing.JPanel np_cp_west;
     private javax.swing.JPanel root_panel;
-    private javax.swing.JButton search_object;
+    private javax.swing.JButton save_process_button;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void getDataView() {
-
-    }
 }

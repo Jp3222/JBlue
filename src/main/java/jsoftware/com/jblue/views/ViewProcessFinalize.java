@@ -39,11 +39,13 @@ public class ViewProcessFinalize extends javax.swing.JPanel {
         jPanel1.setPreferredSize(new java.awt.Dimension(300, 300));
         jPanel1.setLayout(new java.awt.GridLayout(15, 0));
 
+        jButton1.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/Bundle"); // NOI18N
         jButton1.setText(bundle.getString("ViewProcessFinalize.jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
         jPanel1.add(jButton1);
 
+        jButton2.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jButton2.setText(bundle.getString("ViewProcessFinalize.jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
         jPanel1.add(jButton2);
@@ -52,6 +54,7 @@ public class ViewProcessFinalize extends javax.swing.JPanel {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
+        jTable1.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},

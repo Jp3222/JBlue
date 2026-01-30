@@ -172,6 +172,11 @@
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
           <SubComponents>
             <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Noto Sans" size="14" style="0"/>
+                </Property>
+              </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                   <BorderConstraints direction="Center"/>
@@ -206,6 +211,9 @@
                       <SubComponents>
                         <Component class="javax.swing.JLabel" name="jLabel17">
                           <Properties>
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                              <Font name="Liberation Sans" size="14" style="0"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="Tipo de Usuario"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[150, 30]"/>
@@ -219,6 +227,9 @@
                         </Component>
                         <Component class="javax.swing.JComboBox" name="user_type_field">
                           <Properties>
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                              <Font name="Liberation Sans" size="14" style="0"/>
+                            </Property>
                             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                               <StringArray count="0"/>
                             </Property>
@@ -418,6 +429,9 @@
                       <SubComponents>
                         <Component class="javax.swing.JLabel" name="jLabel25">
                           <Properties>
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                              <Font name="Liberation Sans" size="14" style="0"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="Genero"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[150, 25]"/>
@@ -431,6 +445,9 @@
                         </Component>
                         <Component class="javax.swing.JComboBox" name="gender_field">
                           <Properties>
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                              <Font name="Liberation Sans" size="14" style="0"/>
+                            </Property>
                             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                               <StringArray count="3">
                                 <StringItem index="0" value="No. Definido"/>
@@ -775,6 +792,9 @@
                         <Component class="javax.swing.JTextField" name="date_last_update_field">
                           <Properties>
                             <Property name="editable" type="boolean" value="false"/>
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                              <Font name="Liberation Sans" size="14" style="0"/>
+                            </Property>
                             <Property name="name" type="java.lang.String" value="Fecha de Actualizacion" noResource="true"/>
                           </Properties>
                           <Constraints>
@@ -831,6 +851,9 @@
                         <Component class="javax.swing.JTextField" name="date_register_field">
                           <Properties>
                             <Property name="editable" type="boolean" value="false"/>
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                              <Font name="Liberation Sans" size="14" style="0"/>
+                            </Property>
                             <Property name="name" type="java.lang.String" value="Fecha de Registro" noResource="true"/>
                           </Properties>
                           <Constraints>

@@ -116,7 +116,7 @@ public final class VPerfil extends SimpleView {
         register_panel.setName("register"); // NOI18N
         register_panel.setLayout(new java.awt.BorderLayout());
 
-        jTabbedPane1.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        jTabbedPane1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
 
         user_data_panel.setPreferredSize(new java.awt.Dimension(500, 600));
         user_data_panel.setLayout(new java.awt.GridLayout(11, 1, 0, 10));

@@ -9,27 +9,91 @@ import java.util.Objects;
 import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
+ * Objeto de transferencia de datos envolvente (Wrapper) para procesos
+ * transaccionales en JBlue.
+ * <p>
+ * Centraliza todas las entidades necesarias para completar un flujo de trabajo
+ * (como el alta de una toma o registro de titular), permitiendo la comparación
+ * de estados (old vs new) y la gestión de pagos vinculados.
+ * </p>
  *
- * @author juanp
+ * @author JUAN PABLO CAMPOS CASASANERO
+ * @version 1.2
+ * @since 2026/02/01
  */
 public class ProcessWrapperDTO extends JDBMapObject {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * DTO con los datos del empleado actual en el sistema
+     */
     private EmployeeDTO current_employee;
+
+    /**
+     * DTO con los datos actuales del usuario
+     */
     private UserDTO user;
+
+    /**
+     * lista de DTOs con los docuemtos del identidad del usuario
+     */
     private List<UserDocumentDTO> user_document_list;
-    private WaterIntakeTypesDTO water_intake_type;
-    private WaterIntakesDTO water_intake;
+
+    /**
+     * Tipo de toma del usuario
+     */
+    private WaterIntakeTypeDTO water_intake_type;
+
+    /**
+     * DTO con los datos de la toma de agua potable del usuario
+     */
+    private WaterIntakeDTO water_intake;
+
+    /**
+     * Cabezera o pago total del tramite
+     */
     private PaymentDTO payment;
+
+    /**
+     * Lista de pagos o Pago total desglosado
+     */
     private List<PaymentListDTO> payment_concept_list;
 
-    /**/
+    /**
+     * DTO con datos anteriores en caso de que el usuario ya extista o se
+     * requiera una actualizacion
+     */
     private UserDTO user_copy;
-    private WaterIntakesDTO water_intake_copy;
+
+    /**
+     * DTO con datos anteriores en caso de que la toma de agua potable ya
+     * extista o se requiera una actualizacion
+     */
+    private WaterIntakeDTO water_intake_copy;
+
+    /**
+     * bandera para indicar que los dato de usuario son validos
+     */
+    private boolean user_valid;
+
+    /**
+     * bandera para inidicar que los datos de la toma de agua son validos
+     */
+    private boolean water_intake_valid;
+
+    /**
+     * bandera para indicar que los datos de pago son validos
+     */
+    private boolean payment_valid;
+
+    /**
+     * bandera para indicar que los documentos guardados son validos
+     */
+    private boolean document_list_valid;
 
     public ProcessWrapperDTO(EmployeeDTO employee) {
-        this.current_employee = new EmployeeDTO();
+        this.current_employee = employee;
     }
 
     public EmployeeDTO getCurrent_employee() {
@@ -56,19 +120,19 @@ public class ProcessWrapperDTO extends JDBMapObject {
         this.user_document_list = user_document_list;
     }
 
-    public WaterIntakeTypesDTO getWater_intake_type() {
+    public WaterIntakeTypeDTO getWater_intake_type() {
         return water_intake_type;
     }
 
-    public void setWater_intake_type(WaterIntakeTypesDTO water_intake_type) {
+    public void setWater_intake_type(WaterIntakeTypeDTO water_intake_type) {
         this.water_intake_type = water_intake_type;
     }
 
-    public WaterIntakesDTO getWater_intake() {
+    public WaterIntakeDTO getWater_intake() {
         return water_intake;
     }
 
-    public void setWater_intake(WaterIntakesDTO water_intake) {
+    public void setWater_intake(WaterIntakeDTO water_intake) {
         this.water_intake = water_intake;
     }
 
@@ -96,11 +160,11 @@ public class ProcessWrapperDTO extends JDBMapObject {
         this.user_copy = user_copy;
     }
 
-    public WaterIntakesDTO getWater_intake_copy() {
+    public WaterIntakeDTO getWater_intake_copy() {
         return water_intake_copy;
     }
 
-    public void setWater_intake_copy(WaterIntakesDTO water_intake_copy) {
+    public void setWater_intake_copy(WaterIntakeDTO water_intake_copy) {
         this.water_intake_copy = water_intake_copy;
     }
 
@@ -156,6 +220,38 @@ public class ProcessWrapperDTO extends JDBMapObject {
             return false;
         }
         return Objects.equals(this.water_intake_copy, other.water_intake_copy);
+    }
+
+    public boolean isUser_valid() {
+        return user_valid;
+    }
+
+    public void setUser_valid(boolean user_valid) {
+        this.user_valid = user_valid;
+    }
+
+    public boolean isWater_intake_valid() {
+        return water_intake_valid;
+    }
+
+    public void setWater_intake_valid(boolean water_intake_valid) {
+        this.water_intake_valid = water_intake_valid;
+    }
+
+    public boolean isPayment_valid() {
+        return payment_valid;
+    }
+
+    public void setPayment_valid(boolean payment_valid) {
+        this.payment_valid = payment_valid;
+    }
+
+    public boolean isDocument_list_valid() {
+        return document_list_valid;
+    }
+
+    public void setDocument_list_valid(boolean document_list_valid) {
+        this.document_list_valid = document_list_valid;
     }
 
 }

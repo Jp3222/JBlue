@@ -16,6 +16,8 @@
  */
 package jsoftware.com.jblue.util.plataformas;
 
+import jsoftware.com.jutil.platf.So;
+
 /**
  *
  * @author juan pablo campos casasanero
@@ -23,7 +25,19 @@ package jsoftware.com.jblue.util.plataformas;
 public class Windows extends OsConfig {
 
     public Windows() {
-
+        // Rutas específicas con el separador de Windows
+        this.documents_path = new String[]{
+            So.USER_HOME + "\\OneDrive\\Documents",
+            So.USER_HOME + "\\OneDrive\\Documentos",
+            So.USER_HOME + "\\Documents",
+            So.USER_HOME + "\\Documentos"
+        };
+        this.desktop_path = new String[]{
+            So.USER_HOME + "\\OneDrive\\Desktop",
+            So.USER_HOME + "\\OneDrive\\Escritorio",
+            So.USER_HOME + "\\Desktop",
+            So.USER_HOME + "\\Escritorio"
+        };
     }
 
 }

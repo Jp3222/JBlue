@@ -14,23 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jsoftware.com.jblue.model.wrappers;
-
-import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
+package jsoftware.com.jblue.sys;
 
 /**
  *
  * @author juanp
  */
-public class NewUserRegistration {
-    
-    private UserDTO user;
-    private WaterIntakesDTO water_intake;
+public class SystemConsts {
 
-    public NewUserRegistration(UserDTO user, WaterIntakesDTO water_intake) {
-        this.user = user;
-        this.water_intake = water_intake;
-    }
-    
+    public static final String DATA_BASE_KEY = "connection";
+    public static final String USER_DIR_FILE = "users-files";
+    public static final String SYSTEM_DATE = "users-files";
+    public static final String DB_DATE = "users-files";
 }

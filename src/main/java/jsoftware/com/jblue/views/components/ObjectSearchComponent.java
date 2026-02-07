@@ -30,7 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.framework.ListSearchViewModel;
@@ -59,8 +59,8 @@ public final class ObjectSearchComponent<T extends JDBMapObject> extends JDialog
         return o.getObjectSearch();
     }
 
-    public static WaterIntakeTypesDTO getWaterIntakeType(JFrame padre) {
-        ObjectSearchComponent<WaterIntakeTypesDTO> o = new ObjectSearchComponent<>(padre, true, CacheFactory.WATER_INTAKES_TYPES);
+    public static WaterIntakeTypeDTO getWaterIntakeType(JFrame padre) {
+        ObjectSearchComponent<WaterIntakeTypeDTO> o = new ObjectSearchComponent<>(padre, true, CacheFactory.WATER_INTAKES_TYPES);
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;

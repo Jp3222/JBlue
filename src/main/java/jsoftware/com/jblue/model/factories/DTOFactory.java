@@ -11,8 +11,8 @@ import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.dto.PaymentDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
@@ -25,8 +25,8 @@ public class DTOFactory {
 
     public static void init() {
         map.put(UserDTO.class.getName(), () -> new UserDTO());
-        map.put(WaterIntakesDTO.class.getName(), () -> new WaterIntakesDTO());
-        map.put(WaterIntakeTypesDTO.class.getName(), () -> new WaterIntakesDTO());
+        map.put(WaterIntakeDTO.class.getName(), () -> new WaterIntakeDTO());
+        map.put(WaterIntakeTypeDTO.class.getName(), () -> new WaterIntakeDTO());
         map.put(StreetDTO.class.getName(), () -> new StreetDTO());
         map.put(EmployeeDTO.class.getName(), () -> new EmployeeDTO());
         map.put(PaymentDTO.class.getName(), () -> new PaymentDTO());

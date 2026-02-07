@@ -75,6 +75,10 @@ public class Formats {
         }
         return time.format(DateTimeFormatter.ISO_DATE);
     }
+    
+    public static String geDBInputFormat(String o){
+        return o.trim().replace(" ", "_").toUpperCase();
+    }
 
     public static String[] getDBFormatInputArray(String... args) {
         String a;

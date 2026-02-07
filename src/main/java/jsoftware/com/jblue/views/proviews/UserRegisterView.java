@@ -4,6 +4,9 @@
  */
 package jsoftware.com.jblue.views.proviews;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -15,27 +18,30 @@ import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
+import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.util.Filters;
+import jsoftware.com.jblue.util.Formats;
+import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
-import jsoftware.com.jutil.util.Func;
+import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  *
  * @author juanp
  */
-public final class UserDataView extends AbstractProcessView<UserDocumentDTO> implements DBObjectValues<UserDTO> {
+public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO> implements DBObjectValues<UserDTO> {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form UserDataView
      */
-    public UserDataView(ProcessViewBuilder builder) {
+    public UserRegisterView(ProcessViewBuilder builder) {
         super(builder);
         initComponents();
         build();
@@ -56,11 +62,11 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
 
     @Override
     public void events() {
-        StreetDAO street_dao = new StreetDAO(AppConfig.isDevMessages(), getProcessName());
-        WaterIntakeTypeDAO water_intake_dao = new WaterIntakeTypeDAO(AppConfig.isDevMessages(), getProcessName());
+        StreetDAO street_dao = new StreetDAO(AppConfig.isDevMessages(), getProcessTypeName());
+        WaterIntakeTypeDAO water_intake_dao = new WaterIntakeTypeDAO(AppConfig.isDevMessages(), getProcessTypeName());
         ComboBoxController<StreetDTO> street_1 = new ComboBoxController<>(street1_field, street_dao);
         ComboBoxController<StreetDTO> street_2 = new ComboBoxController<>(street2_field, street_dao);
-        ComboBoxController<WaterIntakeTypesDTO> wki_type = new ComboBoxController<>(water_intakes_type_field, water_intake_dao);
+        ComboBoxController<WaterIntakeTypeDTO> wki_type = new ComboBoxController<>(water_intakes_type_field, water_intake_dao);
         comboBoxInit(street_1, street1_field.getItemCount() <= 0);
         comboBoxInit(street_2, street2_field.getItemCount() <= 0);
         comboBoxInit(wki_type, water_intakes_type_field.getItemCount() <= 0);
@@ -172,7 +178,7 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         p_curp.setLayout(new java.awt.BorderLayout());
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/proviews/Bundle"); // NOI18N
-        jLabel22.setText(bundle.getString("UserDataView.jLabel22.text")); // NOI18N
+        jLabel22.setText(bundle.getString("UserRegisterView.jLabel22.text")); // NOI18N
         jLabel22.setName("jLabel22"); // NOI18N
         jLabel22.setPreferredSize(new java.awt.Dimension(150, 25));
         p_curp.add(jLabel22, java.awt.BorderLayout.WEST);
@@ -190,14 +196,14 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         pc_nombre.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel2.setText(bundle.getString("UserDataView.jLabel2.text")); // NOI18N
+        jLabel2.setText(bundle.getString("UserRegisterView.jLabel2.text")); // NOI18N
         jLabel2.setMaximumSize(new java.awt.Dimension(60, 20));
         jLabel2.setName("jLabel2"); // NOI18N
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_nombre.add(jLabel2, java.awt.BorderLayout.WEST);
 
         first_name_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        first_name_field.setToolTipText(bundle.getString("UserDataView.first_name_field.toolTipText")); // NOI18N
+        first_name_field.setToolTipText(bundle.getString("UserRegisterView.first_name_field.toolTipText")); // NOI18N
         first_name_field.setName("Nombre"); // NOI18N
         first_name_field.setPreferredSize(new java.awt.Dimension(100, 30));
         pc_nombre.add(first_name_field, java.awt.BorderLayout.CENTER);
@@ -213,13 +219,13 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         pc_ap.setLayout(new java.awt.BorderLayout());
 
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel3.setText(bundle.getString("UserDataView.jLabel3.text")); // NOI18N
+        jLabel3.setText(bundle.getString("UserRegisterView.jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
         jLabel3.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_ap.add(jLabel3, java.awt.BorderLayout.WEST);
 
         last_name1_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        last_name1_field.setToolTipText(bundle.getString("UserDataView.last_name1_field.toolTipText")); // NOI18N
+        last_name1_field.setToolTipText(bundle.getString("UserRegisterView.last_name1_field.toolTipText")); // NOI18N
         last_name1_field.setName("A. Paterno"); // NOI18N
         last_name1_field.setPreferredSize(new java.awt.Dimension(100, 30));
         pc_ap.add(last_name1_field, java.awt.BorderLayout.CENTER);
@@ -235,13 +241,13 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         pc_am.setLayout(new java.awt.BorderLayout());
 
         jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel4.setText(bundle.getString("UserDataView.jLabel4.text")); // NOI18N
+        jLabel4.setText(bundle.getString("UserRegisterView.jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
         jLabel4.setPreferredSize(new java.awt.Dimension(150, 25));
         pc_am.add(jLabel4, java.awt.BorderLayout.WEST);
 
         last_name2_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        last_name2_field.setToolTipText(bundle.getString("UserDataView.last_name2_field.toolTipText")); // NOI18N
+        last_name2_field.setToolTipText(bundle.getString("UserRegisterView.last_name2_field.toolTipText")); // NOI18N
         last_name2_field.setName("A. Materno"); // NOI18N
         last_name2_field.setPreferredSize(new java.awt.Dimension(100, 30));
         pc_am.add(last_name2_field, java.awt.BorderLayout.CENTER);
@@ -255,7 +261,7 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         p_gender.setName("p_gender"); // NOI18N
         p_gender.setLayout(new java.awt.BorderLayout());
 
-        jLabel25.setText(bundle.getString("UserDataView.jLabel25.text")); // NOI18N
+        jLabel25.setText(bundle.getString("UserRegisterView.jLabel25.text")); // NOI18N
         jLabel25.setName("jLabel25"); // NOI18N
         jLabel25.setPreferredSize(new java.awt.Dimension(150, 25));
         p_gender.add(jLabel25, java.awt.BorderLayout.LINE_START);
@@ -275,7 +281,7 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         p_water_intake_type.setLayout(new java.awt.BorderLayout());
 
         jLabel5.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel5.setText(bundle.getString("UserDataView.jLabel5.text")); // NOI18N
+        jLabel5.setText(bundle.getString("UserRegisterView.jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 25));
         p_water_intake_type.add(jLabel5, java.awt.BorderLayout.WEST);
@@ -296,7 +302,7 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         p_street1.setLayout(new java.awt.BorderLayout());
 
         jLabel6.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel6.setText(bundle.getString("UserDataView.jLabel6.text")); // NOI18N
+        jLabel6.setText(bundle.getString("UserRegisterView.jLabel6.text")); // NOI18N
         jLabel6.setName("jLabel6"); // NOI18N
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 25));
         p_street1.add(jLabel6, java.awt.BorderLayout.WEST);
@@ -315,7 +321,7 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         p_street2.setName("p_street2"); // NOI18N
         p_street2.setLayout(new java.awt.BorderLayout());
 
-        jLabel20.setText(bundle.getString("UserDataView.jLabel20.text")); // NOI18N
+        jLabel20.setText(bundle.getString("UserRegisterView.jLabel20.text")); // NOI18N
         jLabel20.setName("jLabel20"); // NOI18N
         jLabel20.setPreferredSize(new java.awt.Dimension(150, 25));
         p_street2.add(jLabel20, java.awt.BorderLayout.WEST);
@@ -332,7 +338,7 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         p_born_date.setName("p_born_date"); // NOI18N
         p_born_date.setLayout(new java.awt.BorderLayout());
 
-        jLabel27.setText(bundle.getString("UserDataView.jLabel27.text")); // NOI18N
+        jLabel27.setText(bundle.getString("UserRegisterView.jLabel27.text")); // NOI18N
         jLabel27.setName("jLabel27"); // NOI18N
         jLabel27.setPreferredSize(new java.awt.Dimension(150, 25));
         p_born_date.add(jLabel27, java.awt.BorderLayout.WEST);
@@ -352,13 +358,13 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         p_in_number.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel1.setText(bundle.getString("UserDataView.jLabel1.text")); // NOI18N
+        jLabel1.setText(bundle.getString("UserRegisterView.jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
         jLabel1.setPreferredSize(new java.awt.Dimension(150, 25));
         p_in_number.add(jLabel1, java.awt.BorderLayout.WEST);
 
         inside_number_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        inside_number_field.setToolTipText(bundle.getString("UserDataView.inside_number_field.toolTipText")); // NOI18N
+        inside_number_field.setToolTipText(bundle.getString("UserRegisterView.inside_number_field.toolTipText")); // NOI18N
         inside_number_field.setName("Numero Interior"); // NOI18N
         inside_number_field.setPreferredSize(new java.awt.Dimension(100, 30));
         p_in_number.add(inside_number_field, java.awt.BorderLayout.CENTER);
@@ -372,7 +378,7 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         p_out_number.setName("p_out_number"); // NOI18N
         p_out_number.setLayout(new java.awt.BorderLayout());
 
-        jLabel21.setText(bundle.getString("UserDataView.jLabel21.text")); // NOI18N
+        jLabel21.setText(bundle.getString("UserRegisterView.jLabel21.text")); // NOI18N
         jLabel21.setName("jLabel21"); // NOI18N
         jLabel21.setPreferredSize(new java.awt.Dimension(150, 25));
         p_out_number.add(jLabel21, java.awt.BorderLayout.WEST);
@@ -386,7 +392,7 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
 
         user_data_panel.add(p_out_number);
 
-        jTabbedPane1.addTab(bundle.getString("UserDataView.user_data_panel.TabConstraints.tabTitle"), user_data_panel); // NOI18N
+        jTabbedPane1.addTab(bundle.getString("UserRegisterView.user_data_panel.TabConstraints.tabTitle"), user_data_panel); // NOI18N
 
         complement_data_panel.setName("complement_data_panel"); // NOI18N
         complement_data_panel.setLayout(new java.awt.GridLayout(11, 1, 10, 10));
@@ -394,7 +400,7 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         jPanel2.setName("jPanel2"); // NOI18N
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jLabel11.setText(bundle.getString("UserDataView.jLabel11.text")); // NOI18N
+        jLabel11.setText(bundle.getString("UserRegisterView.jLabel11.text")); // NOI18N
         jLabel11.setName("jLabel11"); // NOI18N
         jLabel11.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel2.add(jLabel11, java.awt.BorderLayout.WEST);
@@ -411,7 +417,7 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         jPanel3.setName("jPanel3"); // NOI18N
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        jLabel14.setText(bundle.getString("UserDataView.jLabel14.text")); // NOI18N
+        jLabel14.setText(bundle.getString("UserRegisterView.jLabel14.text")); // NOI18N
         jLabel14.setName("jLabel14"); // NOI18N
         jLabel14.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel3.add(jLabel14, java.awt.BorderLayout.WEST);
@@ -428,7 +434,7 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         jPanel4.setName("jPanel4"); // NOI18N
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        jLabel19.setText(bundle.getString("UserDataView.jLabel19.text")); // NOI18N
+        jLabel19.setText(bundle.getString("UserRegisterView.jLabel19.text")); // NOI18N
         jLabel19.setName("jLabel19"); // NOI18N
         jLabel19.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel4.add(jLabel19, java.awt.BorderLayout.WEST);
@@ -446,8 +452,8 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         add_photo_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/agregar-archivo.png"))); // NOI18N
-        add_photo_button.setText(bundle.getString("UserDataView.add_photo_button.text")); // NOI18N
-        add_photo_button.setActionCommand(bundle.getString("UserDataView.add_photo_button.actionCommand")); // NOI18N
+        add_photo_button.setText(bundle.getString("UserRegisterView.add_photo_button.text")); // NOI18N
+        add_photo_button.setActionCommand(bundle.getString("UserRegisterView.add_photo_button.actionCommand")); // NOI18N
         add_photo_button.setName("add_photo_button"); // NOI18N
         jPanel1.add(add_photo_button, java.awt.BorderLayout.CENTER);
 
@@ -455,14 +461,14 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
         jLabel39.setPreferredSize(new java.awt.Dimension(60, 30));
         jPanel1.add(jLabel39, java.awt.BorderLayout.LINE_END);
 
-        jLabel40.setText(bundle.getString("UserDataView.jLabel40.text")); // NOI18N
+        jLabel40.setText(bundle.getString("UserRegisterView.jLabel40.text")); // NOI18N
         jLabel40.setName("jLabel40"); // NOI18N
         jLabel40.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel1.add(jLabel40, java.awt.BorderLayout.WEST);
 
         complement_data_panel.add(jPanel1);
 
-        jTabbedPane1.addTab(bundle.getString("UserDataView.complement_data_panel.TabConstraints.tabTitle"), complement_data_panel); // NOI18N
+        jTabbedPane1.addTab(bundle.getString("UserRegisterView.complement_data_panel.TabConstraints.tabTitle"), complement_data_panel); // NOI18N
 
         register_panel.add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
@@ -534,7 +540,7 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
     private javax.swing.JComboBox<StreetDTO> street1_field;
     private javax.swing.JComboBox<StreetDTO> street2_field;
     private javax.swing.JPanel user_data_panel;
-    private javax.swing.JComboBox<WaterIntakeTypesDTO> water_intakes_type_field;
+    private javax.swing.JComboBox<WaterIntakeTypeDTO> water_intakes_type_field;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -554,66 +560,92 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
 
     @Override
     public boolean isValuesOK() {
-        boolean res = false;
+        boolean res = true; // Empezamos asumiendo que es válido
         String msg = "EL CAMPO %s NO ES VALIDO";
+        String field_error = "";
+        // --- Validar Textos ---
         JTextField[] field = {
+            curp_field,
             first_name_field,
             last_name1_field,
-            last_name2_field,
-            curp_field
+            last_name2_field
+
         };
         for (JTextField i : field) {
             if (Filters.isNullOrBlank(i.getText())) {
-                msg = msg.formatted(i.getName());
-                res = true;
+                field_error = i.getName();
+                res = false; // Marcamos como inválido
                 break;
             }
         }
-        JComboBox[] field2 = {
-            gender_field,
-            street1_field,
-            water_intakes_type_field
-
-        };
-        for (JComboBox i : field2) {
-            if (Filters.isValidComboBox(i)) {
-                msg = msg.formatted(i.getName());
-                res = true;
-                break;
-            }
-        }
+        // --- Validar Combos (solo si los textos pasaron) ---
         if (res) {
-            JOptionPane.showMessageDialog(this, msg);
+            JComboBox[] field2 = {
+                gender_field,
+                street1_field,
+                water_intakes_type_field
+            };
+            for (JComboBox i : field2) {
+                // Asumo que isValidComboBox devuelve FALSE si no hay selección válida
+                if (!Filters.isValidComboBox(i)) {
+                    field_error = i.getName();
+                    res = false;
+                    break;
+                }
+            }
         }
+        // --- Respuesta al usuario ---
+        if (!res) {
+            JOptionPane.showMessageDialog(this, msg.formatted(field_error));
+        }
+        // Guardamos el estado real en el Wrapper
+        getProcessWrapper().setUser_valid(res);
         return res;
     }
 
     @Override
     public UserDTO getValues(boolean update) {
-        UserDTO user = new UserDTO();
-        Func.putIfNotNull(user.getMap(), "first_name", first_name_field.getText());
-        Func.putIfNotNull(user.getMap(), "last_name1", last_name1_field.getText());
-        Func.putIfNotNull(user.getMap(), "last_name2", last_name2_field.getText());
-        Func.putIfNotNull(user.getMap(), "curp", curp_field.getText());
-        Func.putIfNotNull(user.getMap(), "user_type", getUserType(getProcessId()));
-        Func.putIfNotNull(user.getMap(), "gender", gender_field.getSelectedIndex());
-        Func.putIfNotNull(user.getMap(), "water_intake_type", water_intakes_type_field.getItemAt(water_intakes_type_field.getSelectedIndex()).getId());
-        Func.putIfNotNull(user.getMap(), "street1", street1_field.getItemAt(street1_field.getSelectedIndex()).getId());
-        int street2_select = street2_field.getSelectedIndex();
-        String s2 = null;
-        if (street2_select > 0) {
-            s2 = street2_field.getItemAt(street2_select).getId();
+        Map<String, Object> map = new HashMap<>();
+        UserDTO dto = new UserDTO();
+        try {
+            // Obtenemos los valores actuales de los campos de texto
+            String curp = Formats.geDBInputFormat(curp_field.getText());
+            String firstName = Formats.geDBInputFormat(first_name_field.getText());
+            String lastName1 = Formats.geDBInputFormat(last_name1_field.getText());
+            String lastName2 = Formats.geDBInputFormat(last_name2_field.getText());
+            String email = Formats.geDBInputFormat(email_field.getText());
+            String number_phone1 = Formats.geDBInputFormat(phone_number1_field.getText());
+            String number_phone2 = Formats.geDBInputFormat(phone_number2_field.getText());
+            String gender = String.valueOf(gender_field.getSelectedIndex());
+            String water_intake_type = water_intakes_type_field.getItemAt(water_intakes_type_field.getSelectedIndex()).getId();
+            String street1 = street1_field.getItemAt(street1_field.getSelectedIndex()).getId();
+            String street2 = street2_field.getItemAt(street2_field.getSelectedIndex()).getId();
+            // --- LÓGICA PARA NUEVO REGISTRO ---
+            Func.putIfPresentAndNotBlank(map, "curp", curp);
+            Func.putIfPresentAndNotBlank(map, "first_name", firstName);
+            Func.putIfPresentAndNotBlank(map, "last_name1", lastName1);
+            Func.putIfPresentAndNotBlank(map, "last_name2", lastName2);
+            Func.putIfNotNull(map, "gender", gender);
+            Func.putIfNotNull(map, "water_intake_type", water_intake_type);
+            Func.putIfNotNull(map, "street1", street1);
+            if (Func.isNotNull(email)) {
+                Func.putIfPresentAndNotBlank(map, "email", email);
+            }
+            if (Func.isNotNull(number_phone1)) {
+                Func.putIfPresentAndNotBlank(map, "number_phone1", number_phone1);
+            }
+            if (Func.isNotNull(number_phone2)) {
+                Func.putIfPresentAndNotBlank(map, "number_phone2", number_phone2);
+            }
+            if (Func.isNotNull(street2)) {
+                Func.putIfNotNull(map, "street2", street2);
+            }
+
+        } catch (Exception e) {
+            log(e, "getValues");
         }
-        Func.putIfNotNull(user.getMap(), "street2", s2);
-        Func.putIfNotNull(user.getMap(), "", "");
-        Func.putIfNotNull(user.getMap(), "", "");
-        Func.putIfNotNull(user.getMap(), "", "");
-        Func.putIfNotNull(user.getMap(), "", "");
-        Func.putIfNotNull(user.getMap(), "", "");
-        Func.putIfNotNull(user.getMap(), "", "");
-        Func.putIfNotNull(user.getMap(), "", "");
-        Func.putIfNotNull(user.getMap(), "", "");
-        return user;
+        dto.setMap(map);
+        return dto;
     }
 
     public String getUserType(String process) {
@@ -628,4 +660,13 @@ public final class UserDataView extends AbstractProcessView<UserDocumentDTO> imp
                 yield "1";
         };
     }
+
+    public void log(Exception e, String method_name) {
+        try {
+            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, getProcessTypeName(), method_name, e.getMessage());
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
+    }
+
 }

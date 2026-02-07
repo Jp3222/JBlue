@@ -5,6 +5,7 @@
 package jsoftware.com.jblue.model.dao;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import jsoftware.com.jblue.model.dto.UserDocumentDTO;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -24,7 +25,20 @@ public class UserDocumentDAO extends AbstractDAO {
     }
     public final String INSERT = "INSERT INTO usr_user_document(user, document_name, document_path, doc_file) VALUES(?,?,?,?)";
 
-    public boolean insert(JDBConnection connection, List<UserDocumentDTO> doc_list) {
+    /**
+     * Inserta una lista de documentos de identidad mediante procesamiento por
+     * lotes (Batch).
+     * <p>
+     * Optimiza la persistencia de archivos binarios (BLOB) y rutas de servidor,
+     * vinculando cada documento al ID de usuario proporcionado.
+     * </p>
+     *
+     * @param connection Conexión transaccional activa.
+     * @param doc_list Lista de documentos capturados en el proceso de registro.
+     * @return true si el número de registros insertados coincide con el tamaño
+     * de la lista.
+     */
+    public boolean insert(JDBConnection connection, List<UserDocumentDTO> doc_list) throws SQLException, Exception{
         boolean res = false;
         try (PreparedStatement ps = connection.getNewPreparedStatement(INSERT)) {
             for (UserDocumentDTO i : doc_list) {
@@ -46,8 +60,10 @@ public class UserDocumentDAO extends AbstractDAO {
             // Ejecuta todos los registros juntos
             int[] resultados = ps.executeBatch();
             res = resultados.length == doc_list.size();
+        } catch (SQLException e) {
+            throw e;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return res;
     }

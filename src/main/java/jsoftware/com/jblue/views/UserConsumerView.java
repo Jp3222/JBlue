@@ -544,7 +544,7 @@ public class UserConsumerView extends AbstractProcessView<UserDTO> {
     private javax.swing.JButton update_button;
     private javax.swing.JTextField user_name_field;
     private javax.swing.JComboBox<String> water_intake_field;
-    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO> water_intakes_filter;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO> water_intakes_filter;
     // End of variables declaration//GEN-END:variables
 
     @Override

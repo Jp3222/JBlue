@@ -4,19 +4,13 @@
  */
 package jsoftware.com.jblue.views.framework;
 
-import java.io.Serializable;
-
 /**
  *
  * @author juanp
  */
-public interface ProcessViewModel extends Serializable {
+public interface WarningModel {
 
-    public void setProcessTypeName(String module_name);
+    public void warning();
 
-    public String getProcessTypeName();
-
-    public void setProcess(boolean flag);
-
-    public boolean isProcess();
+    public void notification();
 }

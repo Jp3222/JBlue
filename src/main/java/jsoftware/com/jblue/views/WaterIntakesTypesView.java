@@ -19,7 +19,7 @@ package jsoftware.com.jblue.views;
 import java.awt.CardLayout;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -28,7 +28,7 @@ import jsoftware.com.jblue.controllers.FactoryController;
 import jsoftware.com.jblue.controllers.compc.TableController;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.WaterIntakeTypeDAO;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.util.Formats;
@@ -36,20 +36,19 @@ import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.DBView;
 import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
-import jsoftware.com.jutil.util.Func;
 
 /**
  *
  * @author juan pablo campos casasanero
  */
-public final class WaterIntakesTypesView extends DBView<WaterIntakeTypesDTO> implements DBObjectValues<WaterIntakeTypesDTO> {
+public final class WaterIntakesTypesView extends DBView<WaterIntakeTypeDTO> implements DBObjectValues<WaterIntakeTypeDTO> {
 
     private static final long serialVersionUID = 1L;
 
     private final CardLayout ly;
     private final JTableModel model;
-    private WaterIntakeTypesDTO object_search;
- 
+    private WaterIntakeTypeDTO object_search;
+
     /**
      * Creates new form NewTipoDeTomas
      */
@@ -105,13 +104,13 @@ public final class WaterIntakesTypesView extends DBView<WaterIntakeTypesDTO> imp
     }
 
     @Override
-    public WaterIntakeTypesDTO getObjectSearch() {
+    public WaterIntakeTypeDTO getObjectSearch() {
         return object_search;
     }
 
     @Override
     public void setObjectSearch(JDBMapObject o) {
-        object_search = (WaterIntakeTypesDTO) o;
+        object_search = (WaterIntakeTypeDTO) o;
     }
 
     /**
@@ -607,19 +606,14 @@ public final class WaterIntakesTypesView extends DBView<WaterIntakeTypesDTO> imp
     }
 
     @Override
-    public WaterIntakeTypesDTO getValues(boolean update) {
-        Map<String, Object> map = new Hashtable<>();
+    public WaterIntakeTypeDTO getValues(boolean update) {
+        Map<String, Object> map = new HashMap<>();
         if (update) {
-            Func.addIfChanged(map, "type_name", object_search.getTypeName(), Formats.getTextFormat(type_name_field.getText()));
-            Func.addIfChanged(map, "current_price", object_search.getCurrentPrice(), Formats.getTextFormat(current_price_field.getText()));
-            Func.addIfChanged(map, "previous_price", object_search.getPreviousPrice(), object_search.getCurrentPrice());
-            Func.addIfChanged(map, "surcharge", object_search.getSurcharge(), Formats.getTextFormat(surcharge_field.getText()));
+
         } else {
-            Func.putIfPresentAndNotBlank(map, "type_name", Formats.getTextFormat(type_name_field.getText()));
-            Func.putIfPresentAndNotBlank(map, "current_price", Formats.getTextFormat(current_price_field.getText()));
-            Func.putIfPresentAndNotBlank(map, "surcharge", Formats.getTextFormat(surcharge_field.getText()));
+
         }
-        WaterIntakeTypesDTO o = new WaterIntakeTypesDTO(map);
+        WaterIntakeTypeDTO o = new WaterIntakeTypeDTO(map);
         return o;
     }
 

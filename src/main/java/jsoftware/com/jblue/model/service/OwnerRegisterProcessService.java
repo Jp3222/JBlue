@@ -46,7 +46,7 @@ public class OwnerRegisterProcessService implements Serializable {
              * SE REGISTRAN LOS DATOS DEL USUARIO, LOS DOCUMENTOS DE IDENTIDAD Y
              * LOS REGISTROS NECESARIOS EN BITACORA
              */
-            int process_id = user.save(connection, process_type, dto.getUser(), dto.getUser_document_list());
+            int process_id = user.save(connection, process_type, dto);
             res = process_id > 0;
             if (!res) {
                 throw new SQLException("PROCESO DE INICIO Y VALIDACION CORRUPTO");
@@ -57,7 +57,7 @@ public class OwnerRegisterProcessService implements Serializable {
              * SE REGISTRA EL PAGO TOTAL AL IGUAL QUE LOS CONCEPTOS DESGLOSADOS
              * DEL TRAMITE
              */
-            res = payment.save(connection, process_type, dto.getWater_intake().getUser(), dto.getPayment(), dto.getPayment_concept_list());
+            res = payment.saveProcess(connection, process_type, dto.getWater_intake().getUser(), dto.getPayment(), dto.getPayment_concept_list());
             if (!res) {
                 throw new SQLException("PROCESO DE PAGO CORRUPTO");
             }
@@ -70,6 +70,8 @@ public class OwnerRegisterProcessService implements Serializable {
             //[5]OPCIONAL: IMPRECION DEL COMPROBANTE(INFORMACION FISICA DEL TRAMITE)
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (Exception ex) {
+            System.getLogger(OwnerRegisterProcessService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return res;
     }

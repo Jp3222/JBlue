@@ -16,8 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
-import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
@@ -26,7 +25,7 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  *
  * @author juanp
  */
-public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<WaterIntakeTypesDTO>, TableComponentDAO<WaterIntakeTypesDTO> {
+public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<WaterIntakeTypeDTO>, TableComponentDAO<WaterIntakeTypeDTO> {
 
     private static final String TABLE = "wki_water_intake_type";
     private static final String SELECT_ALL = "SELECT * FROM " + TABLE;
@@ -45,8 +44,8 @@ public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<
     }
 
     // --- Auxiliar: Mapeo de ResultSet a Map-based DTO ---
-    private WaterIntakeTypesDTO mapResultSetToDTO(ResultSet rs) throws SQLException {
-        WaterIntakeTypesDTO dto = new WaterIntakeTypesDTO();
+    private WaterIntakeTypeDTO mapResultSetToDTO(ResultSet rs) throws SQLException {
+        WaterIntakeTypeDTO dto = new WaterIntakeTypeDTO();
         // Mapeo dinámico de todas las columnas (similar a getPaymentList)
         java.sql.ResultSetMetaData metaData = rs.getMetaData();
         int columnCount = metaData.getColumnCount();
@@ -64,7 +63,7 @@ public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<
     /**
      * 1. Obtener por ID
      */
-    public WaterIntakeTypesDTO get(JDBConnection connection, int id) throws SQLException {
+    public WaterIntakeTypeDTO get(JDBConnection connection, int id) throws SQLException {
         try (Connection conn = connection.getConnection(); PreparedStatement ps = conn.prepareStatement(SELECT_BY_ID)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -77,22 +76,9 @@ public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<
     }
 
     /**
-     * 2. Obtener lista de todos los registros
-     */
-    public List<WaterIntakeTypesDTO> getList(JDBConnection connection) throws SQLException {
-        List<WaterIntakeTypesDTO> list = new ArrayList<>();
-        try (Connection conn = connection.getConnection(); PreparedStatement ps = conn.prepareStatement(SELECT_ALL); ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                list.add(mapResultSetToDTO(rs));
-            }
-        }
-        return list;
-    }
-
-    /**
      * 3. Insertar nuevo registro
      */
-    public int insert(JDBConnection connection, WaterIntakeTypesDTO dto) {
+    public int insert(JDBConnection connection, WaterIntakeTypeDTO dto) {
         int res = -1;
         try (PreparedStatement ps = connection.getNewPreparedStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS)) {
             // 1. Asignación de parámetros (índices fijos según INSERT_COLS)
@@ -136,7 +122,7 @@ public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<
     /**
      * 5. Actualización Dinámica
      */
-    public boolean updateDynamic(JDBConnection connection, WaterIntakeTypesDTO old_wki, WaterIntakeTypesDTO new_wki) throws SQLException {
+    public boolean updateDynamic(JDBConnection connection, WaterIntakeTypeDTO old_wki, WaterIntakeTypeDTO new_wki) throws SQLException {
 
         Map<String, Object> oldMap = old_wki.getMap();
         Map<String, Object> newMap = new_wki.getMap();
@@ -200,10 +186,10 @@ public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<
     }
 
     @Override
-    public List<WaterIntakeTypesDTO> getList() {
-        List<WaterIntakeTypesDTO> list = new ArrayList<>(15);
+    public List<WaterIntakeTypeDTO> getList(JDBConnection connection) throws SQLException, Exception {
+        List<WaterIntakeTypeDTO> list = new ArrayList<>(15);
         String query = "SELECT * FROM wki_water_intake_type WHERE status = 1";
-        try (JDBConnection c = ConnectionFactory.getIntance().getCacheConnection(); PreparedStatement ps = c.getNewPreparedStatement(query)) {
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
             try (ResultSet rs = ps.executeQuery();) {
                 ResultSetMetaData md = rs.getMetaData();
                 int size = md.getColumnCount();
@@ -211,9 +197,9 @@ public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<
                 for (int i = 0; i < fields.length; i++) {
                     fields[i] = md.getColumnLabel(i + 1);
                 }
-                WaterIntakeTypesDTO o;
+                WaterIntakeTypeDTO o;
                 while (rs.next()) {
-                    o = new WaterIntakeTypesDTO();
+                    o = new WaterIntakeTypeDTO();
                     for (String i : fields) {
                         o.getMap().put(i, rs.getString(i));
                     }
@@ -227,15 +213,15 @@ public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<
     }
 
     @Override
-    public List<WaterIntakeTypesDTO> getList(JDBConnection connection, JTableModel model) {
+    public List<WaterIntakeTypeDTO> getList(JDBConnection connection, JTableModel model) {
         return null;
     }
 
-    public boolean delete(JDBConnection connection, WaterIntakeTypesDTO o) {
+    public boolean delete(JDBConnection connection, WaterIntakeTypeDTO o) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public boolean update(JDBConnection connection, WaterIntakeTypesDTO old_dto, WaterIntakeTypesDTO new_dto) {
+    public boolean update(JDBConnection connection, WaterIntakeTypeDTO old_dto, WaterIntakeTypeDTO new_dto) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

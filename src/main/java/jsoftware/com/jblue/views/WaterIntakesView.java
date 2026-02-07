@@ -26,8 +26,8 @@ import jsoftware.com.jblue.controllers.FactoryController;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
@@ -41,15 +41,15 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  *
  * @author juanp
  */
-public final class WaterIntakesView extends AbstractProcessView<WaterIntakesDTO> implements DBValuesMapModel, TableSearchViewModel {
+public final class WaterIntakesView extends AbstractProcessView<WaterIntakeDTO> implements DBValuesMapModel, TableSearchViewModel {
 
     private static final long serialVersionUID = 1L;
 
     private final CardLayout ly;
     private final JTableModel model;
-    private WaterIntakesDTO object_search;
+    private WaterIntakeDTO object_search;
     private UserDTO user_search;
-    private WaterIntakeTypesDTO water_intake_types_search;
+    private WaterIntakeTypeDTO water_intake_types_search;
     private StreetDTO street1_search;
     private StreetDTO street2_search;
 
@@ -112,7 +112,7 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakesDTO>
 
     @Override
     public void finalState() {
-        System.out.println(getProcessName() + ":");
+        System.out.println(getProcessTypeName() + ":");
         System.out.println("ES UN PROCESO?: " + isProcess() + " - " + getProcessId());
         north_panel.setVisible(!isProcess());
         p_status.setVisible(!isProcess());
@@ -126,13 +126,13 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakesDTO>
     }
 
     @Override
-    public WaterIntakesDTO getObjectSearch() {
+    public WaterIntakeDTO getObjectSearch() {
         return object_search;
     }
 
     @Override
     public void setObjectSearch(JDBMapObject o) {
-        object_search = (WaterIntakesDTO) o;
+        object_search = (WaterIntakeDTO) o;
     }
 
     /**
@@ -614,7 +614,7 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakesDTO>
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     private javax.swing.JTextField user_field;
-    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.WaterIntakesDTO> water_intake_types_field;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.WaterIntakeDTO> water_intake_types_field;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -717,7 +717,7 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakesDTO>
     }
 
     public Map<String, Object> saveUpdate(
-            WaterIntakesDTO originalProcedure, // Objeto con datos actuales
+            WaterIntakeDTO originalProcedure, // Objeto con datos actuales
             String _cost_procedure, String _water_inatke, String _user, String _user_name,
             String _street1, String _street2, String _location, String _description,
             String _status) {
@@ -796,7 +796,7 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakesDTO>
         this.user_search = user_search;
     }
 
-    public void setWater_intake_types_search(WaterIntakeTypesDTO water_intake_types_search) {
+    public void setWater_intake_types_search(WaterIntakeTypeDTO water_intake_types_search) {
         this.water_intake_types_search = water_intake_types_search;
     }
 

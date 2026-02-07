@@ -27,7 +27,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import jsoftware.com.jblue.controllers.FactoryController;
-import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.GraphicsUtils;
 import jsoftware.com.jblue.views.framework.DBView;
@@ -46,8 +46,8 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
 
     private final CardLayout ly;
     private final JTableModel table_model;
-    private final DefaultListModel<WaterIntakesDTO> list_model;
-    private WaterIntakesDTO object_search;
+    private final DefaultListModel<WaterIntakeDTO> list_model;
+    private WaterIntakeDTO object_search;
     private ArrayList<JCheckBox> month_paid_list;
 
     private int count_elements;
@@ -852,7 +852,7 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
     private javax.swing.JTextField type_toma_field;
     private javax.swing.JPanel user_info_panel;
     private javax.swing.JTextField user_type_field;
-    private javax.swing.JList<jsoftware.com.jblue.model.dto.WaterIntakesDTO> users_list;
+    private javax.swing.JList<jsoftware.com.jblue.model.dto.WaterIntakeDTO> users_list;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -891,7 +891,7 @@ public class ShopCartView extends DBView implements ListSearchViewModel {
     }
 
     @Override
-    public WaterIntakesDTO getObjectSearch() {
+    public WaterIntakeDTO getObjectSearch() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

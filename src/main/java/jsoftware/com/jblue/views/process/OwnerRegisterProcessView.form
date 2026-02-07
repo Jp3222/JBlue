@@ -60,7 +60,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Regresar"/>
                 <Property name="toolTipText" type="java.lang.String" value="Seccion Anterior"/>
-                <Property name="actionCommand" type="java.lang.String" value="register_view"/>
+                <Property name="actionCommand" type="java.lang.String" value="back_view"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="next_panel_button">
@@ -70,7 +70,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Siguiente"/>
                 <Property name="toolTipText" type="java.lang.String" value="Siguiente Seccion"/>
-                <Property name="actionCommand" type="java.lang.String" value="search_view"/>
+                <Property name="actionCommand" type="java.lang.String" value="next_view"/>
               </Properties>
             </Component>
           </SubComponents>

@@ -18,6 +18,7 @@ package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.controllers.DBControllerModel;
@@ -30,12 +31,15 @@ import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.components.ComponentFactory;
 import jsoftware.com.jblue.views.components.UserViewComponent;
 import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  *
  * @author juan pablo campos casasanero
  */
 public class UserController extends AbstractDBViewController<UserDTO> implements DBControllerModel {
+
+    private static final long serialVersionUID = 1L;
 
     private final UserView view;
 
@@ -47,7 +51,7 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
 
     public UserController(UserView view) {
         this.view = view;
-        user_service = new UserService(AppConfig.isDevMessages(), view.getProcessName());
+        user_service = new UserService(AppConfig.isDevMessages(), view.getProcessTypeName());
     }
 
     @Override
@@ -88,11 +92,11 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
         }
         try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
 
-            int pro = user_service.save(connection, view.getProcessId(), user, null);
+            int pro = user_service.save(connection, view.getProcessId(), user);
             res = pro > 0;
             returnMessage(view, res);
         } catch (Exception e) {
-            e.printStackTrace();
+            log(e, "save");
         }
     }
 
@@ -133,4 +137,17 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
         //Files.copy(file.toPath(), new BufferedOutputStream(new FileOutputStream(out)));
     }
 
+    public void log(Exception e, String method_name) {
+        try {
+            FuncLogs.logError(
+                    AppFiles.DIR_PROG_LOG_TODAY,
+                    getClass(), e,
+                    getClass().getName(),
+                    method_name,
+                    e.getMessage()
+            );
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
+    }
 }

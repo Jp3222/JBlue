@@ -10,19 +10,19 @@ import java.util.Map;
  *
  * @author jp
  */
-public class WaterIntakeTypesDTO extends AuditableObjectMap {
+public class WaterIntakeTypeDTO extends AuditableObjectMap {
 
     private static final long serialVersionUID = 1L;
 
-    public WaterIntakeTypesDTO(Map<String, Object> map) {
+    public WaterIntakeTypeDTO(Map<String, Object> map) {
         super(map);
     }
 
-    public WaterIntakeTypesDTO(int size) {
+    public WaterIntakeTypeDTO(int size) {
         super(size);
     }
 
-    public WaterIntakeTypesDTO() {
+    public WaterIntakeTypeDTO() {
         super();
     }
 

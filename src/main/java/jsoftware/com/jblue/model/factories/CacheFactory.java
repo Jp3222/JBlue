@@ -9,10 +9,10 @@ import java.sql.SQLException;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.dto.EmployeeTypesDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.jexception.JExcp;
@@ -162,7 +162,7 @@ public final class CacheFactory {
     /**
      * Caché de tipos de tomas de agua.
      */
-    public static final MemoListCache<WaterIntakeTypesDTO> WATER_INTAKES_TYPES = new MemoListCache<>(Const.WKI_WATER_INTAKE_TYPE_TABLE, WaterIntakeTypesDTO.class);
+    public static final MemoListCache<WaterIntakeTypeDTO> WATER_INTAKES_TYPES = new MemoListCache<>(Const.WKI_WATER_INTAKE_TYPE_TABLE, WaterIntakeTypeDTO.class);
     /**
      * Caché de calles.
      */
@@ -174,11 +174,11 @@ public final class CacheFactory {
     /**
      * Caché de usuarios.
      */
-    public static final MemoListCache<UserDTO> USERS = new MemoListCache<>(Const.USR_USER_TABLE, WaterIntakeTypesDTO.class);
+    public static final MemoListCache<UserDTO> USERS = new MemoListCache<>(Const.USR_USER_TABLE, WaterIntakeTypeDTO.class);
     /**
      * Caché de tomas de agua (medidores).
      */
-    public static final MemoListCache<WaterIntakesDTO> WATER_INTAKES = new MemoListCache<>(Const.WKI_WATER_INTAKES_TABLE, WaterIntakesDTO.class);
+    public static final MemoListCache<WaterIntakeDTO> WATER_INTAKES = new MemoListCache<>(Const.WKI_WATER_INTAKES_TABLE, WaterIntakeDTO.class);
 
     /**
      * Array de todas las cachés de MemoListCache a ser cargadas

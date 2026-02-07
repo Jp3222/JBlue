@@ -17,11 +17,10 @@ import jsoftware.com.jutil.db.JDBMapObject;
 public abstract class AbstractProcessView<T extends JDBMapObject> extends DBView<T> implements ProcessViewModel {
 
     private static final long serialVersionUID = 1L;
-
     private final String process_id;
     private final boolean dev_flag;
     private boolean process;
-    private String process_name;
+    private String process_type;
     private ProcessWrapperDTO process_wrapper;
     private ProcessViewBuilder builder;
 
@@ -29,19 +28,19 @@ public abstract class AbstractProcessView<T extends JDBMapObject> extends DBView
         this.builder = builder;
         this.process_id = builder.getProcess_id();
         this.process = builder.isProcess();
-        this.process_name = builder.getProcess_name();
+        this.process_type = builder.getProcess_name();
         this.process_wrapper = builder.getProcess_wrapper();
         this.dev_flag = builder.isDev_flag();
     }
 
     @Override
-    public void setProcessName(String module_name) {
-        this.process_name = module_name;
+    public void setProcessTypeName(String module_name) {
+        this.process_type = module_name;
     }
 
     @Override
-    public String getProcessName() {
-        return process_name != null ? process_name : getName();
+    public String getProcessTypeName() {
+        return process_type != null ? process_type : getName();
     }
 
     public String getProcessId() {
@@ -150,5 +149,4 @@ public abstract class AbstractProcessView<T extends JDBMapObject> extends DBView
     }
 
     public abstract void getDataView();
-
 }

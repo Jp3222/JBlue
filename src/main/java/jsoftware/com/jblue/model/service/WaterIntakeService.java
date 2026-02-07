@@ -10,7 +10,7 @@ import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.ProcessDAO;
 import jsoftware.com.jblue.model.dao.WaterIntakeDAO;
-import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**
@@ -34,7 +34,7 @@ public class WaterIntakeService implements Serializable {
         this.process_dao = new ProcessDAO(flag_dev, name_module);
     }
 
-    public boolean save(JDBConnection connection, String process_type, WaterIntakesDTO dto) throws SQLException {
+    public boolean save(JDBConnection connection, String process_type, WaterIntakeDTO dto) throws SQLException, Exception {
         boolean res = false;
         try {
             connection.setAutoCommit(false);

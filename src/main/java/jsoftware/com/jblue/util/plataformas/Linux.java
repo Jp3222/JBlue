@@ -16,13 +16,20 @@
  */
 package jsoftware.com.jblue.util.plataformas;
 
-/**
- *
- * @author juan pablo campos casasanero
- */
+import jsoftware.com.jutil.platf.So;
+
 public class Linux extends OsConfig {
 
     public Linux() {
+        // En Linux las mayúsculas importan (Case Sensitive)
+        this.documents_path = new String[]{
+            So.USER_HOME + "/Documents",
+            So.USER_HOME + "/Documentos",
+            So.USER_HOME + "/docs"
+        };
+        this.desktop_path = new String[]{
+            So.USER_HOME + "/Desktop",
+            So.USER_HOME + "/Escritorio"
+        };
     }
-
 }

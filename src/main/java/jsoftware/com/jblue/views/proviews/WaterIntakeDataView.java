@@ -4,7 +4,12 @@
  */
 package jsoftware.com.jblue.views.proviews;
 
+import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
+import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 
@@ -12,7 +17,7 @@ import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
  *
  * @author juanp
  */
-public class WaterIntakeDataView extends AbstractProcessView<UserDocumentDTO> {
+public final class WaterIntakeDataView extends AbstractProcessView<UserDocumentDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,6 +27,29 @@ public class WaterIntakeDataView extends AbstractProcessView<UserDocumentDTO> {
     public WaterIntakeDataView(ProcessViewBuilder builder) {
         super(builder);
         initComponents();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+
+    }
+
+    @Override
+    public void components() {
+    }
+
+    @Override
+    public void events() {
+    }
+
+    @Override
+    public void initialState() {
+    }
+
+    @Override
+    public void finalState() {
     }
 
     /**
@@ -246,11 +274,17 @@ public class WaterIntakeDataView extends AbstractProcessView<UserDocumentDTO> {
     private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.StreetDTO> street1_field;
     private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.StreetDTO> street2_field;
     private javax.swing.JTextField user_field;
-    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.WaterIntakesDTO> water_intake_types_field;
+    private javax.swing.JComboBox<WaterIntakeTypeDTO> water_intake_types_field;
     // End of variables declaration//GEN-END:variables
-    
+
     @Override
     public void getDataView() {
-    
+        ProcessWrapperDTO pw = getProcessWrapper();
+        WaterIntakeDTO wk = pw.getWater_intake();
+        if (Func.isNotNull(pw.getUser())) {
+            UserDTO user = pw.getUser();
+            wk.getMap().put("user_name", user.toString());
+            
+        }
     }
 }

@@ -21,165 +21,154 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.querys.UserQuerys;
+import jsoftware.com.jblue.util.Formats;
+import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
-import jsoftware.com.jutil.util.JFunc;
 
 /**
  *
  * @author juanp
  */
-public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO> {
+public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, ListComponentDAO<UserDTO> {
 
     private static final long serialVersionUID = 1L;
 
     public UserDao(boolean flag_dev_log, String name_module) {
         super(flag_dev_log, name_module);
     }
-    final String INSERT_SQL = """
-    INSERT INTO usr_user
-    (
-        curp, first_name, last_name1, last_name2, gender, 
-        email, phone_number1, phone_number2, street1, street2, 
-        inside_number, outside_number, water_intake_type, 
-        user_type, status, last_employee_update
-    )
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-    """;
 
+    /**
+     * Registra un nuevo titular en el sistema (usr_user).
+     * <p>
+     * El proceso de inserción valida de forma implícita la integridad de los
+     * datos mediante tipos definidos en MySQL. Tras una inserción exitosa, el
+     * objeto {@code UserDTO} se actualiza con el ID generado y las marcas de
+     * tiempo.
+     * </p>
+     * * <b>Campos Obligatorios:</b>
+     * <ul>
+     * <li>Identidad:
+     * {@code curp, first_name, last_name1, last_name2, gender}</li>
+     * <li>Ubicación: {@code street1}</li>
+     * <li>Configuración:
+     * {@code water_intake_type, user_type, status, last_employee_update}</li>
+     * </ul>
+     * * <b>Campos Opcionales:</b>
+     * <ul>
+     * <li>{@code email, phone_number1, phone_number2, street2, inside_number, outside_number}</li>
+     * </ul>
+     *
+     * @param connection Conexión activa a la base de datos (proporcionada por
+     * ConnectionFactory).
+     * @param user Objeto DTO con el mapa de datos capturado desde la vista.
+     * @return El ID (PK) generado por la base de datos.
+     * @throws SQLException Si ocurre un error de duplicidad (ej. CURP), falla
+     * de conexión, o si el número de registros afectados es distinto de 1.
+     * @throws Exception Para errores de conversión de tipos (parseInt) o nulos
+     * inesperados.
+     */
     public int insert(JDBConnection connection, UserDTO user) throws SQLException {
-        int userId = 0;
-        // Usamos la herramienta de tu arquitectura JBlue para obtener el Statement
-        try (PreparedStatement pstmt = connection.getNewPreparedStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS)) {
-
-            // 1. Datos de Identidad (VARCHAR)
-            pstmt.setString(1, user.getCurp());
-            pstmt.setString(2, user.getFirstName());
-            pstmt.setString(3, user.getLastName1());
-            pstmt.setString(4, user.getLastName2());
-
-            // 2. Género (INT en DB) - Conversión necesaria
-            pstmt.setInt(5, Integer.parseInt(user.getGender()));
-
-            // 3. Contacto (VARCHAR)
-            pstmt.setString(6, user.getEmail());
-            pstmt.setString(7, user.getPhoneNumber1());
-            pstmt.setString(8, user.getPhoneNumber2());
-
-            // 4. Domicilio - Calle 1 (INT en DB)
-            pstmt.setInt(9, Integer.parseInt(user.getStreet1()));
-
-            // 5. Manejo de Calle 2 (Opcional - INT)
-            if (JFunc.isNull(user.getStreet2())) {
-                pstmt.setNull(10, Types.INTEGER);
-            } else {
-                pstmt.setInt(10, Integer.parseInt(user.getStreet2()));
+        int user_id = 0;
+        String query = UserQuerys.INSERT_USER;
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            //IDENTIDAD DE USUARIO
+            ps.setString(1, user.getCurp());
+            ps.setString(2, user.getFirstName());
+            ps.setString(3, user.getLastName1());
+            ps.setString(4, user.getLastName2());
+            ps.setString(5, user.getGender());
+            ps.setString(6, user.getBirthdate());
+            //CONTACTO DE USUARIO
+            setNull(ps, 7, user.getEmail());
+            setNull(ps, 8, user.getPhoneNumber1());
+            setNull(ps, 9, user.getPhoneNumber2());
+            //DIRECCION DE USUARIO
+            ps.setString(10, user.getStreet1());
+            setNull(ps, 11, user.getStreet2());
+            setNull(ps, 12, user.getInsideNumber());
+            setNull(ps, 13, user.getOutsideNumber());
+            //TIPO DE USUARIO
+            ps.setString(14, user.getUserType());
+            //STATUS DE USUARIO
+            ps.setInt(15, user.getStatus());
+            ps.setString(16, user.getLastEmployeeUpdate());
+            int affected_row = ps.executeUpdate();
+            if (affected_row == PreparedStatement.EXECUTE_FAILED || affected_row != 1) {
+                throw new SQLException("INSERCCION DE USUARIO FALLIDA");
             }
-
-            // 6. Números de casa (VARCHAR)
-            pstmt.setString(11, user.getInsideNumber());
-            pstmt.setString(12, user.getOutsideNumber());
-
-            // 7. Configuración de Usuario (Todos son INT en la tabla)
-            pstmt.setInt(13, Integer.parseInt(user.getWaterIntakeType()));
-            pstmt.setInt(14, Integer.parseInt(user.getUserType()));
-            pstmt.setInt(15, user.getStatus()); // Este ya era Int en tu código
-            pstmt.setInt(16, Integer.parseInt(user.getLastEmployeeUpdate()));
-
-            // Ejecución
-            if (pstmt.executeUpdate() > 0) {
-                try (ResultSet rs = pstmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        userId = rs.getInt(1);
-                        // Sincronizamos el ID generado con el DTO
-                        user.put("id", String.valueOf(userId));
-                    }
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (!rs.next()) {
+                    throw new SQLException("LLAVE PRIMARIA CORRUPTA");
                 }
+                user_id = rs.getInt(1);
+                user.getMap().put("id", user_id);
+                user.getMap().put("date_update", Formats.getLocalDateTime(LocalDateTime.now()));
+                user.getMap().put("date_resgiter", Formats.getLocalDateTime(LocalDateTime.now()));
             }
-
         } catch (SQLException e) {
-            // No cerramos la transacción aquí, dejamos que el Service haga el rollBack
+            throw e;
+        } catch (Exception e) {
             throw e;
         }
-        return userId;
+        return user_id;
     }
 
+    /**
+     * Realiza una actualización selectiva (Delta Update) del usuario.
+     * <p>
+     * Compara los atributos del usuario original contra los nuevos valores y
+     * construye dinámicamente la sentencia SQL. Si no se detectan cambios en
+     * los campos editables, el método finaliza sin realizar peticiones a la
+     * base de datos.
+     * </p>
+     *
+     * @param connection Conexión transaccional activa.
+     * @param old_user Estado previo del usuario (recuperado de la BD).
+     * @param new_user Estado actual capturado en la vista.
+     * @return true si se aplicaron cambios; false si no hubo diferencias o no
+     * se afectaron filas.
+     * @throws SQLException Si ocurre un error de integridad o pérdida de
+     * conexión.
+     */
     public boolean updateOldUser(JDBConnection connection, UserDTO old_user, UserDTO new_user) throws SQLException {
-        StringBuilder sb = new StringBuilder(300);
+        StringBuilder sb = new StringBuilder(400);
         List<Object> params = new ArrayList<>();
         sb.append("UPDATE usr_user SET ");
+        // 1. Registro de cambios (Campos de texto)
+        Func.appendIfChanged(sb, params, "email", old_user.getEmail(), new_user.getEmail(), false);
+        Func.appendIfChanged(sb, params, "phone_number1", old_user.getPhoneNumber1(), new_user.getPhoneNumber1(), false);
+        Func.appendIfChanged(sb, params, "phone_number2", old_user.getPhoneNumber2(), new_user.getPhoneNumber2(), false);
+        Func.appendIfChanged(sb, params, "inside_number", old_user.getInsideNumber(), new_user.getInsideNumber(), false);
+        Func.appendIfChanged(sb, params, "outside_number", old_user.getOutsideNumber(), new_user.getOutsideNumber(), false);
+        // 2. Registro de cambios (Campos numéricos/FK)
+        Func.appendIfChanged(sb, params, "street1", old_user.getStreet1(), new_user.getStreet1(), true);
+        Func.appendIfChanged(sb, params, "street2", old_user.getStreet2(), new_user.getStreet2(), true);
 
-        // 1. Comparación de campos y construcción dinámica
-        if (!Objects.equals(old_user.getEmail(), new_user.getEmail())) {
-            sb.append("email = ?, ");
-            params.add(new_user.getEmail());
-        }
-        if (!Objects.equals(old_user.getPhoneNumber1(), new_user.getPhoneNumber1())) {
-            sb.append("phone_number1 = ?, ");
-            params.add(new_user.getPhoneNumber1());
-        }
-        if (!Objects.equals(old_user.getPhoneNumber2(), new_user.getPhoneNumber2())) {
-            sb.append("phone_number2 = ?, ");
-            params.add(new_user.getPhoneNumber2());
-        }
-        if (!Objects.equals(old_user.getStreet1(), new_user.getStreet1())) {
-            sb.append("street1 = ?, ");
-            params.add(Integer.valueOf(new_user.getStreet1()));
-        }
-        if (!Objects.equals(old_user.getStreet2(), new_user.getStreet2())) {
-            sb.append("street2 = ?, ");
-            params.add(JFunc.isNull(new_user.getStreet2()) ? null : Integer.valueOf(new_user.getStreet2()));
-        }
-        if (!Objects.equals(old_user.getInsideNumber(), new_user.getInsideNumber())) {
-            sb.append("inside_number = ?, ");
-            params.add(new_user.getInsideNumber());
-        }
-        if (!Objects.equals(old_user.getOutsideNumber(), new_user.getOutsideNumber())) {
-            sb.append("outside_number = ?, ");
-            params.add(new_user.getOutsideNumber());
-        }
-        if (!Objects.equals(old_user.getWaterIntakeType(), new_user.getWaterIntakeType())) {
-            sb.append("water_intake_type = ?, ");
-            params.add(Integer.valueOf(new_user.getWaterIntakeType()));
-        }
-
-        // Si no hubo cambios, retornamos false de inmediato
         if (params.isEmpty()) {
-            return false;
+            return false; // Cero tráfico a Railway si no hay cambios
         }
-
-        // 2. Agregar siempre el empleado que actualiza y limpiar la última coma
-        sb.append("last_employee_update = ? ");
+        // 3. Cierre mandatorio (Empleado y WHERE)
+        // Aquí NO hay coma antes de last_employee_update porque la utilidad la pone al final de cada campo previo
+        sb.append("last_employee_update = ? WHERE id = ? AND status = 1");
         params.add(Integer.valueOf(new_user.getLastEmployeeUpdate()));
-
-        // 3. Finalizar query
-        sb.append("WHERE id = ? AND status = 1");
         params.add(Integer.valueOf(old_user.getId()));
 
         // 4. Ejecución
         try (PreparedStatement ps = connection.getNewPreparedStatement(sb.toString())) {
             for (int i = 0; i < params.size(); i++) {
-                Object val = params.get(i);
-                if (val == null) {
-                    ps.setNull(i + 1, Types.INTEGER); // Específicamente para street2
-                } else {
-                    ps.setObject(i + 1, val);
-                }
+                ps.setObject(i + 1, params.get(i));
             }
-
-            int affected = ps.executeUpdate();
-            return affected > 0;
-        } catch (SQLException e) {
-            throw e; // Lanzamos para que el Service maneje el Rollback
+            return ps.executeUpdate() > 0;
         }
     }
 
@@ -219,7 +208,6 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO> {
 
         autoSet(old_user.getInsideNumber(), new_user.getInsideNumber(), "inside_number", setColumns, parameters);
         autoSet(old_user.getOutsideNumber(), new_user.getOutsideNumber(), "outside_number", setColumns, parameters);
-        autoSet(old_user.getWaterIntakeType(), new_user.getWaterIntakeType(), "water_intake_type", setColumns, parameters);
         autoSet(old_user.getUserType(), new_user.getUserType(), "user_type", setColumns, parameters);
         autoSet(old_user.getStatus(), new_user.getStatus(), "status", setColumns, parameters);
 
@@ -281,31 +269,25 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO> {
         }
     }
 
-    private static final String LOGICAL_DELETE_SQL
-            = "UPDATE usr_user SET status = ?, date_end = ?, last_employee_update = ? WHERE id = ?";
-
-    public boolean logicalDeleteUser(JDBConnection connection, int userId, int employeeId) throws SQLException {
-        // Usamos la gestión de statements de JBlue
-        try (PreparedStatement pstmt = connection.getNewPreparedStatement(LOGICAL_DELETE_SQL)) {
-
-            // 1. Status (3: Supongamos que es 'BAJA' o 'INACTIVO')
-            pstmt.setInt(1, 3);
-
-            // 2. Fecha de baja (Timestamp actual)
-            pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-
-            // 3. Empleado que autoriza la baja
-            pstmt.setInt(3, employeeId);
-
-            // 4. Filtro por ID
-            pstmt.setInt(4, userId);
+    public boolean delete(JDBConnection connection, int userId, int employeeId) throws SQLException {
+        boolean res = false;
+        String query = UserQuerys.UPDATE_USER_STATUS;
+        try (PreparedStatement pstmt = connection.getNewPreparedStatement(query)) {
+            pstmt.setInt(1, Const.INDEX_STATUS_ELIMINADO);
+            pstmt.setInt(2, employeeId);
+            pstmt.setInt(3, userId);
 
             int affectedRows = pstmt.executeUpdate();
-
-            // Nota: No hacemos catch aquí para permitir que el Service 
-            // maneje la excepción y decida si hace Rollback
-            return affectedRows > 0;
+            res = affectedRows == 1;
+            if (!res) {
+                throw new SQLException("EL QUERY AFECTO %s REGISTROS".formatted(affectedRows));
+            }
+        } catch (SQLException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
         }
+        return res;
     }
 
     // Consulta SQL que selecciona todas las columnas de la tabla usr_user
@@ -325,12 +307,12 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO> {
         List<Object> params = new ArrayList<>();
 
         // Construcción dinámica de criterios con OR para detectar duplicados
-        if (JFunc.isNotNullEmptyBlank(dto.getId())) {
+        if (Func.isNotNullEmptyBlank(dto.getId())) {
             sb.append("id = ? ");
             params.add(Integer.valueOf(dto.getId()));
         }
 
-        if (JFunc.isNotNullEmptyBlank(dto.getCurp())) {
+        if (Func.isNotNullEmptyBlank(dto.getCurp())) {
             if (!params.isEmpty()) {
                 sb.append(" OR ");
             }
@@ -338,7 +320,7 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO> {
             params.add(dto.getCurp());
         }
 
-        if (JFunc.isNotNullEmptyBlank(dto.getFirstName()) && JFunc.isNotNullEmptyBlank(dto.getLastName1())) {
+        if (Func.isNotNullEmptyBlank(dto.getFirstName()) && Func.isNotNullEmptyBlank(dto.getLastName1())) {
             if (!params.isEmpty()) {
                 sb.append(" OR ");
             }
@@ -380,52 +362,44 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO> {
      * @param rs El ResultSet posicionado en la fila actual.
      * @return Un objeto UserDTO poblado.
      */
-    public Optional<UserDTO> findById(JDBConnection connection, int userId) {
-        try (Connection conn = connection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(SELECT_BY_ID_SQL)) {
+    public Optional<UserDTO> findById(JDBConnection connection, int userId) throws SQLException, Exception {
+        Optional<UserDTO> res = Optional.empty();
+        String query = "SELECT * FROM usr_user WHERE id = ?";
+        try (Connection conn = connection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, userId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    // Usamos el nuevo método genérico para mapear todos los campos
-                    UserDTO user = mapResultSetToDTO(rs);
-                    return Optional.of(user);
+                    ResultSetMetaData md = rs.getMetaData();
+                    int size = md.getColumnCount();
+                    String[] fields = new String[size];
+                    for (int i = 0; i < fields.length; i++) {
+                        fields[i] = md.getColumnLabel(i + 1);
+                    }
+                    if (rs.next()) {
+                        UserDTO aux = new UserDTO();
+                        for (String field : fields) {
+                            aux.getMap().put(field, rs.getString(field));
+                        }
+                        res = Optional.of(aux);
+                    }
                 }
             }
         } catch (SQLException e) {
-            // Manejo de la excepción
-            e.printStackTrace();
+            throw e;
+        } catch (Exception e) {
+            throw e;
         }
-        // Retorna Optional.empty() si el usuario no existe o si ocurre un error
-        return Optional.empty();
-    }
-
-    private UserDTO mapResultSetToDTO(ResultSet rs) throws SQLException {
-        // Creamos una nueva instancia del DTO
-        UserDTO user = new UserDTO();
-
-        // Obtenemos los metadatos del ResultSet para conocer los nombres de las columnas
-        ResultSetMetaData metaData = rs.getMetaData();
-        int columnCount = metaData.getColumnCount();
-
-        for (int i = 1; i <= columnCount; i++) {
-            String columnName = metaData.getColumnLabel(i); // Nombre de la columna
-            Object value = rs.getObject(i);                 // Valor de la columna
-
-            // Usamos el método set() del DTO para guardar el valor en el Map interno
-            user.getMap().put(columnName, value);
-        }
-        return user;
+        return res;
     }
 
     @Override
     public List<UserDTO> getList(JDBConnection connection, JTableModel model) {
         List<UserDTO> userList = new ArrayList<>();
-
         // 1. Construir la consulta con StringBuilder
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ");
         sb.append("  id, first_name, last_name1, last_name2, status, date_register ");
         sb.append("FROM usr_user");
-
         // 2. Ejecutar la consulta
         try (PreparedStatement pstmt = connection.getNewPreparedStatement(sb.toString()); ResultSet rs = pstmt.executeQuery()) {
             ResultSetMetaData md = rs.getMetaData();
@@ -444,6 +418,33 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO> {
         }
 
         return userList;
+    }
+
+    @Override
+    public List<UserDTO> getList(JDBConnection connection) throws SQLException, Exception {
+        List<UserDTO> list = List.of();
+        String query = "SELECT * FROM usr_user WHERE status = 1";
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query); ResultSet rs = ps.executeQuery();) {
+            ResultSetMetaData md = rs.getMetaData();
+            int size = md.getColumnCount();
+            String[] fields = new String[size];
+            for (int i = 0; i < fields.length; i++) {
+                fields[i] = md.getColumnLabel(i + 1);
+            }
+            list = new ArrayList<>(1000);
+            while (rs.next()) {
+                UserDTO aux = new UserDTO();
+                for (String field : fields) {
+                    aux.getMap().put(field, rs.getString(field));
+                }
+                list.add(aux);
+            }
+        } catch (SQLException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
+        }
+        return list;
     }
 
 }

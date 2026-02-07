@@ -38,8 +38,9 @@ import jsoftware.com.jblue.views.process.OwnerChangerProcessView;
 import jsoftware.com.jblue.views.process.OwnerRegisterProcessView;
 
 /**
+ * Esta clase esta dedicada a la vista del menu principal de la aplicacion
  *
- * @author juan pablo campos casasanero
+ * @author JUAN PABLO CAMPOS CASASANERO
  */
 public final class WMainMenu extends AbstractAppWindows {
 
@@ -47,7 +48,6 @@ public final class WMainMenu extends AbstractAppWindows {
 
     //
     private final CardLayout ly;
-    //Vistas de la base de datos
     private final ShopCartView shop_cart_view;
     private final OwnerRegisterProcessView owner_register_process_view;
     private final ConsumerRegisterProcessView consumer_register_process_view;

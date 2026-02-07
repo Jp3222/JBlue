@@ -6,10 +6,10 @@ package jsoftware.com.jblue.util;
 
 import java.lang.reflect.InvocationTargetException;
 import jsoftware.com.jblue.model.dto.HysAdministrationHistoryDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
 import jsoftware.com.jblue.model.dto.PaymentDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jutil.db.JDBArrayObject;
 import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.db.model.ObjectsFactory;
@@ -29,11 +29,11 @@ public class DTOFactory implements ObjectsFactory<JDBMapObject, JDBArrayObject> 
             if (cls.getName().equals(PaymentDTO.class.getName())) {
                 return new PaymentDTO();
             }
-            if (cls.getName().equals(WaterIntakeTypesDTO.class.getName())) {
-                return new WaterIntakeTypesDTO();
+            if (cls.getName().equals(WaterIntakeTypeDTO.class.getName())) {
+                return new WaterIntakeTypeDTO();
             }
-            if (cls.getName().equals(WaterIntakesDTO.class.getName())) {
-                return new WaterIntakesDTO();
+            if (cls.getName().equals(WaterIntakeDTO.class.getName())) {
+                return new WaterIntakeDTO();
             }
             if (cls.getName().equals(HysAdministrationHistoryDTO.class.getName())) {
                 return new HysAdministrationHistoryDTO();

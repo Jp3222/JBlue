@@ -16,10 +16,21 @@
  */
 package jsoftware.com.jblue.util.plataformas;
 
+import jsoftware.com.jutil.platf.So;
+
 /**
  *
  * @author juan pablo campos casasanero
  */
-public class MacOs {
-    
+public class MacOs extends OsConfig {
+
+    public MacOs() {
+        this.documents_path = new String[]{
+            So.USER_HOME + "/Documents"
+        };
+        this.desktop_path = new String[]{
+            So.USER_HOME + "/Desktop"
+        };
+    }
+
 }

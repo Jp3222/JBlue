@@ -27,23 +27,21 @@ import jsoftware.com.jblue.controllers.FactoryController;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
 import jsoftware.com.jblue.controllers.compc.TableController;
 import jsoftware.com.jblue.model.dao.StreetDAO;
-import jsoftware.com.jblue.model.dao.UserDAO2;
+import jsoftware.com.jblue.model.dao.UserDao;
 import jsoftware.com.jblue.model.dao.UserTypeDAO;
 import jsoftware.com.jblue.model.dao.WaterIntakeTypeDAO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserTypeDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
-import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.GraphicsUtils;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
-import jsoftware.com.jutil.util.Func;
 
 /**
  *
@@ -59,7 +57,7 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
     private String user_key;
     private ComboBoxController<StreetDTO> combo_box1;
     private ComboBoxController<StreetDTO> combo_box2;
-    private ComboBoxController<WaterIntakeTypesDTO> combo_box3;
+    private ComboBoxController<WaterIntakeTypeDTO> combo_box3;
     private ComboBoxController<UserTypeDTO> combo_box4;
 
     /**
@@ -70,15 +68,15 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
         this.initComponents();
         initComponents();
         controller = FactoryController.getUserController(this);
-        table_controller = new TableController<>(this, new UserDAO2(true, getProcessName()));
+        table_controller = new TableController<>(this, new UserDao(true, getProcessTypeName()));
         model = TableModelFactory.getUserTableModel();
         objects_table.setModel(model);
         ly = (CardLayout) root_panel.getLayout();
         ly.show(root_panel, register_panel.getName());
-        combo_box1 = new ComboBoxController<>(street1_field, new StreetDAO(isDev_flag(), getProcessName()));
-        combo_box2 = new ComboBoxController<>(street2_field, new StreetDAO(isDev_flag(), getProcessName()));
-        combo_box3 = new ComboBoxController<>(water_intakes_type_field, new WaterIntakeTypeDAO(isDev_flag(), getProcessName()));
-        combo_box4 = new ComboBoxController<>(user_type_field, new UserTypeDAO(isDev_flag(), getProcessName()));
+        combo_box1 = new ComboBoxController<>(street1_field, new StreetDAO(isDev_flag(), getProcessTypeName()));
+        combo_box2 = new ComboBoxController<>(street2_field, new StreetDAO(isDev_flag(), getProcessTypeName()));
+        combo_box3 = new ComboBoxController<>(water_intakes_type_field, new WaterIntakeTypeDAO(isDev_flag(), getProcessTypeName()));
+        combo_box4 = new ComboBoxController<>(user_type_field, new UserTypeDAO(isDev_flag(), getProcessTypeName()));
         combo_box1.loadData();
         combo_box2.loadData();
         combo_box3.loadData();
@@ -1056,8 +1054,8 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
     private javax.swing.JPanel user_data_panel;
     private javax.swing.JComboBox<String> user_status_field;
     private javax.swing.JComboBox<UserTypeDTO> user_type_field;
-    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO> water_intakes_filter;
-    private javax.swing.JComboBox<WaterIntakeTypesDTO> water_intakes_type_field;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO> water_intakes_filter;
+    private javax.swing.JComboBox<WaterIntakeTypeDTO> water_intakes_type_field;
     // End of variables declaration//GEN-END:variables
 
     public UserDTO getObject() {
@@ -1125,7 +1123,7 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
         last_name1_field.setText(object_search.getLastName1());
         last_name2_field.setText(object_search.getLastName2());
         gender_field.setSelectedIndex(Integer.parseInt(object_search.getGender()));
-        water_intakes_type_field.setSelectedItem((WaterIntakeTypesDTO) object_search.get("water_inatke_type_object"));
+        water_intakes_type_field.setSelectedItem((WaterIntakeTypeDTO) object_search.get("water_inatke_type_object"));
         street1_field.setSelectedItem((StreetDTO) object_search.get("street1_object"));
         street2_field.setSelectedItem((StreetDTO) object_search.get("street2_object"));
         inside_number_field.setText(object_search.getInsideNumber());
@@ -1180,50 +1178,7 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
     public UserDTO getValues(boolean update) {
         Map<String, Object> map = new HashMap<>(18);
         if (update) {
-            Func.addIfChanged(map, "curp", object_search.getCurp(), Formats.getTextFormat(curp_field.getText()));
-            Func.addIfChanged(map, "first_name", object_search.getCurp(), Formats.getTextFormat(first_name_field.getText()));
-            Func.addIfChanged(map, "last_name1", object_search.getCurp(), Formats.getTextFormat(last_name1_field.getText()));
-            Func.addIfChanged(map, "last_name2", object_search.getCurp(), Formats.getTextFormat(last_name2_field.getText()));
-            Func.addIfChanged(map, "gender", object_search.getCurp(), Formats.getTextFormat(String.valueOf(gender_field.getSelectedIndex())));
-            Func.addIfChanged(map, "email", object_search.getCurp(), Formats.getTextFormat(email_field.getText()));
-            Func.addIfChanged(map, "birthdate", object_search.getCurp(), Formats.getTextFormat(date_birday_field.getText()));
-            Func.addIfChanged(map, "phone_number1", object_search.getCurp(), Formats.getTextFormat(phone_number1_field.getText()));
-            Func.addIfChanged(map, "phone_number2", object_search.getCurp(), Formats.getTextFormat(phone_number2_field.getText()));
-            StreetDTO str1 = street1_field.getItemAt(street1_field.getSelectedIndex());
-            Func.addIfChanged(map, "street1", object_search.getCurp(), Formats.getTextFormat(str1.getId()));
-
-            StreetDTO str2 = street2_field.getItemAt(street2_field.getSelectedIndex());
-            Func.addIfChanged(map, "street2", object_search.getCurp(), Formats.getTextFormat(str2.getId()));
-
-            Func.addIfChanged(map, "inside_number", object_search.getCurp(), Formats.getTextFormat(inside_number_field.getText()));
-            Func.addIfChanged(map, "outside_number", object_search.getCurp(), Formats.getTextFormat(outside_number_field.getText()));
-            WaterIntakeTypesDTO wki = water_intakes_type_field.getItemAt(water_intakes_type_field.getSelectedIndex());
-            Func.addIfChanged(map, "water_intake_type", object_search.getCurp(), Formats.getTextFormat(wki.getId()));
-            String user_type = buttonGroup1.getSelection().getActionCommand();
-            Func.addIfChanged(map, "user_type", object_search.getCurp(), Formats.getTextFormat(user_type));
-
         } else {
-            Func.putIfPresentAndNotBlank(map, "curp", Formats.getTextFormat(curp_field.getText()));
-            Func.putIfPresentAndNotBlank(map, "first_name", Formats.getTextFormat(first_name_field.getText()));
-            Func.putIfPresentAndNotBlank(map, "last_name1", Formats.getTextFormat(last_name1_field.getText()));
-            Func.putIfPresentAndNotBlank(map, "last_name2", Formats.getTextFormat(last_name2_field.getText()));
-            Func.putIfPresentAndNotBlank(map, "gender", Formats.getTextFormat(String.valueOf(gender_field.getSelectedIndex())));
-            Func.putIfPresentAndNotBlank(map, "email", Formats.getTextFormat(email_field.getText()));
-            Func.putIfPresentAndNotBlank(map, "birthdate", Formats.getTextFormat(date_birday_field.getText()));
-            Func.putIfPresentAndNotBlank(map, "phone_number1", Formats.getTextFormat(phone_number1_field.getText()));
-            Func.putIfPresentAndNotBlank(map, "phone_number2", Formats.getTextFormat(phone_number2_field.getText()));
-            StreetDTO str1 = street1_field.getItemAt(street1_field.getSelectedIndex());
-            Func.putIfPresentAndNotBlank(map, "street1", Formats.getTextFormat(str1.getId()));
-
-            StreetDTO str2 = street2_field.getItemAt(street2_field.getSelectedIndex());
-            Func.putIfPresentAndNotBlank(map, "street2", Formats.getTextFormat(str2.getId()));
-
-            Func.putIfPresentAndNotBlank(map, "inside_number", Formats.getTextFormat(inside_number_field.getText()));
-            Func.putIfPresentAndNotBlank(map, "outside_number", Formats.getTextFormat(outside_number_field.getText()));
-            WaterIntakeTypesDTO wki = water_intakes_type_field.getItemAt(water_intakes_type_field.getSelectedIndex());
-            Func.putIfPresentAndNotBlank(map, "water_intake_type", Formats.getTextFormat(wki.getId()));
-            String user_type = buttonGroup1.getSelection().getActionCommand();
-            Func.putIfPresentAndNotBlank(map, "user_type", Formats.getTextFormat(user_type));
         }
         return new UserDTO(map);
     }

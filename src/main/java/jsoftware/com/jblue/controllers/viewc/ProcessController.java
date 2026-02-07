@@ -28,7 +28,7 @@ public class ProcessController extends AbstractDBViewController<ProcessWrapperDT
 
     public ProcessController(AbstractProcessView<UserDTO> view) {
         this.view = view;
-        this.service = new OwnerRegisterProcessService(AppConfig.isDevMessages(), view.getProcessName());
+        this.service = new OwnerRegisterProcessService(AppConfig.isDevMessages(), view.getProcessTypeName());
 
     }
 

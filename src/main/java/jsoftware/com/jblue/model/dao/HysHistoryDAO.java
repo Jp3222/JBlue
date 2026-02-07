@@ -136,15 +136,15 @@ public class HysHistoryDAO extends AbstractDAO {
     public class HysEmployeeMovs {
 
         public boolean insertToEmployee(String description) throws SQLException {
-            return insert(Const.INDEX_EMP_EMPLOYEES, description);
+            return insert(Const.INDEX_EMP_EMPLOYEE, description);
         }
 
         public boolean updateToEmployee(String description) throws SQLException {
-            return insert(Const.INDEX_EMP_EMPLOYEES, description);
+            return insert(Const.INDEX_EMP_EMPLOYEE, description);
         }
 
         public boolean deleteToEmployee(String description) throws SQLException {
-            return insert(Const.INDEX_EMP_EMPLOYEES, description);
+            return insert(Const.INDEX_EMP_EMPLOYEE, description);
         }
 
         public boolean saveLogin(EmployeeDTO employee, String description) throws SQLException {
@@ -162,15 +162,15 @@ public class HysHistoryDAO extends AbstractDAO {
         private static final long serialVersionUID = 1L;
 
         public boolean insertToUsers(String description) throws SQLException {
-            return insert(Const.INDEX_USR_USERS, description);
+            return insert(Const.INDEX_USR_USER, description);
         }
 
         public boolean updateToUsers(String description) throws SQLException {
-            return insert(Const.INDEX_USR_USERS, description);
+            return insert(Const.INDEX_USR_USER, description);
         }
 
         public boolean deleteToUsers(String description) throws SQLException {
-            return insert(Const.INDEX_USR_USERS, description);
+            return insert(Const.INDEX_USR_USER, description);
         }
     }
 

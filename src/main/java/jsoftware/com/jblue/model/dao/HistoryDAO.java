@@ -119,19 +119,19 @@ public class HistoryDAO extends AbstractDAO {
         }
 
         public boolean insert(JDBConnection connection, String description) throws SQLException {
-            return dao.insert(connection, Const.INDEX_USR_USERS, description);
+            return dao.insert(connection, Const.INDEX_USR_USER, description);
         }
 
         public boolean update(JDBConnection connection, String description) throws SQLException {
-            return dao.update(connection, Const.INDEX_USR_USERS, description);
+            return dao.update(connection, Const.INDEX_USR_USER, description);
         }
 
         public boolean delete(JDBConnection connection, String description) throws SQLException {
-            return dao.delete(connection, Const.INDEX_USR_USERS, description);
+            return dao.delete(connection, Const.INDEX_USR_USER, description);
         }
 
         public boolean select(JDBConnection connection, String description) throws SQLException {
-            return dao.select(connection, Const.INDEX_USR_USERS, description);
+            return dao.select(connection, Const.INDEX_USR_USER, description);
         }
     }
 
@@ -153,19 +153,19 @@ public class HistoryDAO extends AbstractDAO {
         }
 
         public boolean insert(JDBConnection connection, String description) throws SQLException {
-            return dao.insert(connection, Const.INDEX_EMP_EMPLOYEES, description);
+            return dao.insert(connection, Const.INDEX_EMP_EMPLOYEE, description);
         }
 
         public boolean update(JDBConnection connection, String description) throws SQLException {
-            return dao.update(connection, Const.INDEX_EMP_EMPLOYEES, description);
+            return dao.update(connection, Const.INDEX_EMP_EMPLOYEE, description);
         }
 
         public boolean delete(JDBConnection connection, String description) throws SQLException {
-            return dao.delete(connection, Const.INDEX_EMP_EMPLOYEES, description);
+            return dao.delete(connection, Const.INDEX_EMP_EMPLOYEE, description);
         }
 
         public boolean select(JDBConnection connection, String description) throws SQLException {
-            return dao.select(connection, Const.INDEX_EMP_EMPLOYEES, description);
+            return dao.select(connection, Const.INDEX_EMP_EMPLOYEE, description);
         }
     }
 
@@ -186,19 +186,19 @@ public class HistoryDAO extends AbstractDAO {
         }
 
         public boolean insert(JDBConnection connection, String description) throws SQLException {
-            return dao.insert(connection, Const.INDEX_PYM_PAYMENTS, description);
+            return dao.insert(connection, Const.INDEX_PYM_PAYMENT, description);
         }
 
         public boolean update(JDBConnection connection, String description) throws SQLException {
-            return dao.update(connection, Const.INDEX_PYM_PAYMENTS, description);
+            return dao.update(connection, Const.INDEX_PYM_PAYMENT, description);
         }
 
         public boolean delete(JDBConnection connection, String description) throws SQLException {
-            return dao.delete(connection, Const.INDEX_PYM_PAYMENTS, description);
+            return dao.delete(connection, Const.INDEX_PYM_PAYMENT, description);
         }
 
         public boolean select(JDBConnection connection, String description) throws SQLException {
-            return dao.select(connection, Const.INDEX_PYM_PAYMENTS, description);
+            return dao.select(connection, Const.INDEX_PYM_PAYMENT, description);
         }
     }
 
@@ -310,12 +310,12 @@ public class HistoryDAO extends AbstractDAO {
         }
 
         public boolean insert(JDBConnection connection, String description) throws SQLException {
-            return dao.insert(connection, Const.INDEX_USR_DOCUMENT, description);
+            return dao.insert(connection, Const.INDEX_USR_USER_DOCUMENT, description);
         }
 
         // El historial de documentos suele ser solo de inserción o borrado
         public boolean delete(JDBConnection connection, String description) throws SQLException {
-            return dao.delete(connection, Const.INDEX_USR_DOCUMENT, description);
+            return dao.delete(connection, Const.INDEX_USR_USER_DOCUMENT, description);
         }
     }
 

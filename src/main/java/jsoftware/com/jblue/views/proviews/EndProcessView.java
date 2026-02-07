@@ -4,7 +4,11 @@
  */
 package jsoftware.com.jblue.views.proviews;
 
+import java.util.Map;
+import javax.swing.table.TableModel;
+import jsoftware.com.jblue.model.dto.PaymentListDTO;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.dto.UserDocumentDTO;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 
@@ -103,6 +107,42 @@ public final class EndProcessView extends AbstractProcessView<ProcessWrapperDTO>
 
     @Override
     public void getDataView() {
-
+        
+        ProcessWrapperDTO o = getProcessWrapper();
+        TableModel model = jTable1.getModel();
+        model.getRowCount();
+        int i = 0;
+        for (Map.Entry<String, Object> entry : o.getUser().getMap().entrySet()) {
+            String key = entry.getKey();
+            String val = entry.getValue().toString();
+            model.setValueAt(key, i, 0);
+            model.setValueAt(val, i, 1);
+            i++;
+        }
+        for (UserDocumentDTO doc : o.getUser_document_list()) {
+            for (Map.Entry<String, Object> entry : doc.getMap().entrySet()) {
+                String key = entry.getKey();
+                String val = entry.getValue().toString();
+                model.setValueAt(key, i, 0);
+                model.setValueAt(val, i, 1);
+                i++;
+            }
+        }
+        for (PaymentListDTO py : o.getPayment_concept_list()) {
+            for (Map.Entry<String, Object> entry : py.getMap().entrySet()) {
+                String key = entry.getKey();
+                String val = entry.getValue().toString();
+                model.setValueAt(key, i, 0);
+                model.setValueAt(val, i, 1);
+                i++;
+            }
+        }
+        for (Map.Entry<String, Object> entry : o.getWater_intake().getMap().entrySet()) {
+            String key = entry.getKey();
+            String val = entry.getValue().toString();
+            model.setValueAt(key, i, 0);
+            model.setValueAt(val, i, 1);
+            i++;
+        }
     }
 }

@@ -28,8 +28,6 @@ public class UserDTO extends PersonObject implements Cloneable {
         super(21);
     }
 
-   
-
     public String getStreet1() {
         return get("street1").toString();
     }
@@ -44,10 +42,6 @@ public class UserDTO extends PersonObject implements Cloneable {
 
     public String getOutsideNumber() {
         return get("outside_number").toString();
-    }
-
-    public String getWaterIntakeType() {
-        return get("water_intake_type").toString();
     }
 
     public String getUserType() {

@@ -17,12 +17,17 @@
 package jsoftware.com.jblue.controllers.compc;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import jsoftware.com.jblue.controllers.AbstractComponentController;
 import jsoftware.com.jblue.model.dao.ListComponentDAO;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jblue.sys.app.AppFiles;
+import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.db.JDBMapObject;
+import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  *
@@ -45,22 +50,23 @@ public class ComboBoxController<T extends JDBMapObject> extends AbstractComponen
 
     @Override
     public void loadData() {
-        JComboBox<T> box = getComponent();
-        if (list == null || list.isEmpty()) {
-            list.addAll(dao.getList());
-            System.out.println("dao disparado");
-        }
-
-        box.addItem((T) new JDBMapObject() {
-            @Override
-            public String toString() {
-                return "SELECCIONA ELEMENTO";
+        try (JDBConnection c = ConnectionFactory.getIntance().getCacheConnection()) {
+            JComboBox<T> box = getComponent();
+            if (list.isEmpty()) {
+                list.addAll(dao.getList(c));
+                System.out.println("dao disparado");
             }
-        });
-
-        for (T i : list) {
-            box.addItem(i);
-            System.out.println(i.toString());
+            box.addItem((T) new JDBMapObject() {
+                @Override
+                public String toString() {
+                    return "SELECCIONA ELEMENTO";
+                }
+            });
+            for (T i : list) {
+                box.addItem(i);
+            }
+        } catch (Exception e) {
+            log(e, "loadData");
         }
     }
 
@@ -84,4 +90,17 @@ public class ComboBoxController<T extends JDBMapObject> extends AbstractComponen
     public void actionPerformed(ActionEvent ae) {
     }
 
+    public void log(Exception e, String method_name) {
+        try {
+            FuncLogs.logError(
+                    AppFiles.DIR_PROG_LOG_TODAY,
+                    getClass(), e,
+                    getClass().getName(),
+                    method_name,
+                    e.getMessage()
+            );
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
+    }
 }

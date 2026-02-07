@@ -23,9 +23,9 @@ import java.util.Map;
 import jsoftware.com.jblue.model.dao.PaymentListDAO;
 import jsoftware.com.jblue.model.dao.PaymentsDAO;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.PaymentsRulers;
@@ -46,8 +46,8 @@ public abstract class AbstractPayment implements PaymentModel {
 
     protected int payment_concept;
     protected UserDTO user;
-    protected WaterIntakesDTO water_intake;
-    protected WaterIntakeTypesDTO water_intake_type;
+    protected WaterIntakeDTO water_intake;
+    protected WaterIntakeTypeDTO water_intake_type;
     protected String payment_method;
 
     protected BigDecimal total_cost;
@@ -129,7 +129,7 @@ public abstract class AbstractPayment implements PaymentModel {
     @Override
     public void setUser(UserDTO usuario) {
         this.user = usuario;
-        this.water_intake_type = (WaterIntakeTypesDTO) usuario.get("water_intake_object");
+        this.water_intake_type = (WaterIntakeTypeDTO) usuario.get("water_intake_object");
     }
 
     @Override
@@ -171,7 +171,7 @@ public abstract class AbstractPayment implements PaymentModel {
     }
 
     @Override
-    public void setWaterIntake(WaterIntakesDTO o) {
+    public void setWaterIntake(WaterIntakeDTO o) {
         this.water_intake = o;
     }
 

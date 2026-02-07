@@ -20,21 +20,23 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.util.DTOFactory;
+import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.win.ConfigWindow;
 import jsoftware.com.jblue.views.win.LoginWindows;
+import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.db.JDBConnectionBuilder;
 import jsoftware.com.jutil.platf.So;
 import jsoftware.com.jutil.sys.MainSystem;
+import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  *
@@ -43,8 +45,6 @@ import jsoftware.com.jutil.sys.MainSystem;
 public class JBlueMainSystem implements MainSystem {
 
     public static final String DATA_BASE_KEY = "connection";
-    private static final Logger LOG = Logger.getLogger(JBlueMainSystem.class.getName());
-    private final int code_1049 = 1049;
     /**
      *
      */
@@ -109,56 +109,61 @@ public class JBlueMainSystem implements MainSystem {
             builder.setMaxPollSize(20);
             builder.setFactory(new DTOFactory());
             ConnectionFactory intance = ConnectionFactory.getIntance(builder);
-            SystemLogs.infoSysLogs("BASE DE DATOS CONECTADA");
+            try (JDBConnection c = intance.getMainConnection()) {
+                if (Func.isNull(c)) {
+                    throw new SQLException("SIN CONEXIONES");
+                }
+            }
+            log("FABRICA DE CONECIONES CREADA");
             res = true;
         } catch (NullPointerException ex) {
-            System.getLogger(JBlueMainSystem.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            log(ex, "connectionDB", ex.getMessage());
+        } catch (SQLException ex) {
+            log(ex, "connectionDB", ex.getMessage());
         } catch (Exception ex) {
-            System.getLogger(JBlueMainSystem.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            log(ex, "connectionDB", ex.getMessage());
         }
         return res;
     }
 
     @Override
     public boolean appFiles() {
-        File aux;
-        //Directorios del sistema
-        for (String i : jsoftware.com.jblue.sys.app.AppFiles.S_ALL_DIR_PROG) {
-            aux = new File(i);
-            if (aux.exists()) {
-                System.out.println(log_messages.formatted(i, "EXISTE"));
-            } else {
-                aux.mkdir();
-                System.out.println(log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
-            }
-        }
-        //Directorios del usuario
-        for (String i : AppFiles.S_ARR_DIR_USER) {
-            aux = new File(i);
-            if (aux.exists()) {
-                SystemLogs.infoSysLogs(log_messages.formatted(i, "EXISTE"));
-            } else {
-                aux.mkdirs();
-                System.out.println(log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
-            }
-        }
-        //Alchivos del programa
-        for (String i : AppFiles.S_ARR_PROG_ARC) {
-            System.out.println(i);
-            aux = new File(i);
-            if (aux.exists()) {
-                System.out.println(aux.getAbsolutePath());
-                SystemLogs.infoSysLogs(log_messages.formatted(i, "EXISTE"));
-            } else {
-                try {
-                    aux.createNewFile();
-                    SystemLogs.infoSysLogs(log_messages.formatted(i, "FUE CREADO CORRECTAMENTE"));
-                } catch (IOException ex) {
-                    SystemLogs.severeSysLogs(i, ex);
+        try {
+            File aux;
+            //Directorios del sistema
+            for (String i : jsoftware.com.jblue.sys.app.AppFiles.S_ALL_DIR_PROG) {
+                aux = new File(i);
+                if (aux.exists()) {
+                    log(log_messages.formatted(i, "EXISTENTE"));
+                } else {
+                    aux.mkdir();
+                    log(log_messages.formatted(i, "CREADO EXITOSAMENTE"));
                 }
             }
+            //Directorios del usuario
+            for (String i : AppFiles.S_ARR_DIR_USER) {
+                aux = new File(i);
+                if (aux.exists()) {
+                    log(log_messages.formatted(i, "EXISTENTE"));
+                } else {
+                    aux.mkdirs();
+                    log(log_messages.formatted(i, "CREADO EXITOSAMENTE"));
+                }
+            }
+            //Alchivos del programa
+            for (String i : AppFiles.S_ARR_PROG_ARC) {
+                System.out.println(i);
+                aux = new File(i);
+                if (aux.exists()) {
+                    log(log_messages.formatted(i, "EXISTENTE"));
+                } else {
+                    aux.createNewFile();
+                    log(log_messages.formatted(i, "CREADO EXITOSAMENTE"));
+                }
+            }
+        } catch (IOException ex) {
+            log(ex, "openSys", ex.getMessage());
         }
-
         return true;
     }
 
@@ -166,7 +171,7 @@ public class JBlueMainSystem implements MainSystem {
     public boolean cache() {
         boolean rs = CacheFactory.isLoaded || CacheFactory.loadCaches();
         if (rs) {
-            SystemLogs.infoSysLogs("MEMORIA CACHE LISTA");
+            log("CACHE CARGADA");
         }
         return rs;
     }
@@ -180,30 +185,44 @@ public class JBlueMainSystem implements MainSystem {
 
     @Override
     public boolean openSys() {
+        log("START SYSTEM");
         try (FileInputStream input = new FileInputStream(AppFiles.FIL_ARC_CONFIG)) {
             propiedades.loadFromXML(input);
 
         } catch (IOException ex) {
-            Logger.getLogger(JBlueMainSystem.class.getName()).log(Level.SEVERE, null, ex);
+            log(ex, "openSys", ex.getMessage());
         }
-        System.out.println(AppFiles.FIL_ARC_CONFIG.getAbsolutePath());
-        SystemLogs.infoDbLogs("OPEN SYSTEM");
+        log("OPEN SYS");
         return true;
     }
 
     @Override
     public boolean closeSys() {
         ConnectionFactory.getIntance().close();
-        SystemLogs.infoDbLogs("CLOSE SYSTEM");
-        LOG.log(Level.INFO, "EXIT");
+        log("EXIT SYS\n");
         System.exit(0);
         return true;
     }
-    private final String log_messages = "EL DIRECTORIO: %s %s";
+    private final String log_messages = "EL DIRECTORIO: %s %s ";
 
     @Override
     public Object getResources(String key) {
         return resources.get(key);
     }
 
+    public void log(String message) {
+        try {
+            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", message);
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    public void log(Exception e, String method_name, String message) {
+        try {
+            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "MAIN", method_name, message);
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
+    }
 }

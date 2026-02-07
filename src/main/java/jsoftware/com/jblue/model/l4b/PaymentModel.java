@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
 
 /**
  *
@@ -83,7 +83,7 @@ public interface PaymentModel extends Serializable {
      */
     void setUser(UserDTO o);
 
-    void setWaterIntake(WaterIntakesDTO o);
+    void setWaterIntake(WaterIntakeDTO o);
 
     /**
      *

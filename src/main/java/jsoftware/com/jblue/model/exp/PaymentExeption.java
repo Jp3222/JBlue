@@ -19,5 +19,5 @@ public class PaymentExeption extends BlueException {
     public PaymentExeption(int error_code, String user_message, String dev_message) {
         super(error_code, user_message, dev_message);
     }
-    
+
 }

@@ -12,8 +12,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
-import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
 import jsoftware.com.jutil.util.JFunc;
@@ -22,13 +21,13 @@ import jsoftware.com.jutil.util.JFunc;
  *
  * @author juanp
  */
-public class WaterIntakeDAO extends AbstractDAO implements ListComponentDAO<WaterIntakesDTO> {
+public class WaterIntakeDAO extends AbstractDAO implements ListComponentDAO<WaterIntakeDTO> {
 
     public WaterIntakeDAO(boolean flag_dev_log, String name_module) {
         super(flag_dev_log, name_module);
     }
 
-    public int insert(JDBConnection connection, WaterIntakesDTO dto) throws Exception {
+    public int insert(JDBConnection connection, WaterIntakeDTO dto) throws Exception {
         int generated_id = -1;
         String query = """
                    INSERT INTO wki_water_intakes 
@@ -84,7 +83,7 @@ public class WaterIntakeDAO extends AbstractDAO implements ListComponentDAO<Wate
         return generated_id;
     }
 
-    public boolean updateOwnerChage(JDBConnection connection, int original_user_id, WaterIntakesDTO dto) throws Exception {
+    public boolean updateOwnerChage(JDBConnection connection, int original_user_id, WaterIntakeDTO dto) throws Exception {
         boolean res = false;
         String query = """
                        UPDATE wki_water_intakes SET 
@@ -116,7 +115,7 @@ public class WaterIntakeDAO extends AbstractDAO implements ListComponentDAO<Wate
         return res;
     }
 
-    public boolean updateStatus(JDBConnection connection, WaterIntakesDTO dto) throws Exception {
+    public boolean updateStatus(JDBConnection connection, WaterIntakeDTO dto) throws Exception {
         boolean res = false;
         String query = """
                        UPDATE wki_water_intakes SET 
@@ -145,15 +144,13 @@ public class WaterIntakeDAO extends AbstractDAO implements ListComponentDAO<Wate
     }
 
     @Override
-    public List<WaterIntakesDTO> getList() throws SQLException, Exception {
-        List<WaterIntakesDTO> list = new ArrayList<>(15);
+    public List<WaterIntakeDTO> getList(JDBConnection connection) throws SQLException, Exception {
+        List<WaterIntakeDTO> list = new ArrayList<>(15);
         String query = """
                    SELECT * FROM wki_water_intakes 
                    WHERE status = 1
                    """;
-
-        try (JDBConnection c = ConnectionFactory.getIntance().getCacheConnection(); PreparedStatement ps = c.getNewPreparedStatement(query)) {
-
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
             try (ResultSet rs = ps.executeQuery()) {
                 ResultSetMetaData md = rs.getMetaData();
                 int size = md.getColumnCount();
@@ -164,7 +161,7 @@ public class WaterIntakeDAO extends AbstractDAO implements ListComponentDAO<Wate
                 }
 
                 while (rs.next()) {
-                    WaterIntakesDTO o = new WaterIntakesDTO();
+                    WaterIntakeDTO o = new WaterIntakeDTO();
                     for (String field_name : fields) {
                         o.getMap().put(field_name, rs.getString(field_name));
                     }

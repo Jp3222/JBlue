@@ -7,11 +7,37 @@ package jsoftware.com.jblue.model.constants.des;
 import jsoftware.com.jutil.db.JDBTable;
 
 /**
+ * Central de Metadatos del Esquema de Base de Datos JBlue.
+ * <p>
+ * Esta clase actúa como un <b>Diccionario de Datos Dinámico</b>, consolidando
+ * objetos {@link JDBTable} que representan la estructura completa de la base de
+ * datos MySQL. Implementa un diseño basado en interfaces de constantes para
+ * agrupar nombres de tablas, campos (fields) y mapeos de acceso (GS).</p>
+ * *
+ * * <p>
+ * <b>Arquitectura de la Clase:</b></p>
+ * <ul>
+ * <li><b>Consistencia:</b> Garantiza que los nombres de las columnas y tablas
+ * sean uniformes en todo el proyecto.</li>
+ * <li><b>Abstracción:</b> Facilita la construcción de consultas dinámicas en
+ * los DAOs sin escribir SQL puro ("Hard-coded").</li>
+ * <li><b>Modularidad:</b> Agrupa las tablas por prefijos funcionales:
+ * <ul>
+ * <li>{@code CAT_}: Catálogos del sistema (Calles, Estados, Métodos de
+ * Pago).</li>
+ * <li>{@code USR_}: Gestión de Usuarios y Documentación.</li>
+ * <li>{@code PYM_}: Procesamiento de Pagos y Conceptos.</li>
+ * <li>{@code HYS_} / {@code LOGBOOK_}: Historiales y Auditoría.</li>
+ * </ul>
+ * </li>
+ * </ul>
  *
- * @author juanp
+ * @author JUAN PABLO CAMPOS CASASANERO
+ * @see jsoftware.com.jutil.db.JDBTable
  */
-public class ConstTable extends TableNameConst {
+public class TableConst implements TableFieldConst, TableFieldGsConst, TableIndexConst, TableNameConst {
 
+    public static final JDBTable CAT_GROUP_PREFIX_TABLE = new JDBTable(CAT_GROUP_PREFIX_NAME, CAT_GROUP_PREFIX_FIELDS, CAT_GROUP_PREFIX_GS);
     public static final JDBTable CAT_HISTORY_TYPE_MOV_TABLE = new JDBTable(CAT_HISTORY_TYPE_MOV_NAME, CAT_HISTORY_TYPE_MOV_FIELDS, CAT_HISTORY_TYPE_MOV_GS);
     public static final JDBTable CAT_PAYMENT_METHOD_TABLE = new JDBTable(CAT_PAYMENT_METHOD_NAME, CAT_PAYMENT_METHOD_FIELDS, CAT_PAYMENT_METHOD_GS);
     public static final JDBTable CAT_PAYMENT_TYPE_TABLE = new JDBTable(CAT_PAYMENT_TYPE_NAME, CAT_PAYMENT_TYPE_FIELDS, CAT_PAYMENT_TYPE_GS);
@@ -29,12 +55,14 @@ public class ConstTable extends TableNameConst {
     public static final JDBTable HYS_HISTORY_TABLE = new JDBTable(HYS_HISTORY_NAME, HYS_HISTORY_FIELDS, HYS_HISTORY_GS);
     public static final JDBTable HYS_PROGRAM_HISTORY_TABLE = new JDBTable(HYS_PROGRAM_HISTORY_NAME, HYS_PROGRAM_HISTORY_FIELDS, HYS_PROGRAM_HISTORY_GS);
     public static final JDBTable LOGBOOK_TO_EMPLOYEE_TABLE = new JDBTable(LOGBOOK_TO_EMPLOYEE_NAME, LOGBOOK_TO_EMPLOYEE_FIELDS, LOGBOOK_TO_EMPLOYEE_GS);
-    public static final JDBTable LOGBOOK_TO_PARAMETES_TABLE = new JDBTable(LOGBOOK_TO_PARAMETES_NAME, LOGBOOK_TO_PARAMETES_FIELDS, LOGBOOK_TO_PARAMETES_GS);
+    public static final JDBTable LOGBOOK_TO_PARAMETES_TABLE = new JDBTable(LOGBOOK_TO_PARAMETES_NAME, LOGBOOK_TO_PARAMETERS_FIELDS, LOGBOOK_TO_PARAMETERS_GS);
     public static final JDBTable LOGBOOK_TO_PAYMENT_TABLE = new JDBTable(LOGBOOK_TO_PAYMENT_NAME, LOGBOOK_TO_PAYMENT_FIELDS, LOGBOOK_TO_PAYMENT_GS);
     public static final JDBTable LOGBOOK_TO_USER_TABLE = new JDBTable(LOGBOOK_TO_USER_NAME, LOGBOOK_TO_USER_FIELDS, LOGBOOK_TO_USER_GS);
     public static final JDBTable LOGBOOK_TO_WATER_INTAKE_TABLE = new JDBTable(LOGBOOK_TO_WATER_INTAKE_NAME, LOGBOOK_TO_WATER_INTAKE_FIELDS, LOGBOOK_TO_WATER_INTAKE_GS);
     public static final JDBTable LOGBOOK_TO_WATER_INTAKES_TYPE_TABLE = new JDBTable(LOGBOOK_TO_WATER_INTAKES_TYPE_NAME, LOGBOOK_TO_WATER_INTAKES_TYPE_FIELDS, LOGBOOK_TO_WATER_INTAKES_TYPE_GS);
     public static final JDBTable PRO_PROCESS_TABLE = new JDBTable(PRO_PROCESS_NAME, PRO_PROCESS_FIELDS, PRO_PROCESS_GS);
+    public static final JDBTable PYM_PAYMENT_CONCEPT_TABLE = new JDBTable(PYM_PAYMENT_CONCEPT_NAME, PYM_PAYMENT_CONCEPT_FIELDS, PYM_PAYMENT_CONCEPT_GS);
+    public static final JDBTable PYM_PAYMENT_LIST_TABLE = new JDBTable(PYM_PAYMENT_LIST_NAME, PYM_PAYMENT_LIST_FIELDS, PYM_PAYMENT_LIST_GS);
     public static final JDBTable PYM_PAYMENTS_TABLE = new JDBTable(PYM_PAYMENTS_NAME, PYM_PAYMENTS_FIELDS, PYM_PAYMENTS_GS);
     public static final JDBTable USR_BLOCKED_USER_TABLE = new JDBTable(USR_BLOCKED_USER_NAME, USR_BLOCKED_USER_FIELDS, USR_BLOCKED_USER_GS);
     public static final JDBTable USR_USER_TABLE = new JDBTable(USR_USER_NAME, USR_USER_FIELDS, USR_USER_GS);
@@ -43,5 +71,4 @@ public class ConstTable extends TableNameConst {
     public static final JDBTable USR_USERS_CONSUMERS_TABLE = new JDBTable(USR_USERS_CONSUMERS_NAME, USR_USERS_CONSUMERS_FIELDS, USR_USERS_CONSUMERS_GS);
     public static final JDBTable WKI_WATER_INTAKE_TYPE_TABLE = new JDBTable(WKI_WATER_INTAKE_TYPE_NAME, WKI_WATER_INTAKE_TYPE_FIELDS, WKI_WATER_INTAKE_TYPE_GS);
     public static final JDBTable WKI_WATER_INTAKES_TABLE = new JDBTable(WKI_WATER_INTAKES_NAME, WKI_WATER_INTAKES_FIELDS, WKI_WATER_INTAKES_GS);
-
 }

@@ -18,10 +18,10 @@ package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
-import jsoftware.com.jblue.model.dto.WaterIntakesDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.views.WaterIntakesView;
 import jsoftware.com.jblue.views.components.ObjectSearchComponent;
 
@@ -29,7 +29,7 @@ import jsoftware.com.jblue.views.components.ObjectSearchComponent;
  *
  * @author juanp
  */
-public class WaterIntakesController extends AbstractDBViewController<WaterIntakesDTO> {
+public class WaterIntakesController extends AbstractDBViewController<WaterIntakeDTO> {
 
     private WaterIntakesView view;
 
@@ -94,7 +94,7 @@ public class WaterIntakesController extends AbstractDBViewController<WaterIntake
     }
 
     private void search_water_inatake_type() {
-        WaterIntakeTypesDTO water_inatke_type = ObjectSearchComponent.getWaterIntakeType(null);
+        WaterIntakeTypeDTO water_inatke_type = ObjectSearchComponent.getWaterIntakeType(null);
         view.setWater_intake_types_search(water_inatke_type);
     }
 }

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import jsoftware.com.jblue.model.dto.StreetDTO;
-import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
@@ -28,10 +27,10 @@ public class StreetDAO extends AbstractDAO implements ListComponentDAO<StreetDTO
     }
 
     @Override
-    public List<StreetDTO> getList() {
+    public List<StreetDTO> getList(JDBConnection connection) throws SQLException, Exception {
         List<StreetDTO> list = new ArrayList<>(15);
         String query = "SELECT * FROM cat_street WHERE status = 1";
-        try (JDBConnection c = ConnectionFactory.getIntance().getCacheConnection(); PreparedStatement ps = c.getNewPreparedStatement(query)) {
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
             try (ResultSet rs = ps.executeQuery();) {
                 ResultSetMetaData md = rs.getMetaData();
                 int size = md.getColumnCount();

@@ -16,11 +16,11 @@
  */
 package jsoftware.com.jblue.util.plataformas;
 
-import jsoftware.com.jutil.platf.So;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jsoftware.com.jutil.platf.So;
 
 /**
  *
@@ -28,27 +28,29 @@ import java.util.logging.Logger;
  */
 public abstract class OsConfig implements OsConfigModel {
 
+    // Dentro de OsConfig.java, actualiza estos métodos:
     public static final OsConfig getDefaultOsConfig() {
         if (So.isLinux()) {
-            return getLinuxConfing();
+            return getLinuxConfig();
         }
         if (So.isMac()) {
-            return getMacConfing();
+            return getMacConfig();
         }
-        return getWindowsConfing();
+        return getWindowsConfig();
     }
 
-    public static final OsConfig getWindowsConfing() {
+    public static final OsConfig getWindowsConfig() {
         return new Windows();
     }
 
-    public static final OsConfig getLinuxConfing() {
-        return new Windows();
+    public static final OsConfig getLinuxConfig() {
+        return new Linux(); // Ahora sí devuelve Linux
     }
 
-    public static final OsConfig getMacConfing() {
-        return new Windows();
+    public static final OsConfig getMacConfig() {
+        return new MacOs(); // Ahora sí devuelve Mac
     }
+    
     protected String documents_path[],
             desktop_path[];
 

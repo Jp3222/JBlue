@@ -34,7 +34,7 @@ public abstract class AbstractComponentController<T extends JDBMapObject> extend
     protected final List<T> list;
 
     public AbstractComponentController(JComponent componente) {
-        this(componente, new ArrayList<>());
+        this(componente, new ArrayList<>(100));
     }
 
     public AbstractComponentController(JComponent componente, List<T> list) {
@@ -42,6 +42,7 @@ public abstract class AbstractComponentController<T extends JDBMapObject> extend
         this.list = list;
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends JComponent> T getComponent() {
         return (T) componente;
     }

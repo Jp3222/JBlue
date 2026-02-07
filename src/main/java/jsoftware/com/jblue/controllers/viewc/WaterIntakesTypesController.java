@@ -24,7 +24,7 @@ import jsoftware.com.jblue.controllers.DBControllerModel;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.HysHistoryDAO;
 import jsoftware.com.jblue.model.dao.WaterIntakeTypeDAO;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypesDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.views.WaterIntakesTypesView;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -33,7 +33,7 @@ import jsoftware.com.jutil.db.JDBConnection;
  *
  * @author juan pablo campos casasanero
  */
-public class WaterIntakesTypesController extends AbstractDBViewController<WaterIntakeTypesDTO> implements DBControllerModel {
+public class WaterIntakesTypesController extends AbstractDBViewController<WaterIntakeTypeDTO> implements DBControllerModel {
 
     private static final long serialVersionUID = 1L;
 
@@ -66,7 +66,7 @@ public class WaterIntakesTypesController extends AbstractDBViewController<WaterI
         if (!view.isValuesOK()) {
             return;
         }
-        WaterIntakeTypesDTO o = view.getValues(false);
+        WaterIntakeTypeDTO o = view.getValues(false);
         if (o == null || o.getMap().isEmpty()) {
             returnMessage(view, "HA OCURRIDO UN ERROR INTERNO");
             return;
@@ -84,7 +84,7 @@ public class WaterIntakesTypesController extends AbstractDBViewController<WaterI
         if (!view.isValuesOK()) {
             return;
         }
-        WaterIntakeTypesDTO o = view.getObjectSearch();
+        WaterIntakeTypeDTO o = view.getObjectSearch();
         if (o == null || o.getMap().isEmpty()) {
             returnMessage(view, "HA OCURRIDO UN ERROR INTERNO");
             return;
@@ -102,8 +102,8 @@ public class WaterIntakesTypesController extends AbstractDBViewController<WaterI
         if (!view.isValuesOK()) {
             return;
         }
-        WaterIntakeTypesDTO new_dto = view.getValues(false);
-        WaterIntakeTypesDTO old_dto = view.getObjectSearch();
+        WaterIntakeTypeDTO new_dto = view.getValues(false);
+        WaterIntakeTypeDTO old_dto = view.getObjectSearch();
         if (new_dto == null || new_dto.getMap().isEmpty()) {
             returnMessage(view, "HA OCURRIDO UN ERROR INTERNO");
             return;
@@ -129,7 +129,7 @@ public class WaterIntakesTypesController extends AbstractDBViewController<WaterI
         }
     }
 
-    private boolean save(JDBConnection connection, WaterIntakeTypesDTO o) {
+    private boolean save(JDBConnection connection, WaterIntakeTypeDTO o) {
         boolean res = false;
         int key = -1;
         try {
@@ -158,7 +158,7 @@ public class WaterIntakesTypesController extends AbstractDBViewController<WaterI
         return res;
     }
 
-    public boolean delete(JDBConnection connection, WaterIntakeTypesDTO o) {
+    public boolean delete(JDBConnection connection, WaterIntakeTypeDTO o) {
         boolean res = false;
         try {
             connection.setAutoCommit(false);
@@ -184,7 +184,7 @@ public class WaterIntakesTypesController extends AbstractDBViewController<WaterI
         return res;
     }
 
-    public boolean update(JDBConnection connection, WaterIntakeTypesDTO old_dto, WaterIntakeTypesDTO new_dto) {
+    public boolean update(JDBConnection connection, WaterIntakeTypeDTO old_dto, WaterIntakeTypeDTO new_dto) {
         boolean res = false;
         try {
             connection.setAutoCommit(false);

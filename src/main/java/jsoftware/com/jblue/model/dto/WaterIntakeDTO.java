@@ -22,19 +22,19 @@ import java.util.Map;
  *
  * @author juanp
  */
-public class WaterIntakesDTO extends AuditableObjectMap {
+public class WaterIntakeDTO extends AuditableObjectMap {
 
     private static final long serialVersionUID = 1L;
 
-    public WaterIntakesDTO(Map<String, Object> map) {
+    public WaterIntakeDTO(Map<String, Object> map) {
         super(map);
     }
 
-    public WaterIntakesDTO(int size) {
+    public WaterIntakeDTO(int size) {
         super(size);
     }
 
-    public WaterIntakesDTO() {
+    public WaterIntakeDTO() {
     }
 
     public String getConstProcedure() {

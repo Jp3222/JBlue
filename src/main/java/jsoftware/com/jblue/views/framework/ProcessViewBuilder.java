@@ -6,6 +6,7 @@ package jsoftware.com.jblue.views.framework;
 
 import java.io.Serializable;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
+import jsoftware.com.jblue.views.ShopCartView;
 import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.process.ConsumerRegisterProcessView;
 import jsoftware.com.jblue.views.process.OwnerChangerProcessView;
@@ -88,17 +89,24 @@ public class ProcessViewBuilder implements Serializable {
     }
 
     public AbstractProcessView<?> builder(String cls, ProcessViewBuilder i) {
-        if (UserView.class.getName().equals(cls)) {
-            return new UserView(i);
-        }
-        if (OwnerRegisterProcessView.class.getName().equals(cls)) {
-            return new OwnerRegisterProcessView(i);
-        }
-        if (ConsumerRegisterProcessView.class.getName().equals(cls)) {
-            return new ConsumerRegisterProcessView(i);
-        }
-        if (OwnerChangerProcessView.class.getName().equals(cls)) {
-            return new OwnerChangerProcessView(i);
+        try {
+            if (UserView.class.getName().equals(cls)) {
+                return new UserView(i);
+            }
+            if (OwnerRegisterProcessView.class.getName().equals(cls)) {
+                return new OwnerRegisterProcessView(i);
+            }
+            if (ConsumerRegisterProcessView.class.getName().equals(cls)) {
+                return new ConsumerRegisterProcessView(i);
+            }
+            if (OwnerChangerProcessView.class.getName().equals(cls)) {
+                return new OwnerChangerProcessView(i);
+            }
+            if (ShopCartView.class.getName().equals(cls)) {
+                return new ShopCartView(i);
+            }
+        } catch (Exception ex) {
+            System.getLogger(ProcessViewBuilder.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return null;
     }

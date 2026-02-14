@@ -85,7 +85,7 @@ public final class WMainMenu extends AbstractAppWindows {
         this.LOGIN = LOGIN;
         this.ABOUT = new AboutUs();
         this.PROFILE = new ProfileWindow();
-        shop_cart_view = new ShopCartView();
+        shop_cart_view = ProcessViewFactory.getIntance().getShopCarProcess();
         //PROCESO DE REGISTRO DE TITULAR
         owner_register_process_view = ProcessViewFactory.getIntance().getUserRegisterProcess();
         //PROCESO DE REGISTRO DE CONSUMIDOR

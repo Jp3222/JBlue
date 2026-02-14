@@ -4,9 +4,7 @@
  */
 package jsoftware.com.jblue.views.framework;
 
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
+import jsoftware.com.jblue.controllers.compc.TableController;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jutil.db.JDBMapObject;
 
@@ -14,7 +12,7 @@ import jsoftware.com.jutil.db.JDBMapObject;
  *
  * @author juanp
  */
-public abstract class AbstractProcessView<T extends JDBMapObject> extends DBView<T> implements ProcessViewModel {
+public abstract class AbstractProcessView<T extends JDBMapObject> extends SimpleView implements ProcessViewModel {
 
     private static final long serialVersionUID = 1L;
     private final String process_id;
@@ -23,6 +21,8 @@ public abstract class AbstractProcessView<T extends JDBMapObject> extends DBView
     private String process_type;
     private ProcessWrapperDTO process_wrapper;
     private ProcessViewBuilder builder;
+    protected TableController<T> table_controller;
+    protected int view_show;
 
     public AbstractProcessView(ProcessViewBuilder builder) {
         this.builder = builder;
@@ -96,56 +96,6 @@ public abstract class AbstractProcessView<T extends JDBMapObject> extends DBView
 
     public ProcessViewBuilder getBuilder() {
         return builder;
-    }
-
-    @Override
-    public JTextField getTextComponenteTable() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public String getTextSearchTable() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public JTable getTable() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public DefaultTableModel getModel() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void setViewShow(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public int getViewShow() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public <T extends JDBMapObject> void setObjectSearch(T o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public <T extends JDBMapObject> T getObjectSearch() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void setRowsData(String... info) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void setScreenTableInfo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public abstract void getDataView();

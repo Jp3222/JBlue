@@ -27,7 +27,7 @@ import jsoftware.com.jblue.controllers.FactoryController;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
 import jsoftware.com.jblue.controllers.compc.TableController;
 import jsoftware.com.jblue.model.dao.StreetDAO;
-import jsoftware.com.jblue.model.dao.UserDao;
+import jsoftware.com.jblue.model.dao.UserDAO;
 import jsoftware.com.jblue.model.dao.UserTypeDAO;
 import jsoftware.com.jblue.model.dao.WaterIntakeTypeDAO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
@@ -40,6 +40,7 @@ import jsoftware.com.jblue.util.GraphicsUtils;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
+import jsoftware.com.jblue.views.framework.TableSearchViewModel;
 import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
@@ -47,7 +48,7 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  *
  * @author juan pablo campos casasanero
  */
-public final class UserView extends AbstractProcessView<UserDTO> implements DBObjectValues<UserDTO> {
+public final class UserView extends AbstractProcessView<UserDTO> implements DBObjectValues<UserDTO>, TableSearchViewModel {
 
     private static final long serialVersionUID = 1L;
 
@@ -68,7 +69,7 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
         this.initComponents();
         initComponents();
         controller = FactoryController.getUserController(this);
-        table_controller = new TableController<>(this, new UserDao(true, getProcessTypeName()));
+        table_controller = new TableController<>(this, new UserDAO(true, getProcessTypeName()));
         model = TableModelFactory.getUserTableModel();
         objects_table.setModel(model);
         ly = (CardLayout) root_panel.getLayout();

@@ -5,28 +5,30 @@
 package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
-import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.service.OwnerRegisterProcessService;
 import jsoftware.com.jblue.sys.app.AppConfig;
-import jsoftware.com.jblue.views.framework.AbstractProcessView;
+import jsoftware.com.jblue.sys.app.AppFiles;
+import jsoftware.com.jblue.views.process.OwnerRegisterProcessView;
 import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  *
  * @author juanp
  */
-public class ProcessController extends AbstractDBViewController<ProcessWrapperDTO> {
+public class OwnerRegisterProcessController extends AbstractDBViewController<ProcessWrapperDTO> {
 
     private static final long serialVersionUID = 1L;
 
-    private final AbstractProcessView<UserDTO> view;
+    private final OwnerRegisterProcessView view;
     private final OwnerRegisterProcessService service;
 
-    public ProcessController(AbstractProcessView<UserDTO> view) {
+    public OwnerRegisterProcessController(OwnerRegisterProcessView view) {
         this.view = view;
         this.service = new OwnerRegisterProcessService(AppConfig.isDevMessages(), view.getProcessTypeName());
 
@@ -34,7 +36,12 @@ public class ProcessController extends AbstractDBViewController<ProcessWrapperDT
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        switch (e.getActionCommand()) {
+            case SAVE_COMMAND ->
+                save();
+            default ->
+                throw new AssertionError();
+        }
     }
 
     @Override
@@ -45,10 +52,10 @@ public class ProcessController extends AbstractDBViewController<ProcessWrapperDT
             }
             int showConfirmDialog = JOptionPane.showConfirmDialog(view, "¿DESEAS EXPORTAR LOS FORMATOS?");
             if (showConfirmDialog == JOptionPane.YES_OPTION) {
-                
+
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log(e, "save");
         }
     }
 
@@ -65,5 +72,13 @@ public class ProcessController extends AbstractDBViewController<ProcessWrapperDT
     @Override
     public void cancel() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void log(Exception e, String method_name) {
+        try {
+            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, view.getProcessTypeName(), method_name, e.getMessage());
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 }

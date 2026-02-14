@@ -20,9 +20,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.Controller;
-import jsoftware.com.jblue.model.dao.PaymentsDAO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.factories.CacheFactory;
+import jsoftware.com.jblue.model.service.PaymentService;
 import jsoftware.com.jblue.util.GraphicsUtils;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.ShopCartView;
@@ -40,13 +40,13 @@ public class ShopCartController extends Controller {
     private final MemoListCache<UserDTO> memo_cache;
     private final ShopCartView view;
     private final StringBuilder mov_book;
-    private final PaymentsDAO payments_dao;
+    private final PaymentService service;
 
     public ShopCartController(ShopCartView view) {
         this.view = view;
         this.memo_cache = CacheFactory.USERS;
         this.mov_book = new StringBuilder(3000);
-        this.payments_dao = new PaymentsDAO("ShopCartController");
+        this.service = new PaymentService(view.isDev_flag(), view.getProcessTypeName());
     }
 
     @Override
@@ -165,6 +165,6 @@ public class ShopCartController extends Controller {
             JOptionPane.showMessageDialog(view, "Usuario no encontrado");
             return;
         }
-        view.setObjectSearch(o);
+        //view.setObjectSearch(o);
     }
 }

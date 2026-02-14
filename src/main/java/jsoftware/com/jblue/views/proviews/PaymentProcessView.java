@@ -6,6 +6,7 @@ package jsoftware.com.jblue.views.proviews;
 
 import java.sql.SQLException;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import jsoftware.com.jblue.model.dao.PaymentConceptDAO;
 import jsoftware.com.jblue.model.dto.PaymentDTO;
@@ -20,36 +21,38 @@ import jsoftware.com.jutil.db.JDBConnection;
  * @author juanp
  */
 public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
-
+    
     private static final long serialVersionUID = 1L;
     private final DefaultTableModel model;
 
     /**
      * Creates new form PaymentProcess
      */
-    public PaymentProcessView(ProcessViewBuilder builder) {
+    public PaymentProcessView(ProcessViewBuilder builder) throws Exception {
         super(builder);
         this.initComponents();
         this.model = new DefaultTableModel(new String[]{"No.", "Concepto", "Costo", "Tipo"}, 0);
         jTable1.setModel(model);
         load();
     }
-
-    public void load() {
+    
+    public void load() throws Exception {
         PaymentConceptDAO dao = new PaymentConceptDAO(true, getName());
         try (JDBConnection c = connection();) {
             List<String[]> paymentConcep = dao.getPaymentConcep(c, getProcessId());
             for (String[] i : paymentConcep) {
                 if (i[i.length - 1].equals("1")) {
                     i[i.length - 1] = "OBLIGATORIO";
+                } else {
+                    i[i.length - 1] = "OPCIONAL";
                 }
                 model.addRow(i);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
-
+    
     JDBConnection connection() throws SQLException {
         return ConnectionFactory.getIntance().getMainConnection();
     }
@@ -63,12 +66,9 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        register_panel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
@@ -79,37 +79,22 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
         jButton2 = new javax.swing.JButton();
 
         setName("PAGO DE CONCEPTOS"); // NOI18N
-        setLayout(new java.awt.BorderLayout());
+        setLayout(new java.awt.CardLayout());
 
-        jPanel1.setName("jPanel1"); // NOI18N
-        jPanel1.setPreferredSize(new java.awt.Dimension(700, 30));
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        register_panel.setName("register_panel"); // NOI18N
+        register_panel.setPreferredSize(new java.awt.Dimension(700, 30));
+        register_panel.setLayout(new java.awt.BorderLayout());
 
+        jLabel1.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/proviews/Bundle"); // NOI18N
         jLabel1.setText(bundle.getString("PaymentProcessView.jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
-        jLabel1.setPreferredSize(new java.awt.Dimension(200, 30));
-        jPanel1.add(jLabel1, java.awt.BorderLayout.WEST);
-
-        jTextField1.setText(bundle.getString("PaymentProcessView.jTextField1.text")); // NOI18N
-        jTextField1.setName("jTextField1"); // NOI18N
-        jPanel1.add(jTextField1, java.awt.BorderLayout.CENTER);
-
-        jLabel4.setText(bundle.getString("PaymentProcessView.jLabel4.text")); // NOI18N
-        jLabel4.setName("jLabel4"); // NOI18N
-        jLabel4.setPreferredSize(new java.awt.Dimension(200, 30));
-        jPanel1.add(jLabel4, java.awt.BorderLayout.EAST);
-
-        add(jPanel1, java.awt.BorderLayout.PAGE_START);
+        jLabel1.setPreferredSize(new java.awt.Dimension(150, 50));
+        register_panel.add(jLabel1, java.awt.BorderLayout.NORTH);
 
         jPanel2.setName("jPanel2"); // NOI18N
         jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel2.setText(bundle.getString("PaymentProcessView.jLabel2.text")); // NOI18N
-        jLabel2.setName("jLabel2"); // NOI18N
-        jLabel2.setPreferredSize(new java.awt.Dimension(200, 30));
-        jPanel2.add(jLabel2, java.awt.BorderLayout.NORTH);
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -118,11 +103,11 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
 
             },
             new String [] {
-                "No.", "Concepto de pago", "Precio", "Tipo"
+                "No.", "Concepto de pago", "Precio", "Tipo", "Pagar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -141,7 +126,7 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
         jPanel4.setPreferredSize(new java.awt.Dimension(400, 100));
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Noto Sans", 1, 18)); // NOI18N
         jLabel3.setText(bundle.getString("PaymentProcessView.jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
         jPanel4.add(jLabel3, java.awt.BorderLayout.PAGE_START);
@@ -149,12 +134,18 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
         jPanel5.setName("jPanel5"); // NOI18N
         jPanel5.setLayout(new java.awt.GridLayout(15, 0));
 
+        jLabel5.setFont(new java.awt.Font("Noto Sans", 1, 18)); // NOI18N
         jLabel5.setText(bundle.getString("PaymentProcessView.jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
         jPanel5.add(jLabel5);
 
         jButton1.setText(bundle.getString("PaymentProcessView.jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel5.add(jButton1);
 
         jButton2.setText(bundle.getString("PaymentProcessView.jButton2.text")); // NOI18N
@@ -165,30 +156,38 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
 
         jPanel2.add(jPanel4, java.awt.BorderLayout.LINE_END);
 
-        add(jPanel2, java.awt.BorderLayout.CENTER);
+        register_panel.add(jPanel2, java.awt.BorderLayout.CENTER);
+
+        add(register_panel, "card2");
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        int input = JOptionPane.showConfirmDialog(this, "¿CONFIRMA QUE HA RECIBIDO EL MONTO DEL PAGO EN SU TOTALIDAD?", "pago", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (input == JOptionPane.YES_OPTION) {
+            getProcessWrapper().setPayment_valid(true);
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPanel register_panel;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void getDataView() {
         List<PaymentListDTO> payment_concept_list = getProcessWrapper().getPayment_concept_list();
-
+        
     }
 }

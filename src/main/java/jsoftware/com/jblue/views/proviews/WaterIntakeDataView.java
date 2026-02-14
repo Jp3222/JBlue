@@ -4,20 +4,26 @@
  */
 package jsoftware.com.jblue.views.proviews;
 
+import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.compc.ComboBoxController;
+import jsoftware.com.jblue.model.dao.StreetDAO;
+import jsoftware.com.jblue.model.dao.WaterIntakeTypeDAO;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.UserDocumentDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
+import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 
 /**
  *
  * @author juanp
  */
-public final class WaterIntakeDataView extends AbstractProcessView<UserDocumentDTO> {
+public final class WaterIntakeDataView extends AbstractProcessView<WaterIntakeDTO> implements DBObjectValues<WaterIntakeDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,6 +33,8 @@ public final class WaterIntakeDataView extends AbstractProcessView<UserDocumentD
     public WaterIntakeDataView(ProcessViewBuilder builder) {
         super(builder);
         initComponents();
+        getProcessWrapper().setWater_intake(new WaterIntakeDTO());
+        build();
     }
 
     @Override
@@ -42,6 +50,20 @@ public final class WaterIntakeDataView extends AbstractProcessView<UserDocumentD
 
     @Override
     public void events() {
+        StreetDAO street_dao = new StreetDAO(AppConfig.isDevMessages(), getProcessTypeName());
+        WaterIntakeTypeDAO water_intake_dao = new WaterIntakeTypeDAO(AppConfig.isDevMessages(), getProcessTypeName());
+        ComboBoxController<StreetDTO> street_1 = new ComboBoxController<>(street1_field, street_dao);
+        ComboBoxController<StreetDTO> street_2 = new ComboBoxController<>(street2_field, street_dao);
+        ComboBoxController<WaterIntakeTypeDTO> water_intake_type = new ComboBoxController<>(water_intake_types_field, water_intake_dao);
+        comboBoxInit(street_1, street1_field.getItemCount() <= 0);
+        comboBoxInit(street_2, street2_field.getItemCount() <= 0);
+        comboBoxInit(water_intake_type, water_intake_types_field.getItemCount() <= 0);
+    }
+
+    public void comboBoxInit(ComboBoxController<?> c, boolean empty) {
+        if (empty) {
+            c.loadData();
+        }
     }
 
     @Override
@@ -61,50 +83,53 @@ public final class WaterIntakeDataView extends AbstractProcessView<UserDocumentD
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        p_fields = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        register_panel = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        user_field = new javax.swing.JTextField();
-        search_user_button = new javax.swing.JButton();
+        description_field = new javax.swing.JTextField();
+        jLabel23 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        search_water_intake = new javax.swing.JButton();
         water_intake_types_field = new javax.swing.JComboBox<>();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        operation_cost_field = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        search_street_button = new javax.swing.JButton();
         street1_field = new javax.swing.JComboBox<>();
+        jLabel25 = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        search_street2_button = new javax.swing.JButton();
         street2_field = new javax.swing.JComboBox<>();
+        jLabel26 = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         location_field = new javax.swing.JTextField();
-        p_status = new javax.swing.JPanel();
+        jLabel27 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel28 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        status_field = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(900, 700));
         setName("Form"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.CardLayout());
 
-        p_fields.setName("p_fields"); // NOI18N
-        p_fields.setPreferredSize(new java.awt.Dimension(500, 620));
-        p_fields.setLayout(new java.awt.GridLayout(13, 0, 0, 10));
+        jPanel1.setName("jPanel1"); // NOI18N
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/proviews/Bundle"); // NOI18N
         jLabel4.setText(bundle.getString("WaterIntakeDataView.jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
-        jLabel4.setPreferredSize(new java.awt.Dimension(500, 100));
-        p_fields.add(jLabel4);
+        jLabel4.setPreferredSize(new java.awt.Dimension(150, 50));
+        jPanel1.add(jLabel4, java.awt.BorderLayout.NORTH);
+
+        register_panel.setName("register_panel"); // NOI18N
+        register_panel.setPreferredSize(new java.awt.Dimension(500, 620));
+        register_panel.setLayout(new java.awt.GridLayout(13, 0, 0, 10));
 
         jPanel12.setName("jPanel12"); // NOI18N
         jPanel12.setPreferredSize(new java.awt.Dimension(100, 35));
@@ -113,21 +138,18 @@ public final class WaterIntakeDataView extends AbstractProcessView<UserDocumentD
         jLabel6.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel6.setText(bundle.getString("WaterIntakeDataView.jLabel6.text")); // NOI18N
         jLabel6.setName("jLabel6"); // NOI18N
-        jLabel6.setPreferredSize(new java.awt.Dimension(150, 20));
+        jLabel6.setPreferredSize(new java.awt.Dimension(150, 25));
         jPanel12.add(jLabel6, java.awt.BorderLayout.WEST);
 
-        user_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        user_field.setName(""); // NOI18N
-        jPanel12.add(user_field, java.awt.BorderLayout.CENTER);
+        description_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        description_field.setName(""); // NOI18N
+        jPanel12.add(description_field, java.awt.BorderLayout.CENTER);
 
-        search_user_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        search_user_button.setToolTipText(bundle.getString("WaterIntakeDataView.search_user_button.toolTipText")); // NOI18N
-        search_user_button.setActionCommand(bundle.getString("WaterIntakeDataView.search_user_button.actionCommand")); // NOI18N
-        search_user_button.setName("search_user_button"); // NOI18N
-        search_user_button.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel12.add(search_user_button, java.awt.BorderLayout.LINE_END);
+        jLabel23.setName("jLabel23"); // NOI18N
+        jLabel23.setPreferredSize(new java.awt.Dimension(60, 30));
+        jPanel12.add(jLabel23, java.awt.BorderLayout.LINE_END);
 
-        p_fields.add(jPanel12);
+        register_panel.add(jPanel12);
 
         jPanel8.setName("jPanel8"); // NOI18N
         jPanel8.setPreferredSize(new java.awt.Dimension(100, 35));
@@ -136,36 +158,17 @@ public final class WaterIntakeDataView extends AbstractProcessView<UserDocumentD
         jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel2.setText(bundle.getString("WaterIntakeDataView.jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
-        jLabel2.setPreferredSize(new java.awt.Dimension(150, 20));
+        jLabel2.setPreferredSize(new java.awt.Dimension(150, 25));
         jPanel8.add(jLabel2, java.awt.BorderLayout.WEST);
-
-        search_water_intake.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        search_water_intake.setToolTipText(bundle.getString("WaterIntakeDataView.search_water_intake.toolTipText")); // NOI18N
-        search_water_intake.setActionCommand(bundle.getString("WaterIntakeDataView.search_water_intake.actionCommand")); // NOI18N
-        search_water_intake.setName("search_water_intake"); // NOI18N
-        search_water_intake.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel8.add(search_water_intake, java.awt.BorderLayout.LINE_END);
 
         water_intake_types_field.setName("water_intake_types_field"); // NOI18N
         jPanel8.add(water_intake_types_field, java.awt.BorderLayout.CENTER);
 
-        p_fields.add(jPanel8);
+        jLabel24.setName("jLabel24"); // NOI18N
+        jLabel24.setPreferredSize(new java.awt.Dimension(60, 30));
+        jPanel8.add(jLabel24, java.awt.BorderLayout.LINE_END);
 
-        jPanel9.setName("jPanel9"); // NOI18N
-        jPanel9.setPreferredSize(new java.awt.Dimension(100, 35));
-        jPanel9.setLayout(new java.awt.BorderLayout());
-
-        jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel3.setText(bundle.getString("WaterIntakeDataView.jLabel3.text")); // NOI18N
-        jLabel3.setName("jLabel3"); // NOI18N
-        jLabel3.setPreferredSize(new java.awt.Dimension(150, 20));
-        jPanel9.add(jLabel3, java.awt.BorderLayout.WEST);
-
-        operation_cost_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        operation_cost_field.setName(""); // NOI18N
-        jPanel9.add(operation_cost_field, java.awt.BorderLayout.CENTER);
-
-        p_fields.add(jPanel9);
+        register_panel.add(jPanel8);
 
         jPanel10.setName("jPanel10"); // NOI18N
         jPanel10.setPreferredSize(new java.awt.Dimension(100, 35));
@@ -174,20 +177,17 @@ public final class WaterIntakeDataView extends AbstractProcessView<UserDocumentD
         jLabel5.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel5.setText(bundle.getString("WaterIntakeDataView.jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
-        jLabel5.setPreferredSize(new java.awt.Dimension(150, 20));
+        jLabel5.setPreferredSize(new java.awt.Dimension(150, 25));
         jPanel10.add(jLabel5, java.awt.BorderLayout.WEST);
-
-        search_street_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        search_street_button.setToolTipText(bundle.getString("WaterIntakeDataView.search_street_button.toolTipText")); // NOI18N
-        search_street_button.setActionCommand(bundle.getString("WaterIntakeDataView.search_street_button.actionCommand")); // NOI18N
-        search_street_button.setName("search_street_button"); // NOI18N
-        search_street_button.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel10.add(search_street_button, java.awt.BorderLayout.LINE_END);
 
         street1_field.setName("street1_field"); // NOI18N
         jPanel10.add(street1_field, java.awt.BorderLayout.CENTER);
 
-        p_fields.add(jPanel10);
+        jLabel25.setName("jLabel25"); // NOI18N
+        jLabel25.setPreferredSize(new java.awt.Dimension(60, 30));
+        jPanel10.add(jLabel25, java.awt.BorderLayout.LINE_END);
+
+        register_panel.add(jPanel10);
 
         jPanel13.setName("jPanel13"); // NOI18N
         jPanel13.setPreferredSize(new java.awt.Dimension(100, 35));
@@ -196,20 +196,17 @@ public final class WaterIntakeDataView extends AbstractProcessView<UserDocumentD
         jLabel7.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel7.setText(bundle.getString("WaterIntakeDataView.jLabel7.text")); // NOI18N
         jLabel7.setName("jLabel7"); // NOI18N
-        jLabel7.setPreferredSize(new java.awt.Dimension(150, 20));
+        jLabel7.setPreferredSize(new java.awt.Dimension(150, 25));
         jPanel13.add(jLabel7, java.awt.BorderLayout.WEST);
-
-        search_street2_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        search_street2_button.setToolTipText(bundle.getString("WaterIntakeDataView.search_street2_button.toolTipText")); // NOI18N
-        search_street2_button.setActionCommand(bundle.getString("WaterIntakeDataView.search_street2_button.actionCommand")); // NOI18N
-        search_street2_button.setName("search_street2_button"); // NOI18N
-        search_street2_button.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel13.add(search_street2_button, java.awt.BorderLayout.LINE_END);
 
         street2_field.setName("street2_field"); // NOI18N
         jPanel13.add(street2_field, java.awt.BorderLayout.CENTER);
 
-        p_fields.add(jPanel13);
+        jLabel26.setName("jLabel26"); // NOI18N
+        jLabel26.setPreferredSize(new java.awt.Dimension(60, 30));
+        jPanel13.add(jLabel26, java.awt.BorderLayout.LINE_END);
+
+        register_panel.add(jPanel13);
 
         jPanel14.setName("jPanel14"); // NOI18N
         jPanel14.setPreferredSize(new java.awt.Dimension(100, 35));
@@ -218,62 +215,91 @@ public final class WaterIntakeDataView extends AbstractProcessView<UserDocumentD
         jLabel8.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel8.setText(bundle.getString("WaterIntakeDataView.jLabel8.text")); // NOI18N
         jLabel8.setName("jLabel8"); // NOI18N
-        jLabel8.setPreferredSize(new java.awt.Dimension(150, 20));
+        jLabel8.setPreferredSize(new java.awt.Dimension(150, 25));
         jPanel14.add(jLabel8, java.awt.BorderLayout.WEST);
 
         location_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         location_field.setName(""); // NOI18N
         jPanel14.add(location_field, java.awt.BorderLayout.CENTER);
 
-        p_fields.add(jPanel14);
+        jLabel27.setName("jLabel27"); // NOI18N
+        jLabel27.setPreferredSize(new java.awt.Dimension(60, 30));
+        jPanel14.add(jLabel27, java.awt.BorderLayout.LINE_END);
 
-        p_status.setName("p_status"); // NOI18N
-        p_status.setPreferredSize(new java.awt.Dimension(100, 35));
-        p_status.setLayout(new java.awt.BorderLayout());
+        register_panel.add(jPanel14);
+
+        jPanel2.setName("jPanel2"); // NOI18N
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jLabel28.setName("jLabel28"); // NOI18N
+        jLabel28.setPreferredSize(new java.awt.Dimension(60, 30));
+        jPanel2.add(jLabel28, java.awt.BorderLayout.LINE_END);
 
         jLabel9.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel9.setText(bundle.getString("WaterIntakeDataView.jLabel9.text")); // NOI18N
         jLabel9.setName("jLabel9"); // NOI18N
-        jLabel9.setPreferredSize(new java.awt.Dimension(150, 20));
-        p_status.add(jLabel9, java.awt.BorderLayout.WEST);
+        jLabel9.setPreferredSize(new java.awt.Dimension(150, 25));
+        jPanel2.add(jLabel9, java.awt.BorderLayout.WEST);
 
-        status_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar Estado.", "Activo.", "Inactivo." }));
-        status_field.setName(""); // NOI18N
-        p_status.add(status_field, java.awt.BorderLayout.CENTER);
+        jButton1.setText(bundle.getString("WaterIntakeDataView.jButton1.text")); // NOI18N
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton1, java.awt.BorderLayout.CENTER);
 
-        p_fields.add(p_status);
+        register_panel.add(jPanel2);
 
-        add(p_fields, "card2");
+        jPanel1.add(register_panel, java.awt.BorderLayout.CENTER);
+
+        add(jPanel1, "card3");
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        UserDTO user = getProcessWrapper().getUser();
+        if (user == null) {
+            JOptionPane.showMessageDialog(this, "POR FAVOR, ASEGURESE DE QUE LOS DATOS GENERADOS SEAN CORRECTOS", "Datos Generados", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        System.out.println(user.getMap().toString());
+        description_field.setText(user.toString());
+        street1_field.setSelectedIndex(Integer.parseInt(user.get("stree2_selected").toString()));
+        if (user.getStreet2() != null || !user.getStreet2().isEmpty()) {
+            street2_field.setSelectedIndex(Integer.parseInt(user.get("stree2_selected").toString()));
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField description_field;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JTextField location_field;
-    private javax.swing.JTextField operation_cost_field;
-    private javax.swing.JPanel p_fields;
-    private javax.swing.JPanel p_status;
-    private javax.swing.JButton search_street2_button;
-    private javax.swing.JButton search_street_button;
-    private javax.swing.JButton search_user_button;
-    private javax.swing.JButton search_water_intake;
-    private javax.swing.JComboBox<String> status_field;
+    private javax.swing.JPanel register_panel;
     private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.StreetDTO> street1_field;
     private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.StreetDTO> street2_field;
-    private javax.swing.JTextField user_field;
     private javax.swing.JComboBox<WaterIntakeTypeDTO> water_intake_types_field;
     // End of variables declaration//GEN-END:variables
 
@@ -283,8 +309,43 @@ public final class WaterIntakeDataView extends AbstractProcessView<UserDocumentD
         WaterIntakeDTO wk = pw.getWater_intake();
         if (Func.isNotNull(pw.getUser())) {
             UserDTO user = pw.getUser();
-            wk.getMap().put("user_name", user.toString());
-            
+            wk.getMap().put("description", user.toString());
+            description_field.setText(user.toString());
         }
+        getProcessWrapper().setWater_intake_valid(true);
     }
+
+    @Override
+    public boolean isValuesOK() {
+        if (description_field.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El campos %s no es valido".formatted(description_field.getName()));
+            return false;
+        }
+        if (water_intake_types_field.getSelectedIndex() <= 0) {
+            JOptionPane.showMessageDialog(this, "El campos %s no es valido".formatted(water_intake_types_field.getName()));
+            return false;
+        }
+        if (street1_field.getSelectedIndex() <= 0) {
+            JOptionPane.showMessageDialog(this, "El campos %s no es valido".formatted(street1_field.getName()));
+            return false;
+        }
+        if (street2_field.getSelectedIndex() <= 0) {
+            JOptionPane.showMessageDialog(this, "El campos %s no es valido".formatted(street2_field.getName()));
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public WaterIntakeDTO getValues(boolean update) {
+        WaterIntakeDTO dto = getProcessWrapper().getWater_intake();
+        Func.putIfNotNull(dto.getMap(), "description", description_field.getText());
+        Func.putIfNotNull(dto.getMap(), "water_intake_type", water_intake_types_field.getItemAt(water_intake_types_field.getSelectedIndex()).getId());
+        Func.putIfNotNull(dto.getMap(), "street1", street1_field.getItemAt(street1_field.getSelectedIndex()).getId());
+        if (street2_field.getSelectedIndex() >= 1) {
+            Func.putIfNotNull(dto.getMap(), "street2", street2_field.getItemAt(street2_field.getSelectedIndex()).getId());
+        }
+        return getProcessWrapper().getWater_intake();
+    }
+
 }

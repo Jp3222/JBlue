@@ -4,13 +4,11 @@
  */
 package jsoftware.com.jblue.views.framework;
 
-import jsoftware.com.jutil.db.JDBMapObject;
-
 /**
  *
  * @author juanp
  */
-public interface DBObjectValues<T extends JDBMapObject> {
+public interface DBObjectValues<T> {
 
     public boolean isValuesOK();
 

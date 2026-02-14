@@ -12,13 +12,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
 import jsoftware.com.jblue.model.dao.StreetDAO;
-import jsoftware.com.jblue.model.dao.WaterIntakeTypeDAO;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
@@ -63,13 +61,12 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
     @Override
     public void events() {
         StreetDAO street_dao = new StreetDAO(AppConfig.isDevMessages(), getProcessTypeName());
-        WaterIntakeTypeDAO water_intake_dao = new WaterIntakeTypeDAO(AppConfig.isDevMessages(), getProcessTypeName());
+
         ComboBoxController<StreetDTO> street_1 = new ComboBoxController<>(street1_field, street_dao);
         ComboBoxController<StreetDTO> street_2 = new ComboBoxController<>(street2_field, street_dao);
-        ComboBoxController<WaterIntakeTypeDTO> wki_type = new ComboBoxController<>(water_intakes_type_field, water_intake_dao);
+
         comboBoxInit(street_1, street1_field.getItemCount() <= 0);
         comboBoxInit(street_2, street2_field.getItemCount() <= 0);
-        comboBoxInit(wki_type, water_intakes_type_field.getItemCount() <= 0);
     }
 
     public void comboBoxInit(ComboBoxController<?> c, boolean empty) {
@@ -98,7 +95,7 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
     private void initComponents() {
 
         register_panel = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jLabel8 = new javax.swing.JLabel();
         user_data_panel = new javax.swing.JPanel();
         p_curp = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
@@ -120,10 +117,6 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
         jLabel25 = new javax.swing.JLabel();
         gender_field = new javax.swing.JComboBox<>();
         jLabel26 = new javax.swing.JLabel();
-        p_water_intake_type = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        water_intakes_type_field = new javax.swing.JComboBox<>();
-        jLabel28 = new javax.swing.JLabel();
         p_street1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         street1_field = new javax.swing.JComboBox<>();
@@ -144,7 +137,6 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
         jLabel21 = new javax.swing.JLabel();
         outside_number_field = new javax.swing.JTextField();
         jLabel37 = new javax.swing.JLabel();
-        complement_data_panel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         email_field = new javax.swing.JTextField();
@@ -168,16 +160,21 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
         register_panel.setName("register"); // NOI18N
         register_panel.setLayout(new java.awt.BorderLayout());
 
-        jTabbedPane1.setName("jTabbedPane1"); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/proviews/Bundle"); // NOI18N
+        jLabel8.setText(bundle.getString("UserRegisterView.jLabel8.text")); // NOI18N
+        jLabel8.setName("jLabel8"); // NOI18N
+        jLabel8.setPreferredSize(new java.awt.Dimension(150, 50));
+        register_panel.add(jLabel8, java.awt.BorderLayout.NORTH);
 
         user_data_panel.setName("user_data_panel"); // NOI18N
         user_data_panel.setPreferredSize(new java.awt.Dimension(500, 600));
-        user_data_panel.setLayout(new java.awt.GridLayout(15, 1, 0, 10));
+        user_data_panel.setLayout(new java.awt.GridLayout(14, 1, 0, 10));
 
         p_curp.setName("p_curp"); // NOI18N
         p_curp.setLayout(new java.awt.BorderLayout());
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/proviews/Bundle"); // NOI18N
         jLabel22.setText(bundle.getString("UserRegisterView.jLabel22.text")); // NOI18N
         jLabel22.setName("jLabel22"); // NOI18N
         jLabel22.setPreferredSize(new java.awt.Dimension(150, 25));
@@ -276,27 +273,6 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
 
         user_data_panel.add(p_gender);
 
-        p_water_intake_type.setName("p_water_intake_type"); // NOI18N
-        p_water_intake_type.setPreferredSize(new java.awt.Dimension(500, 50));
-        p_water_intake_type.setLayout(new java.awt.BorderLayout());
-
-        jLabel5.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel5.setText(bundle.getString("UserRegisterView.jLabel5.text")); // NOI18N
-        jLabel5.setName("jLabel5"); // NOI18N
-        jLabel5.setPreferredSize(new java.awt.Dimension(150, 25));
-        p_water_intake_type.add(jLabel5, java.awt.BorderLayout.WEST);
-
-        water_intakes_type_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        water_intakes_type_field.setName("Tipo de toma"); // NOI18N
-        water_intakes_type_field.setPreferredSize(new java.awt.Dimension(100, 30));
-        p_water_intake_type.add(water_intakes_type_field, java.awt.BorderLayout.CENTER);
-
-        jLabel28.setName("jLabel28"); // NOI18N
-        jLabel28.setPreferredSize(new java.awt.Dimension(60, 30));
-        p_water_intake_type.add(jLabel28, java.awt.BorderLayout.LINE_END);
-
-        user_data_panel.add(p_water_intake_type);
-
         p_street1.setName("p_street1"); // NOI18N
         p_street1.setPreferredSize(new java.awt.Dimension(500, 50));
         p_street1.setLayout(new java.awt.BorderLayout());
@@ -392,17 +368,12 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
 
         user_data_panel.add(p_out_number);
 
-        jTabbedPane1.addTab(bundle.getString("UserRegisterView.user_data_panel.TabConstraints.tabTitle"), user_data_panel); // NOI18N
-
-        complement_data_panel.setName("complement_data_panel"); // NOI18N
-        complement_data_panel.setLayout(new java.awt.GridLayout(11, 1, 10, 10));
-
         jPanel2.setName("jPanel2"); // NOI18N
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         jLabel11.setText(bundle.getString("UserRegisterView.jLabel11.text")); // NOI18N
         jLabel11.setName("jLabel11"); // NOI18N
-        jLabel11.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel11.setPreferredSize(new java.awt.Dimension(150, 25));
         jPanel2.add(jLabel11, java.awt.BorderLayout.WEST);
 
         email_field.setName("Correo Electronico"); // NOI18N
@@ -412,14 +383,14 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
         jLabel32.setPreferredSize(new java.awt.Dimension(60, 30));
         jPanel2.add(jLabel32, java.awt.BorderLayout.LINE_END);
 
-        complement_data_panel.add(jPanel2);
+        user_data_panel.add(jPanel2);
 
         jPanel3.setName("jPanel3"); // NOI18N
         jPanel3.setLayout(new java.awt.BorderLayout());
 
         jLabel14.setText(bundle.getString("UserRegisterView.jLabel14.text")); // NOI18N
         jLabel14.setName("jLabel14"); // NOI18N
-        jLabel14.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel14.setPreferredSize(new java.awt.Dimension(150, 25));
         jPanel3.add(jLabel14, java.awt.BorderLayout.WEST);
 
         phone_number1_field.setName("Telefono 1"); // NOI18N
@@ -429,14 +400,14 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
         jLabel34.setPreferredSize(new java.awt.Dimension(60, 30));
         jPanel3.add(jLabel34, java.awt.BorderLayout.LINE_END);
 
-        complement_data_panel.add(jPanel3);
+        user_data_panel.add(jPanel3);
 
         jPanel4.setName("jPanel4"); // NOI18N
         jPanel4.setLayout(new java.awt.BorderLayout());
 
         jLabel19.setText(bundle.getString("UserRegisterView.jLabel19.text")); // NOI18N
         jLabel19.setName("jLabel19"); // NOI18N
-        jLabel19.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel19.setPreferredSize(new java.awt.Dimension(150, 25));
         jPanel4.add(jLabel19, java.awt.BorderLayout.WEST);
 
         phone_number2_field.setName("Telefono 2"); // NOI18N
@@ -446,7 +417,7 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
         jLabel35.setPreferredSize(new java.awt.Dimension(60, 30));
         jPanel4.add(jLabel35, java.awt.BorderLayout.LINE_END);
 
-        complement_data_panel.add(jPanel4);
+        user_data_panel.add(jPanel4);
 
         jPanel1.setName("jPanel1"); // NOI18N
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -463,14 +434,12 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
 
         jLabel40.setText(bundle.getString("UserRegisterView.jLabel40.text")); // NOI18N
         jLabel40.setName("jLabel40"); // NOI18N
-        jLabel40.setPreferredSize(new java.awt.Dimension(100, 25));
+        jLabel40.setPreferredSize(new java.awt.Dimension(150, 25));
         jPanel1.add(jLabel40, java.awt.BorderLayout.WEST);
 
-        complement_data_panel.add(jPanel1);
+        user_data_panel.add(jPanel1);
 
-        jTabbedPane1.addTab(bundle.getString("UserRegisterView.complement_data_panel.TabConstraints.tabTitle"), complement_data_panel); // NOI18N
-
-        register_panel.add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+        register_panel.add(user_data_panel, java.awt.BorderLayout.CENTER);
 
         add(register_panel, "register");
     }// </editor-fold>//GEN-END:initComponents
@@ -478,7 +447,6 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_photo_button;
-    private javax.swing.JPanel complement_data_panel;
     private javax.swing.JTextField curp_field;
     private javax.swing.JTextField email_field;
     private javax.swing.JTextField first_name_field;
@@ -498,7 +466,6 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
@@ -511,15 +478,14 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField last_name1_field;
     private javax.swing.JTextField last_name2_field;
     private javax.swing.JTextField outside_number_field;
@@ -530,7 +496,6 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
     private javax.swing.JPanel p_out_number;
     private javax.swing.JPanel p_street1;
     private javax.swing.JPanel p_street2;
-    private javax.swing.JPanel p_water_intake_type;
     private javax.swing.JPanel pc_am;
     private javax.swing.JPanel pc_ap;
     private javax.swing.JPanel pc_nombre;
@@ -540,7 +505,6 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
     private javax.swing.JComboBox<StreetDTO> street1_field;
     private javax.swing.JComboBox<StreetDTO> street2_field;
     private javax.swing.JPanel user_data_panel;
-    private javax.swing.JComboBox<WaterIntakeTypeDTO> water_intakes_type_field;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -582,8 +546,7 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
         if (res) {
             JComboBox[] field2 = {
                 gender_field,
-                street1_field,
-                water_intakes_type_field
+                street1_field
             };
             for (JComboBox i : field2) {
                 // Asumo que isValidComboBox devuelve FALSE si no hay selección válida
@@ -617,7 +580,6 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
             String number_phone1 = Formats.geDBInputFormat(phone_number1_field.getText());
             String number_phone2 = Formats.geDBInputFormat(phone_number2_field.getText());
             String gender = String.valueOf(gender_field.getSelectedIndex());
-            String water_intake_type = water_intakes_type_field.getItemAt(water_intakes_type_field.getSelectedIndex()).getId();
             String street1 = street1_field.getItemAt(street1_field.getSelectedIndex()).getId();
             String street2 = street2_field.getItemAt(street2_field.getSelectedIndex()).getId();
             // --- LÓGICA PARA NUEVO REGISTRO ---
@@ -626,8 +588,9 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
             Func.putIfPresentAndNotBlank(map, "last_name1", lastName1);
             Func.putIfPresentAndNotBlank(map, "last_name2", lastName2);
             Func.putIfNotNull(map, "gender", gender);
-            Func.putIfNotNull(map, "water_intake_type", water_intake_type);
+
             Func.putIfNotNull(map, "street1", street1);
+            Func.putIfPresentAndNotBlank(map, "street1_selected", street1_field.getSelectedIndex());
             if (Func.isNotNull(email)) {
                 Func.putIfPresentAndNotBlank(map, "email", email);
             }
@@ -639,6 +602,7 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
             }
             if (Func.isNotNull(street2)) {
                 Func.putIfNotNull(map, "street2", street2);
+                Func.putIfPresentAndNotBlank(map, "street2_selected", street2_field.getSelectedIndex());
             }
 
         } catch (Exception e) {
@@ -646,19 +610,6 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
         }
         dto.setMap(map);
         return dto;
-    }
-
-    public String getUserType(String process) {
-        return switch (process) {
-            case "10":
-                yield "1";
-            case "11":
-                yield "2";
-            case "12":
-                yield "3";
-            default:
-                yield "1";
-        };
     }
 
     public void log(Exception e, String method_name) {

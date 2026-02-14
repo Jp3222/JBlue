@@ -19,6 +19,8 @@ package jsoftware.com.jblue.views.process;
 import java.awt.CardLayout;
 import java.io.IOException;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
@@ -48,28 +50,27 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<ProcessW
 
     private int current_view;
     private CardLayout ly;
+    private OwnerRegisterProcessController controller;
 
-    public OwnerRegisterProcessView(ProcessViewBuilder builder) {
+    public OwnerRegisterProcessView(ProcessViewBuilder builder) throws Exception {
         super(builder);
-
         // 1. Instanciación de sub-vistas compartiendo el builder (y el DTO)
         this.user_view = new UserRegisterView(builder);
         this.validation_process_view = new ValidationProcessView(builder);
         this.payment_concepts_view = new PaymentProcessView(builder);
         this.water_intake_view = new WaterIntakeDataView(builder);
-
         // 2. Organización en arreglo para navegación polimórfica
         this.views = new AbstractProcessView[]{
             user_view,
             validation_process_view,
-            payment_concepts_view,
-            water_intake_view
+            water_intake_view,
+            payment_concepts_view
         };
-
         this.current_view = 0;
-
         initComponents();
         build();
+        controller = new OwnerRegisterProcessController(this);
+
     }
 
     @Override
@@ -94,27 +95,29 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<ProcessW
     public void events() {
         // Evento SIGUIENTE / FINALIZAR
         next_panel_button.addActionListener((e) -> {
-            // Recolectamos datos de la vista actual antes de movernos
-            getDataView();
-            if (current_view == 0 && !getProcessWrapper().isUser_valid()) {
-                return;
-            }
-            if (current_view == 1 && !getProcessWrapper().isDocument_list_valid()) {
-                return;
-            }
-            if (current_view == 2 && !getProcessWrapper().isPayment_valid()) {
-                return;
-            }
-            if (current_view == views.length - 1 && !getProcessWrapper().isWater_intake_valid()) {
+            getDataView(); // Sincroniza vista -> modelo
+
+            boolean isValid = switch (current_view) {
+                case 0 ->
+                    getProcessWrapper().isUser_valid();
+                case 1 ->
+                    getProcessWrapper().isDocument_list_valid();
+                case 2 ->
+                    getProcessWrapper().isWater_intake_valid(); // Ajustar según tu orden
+                default ->
+                    true;
+            };
+            if (!isValid) {
+                JOptionPane.showMessageDialog(root_panel,
+                        "Por favor, complete correctamente los campos obligatorios de esta sección.",
+                        "Validación", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             if (current_view < views.length - 1) {
-
                 ly.next(root_panel);
                 current_view++;
                 updateNavigationUI();
             } else {
-                // Si estamos en el último paso, disparamos el proceso de guardado
                 executeFinalSave();
             }
         });
@@ -145,13 +148,13 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<ProcessW
      */
     private void updateNavigationUI() {
         last_panel_button.setEnabled(current_view > 0);
-
         if (current_view == views.length - 1) {
             next_panel_button.setText("Finalizar Registro");
-            next_panel_button.setActionCommand("end");
+            next_panel_button.setActionCommand("save");
         } else {
             next_panel_button.setText("Siguiente");
             next_panel_button.setActionCommand("next_view");
+
         }
     }
 
@@ -167,7 +170,6 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<ProcessW
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al capturar datos: " + e.getMessage());
             log(e, "getDataView");
-
         }
     }
 
@@ -176,28 +178,28 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<ProcessW
      * información.
      */
     private void executeFinalSave() {
-        // 1. Aseguramos que todos los datos de todas las vistas estén en el DTO
         for (AbstractProcessView v : views) {
             v.getDataView();
         }
         ProcessWrapperDTO pw = getProcessWrapper();
-
         // 2. Aquí llamarías a tu Service: userService.save(...)
         JOptionPane.showMessageDialog(this, "Iniciando persistencia de datos en base de datos...");
+        //controller.save();
+        
     }
 
     @Override
     public void initialState() {
         current_view = 0;
-        ly.first(root_panel);
+        ly.show(root_panel, user_view.getName());
         updateNavigationUI();
+        next_panel_button.setEnabled(true);
+        last_panel_button.setEnabled(false);
     }
 
     @Override
     public void finalState() {
         // Bloquear controles tras un guardado exitoso
-        next_panel_button.setEnabled(true);
-        last_panel_button.setEnabled(false);
     }
 
     /**
@@ -287,4 +289,21 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<ProcessW
             ex.printStackTrace(System.err);
         }
     }
+
+    public int getCurrent_view() {
+        return current_view;
+    }
+
+    public CardLayout getLy() {
+        return ly;
+    }
+
+    public JPanel getRoot_panel() {
+        return root_panel;
+    }
+
+    public AbstractProcessView[] getViews() {
+        return views;
+    }
+
 }

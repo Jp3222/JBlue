@@ -52,4 +52,12 @@ public class UserDTO extends PersonObject implements Cloneable {
         return get("last_employee_ppdate").toString();
     }
 
+    @Override
+    public String toString() {
+        return getFirstName().concat(" ")
+                .concat(getLastName1())
+                .concat(" ")
+                .concat(getLastName2());
+    }
+
 }

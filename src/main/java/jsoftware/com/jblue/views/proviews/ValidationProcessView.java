@@ -17,16 +17,18 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentDTO;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 
 /**
  *
  * @author juanp
  */
-public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> {
+public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> implements DBObjectValues<List<UserDocumentDTO>> {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,7 +42,7 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
         initComponents();
         this.model = new DefaultListModel<>();
         document_list.setModel(model);
-
+        this.getProcessWrapper().setUser_document_list(new ArrayList<>(6));
         this.add_doc1.addActionListener((e) -> {
             File file = getSelectFile();
             if (file == null) {
@@ -78,7 +80,6 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
         file_chooser = new javax.swing.JFileChooser();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         document_list = new javax.swing.JList<>();
@@ -93,8 +94,8 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         file_chooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
         file_chooser.setMinimumSize(new java.awt.Dimension(900, 700));
@@ -103,22 +104,19 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
 
         setName("Validacion De Usuario"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
-        setLayout(new java.awt.BorderLayout());
+        setLayout(new java.awt.CardLayout());
 
         jPanel1.setName("jPanel1"); // NOI18N
         jPanel1.setPreferredSize(new java.awt.Dimension(900, 40));
-        jPanel1.setLayout(new java.awt.BorderLayout(10, 10));
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
+        jLabel1.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/proviews/Bundle"); // NOI18N
         jLabel1.setText(bundle.getString("ValidationProcessView.jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
-        jPanel1.add(jLabel1, java.awt.BorderLayout.LINE_START);
-
-        jTextField1.setText(bundle.getString("ValidationProcessView.jTextField1.text")); // NOI18N
-        jTextField1.setName("jTextField1"); // NOI18N
-        jPanel1.add(jTextField1, java.awt.BorderLayout.CENTER);
-
-        add(jPanel1, java.awt.BorderLayout.PAGE_START);
+        jLabel1.setPreferredSize(new java.awt.Dimension(150, 50));
+        jPanel1.add(jLabel1, java.awt.BorderLayout.NORTH);
 
         jPanel2.setName("jPanel2"); // NOI18N
         jPanel2.setLayout(new java.awt.GridLayout(1, 3, 20, 20));
@@ -177,18 +175,43 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
         jLabel9.setName(""); // NOI18N
         jPanel3.add(jLabel9);
 
-        jLabel10.setText(bundle1.getString("ValidationProcessView.text")); // NOI18N
-        jLabel10.setName(""); // NOI18N
-        jPanel3.add(jLabel10);
-
         jButton3.setText(bundle.getString("ValidationProcessView.jButton3.text")); // NOI18N
         jButton3.setName("jButton3"); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jPanel3.add(jButton3);
+
+        jButton1.setText(bundle.getString("ValidationProcessView.jButton1.text")); // NOI18N
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton1);
 
         jPanel2.add(jPanel3);
 
-        add(jPanel2, java.awt.BorderLayout.CENTER);
+        jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
+
+        add(jPanel1, "card2");
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        int input = JOptionPane.showConfirmDialog(this, "¿CONFIRMA QUE LOS DOCUMENTOS DE IDENTIDAD DEL USUARIO SON DOCUMENTOS OFICIALES Y VALIDOS?", "pago", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (input == JOptionPane.YES_OPTION) {
+            getProcessWrapper().setUser_valid(true);
+        }
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        getProcessWrapper().setUser_valid(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -197,9 +220,9 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
     private javax.swing.JButton add_doc3;
     private javax.swing.JList<File> document_list;
     private javax.swing.JFileChooser file_chooser;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -211,7 +234,6 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 
     public File getSelectFile() {
@@ -320,17 +342,31 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
 
     @Override
     public void getDataView() {
-        List<UserDocumentDTO> user_document_list = getProcessWrapper().getUser_document_list();
-        if (user_document_list == null) {
-            user_document_list = new ArrayList<>();
-        }
-        for (int i = 0; i < model.getSize(); i++) {
-            File j = model.elementAt(i);
-            UserDocumentDTO o = new UserDocumentDTO();
-            o.put("doc_file", j);
-            o.put("document_name", j.getName());
-            o.put("document_path", j.getPath());
-            user_document_list.add(o);
-        }
+        
     }
+
+    @Override
+    public boolean isValuesOK() {
+        ProcessWrapperDTO pw = getProcessWrapper();
+
+        // Evaluamos si es válido (no está vacía)
+        boolean isValid = !pw.getUser_document_list().isEmpty();
+
+        if (!isValid) {
+            // Si NO es válido, avisamos al usuario
+            JOptionPane.showMessageDialog(this,
+                    "Debe añadir al menos un documento para continuar.",
+                    "Documentación faltante",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+
+        // Actualizamos el estado en el Wrapper para que el botón 'Siguiente' lo vea
+        return isValid;
+    }
+
+    @Override
+    public List<UserDocumentDTO> getValues(boolean update) {
+        return getProcessWrapper().getUser_document_list();
+    }
+
 }

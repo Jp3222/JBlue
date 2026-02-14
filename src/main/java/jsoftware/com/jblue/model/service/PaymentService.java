@@ -110,29 +110,32 @@ public class PaymentService implements Serializable {
         boolean res = false;
         try {
             connection.setAutoCommit(false);
-            res = HistoryDAO.ProcessHistoryDAO.getInstance().update(connection, "INICIO DE UNA TRANSACCION");
-            if (!res) {
-                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-            }
+            //REGISTRO DE LA CABEZERA DEL PAGO
             int key = savePayment(connection, payment);
-
+            if (key <= 0) {
+                throw new SQLException("REGISTRO DE TOTAL CORRUPO");
+            }
+            
+            //SE AÑADE EL PAGO
+            for (PaymentListDTO i : list_items) {
+                i.getMap().put("payment", key);
+            }
+            //REGISTRO DE LOS CONCEPTOS DE PAGO
             res = savePaymentList(connection, list_items);
+            if (!res) {
+                throw new SQLException("REGISTRO DE CONCEPTOS CORRUPO");
+            }
 
             //[3]ACTUALIZA EL STATUS DEL TRAMITE A PAGADO
             res = process_dao.payProcess(connection, procedure_id);
             if (!res) {
-                throw new SQLException("REGISTRO DEL PROCESO CORRUPTO");
+                throw new SQLException("ACTUALIZACION DE \"STATUS PAGADO\" CORRUPO");
             }
             //REGISTRO EN BITACORA
             res = HistoryDAO.ProcessHistoryDAO.getInstance().update(connection, "SE PAGO EL TRAMITE: %s DEL USUARIO: %s".formatted(
                     key,
                     user_name
             ));
-            if (!res) {
-                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-            }
-            //si no hubo error alguno se confirma la transaccion 
-            res = HistoryDAO.ProcessHistoryDAO.getInstance().update(connection, "FIN DE UNA TRANSACCION");
             if (!res) {
                 throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
             }

@@ -29,7 +29,7 @@ public final class ConsumerRegisterProcessView extends AbstractProcessView<UserD
     /**
      * Creates new form ProcessView
      */
-    public ConsumerRegisterProcessView(ProcessViewBuilder builder) {
+    public ConsumerRegisterProcessView(ProcessViewBuilder builder) throws Exception {
         super(builder);
         this.user_view = new UserView(builder);
         this.validation_process_view = new ValidationProcessView(builder);

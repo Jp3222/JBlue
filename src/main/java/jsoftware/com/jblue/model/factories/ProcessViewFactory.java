@@ -10,6 +10,7 @@ import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
+import jsoftware.com.jblue.views.ShopCartView;
 import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 import jsoftware.com.jblue.views.process.ConsumerRegisterProcessView;
@@ -71,6 +72,13 @@ public final class ProcessViewFactory {
                 .setProcess_name("ACTUALIZACION DE USUARIO")
                 .setProcess_id("11");
         return (OwnerChangerProcessView) o.builder(OwnerChangerProcessView.class.getName(), o);
+    }
+
+    public ShopCartView getShopCarProcess() {
+        ProcessViewBuilder o = new ProcessViewBuilder(init)
+                .setProcess_name("CAJA DE COBRO")
+                .setProcess_id("13");
+        return (ShopCartView) o.builder(ShopCartView.class.getName(), o);
     }
 
     public Map<String, ViewProvider<?, ?>> getFactory() {

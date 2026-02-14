@@ -551,4 +551,5 @@ public class UserConsumerView extends AbstractProcessView<UserDTO> {
     public void getDataView() {
 
     }
+
 }

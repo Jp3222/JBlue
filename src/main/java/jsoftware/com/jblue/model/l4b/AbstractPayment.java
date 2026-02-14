@@ -86,43 +86,7 @@ public abstract class AbstractPayment implements PaymentModel {
     }
 
     protected int payment(int payment_type, int status) {
-        if (payment_type == 1) {
-            return payments_dao.insertServicePayment(
-                    connection,
-                    payments_dao.UUID(),
-                    water_intake,
-                    total_cost,
-                    amount_paid,
-                    change_amount,
-                    month_paid_list.size(),
-                    type_payment,
-                    status);
-        }
-        if (payment_type == 2) {
-            return payments_dao.insertSurchargePayment(connection,
-                    payments_dao.UUID(),
-                    water_intake,
-                    total_cost,
-                    amount_paid,
-                    change_amount,
-                    month_paid_list.size(),
-                    type_payment,
-                    status);
-
-        }
-        if (payment_type == 3) {
-            return payments_dao.insertOtherPayment(
-                    connection,
-                    payments_dao.UUID(),
-                    water_intake,
-                    payment_concept,
-                    total_cost,
-                    amount_paid,
-                    change_amount,
-                    month_paid_list.size(),
-                    type_payment, status
-            );
-        }
+        
         return 0;
     }
 

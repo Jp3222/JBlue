@@ -4,6 +4,7 @@
  */
 package jsoftware.com.jblue.model.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import jsoftware.com.jutil.db.JDBMapObject;
@@ -76,7 +77,10 @@ public class ProcessWrapperDTO extends JDBMapObject {
      * bandera para indicar que los dato de usuario son validos
      */
     private boolean user_valid;
-
+    /**
+     * bandera para indicar que los documentos validan la identidad del usuario
+     */
+    private boolean user_document_valid;
     /**
      * bandera para inidicar que los datos de la toma de agua son validos
      */
@@ -94,6 +98,14 @@ public class ProcessWrapperDTO extends JDBMapObject {
 
     public ProcessWrapperDTO(EmployeeDTO employee) {
         this.current_employee = employee;
+        //this.user = new UserDTO();
+        this.water_intake = new WaterIntakeDTO();
+        this.water_intake_type = new WaterIntakeTypeDTO();
+        this.payment = new PaymentDTO();
+        this.payment_concept_list = new ArrayList<>();
+        this.payment_valid = false;
+        this.user_valid = false;
+        this.water_intake_valid = false;
     }
 
     public EmployeeDTO getCurrent_employee() {
@@ -228,6 +240,14 @@ public class ProcessWrapperDTO extends JDBMapObject {
 
     public void setUser_valid(boolean user_valid) {
         this.user_valid = user_valid;
+    }
+
+    public boolean isUser_document_valid() {
+        return user_document_valid;
+    }
+
+    public void setUser_document_valid(boolean user_document_valid) {
+        this.user_document_valid = user_document_valid;
     }
 
     public boolean isWater_intake_valid() {

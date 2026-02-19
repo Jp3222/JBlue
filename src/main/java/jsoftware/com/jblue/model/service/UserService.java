@@ -11,7 +11,7 @@ import java.util.List;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.ProcessDAO;
-import jsoftware.com.jblue.model.dao.UserDAO;
+import jsoftware.com.jblue.model.dao.UserDao;
 import jsoftware.com.jblue.model.dao.UserDocumentDAO;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
@@ -28,11 +28,11 @@ public class UserService implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final UserDAO user_dao;
+    private final UserDao user_dao;
     private final ProcessDAO process_dao;
     private final UserDocumentDAO doc_dao;
 
-    public UserService(UserDocumentDAO doc_dao, UserDAO user_dao, ProcessDAO process_dao) {
+    public UserService(UserDocumentDAO doc_dao, UserDao user_dao, ProcessDAO process_dao) {
         this.doc_dao = doc_dao;
         this.user_dao = user_dao;
         this.process_dao = process_dao;
@@ -40,7 +40,7 @@ public class UserService implements Serializable {
 
     public UserService(boolean flag_dev, String name_module) {
         this.doc_dao = new UserDocumentDAO(flag_dev, name_module);
-        this.user_dao = new UserDAO(flag_dev, name_module);
+        this.user_dao = new UserDao(flag_dev, name_module);
         this.process_dao = new ProcessDAO(flag_dev, name_module);
     }
 

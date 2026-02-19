@@ -27,7 +27,7 @@ import jsoftware.com.jblue.controllers.FactoryController;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
 import jsoftware.com.jblue.controllers.compc.TableController;
 import jsoftware.com.jblue.model.dao.StreetDAO;
-import jsoftware.com.jblue.model.dao.UserDAO;
+import jsoftware.com.jblue.model.dao.UserDao;
 import jsoftware.com.jblue.model.dao.UserTypeDAO;
 import jsoftware.com.jblue.model.dao.WaterIntakeTypeDAO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
@@ -69,7 +69,7 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
         this.initComponents();
         initComponents();
         controller = FactoryController.getUserController(this);
-        table_controller = new TableController<>(this, new UserDAO(true, getProcessTypeName()));
+        table_controller = new TableController<>(this, new UserDao(true, getProcessTypeName()));
         model = TableModelFactory.getUserTableModel();
         objects_table.setModel(model);
         ly = (CardLayout) root_panel.getLayout();

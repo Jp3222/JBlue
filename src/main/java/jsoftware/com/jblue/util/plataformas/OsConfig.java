@@ -50,7 +50,7 @@ public abstract class OsConfig implements OsConfigModel {
     public static final OsConfig getMacConfig() {
         return new MacOs(); // Ahora sí devuelve Mac
     }
-    
+
     protected String documents_path[],
             desktop_path[];
 

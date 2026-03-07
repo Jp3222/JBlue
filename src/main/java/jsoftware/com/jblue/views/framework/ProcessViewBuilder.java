@@ -50,6 +50,7 @@ public class ProcessViewBuilder implements Serializable {
 
     public ProcessViewBuilder setProcess_id(String process_id) {
         this.process_id = process_id;
+        this.process_wrapper.setProcess_id(Integer.valueOf(process_id));
         return this;
     }
 

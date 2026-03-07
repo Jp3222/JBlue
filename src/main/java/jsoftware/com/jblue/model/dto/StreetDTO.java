@@ -11,8 +11,8 @@ package jsoftware.com.jblue.model.dto;
 public class StreetDTO extends AuditableObjectMap {
 
     private static final long serialVersionUID = 1L;
-    
-    public String getStreetName(){
+
+    public String getStreetName() {
         return get("street_name").toString();
     }
 
@@ -20,6 +20,5 @@ public class StreetDTO extends AuditableObjectMap {
     public String toString() {
         return getStreetName();
     }
-    
-    
+
 }

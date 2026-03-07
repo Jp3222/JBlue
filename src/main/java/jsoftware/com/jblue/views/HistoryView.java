@@ -213,7 +213,6 @@ public final class HistoryView extends DataBaseAccessView {
     protected void dataDump() {
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back_button;
     private javax.swing.JLabel count;

@@ -21,6 +21,7 @@ package jsoftware.com.jblue.sys.app;
  * @author juan pablo campos casasanero
  */
 public interface AppSM {
+
     static final String FACEBOOK = "facebook";
     static final String INSTAGRAM = "instagrama";
     static final String WHATSAPP = "whatsapp";

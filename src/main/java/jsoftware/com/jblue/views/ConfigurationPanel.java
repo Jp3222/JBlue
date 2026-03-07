@@ -431,7 +431,6 @@ public final class ConfigurationPanel extends SimpleView implements DBValuesMode
         add(option_panel, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPasswordField db_password;
     private javax.swing.JPasswordField db_user;

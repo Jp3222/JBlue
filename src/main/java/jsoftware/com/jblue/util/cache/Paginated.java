@@ -22,19 +22,17 @@ import java.io.Serializable;
  *
  * @author juan pablo campos casasanero
  */
-public interface Paginated extends Serializable{
+public interface Paginated extends Serializable {
 
     public static final int MOV_TO_BACK = -1;
     public static final int MOV_TO_NEXT = 1;
-    
-    
+
     boolean next();
 
     boolean back();
 
     boolean movBuffer(int mov);
-    
+
     boolean movData(int mov);
-    
 
 }

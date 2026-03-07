@@ -47,9 +47,9 @@ public interface TableSearchViewModel extends Serializable {
     <T extends JDBMapObject> void setObjectSearch(T o);
 
     <T extends JDBMapObject> T getObjectSearch();
-    
+
     public void setRowsData(String... info);
-    
+
     void setScreenTableInfo();
 
 }

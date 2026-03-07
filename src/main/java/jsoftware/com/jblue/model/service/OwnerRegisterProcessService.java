@@ -28,7 +28,7 @@ public class OwnerRegisterProcessService implements Serializable {
 
     public boolean save(JDBConnection connection, String process_type, ProcessWrapperDTO dto) {
         boolean res = false;
-
+        
         return res;
     }
 

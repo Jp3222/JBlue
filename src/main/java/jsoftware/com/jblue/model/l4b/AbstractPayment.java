@@ -82,11 +82,11 @@ public abstract class AbstractPayment implements PaymentModel {
     }
 
     protected boolean isWaterIntakeNull() {
-        return user.get("water_intake_object")== null;
+        return user.get("water_intake_object") == null;
     }
 
     protected int payment(int payment_type, int status) {
-        
+
         return 0;
     }
 
@@ -124,7 +124,7 @@ public abstract class AbstractPayment implements PaymentModel {
     @Override
     public double getTotal() {
         return PaymentsRulers.calculateBaseTotal(
-                month_paid_list.size(), 
+                month_paid_list.size(),
                 new BigDecimal(water_intake_type.getCurrentPrice())
         ).doubleValue();
     }

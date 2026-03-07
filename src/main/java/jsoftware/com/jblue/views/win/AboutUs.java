@@ -256,7 +256,6 @@ public final class AboutUs extends AbstractAppWindows {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField date_update;
     private javax.swing.JButton facebook_button;

@@ -16,11 +16,11 @@ public class BlueException extends Exception implements ExceptionCode {
 
     protected int error_code;
     protected String user_message;
-    
-    public BlueException(){
+
+    public BlueException() {
         this("ERROR DE DESARROLLO");
     }
-    
+
     public BlueException(String dev_msg) {
         this(-1, null, dev_msg);
     }

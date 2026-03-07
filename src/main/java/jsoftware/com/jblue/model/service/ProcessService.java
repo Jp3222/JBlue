@@ -11,5 +11,5 @@ import jsoftware.com.jblue.model.models.AbstractService;
  * @author juanp
  */
 public class ProcessService extends AbstractService {
-    
+
 }

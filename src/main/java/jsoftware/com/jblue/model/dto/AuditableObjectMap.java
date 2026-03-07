@@ -68,7 +68,7 @@ public class AuditableObjectMap extends JDBMapObject implements AuditableModel {
 
     @Override
     public LocalDateTime getDateEnd() {
-        if (JFunc.isNotNull(get("date_end"))&&JFunc.isNotNullEmptyBlank(get("date_end").toString())) {
+        if (JFunc.isNotNull(get("date_end")) && JFunc.isNotNullEmptyBlank(get("date_end").toString())) {
             return Formats.getLocalDateTime(get("date_end").toString());
         }
         return null;

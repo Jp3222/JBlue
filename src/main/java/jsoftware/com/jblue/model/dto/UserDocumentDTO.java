@@ -31,8 +31,8 @@ public class UserDocumentDTO extends AuditableObjectMap {
     public String getDocFile() {
         return get("doc_file").toString();
     }
-    
-    public String getDocumentTypeId(){
+
+    public String getDocumentTypeId() {
         return get("document_type_id").toString();
     }
 
@@ -40,6 +40,5 @@ public class UserDocumentDTO extends AuditableObjectMap {
     public String toString() {
         return getDocumentName();
     }
-    
-    
+
 }

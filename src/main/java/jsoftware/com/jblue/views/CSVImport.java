@@ -16,9 +16,6 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.views.components.ChooseFileComponent;
-import jsoftware.com.jutil.view.ViewStates;
-import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -27,6 +24,9 @@ import java.io.Reader;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jsoftware.com.jblue.views.components.ChooseFileComponent;
+import jsoftware.com.jutil.swingw.modelos.JTableModel;
+import jsoftware.com.jutil.view.ViewStates;
 
 /**
  *
@@ -143,7 +143,6 @@ public final class CSVImport extends javax.swing.JPanel implements ViewStates {
 
         add(jPanel6, "card4");
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cancelar;

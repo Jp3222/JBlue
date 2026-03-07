@@ -546,7 +546,6 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakeDTO> 
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back_button;
     private javax.swing.JButton cancel_button;

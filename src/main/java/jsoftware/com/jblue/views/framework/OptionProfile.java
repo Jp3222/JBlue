@@ -21,5 +21,5 @@ package jsoftware.com.jblue.views.framework;
  * @author juan pablo campos casasanero
  */
 public interface OptionProfile {
-    
+
 }

@@ -709,7 +709,6 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Jlabel1;
     private javax.swing.JCheckBox abr;

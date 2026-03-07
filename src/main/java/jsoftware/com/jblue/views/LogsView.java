@@ -69,7 +69,6 @@ public class LogsView extends javax.swing.JPanel {
         add(jPanel2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> dir_logs_field;
     private javax.swing.JComboBox<String> fil_log_field;

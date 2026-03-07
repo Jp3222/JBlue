@@ -14,7 +14,7 @@ import jsoftware.com.jutil.model.dto.DtoMapModel;
  *
  * @author juanp
  */
-public interface ListComponentDAO <T extends DtoMapModel> extends Serializable {
+public interface ListComponentDAO<T extends DtoMapModel> extends Serializable {
 
     public List<T> getList(JDBConnection connection) throws SQLException, Exception;
 }

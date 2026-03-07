@@ -67,7 +67,6 @@ public final class ConfigWindow extends AbstractAppWindows {
     public void finalState() {
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

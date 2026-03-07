@@ -214,7 +214,6 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_doc1;
     private javax.swing.JButton add_doc2;
@@ -379,7 +378,7 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
             }
             list.add(dto);
         }
-        
+
         // Actualizamos el estado en el Wrapper para que el botón 'Siguiente' lo vea
         return isValid;
     }

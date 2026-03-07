@@ -57,7 +57,7 @@ public class SurchargePaymentsView extends SimpleView implements ListSearchViewM
 
     @Override
     public void finalState() {
-        
+
     }
 
     /**
@@ -351,7 +351,6 @@ public class SurchargePaymentsView extends SimpleView implements ListSearchViewM
 
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_item_button;

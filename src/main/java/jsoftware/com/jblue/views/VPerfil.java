@@ -388,7 +388,6 @@ public final class VPerfil extends SimpleView {
         add(register_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel complement_data_panel;
     private javax.swing.JTextField curp_field;
@@ -451,7 +450,7 @@ public final class VPerfil extends SimpleView {
         if (!isInfoValid()) {
             return;
         }
-        
+
     }
 
     public boolean isInfoValid() {

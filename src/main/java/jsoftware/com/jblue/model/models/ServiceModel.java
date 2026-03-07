@@ -15,5 +15,5 @@ public interface ServiceModel {
     int getErrorCode();
 
     boolean isError();
-    
+
 }

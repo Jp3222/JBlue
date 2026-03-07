@@ -15,8 +15,7 @@ import jsoftware.com.jutil.sys.LaunchApp;
  * Nota 1: En esta clase se puede alterar la version de las clases debido a la
  * migracion a maven
  * <br>
- * Nota 2: Esta version esta totalmente rota, no usar
- * 1 - JUtilidades
+ * Nota 2: Esta version esta totalmente rota, no usar 1 - JUtilidades
  *
  * @author jp
  * @version 2.0

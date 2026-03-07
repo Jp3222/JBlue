@@ -63,7 +63,7 @@ public class WaterIntakesController extends AbstractDBViewController<WaterIntake
 
     @Override
     public void save() {
-        
+
     }
 
     @Override

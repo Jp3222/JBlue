@@ -925,7 +925,6 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_consumer_button;
     private javax.swing.JButton add_file_button;

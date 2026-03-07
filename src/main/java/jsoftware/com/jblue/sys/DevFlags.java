@@ -41,7 +41,7 @@ public final class DevFlags {
      * Bandera para todos los mensajes puestos en condigo sobre el codigo
      */
     public static boolean DEV_MSG_CODE = AppConfig.isDevMessages();
-    
+
     /**
      * Bandera para todos los mensajes puestos en el codigo sobre la base de
      * datos

@@ -11,9 +11,9 @@ import jsoftware.com.jblue.model.exp.DataAccesObjectException;
  * @author juanp
  */
 public class CorruptInsertionException extends DataAccesObjectException {
-    
+
     public CorruptInsertionException() {
         super(CORRUPT_INSERTION_EXCEPTION, "EL REGISTRO NO PUDO SER GUARDADO EN LA BASE DE DATOS");
     }
-    
+
 }

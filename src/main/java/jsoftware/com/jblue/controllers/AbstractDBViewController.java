@@ -29,7 +29,6 @@ public abstract class AbstractDBViewController<T extends JDBObject> extends Abst
 
     private static final long serialVersionUID = 1L;
 
-
     /**
      * Este metodo reinicia la cache y la vista, define el estado de la
      * operacion y lanza un mensaje

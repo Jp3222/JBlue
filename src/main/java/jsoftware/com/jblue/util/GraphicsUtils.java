@@ -80,8 +80,8 @@ public class GraphicsUtils {
             }
         }
     }
-    
-    public static boolean isComboBoxOk(JComboBox c){
+
+    public static boolean isComboBoxOk(JComboBox c) {
         return c.getSelectedIndex() > 0;
     }
 

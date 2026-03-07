@@ -148,7 +148,6 @@ public final class ConsumerRegisterProcessView extends AbstractProcessView<UserD
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton3;
     private javax.swing.JButton last_panel_button;

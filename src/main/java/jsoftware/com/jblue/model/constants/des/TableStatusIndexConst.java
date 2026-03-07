@@ -16,6 +16,7 @@ package jsoftware.com.jblue.model.constants.des;
  * comparaciones de lógica de negocio en la capa de servicio para evitar el uso
  * de valores literales (números mágicos). * * @author JUAN PABLO CAMPOS
  * CASASANERO
+ *
  * @version 1.0
  */
 public interface TableStatusIndexConst {

@@ -204,7 +204,6 @@ public final class CatalogViewerView<T extends JDBMapObject> extends SimpleView 
     public void finalState() {
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back_button;
     private javax.swing.JLabel count_field;

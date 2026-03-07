@@ -9,7 +9,7 @@ package jsoftware.com.jblue.model.exp;
  * @author juanp
  */
 public class ServiceException extends BlueException {
-    
+
     public ServiceException(int error_code, String user_message) {
         super(error_code, user_message);
     }
@@ -17,7 +17,5 @@ public class ServiceException extends BlueException {
     public ServiceException() {
         super(SERVICE_EXCEPTION, "FLUJO DE OPERACIONES ROTO");
     }
-    
-    
-    
+
 }

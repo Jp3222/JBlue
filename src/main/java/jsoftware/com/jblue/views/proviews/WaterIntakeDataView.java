@@ -271,7 +271,6 @@ public final class WaterIntakeDataView extends AbstractProcessView<WaterIntakeDT
         street2_field.setSelectedIndex(Integer.parseInt(user.get("street2_selected").toString()));
     }//GEN-LAST:event_jButton1ActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;

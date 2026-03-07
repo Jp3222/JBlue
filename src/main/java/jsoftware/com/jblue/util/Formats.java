@@ -75,8 +75,8 @@ public class Formats {
         }
         return time.format(DateTimeFormatter.ISO_DATE);
     }
-    
-    public static String geDBInputFormat(String o){
+
+    public static String geDBInputFormat(String o) {
         return o.trim().replace(" ", "_").toUpperCase();
     }
 

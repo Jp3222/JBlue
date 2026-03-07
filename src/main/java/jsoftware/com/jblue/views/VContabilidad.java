@@ -211,7 +211,6 @@ public class VContabilidad extends javax.swing.JPanel implements OptionMenuModel
         add(jPanel10);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Mes;
     private javax.swing.JComboBox<String> day_field;
@@ -278,7 +277,7 @@ private JButton option;
         day_field.setSelectedIndex(ld.getDayOfMonth() - 1);
         //
         dateList(month_field, 1, 12);
-        month_field.setSelectedIndex(ld.getMonthValue()-1);
+        month_field.setSelectedIndex(ld.getMonthValue() - 1);
         //
         dateList(year_field, ld.getYear(), ld.getYear());
         year_field.setSelectedItem(ld.getYear());

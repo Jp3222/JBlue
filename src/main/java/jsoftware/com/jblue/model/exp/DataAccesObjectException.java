@@ -15,5 +15,5 @@ public class DataAccesObjectException extends BlueException implements Exception
     public DataAccesObjectException(int error_code, String user_message) {
         super(error_code, user_message);
     }
-    
+
 }

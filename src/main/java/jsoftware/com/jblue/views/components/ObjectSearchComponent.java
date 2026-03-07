@@ -80,7 +80,6 @@ public final class ObjectSearchComponent<T extends JDBMapObject> extends JDialog
      */
     public static final int RET_OK = 1;
 
-
     /**
      * Creates new form NewOkCancelDialog
      *

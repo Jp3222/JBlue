@@ -10,13 +10,10 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
 import jsoftware.com.jblue.model.dao.StreetDAO;
-import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentDTO;
 import jsoftware.com.jblue.model.models.AbstractValidation;
-import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.util.Formats;
@@ -444,7 +441,6 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
         add(register_panel, "register");
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_photo_button;
     private javax.swing.JTextField curp_field;
@@ -509,18 +505,11 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
 
     @Override
     public void getDataView() {
-        ProcessWrapperDTO pw = getProcessWrapper();
-        if (pw == null) {
-            EmployeeDTO emp = SystemSession.getInstancia().getCurrentEmployee();
-            pw = new ProcessWrapperDTO(emp);
-            setProcessWrapper(pw);
-            System.out.println("se crea un nuevo pw");
-        }
         if (!isValuesOK()) {
             return;
         }
         UserDTO o = getValues(false);
-        pw.getUser().getMap().putAll(o.getMap());
+        getProcessWrapper().getUser().getMap().putAll(o.getMap());
     }
 
     @Override

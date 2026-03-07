@@ -26,8 +26,7 @@ import java.util.function.Predicate;
  * @param <V>
  */
 public interface MapCache<K, V> {
-    
-    
+
     Map<K, V> getMap();
 
     Map<K, V> getMap(Predicate filter);

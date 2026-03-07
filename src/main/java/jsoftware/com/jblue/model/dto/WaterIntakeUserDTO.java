@@ -56,6 +56,5 @@ public class WaterIntakeUserDTO extends AuditableObjectMap {
     public String toString() {
         return getDescription();
     }
-    
-    
+
 }

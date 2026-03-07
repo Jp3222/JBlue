@@ -181,7 +181,6 @@ public class StatusTypeView extends SimpleView {
         add(status_bar_panel, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back_button;
     private javax.swing.JLabel count;

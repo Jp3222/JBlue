@@ -38,7 +38,7 @@ public class UserDocumentDAO extends AbstractDAO {
      * @return true si el número de registros insertados coincide con el tamaño
      * de la lista.
      */
-    public boolean insert(JDBConnection connection, List<UserDocumentDTO> doc_list) throws SQLException, Exception{
+    public boolean insert(JDBConnection connection, List<UserDocumentDTO> doc_list) throws SQLException, Exception {
         boolean res = false;
         try (PreparedStatement ps = connection.getNewPreparedStatement(INSERT)) {
             for (UserDocumentDTO i : doc_list) {

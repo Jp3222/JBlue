@@ -21,7 +21,7 @@ package jsoftware.com.jblue.model.dto;
  * @author juan pablo campos casasanero
  */
 public interface ForeingKeyObject {
-    
+
     String[] getInfoSinFK();
-    
+
 }

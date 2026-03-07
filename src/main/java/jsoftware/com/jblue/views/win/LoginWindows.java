@@ -108,9 +108,9 @@ public class LoginWindows extends AbstractAppWindows {
             icon_image.setIcon(i);
         }
         //
-        
+
         String status_db;
-        try (JDBConnection conn = ConnectionFactory.getIntance().getMainConnection()){
+        try (JDBConnection conn = ConnectionFactory.getIntance().getMainConnection()) {
             status_db = conn.getConnection().isClosed() ? "Desconectado" : "Conectado";
             db_status_field.setText(status_db);
         } catch (SQLException ex) {
@@ -276,7 +276,6 @@ public class LoginWindows extends AbstractAppWindows {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private final javax.swing.JButton change_password_button = new javax.swing.JButton();

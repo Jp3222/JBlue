@@ -49,8 +49,8 @@ public final class TableModelFactory {
     public static JTableModel getPayment() {
         return getTableModel(Const.PYM_PAYMENTS_TABLE);
     }
-    
-    public static JTableModel getStatus(){
+
+    public static JTableModel getStatus() {
         return getTableModel(Const.CAT_STATUS_TABLE);
     }
 

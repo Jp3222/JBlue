@@ -95,7 +95,6 @@ public final class EndProcessView extends AbstractProcessView<ProcessWrapperDTO>
         add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -107,7 +106,7 @@ public final class EndProcessView extends AbstractProcessView<ProcessWrapperDTO>
 
     @Override
     public void getDataView() {
-        
+
         ProcessWrapperDTO o = getProcessWrapper();
         TableModel model = jTable1.getModel();
         model.getRowCount();

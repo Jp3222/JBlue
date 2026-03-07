@@ -708,7 +708,6 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
 
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottom_panel;
     private javax.swing.JPanel card_panel;

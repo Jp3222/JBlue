@@ -98,8 +98,8 @@ public class PaymentsDAO extends AbstractDAO implements Serializable {
         }
         return payment_id;
     }
-    
-    public String UDDI(){
+
+    public String UDDI() {
         return UUID.randomUUID().toString();
     }
 }

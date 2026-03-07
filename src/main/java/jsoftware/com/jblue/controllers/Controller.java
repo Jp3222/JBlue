@@ -73,7 +73,4 @@ public abstract class Controller implements ActionListener, KeyListener, MouseLi
         JOptionPane.showMessageDialog(null, messages, title, messageType);
     }
 
-
-    
-
 }

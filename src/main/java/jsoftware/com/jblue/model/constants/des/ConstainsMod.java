@@ -9,7 +9,7 @@ package jsoftware.com.jblue.model.constants.des;
  * @author juanp
  */
 public class ConstainsMod {
-    
+
     public static String USER = "user";
     public static String WATER_INTAKE = "water_inatke";
     public static String PROGRAM = "program";

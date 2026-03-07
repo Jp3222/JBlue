@@ -331,7 +331,6 @@ public class OtherPaymentsView extends javax.swing.JPanel {
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_item_button;
     private javax.swing.JButton btn_ant;

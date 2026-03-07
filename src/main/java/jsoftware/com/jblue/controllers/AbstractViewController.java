@@ -21,5 +21,5 @@ package jsoftware.com.jblue.controllers;
  * @author juan pablo campos casasanero
  */
 public abstract class AbstractViewController extends Controller {
-    
+
 }

@@ -21,5 +21,5 @@ package jsoftware.com.jblue.util.cache;
  * @author juan pablo campos casasanero
  */
 public class MemoSetCache {
-    
+
 }

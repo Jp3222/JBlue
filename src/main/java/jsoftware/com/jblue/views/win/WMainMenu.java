@@ -506,7 +506,6 @@ public final class WMainMenu extends AbstractAppWindows {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem about_item_view;
     private javax.swing.JMenuItem administration_history_view_item;

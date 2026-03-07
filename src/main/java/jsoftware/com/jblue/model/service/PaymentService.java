@@ -115,7 +115,7 @@ public class PaymentService implements Serializable {
             if (key <= 0) {
                 throw new SQLException("REGISTRO DE TOTAL CORRUPO");
             }
-            
+
             //SE AÑADE EL PAGO
             for (PaymentListDTO i : list_items) {
                 i.getMap().put("payment", key);

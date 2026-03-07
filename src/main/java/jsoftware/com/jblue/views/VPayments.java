@@ -203,7 +203,6 @@ public class VPayments extends javax.swing.JPanel implements ViewStates, OptionM
         add(status_bar, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel filter_panel;
     private javax.swing.JButton jButton1;
@@ -273,6 +272,6 @@ public class VPayments extends javax.swing.JPanel implements ViewStates, OptionM
         if (option.getActionListeners().length < 1) {
             option.addActionListener(e);
         }
-        
+
     }
 }

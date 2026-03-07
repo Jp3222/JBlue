@@ -10,9 +10,6 @@ package jsoftware.com.jblue.model.constants.loc;
  */
 public class _ConstLOC extends _ConstTables {
 
-   
-
-   
     public static final int INDEX_INSERT = 1;
     public static final int INDEX_UPDATE = 2;
     public static final int INDEX_DELETE = 3;

@@ -21,9 +21,9 @@ package jsoftware.com.jblue.util.cache;
  * @author juan pablo campos casasanero
  */
 public interface UpdateCache {
-    
+
     void setActualizable(boolean actu);
-    
+
     boolean isActualizable();
-    
+
 }

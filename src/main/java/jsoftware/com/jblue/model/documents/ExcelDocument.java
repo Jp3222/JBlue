@@ -8,8 +8,8 @@ package jsoftware.com.jblue.model.documents;
  *
  * @author juanp
  */
-public class ExcelDocument extends Document implements DocumentModel{
-    
+public class ExcelDocument extends Document implements DocumentModel {
+
     public ExcelDocument(DocumentsBuilder builder) {
         super(builder);
     }
@@ -18,5 +18,5 @@ public class ExcelDocument extends Document implements DocumentModel{
     public boolean export() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
 }

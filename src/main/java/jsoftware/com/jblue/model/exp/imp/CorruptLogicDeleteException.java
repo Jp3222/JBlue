@@ -11,9 +11,9 @@ import jsoftware.com.jblue.model.exp.DataAccesObjectException;
  * @author juanp
  */
 public class CorruptLogicDeleteException extends DataAccesObjectException {
-    
+
     public CorruptLogicDeleteException() {
         super(CORRUPT_INSERTION_EXCEPTION, "EL CAMBIO DE STATUS NO PUDO SER REALIZADO");
     }
-    
+
 }

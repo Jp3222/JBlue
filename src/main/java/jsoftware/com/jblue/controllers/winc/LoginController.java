@@ -112,8 +112,8 @@ public class LoginController extends WindowController {
             WIN_MAIN_MENU = new WMainMenu(view);
             WIN_MAIN_MENU.setVisible(true);
             view.setSesionActive(false);
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException 
-                | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException 
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException
+                | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException
                 | SQLException ex) {
             System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }

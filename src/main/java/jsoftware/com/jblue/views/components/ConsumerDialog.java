@@ -196,7 +196,6 @@ public class ConsumerDialog extends javax.swing.JDialog {
         dispose();
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
     private javax.swing.JPanel center_panel;

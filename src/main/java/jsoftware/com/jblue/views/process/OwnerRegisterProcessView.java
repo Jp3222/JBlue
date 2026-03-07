@@ -186,7 +186,7 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<ProcessW
         System.out.println(getProcessWrapper().toString());
         JOptionPane.showMessageDialog(this, "Iniciando persistencia de datos en base de datos...");
         //controller.save();
-        
+
     }
 
     @Override
@@ -269,7 +269,6 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<ProcessW
         root_panel.setLayout(new java.awt.CardLayout());
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancel_process_button;

@@ -92,7 +92,6 @@ public class LoadDocumentsView extends javax.swing.JPanel {
         add(jScrollPane1, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable documents;
     private javax.swing.JButton jButton1;

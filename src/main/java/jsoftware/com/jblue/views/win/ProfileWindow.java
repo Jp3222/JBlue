@@ -16,14 +16,14 @@
  */
 package jsoftware.com.jblue.views.win;
 
+import java.awt.CardLayout;
+import javax.swing.JPanel;
 import jsoftware.com.jblue.controllers.winc.ProfileController;
-import jsoftware.com.jblue.views.framework.AbstractAppWindows;
 import jsoftware.com.jblue.views.EmployeesView;
 import jsoftware.com.jblue.views.HistoryView;
 import jsoftware.com.jblue.views.VContabilidad;
 import jsoftware.com.jblue.views.VPerfil;
-import java.awt.CardLayout;
-import javax.swing.JPanel;
+import jsoftware.com.jblue.views.framework.AbstractAppWindows;
 
 /**
  *
@@ -159,7 +159,6 @@ public final class ProfileWindow extends AbstractAppWindows {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton contable_view_button;

@@ -56,7 +56,7 @@ public final class AdministrationHistoryView extends SimpleView {
 
     @Override
     public void components() {
-}
+    }
 
     @Override
     public void initialState() {
@@ -475,7 +475,6 @@ public final class AdministrationHistoryView extends SimpleView {
 
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<EmployeeDTO> admin_employee;

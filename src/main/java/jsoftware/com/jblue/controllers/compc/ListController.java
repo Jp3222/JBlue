@@ -29,7 +29,7 @@ import jsoftware.com.jutil.db.JDBMapObject;
 public class ListController<T extends JDBMapObject> extends AbstractComponentController<T> {
 
     private static final long serialVersionUID = 1L;
-    
+
     public ListController(JComponent componente) {
         super(componente);
     }

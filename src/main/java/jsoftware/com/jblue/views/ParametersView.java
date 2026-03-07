@@ -439,7 +439,6 @@ public final class ParametersView extends SimpleView {
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox auto_pay_field;
     private javax.swing.JButton cancel_button;

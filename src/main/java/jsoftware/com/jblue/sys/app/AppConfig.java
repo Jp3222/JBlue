@@ -206,9 +206,25 @@ public final class AppConfig {
         return LocalDate.parse((CharSequence) value, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
+    public static boolean getParameterBoolean(String name) {
+        Boolean res = Boolean.valueOf((String) getParameter(name));
+        if (res == null) {
+            return Boolean.FALSE;
+        }
+        return res;
+    }
+
+    public static int getParameterInt(String name) {
+        return (int) getParameter(name);
+    }
+
+    public static String getParameterString(String name) {
+        return (String) getParameter(name);
+    }
+
     private static Object getParameter(String name) {
         try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection();) {
-            String query = "SELECT value,data_type FROM %s WHERE parameter = '%s' AND status = 1"
+            String query = "SELECT value, data_type FROM %s WHERE parameter = '%s' AND status = 1"
                     .formatted(Const.DEV_PARAMETERS_TABLE.getTableName(), name);
             ResultSet rs = connection.query(query);
             if (rs.next()) {

@@ -31,5 +31,15 @@ public class UserDocumentDTO extends AuditableObjectMap {
     public String getDocFile() {
         return get("doc_file").toString();
     }
+    
+    public String getDocumentTypeId(){
+        return get("document_type_id").toString();
+    }
 
+    @Override
+    public String toString() {
+        return getDocumentName();
+    }
+    
+    
 }

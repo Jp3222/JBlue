@@ -21,7 +21,7 @@ import jsoftware.com.jutil.db.JDBConnection;
  * @author juanp
  */
 public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
-    
+
     private static final long serialVersionUID = 1L;
     private final DefaultTableModel model;
 
@@ -35,7 +35,7 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
         jTable1.setModel(model);
         load();
     }
-    
+
     public void load() throws Exception {
         PaymentConceptDAO dao = new PaymentConceptDAO(true, getName());
         try (JDBConnection c = connection();) {
@@ -52,7 +52,7 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
             throw e;
         }
     }
-    
+
     JDBConnection connection() throws SQLException {
         return ConnectionFactory.getIntance().getMainConnection();
     }
@@ -162,12 +162,21 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
         int input = JOptionPane.showConfirmDialog(this, "¿CONFIRMA QUE HA RECIBIDO EL MONTO DEL PAGO EN SU TOTALIDAD?", "pago", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (input == JOptionPane.YES_OPTION) {
             getProcessWrapper().setPayment_valid(true);
+            for (int i = 0; i < model.getRowCount(); i++) {
+                PaymentListDTO dto = new PaymentListDTO();
+                for (int j = 0; j < model.getRowCount(); j++) {
+                    dto.put("payment_concept_id", model.getValueAt(j, 0));
+                    dto.put("payment_concept_id", model.getValueAt(j, 1));
+                    dto.put("payment_concept_id", model.getValueAt(j, 2
+                    ));
+                }
+
+            }
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
@@ -188,6 +197,6 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
     @Override
     public void getDataView() {
         List<PaymentListDTO> payment_concept_list = getProcessWrapper().getPayment_concept_list();
-        
+
     }
 }

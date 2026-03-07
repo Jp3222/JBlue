@@ -11,7 +11,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -32,7 +31,7 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
 
     private static final long serialVersionUID = 1L;
 
-    private DefaultListModel<File> model;
+    private DefaultListModel<UserDocumentDTO> model;
 
     /**
      * Creates new form ValidationProcess
@@ -42,13 +41,12 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
         initComponents();
         this.model = new DefaultListModel<>();
         document_list.setModel(model);
-        this.getProcessWrapper().setUser_document_list(new ArrayList<>(6));
         this.add_doc1.addActionListener((e) -> {
             File file = getSelectFile();
             if (file == null) {
                 return;
             }
-            addItem(this.add_doc1, file);
+            addItem(this.add_doc1, file, 1);
         });
 
         add_doc2.addActionListener((e) -> {
@@ -56,7 +54,7 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
             if (file == null) {
                 return;
             }
-            addItem(add_doc2, file);
+            addItem(add_doc2, file, 2);
         });
 
         add_doc3.addActionListener((e) -> {
@@ -64,7 +62,7 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
             if (file == null) {
                 return;
             }
-            addItem(add_doc3, file);
+            addItem(add_doc3, file, 3);
         });
     }
 
@@ -102,7 +100,7 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
         file_chooser.setName("file_chooser"); // NOI18N
         file_chooser.setPreferredSize(new java.awt.Dimension(900, 700));
 
-        setName("Validacion De Usuario"); // NOI18N
+        setName("DOCUMENTOS DE USUARIO"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.CardLayout());
 
@@ -204,13 +202,16 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
 
         int input = JOptionPane.showConfirmDialog(this, "¿CONFIRMA QUE LOS DOCUMENTOS DE IDENTIDAD DEL USUARIO SON DOCUMENTOS OFICIALES Y VALIDOS?", "pago", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (input == JOptionPane.YES_OPTION) {
-            getProcessWrapper().setUser_valid(true);
+            getProcessWrapper().setUser_document_valid(true);
         }
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        getProcessWrapper().setUser_valid(false);
+        int input = JOptionPane.showConfirmDialog(this, "¿DESEA RECHAZAR EL TRAMITE ACTUAL CON STATUS \"RECHAZADO\"?", "pago", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (input == JOptionPane.YES_OPTION) {
+            getProcessWrapper().setUser_document_valid(false);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
@@ -218,7 +219,7 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
     private javax.swing.JButton add_doc1;
     private javax.swing.JButton add_doc2;
     private javax.swing.JButton add_doc3;
-    private javax.swing.JList<File> document_list;
+    private javax.swing.JList<UserDocumentDTO> document_list;
     private javax.swing.JFileChooser file_chooser;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
@@ -255,42 +256,53 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
         return name.substring(lastIndexOf + 1);
     }
 
-    public void addItem(JButton e, File file) {
-        // 1. Obtener el nombre base del documento usando ActionCommand (Mejora)
-        String nameBase = e.getActionCommand();
+    public void addItem(JButton e, File file, int type_id) {
+        try {
+            // 1. Obtener el nombre base del documento usando ActionCommand (Mejora)
+            String nameBase = e.getActionCommand();
 
-        if (file == null) {
-            // Manejar el caso donde el diálogo fue cancelado
-            return;
-        }
-
-        // 2. Lógica de deduplicación (Corregida: solo se cuenta el sufijo)
-        // Nota: Esta lógica aún asume que document_list contiene objetos que
-        // tienen un método getName() que devuelve el nombre de la copia.
-        int count = 1;
-        String namePrefix = nameBase.replaceAll(" ", "_").toUpperCase(); // Limpia el nombre base
-
-        for (int j = 0; j < document_list.getModel().getSize(); j++) {
-            // ASUMIMOS que el elemento en el modelo es un File o un objeto que expone el nombre.
-            // Si el nombre en la lista coincide con el prefijo, incrementamos el contador
-            // Esto previene sobrescribir: IDENTIFICACION1, IDENTIFICACION2, etc.
-            if (document_list.getModel().getElementAt(j).getName().startsWith(namePrefix)) {
-                count++;
+            if (file == null) {
+                // Manejar el caso donde el diálogo fue cancelado
+                return;
             }
-        }
 
-        // 3. Crear el nombre final, incluyendo la extensión original.
-        String extension = getFileExtension(file);
-        String finalName = namePrefix + "_" + count + (extension.isEmpty() ? "" : "." + extension);
+            // 2. Lógica de deduplicación (Corregida: solo se cuenta el sufijo)
+            // Nota: Esta lógica aún asume que document_list contiene objetos que
+            // tienen un método getName() que devuelve el nombre de la copia.
+            int count = 1;
+            String namePrefix = nameBase.replaceAll(" ", "_").toUpperCase(); // Limpia el nombre base
 
-        // 4. Llamar al método de copia, pasando el nombre deseado
-        File f = copySelectedFileToProgramDirectory(this, file_chooser, file, finalName);
+            for (int j = 0; j < document_list.getModel().getSize(); j++) {
+                // ASUMIMOS que el elemento en el modelo es un File o un objeto que expone el nombre.
+                // Si el nombre en la lista coincide con el prefijo, incrementamos el contador
+                // Esto previene sobrescribir: IDENTIFICACION1, IDENTIFICACION2, etc.
+                if (document_list.getModel().getElementAt(j).getDocumentName().startsWith(namePrefix)) {
+                    count++;
+                }
+            }
 
-        if (f != null) {
-            // 5. Agregar el archivo copiado (f) al modelo.
-            // Es crucial agregar el archivo 'f' (el copiado) y no 'file' (el original).
-            model.addElement(f);
-            System.out.println("Archivo copiado y registrado: " + finalName);
+            // 3. Crear el nombre final, incluyendo la extensión original.
+            String extension = getFileExtension(file);
+            String finalName = namePrefix + "_" + count + (extension.isEmpty() ? "" : "." + extension);
+
+            // 4. Llamar al método de copia, pasando el nombre deseado
+            File f = copySelectedFileToProgramDirectory(this, file_chooser, file, finalName);
+
+            UserDocumentDTO dto = new UserDocumentDTO();
+            dto.put("document_name", f.getName());
+            dto.put("document_path", f.getPath());
+            dto.put("doc_file", Files.readAllBytes(f.toPath()));
+            dto.put("document_type_id", type_id);
+            dto.put("document_name", f.getName());
+
+            if (f != null) {
+                // 5. Agregar el archivo copiado (f) al modelo.
+                // Es crucial agregar el archivo 'f' (el copiado) y no 'file' (el original).
+                model.addElement(dto);
+                System.out.println("Archivo copiado y registrado: " + finalName);
+            }
+        } catch (IOException ex) {
+            System.getLogger(ValidationProcessView.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
     // Reemplaza la versión anterior por esta (debería estar dentro de ValidationProcessView o un servicio)
@@ -342,7 +354,7 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
 
     @Override
     public void getDataView() {
-        
+
     }
 
     @Override
@@ -359,7 +371,15 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
                     "Documentación faltante",
                     JOptionPane.WARNING_MESSAGE);
         }
-
+        List<UserDocumentDTO> list = getProcessWrapper().getUser_document_list();
+        for (int i = 0; i < model.getSize(); i++) {
+            UserDocumentDTO dto = model.getElementAt(i);
+            if (isValid) {
+                dto.put("status", 1);
+            }
+            list.add(dto);
+        }
+        
         // Actualizamos el estado en el Wrapper para que el botón 'Siguiente' lo vea
         return isValid;
     }

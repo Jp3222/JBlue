@@ -91,10 +91,9 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
             return;
         }
         try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
-
-            int pro = user_service.save(connection, view.getProcessId(), user);
+            int pro = user_service.saveUser(connection, user);
             res = pro > 0;
-            returnMessage(view, res);
+            returnMessage(view, null);
         } catch (Exception e) {
             log(e, "save");
         }

@@ -13,6 +13,7 @@ import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
+import jsoftware.com.jblue.model.models.AbstractValidation;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
@@ -33,7 +34,6 @@ public final class WaterIntakeDataView extends AbstractProcessView<WaterIntakeDT
     public WaterIntakeDataView(ProcessViewBuilder builder) {
         super(builder);
         initComponents();
-        getProcessWrapper().setWater_intake(new WaterIntakeDTO());
         build();
     }
 
@@ -88,7 +88,7 @@ public final class WaterIntakeDataView extends AbstractProcessView<WaterIntakeDT
         register_panel = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        description_field = new javax.swing.JTextField();
+        owner_field = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -112,7 +112,7 @@ public final class WaterIntakeDataView extends AbstractProcessView<WaterIntakeDT
         jButton1 = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(900, 700));
-        setName("Form"); // NOI18N
+        setName("DATOS DE LA TOMA DE AGUA POTABLE"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.CardLayout());
 
@@ -141,9 +141,10 @@ public final class WaterIntakeDataView extends AbstractProcessView<WaterIntakeDT
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 25));
         jPanel12.add(jLabel6, java.awt.BorderLayout.WEST);
 
-        description_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        description_field.setName(""); // NOI18N
-        jPanel12.add(description_field, java.awt.BorderLayout.CENTER);
+        owner_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        owner_field.setToolTipText(bundle.getString("WaterIntakeDataView.owner_field.toolTipText")); // NOI18N
+        owner_field.setName(""); // NOI18N
+        jPanel12.add(owner_field, java.awt.BorderLayout.CENTER);
 
         jLabel23.setName("jLabel23"); // NOI18N
         jLabel23.setPreferredSize(new java.awt.Dimension(60, 30));
@@ -265,16 +266,13 @@ public final class WaterIntakeDataView extends AbstractProcessView<WaterIntakeDT
             return;
         }
         System.out.println(user.getMap().toString());
-        description_field.setText(user.toString());
-        street1_field.setSelectedIndex(Integer.parseInt(user.get("stree2_selected").toString()));
-        if (user.getStreet2() != null || !user.getStreet2().isEmpty()) {
-            street2_field.setSelectedIndex(Integer.parseInt(user.get("stree2_selected").toString()));
-        }
+        owner_field.setText(user.toString());
+        street1_field.setSelectedIndex(Integer.parseInt(user.get("street1_selected").toString()));
+        street2_field.setSelectedIndex(Integer.parseInt(user.get("street2_selected").toString()));
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField description_field;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel23;
@@ -297,6 +295,7 @@ public final class WaterIntakeDataView extends AbstractProcessView<WaterIntakeDT
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JTextField location_field;
+    private javax.swing.JTextField owner_field;
     private javax.swing.JPanel register_panel;
     private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.StreetDTO> street1_field;
     private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.StreetDTO> street2_field;
@@ -310,36 +309,23 @@ public final class WaterIntakeDataView extends AbstractProcessView<WaterIntakeDT
         if (Func.isNotNull(pw.getUser())) {
             UserDTO user = pw.getUser();
             wk.getMap().put("description", user.toString());
-            description_field.setText(user.toString());
+            owner_field.setText(user.toString());
         }
         getProcessWrapper().setWater_intake_valid(true);
     }
 
     @Override
     public boolean isValuesOK() {
-        if (description_field.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El campos %s no es valido".formatted(description_field.getName()));
-            return false;
-        }
-        if (water_intake_types_field.getSelectedIndex() <= 0) {
-            JOptionPane.showMessageDialog(this, "El campos %s no es valido".formatted(water_intake_types_field.getName()));
-            return false;
-        }
-        if (street1_field.getSelectedIndex() <= 0) {
-            JOptionPane.showMessageDialog(this, "El campos %s no es valido".formatted(street1_field.getName()));
-            return false;
-        }
-        if (street2_field.getSelectedIndex() <= 0) {
-            JOptionPane.showMessageDialog(this, "El campos %s no es valido".formatted(street2_field.getName()));
-            return false;
-        }
+        AbstractValidation validation = new AbstractValidation();
+        validation.addRuler("owner", owner_field, t -> Func.isNotNull(owner_field.getText()),
+                "EL NOMBRE DEL TITULAT NO ES VALIDO");
         return true;
     }
 
     @Override
     public WaterIntakeDTO getValues(boolean update) {
         WaterIntakeDTO dto = getProcessWrapper().getWater_intake();
-        Func.putIfNotNull(dto.getMap(), "description", description_field.getText());
+        Func.putIfNotNull(dto.getMap(), "description", owner_field.getText());
         Func.putIfNotNull(dto.getMap(), "water_intake_type", water_intake_types_field.getItemAt(water_intake_types_field.getSelectedIndex()).getId());
         Func.putIfNotNull(dto.getMap(), "street1", street1_field.getItemAt(street1_field.getSelectedIndex()).getId());
         if (street2_field.getSelectedIndex() >= 1) {

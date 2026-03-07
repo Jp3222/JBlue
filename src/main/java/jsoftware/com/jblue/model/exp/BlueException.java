@@ -4,23 +4,29 @@
  */
 package jsoftware.com.jblue.model.exp;
 
+import jsoftware.com.jblue.model.models.ExceptionCode;
+
 /**
  *
  * @author juanp
  */
-public class BlueException extends Exception {
+public class BlueException extends Exception implements ExceptionCode {
 
     private static final long serialVersionUID = 1L;
 
     protected int error_code;
     protected String user_message;
+    
+    public BlueException(){
+        this("ERROR DE DESARROLLO");
+    }
+    
+    public BlueException(String dev_msg) {
+        this(-1, null, dev_msg);
+    }
 
     public BlueException(int error_code, String user_message) {
         this(error_code, user_message, user_message);
-    }
-
-    public BlueException(String user_message, String dev_msg) {
-        this(-1, user_message, dev_msg);
     }
 
     public BlueException(int error_code, String user_message, String dev_msg) {

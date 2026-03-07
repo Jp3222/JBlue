@@ -43,11 +43,11 @@ public class PersonObject extends AuditableObjectMap {
     }
 
     public String getGender() {
-        return get("Gender").toString();
+        return get("gender").toString();
     }
 
     public String getEmail() {
-        return get("Email").toString();
+        return get("email").toString();
     }
 
     public String getBirthdate() {

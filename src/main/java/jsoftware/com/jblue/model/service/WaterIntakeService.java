@@ -47,7 +47,7 @@ public class WaterIntakeService implements Serializable {
             //REGISTRO EN BITACORA
             res = HistoryDAO.getInstance().insert(connection, Const.INDEX_WKI_WATER_INTAKES, "SE REGISTRO LA TOMA: %s - %s".formatted(
                     key,
-                    dto.getUserName()
+                    dto.getDescription()
             ));
             if (!res) {
                 throw new SQLException("REGISTRO EN BITACORA CORRUPTO");

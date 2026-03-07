@@ -722,35 +722,8 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakeDTO> 
             String _street1, String _street2, String _location, String _description,
             String _status) {
 
-        // Verificar el objeto base (Fail-Fast)
-        if (originalProcedure == null) {
-            throw new NullPointerException("El objeto de procedimiento original (originalProcedure) no puede ser null para una actualización.");
-        }
-
         Map<String, Object> map = new HashMap<>();
 
-        // 1. Campos Obligatorios/Centrales
-        // Compara el valor nuevo (ej. _cost_procedure) con el valor original (originalProcedure.getCostProcedure())
-        Filters.addIfChanged(map, "cost_procedure", originalProcedure.getConstProcedure(), _cost_procedure);
-
-        // Asumiendo que el campo 'water_intake_id' es un String en el objeto original:
-        Filters.addIfChanged(map, "water_intake_id", originalProcedure.getWaterIntakeType(), _water_inatke);
-
-        // Asumiendo que el campo 'user_id' es un String en el objeto original:
-        Filters.addIfChanged(map, "user_id", originalProcedure.getUser(), _user);
-
-        // El parámetro 'toString' de tu función original fue renombrado a '_user_name' para ser claro.
-        // Asumiendo que el campo 'user_name' es un String en el objeto original:
-        Filters.addIfChanged(map, "user_name", originalProcedure.getUserName(), _user_name);
-
-        // 2. Campos Opcionales/Descriptivos
-        Filters.addIfChanged(map, "street1", originalProcedure.getStreet1(), _street1);
-        Filters.addIfChanged(map, "street2", originalProcedure.getStreet2(), _street2);
-        Filters.addIfChanged(map, "location", originalProcedure.getLocation(), _location);
-        Filters.addIfChanged(map, "description", originalProcedure.getDescription(), _description);
-
-        // Asumiendo que el estado se guarda como String:
-        Filters.addIfChanged(map, "status", String.valueOf(originalProcedure.getStatus()), _status);
         return map;
     }
 
@@ -812,5 +785,5 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakeDTO> 
     public void getDataView() {
 
     }
-    
+
 }

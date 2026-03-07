@@ -16,7 +16,7 @@
     </Component>
   </NonVisualComponents>
   <Properties>
-    <Property name="name" type="java.lang.String" value="Validacion De Usuario" noResource="true"/>
+    <Property name="name" type="java.lang.String" value="DOCUMENTOS DE USUARIO" noResource="true"/>
     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[900, 700]"/>
     </Property>
@@ -106,7 +106,7 @@
                     <Property name="name" type="java.lang.String" value="document_list" noResource="true"/>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;File&gt;"/>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;UserDocumentDTO&gt;"/>
                   </AuxValues>
                 </Component>
               </SubComponents>

@@ -80,6 +80,10 @@ public class GraphicsUtils {
             }
         }
     }
+    
+    public static boolean isComboBoxOk(JComboBox c){
+        return c.getSelectedIndex() > 0;
+    }
 
     public static void getComboBoxDate(JComboBox<Integer> comp, int start, int end) {
         for (int i = start; i < end; i++) {

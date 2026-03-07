@@ -9,6 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
+import jsoftware.com.jblue.model.exp.DataAccesObjectException;
+import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
+import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jblue.model.querys.WaterIntakeUserQuery;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -26,36 +29,37 @@ public class WaterIntakeUserDAO extends AbstractDAO {
         super(flag_dev_log, name_module);
     }
 
-    public int insert(JDBConnection connection, WaterIntakeUserDTO wki_user) throws SQLException {
+    public int insert(JDBConnection connection, WaterIntakeUserDTO dto) throws SQLException, DataAccesObjectException {
         int user_id = -1;
+        boolean res = false;
         String query = WaterIntakeUserQuery.INSERT_NEW_OWNER;
         try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, wki_user.getUserId());
-            ps.setString(2, wki_user.getWaterIntakeId());
-            ps.setString(3, wki_user.getDescription());
-            ps.setString(4, wki_user.getNotes());
-            ps.setString(5, wki_user.getEmployeRegister());
-            ps.setString(6, wki_user.getLastUpdateEmployee());
-            ps.setString(7, wki_user.getOriginalProcessId());
-            ps.setString(8, wki_user.getLastUpdateEmployee());
-            ps.setInt(9, wki_user.getStatus());
-            int affected_row = ps.executeUpdate();
-            if (affected_row == PreparedStatement.RETURN_GENERATED_KEYS || affected_row != 1) {
-                throw new SQLException("INSERCCION DE USUARIO AL PADRON DE TOMAS DE AGUA POTABLE ERRONEO");
+            ps.setString(1, dto.getUserId());
+            ps.setString(2, dto.getWaterIntakeId());
+            ps.setString(3, dto.getWaterIntakeTypeId());
+            ps.setString(4, dto.getDescription());
+            ps.setString(5, dto.getNotes());
+            ps.setString(6, dto.getEmployeeRegister());
+            ps.setString(7, dto.getLastEmployeeUpdate());
+            ps.setString(8, dto.getOriginalProcessId());
+            ps.setString(9, dto.getLastProcessType());
+            ps.setInt(10, dto.getStatus());
+            res = ps.executeUpdate() == 1;
+            if (!res) {
+                throw new CorruptInsertionException();
             }
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (!rs.next()) {
-                    throw new SQLException("ERROR AL OBTENER LLAVE PRIMARIA");
+                    throw new KeyNotGenerateException();
                 }
                 user_id = rs.getInt(1);
-                wki_user.getMap().put("id", user_id);
-                wki_user.getMap().put("date_update", Formats.getLocalDate(LocalDateTime.now()));
-                wki_user.getMap().put("date_register", Formats.getLocalDate(LocalDateTime.now()));
-                wki_user.getMap().put("id", user_id);
+                dto.getMap().put("id", user_id);
+                dto.getMap().put("date_update", Formats.getLocalDate(LocalDateTime.now()));
+                dto.getMap().put("date_register", Formats.getLocalDate(LocalDateTime.now()));
             }
         } catch (SQLException ex) {
             throw ex;
-        } catch (Exception ex) {
+        } catch (DataAccesObjectException ex) {
             throw ex;
         }
         return user_id;

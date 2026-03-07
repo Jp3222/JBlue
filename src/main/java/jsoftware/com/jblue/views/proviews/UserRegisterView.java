@@ -7,9 +7,7 @@ package jsoftware.com.jblue.views.proviews;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
 import jsoftware.com.jblue.model.dao.StreetDAO;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
@@ -17,12 +15,13 @@ import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentDTO;
+import jsoftware.com.jblue.model.models.AbstractValidation;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
-import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.Func;
+import jsoftware.com.jblue.util.GraphicsUtils;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
@@ -154,7 +153,7 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
         jLabel39 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
 
-        setName("Form"); // NOI18N
+        setName("DATOS DE USUARIO"); // NOI18N
         setLayout(new java.awt.CardLayout());
 
         register_panel.setName("register"); // NOI18N
@@ -425,6 +424,7 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
         add_photo_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/agregar-archivo.png"))); // NOI18N
         add_photo_button.setText(bundle.getString("UserRegisterView.add_photo_button.text")); // NOI18N
         add_photo_button.setActionCommand(bundle.getString("UserRegisterView.add_photo_button.actionCommand")); // NOI18N
+        add_photo_button.setEnabled(false);
         add_photo_button.setName("add_photo_button"); // NOI18N
         jPanel1.add(add_photo_button, java.awt.BorderLayout.CENTER);
 
@@ -514,53 +514,52 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
             EmployeeDTO emp = SystemSession.getInstancia().getCurrentEmployee();
             pw = new ProcessWrapperDTO(emp);
             setProcessWrapper(pw);
+            System.out.println("se crea un nuevo pw");
         }
         if (!isValuesOK()) {
             return;
         }
         UserDTO o = getValues(false);
-        pw.setUser(o);
+        pw.getUser().getMap().putAll(o.getMap());
     }
 
     @Override
     public boolean isValuesOK() {
         boolean res = true; // Empezamos asumiendo que es válido
-        String msg = "EL CAMPO %s NO ES VALIDO";
-        String field_error = "";
-        // --- Validar Textos ---
-        JTextField[] field = {
-            curp_field,
-            first_name_field,
-            last_name1_field,
-            last_name2_field
 
-        };
-        for (JTextField i : field) {
-            if (Filters.isNullOrBlank(i.getText())) {
-                field_error = i.getName();
-                res = false; // Marcamos como inválido
-                break;
-            }
+        AbstractValidation v = new AbstractValidation();
+        v.addRuler("curp", curp_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()));
+        v.addErrorMessage("curp", "LA CURP NO TIENE EL FORMATO INCORRECTO");
+
+        System.out.println(curp_field.getText());
+        System.out.println(curp_field.getText().matches(Func.REGEX_CURP));
+
+        v.addRuler("first_name", first_name_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
+        v.addErrorMessage("first_name", "EL NOMBRE DEBE SER SOLO TEXTO");
+
+        v.addRuler("last_name1", last_name1_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
+        v.addErrorMessage("last_name1", "EL APELLIDO PATERNO DEBE SER SOLO TEXTO");
+
+        v.addRuler("last_name2", last_name2_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
+        v.addErrorMessage("last_name2", "EL APELLIDO MATERNO DEBE SER SOLO TEXTO");
+
+//        v.addRuler("gender", gender_field, t -> Func.isNotNull(t) && GraphicsUtils.isComboBoxOk(gender_field));
+//        v.addErrorMessage("gender", "EL GENERO ES OBLIGATORIO");
+        v.addRuler("street1", street1_field, t -> Func.isNotNull(t) && GraphicsUtils.isComboBoxOk(t));
+        v.addErrorMessage("street1", "LA CALLE 1 NO ES UNA CALLE VALIDA");
+
+        if (AppConfig.getParameterBoolean("CAMPOS_SECUNDARIOS_OBLIGATORIOS")) {
+            v.addRuler("phone_number", phone_number1_field, t -> Func.isNotNull(t) && Func.isInteger(t.getText()));
+            v.addErrorMessage("phone_number", "EL NUMERO TELEFONICO NO TIENE EL FORMATO CORRECTO");
+            v.addRuler("email", email_field, t -> Func.isNotNull(t) && Func.isValidEmail(t.getText()));
+            v.addErrorMessage("email", "EL NUMERO TELEFONICO NO TIENE EL FORMATO CORRECTO");
         }
-        // --- Validar Combos (solo si los textos pasaron) ---
-        if (res) {
-            JComboBox[] field2 = {
-                gender_field,
-                street1_field
-            };
-            for (JComboBox i : field2) {
-                // Asumo que isValidComboBox devuelve FALSE si no hay selección válida
-                if (!Filters.isValidComboBox(i)) {
-                    field_error = i.getName();
-                    res = false;
-                    break;
-                }
-            }
-        }
-        // --- Respuesta al usuario ---
+
+        res = v.isValid();
         if (!res) {
-            JOptionPane.showMessageDialog(this, msg.formatted(field_error));
+            JOptionPane.showMessageDialog(this, v.getErrorMessage());
         }
+
         // Guardamos el estado real en el Wrapper
         getProcessWrapper().setUser_valid(res);
         return res;
@@ -576,12 +575,17 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
             String firstName = Formats.geDBInputFormat(first_name_field.getText());
             String lastName1 = Formats.geDBInputFormat(last_name1_field.getText());
             String lastName2 = Formats.geDBInputFormat(last_name2_field.getText());
-            String email = Formats.geDBInputFormat(email_field.getText());
+            String email = email_field.getText();
             String number_phone1 = Formats.geDBInputFormat(phone_number1_field.getText());
             String number_phone2 = Formats.geDBInputFormat(phone_number2_field.getText());
             String gender = String.valueOf(gender_field.getSelectedIndex());
             String street1 = street1_field.getItemAt(street1_field.getSelectedIndex()).getId();
-            String street2 = street2_field.getItemAt(street2_field.getSelectedIndex()).getId();
+            String street2;
+            if (street2_field.getSelectedIndex() > 0) {
+                street2 = street2_field.getItemAt(street2_field.getSelectedIndex()).getId();
+            } else {
+                street2 = null;
+            }
             // --- LÓGICA PARA NUEVO REGISTRO ---
             Func.putIfPresentAndNotBlank(map, "curp", curp);
             Func.putIfPresentAndNotBlank(map, "first_name", firstName);
@@ -600,9 +604,9 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
             if (Func.isNotNull(number_phone2)) {
                 Func.putIfPresentAndNotBlank(map, "number_phone2", number_phone2);
             }
+            Func.putIfPresentAndNotBlank(map, "street2_selected", street2_field.getSelectedIndex());
             if (Func.isNotNull(street2)) {
                 Func.putIfNotNull(map, "street2", street2);
-                Func.putIfPresentAndNotBlank(map, "street2_selected", street2_field.getSelectedIndex());
             }
 
         } catch (Exception e) {

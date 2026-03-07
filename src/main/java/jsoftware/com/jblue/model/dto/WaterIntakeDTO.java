@@ -30,27 +30,20 @@ public class WaterIntakeDTO extends AuditableObjectMap {
         super(map);
     }
 
-    public WaterIntakeDTO(int size) {
-        super(size);
-    }
-
     public WaterIntakeDTO() {
+        super(15);
     }
 
-    public String getConstProcedure() {
+    public String getCostProcedure() {
         return get("cost_procedure").toString();
+    }
+
+    public String getLastProcess() {
+        return get("last_process").toString();
     }
 
     public String getWaterIntakeType() {
         return get("water_intake_type").toString();
-    }
-
-    public String getUser() {
-        return get("user").toString();
-    }
-
-    public String getUserName() {
-        return get("user_name").toString();
     }
 
     public String getStreet1() {
@@ -72,5 +65,4 @@ public class WaterIntakeDTO extends AuditableObjectMap {
     public String getLastEmployeeUpdate() {
         return get("last_employee_update").toString();
     }
-
 }

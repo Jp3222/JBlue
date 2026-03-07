@@ -24,6 +24,10 @@ public class WaterIntakeUserDTO extends AuditableObjectMap {
         return get("water_intake_id").toString();
     }
 
+    public String getWaterIntakeTypeId() {
+        return get("water_intake_type_id").toString();
+    }
+
     public String getDescription() {
         return get("description").toString();
     }
@@ -32,12 +36,12 @@ public class WaterIntakeUserDTO extends AuditableObjectMap {
         return get("notes").toString();
     }
 
-    public String getEmployeRegister() {
+    public String getEmployeeRegister() {
         return get("employee_register").toString();
     }
 
-    public String getLastUpdateEmployee() {
-        return get("last_update_employee").toString();
+    public String getLastEmployeeUpdate() {
+        return get("last_employee_update").toString();
     }
 
     public String getOriginalProcessId() {
@@ -48,4 +52,10 @@ public class WaterIntakeUserDTO extends AuditableObjectMap {
         return get("last_process_type").toString();
     }
 
+    @Override
+    public String toString() {
+        return getDescription();
+    }
+    
+    
 }

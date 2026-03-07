@@ -18,10 +18,6 @@ public class WaterIntakeTypeDTO extends AuditableObjectMap {
         super(map);
     }
 
-    public WaterIntakeTypeDTO(int size) {
-        super(size);
-    }
-
     public WaterIntakeTypeDTO() {
         super();
     }

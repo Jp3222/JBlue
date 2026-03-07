@@ -102,6 +102,7 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
             //STATUS DE USUARIO
             ps.setInt(15, user.getStatus());
             ps.setString(16, user.getLastEmployeeUpdate());
+            
             int affected_row = ps.executeUpdate();
             if (affected_row == PreparedStatement.EXECUTE_FAILED || affected_row != 1) {
                 throw new SQLException("INSERCCION DE USUARIO FALLIDA");

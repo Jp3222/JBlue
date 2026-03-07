@@ -24,9 +24,9 @@ public class WaterIntakeUserQuery {
 // Paso B: El INSERT se mantiene igual ya que genera un nuevo registro
     public static final String INSERT_NEW_OWNER = """
     INSERT INTO wki_user (
-        user_id, water_intake_id, description, notes, 
-        employee_register, last_employee_update, original_process, 
-        last_process_type, status
+        user_id, water_intake_id, water_intake_type_id, description, notes, 
+        employee_register, last_employee_update, original_process, last_process_type, 
+        status
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
     """;
 }

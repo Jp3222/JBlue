@@ -44,16 +44,19 @@ public class UserDocumentDAO extends AbstractDAO {
             for (UserDocumentDTO i : doc_list) {
                 ps.setInt(1, Integer.parseInt(i.getUser()));
                 ps.setString(2, i.getDocumentName());
+                
                 if (JFunc.isNotNullEmptyBlank(i.getDocumentPath())) {
                     ps.setString(3, i.getDocumentPath());
                 } else {
                     ps.setNull(3, java.sql.Types.VARCHAR);
                 }
+                
                 if (i.getDocFile() != null) {
                     ps.setBytes(4, i.getDocFile().getBytes());
                 } else {
                     ps.setNull(4, java.sql.Types.BLOB);
                 }
+                
                 ps.addBatch(); //Agrega este registro al lote
             }
 

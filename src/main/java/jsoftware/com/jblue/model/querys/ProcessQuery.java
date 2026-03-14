@@ -17,7 +17,7 @@ public class ProcessQuery {
                                                       INSERT INTO pro_process(
                                                             process_type, 
                                                             employee_start,
-                                                            administration, 
+                                                            administration_start, 
                                                             last_employee_update, 
                                                             current_db_user
                                                             status
@@ -28,7 +28,6 @@ public class ProcessQuery {
                                                 UPDATE pro_process SET 
                                                     employee_valid = ?,
                                                     date_valid = CURRENT_TIMESTAMP,
-                                                    administration = ?,
                                                     last_employee_update = ?, 
                                                     current_db_user = ?, 
                                                     status = ?
@@ -38,7 +37,6 @@ public class ProcessQuery {
                                                 UPDATE pro_process SET 
                                                     employee_payment = ?,
                                                     date_payment = CURRENT_TIMESTAMP,
-                                                    administration = ?,
                                                     last_employee_update = ?, 
                                                     current_db_user = ?, 
                                                     status = ?
@@ -49,7 +47,7 @@ public class ProcessQuery {
                                                 UPDATE pro_process SET 
                                                     employee_finalize = ?,
                                                     date_finalize = CURRENT_TIMESTAMP,
-                                                    administration = ?,
+                                                    administration_end = ?
                                                     last_employee_update = ?, 
                                                     current_db_user = ?, 
                                                     origina_user = ?,

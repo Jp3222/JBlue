@@ -96,7 +96,6 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<ProcessW
         // Evento SIGUIENTE / FINALIZAR
         next_panel_button.addActionListener((e) -> {
             getDataView(); // Sincroniza vista -> modelo
-
             boolean isValid = switch (current_view) {
                 case 0 ->
                     getProcessWrapper().isUser_valid();

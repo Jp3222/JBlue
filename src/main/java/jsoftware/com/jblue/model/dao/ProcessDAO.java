@@ -46,7 +46,7 @@ public class ProcessDAO extends AbstractDAO {
         super(flag_dev_log, name_module);
         current_employee = SystemSession.getInstancia().getCurrentEmployee();
         current_admin = SystemSession.getInstancia().getCurrentAdministration();
-        current_db_user = null;
+        current_db_user = SystemSession.getInstancia().getCurrentDbUser();
     }
 
     public int startProcess(JDBConnection connection, String process_type, String user_id) throws SQLException {
@@ -61,7 +61,7 @@ public class ProcessDAO extends AbstractDAO {
         // 1. IMPORTANTE: Solicitar que se retornen las llaves generadas
         try (PreparedStatement ps = connection.getNewPreparedStatement(
                 ProcessQuery.INSERT_START_PROCESS,
-                java.sql.Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, process_type);
             ps.setString(2, current_employee.getId());
@@ -99,7 +99,6 @@ public class ProcessDAO extends AbstractDAO {
             LocalDateTime ld = LocalDateTime.now();
             connection.setAutoCommit(false);
             ps.setString(1, current_employee.getId());
-            ps.setString(2, current_admin.getId());
             ps.setString(3, current_employee.getId());
             ps.setString(4, current_db_user);
             ps.setString(5, "10");

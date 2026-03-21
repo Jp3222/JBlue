@@ -12,6 +12,8 @@ import jsoftware.com.jblue.model.exp.DataAccesObjectException;
  */
 public class CorruptInsertionException extends DataAccesObjectException {
 
+    private static final long serialVersionUID = 1L;
+
     public CorruptInsertionException() {
         super(CORRUPT_INSERTION_EXCEPTION, "EL REGISTRO NO PUDO SER GUARDADO EN LA BASE DE DATOS");
     }

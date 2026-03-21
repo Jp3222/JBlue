@@ -34,9 +34,9 @@ WHERE
 GROUP BY
     table_name;
     
--- TABLE FIELD CONST 
+-- TABLE FIELD GS CONST -- TableFieldGsConst
 SELECT
-	CONCAT('protected static final String[] ',
+	CONCAT('static final String[] ',
     UPPER(TABLE_NAME),'_GS = {', GROUP_CONCAT('"', UPPER(COLUMN_NAME),'"'),
     '};')
 FROM
@@ -46,7 +46,7 @@ WHERE
 GROUP BY
     table_name;
     
--- TABLE FIELD GS CONST 
+-- TABLE CONST -- TableConst
 SELECT
 	CONCAT('public static final JDBTable ',
     UPPER(TABLE_NAME),'_TABLE = '

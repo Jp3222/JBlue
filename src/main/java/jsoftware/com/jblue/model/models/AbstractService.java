@@ -10,12 +10,18 @@ package jsoftware.com.jblue.model.models;
  */
 public class AbstractService implements ServiceModel {
 
+    private static final long serialVersionUID = 1L;
+
     protected String user_message;
     protected int error_code;
+    private final boolean dev_flag;
+    private final String process_name;
 
-    public AbstractService() {
+    public AbstractService(boolean dev_flag, String process_name) {
         this.user_message = null;
         this.error_code = 0;
+        this.process_name = process_name;
+        this.dev_flag = dev_flag;
     }
 
     @Override
@@ -26,6 +32,14 @@ public class AbstractService implements ServiceModel {
     @Override
     public int getErrorCode() {
         return error_code;
+    }
+
+    public boolean isDev_flag() {
+        return dev_flag;
+    }
+
+    public String getProcess_name() {
+        return process_name;
     }
 
     @Override

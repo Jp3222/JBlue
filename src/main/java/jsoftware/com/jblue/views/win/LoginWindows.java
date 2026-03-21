@@ -5,10 +5,9 @@
 package jsoftware.com.jblue.views.win;
 
 import java.awt.Image;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -19,10 +18,12 @@ import jsoftware.com.jblue.controllers.FactoryController;
 import jsoftware.com.jblue.controllers.winc.WindowController;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.sys.app.AppConfig;
+import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.framework.AbstractAppWindows;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.swingw.wrappers.TextFieldWrapper;
 import jsoftware.com.jutil.sys.LaunchApp;
+import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  *
@@ -40,7 +41,8 @@ public class LoginWindows extends AbstractAppWindows {
      *
      */
     public LoginWindows() {
-        updateTitle("Inicio de Sesion");
+        super();
+        this.updateTitle("Inicio de Sesion");
         this.MENU_CONFIG_BD = new ConfigWindow();
         initComponents();
         FIELDS = new TextFieldWrapper[2];
@@ -68,7 +70,6 @@ public class LoginWindows extends AbstractAppWindows {
         user.addKeyListener(controller);
         password.addKeyListener(controller);
         change_password_button.addActionListener(controller);
-
         for (TextFieldWrapper envjtf : FIELDS) {
             envjtf.borrarAlClick();
             envjtf.borrarAlEscribir();
@@ -85,7 +86,6 @@ public class LoginWindows extends AbstractAppWindows {
         user.requestFocusInWindow();
         mostrar.setToolTipText("mostrar");
         mostrar.setSelected(false);
-        //
         for (TextFieldWrapper envjtf : FIELDS) {
             envjtf.defecto();
         }
@@ -107,14 +107,13 @@ public class LoginWindows extends AbstractAppWindows {
             i.setImage(icon);
             icon_image.setIcon(i);
         }
-        //
 
         String status_db;
         try (JDBConnection conn = ConnectionFactory.getIntance().getMainConnection()) {
             status_db = conn.getConnection().isClosed() ? "Desconectado" : "Conectado";
             db_status_field.setText(status_db);
         } catch (SQLException ex) {
-            Logger.getLogger(LoginWindows.class.getName()).log(Level.SEVERE, null, ex);
+            log(ex, "finalState");
         }
 
     }
@@ -345,6 +344,14 @@ public class LoginWindows extends AbstractAppWindows {
 
     public void setSesionActive(boolean sesion_active) {
         this.sesion_active = sesion_active;
+    }
+
+    public void log(Exception e, String method_name) {
+        try {
+            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "INICIO DE SESSION", method_name, e.getMessage());
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 
 }

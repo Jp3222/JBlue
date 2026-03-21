@@ -92,9 +92,9 @@ public final class UserViewComponent extends JDialog implements ComponentStates 
             dato_codigo
         };
         //
-        modelo_pagos_x_servicio = new JTableModel(Const.PYM_PAYMENTS_TABLE.getFields(), 0);
-        modelo_pagos_x_recargo = new JTableModel(Const.PYM_PAYMENTS_TABLE.getFields(), 0);
-        modelo_pagos_x_otros = new JTableModel(Const.PYM_PAYMENTS_TABLE.getFields(), 0);
+        modelo_pagos_x_servicio = new JTableModel(Const.PYM_PAYMENT_TABLE.getFields(), 0);
+        modelo_pagos_x_recargo = new JTableModel(Const.PYM_PAYMENT_TABLE.getFields(), 0);
+        modelo_pagos_x_otros = new JTableModel(Const.PYM_PAYMENT_TABLE.getFields(), 0);
         //
         service_payments.setModel(modelo_pagos_x_servicio);
         surcharge_payments.setModel(modelo_pagos_x_recargo);

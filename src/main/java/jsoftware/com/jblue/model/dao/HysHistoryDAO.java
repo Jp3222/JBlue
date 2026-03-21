@@ -21,7 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import jsoftware.com.jblue.model.constants.Const;
-import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -76,7 +76,7 @@ public class HysHistoryDAO extends AbstractDAO {
     public boolean save(int affected_table, int type_mov, String description) throws SQLException {
         boolean res;
         try (JDBConnection connection = ConnectionFactory.getIntance().getHistoryConnection()) {
-            EmployeeDTO employee = SystemSession.getInstancia().getCurrentEmployee();
+            EmployeeUserDTO employee = SystemSession.getInstancia().getCurrentEmployee();
             String current_user = currentUser(connection);
             res = save(connection, current_user, employee, affected_table, type_mov, description);
         } catch (SQLException e) {
@@ -85,7 +85,7 @@ public class HysHistoryDAO extends AbstractDAO {
         return res;
     }
 
-    private boolean save(EmployeeDTO employee, int affected_table, int type_mov, String description) throws SQLException {
+    private boolean save(EmployeeUserDTO employee, int affected_table, int type_mov, String description) throws SQLException {
         boolean res;
         try (JDBConnection connection = ConnectionFactory.getIntance().getHistoryConnection()) {
             String current_user = currentUser(connection);
@@ -96,7 +96,7 @@ public class HysHistoryDAO extends AbstractDAO {
         return res;
     }
 
-    protected boolean save(JDBConnection connection, String current_user, EmployeeDTO employee, int affected_table, int type_mov, String description) throws SQLException {
+    protected boolean save(JDBConnection connection, String current_user, EmployeeUserDTO employee, int affected_table, int type_mov, String description) throws SQLException {
         boolean rt = false;
         try (PreparedStatement ps = connection.getNewCallableStatement(INSERT)) {
             ps.setString(1, employee.getId());
@@ -147,11 +147,11 @@ public class HysHistoryDAO extends AbstractDAO {
             return insert(Const.INDEX_EMP_EMPLOYEE, description);
         }
 
-        public boolean saveLogin(EmployeeDTO employee, String description) throws SQLException {
+        public boolean saveLogin(EmployeeUserDTO employee, String description) throws SQLException {
             return save(employee, Const.INDEX_HYS_PROGRAM_HISTORY, Const.INDEX_LOGIN, description);
         }
 
-        public boolean saveLogOut(EmployeeDTO employee, String description) throws SQLException {
+        public boolean saveLogOut(EmployeeUserDTO employee, String description) throws SQLException {
             return save(employee, Const.INDEX_HYS_PROGRAM_HISTORY, Const.INDEX_LOGOUT, description);
         }
 

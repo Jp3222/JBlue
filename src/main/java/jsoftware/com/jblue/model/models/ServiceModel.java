@@ -4,11 +4,13 @@
  */
 package jsoftware.com.jblue.model.models;
 
+import java.io.Serializable;
+
 /**
  *
  * @author juanp
  */
-public interface ServiceModel {
+public interface ServiceModel extends Serializable {
 
     String getUserMessage();
 

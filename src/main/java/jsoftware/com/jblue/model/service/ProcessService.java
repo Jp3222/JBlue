@@ -12,4 +12,8 @@ import jsoftware.com.jblue.model.models.AbstractService;
  */
 public class ProcessService extends AbstractService {
 
+    public ProcessService(boolean dev_flag, String process_name) {
+        super(dev_flag, process_name);
+    }
+
 }

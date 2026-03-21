@@ -28,8 +28,8 @@ public class UserDTO extends PersonObject implements Cloneable {
         super(21);
     }
 
-    public String getStreet1() {
-        return get("street1").toString();
+    public String getPhoneNumber2() {
+        return get("phone_number2").toString();
     }
 
     public String getStreet2() {

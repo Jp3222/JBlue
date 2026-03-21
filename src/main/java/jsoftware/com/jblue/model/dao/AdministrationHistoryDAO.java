@@ -21,6 +21,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import jsoftware.com.jblue.model.dto.HysAdministrationHistoryDTO;
 import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.model.AbstractDAO;
 
 /**
  * Clase DAO (Data Access Object) responsable de consultar y gestionar el
@@ -30,7 +31,7 @@ import jsoftware.com.jutil.db.JDBConnection;
  * @version 1.0
  * @since 22/11/2025
  */
-public class AdministrationHistoryDAO {
+public class AdministrationHistoryDAO extends AbstractDAO {
 
     /**
      * Índice para el campo 'administrator' en EMPLOYEE_REGISTER.
@@ -52,9 +53,12 @@ public class AdministrationHistoryDAO {
         "administrator", "president", "treasurer"
     };
 
-    // -------------------------------------------------------------------------
-    // MÉTODOS DE VALIDACIÓN
-    // -------------------------------------------------------------------------
+    private static final long serialVersionUID = 1L;
+
+    public AdministrationHistoryDAO(boolean flag_dev_log, String name_module) {
+        super(flag_dev_log, name_module);
+    }
+
     /**
      * Valida si el campo del Presidente está registrado en la administración
      * activa.
@@ -63,7 +67,7 @@ public class AdministrationHistoryDAO {
      * @return {@code true} si el campo 'president' no es nulo en el registro
      * activo.
      */
-    public static boolean isPresidentRegistered(JDBConnection connection) {
+    public boolean isPresidentRegistered(JDBConnection connection) {
         return isEmployeeRegistered(connection, PRESIDENT);
     }
 
@@ -75,7 +79,7 @@ public class AdministrationHistoryDAO {
      * @return {@code true} si el campo 'treasurer' no es nulo en el registro
      * activo.
      */
-    public static boolean isTreasurerRegistered(JDBConnection connection) {
+    public boolean isTreasurerRegistered(JDBConnection connection) {
         return isEmployeeRegistered(connection, TREASURER);
     }
 
@@ -87,7 +91,7 @@ public class AdministrationHistoryDAO {
      * @return {@code true} si el campo 'administrator' no es nulo en el
      * registro activo.
      */
-    public static boolean isAdministratorRegistered(JDBConnection connection) {
+    public boolean isAdministratorRegistered(JDBConnection connection) {
         return isEmployeeRegistered(connection, ADMINISTRATOR);
     }
 
@@ -101,7 +105,7 @@ public class AdministrationHistoryDAO {
      * @return {@code true} si se encuentra un registro donde el campo del rol
      * no es nulo.
      */
-    private static boolean isEmployeeRegistered(JDBConnection connection, int employee) {
+    private boolean isEmployeeRegistered(JDBConnection connection, int employee) {
         // Inicializar a false es redundante si se devuelve dentro del try/catch
         String query = getQueryEmployeeRegisterInAdmin(employee);
 
@@ -119,9 +123,6 @@ public class AdministrationHistoryDAO {
             throw new RuntimeException("Fallo en la persistencia durante la validación.", ex);
         }
     }
-// -------------------------------------------------------------------------
-// MÉTODOS DE CONSULTA
-// -------------------------------------------------------------------------
 
     /**
      * Obtiene el registro de administración activa para el año en curso.

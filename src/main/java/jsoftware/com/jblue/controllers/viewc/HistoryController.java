@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import jsoftware.com.jblue.controllers.AbstractViewController;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.HysHistoryDAO;
-import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.views.HistoryView;
@@ -54,14 +54,12 @@ public class HistoryController extends AbstractViewController {
 
     private void load(JDBConnection connection) {
         connection.setAutoCommit(false);
-        EmployeeDTO dto = SystemSession.getInstancia().getCurrentEmployee();
+        EmployeeUserDTO dto = SystemSession.getInstancia().getCurrentEmployee();
         try {
             boolean res = HysHistoryDAO.getINSTANCE().select(
                     Const.INDEX_HYS_PROGRAM_HISTORY,
                     "EL EMPLEADO: %s %s %s CONSULTO EL HISTORIAL".formatted(
-                            dto.getFirstName(),
-                            dto.getLastName1(),
-                            dto.getLastName2()
+                            dto.getDescription()
                     )
             );
             if (!res) {

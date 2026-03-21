@@ -17,13 +17,13 @@
 package jsoftware.com.jblue.views.win;
 
 import java.awt.CardLayout;
+import java.awt.event.WindowListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import jsoftware.com.jblue.controllers.winc.MainController;
 import jsoftware.com.jblue.model.dto.StatusDTO;
 import jsoftware.com.jblue.model.factories.ProcessViewFactory;
-import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.views.CatalogViewFactory;
 import jsoftware.com.jblue.views.CatalogViewerView;
 import jsoftware.com.jblue.views.PaymentConceptView;
@@ -149,6 +149,7 @@ public final class WMainMenu extends AbstractAppWindows {
     @Override
     public void events() {
         controller = new MainController(this);
+        addWindowListener((WindowListener) controller);
         exit_button.addActionListener(controller);
         btn_home.addActionListener(controller);
         //btn_usuarios.addActionListener(controller);
@@ -575,8 +576,6 @@ public final class WMainMenu extends AbstractAppWindows {
         if (showVisor != null && showVisor.isVisible()) {
             showVisor.dispose();
         }
-
-        SystemSession.getInstancia().setUser(null);
         SwingUtilities.invokeLater(() -> {
             LOGIN.setVisible(true);
         });

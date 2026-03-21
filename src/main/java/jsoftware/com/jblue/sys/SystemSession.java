@@ -1,15 +1,14 @@
 package jsoftware.com.jblue.sys;
 
-import java.sql.SQLException;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.model.dao.AdministrationHistoryDAO;
-import jsoftware.com.jblue.model.dao.HysHistoryDAO;
-import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.HysAdministrationHistoryDTO;
-import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jblue.model.dto.SessionDTO;
 import jsoftware.com.jblue.sys.app.AppConfig;
-import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.jexception.JExcp;
+import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.sys.LocalSession;
 
 /**
@@ -21,9 +20,10 @@ import jsoftware.com.jutil.sys.LocalSession;
  * @version 1.0
  * @since 2025-11-22
  */
-public class SystemSession implements LocalSession<EmployeeDTO> {
+public class SystemSession implements LocalSession<EmployeeUserDTO>, Serializable {
 
     private static SystemSession instancia;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Retorna una única instancia de la clase Sesión (Patrón Singleton). El
@@ -39,15 +39,25 @@ public class SystemSession implements LocalSession<EmployeeDTO> {
         return instancia;
     }
 
+    private Map<String, Object> var_session;
     /**
      * Empleado DTO que ha iniciado sesión actualmente.
      */
-    private EmployeeDTO current_employee;
+    private EmployeeUserDTO current_employee;
+
     /**
      * Registro de la administración activa actual (del año en curso).
      */
     private HysAdministrationHistoryDTO current_administration;
 
+    /**
+     * Informacion de sesion actual
+     */
+    private SessionDTO current_session;
+
+    /**
+     * usuario principal de base de datos
+     */
     private String current_db_user;
 
     /**
@@ -55,51 +65,47 @@ public class SystemSession implements LocalSession<EmployeeDTO> {
      * inicializar la única instancia de la sesión.
      */
     private SystemSession() {
+        init();
+    }
+
+    void init() {
+        this.current_administration = null;
+        this.current_db_user = null;
+        this.current_employee = null;
+        this.current_session = null;
+        this.var_session = new HashMap<>(30);
     }
 
     /**
-     * Obtiene el DTO del empleado actualmente autenticado.
-     *
-     * @return El DTO del empleado en sesión, o {@code null} si no hay sesión
-     * abierta.
-     */
-    public EmployeeDTO getCurrentEmployee() {
-        return current_employee;
-    }
-
-    /**
-     * Obtiene el registro de la administración activa (presidente, tesorero,
-     * etc.) para el contexto actual.
-     *
-     * @return El DTO de la historia de administración.
-     */
-    public HysAdministrationHistoryDTO getCurrentAdministration() {
-        return current_administration;
-    }
-
-    public String getCurrentDbUser() {
-        return current_db_user;
-    }
-
-    /**
-     * Muestra advertencias críticas del sistema mediante un cuadro de diálogo
-     * (JOptionPane). Verifica el estado del empleado, la administración y la
-     * configuración de pagos automáticos.
+     * Muestra advertencias del sistema, realizando verificaciones importantes
+     * que podrian afectar a las funcionalidades del aplicativo
      */
     public void getWarnings() {
         StringBuilder sb = new StringBuilder(255);
+        //Permite el paso y ejecucion del funciones
+        if (Func.isNotNullEmptyBlank(current_db_user)) {
+            sb.append("El usuario de base de datos no se ha registrado correctamente. No podrá realizar algunos registros.\n");
+        }
 
-        if (getCurrentEmployee() == null) {
+        //Permite el paso
+        if (Func.isNotNull(current_employee)) {
             sb.append("El usuario no se ha registrado correctamente. No podrá realizar algunos registros.\n");
         }
 
-        if (getCurrentAdministration() == null) {
+        //permite el paso
+        if (Func.isNotNull(current_administration)) {
             sb.append("La administración actual no ha sido registrada. No podrá realizar ningún registro administrativo.\n");
+        }
+
+        //no permite el paso
+        if (Func.isNotNull(current_session)) {
+            sb.append("El objeto de session actual no ha sido registrado correctamente. No podrá realizar ningún registro administrativo.\n");
         }
 
         if (AppConfig.isAutoPay()) {
             sb.append("Advertencia: El sistema tiene el modo de recargo automático activado.\n");
         }
+
         if (!sb.isEmpty()) {
             JOptionPane.showMessageDialog(
                     null,
@@ -111,14 +117,14 @@ public class SystemSession implements LocalSession<EmployeeDTO> {
     }
 
     /**
-     * {@inheritDoc} Verifica si la sesión está abierta (si existe un empleado
-     * autenticado).
+     * Metodo que verifica una sesion abierta
      *
-     * @return {@code true} si {@code current_employee} no es nulo.
+     * @return true solo si existe un user_db, empleado y objeto de session en
+     * la session actual
      */
     @Override
     public boolean isOpen() {
-        return current_employee != null;
+        return current_db_user != null && current_employee != null && current_session != null;
     }
 
     /**
@@ -127,69 +133,61 @@ public class SystemSession implements LocalSession<EmployeeDTO> {
      */
     @Override
     public void writer() {
-        // Método sin implementar/funcionalidad
     }
 
-    /**
-     * Inicia o cierra una sesión de empleado, registrando la acción en la
-     * bitácora de movimientos del empleado de forma transaccional.
-     *
-     * @param user El DTO del empleado que inicia sesión, o {@code null} para
-     * cerrar sesión.
-     * @throws RuntimeException Si el registro en la bitácora o la actualización
-     * de estado falla.
-     */
+    public void close() {
+        var_session.clear();
+        init();
+    }
+
     @Override
-    public void setUser(EmployeeDTO user) {
-        // Deshabilita el auto-commit para manejar la transacción manualmente.
-        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
-            saveSession(connection, user);
-        } catch (SQLException e) {
-
-        }
+    public void setUser(EmployeeUserDTO user) {
+        this.current_employee = user;
     }
 
-    private void saveSession(JDBConnection connection, EmployeeDTO user) {
-        boolean res;
-        try {
-            connection.setAutoCommit(false);
-            String description = user == null ? "FIN DE SESION" : "INICIO DE SESIÓN";
-            if (user == null) {
-                // Registro de salida
-                res = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogOut(current_employee, description);
-                //las variables de sesion se quitan
-                current_employee = null;
-                current_administration = null;
-                current_db_user = null;
-            } else {
-                // Registro de entrada
-                res = HysHistoryDAO.getINSTANCE().getHysEmployeeMovs().saveLogin(user, description);
-                current_employee = user;
-                //Obtiene el contexto administrativo tras un login exitoso.
-                current_administration = new AdministrationHistoryDAO().getCurrentAdministration(connection);
-                //Usuario de base de datos actual
-                current_db_user = HysHistoryDAO.getINSTANCE().currentUser(connection);
-            }
-            if (!res) {
-                throw new SQLException("El registro de auditoría en bitácora ha fallado o fue corrupto.");
-            }
-            connection.commit();
-        } catch (SQLException e) {
-            connection.rollBack();
-            JExcp.getInstance(false, true).print(e, getClass(), "setUser");
-
-        } finally {
-            // Siempre restaurar el modo AutoCommit.
-            connection.setAutoCommit(true);
-        }
+    public EmployeeUserDTO getCurrentEmployee() {
+        return current_employee;
     }
 
-    /**
-     * Método placeholder para la lógica de carga de la sesión. Actualmente no
-     * implementado.
-     */
-    public void load() {
-        // Lógica de precarga de sesión si es necesario
+    public void setCurrentEmployee(EmployeeUserDTO current_employee) {
+        this.current_employee = current_employee;
+    }
+
+    public HysAdministrationHistoryDTO getCurrentAdministration() {
+        return current_administration;
+    }
+
+    public void setCurrentAdministration(HysAdministrationHistoryDTO current_administration) {
+        this.current_administration = current_administration;
+    }
+
+    public SessionDTO getCurrentSession() {
+        return current_session;
+    }
+
+    public void setCurrentSession(SessionDTO current_session) {
+        this.current_session = current_session;
+    }
+
+    public String getCurrentDbUser() {
+        return current_db_user;
+    }
+
+    public void setCurrentDbUser(String current_db_user) {
+        this.current_db_user = current_db_user;
+    }
+    
+    public void put(String key, Object value){
+        var_session.put(key, value);
+    }
+    
+    public Object get(String key){
+        return var_session.get(key);
+    }
+
+    @Override
+    public String toString() {
+        return current_db_user;
     }
 
 }

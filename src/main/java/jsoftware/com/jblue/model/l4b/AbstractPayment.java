@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import jsoftware.com.jblue.model.dao.PaymentListDAO;
 import jsoftware.com.jblue.model.dao.PaymentsDAO;
-import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
@@ -41,7 +41,7 @@ public abstract class AbstractPayment implements PaymentModel {
     private static final long serialVersionUID = 1L;
 
     protected final Map<String, String> mov;
-    protected final EmployeeDTO current_employee;
+    protected final EmployeeUserDTO current_employee;
     protected final JDBConnection connection;
 
     protected int payment_concept;

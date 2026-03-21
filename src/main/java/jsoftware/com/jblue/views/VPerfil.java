@@ -20,7 +20,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.views.framework.SimpleView;
 
 /**
@@ -38,7 +37,7 @@ public final class VPerfil extends SimpleView {
      */
     public VPerfil() {
         initComponents();
-        current_employee = SystemSession.getInstancia().getCurrentEmployee();
+        current_employee = null;
         setInfoGrafica();
 
     }

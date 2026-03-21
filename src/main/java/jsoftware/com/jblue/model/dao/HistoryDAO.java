@@ -4,11 +4,14 @@
  */
 package jsoftware.com.jblue.model.dao;
 
+import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import jsoftware.com.jblue.model.constants.Const;
-import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
+import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
+import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -44,6 +47,12 @@ public class HistoryDAO extends AbstractDAO {
         return insert(connection, affected_table, Const.INDEX_INSERT, description);
     }
 
+    public int insertAndReturn(JDBConnection connection, int affected_table, int type_mov, String description) throws SQLException, CorruptInsertionException, KeyNotGenerateException {
+        String current_user = currentUser(connection);
+        EmployeeUserDTO emp = SystemSession.getInstancia().getCurrentEmployee();
+        return saveAndReturn(connection, current_user, emp, affected_table, type_mov, description);
+    }
+
     public boolean update(JDBConnection connection, int affected_table, String description) throws SQLException {
         return insert(connection, affected_table, Const.INDEX_UPDATE, description);
     }
@@ -57,19 +66,19 @@ public class HistoryDAO extends AbstractDAO {
     }
 
     public boolean insert(JDBConnection connection, int affected_table, int type_mov, String description) throws SQLException {
-        EmployeeDTO employee = SystemSession.getInstancia().getCurrentEmployee();
+        EmployeeUserDTO employee = SystemSession.getInstancia().getCurrentEmployee();
         if (JFunc.isNull(employee)) {
             throw new NullPointerException("EL EMPLEADO CACHEADO EN EL SISTEMA ES NULL");
         }
         return insert(connection, employee, affected_table, type_mov, description);
     }
 
-    public boolean insert(JDBConnection connection, EmployeeDTO employee, int affected_table, int type_mov, String description) throws SQLException {
+    public boolean insert(JDBConnection connection, EmployeeUserDTO employee, int affected_table, int type_mov, String description) throws SQLException {
         String current_user = currentUser(connection);
         return save(connection, current_user, employee, affected_table, type_mov, description);
     }
 
-    protected boolean save(JDBConnection connection, String current_user, EmployeeDTO employee, int affected_table, int type_mov, String description) throws SQLException {
+    protected boolean save(JDBConnection connection, String current_user, EmployeeUserDTO employee, int affected_table, int type_mov, String description) throws SQLException {
         boolean rt = false;
         String INSERT = "INSERT INTO hys_program_history(employee, db_user, affected_table, type_mov, description) VALUES(?,?,?,?,?)";
         try (PreparedStatement ps = connection.getNewPreparedStatement(INSERT)) {
@@ -80,6 +89,31 @@ public class HistoryDAO extends AbstractDAO {
             ps.setString(5, description);
             rt = ps.executeUpdate() > 0;
         } catch (SQLException e) {
+            throw e;
+        }
+        return rt;
+    }
+
+    protected int saveAndReturn(JDBConnection connection, String current_user, EmployeeUserDTO employee, int affected_table, int type_mov, String description) throws SQLException, CorruptInsertionException, KeyNotGenerateException {
+        int rt = -1;
+        String INSERT = "INSERT INTO hys_program_history(employee, db_user, affected_table, type_mov, description) VALUES(?,?,?,?,?)";
+        try (PreparedStatement ps = connection.getNewPreparedStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, employee.getId());
+            ps.setString(2, current_user);
+            ps.setInt(3, affected_table);
+            ps.setInt(4, type_mov);
+            ps.setString(5, description);
+            rt = ps.executeUpdate();
+            if (rt != 1) {
+                throw new CorruptInsertionException();
+            }
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (!rs.next()) {
+                    throw new KeyNotGenerateException();
+                }
+                rt = rs.getInt(1);
+            }
+        } catch (SQLException | CorruptInsertionException | KeyNotGenerateException e) {
             throw e;
         }
         return rt;
@@ -101,8 +135,10 @@ public class HistoryDAO extends AbstractDAO {
         return current_user;
     }
 
-    public static class UserHistoryDAO {
+    public static class UserHistoryDAO implements Serializable {
 
+        private static final long serialVersionUID = 1L;
+        
         private static UserHistoryDAO instance;
 
         public static synchronized UserHistoryDAO getInstance() {
@@ -135,7 +171,9 @@ public class HistoryDAO extends AbstractDAO {
         }
     }
 
-    public static class EmployeeHistoryDAO {
+    public static class EmployeeHistoryDAO implements Serializable {
+
+        private static final long serialVersionUID = 1L;
 
         private static EmployeeHistoryDAO instance;
 
@@ -169,7 +207,9 @@ public class HistoryDAO extends AbstractDAO {
         }
     }
 
-    public static class PaymentHistoryDAO {
+    public static class PaymentHistoryDAO implements Serializable {
+
+        private static final long serialVersionUID = 1L;
 
         private static PaymentHistoryDAO instance;
 
@@ -202,7 +242,9 @@ public class HistoryDAO extends AbstractDAO {
         }
     }
 
-    public static class PaymentListHistoryDAO {
+    public static class PaymentListHistoryDAO implements Serializable {
+
+        private static final long serialVersionUID = 1L;
 
         private static PaymentListHistoryDAO instance;
 
@@ -235,7 +277,9 @@ public class HistoryDAO extends AbstractDAO {
         }
     }
 
-    public static class ProcessHistoryDAO {
+    public static class ProcessHistoryDAO implements Serializable {
+
+        private static final long serialVersionUID = 1L;
 
         private static ProcessHistoryDAO instance;
 
@@ -268,7 +312,9 @@ public class HistoryDAO extends AbstractDAO {
         }
     }
 
-    public static class WaterIntakeHistoryDAO {
+    public static class WaterIntakeHistoryDAO implements Serializable {
+
+        private static final long serialVersionUID = 1L;
 
         private static WaterIntakeHistoryDAO instance;
 
@@ -293,7 +339,9 @@ public class HistoryDAO extends AbstractDAO {
         }
     }
 
-    public static class DocumentHistoryDAO {
+    public static class DocumentHistoryDAO implements Serializable {
+
+        private static final long serialVersionUID = 1L;
 
         private static DocumentHistoryDAO instance;
 
@@ -343,4 +391,69 @@ public class HistoryDAO extends AbstractDAO {
             return dao.update(connection, Const.INDEX_CAT_STATUS, description);
         }
     }
+
+    public static class SessionHistoryDAO {
+
+    }
+
+    public static class EmployeeUserHistoryDAO implements Serializable {
+
+        private static final long serialVersionUID = 1L;
+
+        private static EmployeeUserHistoryDAO instance;
+
+        private final HistoryDAO dao;
+
+        public static synchronized EmployeeUserHistoryDAO getInstance() {
+            if (instance == null) {
+                instance = new EmployeeUserHistoryDAO();
+            }
+            return instance;
+        }
+
+        private EmployeeUserHistoryDAO() {
+            this.dao = HistoryDAO.getInstance();
+        }
+
+        public int login(JDBConnection connection, String description) throws SQLException, CorruptInsertionException, KeyNotGenerateException {
+            return dao.insertAndReturn(connection, Const.INDEX_HYS_PROGRAM_HISTORY, Const.INDEX_LOGIN, description);
+        }
+
+        public int logout(JDBConnection connection, String description) throws SQLException, CorruptInsertionException, KeyNotGenerateException {
+            return dao.insertAndReturn(connection, Const.INDEX_HYS_PROGRAM_HISTORY, Const.INDEX_LOGOUT, description);
+        }
+
+        public boolean insert(JDBConnection connection, String description) throws SQLException {
+            return dao.insert(connection, Const.INDEX_EMP_USER, description);
+        }
+
+        public boolean update(JDBConnection connection, String description) throws SQLException {
+            return dao.update(connection, Const.INDEX_EMP_USER, description);
+        }
+
+        public boolean delete(JDBConnection connection, String description) throws SQLException {
+            return dao.delete(connection, Const.INDEX_EMP_USER, description);
+        }
+
+        public boolean select(JDBConnection connection, String description) throws SQLException {
+            return dao.select(connection, Const.INDEX_EMP_USER, description);
+        }
+
+        public String currentUser(JDBConnection connection) throws SQLException {
+            String current_user = null;
+            current_user = SystemSession.getInstancia().getCurrentDbUser();
+            if (JFunc.isNotNull(current_user)) {
+                return current_user;
+            }
+            String q = "SELECT CURRENT_USER";
+            try (PreparedStatement ps = connection.getNewPreparedStatement(q)) {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    current_user = rs.getString(1);
+                }
+            }
+            return current_user;
+        }
+    }
+
 }

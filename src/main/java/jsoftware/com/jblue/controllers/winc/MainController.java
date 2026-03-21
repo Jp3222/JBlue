@@ -16,10 +16,20 @@
  */
 package jsoftware.com.jblue.controllers.winc;
 
-import jsoftware.com.jblue.views.win.WMainMenu;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.model.exp.imp.CorruptUpdateException;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jblue.model.service.LoginService;
+import jsoftware.com.jblue.sys.app.AppConfig;
+import jsoftware.com.jblue.sys.app.AppFiles;
+import jsoftware.com.jblue.views.win.WMainMenu;
+import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  *
@@ -30,9 +40,11 @@ public class MainController extends WindowController {
     private static final long serialVersionUID = 1L;
 
     private final WMainMenu view;
+    private final LoginService service;
 
     public MainController(WMainMenu view) {
         this.view = view;
+        this.service = new LoginService(AppConfig.isDevMessages(), "LOGIN");
     }
 
     @Override
@@ -82,6 +94,36 @@ public class MainController extends WindowController {
             JOptionPane.showMessageDialog(view, "La vista \"%s\" No esta disponible".formatted(actionCommand));
         }
         return out;
+    }
+
+    @Override
+    public void windowClosing(WindowEvent we) {
+
+    }
+
+    @Override
+    public void windowClosed(WindowEvent we) {
+        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
+            service.logout(connection);
+        } catch (SQLException | CorruptUpdateException ex) {
+            log(ex, "windowClosed");
+        }
+    }
+
+    public void log(Exception e, String method_name) {
+        try {
+            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "MAIN", method_name, e.getMessage());
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    public void log(String message) {
+        try {
+            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", message);
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 
 }

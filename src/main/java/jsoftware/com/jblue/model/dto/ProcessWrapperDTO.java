@@ -25,7 +25,7 @@ import jsoftware.com.jutil.db.JDBMapObject;
 public class ProcessWrapperDTO extends JDBMapObject {
 
     private static final long serialVersionUID = 1L;
-    private EmployeeDTO current_employee;
+    private EmployeeUserDTO current_employee;
     //PASO 1
     private final UserDTO user;
     //PASO 2
@@ -55,7 +55,7 @@ public class ProcessWrapperDTO extends JDBMapObject {
     private WaterIntakeDTO water_intake_copy;
     private WaterIntakeUserDTO wki_user_copy;
 
-    public ProcessWrapperDTO(EmployeeDTO employee) {
+    public ProcessWrapperDTO(EmployeeUserDTO employee) {
         this.user = new UserDTO();
         this.user_document_list = new ArrayList<>(15);
         this.water_intake = new WaterIntakeDTO();
@@ -69,11 +69,11 @@ public class ProcessWrapperDTO extends JDBMapObject {
         this.payment_valid = false;
     }
 
-    public EmployeeDTO getCurrent_employee() {
+    public EmployeeUserDTO getCurrent_employee() {
         return current_employee;
     }
 
-    public void setCurrent_employee(EmployeeDTO current_employee) {
+    public void setCurrent_employee(EmployeeUserDTO current_employee) {
         this.current_employee = current_employee;
     }
 

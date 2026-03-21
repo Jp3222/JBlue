@@ -6,7 +6,7 @@ package jsoftware.com.jblue.model.factories;
 
 import java.util.HashMap;
 import java.util.Map;
-import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
@@ -31,7 +31,7 @@ public final class ProcessViewFactory {
     }
 
     private final ProcessViewBuilder init;
-    private final EmployeeDTO current_employee;
+    private final EmployeeUserDTO current_employee;
     private final Map<String, ViewProvider<?, ?>> factory;
 
     public ProcessViewFactory() {

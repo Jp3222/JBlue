@@ -1,19 +1,24 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package jsoftware.com.jblue.views.mod;
+package jsoftware.com.jblue.views.win;
+
+import jsoftware.com.jblue.views.framework.AbstractAppWindows;
 
 /**
  *
  * @author juanp
  */
-public class EmployeeRegister extends javax.swing.JPanel {
+public final class AdministratorWindows extends AbstractAppWindows {
+
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdministratorWindows.class.getName());
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Creates new form EmployeeRegister
+     * Creates new form AdministratorWindows
      */
-    public EmployeeRegister() {
+    public AdministratorWindows() {
         initComponents();
     }
 
@@ -26,10 +31,11 @@ public class EmployeeRegister extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("Form"); // NOI18N
-        setLayout(new java.awt.BorderLayout());
-    }// </editor-fold>//GEN-END:initComponents
 
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

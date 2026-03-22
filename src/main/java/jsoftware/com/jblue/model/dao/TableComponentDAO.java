@@ -17,5 +17,7 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
 public interface TableComponentDAO<T extends DtoMapModel> extends Serializable {
 
     List<T> getList(JDBConnection connection, JTableModel model);
+    
+    JTableModel buildModel(JDBConnection connection, JTableModel model);
 
 }

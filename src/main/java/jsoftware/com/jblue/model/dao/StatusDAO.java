@@ -53,4 +53,10 @@ public final class StatusDAO extends AbstractDAO implements TableComponentDAO<St
         }
         return null;
     }
+
+    @Override
+    public JTableModel buildModel(JDBConnection connection, JTableModel model) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
 }

@@ -183,7 +183,7 @@ public class LoginService extends AbstractService {
             connection.rollBack();
         } catch (DataAccesObjectException ex) {
             user_message = "FIN DE SESION FALLIDO";
-            error_code = -2;
+            error_code = ex.getErrorCode();
             res = false;
             log(ex, "login");
             connection.rollBack();

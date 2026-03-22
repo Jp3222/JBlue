@@ -58,7 +58,7 @@ public class HistoryController extends AbstractViewController {
         try {
             boolean res = HysHistoryDAO.getINSTANCE().select(
                     Const.INDEX_HYS_PROGRAM_HISTORY,
-                    "EL EMPLEADO: %s %s %s CONSULTO EL HISTORIAL".formatted(
+                    "EL EMPLEADO: %s CONSULTO EL HISTORIAL".formatted(
                             dto.getDescription()
                     )
             );
@@ -71,27 +71,31 @@ public class HistoryController extends AbstractViewController {
         } finally {
             connection.setAutoCommit(true);
         }
-        String query = "SELECT * FROM HISTORIAL_DE_MOVIMIENTOS ORDER BY id DESC";
-        try (PreparedStatement ps = connection.getNewPreparedStatement(query); ResultSet rs = ps.executeQuery();) {
-            ResultSetMetaData md = rs.getMetaData();
-            String[] col = new String[md.getColumnCount()];
-            for (int i = 1; i <= md.getColumnCount(); i++) {
-                col[i - 1] = md.getColumnLabel(i);
-            }
-            JTableModel tm = new JTableModel(col, 0);
-            String[] row;
-            int i;
-            while (rs.next()) {
-                row = new String[col.length];
-                i = 0;
-                for (String j : col) {
-                    row[i] = rs.getString(j);
-                    i++;
+        String query = "SELECT * FROM HISTORIAL_DE_MOVIMIENTOS WHERE EMPLEADO = ? AND DATE(`FECHA DE REGISTRO`) = CURDATE() ORDER BY ID DESC";
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query);) {
+            ps.setString(1, dto.getDescription());
+            JTableModel tm;
+            try (ResultSet rs = ps.executeQuery()) {
+                ResultSetMetaData md = rs.getMetaData();
+                String[] col = new String[md.getColumnCount()];
+                for (int i = 1; i <= md.getColumnCount(); i++) {
+                    col[i - 1] = md.getColumnLabel(i);
+                }   tm = new JTableModel(col, 0);
+                String[] row;
+                int i;
+                while (rs.next()) {
+                    row = new String[col.length];
+                    i = 0;
+                    for (String j : col) {
+                        row[i] = rs.getString(j);
+                        i++;
+                    }
+                    tm.addRow(row);
                 }
-                tm.addRow(row);
             }
             view.getObjectsTable().setModel(tm);
         } catch (Exception e) {
+            e.printStackTrace(System.out);
         }
     }
 

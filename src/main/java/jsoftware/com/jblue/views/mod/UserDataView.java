@@ -38,6 +38,7 @@ public class UserDataView extends javax.swing.JPanel {
         jPanel16 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
         jPanel17 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
@@ -46,13 +47,16 @@ public class UserDataView extends javax.swing.JPanel {
         jTextField5 = new javax.swing.JTextField();
         jPanel19 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jPanel20 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
         jPanel21 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         jTextField8 = new javax.swing.JTextField();
+        jPanel22 = new javax.swing.JPanel();
+        jLabel21 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setName("Form"); // NOI18N
         setLayout(new java.awt.CardLayout());
@@ -111,6 +115,10 @@ public class UserDataView extends javax.swing.JPanel {
         jTextField3.setName("jTextField3"); // NOI18N
         jPanel16.add(jTextField3, java.awt.BorderLayout.CENTER);
 
+        jButton2.setText(bundle.getString("UserDataView.jButton2.text")); // NOI18N
+        jButton2.setName("jButton2"); // NOI18N
+        jPanel16.add(jButton2, java.awt.BorderLayout.LINE_END);
+
         jPanel2.add(jPanel16);
 
         jPanel17.setName("jPanel17"); // NOI18N
@@ -149,9 +157,8 @@ public class UserDataView extends javax.swing.JPanel {
         jLabel18.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel19.add(jLabel18, java.awt.BorderLayout.WEST);
 
-        jTextField6.setText(bundle.getString("UserDataView.jTextField6.text")); // NOI18N
-        jTextField6.setName("jTextField6"); // NOI18N
-        jPanel19.add(jTextField6, java.awt.BorderLayout.CENTER);
+        jComboBox1.setName("jComboBox1"); // NOI18N
+        jPanel19.add(jComboBox1, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel19);
 
@@ -183,6 +190,20 @@ public class UserDataView extends javax.swing.JPanel {
 
         jPanel2.add(jPanel21);
 
+        jPanel22.setName("jPanel22"); // NOI18N
+        jPanel22.setLayout(new java.awt.BorderLayout());
+
+        jLabel21.setText(bundle.getString("UserDataView.jLabel21.text")); // NOI18N
+        jLabel21.setName("jLabel21"); // NOI18N
+        jLabel21.setPreferredSize(new java.awt.Dimension(150, 30));
+        jPanel22.add(jLabel21, java.awt.BorderLayout.WEST);
+
+        jButton1.setText(bundle.getString("UserDataView.jButton1.text")); // NOI18N
+        jButton1.setName("jButton1"); // NOI18N
+        jPanel22.add(jButton1, java.awt.BorderLayout.CENTER);
+
+        jPanel2.add(jPanel22);
+
         jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
 
         add(jPanel1, "card2");
@@ -190,7 +211,10 @@ public class UserDataView extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -200,6 +224,7 @@ public class UserDataView extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
@@ -210,12 +235,12 @@ public class UserDataView extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
+    private javax.swing.JPanel jPanel22;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField8;
     // End of variables declaration//GEN-END:variables
 }

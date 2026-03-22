@@ -83,22 +83,22 @@ public class SystemSession implements LocalSession<EmployeeUserDTO>, Serializabl
     public void getWarnings() {
         StringBuilder sb = new StringBuilder(255);
         //Permite el paso y ejecucion del funciones
-        if (Func.isNotNullEmptyBlank(current_db_user)) {
+        if (Func.isNullEmptyBlank(current_db_user)) {
             sb.append("El usuario de base de datos no se ha registrado correctamente. No podrá realizar algunos registros.\n");
         }
 
         //Permite el paso
-        if (Func.isNotNull(current_employee)) {
+        if (Func.isNull(current_employee)) {
             sb.append("El usuario no se ha registrado correctamente. No podrá realizar algunos registros.\n");
         }
 
         //permite el paso
-        if (Func.isNotNull(current_administration)) {
+        if (Func.isNull(current_administration)) {
             sb.append("La administración actual no ha sido registrada. No podrá realizar ningún registro administrativo.\n");
         }
 
         //no permite el paso
-        if (Func.isNotNull(current_session)) {
+        if (Func.isNull(current_session)) {
             sb.append("El objeto de session actual no ha sido registrado correctamente. No podrá realizar ningún registro administrativo.\n");
         }
 

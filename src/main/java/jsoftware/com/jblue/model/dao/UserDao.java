@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Optional;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
+import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jblue.model.querys.UserQuerys;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.Func;
@@ -77,7 +79,7 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
      * @throws Exception Para errores de conversión de tipos (parseInt) o nulos
      * inesperados.
      */
-    public int insert(JDBConnection connection, UserDTO user) throws SQLException {
+    public int insert(JDBConnection connection, UserDTO user) throws SQLException, CorruptInsertionException, KeyNotGenerateException {
         int user_id = 0;
         String query = UserQuerys.INSERT_USER;
         try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -105,20 +107,18 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
 
             int affected_row = ps.executeUpdate();
             if (affected_row == PreparedStatement.EXECUTE_FAILED || affected_row != 1) {
-                throw new SQLException("INSERCCION DE USUARIO FALLIDA");
+                throw new CorruptInsertionException();
             }
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (!rs.next()) {
-                    throw new SQLException("LLAVE PRIMARIA CORRUPTA");
+                    throw new KeyNotGenerateException();
                 }
                 user_id = rs.getInt(1);
                 user.getMap().put("id", user_id);
                 user.getMap().put("date_update", Formats.getLocalDateTime(LocalDateTime.now()));
                 user.getMap().put("date_resgiter", Formats.getLocalDateTime(LocalDateTime.now()));
             }
-        } catch (SQLException e) {
-            throw e;
-        } catch (Exception e) {
+        } catch (SQLException | CorruptInsertionException | KeyNotGenerateException e) {
             throw e;
         }
         return user_id;
@@ -446,6 +446,11 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
             throw e;
         }
         return list;
+    }
+
+    @Override
+    public JTableModel buildModel(JDBConnection connection, JTableModel model) {
+        return null;
     }
 
 }

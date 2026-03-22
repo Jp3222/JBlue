@@ -7,22 +7,26 @@ package jsoftware.com.jblue.model.dao;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.List;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
+import jsoftware.com.jblue.model.dto.HistoryDTO;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
 import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
+import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import jsoftware.com.jutil.util.JFunc;
 
 /**
  *
  * @author juanp
  */
-public class HistoryDAO extends AbstractDAO {
+public class HistoryDAO extends AbstractDAO implements TableComponentDAO<HistoryDTO> {
 
     protected static HistoryDAO instance;
 
@@ -135,10 +139,47 @@ public class HistoryDAO extends AbstractDAO {
         return current_user;
     }
 
+    @Override
+    public List<HistoryDTO> getList(JDBConnection connection, JTableModel model) {
+        String query = "SELECT * FROM HISTORIAL_DE_MOVIMIENTOS WHERE EMPLEADO = ? AND DATE(`FECHA DE REGISTRO`) = CURDATE() ORDER BY ID DESC";
+        EmployeeUserDTO dto = SystemSession.getInstancia().getCurrentEmployee();
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query);) {
+            ps.setString(1, dto.getDescription());
+            JTableModel tm;
+            try (ResultSet rs = ps.executeQuery()) {
+                ResultSetMetaData md = rs.getMetaData();
+                String[] col = new String[md.getColumnCount()];
+                for (int i = 1; i <= md.getColumnCount(); i++) {
+                    col[i - 1] = md.getColumnLabel(i);
+                }
+                tm = new JTableModel(col, 0);
+                String[] row;
+                int i;
+                while (rs.next()) {
+                    row = new String[col.length];
+                    i = 0;
+                    for (String j : col) {
+                        row[i] = rs.getString(j);
+                        i++;
+                    }
+                    tm.addRow(row);
+                }
+            }
+        } catch (SQLException ex) {
+            System.getLogger(HistoryDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return List.of();
+    }
+
+    @Override
+    public JTableModel buildModel(JDBConnection connection, JTableModel model) {
+        return null;
+    }
+
     public static class UserHistoryDAO implements Serializable {
 
         private static final long serialVersionUID = 1L;
-        
+
         private static UserHistoryDAO instance;
 
         public static synchronized UserHistoryDAO getInstance() {
@@ -440,7 +481,7 @@ public class HistoryDAO extends AbstractDAO {
         }
 
         public String currentUser(JDBConnection connection) throws SQLException {
-            String current_user = null;
+            String current_user;
             current_user = SystemSession.getInstancia().getCurrentDbUser();
             if (JFunc.isNotNull(current_user)) {
                 return current_user;

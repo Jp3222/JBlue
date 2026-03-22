@@ -224,4 +224,10 @@ public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<
     public boolean update(JDBConnection connection, WaterIntakeTypeDTO old_dto, WaterIntakeTypeDTO new_dto) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    @Override
+    public JTableModel buildModel(JDBConnection connection, JTableModel model) {
+        return null;
+    }
+
 }

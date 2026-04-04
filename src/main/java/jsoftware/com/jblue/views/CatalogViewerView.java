@@ -18,7 +18,7 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  *
  * @author juanp
  */
-public final class CatalogViewerView<T extends JDBMapObject> extends SimpleView implements TableSearchViewModel {
+public final class CatalogViewerView<T extends JDBMapObject> extends SimpleView implements TableSearchViewModel<T> {
 
     private static final long serialVersionUID = 1L;
 
@@ -249,15 +249,6 @@ public final class CatalogViewerView<T extends JDBMapObject> extends SimpleView 
     }
 
     @Override
-    public <T extends JDBMapObject> void setObjectSearch(T o) {
-    }
-
-    @Override
-    public <T extends JDBMapObject> T getObjectSearch() {
-        return null;
-    }
-
-    @Override
     public void setRowsData(String... info) {
         count_field.setText(info[0]);
         range_field.setText(info[1]);
@@ -271,6 +262,16 @@ public final class CatalogViewerView<T extends JDBMapObject> extends SimpleView 
     @Override
     public DefaultTableModel getModel() {
         return model;
+    }
+
+    @Override
+    public void setObjectSearch(T o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public T getObjectSearch() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

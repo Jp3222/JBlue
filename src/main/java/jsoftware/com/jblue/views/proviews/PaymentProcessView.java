@@ -41,11 +41,6 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
         try (JDBConnection c = connection();) {
             List<String[]> paymentConcep = dao.getPaymentConcep(c, getProcessId());
             for (String[] i : paymentConcep) {
-                if (i[i.length - 1].equals("1")) {
-                    i[i.length - 1] = "OBLIGATORIO";
-                } else {
-                    i[i.length - 1] = "OPCIONAL";
-                }
                 model.addRow(i);
             }
         } catch (Exception e) {

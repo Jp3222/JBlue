@@ -28,11 +28,11 @@ import jsoftware.com.jblue.views.CatalogViewFactory;
 import jsoftware.com.jblue.views.CatalogViewerView;
 import jsoftware.com.jblue.views.PaymentConceptView;
 import jsoftware.com.jblue.views.ShopCartView;
-import jsoftware.com.jblue.views.StreetsView;
 import jsoftware.com.jblue.views.UserView;
-import jsoftware.com.jblue.views.WaterIntakesTypesView;
 import jsoftware.com.jblue.views.components.UserViewComponent;
 import jsoftware.com.jblue.views.framework.AbstractAppWindows;
+import jsoftware.com.jblue.views.mod.StreetView;
+import jsoftware.com.jblue.views.mod.WaterIntakeTypeView;
 import jsoftware.com.jblue.views.process.ConsumerRegisterProcessView;
 import jsoftware.com.jblue.views.process.OwnerChangerProcessView;
 import jsoftware.com.jblue.views.process.OwnerRegisterProcessView;
@@ -46,6 +46,7 @@ public final class WMainMenu extends AbstractAppWindows {
 
     private static final long serialVersionUID = 1L;
 
+    private final ProcessViewFactory factory;
     //
     private final CardLayout ly;
     private final ShopCartView shop_cart_view;
@@ -53,20 +54,11 @@ public final class WMainMenu extends AbstractAppWindows {
     private final ConsumerRegisterProcessView consumer_register_process_view;
     private final OwnerChangerProcessView owner_changer_process_view;
     private final UserView user_process_view;
-    private final StreetsView street_view;
-    private final WaterIntakesTypesView water_intakes_type_view;
+    private final StreetView street_view;
+    private final WaterIntakeTypeView water_intakes_type_view;
     private final PaymentConceptView payment_concept_view;
     private final CatalogViewerView<StatusDTO> status_type_view;
-//    private final WaterIntakesView water_intakes;
-//    private final OtherPaymentTypesView other_payments_types_view;
-//    private final OtherPaymentsView other_payments_view;
-//    private final SurchargePaymentsView surcharge_payments_view;
 
-//    private final UserConsumerView user_consumer;
-//    //
-//    private final ParametersView flag_view;
-//    //
-//    private final AdministrationHistoryView administration_history_view;
     private final LoginWindows LOGIN;
     private final AboutUs ABOUT;
     private final ProfileWindow PROFILE;
@@ -82,36 +74,27 @@ public final class WMainMenu extends AbstractAppWindows {
      */
     public WMainMenu(LoginWindows LOGIN) {
         initComponents();
+        this.factory = ProcessViewFactory.getInstance();
         this.LOGIN = LOGIN;
         this.ABOUT = new AboutUs();
         this.PROFILE = new ProfileWindow();
-        shop_cart_view = ProcessViewFactory.getIntance().getShopCarProcess();
+        shop_cart_view = factory.getShopCarProcess();
         //PROCESO DE REGISTRO DE TITULAR
-        owner_register_process_view = ProcessViewFactory.getIntance().getUserRegisterProcess();
+        owner_register_process_view = factory.getUserRegisterProcess();
         //PROCESO DE REGISTRO DE CONSUMIDOR
-        consumer_register_process_view = ProcessViewFactory.getIntance().getConsumerRegisterProcess();
+        consumer_register_process_view = factory.getConsumerRegisterProcess();
         //PROCESO DE CAMBIO DE PROPIETARIO
-        owner_changer_process_view = ProcessViewFactory.getIntance().getOwnerChangerProcess();
+        owner_changer_process_view = factory.getOwnerChangerProcess();
         //PROCESO DE USUARIO
-        user_process_view = ProcessViewFactory.getIntance().getUserProcess();
+        user_process_view = factory.getUserProcess();
         //PROCESO DE CALLES
-        street_view = new StreetsView();
+        street_view = factory.getStreetView();
         //PROCESO DE TIPO DE TOMAS DE AGUA POTABLE
-        water_intakes_type_view = new WaterIntakesTypesView();
+        water_intakes_type_view = factory.getIntakeTypeView();
         //PROCESO DE CONCEPTOS DE COBRO
         payment_concept_view = new PaymentConceptView();
         //
         status_type_view = CatalogViewFactory.getStatusType(false, "Tipo de status");
-//        water_intakes = new WaterIntakesView();
-//        other_payments_types_view = new OtherPaymentTypesView();
-//        other_payments_view = new OtherPaymentsView();
-//        surcharge_payments_view = new SurchargePaymentsView();
-
-//        user_consumer = new UserConsumerView();
-//        administration_history_view = new AdministrationHistoryView();
-        //
-        //flag_view = ParametersView.getInstance();
-        //
         ly = (CardLayout) views_panel.getLayout();
         updateTitle(shop_cart_view.getName());
         build();
@@ -136,13 +119,6 @@ public final class WMainMenu extends AbstractAppWindows {
         views_panel.add(user_process_view, user_process_view.getName());
         views_panel.add(payment_concept_view, payment_concept_view.getName());
         views_panel.add(status_type_view, status_type_view.getName());
-        //        views_panel.add(water_intakes, water_intakes.getName());
-        //        views_panel.add(other_payments_types_view, other_payments_types_view.getName());
-        //        views_panel.add(other_payments_view, other_payments_view.getName());
-        //        views_panel.add(surcharge_payments_view, surcharge_payments_view.getName());
-        //        views_panel.add(flag_view, flag_view.getName());
-        //        views_panel.add(user_consumer, user_consumer.getName());
-        //        views_panel.add(administration_history_view, administration_history_view.getName());
 
     }
 
@@ -161,9 +137,6 @@ public final class WMainMenu extends AbstractAppWindows {
         street_view_item.addActionListener(controller);
         water_intakes_view_item.addActionListener(controller);
         water_intakes_types_view_item.addActionListener(controller);
-        other_type_payments_view_item.addActionListener(controller);
-        other_payments_view_item.addActionListener(controller);
-        surcharge_payments_view_item.addActionListener(controller);
         service_payments_view_item.addActionListener(controller);
         user_consumer_item.addActionListener(controller);
         owner_register_process_item.addActionListener(controller);
@@ -174,8 +147,6 @@ public final class WMainMenu extends AbstractAppWindows {
         //
         about_item_view.addActionListener(controller);
         profile_item_view.addActionListener(controller);
-        //
-        administration_history_view_item.addActionListener(controller);
     }
 
     @Override
@@ -225,8 +196,15 @@ public final class WMainMenu extends AbstractAppWindows {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         profile_item_view = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        administration_history_view_item = new javax.swing.JMenuItem();
+        jMenu10 = new javax.swing.JMenu();
+        jMenu11 = new javax.swing.JMenu();
+        jMenuItem15 = new javax.swing.JMenuItem();
+        jMenuItem20 = new javax.swing.JMenuItem();
+        jMenuItem21 = new javax.swing.JMenuItem();
+        jMenuItem17 = new javax.swing.JMenuItem();
+        jMenuItem16 = new javax.swing.JMenuItem();
+        jMenuItem18 = new javax.swing.JMenuItem();
+        jMenu12 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         parameters_view_item = new javax.swing.JMenuItem();
@@ -236,15 +214,19 @@ public final class WMainMenu extends AbstractAppWindows {
         jMenu5 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         status_type_item = new javax.swing.JMenuItem();
+        street_view_item = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
+        water_intakes_types_view_item = new javax.swing.JMenuItem();
         users_view_item = new javax.swing.JMenuItem();
         user_consumer_item = new javax.swing.JMenuItem();
         water_intakes_view_item = new javax.swing.JMenuItem();
-        water_intakes_types_view_item = new javax.swing.JMenuItem();
-        street_view_item = new javax.swing.JMenuItem();
+        jMenu8 = new javax.swing.JMenu();
+        jMenuItem12 = new javax.swing.JMenuItem();
         service_payments_view_item = new javax.swing.JMenuItem();
-        surcharge_payments_view_item = new javax.swing.JMenuItem();
-        other_type_payments_view_item = new javax.swing.JMenuItem();
-        other_payments_view_item = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenu9 = new javax.swing.JMenu();
+        jMenuItem14 = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         owner_register_process_item = new javax.swing.JMenuItem();
@@ -390,19 +372,41 @@ public final class WMainMenu extends AbstractAppWindows {
         profile_item_view.setText("Perfil");
         jMenu1.add(profile_item_view);
 
-        jMenuItem6.setText("Panel de Admin");
-        jMenuItem6.setToolTipText("Panel de Administracion");
-        jMenu1.add(jMenuItem6);
+        jMenu10.setText("Administracion");
 
-        administration_history_view_item.setText("Administracion");
-        administration_history_view_item.setName("Administracion"); // NOI18N
-        jMenu1.add(administration_history_view_item);
+        jMenu11.setText("Empleados");
+
+        jMenuItem15.setText("Registro de empleados");
+        jMenu11.add(jMenuItem15);
+
+        jMenuItem20.setText("Modificacion de Informacion");
+        jMenu11.add(jMenuItem20);
+
+        jMenuItem21.setText("Cambio de Contraseña");
+        jMenu11.add(jMenuItem21);
+
+        jMenu10.add(jMenu11);
+
+        jMenuItem17.setText("Administracion Actual");
+        jMenu10.add(jMenuItem17);
+
+        jMenuItem16.setText("Historial de Movimientos");
+        jMenu10.add(jMenuItem16);
+
+        jMenuItem18.setText("Balance");
+        jMenu10.add(jMenuItem18);
+
+        jMenu1.add(jMenu10);
+
+        jMenu12.setText("Herramientas de informacion.");
 
         jMenuItem8.setText("Exportar");
-        jMenu1.add(jMenuItem8);
+        jMenu12.add(jMenuItem8);
 
         jMenuItem7.setText("Importar");
-        jMenu1.add(jMenuItem7);
+        jMenu12.add(jMenuItem7);
+
+        jMenu1.add(jMenu12);
 
         parameters_view_item.setText("Preferencias");
         jMenu1.add(parameters_view_item);
@@ -418,42 +422,57 @@ public final class WMainMenu extends AbstractAppWindows {
 
         jMenu5.setText("Catalogos");
 
-        jMenuItem1.setText("Tipo de usuarios");
+        jMenuItem1.setText("Tipo de Usuarios");
         jMenu5.add(jMenuItem1);
 
-        status_type_item.setText("Tipo de status");
+        status_type_item.setText("Tipos de Status del Sistema");
         jMenu5.add(status_type_item);
+
+        street_view_item.setText("Calles Registradas");
+        jMenu5.add(street_view_item);
 
         jMenu2.add(jMenu5);
 
-        users_view_item.setText("Usuarios");
-        jMenu2.add(users_view_item);
+        jMenu7.setText("Tomas de agua potable.");
 
-        user_consumer_item.setText("Consumidores");
-        jMenu2.add(user_consumer_item);
+        water_intakes_types_view_item.setText("Tipos de Tomas de Agua");
+        jMenu7.add(water_intakes_types_view_item);
 
-        water_intakes_view_item.setText("Tomas Registradas");
-        jMenu2.add(water_intakes_view_item);
+        users_view_item.setText("Padron de Usuarios.");
+        jMenu7.add(users_view_item);
 
-        water_intakes_types_view_item.setText("Tipo de tomas");
-        jMenu2.add(water_intakes_types_view_item);
+        user_consumer_item.setText("Padron de Consumidores");
+        jMenu7.add(user_consumer_item);
 
-        street_view_item.setText("Calles");
-        jMenu2.add(street_view_item);
+        water_intakes_view_item.setText("Padron de Tomas de Agua");
+        jMenu7.add(water_intakes_view_item);
 
-        service_payments_view_item.setText("Pagos por el Servicio");
+        jMenu2.add(jMenu7);
+
+        jMenu8.setText("Pagos");
+
+        jMenuItem12.setText("Concepto de Pagos");
+        jMenu8.add(jMenuItem12);
+
+        service_payments_view_item.setText("Pagos Registrados");
         service_payments_view_item.setActionCommand("Inicio");
         service_payments_view_item.setName("Inicio"); // NOI18N
-        jMenu2.add(service_payments_view_item);
+        jMenu8.add(service_payments_view_item);
 
-        surcharge_payments_view_item.setText("Recargos");
-        jMenu2.add(surcharge_payments_view_item);
+        jMenuItem3.setText("Detalle de Pagos");
+        jMenu8.add(jMenuItem3);
 
-        other_type_payments_view_item.setText("Otros tipos de pagos");
-        jMenu2.add(other_type_payments_view_item);
+        jMenu2.add(jMenu8);
 
-        other_payments_view_item.setText("Otros pagos");
-        jMenu2.add(other_payments_view_item);
+        jMenu9.setText("Empleados");
+
+        jMenuItem14.setText("Informacion de Empleados.");
+        jMenu9.add(jMenuItem14);
+
+        jMenuItem13.setText("Padron de Empleados");
+        jMenu9.add(jMenuItem13);
+
+        jMenu2.add(jMenu9);
 
         jMenuBar1.add(jMenu2);
 
@@ -509,7 +528,6 @@ public final class WMainMenu extends AbstractAppWindows {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem about_item_view;
-    private javax.swing.JMenuItem administration_history_view_item;
     private javax.swing.JButton btn_calles;
     private javax.swing.JButton btn_home;
     private javax.swing.JButton btn_tipo_pagos;
@@ -521,20 +539,35 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu10;
+    private javax.swing.JMenu jMenu11;
+    private javax.swing.JMenu jMenu12;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
+    private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
+    private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem15;
+    private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem17;
+    private javax.swing.JMenuItem jMenuItem18;
     private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem20;
+    private javax.swing.JMenuItem jMenuItem21;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
@@ -551,8 +584,6 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel label_title;
     private javax.swing.JPanel left_panel;
-    private javax.swing.JMenuItem other_payments_view_item;
-    private javax.swing.JMenuItem other_type_payments_view_item;
     private javax.swing.JMenuItem owner_change_process_item;
     private javax.swing.JMenuItem owner_register_process_item;
     private javax.swing.JMenuItem parameters_view_item;
@@ -560,7 +591,6 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JMenuItem service_payments_view_item;
     private javax.swing.JMenuItem status_type_item;
     private javax.swing.JMenuItem street_view_item;
-    private javax.swing.JMenuItem surcharge_payments_view_item;
     private javax.swing.JMenuItem user_consumer_item;
     private javax.swing.JMenuItem users_view_item;
     private javax.swing.JPanel views_panel;

@@ -26,7 +26,7 @@ import jsoftware.com.jutil.db.JDBMapObject;
  *
  * @author juan pablo campos casasanero
  */
-public interface TableSearchViewModel extends Serializable {
+public interface TableSearchViewModel<T extends JDBMapObject> extends Serializable {
 
     static int REGISTER_VIEW = 1;
 
@@ -44,9 +44,9 @@ public interface TableSearchViewModel extends Serializable {
 
     int getViewShow();
 
-    <T extends JDBMapObject> void setObjectSearch(T o);
+    void setObjectSearch(T o);
 
-    <T extends JDBMapObject> T getObjectSearch();
+    T getObjectSearch();
 
     public void setRowsData(String... info);
 

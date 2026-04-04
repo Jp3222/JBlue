@@ -15,7 +15,9 @@ import jsoftware.com.jblue.util.Func;
  */
 public class AbstractValidation implements ValidationModel {
 
-    private Map<String, Ruler> rulers;
+    private static final long serialVersionUID = 1L;
+
+    private final Map<String, Ruler> rulers;
     private String error;
 
     public AbstractValidation() {
@@ -23,6 +25,7 @@ public class AbstractValidation implements ValidationModel {
         this.error = null;
     }
 
+    @Override
     public <T> void addRuler(String name, T value, Predicate<T> ruler, String errorMsg) {
         addRuler(name, value, ruler);
         addErrorMessage(name, errorMsg);

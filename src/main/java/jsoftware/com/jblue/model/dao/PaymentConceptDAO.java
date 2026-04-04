@@ -19,15 +19,16 @@ import jsoftware.com.jutil.model.AbstractDAO;
  */
 public class PaymentConceptDAO extends AbstractDAO {
 
+    private static final long serialVersionUID = 1L;
+
     public PaymentConceptDAO(boolean flag_dev_log, String name_module) {
         super(flag_dev_log, name_module);
     }
 
     public List<String[]> getPaymentConcep(JDBConnection connection, String id_process) throws SQLException {
         List<String[]> res;
-        String query = "SELECT id, description, current_price, mandatory_payment FROM pym_payment_concept WHERE module = ? AND status = 1";
+        String query = "SELECT id, description, current_price FROM pym_payment_concept WHERE status = 1";
         try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
-            ps.setString(1, id_process);
             try (ResultSet rs = ps.executeQuery()) {
                 ResultSetMetaData md = rs.getMetaData();
                 int size_field = md.getColumnCount();

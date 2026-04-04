@@ -14,6 +14,8 @@ import jsoftware.com.jblue.model.dao.UserDocumentDAO;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentDTO;
+import jsoftware.com.jblue.model.exp.DataAccesObjectException;
+import jsoftware.com.jblue.model.models.AbstractService;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.util.FuncLogs;
@@ -22,7 +24,7 @@ import jsoftware.com.jutil.util.FuncLogs;
  *
  * @author juanp
  */
-public class UserService implements Serializable {
+public class UserService extends AbstractService implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,36 +33,19 @@ public class UserService implements Serializable {
     private final UserDocumentDAO doc_dao;
     private final HistoryDAO.UserHistoryDAO history_dao;
 
-    public UserService(UserDocumentDAO doc_dao, UserDao user_dao, ProcessDAO process_dao) {
-        this.doc_dao = doc_dao;
-        this.user_dao = user_dao;
-        this.process_dao = process_dao;
-        this.history_dao = HistoryDAO.UserHistoryDAO.getInstance();
-    }
-
     public UserService(boolean flag_dev, String name_module) {
-        this(new UserDocumentDAO(flag_dev, name_module),
-                new UserDao(flag_dev, name_module),
-                new ProcessDAO(flag_dev, name_module)
-        );
+        super(flag_dev, name_module);
+        user_dao = new UserDao(flag_dev, name_module);
+        process_dao = new ProcessDAO(flag_dev, name_module);
+        doc_dao = new UserDocumentDAO(flag_dev, name_module);
+        history_dao = HistoryDAO.UserHistoryDAO.getInstance();
     }
 
-    public int saveProcess(JDBConnection connection, String process_type, ProcessWrapperDTO dto) throws SQLException {
-        boolean res;
-        int user_id = saveUser(connection, dto.getUser());
-        res = user_id > 0;
-        if (!res) {
-            throw new SQLException("[1]REGISTRO INCORRECTO DEL TRAMITE");
-        }
-        int process_id = process_dao.startProcess(connection, process_type, String.valueOf(user_id));
-        res = process_id > 0;
-        if (!res) {
-            throw new SQLException("[1]REGISTRO INCORRECTO DEL TRAMITE");
-        }
-        return user_id;
+    public int saveProcess(JDBConnection connection, String process_type, ProcessWrapperDTO dto) {
+        return 0;
     }
 
-    public int saveUser(JDBConnection connection, UserDTO dto) throws SQLException {
+    public int saveUser(JDBConnection connection, UserDTO dto) throws SQLException, DataAccesObjectException {
         int user_id = -1;
         boolean res = false;
         try {
@@ -75,6 +60,8 @@ public class UserService implements Serializable {
                     dto.getId(), dto.toString()
             ));
         } catch (SQLException e) {
+
+        } catch (DataAccesObjectException e) {
             throw e;
         }
         return user_id;

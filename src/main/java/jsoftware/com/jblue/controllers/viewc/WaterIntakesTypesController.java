@@ -17,17 +17,21 @@
 package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.controllers.DBControllerModel;
-import jsoftware.com.jblue.model.constants.Const;
-import jsoftware.com.jblue.model.dao.HysHistoryDAO;
-import jsoftware.com.jblue.model.dao.WaterIntakeTypeDAO;
+import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jblue.model.service.WaterIntakeTypeService;
+import jsoftware.com.jblue.sys.SystemSession;
+import jsoftware.com.jblue.sys.app.AppConfig;
+import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.WaterIntakesTypesView;
 import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  *
@@ -38,11 +42,12 @@ public class WaterIntakesTypesController extends AbstractDBViewController<WaterI
     private static final long serialVersionUID = 1L;
 
     private final WaterIntakesTypesView view;
-    private final WaterIntakeTypeDAO dao;
+
+    private WaterIntakeTypeService service;
 
     public WaterIntakesTypesController(WaterIntakesTypesView view) {
         this.view = view;
-        this.dao = new WaterIntakeTypeDAO(true, "TIPO DE TOMAS");
+        this.service = new WaterIntakeTypeService(AppConfig.isDevMessages(), "TIPO DE TOMAS DE AGUA POTABLE");
     }
 
     @Override
@@ -62,61 +67,6 @@ public class WaterIntakesTypesController extends AbstractDBViewController<WaterI
     }
 
     @Override
-    public void save() {
-        if (!view.isValuesOK()) {
-            return;
-        }
-        WaterIntakeTypeDTO o = view.getValues(false);
-        if (o == null || o.getMap().isEmpty()) {
-            returnMessage(view, "HA OCURRIDO UN ERROR INTERNO");
-            return;
-        }
-        try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
-            boolean save = save(c, o);
-            returnMessage(view, save);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void delete() {
-        if (!view.isValuesOK()) {
-            return;
-        }
-        WaterIntakeTypeDTO o = view.getObjectSearch();
-        if (o == null || o.getMap().isEmpty()) {
-            returnMessage(view, "HA OCURRIDO UN ERROR INTERNO");
-            return;
-        }
-        try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
-            boolean save = delete(c, o);
-            returnMessage(view, save);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void update() {
-        if (!view.isValuesOK()) {
-            return;
-        }
-        WaterIntakeTypeDTO new_dto = view.getValues(false);
-        WaterIntakeTypeDTO old_dto = view.getObjectSearch();
-        if (new_dto == null || new_dto.getMap().isEmpty()) {
-            returnMessage(view, "HA OCURRIDO UN ERROR INTERNO");
-            return;
-        }
-        try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
-            boolean save = update(c, old_dto, new_dto);
-            returnMessage(view, save);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public void cancel() {
         int in = JOptionPane.showConfirmDialog(view,
                 "¿Estas seguro de cancelar esta operacion?",
@@ -129,84 +79,41 @@ public class WaterIntakesTypesController extends AbstractDBViewController<WaterI
         }
     }
 
-    private boolean save(JDBConnection connection, WaterIntakeTypeDTO o) {
+    @Override
+    public void save() {
         boolean res = false;
-        int key = -1;
-        try {
-            connection.setAutoCommit(false);
-
-            key = dao.insert(connection, o);
-            res = key > 0;
-            if (!res) {
-                throw new SQLException("REGISTRO DE CALLE CORRUPTO");
-            }
-            res = HysHistoryDAO.getINSTANCE().save(
-                    Const.INDEX_WKI_WATER_INTAKE_TYPE,
-                    Const.INDEX_INSERT,
-                    "SE REGISTRO EL TIPO DE TOMA: %s - %s".formatted(key, o.getTypeName())
-            );
-            if (!res) {
-                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-            }
-            connection.commit();
-        } catch (Exception e) {
-            connection.rollBack();
-            e.printStackTrace();
-        } finally {
-            connection.setAutoCommit(true);
+        String mensaje = "OPERACION EXITOSA";
+        try (JDBConnection connection = ConnectionFactory.getIntance().getWaterIntakeConnection()) {
+            EmployeeUserDTO currentEmployee = SystemSession.getInstancia().getCurrentEmployee();
+            res = service.insert(connection, view.getValues(false), currentEmployee);
+        } catch (SQLException ex) {
+            log(ex, ex.getMessage());
         }
-        return res;
+        if (!res) {
+            mensaje = service.getUserMessage();
+        }
+        returnMessage(view, res, mensaje);
     }
 
-    public boolean delete(JDBConnection connection, WaterIntakeTypeDTO o) {
-        boolean res = false;
-        try {
-            connection.setAutoCommit(false);
-
-            res = dao.delete(connection, o);
-            if (!res) {
-                throw new SQLException("REGISTRO DE CALLE CORRUPTO");
-            }
-            res = HysHistoryDAO.getINSTANCE().save(
-                    Const.INDEX_WKI_WATER_INTAKE_TYPE,
-                    Const.INDEX_INSERT,
-                    "SE ELIMINO EL TIPO DE TOMA: %s - %s".formatted(o.getId(), o.getTypeName())
-            );
-            if (!res) {
-                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-            }
-            connection.commit();
-        } catch (Exception e) {
-            connection.rollBack();
-        } finally {
-            connection.setAutoCommit(true);
-        }
-        return res;
+    @Override
+    public void delete() {
     }
 
-    public boolean update(JDBConnection connection, WaterIntakeTypeDTO old_dto, WaterIntakeTypeDTO new_dto) {
-        boolean res = false;
-        try {
-            connection.setAutoCommit(false);
+    @Override
+    public void update() {
+    }
 
-            res = dao.update(connection, old_dto, new_dto);
-            if (!res) {
-                throw new SQLException("REGISTRO DE CALLE CORRUPTO");
-            }
-            res = HysHistoryDAO.getINSTANCE().save(
-                    Const.INDEX_WKI_WATER_INTAKE_TYPE,
-                    Const.INDEX_INSERT,
-                    "SE ACTUALIZO EL TIPO DE TOMA: %s - %s".formatted(new_dto.getId(), new_dto.getTypeName())
+    public void log(Exception e, String method_name) {
+        try {
+            FuncLogs.logError(
+                    AppFiles.DIR_PROG_LOG_TODAY,
+                    getClass(), e,
+                    getClass().getName(),
+                    method_name,
+                    e.getMessage()
             );
-            if (!res) {
-                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-            }
-            connection.commit();
-        } catch (Exception e) {
-            connection.rollBack();
-        } finally {
-            connection.setAutoCommit(true);
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
         }
-        return res;
     }
 }

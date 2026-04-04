@@ -5,9 +5,11 @@
 package jsoftware.com.jblue.views.framework;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.ShopCartView;
 import jsoftware.com.jblue.views.UserView;
+import jsoftware.com.jblue.views.mod.StreetView;
 import jsoftware.com.jblue.views.process.ConsumerRegisterProcessView;
 import jsoftware.com.jblue.views.process.OwnerChangerProcessView;
 import jsoftware.com.jblue.views.process.OwnerRegisterProcessView;
@@ -50,7 +52,7 @@ public class ProcessViewBuilder implements Serializable {
 
     public ProcessViewBuilder setProcess_id(String process_id) {
         this.process_id = process_id;
-        this.process_wrapper.setProcess_id(Integer.valueOf(process_id));
+        this.process_wrapper.setProcess_id(Integer.parseInt(process_id));
         return this;
     }
 
@@ -89,7 +91,7 @@ public class ProcessViewBuilder implements Serializable {
         return dev_flag;
     }
 
-    public AbstractProcessView<?> builder(String cls, ProcessViewBuilder i) {
+    public AbstractProcessView<?> builder2(String cls, ProcessViewBuilder i) {
         try {
             if (UserView.class.getName().equals(cls)) {
                 return new UserView(i);
@@ -106,10 +108,28 @@ public class ProcessViewBuilder implements Serializable {
             if (ShopCartView.class.getName().equals(cls)) {
                 return new ShopCartView(i);
             }
+            if (StreetView.class.getName().equals(cls)) {
+
+            }
         } catch (Exception ex) {
             System.getLogger(ProcessViewBuilder.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return null;
     }
 
+    public AbstractProcessView<?> builder(Class<?> cls, ProcessViewBuilder i) {
+        try {
+            // Buscamos el constructor que acepte un objeto de tipo ProcessViewBuilder
+            // Esto asume que todas tus vistas (UserView, StreetView, etc.) 
+            // tienen un constructor: public Vista(ProcessViewBuilder builder)
+            return (AbstractProcessView<?>) cls.getConstructor(ProcessViewBuilder.class)
+                    .newInstance(i);
+
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            System.getLogger(ProcessViewBuilder.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return null;
+    }
+    
+    
 }

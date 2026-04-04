@@ -4,8 +4,7 @@
  */
 package jsoftware.com.jblue.model.factories;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.Serializable;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
 import jsoftware.com.jblue.sys.SystemSession;
@@ -13,6 +12,7 @@ import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.views.ShopCartView;
 import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
+import jsoftware.com.jblue.views.mod.*;
 import jsoftware.com.jblue.views.process.ConsumerRegisterProcessView;
 import jsoftware.com.jblue.views.process.OwnerChangerProcessView;
 import jsoftware.com.jblue.views.process.OwnerRegisterProcessView;
@@ -21,21 +21,20 @@ import jsoftware.com.jblue.views.process.OwnerRegisterProcessView;
  *
  * @author juanp
  */
-public final class ProcessViewFactory {
+public final class ProcessViewFactory implements Serializable {
 
-    public static final ProcessViewFactory intance = new ProcessViewFactory();
+    public static final ProcessViewFactory instance = new ProcessViewFactory();
+    private static final long serialVersionUID = 1L;
 
-    public static ProcessViewFactory getIntance() {
-        return intance;
+    public static ProcessViewFactory getInstance() {
+        return instance;
 
     }
 
     private final ProcessViewBuilder init;
     private final EmployeeUserDTO current_employee;
-    private final Map<String, ViewProvider<?, ?>> factory;
 
     public ProcessViewFactory() {
-        this.factory = new HashMap<>();
         this.current_employee = SystemSession.getInstancia().getCurrentEmployee();
         this.init = new ProcessViewBuilder()
                 .setDev_flag(AppConfig.isDevMessages())
@@ -48,7 +47,7 @@ public final class ProcessViewFactory {
                 .setProcess_name("REGISTRO DE TITULAR")
                 .setProcess(true)
                 .setProcess_id("1");
-        return (OwnerRegisterProcessView) o.builder(OwnerRegisterProcessView.class.getName(), o);
+        return (OwnerRegisterProcessView) o.builder(OwnerRegisterProcessView.class, o);
     }
 
     public ConsumerRegisterProcessView getConsumerRegisterProcess() {
@@ -56,7 +55,7 @@ public final class ProcessViewFactory {
                 .setProcess_name("REGISTRO DE CONSUMIDOR")
                 .setProcess(true)
                 .setProcess_id("2");
-        return (ConsumerRegisterProcessView) o.builder(ConsumerRegisterProcessView.class.getName(), o);
+        return (ConsumerRegisterProcessView) o.builder(ConsumerRegisterProcessView.class, o);
     }
 
     public UserView getUserProcess() {
@@ -64,25 +63,35 @@ public final class ProcessViewFactory {
                 .setProcess(false)
                 .setProcess_name("ACTUALIZACION DE USUARIO")
                 .setProcess_id("10");
-        return (UserView) o.builder(UserView.class.getName(), o);
+        return (UserView) o.builder(UserView.class, o);
     }
 
     public OwnerChangerProcessView getOwnerChangerProcess() {
         ProcessViewBuilder o = new ProcessViewBuilder(init)
                 .setProcess_name("ACTUALIZACION DE USUARIO")
                 .setProcess_id("11");
-        return (OwnerChangerProcessView) o.builder(OwnerChangerProcessView.class.getName(), o);
+        return (OwnerChangerProcessView) o.builder(OwnerChangerProcessView.class, o);
     }
 
     public ShopCartView getShopCarProcess() {
         ProcessViewBuilder o = new ProcessViewBuilder(init)
                 .setProcess_name("CAJA DE COBRO")
                 .setProcess_id("13");
-        return (ShopCartView) o.builder(ShopCartView.class.getName(), o);
+        return (ShopCartView) o.builder(ShopCartView.class, o);
     }
 
-    public Map<String, ViewProvider<?, ?>> getFactory() {
-        return factory;
+    public WaterIntakeTypeView getIntakeTypeView() {
+        ProcessViewBuilder o = new ProcessViewBuilder(init)
+                .setProcess_name("TIPO DE TOMAS DE AGUA")
+                .setProcess_id("14");
+        return (WaterIntakeTypeView) o.builder(WaterIntakeTypeView.class, o);
+    }
+
+    public StreetView getStreetView() {
+        ProcessViewBuilder o = new ProcessViewBuilder(init)
+                .setProcess_name("CALLES REGISTRADAS")
+                .setProcess_id("15");
+        return (StreetView) o.builder(StreetView.class, o);
     }
 
 }

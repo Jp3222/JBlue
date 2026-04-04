@@ -380,6 +380,37 @@ public class HistoryDAO extends AbstractDAO implements TableComponentDAO<History
         }
     }
 
+    public static class WaterIntakeTypeHistoryDAO implements Serializable {
+
+        private static final long serialVersionUID = 1L;
+
+        private static WaterIntakeTypeHistoryDAO instance;
+
+        public static synchronized WaterIntakeTypeHistoryDAO getInstance() {
+            if (JFunc.isNull(instance)) {
+                instance = new WaterIntakeTypeHistoryDAO();
+            }
+            return instance;
+        }
+        private HistoryDAO dao;
+
+        private WaterIntakeTypeHistoryDAO() {
+            dao = HistoryDAO.getInstance();
+        }
+
+        public boolean insert(JDBConnection connection, String description) throws SQLException {
+            return dao.insert(connection, Const.INDEX_WKI_WATER_INTAKE_TYPE, description);
+        }
+
+        public boolean update(JDBConnection connection, String description) throws SQLException {
+            return dao.update(connection, Const.INDEX_WKI_WATER_INTAKE_TYPE, description);
+        }
+
+        public boolean delete(JDBConnection connection, String description) throws SQLException {
+            return dao.delete(connection, Const.INDEX_WKI_WATER_INTAKE_TYPE, description);
+        }
+    }
+
     public static class DocumentHistoryDAO implements Serializable {
 
         private static final long serialVersionUID = 1L;

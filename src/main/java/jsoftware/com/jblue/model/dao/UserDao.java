@@ -118,8 +118,6 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
                 user.getMap().put("date_update", Formats.getLocalDateTime(LocalDateTime.now()));
                 user.getMap().put("date_resgiter", Formats.getLocalDateTime(LocalDateTime.now()));
             }
-        } catch (SQLException | CorruptInsertionException | KeyNotGenerateException e) {
-            throw e;
         }
         return user_id;
     }

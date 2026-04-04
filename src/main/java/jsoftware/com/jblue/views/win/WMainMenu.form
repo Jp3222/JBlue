@@ -14,28 +14,67 @@
                 <Property name="text" type="java.lang.String" value="Perfil"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem6">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Panel de Admin"/>
-                <Property name="toolTipText" type="java.lang.String" value="Panel de Administracion"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="administration_history_view_item">
+            <Menu class="javax.swing.JMenu" name="jMenu10">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Administracion"/>
-                <Property name="name" type="java.lang.String" value="Administracion" noResource="true"/>
               </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem8">
+              <SubComponents>
+                <Menu class="javax.swing.JMenu" name="jMenu11">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Empleados"/>
+                  </Properties>
+                  <SubComponents>
+                    <MenuItem class="javax.swing.JMenuItem" name="jMenuItem15">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Registro de empleados"/>
+                      </Properties>
+                    </MenuItem>
+                    <MenuItem class="javax.swing.JMenuItem" name="jMenuItem20">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Modificacion de Informacion"/>
+                      </Properties>
+                    </MenuItem>
+                    <MenuItem class="javax.swing.JMenuItem" name="jMenuItem21">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Cambio de Contrase&#xf1;a"/>
+                      </Properties>
+                    </MenuItem>
+                  </SubComponents>
+                </Menu>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem17">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Administracion Actual"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem16">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Historial de Movimientos"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem18">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Balance"/>
+                  </Properties>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="jMenu12">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Exportar"/>
+                <Property name="text" type="java.lang.String" value="Herramientas de informacion."/>
               </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem7">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Importar"/>
-              </Properties>
-            </MenuItem>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem8">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Exportar"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem7">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Importar"/>
+                  </Properties>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="parameters_view_item">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Preferencias"/>
@@ -63,63 +102,89 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Tipo de usuarios"/>
+                    <Property name="text" type="java.lang.String" value="Tipo de Usuarios"/>
                   </Properties>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="status_type_item">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Tipo de status"/>
+                    <Property name="text" type="java.lang.String" value="Tipos de Status del Sistema"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="street_view_item">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Calles Registradas"/>
                   </Properties>
                 </MenuItem>
               </SubComponents>
             </Menu>
-            <MenuItem class="javax.swing.JMenuItem" name="users_view_item">
+            <Menu class="javax.swing.JMenu" name="jMenu7">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Usuarios"/>
+                <Property name="text" type="java.lang.String" value="Tomas de agua potable."/>
               </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="user_consumer_item">
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="water_intakes_types_view_item">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Tipos de Tomas de Agua"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="users_view_item">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Padron de Usuarios."/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="user_consumer_item">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Padron de Consumidores"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="water_intakes_view_item">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Padron de Tomas de Agua"/>
+                  </Properties>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="jMenu8">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Consumidores"/>
+                <Property name="text" type="java.lang.String" value="Pagos"/>
               </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="water_intakes_view_item">
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem12">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Concepto de Pagos"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="service_payments_view_item">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Pagos Registrados"/>
+                    <Property name="actionCommand" type="java.lang.String" value="Inicio"/>
+                    <Property name="name" type="java.lang.String" value="Inicio" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Detalle de Pagos"/>
+                  </Properties>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="jMenu9">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Tomas Registradas"/>
+                <Property name="text" type="java.lang.String" value="Empleados"/>
               </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="water_intakes_types_view_item">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Tipo de tomas"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="street_view_item">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Calles"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="service_payments_view_item">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Pagos por el Servicio"/>
-                <Property name="actionCommand" type="java.lang.String" value="Inicio"/>
-                <Property name="name" type="java.lang.String" value="Inicio" noResource="true"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="surcharge_payments_view_item">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Recargos"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="other_type_payments_view_item">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Otros tipos de pagos"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="other_payments_view_item">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Otros pagos"/>
-              </Properties>
-            </MenuItem>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem14">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Informacion de Empleados."/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem13">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Padron de Empleados"/>
+                  </Properties>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu4">

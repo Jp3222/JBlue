@@ -4,19 +4,15 @@
  */
 package jsoftware.com.jblue.model.dao;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
+import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
+import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
@@ -27,162 +23,58 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  */
 public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<WaterIntakeTypeDTO>, TableComponentDAO<WaterIntakeTypeDTO> {
 
-    private static final String TABLE = "wki_water_intake_type";
-    private static final String SELECT_ALL = "SELECT * FROM " + TABLE;
-    private static final String SELECT_BY_ID = SELECT_ALL + " WHERE id = ?";
-
-    // Columnas clave para inserción (omitiendo ID y fechas auto-generadas)
-    private static final String INSERT_COLS = "type_name, current_price, previous_price, surcharge, status";
-    private static final String INSERT_SQL = String.format("INSERT INTO %s (%s) VALUES (?, ?, ?, ?, ?)", TABLE, INSERT_COLS);
-
-    // Estado de borrado lógico
-    private static final int LOGICAL_DELETE_STATUS = 3;
     private static final long serialVersionUID = 1L;
 
     public WaterIntakeTypeDAO(boolean flag_dev_log, String name_module) {
         super(flag_dev_log, name_module);
     }
 
-    // --- Auxiliar: Mapeo de ResultSet a Map-based DTO ---
-    private WaterIntakeTypeDTO mapResultSetToDTO(ResultSet rs) throws SQLException {
-        WaterIntakeTypeDTO dto = new WaterIntakeTypeDTO();
-        // Mapeo dinámico de todas las columnas (similar a getPaymentList)
-        java.sql.ResultSetMetaData metaData = rs.getMetaData();
-        int columnCount = metaData.getColumnCount();
-        for (int i = 1; i <= columnCount; i++) {
-            String columnName = metaData.getColumnLabel(i);
-            Object value = rs.getObject(i);
-            dto.put(columnName, value); // Asumiendo que 'put' es accesible
-        }
-        return dto;
-    }
-
-    // -----------------------------------------------------------------
-    // CRUD: get, getList, insert, updateDynamic, logicalDelete
-    // -----------------------------------------------------------------
-    /**
-     * 1. Obtener por ID
-     */
-    public WaterIntakeTypeDTO get(JDBConnection connection, int id) throws SQLException {
-        try (Connection conn = connection.getConnection(); PreparedStatement ps = conn.prepareStatement(SELECT_BY_ID)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return mapResultSetToDTO(rs);
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 3. Insertar nuevo registro
-     */
-    public int insert(JDBConnection connection, WaterIntakeTypeDTO dto) {
-        int res = -1;
-        try (PreparedStatement ps = connection.getNewPreparedStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS)) {
-            // 1. Asignación de parámetros (índices fijos según INSERT_COLS)
+    public int insert(JDBConnection connection, WaterIntakeTypeDTO dto) throws CorruptInsertionException, KeyNotGenerateException, SQLException {
+        int id = -1;
+        String query = """
+                                        INSERT INTO wki_water_intake_type (
+                                        type_name, current_price, previous_price, surcharge,
+                                       charge_unit, unit_id, units, apply_rules, round, round_up,
+                                       base_price, surcharge_percentage, annual_increase, status,
+                                       last_employee_update
+                                       )
+                                       """;
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, dto.getTypeName());
             ps.setString(2, dto.getCurrentPrice());
             ps.setString(3, dto.getPreviousPrice());
             ps.setString(4, dto.getSurcharge());
-            ps.setInt(5, dto.getStatus());
-            res = ps.executeUpdate();
-            if (res <= 0) {
-                throw new SQLException("REGISTRO ERRONEO");
+            ps.setBoolean(5, dto.getChargeUnit());
+            ps.setString(6, dto.getUnitId());
+            ps.setString(7, dto.getUnits());
+            ps.setBoolean(8, dto.getApplyRules());
+            ps.setBoolean(9, dto.getRound());
+            ps.setBoolean(10, dto.getRoundUp());
+            ps.setBigDecimal(11, dto.getBasePrice());
+            ps.setBigDecimal(12, dto.getSurchargePercentage());
+            ps.setBigDecimal(13, dto.getAnnualIncrease());
+            ps.setInt(14, dto.getStatus());
+            ps.setString(15, dto.getLastEmployeeUpdate());
+            boolean res = ps.executeUpdate() > 0;
+            if (!res) {
+                throw new CorruptInsertionException();
             }
+
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (!rs.next()) {
-                    throw new SQLException("LLAVE GENERADA CORRUPTA");
+                    throw new KeyNotGenerateException();
                 }
-                res = rs.getInt(1);
+                id = rs.getInt(1);
+                dto.put("id", id);
             }
-        } catch (SQLException e) {
-            connection.rollBack();
-        } catch (Exception e) {
-            connection.rollBack();
-        } finally {
-            connection.setAutoCommit(true);
         }
-        return res;
+        return id;
     }
 
-    /**
-     * 4. Borrado Lógico (Actualizar status a 3)
-     */
-    public boolean logicalDelete(JDBConnection connection, int id) throws SQLException {
-        String query = String.format("UPDATE %s SET status = ?, date_end = CURRENT_TIMESTAMP WHERE id = ?", TABLE);
-        try (Connection conn = connection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, LOGICAL_DELETE_STATUS);
-            ps.setInt(2, id);
-            return ps.executeUpdate() > 0;
-        }
+    public void update(JDBConnection connection, WaterIntakeTypeDTO dto) {
     }
 
-    /**
-     * 5. Actualización Dinámica
-     */
-    public boolean updateDynamic(JDBConnection connection, WaterIntakeTypeDTO old_wki, WaterIntakeTypeDTO new_wki) throws SQLException {
-
-        Map<String, Object> oldMap = old_wki.getMap();
-        Map<String, Object> newMap = new_wki.getMap();
-
-        List<String> setColumns = new ArrayList<>();
-        List<Object> parameters = new ArrayList<>();
-
-        // Columnas actualizables (excluyendo ID y fechas auto-generadas)
-        String[] updatableColumns = {"type_name", "current_price", "previous_price", "surcharge", "status"};
-
-        // Comparar campo por campo
-        for (String col : updatableColumns) {
-            Object oldValue = oldMap.get(col);
-            Object newValue = newMap.get(col);
-
-            // Si el valor ha cambiado o si uno es nulo y el otro no (requiere actualización)
-            if (!Objects.equals(oldValue, newValue)) {
-                setColumns.add(col);
-                parameters.add(newValue);
-            }
-        }
-
-        // Si no hay campos para actualizar, retornar false.
-        if (setColumns.isEmpty()) {
-            return false;
-        }
-
-        // Construir la sentencia SQL dinámica: UPDATE table SET col1=?, col2=? WHERE id=?
-        String setClause = String.join("=?, ", setColumns) + "=?";
-        String dynamicUpdateSQL = String.format("UPDATE %s SET %s WHERE id=?", TABLE, setClause);
-
-        try (Connection conn = connection.getConnection(); PreparedStatement ps = conn.prepareStatement(dynamicUpdateSQL)) {
-
-            int index = 1;
-            // Asignar parámetros dinámicos
-            for (Object param : parameters) {
-                if (param == null) {
-                    // Usar lógica de mapeo JDBC para nulos basada en el tipo esperado
-                    if (setColumns.get(index - 1).contains("price") || setColumns.get(index - 1).equals("surcharge")) {
-                        ps.setNull(index, Types.DECIMAL);
-                    } else if (setColumns.get(index - 1).equals("status")) {
-                        ps.setNull(index, Types.INTEGER);
-                    } else {
-                        ps.setNull(index, Types.VARCHAR);
-                    }
-                } else if (param instanceof BigDecimal) {
-                    ps.setBigDecimal(index, (BigDecimal) param);
-                } else if (param instanceof Integer) {
-                    ps.setInt(index, (Integer) param);
-                } else {
-                    ps.setObject(index, param);
-                }
-                index++;
-            }
-
-            // Asignar el parámetro WHERE (ID)
-            ps.setInt(index, Integer.parseInt(new_wki.getId()));
-
-            return ps.executeUpdate() > 0;
-        }
+    public void delete(JDBConnection connection, WaterIntakeTypeDTO dto) {
     }
 
     @Override
@@ -215,14 +107,6 @@ public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<
     @Override
     public List<WaterIntakeTypeDTO> getList(JDBConnection connection, JTableModel model) {
         return null;
-    }
-
-    public boolean delete(JDBConnection connection, WaterIntakeTypeDTO o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public boolean update(JDBConnection connection, WaterIntakeTypeDTO old_dto, WaterIntakeTypeDTO new_dto) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override

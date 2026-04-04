@@ -12,6 +12,8 @@ import jsoftware.com.jblue.model.models.ExceptionCode;
  */
 public class DataAccesObjectException extends BlueException implements ExceptionCode {
 
+    private static final long serialVersionUID = 1L;
+
     public DataAccesObjectException(int error_code, String user_message) {
         super(error_code, user_message);
     }

@@ -2,56 +2,27 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package jsoftware.com.jblue.views.process;
+package jsoftware.com.jblue.views.mod.pro;
 
-import java.awt.CardLayout;
-import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
+import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
-import jsoftware.com.jblue.views.mod.EmployeeRegistrationView;
-import jsoftware.com.jblue.views.mod.EmployeeUserDataView;
 
 /**
  *
  * @author juanp
  */
-public class EmployeeRegisterProcess extends AbstractProcessView<EmployeeUserDTO> {
+public class OwnerChangerProcessView extends AbstractProcessView<UserDTO> {
 
     private static final long serialVersionUID = 1L;
-    private EmployeeRegistrationView register;
-    private EmployeeUserDataView data;
-    private CardLayout ly;
 
     /**
-     * Creates new form EmployeeRegisterProcess
+     * Creates new form OwnerChangerProcessView
      */
-    public EmployeeRegisterProcess(ProcessViewBuilder builder) {
-        super(builder);
+    public OwnerChangerProcessView(ProcessViewBuilder aThis) {
+        super(aThis);
         initComponents();
     }
-
-    @Override
-    public void components() {
-        ly = (CardLayout) getLayout();
-        
-    }
-
-    @Override
-    public void events() {
-        super.events(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-    }
-
-    @Override
-    public void initialState() {
-        super.initialState(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-    }
-
-    @Override
-    public void finalState() {
-        super.finalState(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-    }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -72,7 +43,8 @@ public class EmployeeRegisterProcess extends AbstractProcessView<EmployeeUserDTO
         jButton3 = new javax.swing.JButton();
         root_panel = new javax.swing.JPanel();
 
-        setName("Form"); // NOI18N
+        setMinimumSize(new java.awt.Dimension(900, 700));
+        setName("CAMBIO DE TITULAR"); // NOI18N
         setLayout(new java.awt.BorderLayout());
 
         north_panel.setName("north_panel"); // NOI18N
@@ -83,15 +55,15 @@ public class EmployeeRegisterProcess extends AbstractProcessView<EmployeeUserDTO
         np_cp_center.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
 
         last_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/process/Bundle"); // NOI18N
-        last_panel_button.setText(bundle.getString("EmployeeRegisterProcess.last_panel_button.text")); // NOI18N
-        last_panel_button.setActionCommand(bundle.getString("EmployeeRegisterProcess.last_panel_button.actionCommand")); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/pro/Bundle"); // NOI18N
+        last_panel_button.setText(bundle.getString("OwnerChangerProcessView.last_panel_button.text")); // NOI18N
+        last_panel_button.setActionCommand(bundle.getString("OwnerChangerProcessView.last_panel_button.actionCommand")); // NOI18N
         last_panel_button.setName("last_panel_button"); // NOI18N
         np_cp_center.add(last_panel_button);
 
         next_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        next_panel_button.setText(bundle.getString("EmployeeRegisterProcess.next_panel_button.text")); // NOI18N
-        next_panel_button.setActionCommand(bundle.getString("EmployeeRegisterProcess.next_panel_button.actionCommand")); // NOI18N
+        next_panel_button.setText(bundle.getString("OwnerChangerProcessView.next_panel_button.text")); // NOI18N
+        next_panel_button.setActionCommand(bundle.getString("OwnerChangerProcessView.next_panel_button.actionCommand")); // NOI18N
         next_panel_button.setName("next_panel_button"); // NOI18N
         np_cp_center.add(next_panel_button);
 
@@ -102,7 +74,7 @@ public class EmployeeRegisterProcess extends AbstractProcessView<EmployeeUserDTO
         np_cp_west.setLayout(new java.awt.BorderLayout());
 
         search_object.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        search_object.setActionCommand(bundle.getString("EmployeeRegisterProcess.search_object.actionCommand")); // NOI18N
+        search_object.setActionCommand(bundle.getString("OwnerChangerProcessView.search_object.actionCommand")); // NOI18N
         search_object.setName("search_object"); // NOI18N
         np_cp_west.add(search_object, java.awt.BorderLayout.CENTER);
 
@@ -125,12 +97,6 @@ public class EmployeeRegisterProcess extends AbstractProcessView<EmployeeUserDTO
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    @Override
-    public void getDataView() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton3;
     private javax.swing.JButton last_panel_button;
@@ -142,4 +108,9 @@ public class EmployeeRegisterProcess extends AbstractProcessView<EmployeeUserDTO
     private javax.swing.JPanel root_panel;
     private javax.swing.JButton search_object;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void getDataView() {
+
+    }
 }

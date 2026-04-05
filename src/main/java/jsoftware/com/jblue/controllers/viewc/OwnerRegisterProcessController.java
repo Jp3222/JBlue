@@ -13,7 +13,7 @@ import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.service.OwnerRegisterProcessService;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
-import jsoftware.com.jblue.views.process.OwnerRegisterProcessView;
+import jsoftware.com.jblue.views.mod.pro.OwnerRegisterProcessView;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.util.FuncLogs;
 

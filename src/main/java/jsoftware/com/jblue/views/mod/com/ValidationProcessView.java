@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package jsoftware.com.jblue.views.proviews;
+package jsoftware.com.jblue.views.mod.com;
 
 import java.awt.Component;
 import java.io.File;
@@ -110,7 +110,7 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
 
         jLabel1.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/proviews/Bundle"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/com/Bundle"); // NOI18N
         jLabel1.setText(bundle.getString("ValidationProcessView.jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
         jLabel1.setPreferredSize(new java.awt.Dimension(150, 50));

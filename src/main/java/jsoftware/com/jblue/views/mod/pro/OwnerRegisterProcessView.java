@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package jsoftware.com.jblue.views.process;
+package jsoftware.com.jblue.views.mod.pro;
 
 import java.awt.CardLayout;
 import java.io.IOException;
@@ -25,10 +25,10 @@ import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
-import jsoftware.com.jblue.views.proviews.PaymentProcessView;
-import jsoftware.com.jblue.views.proviews.UserRegisterView;
-import jsoftware.com.jblue.views.proviews.ValidationProcessView;
-import jsoftware.com.jblue.views.proviews.WaterIntakeDataView;
+import jsoftware.com.jblue.views.mod.com.PaymentProcessView;
+import jsoftware.com.jblue.views.mod.com.UserRegisterView;
+import jsoftware.com.jblue.views.mod.com.ValidationProcessView;
+import jsoftware.com.jblue.views.mod.com.WaterIntakeDataView;
 import jsoftware.com.jutil.util.FuncLogs;
 
 /**

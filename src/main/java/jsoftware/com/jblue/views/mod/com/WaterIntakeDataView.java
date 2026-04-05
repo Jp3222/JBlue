@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package jsoftware.com.jblue.views.proviews;
+package jsoftware.com.jblue.views.mod.com;
 
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
@@ -121,7 +121,7 @@ public final class WaterIntakeDataView extends AbstractProcessView<WaterIntakeDT
 
         jLabel4.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/proviews/Bundle"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/com/Bundle"); // NOI18N
         jLabel4.setText(bundle.getString("WaterIntakeDataView.jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
         jLabel4.setPreferredSize(new java.awt.Dimension(150, 50));

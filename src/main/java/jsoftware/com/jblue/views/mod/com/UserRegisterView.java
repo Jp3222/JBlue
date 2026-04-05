@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package jsoftware.com.jblue.views.proviews;
+package jsoftware.com.jblue.views.mod.com;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -157,7 +157,7 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
 
         jLabel8.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/proviews/Bundle"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/com/Bundle"); // NOI18N
         jLabel8.setText(bundle.getString("UserRegisterView.jLabel8.text")); // NOI18N
         jLabel8.setName("jLabel8"); // NOI18N
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 50));

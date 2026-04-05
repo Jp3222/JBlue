@@ -2,26 +2,77 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package jsoftware.com.jblue.views.process;
+package jsoftware.com.jblue.views.mod.pro;
 
+import java.awt.CardLayout;
 import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.views.UserView;
+import jsoftware.com.jblue.views.WaterIntakesView;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
+import jsoftware.com.jblue.views.mod.com.PaymentProcessView;
+import jsoftware.com.jblue.views.mod.com.ValidationProcessView;
 
 /**
  *
  * @author juanp
  */
-public class OwnerChangerProcessView extends AbstractProcessView<UserDTO> {
+public final class ConsumerRegisterProcessView extends AbstractProcessView<UserDTO> {
 
     private static final long serialVersionUID = 1L;
+    private final UserView user_view;
+    private final ValidationProcessView validation_process_view;
+    private final PaymentProcessView payment_concepts_view;
+    private final WaterIntakesView water_intake_view;
+    private CardLayout ly;
 
     /**
-     * Creates new form OwnerChangerProcessView
+     * Creates new form ProcessView
      */
-    public OwnerChangerProcessView(ProcessViewBuilder aThis) {
-        super(aThis);
+    public ConsumerRegisterProcessView(ProcessViewBuilder builder) throws Exception {
+        super(builder);
+        this.user_view = new UserView(builder);
+        this.validation_process_view = new ValidationProcessView(builder);
+        this.payment_concepts_view = new PaymentProcessView(builder);
+        this.water_intake_view = new WaterIntakesView(builder);
         initComponents();
+        build();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        finalState();
+        initialState();
+    }
+
+    @Override
+    public void events() {
+        next_panel_button.addActionListener((e) -> {
+            ly.next(root_panel);
+        });
+        last_panel_button.addActionListener((e) -> {
+            ly.previous(root_panel);
+        });
+
+    }
+
+    @Override
+    public void components() {
+        this.ly = (CardLayout) root_panel.getLayout();
+        this.root_panel.add(user_view, user_view.getName());
+        this.root_panel.add(validation_process_view, validation_process_view.getName());
+        this.root_panel.add(water_intake_view, water_intake_view.getName());
+        this.root_panel.add(payment_concepts_view, payment_concepts_view.getName());
+    }
+
+    @Override
+    public void initialState() {
+    }
+
+    @Override
+    public void finalState() {
     }
 
     /**
@@ -43,8 +94,8 @@ public class OwnerChangerProcessView extends AbstractProcessView<UserDTO> {
         jButton3 = new javax.swing.JButton();
         root_panel = new javax.swing.JPanel();
 
-        setMinimumSize(new java.awt.Dimension(900, 700));
-        setName("CAMBIO DE TITULAR"); // NOI18N
+        setName("Registro de consumidor"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
 
         north_panel.setName("north_panel"); // NOI18N
@@ -55,15 +106,15 @@ public class OwnerChangerProcessView extends AbstractProcessView<UserDTO> {
         np_cp_center.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
 
         last_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/process/Bundle"); // NOI18N
-        last_panel_button.setText(bundle.getString("OwnerChangerProcessView.last_panel_button.text")); // NOI18N
-        last_panel_button.setActionCommand(bundle.getString("OwnerChangerProcessView.last_panel_button.actionCommand")); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/pro/Bundle"); // NOI18N
+        last_panel_button.setText(bundle.getString("ConsumerRegisterProcessView.last_panel_button.text")); // NOI18N
+        last_panel_button.setActionCommand(bundle.getString("ConsumerRegisterProcessView.last_panel_button.actionCommand")); // NOI18N
         last_panel_button.setName("last_panel_button"); // NOI18N
         np_cp_center.add(last_panel_button);
 
         next_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        next_panel_button.setText(bundle.getString("OwnerChangerProcessView.next_panel_button.text")); // NOI18N
-        next_panel_button.setActionCommand(bundle.getString("OwnerChangerProcessView.next_panel_button.actionCommand")); // NOI18N
+        next_panel_button.setText(bundle.getString("ConsumerRegisterProcessView.next_panel_button.text")); // NOI18N
+        next_panel_button.setActionCommand(bundle.getString("ConsumerRegisterProcessView.next_panel_button.actionCommand")); // NOI18N
         next_panel_button.setName("next_panel_button"); // NOI18N
         np_cp_center.add(next_panel_button);
 
@@ -74,7 +125,7 @@ public class OwnerChangerProcessView extends AbstractProcessView<UserDTO> {
         np_cp_west.setLayout(new java.awt.BorderLayout());
 
         search_object.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        search_object.setActionCommand(bundle.getString("OwnerChangerProcessView.search_object.actionCommand")); // NOI18N
+        search_object.setActionCommand(bundle.getString("ConsumerRegisterProcessView.search_object.actionCommand")); // NOI18N
         search_object.setName("search_object"); // NOI18N
         np_cp_west.add(search_object, java.awt.BorderLayout.CENTER);
 

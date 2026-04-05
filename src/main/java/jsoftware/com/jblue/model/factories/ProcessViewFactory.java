@@ -13,9 +13,9 @@ import jsoftware.com.jblue.views.ShopCartView;
 import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 import jsoftware.com.jblue.views.mod.*;
-import jsoftware.com.jblue.views.process.ConsumerRegisterProcessView;
-import jsoftware.com.jblue.views.process.OwnerChangerProcessView;
-import jsoftware.com.jblue.views.process.OwnerRegisterProcessView;
+import jsoftware.com.jblue.views.mod.pro.ConsumerRegisterProcessView;
+import jsoftware.com.jblue.views.mod.pro.OwnerChangerProcessView;
+import jsoftware.com.jblue.views.mod.pro.OwnerRegisterProcessView;
 
 /**
  *

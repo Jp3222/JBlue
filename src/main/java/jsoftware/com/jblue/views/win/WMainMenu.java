@@ -33,9 +33,9 @@ import jsoftware.com.jblue.views.components.UserViewComponent;
 import jsoftware.com.jblue.views.framework.AbstractAppWindows;
 import jsoftware.com.jblue.views.mod.StreetView;
 import jsoftware.com.jblue.views.mod.WaterIntakeTypeView;
-import jsoftware.com.jblue.views.process.ConsumerRegisterProcessView;
-import jsoftware.com.jblue.views.process.OwnerChangerProcessView;
-import jsoftware.com.jblue.views.process.OwnerRegisterProcessView;
+import jsoftware.com.jblue.views.mod.pro.ConsumerRegisterProcessView;
+import jsoftware.com.jblue.views.mod.pro.OwnerChangerProcessView;
+import jsoftware.com.jblue.views.mod.pro.OwnerRegisterProcessView;
 
 /**
  * Esta clase esta dedicada a la vista del menu principal de la aplicacion

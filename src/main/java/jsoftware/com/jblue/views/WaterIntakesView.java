@@ -23,25 +23,24 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import jsoftware.com.jblue.controllers.FactoryController;
-import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
-import jsoftware.com.jblue.views.framework.DBValuesMapModel;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 import jsoftware.com.jblue.views.framework.TableSearchViewModel;
-import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
  *
  * @author juanp
  */
-public final class WaterIntakesView extends AbstractProcessView<WaterIntakeDTO> implements DBValuesMapModel, TableSearchViewModel {
+public final class WaterIntakesView extends AbstractProcessView<WaterIntakeDTO> implements DBObjectValues<WaterIntakeDTO>, TableSearchViewModel<WaterIntakeDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -131,8 +130,8 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakeDTO> 
     }
 
     @Override
-    public void setObjectSearch(JDBMapObject o) {
-        object_search = (WaterIntakeDTO) o;
+    public void setObjectSearch(WaterIntakeDTO o) {
+        object_search = o;
     }
 
     /**
@@ -654,7 +653,7 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakeDTO> 
     }
 
     @Override
-    public boolean isValuesOk() {
+    public boolean isValuesOK() {
         boolean ok = true;
         JTextField[] text_fields = {};
         for (JTextField i : text_fields) {
@@ -668,7 +667,7 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakeDTO> 
     }
 
     @Override
-    public Map<String, Object> getValues(boolean update) {
+    public WaterIntakeDTO getValues(boolean update) {
         Map<String, Object> map;
         String _user = user_search.getId();
         String _water_inatke = water_intake_types_search.getId();
@@ -686,7 +685,7 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakeDTO> 
         } else {
             map = saveInsert(_cost_procedure, _water_inatke, _user, user_search.toString(), _street1, _street2, _location, _description, _status);
         }
-        return map;
+        return new WaterIntakeDTO(map);
     }
 
     public Map<String, Object> saveInsert(

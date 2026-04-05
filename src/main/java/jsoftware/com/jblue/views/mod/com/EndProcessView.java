@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package jsoftware.com.jblue.views.proviews;
+package jsoftware.com.jblue.views.mod.com;
 
 import java.util.Map;
 import javax.swing.table.TableModel;
@@ -79,7 +79,7 @@ public final class EndProcessView extends AbstractProcessView<ProcessWrapperDTO>
         jPanel1.setLayout(new java.awt.GridLayout(15, 0));
 
         label1.setName("label1"); // NOI18N
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/proviews/Bundle"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/com/Bundle"); // NOI18N
         label1.setText(bundle.getString("EndProcessView.label1.text")); // NOI18N
         jPanel1.add(label1);
 

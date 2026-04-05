@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
-import jsoftware.com.jblue.model.dto.HysAdministrationHistoryDTO;
+import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
 import jsoftware.com.jblue.model.dto.ProcessDTO;
 import jsoftware.com.jblue.model.exp.ProcessException;
 import jsoftware.com.jblue.model.querys.ProcessQuery;
@@ -39,7 +39,7 @@ public class ProcessDAO extends AbstractDAO {
     public static int STATUS_CANCELADO = 5;
 
     private final EmployeeUserDTO current_employee;
-    private final HysAdministrationHistoryDTO current_admin;
+    private final AdministrationHistoryDTO current_admin;
     private final String current_db_user;
 
     public ProcessDAO(boolean flag_dev_log, String name_module) {

@@ -13,7 +13,7 @@ import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.HistoryDAO.EmployeeUserHistoryDAO;
 import jsoftware.com.jblue.model.dao.SessionDAO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
-import jsoftware.com.jblue.model.dto.HysAdministrationHistoryDTO;
+import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
 import jsoftware.com.jblue.model.dto.SessionDTO;
 import jsoftware.com.jblue.model.exp.DataAccesObjectException;
 import jsoftware.com.jblue.model.exp.ServiceException;
@@ -98,7 +98,7 @@ public class LoginService extends AbstractService {
             //[4] INFORMACION DE SESSION
             String db_user = history_dao.currentUser(connection);
             //GUARDAR ADMINISTRACION ACTUAL
-            HysAdministrationHistoryDTO currentAdministration = administration_history_dao.getCurrentAdministration(connection);
+            AdministrationHistoryDTO currentAdministration = administration_history_dao.getCurrentAdministration(connection);
             system_session.setCurrentAdministration(currentAdministration);
             //GUARDAR USUARIO DE BASE DE DATOS ASIGNADO
             system_session.setCurrentDbUser(db_user);

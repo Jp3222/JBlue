@@ -8,8 +8,8 @@ import java.awt.CardLayout;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
-import jsoftware.com.jblue.views.mod.EmployeeRegistrationView;
-import jsoftware.com.jblue.views.mod.EmployeeUserDataView;
+import jsoftware.com.jblue.views.mod.com.EmployeeRegistrationView;
+import jsoftware.com.jblue.views.mod.com.EmployeeUserDataView;
 
 /**
  *

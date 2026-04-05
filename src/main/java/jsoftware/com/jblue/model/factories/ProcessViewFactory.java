@@ -39,7 +39,7 @@ public final class ProcessViewFactory implements Serializable {
         this.init = new ProcessViewBuilder()
                 .setDev_flag(AppConfig.isDevMessages())
                 .setProcess(true)
-                .setProcess_wrapper(new ProcessWrapperDTO(current_employee));
+                .setProcess_wrapper(new ProcessWrapperDTO());
     }
 
     public OwnerRegisterProcessView getUserRegisterProcess() {

@@ -7,6 +7,8 @@ package jsoftware.com.jblue.model.dto.wrp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.PaymentDTO;
 import jsoftware.com.jblue.model.dto.PaymentListDTO;
@@ -34,6 +36,7 @@ public class ProcessWrapperDTO extends JDBMapObject {
 
     private static final long serialVersionUID = 1L;
     private EmployeeUserDTO current_employee;
+    private AdministrationHistoryDTO current_administration;
     //PASO 1
     private final UserDTO user;
     //PASO 2
@@ -55,7 +58,7 @@ public class ProcessWrapperDTO extends JDBMapObject {
     private boolean payment_valid;
 
     //Datos de proceso
-    private int process_id;
+    private int process_type_id;
     private int last_process_type;
 
     //Datos originales antes de un update
@@ -63,18 +66,20 @@ public class ProcessWrapperDTO extends JDBMapObject {
     private WaterIntakeDTO water_intake_copy;
     private WaterIntakeUserDTO wki_user_copy;
 
-    public ProcessWrapperDTO(EmployeeUserDTO employee) {
+    public ProcessWrapperDTO() {
         this.user = new UserDTO();
-        this.user_document_list = new ArrayList<>(15);
+        this.user_document_list = new ArrayList<>();
         this.water_intake = new WaterIntakeDTO();
         this.water_intake_type = new WaterIntakeTypeDTO();
         this.payment = new PaymentDTO();
-        this.payment_concept_list = new ArrayList<>(15);
+        this.payment_concept_list = new ArrayList<>();
         this.wki_user = new WaterIntakeUserDTO();
         this.user_valid = false;
         this.user_document_valid = false;
         this.water_intake_valid = false;
         this.payment_valid = false;
+        this.process_type_id = -1;
+        this.last_process_type = -1;
     }
 
     public EmployeeUserDTO getCurrent_employee() {
@@ -83,6 +88,86 @@ public class ProcessWrapperDTO extends JDBMapObject {
 
     public void setCurrent_employee(EmployeeUserDTO current_employee) {
         this.current_employee = current_employee;
+    }
+
+    public AdministrationHistoryDTO getCurrent_administration() {
+        return current_administration;
+    }
+
+    public void setCurrent_administration(AdministrationHistoryDTO current_administration) {
+        this.current_administration = current_administration;
+    }
+
+    public boolean isUser_valid() {
+        return user_valid;
+    }
+
+    public void setUser_valid(boolean user_valid) {
+        this.user_valid = user_valid;
+    }
+
+    public boolean isUser_document_valid() {
+        return user_document_valid;
+    }
+
+    public void setUser_document_valid(boolean user_document_valid) {
+        this.user_document_valid = user_document_valid;
+    }
+
+    public boolean isWater_intake_valid() {
+        return water_intake_valid;
+    }
+
+    public void setWater_intake_valid(boolean water_intake_valid) {
+        this.water_intake_valid = water_intake_valid;
+    }
+
+    public boolean isPayment_valid() {
+        return payment_valid;
+    }
+
+    public void setPayment_valid(boolean payment_valid) {
+        this.payment_valid = payment_valid;
+    }
+
+    public int getProcess_type_id() {
+        return process_type_id;
+    }
+
+    public void setProcess_type_id(int process_type_id) {
+        this.process_type_id = process_type_id;
+    }
+
+    public int getLast_process_type() {
+        return last_process_type;
+    }
+
+    public void setLast_process_type(int last_process_type) {
+        this.last_process_type = last_process_type;
+    }
+
+    public UserDTO getUser_copy() {
+        return user_copy;
+    }
+
+    public void setUser_copy(UserDTO user_copy) {
+        this.user_copy = user_copy;
+    }
+
+    public WaterIntakeDTO getWater_intake_copy() {
+        return water_intake_copy;
+    }
+
+    public void setWater_intake_copy(WaterIntakeDTO water_intake_copy) {
+        this.water_intake_copy = water_intake_copy;
+    }
+
+    public WaterIntakeUserDTO getWki_user_copy() {
+        return wki_user_copy;
+    }
+
+    public void setWki_user_copy(WaterIntakeUserDTO wki_user_copy) {
+        this.wki_user_copy = wki_user_copy;
     }
 
     public static long getSerialVersionUID() {
@@ -121,131 +206,122 @@ public class ProcessWrapperDTO extends JDBMapObject {
         return values;
     }
 
-    public boolean isUser_valid() {
-        return user_valid;
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 59 * hash + Objects.hashCode(this.current_employee);
+        hash = 59 * hash + Objects.hashCode(this.current_administration);
+        hash = 59 * hash + Objects.hashCode(this.user);
+        hash = 59 * hash + Objects.hashCode(this.user_document_list);
+        hash = 59 * hash + Objects.hashCode(this.water_intake);
+        hash = 59 * hash + Objects.hashCode(this.water_intake_type);
+        hash = 59 * hash + Objects.hashCode(this.payment);
+        hash = 59 * hash + Objects.hashCode(this.payment_concept_list);
+        hash = 59 * hash + Objects.hashCode(this.wki_user);
+        hash = 59 * hash + (this.user_valid ? 1 : 0);
+        hash = 59 * hash + (this.user_document_valid ? 1 : 0);
+        hash = 59 * hash + (this.water_intake_valid ? 1 : 0);
+        hash = 59 * hash + (this.payment_valid ? 1 : 0);
+        hash = 59 * hash + this.process_type_id;
+        hash = 59 * hash + this.last_process_type;
+        hash = 59 * hash + Objects.hashCode(this.user_copy);
+        hash = 59 * hash + Objects.hashCode(this.water_intake_copy);
+        hash = 59 * hash + Objects.hashCode(this.wki_user_copy);
+        return hash;
     }
 
-    public void setUser_valid(boolean user_valid) {
-        this.user_valid = user_valid;
-    }
-
-    public boolean isUser_document_valid() {
-        return user_document_valid;
-    }
-
-    public void setUser_document_valid(boolean user_document_valid) {
-        this.user_document_valid = user_document_valid;
-    }
-
-    public boolean isWater_intake_valid() {
-        return water_intake_valid;
-    }
-
-    public void setWater_intake_valid(boolean water_intake_valid) {
-        this.water_intake_valid = water_intake_valid;
-    }
-
-    public boolean isPayment_valid() {
-        return payment_valid;
-    }
-
-    public void setPayment_valid(boolean payment_valid) {
-        this.payment_valid = payment_valid;
-    }
-
-    public int getProcess_id() {
-        return process_id;
-    }
-
-    public void setProcess_id(int process_id) {
-        this.process_id = process_id;
-    }
-
-    public int getLast_process_type() {
-        return last_process_type;
-    }
-
-    public void setLast_process_type(int last_process_type) {
-        this.last_process_type = last_process_type;
-    }
-
-    public UserDTO getUser_copy() {
-        return user_copy;
-    }
-
-    public void setUser_copy(UserDTO user_copy) {
-        this.user_copy = user_copy;
-    }
-
-    public WaterIntakeDTO getWater_intake_copy() {
-        return water_intake_copy;
-    }
-
-    public void setWater_intake_copy(WaterIntakeDTO water_intake_copy) {
-        this.water_intake_copy = water_intake_copy;
-    }
-
-    public WaterIntakeUserDTO getWki_user_copy() {
-        return wki_user_copy;
-    }
-
-    public void setWki_user_copy(WaterIntakeUserDTO wki_user_copy) {
-        this.wki_user_copy = wki_user_copy;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ProcessWrapperDTO other = (ProcessWrapperDTO) obj;
+        if (this.user_valid != other.user_valid) {
+            return false;
+        }
+        if (this.user_document_valid != other.user_document_valid) {
+            return false;
+        }
+        if (this.water_intake_valid != other.water_intake_valid) {
+            return false;
+        }
+        if (this.payment_valid != other.payment_valid) {
+            return false;
+        }
+        if (this.process_type_id != other.process_type_id) {
+            return false;
+        }
+        if (this.last_process_type != other.last_process_type) {
+            return false;
+        }
+        if (!Objects.equals(this.current_employee, other.current_employee)) {
+            return false;
+        }
+        if (!Objects.equals(this.current_administration, other.current_administration)) {
+            return false;
+        }
+        if (!Objects.equals(this.user, other.user)) {
+            return false;
+        }
+        if (!Objects.equals(this.user_document_list, other.user_document_list)) {
+            return false;
+        }
+        if (!Objects.equals(this.water_intake, other.water_intake)) {
+            return false;
+        }
+        if (!Objects.equals(this.water_intake_type, other.water_intake_type)) {
+            return false;
+        }
+        if (!Objects.equals(this.payment, other.payment)) {
+            return false;
+        }
+        if (!Objects.equals(this.payment_concept_list, other.payment_concept_list)) {
+            return false;
+        }
+        if (!Objects.equals(this.wki_user, other.wki_user)) {
+            return false;
+        }
+        if (!Objects.equals(this.user_copy, other.user_copy)) {
+            return false;
+        }
+        if (!Objects.equals(this.water_intake_copy, other.water_intake_copy)) {
+            return false;
+        }
+        return Objects.equals(this.wki_user_copy, other.wki_user_copy);
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(1000);
-        sb.append("DATOS DE USUARIO:");
-        sb.append(user.getMap().toString()).append("\n");
+        StringBuilder sb = new StringBuilder(5000);
 
-        sb.append("DATOS DE DOCUMENTOS DE USUARIO:");
-        for (UserDocumentDTO i : user_document_list) {
-            sb.append(i.getMap().toString()).append("\n");
-        }
+        //DATOS DEL USUARIO
+        sb.append("USER: {\n").append(user.getMap().toString()).append("\n} \n");
+        sb.append("USER_VALID: {\n").append(user_valid).append("\n} \n");
 
-        sb.append("DATOS DE LA TOMA:");
-        sb.append(water_intake.getMap().toString()).append("\n");
+        //DOCUMENTACION DE USUARIO
+        sb.append("DOCUMENT_LIST: {\n").append(user_document_list.toString()).append("\n} \n");
+        sb.append("USER_DOCUMENT_VALID: {\n").append(user_document_valid).append("\n} \n");
 
-        sb.append("DATOS DEL TIPO DE TOMA:");
-        sb.append(water_intake_type.getMap().toString()).append("\n");
+        //INFORMACION DE LA TOMA
+        sb.append("WATER_INTAKE: {\n").append(water_intake.getMap().toString()).append("\n} \n");
+        sb.append("WATER_INTAKE_TYPE: {\n").append(water_intake_type.getMap().toString()).append("\n} \n");
+        sb.append("WATER_INTAKE_VALID: {\n").append(water_intake_valid).append("\n} \n");
 
-        sb.append("DATOS DE LA CABEZERA DE PAGO:");
-        sb.append(payment.getMap().toString()).append("\n");
+        //INFORMACION DEL PAGO
+        sb.append("PAYMENT: {\n").append(payment.getMap().toString()).append("\n} \n");
+        sb.append("PAYMENT_CONCEPT_LIST: {\n").append(payment_concept_list.toString()).append("\n} \n");
+        sb.append("PAYMENT_VALID: {\n").append(payment_valid).append("\n} \n");
 
-        sb.append("DATOS DE LOS CONCEPTOS DE PAGO:");
-        for (PaymentListDTO i : payment_concept_list) {
-            sb.append(i.getMap().toString()).append("\n");
-        }
-        sb.append("DATOS DE USUARIO EN EL PADRON:");
-        sb.append(wki_user.getMap().toString()).append("\n");
+        //INFORMACION DE DATOS PARA EL PADRON DE USUARIO
+        sb.append("WKI_USER: {\n").append(wki_user.getMap().toString()).append("\n} \n");
+        System.out.println(sb.length());
         return sb.toString();
-    }
-
-    public void updateToStarted() {
-        for (UserDocumentDTO i : user_document_list) {
-            i.put("user_id", user.getId());
-        }
-        water_intake.put("owner_name", user.toString());
-        payment.put("user", user.getId());
-    }
-
-    public void updateToValidated() {
-
-    }
-
-    public void updateToRegistered() {
-        payment.put("water_intake", water_intake.getId());
-        payment.put("water_intake_type", water_intake.getWaterIntakeType());
-    }
-
-    public void updateToPaid() {
-        wki_user.put("user_id", user.getId());
-        wki_user.put("water_intake_id", water_intake.getId());
-        wki_user.put("water_intake_type_id", water_intake.getWaterIntakeType());
-        wki_user.put("original_process", process_id);
-        wki_user.put("last_process_type", last_process_type);
-
     }
 
 }

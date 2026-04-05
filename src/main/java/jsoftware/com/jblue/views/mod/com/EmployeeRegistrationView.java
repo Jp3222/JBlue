@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package jsoftware.com.jblue.views.mod;
+package jsoftware.com.jblue.views.mod.com;
 
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
@@ -81,7 +81,7 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
 
         jLabel1.setFont(new java.awt.Font("Noto Sans", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/Bundle"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/com/Bundle"); // NOI18N
         jLabel1.setText(bundle.getString("EmployeeRegistrationView.jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
         jLabel1.setPreferredSize(new java.awt.Dimension(200, 50));
@@ -98,7 +98,8 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel13.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel14.add(jLabel13, java.awt.BorderLayout.WEST);
 
-        jTextField1.setText(bundle.getString("EmployeeView.CURP.text")); // NOI18N
+        java.util.ResourceBundle bundle1 = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/Bundle"); // NOI18N
+        jTextField1.setText(bundle1.getString("EmployeeView.CURP.text")); // NOI18N
         jTextField1.setName("CURP"); // NOI18N
         jPanel14.add(jTextField1, java.awt.BorderLayout.CENTER);
 
@@ -112,7 +113,7 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel3.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        first_name.setText(bundle.getString("EmployeeView.jTextField6.text")); // NOI18N
+        first_name.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
         first_name.setName("NOMBRE"); // NOI18N
         jPanel3.add(first_name, java.awt.BorderLayout.CENTER);
 
@@ -126,7 +127,7 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel3.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel4.add(jLabel3, java.awt.BorderLayout.WEST);
 
-        jTextField2.setText(bundle.getString("EmployeeView.jTextField6.text")); // NOI18N
+        jTextField2.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
         jTextField2.setName("APELLIDO PATERNO"); // NOI18N
         jPanel4.add(jTextField2, java.awt.BorderLayout.CENTER);
 
@@ -140,7 +141,7 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel4.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel5.add(jLabel4, java.awt.BorderLayout.WEST);
 
-        jTextField3.setText(bundle.getString("EmployeeView.jTextField6.text")); // NOI18N
+        jTextField3.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
         jTextField3.setName("APELLIDO MATERNO"); // NOI18N
         jPanel5.add(jTextField3, java.awt.BorderLayout.CENTER);
 
@@ -167,7 +168,7 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel7.add(jLabel6, java.awt.BorderLayout.WEST);
 
-        jTextField5.setText(bundle.getString("EmployeeView.jTextField6.text")); // NOI18N
+        jTextField5.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
         jTextField5.setName("FECHA DE NACIMIENTO"); // NOI18N
         jPanel7.add(jTextField5, java.awt.BorderLayout.CENTER);
 
@@ -181,7 +182,7 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel7.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel8.add(jLabel7, java.awt.BorderLayout.WEST);
 
-        jTextField6.setText(bundle.getString("EmployeeView.CORREO ELECTRONICO.text")); // NOI18N
+        jTextField6.setText(bundle1.getString("EmployeeView.CORREO ELECTRONICO.text")); // NOI18N
         jTextField6.setName("CORREO ELECTRONICO"); // NOI18N
         jPanel8.add(jTextField6, java.awt.BorderLayout.CENTER);
 
@@ -195,7 +196,7 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel9.add(jLabel8, java.awt.BorderLayout.WEST);
 
-        jTextField7.setText(bundle.getString("EmployeeView.jTextField6.text")); // NOI18N
+        jTextField7.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
         jTextField7.setName("TELEFONO"); // NOI18N
         jPanel9.add(jTextField7, java.awt.BorderLayout.CENTER);
 
@@ -235,7 +236,7 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel11.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel12.add(jLabel11, java.awt.BorderLayout.WEST);
 
-        jTextField10.setText(bundle.getString("EmployeeView.jTextField6.text")); // NOI18N
+        jTextField10.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
         jTextField10.setName("NUMERO INTERIOR"); // NOI18N
         jPanel12.add(jTextField10, java.awt.BorderLayout.CENTER);
 
@@ -249,7 +250,7 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel12.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel13.add(jLabel12, java.awt.BorderLayout.WEST);
 
-        jTextField11.setText(bundle.getString("EmployeeView.jTextField6.text")); // NOI18N
+        jTextField11.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
         jTextField11.setName("NUMERO EXTERIOR"); // NOI18N
         jPanel13.add(jTextField11, java.awt.BorderLayout.CENTER);
 

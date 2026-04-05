@@ -19,7 +19,10 @@ public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
     private EmployeeDTO employee;
     private EmployeeUserDTO employee_user;
 
-    public EmployeeRegisterWrapperDTO() {
+    public EmployeeRegisterWrapperDTO(String module_id, String module_name) {
+        super(module_id, module_name);
+        this.employee = new EmployeeDTO();
+        this.employee_user = new EmployeeUserDTO();
     }
 
     public EmployeeDTO getEmployee() {
@@ -40,9 +43,9 @@ public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.employee);
-        hash = 29 * hash + Objects.hashCode(this.employee_user);
+        int hash = 3;
+        hash = 37 * hash + Objects.hashCode(this.employee);
+        hash = 37 * hash + Objects.hashCode(this.employee_user);
         return hash;
     }
 
@@ -66,10 +69,12 @@ public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(600);
-        sb.append("EmployeeDTO: ").append(employee.toString()).append("\n");
-        sb.append("EmployeeUserDTO: ").append(employee_user.toString()).append("\n");
-        sb.append("Module: ").append(values.toString()).append("\n");
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.toString()).append("\n");
+        sb.append("EmployeeRegisterWrapperDTO {");
+        sb.append("employee = ").append(employee.getMap().toString());
+        sb.append(", employee_user = ").append(employee_user.getMap().toString());
+        sb.append('}');
         return sb.toString();
     }
 

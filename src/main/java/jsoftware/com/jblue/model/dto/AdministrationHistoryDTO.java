@@ -22,7 +22,7 @@ package jsoftware.com.jblue.model.dto;
  *
  * @author jp
  */
-public class HysAdministrationHistoryDTO extends AuditableObjectMap {
+public class AdministrationHistoryDTO extends AuditableObjectMap {
 
     private static final long serialVersionUID = 1L;
 

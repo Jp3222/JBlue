@@ -11,6 +11,7 @@ import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.service.OwnerRegisterProcessService;
+import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.mod.pro.OwnerRegisterProcessView;
@@ -47,8 +48,15 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
     @Override
     public void save() {
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
+            SystemSession ss = SystemSession.getInstancia();
+            if (!ss.isAdministrationValid()) {
+                returnMessage(view, false, "LA ADMINISTRACION ACTUAL NO SE HA REGISTRADO O NO ES VALIDA");
+                return;
+            }
+            
             boolean res = service.save(c, view.getProcessId(), view.getProcessWrapper());
             if (!res) {
+
             }
             int showConfirmDialog = JOptionPane.showConfirmDialog(view, "¿DESEAS EXPORTAR LOS FORMATOS?");
             if (showConfirmDialog == JOptionPane.YES_OPTION) {

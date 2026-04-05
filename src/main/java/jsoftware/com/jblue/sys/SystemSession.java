@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
-import jsoftware.com.jblue.model.dto.HysAdministrationHistoryDTO;
+import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
 import jsoftware.com.jblue.model.dto.InstanceAuthDTO;
 import jsoftware.com.jblue.model.dto.SessionDTO;
 import jsoftware.com.jblue.sys.app.AppConfig;
@@ -49,7 +49,7 @@ public class SystemSession implements LocalSession<EmployeeUserDTO>, Serializabl
     /**
      * Registro de la administración activa actual (del año en curso).
      */
-    private HysAdministrationHistoryDTO current_administration;
+    private AdministrationHistoryDTO current_administration;
 
     /**
      * Informacion de sesion actual
@@ -159,11 +159,11 @@ public class SystemSession implements LocalSession<EmployeeUserDTO>, Serializabl
         this.current_employee = current_employee;
     }
 
-    public HysAdministrationHistoryDTO getCurrentAdministration() {
+    public AdministrationHistoryDTO getCurrentAdministration() {
         return current_administration;
     }
 
-    public void setCurrentAdministration(HysAdministrationHistoryDTO current_administration) {
+    public void setCurrentAdministration(AdministrationHistoryDTO current_administration) {
         this.current_administration = current_administration;
     }
 
@@ -203,5 +203,8 @@ public class SystemSession implements LocalSession<EmployeeUserDTO>, Serializabl
     public String toString() {
         return current_db_user;
     }
-
+    
+    public boolean isAdministrationValid(){
+        return Func.isNotNull(current_administration);
+    }
 }

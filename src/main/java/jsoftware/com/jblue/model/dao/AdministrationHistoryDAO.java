@@ -19,7 +19,7 @@ package jsoftware.com.jblue.model.dao;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import jsoftware.com.jblue.model.dto.HysAdministrationHistoryDTO;
+import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
 
@@ -133,15 +133,15 @@ public class AdministrationHistoryDAO extends AbstractDAO {
      *
      * @param connection La conexión JDBC activa.
      * @return El DTO de la historia de administración actual
-     * ({@code HysAdministrationHistoryDTO}) o {@code null} si no se encuentra
+     * ({@code AdministrationHistoryDTO}) o {@code null} si no se encuentra
      * un registro activo.
      * @throws RuntimeException Si ocurre un error de SQL durante la consulta.
      */
-    public HysAdministrationHistoryDTO getCurrentAdministration(JDBConnection connection) {
+    public AdministrationHistoryDTO getCurrentAdministration(JDBConnection connection) {
         // -1 en getQueryEmployeeRegisterInAdmin indica que no se debe filtrar por empleado.
         // getQueryEmployeeRegisterInAdmin() se asume que es un método estático de esta clase.
         String query = getQueryEmployeeRegisterInAdmin(-1);
-        HysAdministrationHistoryDTO dto = null;
+        AdministrationHistoryDTO dto = null;
 
         // Uso de try-with-resources para asegurar que el ResultSet se cierre.
         try (ResultSet rs = connection.query(query)) {
@@ -167,18 +167,18 @@ public class AdministrationHistoryDAO extends AbstractDAO {
      * <p>
      * Este método utiliza los metadatos del ResultSet para iterar sobre todas
      * las columnas del resultado y asignarlas al mapa interno del DTO. Esto
-     * asume que {@code HysAdministrationHistoryDTO} implementa la lógica de un
+     * asume que {@code AdministrationHistoryDTO} implementa la lógica de un
      * DTO basado en mapa (como en {@code AbstractMapDTO}).
      * </p>
      *
      * @param rs El ResultSet posicionado en una fila válida (ya ejecutado).
-     * @return Un DTO ({@code HysAdministrationHistoryDTO}) con los valores
+     * @return Un DTO ({@code AdministrationHistoryDTO}) con los valores
      * mapeados.
      * @throws SQLException Si ocurre un error al acceder a los datos del
      * ResultSet (ej. columna no existe).
      */
-    private static HysAdministrationHistoryDTO mapResultSetToDTO(ResultSet rs) throws SQLException {
-        HysAdministrationHistoryDTO dto = new HysAdministrationHistoryDTO();
+    private static AdministrationHistoryDTO mapResultSetToDTO(ResultSet rs) throws SQLException {
+        AdministrationHistoryDTO dto = new AdministrationHistoryDTO();
         ResultSetMetaData metaData = rs.getMetaData();
         int columnCount = metaData.getColumnCount();
 

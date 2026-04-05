@@ -113,6 +113,10 @@ public class JBlueMainSystem implements MainSystem {
                 if (Func.isNull(c)) {
                     throw new SQLException("SIN CONEXIONES");
                 }
+                SystemSession session = SystemSession.getInstancia();
+                if (Func.isNull(session.getCurrent_instance())) {
+                    
+                }
             }
             log("FABRICA DE CONECIONES CREADA");
             res = true;

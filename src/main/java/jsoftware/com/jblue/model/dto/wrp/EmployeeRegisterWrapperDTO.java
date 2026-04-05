@@ -2,16 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package jsoftware.com.jblue.model.dto;
+package jsoftware.com.jblue.model.dto.wrp;
 
-import jsoftware.com.jblue.model.dto.wrp.ModuleWrapperDTO;
 import java.util.Objects;
+import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 
 /**
  *
  * @author juanp
  */
 public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
+
+    private static final long serialVersionUID = 1L;
 
     private EmployeeDTO employee;
     private EmployeeUserDTO employee_user;

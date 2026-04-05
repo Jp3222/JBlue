@@ -7,6 +7,8 @@ package jsoftware.com.jblue.model.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import jsoftware.com.jblue.model.dto.StatusDTO;
@@ -18,7 +20,7 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  *
  * @author juanp
  */
-public final class StatusDAO extends AbstractDAO implements TableComponentDAO<StatusDTO> {
+public final class StatusDAO extends AbstractDAO implements TableComponentDAO<StatusDTO>, ListComponentDAO<StatusDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,7 +29,7 @@ public final class StatusDAO extends AbstractDAO implements TableComponentDAO<St
     }
 
     @Override
-    public List<StatusDTO> getList(JDBConnection connection, JTableModel model) {
+    public List<StatusDTO> getList(JDBConnection connection, JTableModel model) throws SQLException {
         String query = "SELECT * FROM cat_status";
         try (PreparedStatement ps = connection.getNewCallableStatement(query); ResultSet rs = ps.executeQuery();) {
             ResultSetMetaData md = rs.getMetaData();
@@ -48,8 +50,6 @@ public final class StatusDAO extends AbstractDAO implements TableComponentDAO<St
                 System.out.println(Arrays.toString(arr_aux));
                 model.addRow(arr_aux);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return null;
     }
@@ -58,5 +58,27 @@ public final class StatusDAO extends AbstractDAO implements TableComponentDAO<St
     public JTableModel buildModel(JDBConnection connection, JTableModel model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
+    @Override
+    public List<StatusDTO> getList(JDBConnection connection) throws SQLException {
+        String query = "SELECT * FROM jblue.cat_status WHERE date_finalize IS NULL ORDER BY id";
+        List<StatusDTO> list = new ArrayList<>();
+        try (PreparedStatement ps = connection.getNewCallableStatement(query); ResultSet rs = ps.executeQuery();) {
+            ResultSetMetaData md = rs.getMetaData();
+            String[] fields = new String[md.getColumnCount()];
+            for (int i = 0; i < fields.length; i++) {
+                fields[i] = md.getColumnLabel(i + 1);
+            }
+            StatusDTO aux;
+            while (rs.next()) {
+                aux = new StatusDTO();
+                for (String i : fields) {
+                    aux.put(i, rs.getString(i));
+                }
+                list.add(aux);
+            }
+        }
+        return list;
+    }
+
 }

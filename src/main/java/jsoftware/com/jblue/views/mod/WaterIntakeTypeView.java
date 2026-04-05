@@ -37,9 +37,9 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
      */
     public WaterIntakeTypeView(ProcessViewBuilder builder) {
         super(builder);
+        initComponents();
         model = TableModelFactory.getWaterIntakeTypesTableModel();
         ly = (CardLayout) root_panel.getLayout();
-        initComponents();
         build();
     }
 

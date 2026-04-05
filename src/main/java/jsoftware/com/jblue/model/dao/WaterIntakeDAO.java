@@ -125,11 +125,6 @@ public class WaterIntakeDAO extends AbstractDAO implements ListComponentDAO<Wate
                     // throw new SQLException("LA CONSULTA NO DEVOLVIÓ REGISTROS");
                 }
             }
-        } catch (SQLException e) {
-            throw e;
-        } catch (Exception e) {
-            // Mantenemos tu estructura de relanzar la excepción para control total
-            throw e;
         }
         return list;
     }

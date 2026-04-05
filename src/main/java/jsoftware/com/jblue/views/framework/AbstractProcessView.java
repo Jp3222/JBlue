@@ -5,7 +5,7 @@
 package jsoftware.com.jblue.views.framework;
 
 import jsoftware.com.jblue.controllers.compc.TableController;
-import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
@@ -20,12 +20,10 @@ public abstract class AbstractProcessView<T extends JDBMapObject> extends Simple
     private boolean process;
     private String process_type;
     private ProcessWrapperDTO process_wrapper;
-    private ProcessViewBuilder builder;
     protected TableController<T> table_controller;
     protected int view_show;
 
     public AbstractProcessView(ProcessViewBuilder builder) {
-        this.builder = builder;
         this.process_id = builder.getProcess_id();
         this.process = builder.isProcess();
         this.process_type = builder.getProcess_name();
@@ -90,13 +88,5 @@ public abstract class AbstractProcessView<T extends JDBMapObject> extends Simple
         return process_wrapper;
     }
 
-    public void setBuilder(ProcessViewBuilder builder) {
-        this.builder = builder;
-    }
-
-    public ProcessViewBuilder getBuilder() {
-        return builder;
-    }
-
-    public abstract void getDataView();
+     public abstract void getDataView();
 }

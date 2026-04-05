@@ -60,7 +60,6 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
 
         ComboBoxController<StreetDTO> street_1 = new ComboBoxController<>(street1_field, street_dao);
         ComboBoxController<StreetDTO> street_2 = new ComboBoxController<>(street2_field, street_dao);
-
         comboBoxInit(street_1, street1_field.getItemCount() <= 0);
         comboBoxInit(street_2, street2_field.getItemCount() <= 0);
     }

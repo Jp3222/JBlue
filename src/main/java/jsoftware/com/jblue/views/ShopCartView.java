@@ -40,6 +40,10 @@ import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
  */
 public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> implements ListSearchViewModel<WaterIntakeDTO> {
 
+    public static String DEFAULT_LAST_MONTH_PAID = "XX";
+    public static String DEFAULT_LAST_YEAR_PAID = "XXXX";
+    public static String DEFAULT_MONTHS_PAID = "0";
+
     private static final long serialVersionUID = 1L;
 
     private WaterIntakeDTO object_search;
@@ -87,6 +91,13 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
 
     @Override
     public void initialState() {
+        last_month_paid_field.setText(DEFAULT_LAST_MONTH_PAID);
+        last_year_paid_field.setText(DEFAULT_LAST_YEAR_PAID);
+        months_paid_field.setText(DEFAULT_MONTHS_PAID);
+        for (JCheckBox i : months_field_arr) {
+            i.setSelected(false);
+            i.setEnabled(false);
+        }
 
     }
 
@@ -128,13 +139,13 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         jScrollPane2 = new javax.swing.JScrollPane();
         users_list = new javax.swing.JList<>();
         user_info_panel = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        owner_name_field = new javax.swing.JTextField();
+        info_button = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         user_type_field = new javax.swing.JTextField();
-        info_button = new javax.swing.JButton();
-        jPanel12 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        name_user_field = new javax.swing.JTextField();
         jPanel13 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         type_toma_field = new javax.swing.JTextField();
@@ -146,8 +157,15 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         all_months_button = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        months_paid_field = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        month_paid_field = new javax.swing.JTextField();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        last_month_paid_field = new javax.swing.JTextField();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        last_year_paid_field = new javax.swing.JTextField();
         months_panel = new javax.swing.JPanel();
         ene = new javax.swing.JCheckBox();
         feb = new javax.swing.JCheckBox();
@@ -273,6 +291,25 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         user_info_panel.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
         user_info_panel.setLayout(new java.awt.GridLayout(3, 0, 10, 10));
 
+        jPanel12.setLayout(new java.awt.BorderLayout(10, 0));
+
+        jLabel8.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel8.setText("Titular:");
+        jLabel8.setPreferredSize(new java.awt.Dimension(150, 19));
+        jPanel12.add(jLabel8, java.awt.BorderLayout.WEST);
+
+        owner_name_field.setEditable(false);
+        owner_name_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jPanel12.add(owner_name_field, java.awt.BorderLayout.CENTER);
+
+        info_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        info_button.setText("Info de usuario");
+        info_button.setActionCommand("info");
+        info_button.setPreferredSize(new java.awt.Dimension(150, 29));
+        jPanel12.add(info_button, java.awt.BorderLayout.EAST);
+
+        user_info_panel.add(jPanel12);
+
         jPanel3.setLayout(new java.awt.BorderLayout(10, 0));
 
         jLabel7.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
@@ -284,26 +321,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         user_type_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jPanel3.add(user_type_field, java.awt.BorderLayout.CENTER);
 
-        info_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        info_button.setText("Info de usuario");
-        info_button.setActionCommand("info");
-        info_button.setPreferredSize(new java.awt.Dimension(150, 29));
-        jPanel3.add(info_button, java.awt.BorderLayout.EAST);
-
         user_info_panel.add(jPanel3);
-
-        jPanel12.setLayout(new java.awt.BorderLayout(10, 0));
-
-        jLabel8.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel8.setText("Nombre");
-        jLabel8.setPreferredSize(new java.awt.Dimension(150, 19));
-        jPanel12.add(jLabel8, java.awt.BorderLayout.WEST);
-
-        name_user_field.setEditable(false);
-        name_user_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jPanel12.add(name_user_field, java.awt.BorderLayout.CENTER);
-
-        user_info_panel.add(jPanel12);
 
         jPanel13.setLayout(new java.awt.BorderLayout(10, 0));
 
@@ -321,7 +339,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         jPanel4.setLayout(new java.awt.BorderLayout(10, 0));
 
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel3.setText("Costo: $");
+        jLabel3.setText("Cuota: $");
         jLabel3.setPreferredSize(new java.awt.Dimension(80, 30));
         jPanel4.add(jLabel3, java.awt.BorderLayout.WEST);
 
@@ -360,16 +378,44 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         payment_info_panel.add(jPanel5);
 
         jPanel14.setPreferredSize(new java.awt.Dimension(900, 23));
-        jPanel14.setLayout(new java.awt.BorderLayout(10, 0));
+        jPanel14.setLayout(new java.awt.GridLayout(1, 0, 10, 100));
+
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        months_paid_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        months_paid_field.setText("0");
+        jPanel2.add(months_paid_field, java.awt.BorderLayout.CENTER);
 
         jLabel10.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel10.setText("Meses pagados");
-        jLabel10.setPreferredSize(new java.awt.Dimension(150, 19));
-        jPanel14.add(jLabel10, java.awt.BorderLayout.WEST);
+        jLabel10.setText("Meses Pagados: ");
+        jLabel10.setPreferredSize(new java.awt.Dimension(150, 30));
+        jPanel2.add(jLabel10, java.awt.BorderLayout.WEST);
 
-        month_paid_field.setEditable(false);
-        month_paid_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jPanel14.add(month_paid_field, java.awt.BorderLayout.CENTER);
+        jPanel14.add(jPanel2);
+
+        jPanel10.setLayout(new java.awt.BorderLayout());
+
+        jLabel12.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel12.setText("Ultimos mes pagado: ");
+        jLabel12.setPreferredSize(new java.awt.Dimension(150, 30));
+        jPanel10.add(jLabel12, java.awt.BorderLayout.WEST);
+
+        last_month_paid_field.setText("XX");
+        jPanel10.add(last_month_paid_field, java.awt.BorderLayout.CENTER);
+
+        jPanel14.add(jPanel10);
+
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jLabel13.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel13.setText("Ultimo año pagado: ");
+        jLabel13.setPreferredSize(new java.awt.Dimension(150, 30));
+        jPanel9.add(jLabel13, java.awt.BorderLayout.WEST);
+
+        last_year_paid_field.setText("XXXX");
+        jPanel9.add(last_year_paid_field, java.awt.BorderLayout.CENTER);
+
+        jPanel14.add(jPanel9);
 
         payment_info_panel.add(jPanel14);
 
@@ -728,6 +774,8 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
@@ -737,12 +785,14 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel29;
@@ -753,24 +803,27 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JCheckBox jul;
     private javax.swing.JCheckBox jun;
+    private javax.swing.JTextField last_month_paid_field;
+    private javax.swing.JTextField last_year_paid_field;
     private javax.swing.JToggleButton lock_button;
     private javax.swing.JCheckBox mar;
     private javax.swing.JCheckBox may;
     private javax.swing.JPanel money_panel;
-    private javax.swing.JTextField month_paid_field;
+    private javax.swing.JTextField months_paid_field;
     private javax.swing.JPanel months_panel;
     private javax.swing.JButton mov_book_button;
-    private javax.swing.JTextField name_user_field;
     private javax.swing.JButton next_button;
     private javax.swing.JCheckBox nov;
     private javax.swing.JTable objects_table;
     private javax.swing.JCheckBox oct;
     private javax.swing.JPanel option_panel;
     private javax.swing.JButton other_pay_button;
+    private javax.swing.JTextField owner_name_field;
     private javax.swing.JButton pay_button;
     private javax.swing.JButton pay_last_button;
     private javax.swing.JPanel payment_info_panel;
@@ -845,10 +898,10 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
             return;
         }
         user_type_field.setText(user.getUserType());
-        name_user_field.setText(object_search.getDescription());
+        owner_name_field.setText(object_search.getDescription());
         type_toma_field.setText(get.getTypeName());
         cost_field.setText(get.getCurrentPrice());
-        month_paid_field.setText(String.valueOf(months_paid.size()));
+        months_paid_field.setText(String.valueOf(months_paid.size()));
     }
 
     public void setMonths_paid(ArrayList<PaymentListDTO> months_paid) {

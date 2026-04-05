@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.HysAdministrationHistoryDTO;
+import jsoftware.com.jblue.model.dto.InstanceAuthDTO;
 import jsoftware.com.jblue.model.dto.SessionDTO;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.Func;
@@ -59,6 +60,11 @@ public class SystemSession implements LocalSession<EmployeeUserDTO>, Serializabl
      * usuario principal de base de datos
      */
     private String current_db_user;
+
+    /**
+     *
+     */
+    private InstanceAuthDTO current_instance;
 
     /**
      * Constructor privado que obtiene la conexión a la base de datos al
@@ -176,12 +182,20 @@ public class SystemSession implements LocalSession<EmployeeUserDTO>, Serializabl
     public void setCurrentDbUser(String current_db_user) {
         this.current_db_user = current_db_user;
     }
-    
-    public void put(String key, Object value){
+
+    public InstanceAuthDTO getCurrent_instance() {
+        return current_instance;
+    }
+
+    public void setCurrent_instance(InstanceAuthDTO current_instance) {
+        this.current_instance = current_instance;
+    }
+
+    public void put(String key, Object value) {
         var_session.put(key, value);
     }
-    
-    public Object get(String key){
+
+    public Object get(String key) {
         return var_session.get(key);
     }
 

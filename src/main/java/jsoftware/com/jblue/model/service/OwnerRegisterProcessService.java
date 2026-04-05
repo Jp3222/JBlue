@@ -5,7 +5,7 @@
 package jsoftware.com.jblue.model.service;
 
 import java.io.Serializable;
-import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**

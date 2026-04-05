@@ -62,6 +62,8 @@ public class LoginService extends AbstractService {
             res = option.isEmpty();
             if (res) {
                 log("INTENTO DE INICIO DE SESION: USUARIO=%s".formatted(user));
+                user_message = "USUARIO NO ECONTRADO";
+                error_code = 404;
                 return !res;
             }
             //GAURDAR EMPLEADO 

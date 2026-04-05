@@ -88,10 +88,6 @@ public class EmployeeUserDAO extends AbstractDAO {
                 }
                 p = Optional.of(dto);
             }
-        } catch (SQLException e) {
-            throw e;
-        } catch (Exception e) {
-            throw e;
         }
         return p;
     }

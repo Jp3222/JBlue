@@ -2,11 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package jsoftware.com.jblue.model.dto;
+package jsoftware.com.jblue.model.dto.wrp;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
+import jsoftware.com.jblue.model.dto.PaymentDTO;
+import jsoftware.com.jblue.model.dto.PaymentListDTO;
+import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.UserDocumentDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
 import jsoftware.com.jutil.db.JDBMapObject;
 
 /**

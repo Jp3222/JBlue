@@ -6,7 +6,7 @@ package jsoftware.com.jblue.views.framework;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
-import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.ShopCartView;
 import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.mod.StreetView;

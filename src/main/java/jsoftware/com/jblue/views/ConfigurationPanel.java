@@ -23,10 +23,10 @@ import java.util.Properties;
 import javax.swing.JFileChooser;
 import javax.swing.JPasswordField;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.controllers.winc.ConfigController;
+import jsoftware.com.jblue.model.dto.InstanceAuthDTO;
 import jsoftware.com.jblue.sys.app.AppConfig;
-import jsoftware.com.jblue.views.framework.DBValuesModel;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.SimpleView;
 import jsoftware.com.jblue.views.win.ConfigWindow;
 import jsoftware.com.jutil.platf.So;
@@ -36,7 +36,7 @@ import jsoftware.com.jutil.sys.LaunchApp;
  *
  * @author juanp
  */
-public final class ConfigurationPanel extends SimpleView implements DBValuesModel {
+public final class ConfigurationPanel extends SimpleView implements DBObjectValues<InstanceAuthDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -553,17 +553,13 @@ public final class ConfigurationPanel extends SimpleView implements DBValuesMode
     }
 
     @Override
-    public boolean isValuesOk() {
+    public boolean isValuesOK() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public String[] getDbValues(boolean update) {
+    public InstanceAuthDTO getValues(boolean update) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public Controller getController() {
-        return controller;
     }
 
 }

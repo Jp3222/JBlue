@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
-import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.service.OwnerRegisterProcessService;
 import jsoftware.com.jblue.sys.app.AppConfig;

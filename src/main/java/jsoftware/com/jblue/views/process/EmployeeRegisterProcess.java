@@ -9,7 +9,7 @@ import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 import jsoftware.com.jblue.views.mod.EmployeeRegistrationView;
-import jsoftware.com.jblue.views.mod.UserDataView;
+import jsoftware.com.jblue.views.mod.EmployeeUserDataView;
 
 /**
  *
@@ -19,7 +19,7 @@ public class EmployeeRegisterProcess extends AbstractProcessView<EmployeeUserDTO
 
     private static final long serialVersionUID = 1L;
     private EmployeeRegistrationView register;
-    private UserDataView data;
+    private EmployeeUserDataView data;
     private CardLayout ly;
 
     /**

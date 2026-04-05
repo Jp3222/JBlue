@@ -114,9 +114,9 @@ public final class WMainMenu extends AbstractAppWindows {
         views_panel.add(owner_register_process_view, owner_register_process_view.getName());
         views_panel.add(consumer_register_process_view, consumer_register_process_view.getName());
         views_panel.add(owner_changer_process_view, owner_changer_process_view.getName());
+        views_panel.add(user_process_view, user_process_view.getName());
         views_panel.add(street_view, street_view.getName());
         views_panel.add(water_intakes_type_view, water_intakes_type_view.getName());
-        views_panel.add(user_process_view, user_process_view.getName());
         views_panel.add(payment_concept_view, payment_concept_view.getName());
         views_panel.add(status_type_view, status_type_view.getName());
 

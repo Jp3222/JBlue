@@ -29,7 +29,7 @@ import jsoftware.com.jutil.util.FuncLogs;
  *
  * @author jp
  */
-public class LoginWindows extends AbstractAppWindows {
+public final class LoginWindows extends AbstractAppWindows {
 
     private static final long serialVersionUID = 1L;
 

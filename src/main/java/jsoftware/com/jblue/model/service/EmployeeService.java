@@ -9,7 +9,7 @@ import jsoftware.com.jblue.model.dao.EmployeeDAO;
 import jsoftware.com.jblue.model.dao.EmployeeUserDAO;
 import jsoftware.com.jblue.model.dao.HistoryDAO.EmployeeHistoryDAO;
 import jsoftware.com.jblue.model.dao.HistoryDAO.EmployeeUserHistoryDAO;
-import jsoftware.com.jblue.model.dto.EmployeeRegisterWrapperDTO;
+import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
 import jsoftware.com.jblue.model.exp.ServiceException;
 import jsoftware.com.jblue.model.models.AbstractService;
 import jsoftware.com.jblue.sys.app.AppFiles;

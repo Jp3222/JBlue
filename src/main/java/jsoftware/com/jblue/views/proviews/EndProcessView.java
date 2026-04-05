@@ -7,7 +7,7 @@ package jsoftware.com.jblue.views.proviews;
 import java.util.Map;
 import javax.swing.table.TableModel;
 import jsoftware.com.jblue.model.dto.PaymentListDTO;
-import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentDTO;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;

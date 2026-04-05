@@ -4,16 +4,21 @@
  */
 package jsoftware.com.jblue.views.mod;
 
+import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.views.framework.AbstractProcessView;
+import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
+
 /**
  *
  * @author juanp
  */
-public class UserDataView extends javax.swing.JPanel {
+public final class EmployeeUserDataView extends AbstractProcessView<EmployeeDTO> {
 
     /**
      * Creates new form UserDataView
      */
-    public UserDataView() {
+    public EmployeeUserDataView(ProcessViewBuilder builder) {
+        super(builder);
         initComponents();
     }
 
@@ -67,7 +72,7 @@ public class UserDataView extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/Bundle"); // NOI18N
-        jLabel1.setText(bundle.getString("UserDataView.jLabel1.text")); // NOI18N
+        jLabel1.setText(bundle.getString("EmployeeUserDataView.jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
         jLabel1.setPreferredSize(new java.awt.Dimension(200, 50));
         jPanel1.add(jLabel1, java.awt.BorderLayout.NORTH);
@@ -78,12 +83,12 @@ public class UserDataView extends javax.swing.JPanel {
         jPanel14.setName("jPanel14"); // NOI18N
         jPanel14.setLayout(new java.awt.BorderLayout());
 
-        jLabel13.setText(bundle.getString("UserDataView.jLabel13.text")); // NOI18N
+        jLabel13.setText(bundle.getString("EmployeeUserDataView.jLabel13.text")); // NOI18N
         jLabel13.setName("jLabel13"); // NOI18N
         jLabel13.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel14.add(jLabel13, java.awt.BorderLayout.WEST);
 
-        jTextField1.setText(bundle.getString("UserDataView.jTextField1.text")); // NOI18N
+        jTextField1.setText(bundle.getString("EmployeeUserDataView.jTextField1.text")); // NOI18N
         jTextField1.setName("jTextField1"); // NOI18N
         jPanel14.add(jTextField1, java.awt.BorderLayout.CENTER);
 
@@ -92,12 +97,12 @@ public class UserDataView extends javax.swing.JPanel {
         jPanel15.setName("jPanel15"); // NOI18N
         jPanel15.setLayout(new java.awt.BorderLayout());
 
-        jLabel14.setText(bundle.getString("UserDataView.jLabel14.text")); // NOI18N
+        jLabel14.setText(bundle.getString("EmployeeUserDataView.jLabel14.text")); // NOI18N
         jLabel14.setName("jLabel14"); // NOI18N
         jLabel14.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel15.add(jLabel14, java.awt.BorderLayout.WEST);
 
-        jTextField2.setText(bundle.getString("UserDataView.jTextField2.text")); // NOI18N
+        jTextField2.setText(bundle.getString("EmployeeUserDataView.jTextField2.text")); // NOI18N
         jTextField2.setName("jTextField2"); // NOI18N
         jPanel15.add(jTextField2, java.awt.BorderLayout.CENTER);
 
@@ -106,16 +111,16 @@ public class UserDataView extends javax.swing.JPanel {
         jPanel16.setName("jPanel16"); // NOI18N
         jPanel16.setLayout(new java.awt.BorderLayout());
 
-        jLabel15.setText(bundle.getString("UserDataView.jLabel15.text")); // NOI18N
+        jLabel15.setText(bundle.getString("EmployeeUserDataView.jLabel15.text")); // NOI18N
         jLabel15.setName("jLabel15"); // NOI18N
         jLabel15.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel16.add(jLabel15, java.awt.BorderLayout.WEST);
 
-        jTextField3.setText(bundle.getString("UserDataView.jTextField3.text")); // NOI18N
+        jTextField3.setText(bundle.getString("EmployeeUserDataView.jTextField3.text")); // NOI18N
         jTextField3.setName("jTextField3"); // NOI18N
         jPanel16.add(jTextField3, java.awt.BorderLayout.CENTER);
 
-        jButton2.setText(bundle.getString("UserDataView.jButton2.text")); // NOI18N
+        jButton2.setText(bundle.getString("EmployeeUserDataView.jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
         jPanel16.add(jButton2, java.awt.BorderLayout.LINE_END);
 
@@ -124,12 +129,12 @@ public class UserDataView extends javax.swing.JPanel {
         jPanel17.setName("jPanel17"); // NOI18N
         jPanel17.setLayout(new java.awt.BorderLayout());
 
-        jLabel16.setText(bundle.getString("UserDataView.jLabel16.text")); // NOI18N
+        jLabel16.setText(bundle.getString("EmployeeUserDataView.jLabel16.text")); // NOI18N
         jLabel16.setName("jLabel16"); // NOI18N
         jLabel16.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel17.add(jLabel16, java.awt.BorderLayout.WEST);
 
-        jTextField4.setText(bundle.getString("UserDataView.jTextField4.text")); // NOI18N
+        jTextField4.setText(bundle.getString("EmployeeUserDataView.jTextField4.text")); // NOI18N
         jTextField4.setName("jTextField4"); // NOI18N
         jPanel17.add(jTextField4, java.awt.BorderLayout.CENTER);
 
@@ -138,12 +143,12 @@ public class UserDataView extends javax.swing.JPanel {
         jPanel18.setName("jPanel18"); // NOI18N
         jPanel18.setLayout(new java.awt.BorderLayout());
 
-        jLabel17.setText(bundle.getString("UserDataView.jLabel17.text")); // NOI18N
+        jLabel17.setText(bundle.getString("EmployeeUserDataView.jLabel17.text")); // NOI18N
         jLabel17.setName("jLabel17"); // NOI18N
         jLabel17.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel18.add(jLabel17, java.awt.BorderLayout.WEST);
 
-        jTextField5.setText(bundle.getString("UserDataView.jTextField5.text")); // NOI18N
+        jTextField5.setText(bundle.getString("EmployeeUserDataView.jTextField5.text")); // NOI18N
         jTextField5.setName("jTextField5"); // NOI18N
         jPanel18.add(jTextField5, java.awt.BorderLayout.CENTER);
 
@@ -152,7 +157,7 @@ public class UserDataView extends javax.swing.JPanel {
         jPanel19.setName("jPanel19"); // NOI18N
         jPanel19.setLayout(new java.awt.BorderLayout());
 
-        jLabel18.setText(bundle.getString("UserDataView.jLabel18.text")); // NOI18N
+        jLabel18.setText(bundle.getString("EmployeeUserDataView.jLabel18.text")); // NOI18N
         jLabel18.setName("jLabel18"); // NOI18N
         jLabel18.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel19.add(jLabel18, java.awt.BorderLayout.WEST);
@@ -165,12 +170,12 @@ public class UserDataView extends javax.swing.JPanel {
         jPanel20.setName("jPanel20"); // NOI18N
         jPanel20.setLayout(new java.awt.BorderLayout());
 
-        jLabel19.setText(bundle.getString("UserDataView.jLabel19.text")); // NOI18N
+        jLabel19.setText(bundle.getString("EmployeeUserDataView.jLabel19.text")); // NOI18N
         jLabel19.setName("jLabel19"); // NOI18N
         jLabel19.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel20.add(jLabel19, java.awt.BorderLayout.WEST);
 
-        jCheckBox1.setText(bundle.getString("UserDataView.jCheckBox1.text")); // NOI18N
+        jCheckBox1.setText(bundle.getString("EmployeeUserDataView.jCheckBox1.text")); // NOI18N
         jCheckBox1.setName("jCheckBox1"); // NOI18N
         jPanel20.add(jCheckBox1, java.awt.BorderLayout.CENTER);
 
@@ -179,12 +184,12 @@ public class UserDataView extends javax.swing.JPanel {
         jPanel21.setName("jPanel21"); // NOI18N
         jPanel21.setLayout(new java.awt.BorderLayout());
 
-        jLabel20.setText(bundle.getString("UserDataView.jLabel20.text")); // NOI18N
+        jLabel20.setText(bundle.getString("EmployeeUserDataView.jLabel20.text")); // NOI18N
         jLabel20.setName("jLabel20"); // NOI18N
         jLabel20.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel21.add(jLabel20, java.awt.BorderLayout.WEST);
 
-        jTextField8.setText(bundle.getString("UserDataView.jTextField8.text")); // NOI18N
+        jTextField8.setText(bundle.getString("EmployeeUserDataView.jTextField8.text")); // NOI18N
         jTextField8.setName("jTextField8"); // NOI18N
         jPanel21.add(jTextField8, java.awt.BorderLayout.CENTER);
 
@@ -193,12 +198,12 @@ public class UserDataView extends javax.swing.JPanel {
         jPanel22.setName("jPanel22"); // NOI18N
         jPanel22.setLayout(new java.awt.BorderLayout());
 
-        jLabel21.setText(bundle.getString("UserDataView.jLabel21.text")); // NOI18N
+        jLabel21.setText(bundle.getString("EmployeeUserDataView.jLabel21.text")); // NOI18N
         jLabel21.setName("jLabel21"); // NOI18N
         jLabel21.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel22.add(jLabel21, java.awt.BorderLayout.WEST);
 
-        jButton1.setText(bundle.getString("UserDataView.jButton1.text")); // NOI18N
+        jButton1.setText(bundle.getString("EmployeeUserDataView.jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
         jPanel22.add(jButton1, java.awt.BorderLayout.CENTER);
 
@@ -243,4 +248,9 @@ public class UserDataView extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField8;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void getDataView() {
+        getProcessWrapper();
+    }
 }

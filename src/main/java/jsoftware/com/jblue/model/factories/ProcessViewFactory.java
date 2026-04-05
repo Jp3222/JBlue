@@ -6,7 +6,7 @@ package jsoftware.com.jblue.model.factories;
 
 import java.io.Serializable;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
-import jsoftware.com.jblue.model.dto.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.views.ShopCartView;

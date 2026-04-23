@@ -24,9 +24,10 @@
                     <Property name="text" type="java.lang.String" value="Empleados"/>
                   </Properties>
                   <SubComponents>
-                    <MenuItem class="javax.swing.JMenuItem" name="jMenuItem15">
+                    <MenuItem class="javax.swing.JMenuItem" name="employee_register">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Registro de empleados"/>
+                        <Property name="actionCommand" type="java.lang.String" value="REGISTRO DE EMPLEADOS"/>
                       </Properties>
                     </MenuItem>
                     <MenuItem class="javax.swing.JMenuItem" name="jMenuItem20">

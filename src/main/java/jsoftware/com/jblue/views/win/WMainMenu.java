@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import jsoftware.com.jblue.controllers.winc.MainController;
 import jsoftware.com.jblue.model.dto.StatusDTO;
+import jsoftware.com.jblue.model.factories.ModuleFactory;
 import jsoftware.com.jblue.model.factories.ProcessViewFactory;
 import jsoftware.com.jblue.views.CatalogViewFactory;
 import jsoftware.com.jblue.views.CatalogViewerView;
@@ -34,6 +35,7 @@ import jsoftware.com.jblue.views.framework.AbstractAppWindows;
 import jsoftware.com.jblue.views.mod.StreetView;
 import jsoftware.com.jblue.views.mod.WaterIntakeTypeView;
 import jsoftware.com.jblue.views.mod.pro.ConsumerRegisterProcessView;
+import jsoftware.com.jblue.views.mod.pro.EmployeeRegisterProcess;
 import jsoftware.com.jblue.views.mod.pro.OwnerChangerProcessView;
 import jsoftware.com.jblue.views.mod.pro.OwnerRegisterProcessView;
 
@@ -47,6 +49,7 @@ public final class WMainMenu extends AbstractAppWindows {
     private static final long serialVersionUID = 1L;
 
     private final ProcessViewFactory factory;
+    private final ModuleFactory factory_mod;
     //
     private final CardLayout ly;
     private final ShopCartView shop_cart_view;
@@ -58,7 +61,7 @@ public final class WMainMenu extends AbstractAppWindows {
     private final WaterIntakeTypeView water_intakes_type_view;
     private final PaymentConceptView payment_concept_view;
     private final CatalogViewerView<StatusDTO> status_type_view;
-
+    private final EmployeeRegisterProcess employee_registration_view;
     private final LoginWindows LOGIN;
     private final AboutUs ABOUT;
     private final ProfileWindow PROFILE;
@@ -75,6 +78,7 @@ public final class WMainMenu extends AbstractAppWindows {
     public WMainMenu(LoginWindows LOGIN) {
         initComponents();
         this.factory = ProcessViewFactory.getInstance();
+        this.factory_mod = ModuleFactory.getInstance();
         this.LOGIN = LOGIN;
         this.ABOUT = new AboutUs();
         this.PROFILE = new ProfileWindow();
@@ -93,6 +97,8 @@ public final class WMainMenu extends AbstractAppWindows {
         water_intakes_type_view = factory.getIntakeTypeView();
         //PROCESO DE CONCEPTOS DE COBRO
         payment_concept_view = new PaymentConceptView();
+        //
+        employee_registration_view = factory_mod.getRegisterProcess();
         //
         status_type_view = CatalogViewFactory.getStatusType(false, "Tipo de status");
         ly = (CardLayout) views_panel.getLayout();
@@ -119,6 +125,7 @@ public final class WMainMenu extends AbstractAppWindows {
         views_panel.add(water_intakes_type_view, water_intakes_type_view.getName());
         views_panel.add(payment_concept_view, payment_concept_view.getName());
         views_panel.add(status_type_view, status_type_view.getName());
+        views_panel.add(employee_registration_view, employee_registration_view.getName());
 
     }
 
@@ -142,6 +149,7 @@ public final class WMainMenu extends AbstractAppWindows {
         owner_register_process_item.addActionListener(controller);
         consumer_register_process_item.addActionListener(controller);
         status_type_item.addActionListener(controller);
+        employee_register.addActionListener(controller);
         //
         parameters_view_item.addActionListener(controller);
         //
@@ -198,7 +206,7 @@ public final class WMainMenu extends AbstractAppWindows {
         profile_item_view = new javax.swing.JMenuItem();
         jMenu10 = new javax.swing.JMenu();
         jMenu11 = new javax.swing.JMenu();
-        jMenuItem15 = new javax.swing.JMenuItem();
+        employee_register = new javax.swing.JMenuItem();
         jMenuItem20 = new javax.swing.JMenuItem();
         jMenuItem21 = new javax.swing.JMenuItem();
         jMenuItem17 = new javax.swing.JMenuItem();
@@ -376,8 +384,9 @@ public final class WMainMenu extends AbstractAppWindows {
 
         jMenu11.setText("Empleados");
 
-        jMenuItem15.setText("Registro de empleados");
-        jMenu11.add(jMenuItem15);
+        employee_register.setText("Registro de empleados");
+        employee_register.setActionCommand("REGISTRO DE EMPLEADOS");
+        jMenu11.add(employee_register);
 
         jMenuItem20.setText("Modificacion de Informacion");
         jMenu11.add(jMenuItem20);
@@ -534,6 +543,7 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JButton btn_tipo_tomas;
     private javax.swing.JPanel center_panel;
     private javax.swing.JMenuItem consumer_register_process_item;
+    private javax.swing.JMenuItem employee_register;
     private javax.swing.JButton exit_button;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -557,7 +567,6 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem18;

@@ -5,6 +5,7 @@
 package jsoftware.com.jblue.model.dao;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
@@ -18,7 +19,7 @@ public class EmployeeDAO extends AbstractDAO {
         super(flag_dev_log, name_module);
     }
 
-    public int insert(JDBConnection connection, EmployeeDTO dto) {
+    public int insert(JDBConnection connection, EmployeeDTO dto) throws SQLException {
         int res = INSERT_DEFAULT_RETURN;
         String query = """
                        INSERT INTO emp_employee
@@ -33,7 +34,6 @@ public class EmployeeDAO extends AbstractDAO {
                        """;
         try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-        } catch (Exception e) {
         }
         return res;
     }

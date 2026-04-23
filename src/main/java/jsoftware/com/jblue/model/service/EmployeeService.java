@@ -4,17 +4,13 @@
  */
 package jsoftware.com.jblue.model.service;
 
-import java.io.IOException;
+import java.sql.SQLException;
 import jsoftware.com.jblue.model.dao.EmployeeDAO;
-import jsoftware.com.jblue.model.dao.EmployeeUserDAO;
 import jsoftware.com.jblue.model.dao.HistoryDAO.EmployeeHistoryDAO;
-import jsoftware.com.jblue.model.dao.HistoryDAO.EmployeeUserHistoryDAO;
-import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
+import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.exp.ServiceException;
 import jsoftware.com.jblue.model.models.AbstractService;
-import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  *
@@ -22,72 +18,37 @@ import jsoftware.com.jutil.util.FuncLogs;
  */
 public class EmployeeService extends AbstractService {
 
-    private EmployeeDAO employee_dao;
-    private EmployeeUserDAO employee_user_dao;
-    private EmployeeHistoryDAO history_employee_dao;
-    private EmployeeUserHistoryDAO history_employee_user_dao;
+    private static final long serialVersionUID = 1L;
+
+    private EmployeeDAO dao;
+    private EmployeeHistoryDAO hys;
 
     public EmployeeService(boolean dev_flag, String process_name) {
         super(dev_flag, process_name);
-        employee_dao = new EmployeeDAO(dev_flag, user_message);
-        employee_user_dao = new EmployeeUserDAO(dev_flag, user_message);
-        history_employee_dao = EmployeeHistoryDAO.getInstance();
-        history_employee_user_dao = EmployeeUserHistoryDAO.getInstance();
+        dao = new EmployeeDAO(dev_flag, user_message);
+        hys = EmployeeHistoryDAO.getInstance();
     }
 
-    public void insert(JDBConnection connection, EmployeeRegisterWrapperDTO dto) {
+    public int insert(JDBConnection connection, EmployeeDTO dto) {
+        int pk = 0;
         boolean res = false;
         try {
-            connection.setAutoCommit(false);
-            int employee_id = employee_dao.insert(connection, dto.getEmployee());
-            res = employee_id > 0;
+            //REGISTRO DE EMPLEADO
+            pk = dao.insert(connection, dto);
+            res = pk > 0;
             if (!res) {
-                throw new ServiceException(1, "ERROR AL REGISTRAR DATOS DEL EMPLEADO");
+                throw new ServiceException(1, "LOS DATOS DEL EMPLEADO NO SE HAN REGISTRADO CORRECTAMENTE");
             }
-            res = history_employee_dao.insert(connection,
-                    "SE REGISTRARON LOS DATOS DEL EMPLEADO: %s - %s".formatted(
-                            String.valueOf(employee_id),
-                            dto.getEmployee_user().getDescription()
-                    )
-            );
+            //REGISTRO EN BITACORA
+            res = hys.insert(connection, "SE REGISTRO EL EMPLEADO: %s - %s");
             if (!res) {
-                throw new ServiceException(1, "ERROR AL REGISTRAR DATOS DEL EMPLEADO");
+                throw new ServiceException(1, "REGISTRO EN BITACORA CORRUPTO");
             }
-            int employee_user_id = employee_user_dao.insert(connection, dto.getEmployee_user());
-            res = employee_user_id > 0;
-            if (!res) {
-                throw new ServiceException(2, "ERROR AL REGISTRAR EL USUARIO DEL EMPLEADO");
-            }
-            res = history_employee_dao.insert(connection,
-                    "SE REGISTRO EL USUARIO DEL EMPLEADO: %s - %s".formatted(
-                            String.valueOf(employee_user_id),
-                            dto.getEmployee_user().getDescription()
-                    )
-            );
-            if (!res) {
-                throw new ServiceException(1, "ERROR AL REGISTRAR DATOS DEL EMPLEADO");
-            }
-            connection.commit();
-        } catch (Exception e) {
-            log(e, "insert");
-        } finally {
-            connection.setAutoCommit(true);
+        } catch (SQLException ex) {
+            System.getLogger(EmployeeService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (ServiceException ex) {
+            System.getLogger(EmployeeService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-    }
-
-    public void log(Exception e, String method_name) {
-        try {
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, getProcess_name(), method_name, e.getMessage());
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
-    }
-
-    public void log(String message) {
-        try {
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", message);
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
+        return pk;
     }
 }

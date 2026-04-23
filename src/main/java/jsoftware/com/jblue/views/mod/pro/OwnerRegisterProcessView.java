@@ -233,13 +233,13 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<ProcessW
         last_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         last_panel_button.setText("Regresar");
         last_panel_button.setToolTipText("Seccion Anterior");
-        last_panel_button.setActionCommand("back_view");
+        last_panel_button.setActionCommand("previous_step");
         np_cp_center.add(last_panel_button);
 
         next_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         next_panel_button.setText("Siguiente");
         next_panel_button.setToolTipText("Siguiente Seccion");
-        next_panel_button.setActionCommand("next_view");
+        next_panel_button.setActionCommand("next_step");
         np_cp_center.add(next_panel_button);
 
         north_panel.add(np_cp_center, java.awt.BorderLayout.CENTER);

@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
-import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.PaymentDTO;
 import jsoftware.com.jblue.model.dto.PaymentListDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
@@ -17,7 +15,6 @@ import jsoftware.com.jblue.model.dto.UserDocumentDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
-import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  * Objeto de transferencia de datos envolvente (Wrapper) para procesos
@@ -32,11 +29,10 @@ import jsoftware.com.jutil.db.JDBMapObject;
  * @version 1.2
  * @since 2026/02/01
  */
-public class ProcessWrapperDTO extends JDBMapObject {
+public class ProcessWrapperDTO extends ModuleWrapperDTO {
 
     private static final long serialVersionUID = 1L;
-    private EmployeeUserDTO current_employee;
-    private AdministrationHistoryDTO current_administration;
+
     //PASO 1
     private final UserDTO user;
     //PASO 2
@@ -66,7 +62,8 @@ public class ProcessWrapperDTO extends JDBMapObject {
     private WaterIntakeDTO water_intake_copy;
     private WaterIntakeUserDTO wki_user_copy;
 
-    public ProcessWrapperDTO() {
+    public ProcessWrapperDTO(String module_id, String module_name) {
+        super(module_id, module_name);
         this.user = new UserDTO();
         this.user_document_list = new ArrayList<>();
         this.water_intake = new WaterIntakeDTO();
@@ -80,22 +77,6 @@ public class ProcessWrapperDTO extends JDBMapObject {
         this.payment_valid = false;
         this.process_type_id = -1;
         this.last_process_type = -1;
-    }
-
-    public EmployeeUserDTO getCurrent_employee() {
-        return current_employee;
-    }
-
-    public void setCurrent_employee(EmployeeUserDTO current_employee) {
-        this.current_employee = current_employee;
-    }
-
-    public AdministrationHistoryDTO getCurrent_administration() {
-        return current_administration;
-    }
-
-    public void setCurrent_administration(AdministrationHistoryDTO current_administration) {
-        this.current_administration = current_administration;
     }
 
     public boolean isUser_valid() {
@@ -208,25 +189,23 @@ public class ProcessWrapperDTO extends JDBMapObject {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 59 * hash + Objects.hashCode(this.current_employee);
-        hash = 59 * hash + Objects.hashCode(this.current_administration);
-        hash = 59 * hash + Objects.hashCode(this.user);
-        hash = 59 * hash + Objects.hashCode(this.user_document_list);
-        hash = 59 * hash + Objects.hashCode(this.water_intake);
-        hash = 59 * hash + Objects.hashCode(this.water_intake_type);
-        hash = 59 * hash + Objects.hashCode(this.payment);
-        hash = 59 * hash + Objects.hashCode(this.payment_concept_list);
-        hash = 59 * hash + Objects.hashCode(this.wki_user);
-        hash = 59 * hash + (this.user_valid ? 1 : 0);
-        hash = 59 * hash + (this.user_document_valid ? 1 : 0);
-        hash = 59 * hash + (this.water_intake_valid ? 1 : 0);
-        hash = 59 * hash + (this.payment_valid ? 1 : 0);
-        hash = 59 * hash + this.process_type_id;
-        hash = 59 * hash + this.last_process_type;
-        hash = 59 * hash + Objects.hashCode(this.user_copy);
-        hash = 59 * hash + Objects.hashCode(this.water_intake_copy);
-        hash = 59 * hash + Objects.hashCode(this.wki_user_copy);
+        int hash = 3;
+        hash = 53 * hash + Objects.hashCode(this.user);
+        hash = 53 * hash + Objects.hashCode(this.user_document_list);
+        hash = 53 * hash + Objects.hashCode(this.water_intake);
+        hash = 53 * hash + Objects.hashCode(this.water_intake_type);
+        hash = 53 * hash + Objects.hashCode(this.payment);
+        hash = 53 * hash + Objects.hashCode(this.payment_concept_list);
+        hash = 53 * hash + Objects.hashCode(this.wki_user);
+        hash = 53 * hash + (this.user_valid ? 1 : 0);
+        hash = 53 * hash + (this.user_document_valid ? 1 : 0);
+        hash = 53 * hash + (this.water_intake_valid ? 1 : 0);
+        hash = 53 * hash + (this.payment_valid ? 1 : 0);
+        hash = 53 * hash + this.process_type_id;
+        hash = 53 * hash + this.last_process_type;
+        hash = 53 * hash + Objects.hashCode(this.user_copy);
+        hash = 53 * hash + Objects.hashCode(this.water_intake_copy);
+        hash = 53 * hash + Objects.hashCode(this.wki_user_copy);
         return hash;
     }
 
@@ -258,12 +237,6 @@ public class ProcessWrapperDTO extends JDBMapObject {
             return false;
         }
         if (this.last_process_type != other.last_process_type) {
-            return false;
-        }
-        if (!Objects.equals(this.current_employee, other.current_employee)) {
-            return false;
-        }
-        if (!Objects.equals(this.current_administration, other.current_administration)) {
             return false;
         }
         if (!Objects.equals(this.user, other.user)) {

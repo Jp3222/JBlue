@@ -4,20 +4,28 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
-import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.views.framework.AbstractProcessView;
-import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
+import javax.swing.JOptionPane;
+import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
+import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
+import jsoftware.com.jblue.model.models.AbstractValidation;
+import jsoftware.com.jblue.util.Formats;
+import jsoftware.com.jblue.util.Func;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
 
 /**
+ * Clase dedicada a la captura de datos de usuario para el empleado
  *
- * @author juanp
+ * @author Juan Pablo Campos Casasanero
  */
-public final class EmployeeUserDataView extends AbstractProcessView<EmployeeDTO> {
+public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegisterWrapperDTO> implements DBObjectValues<EmployeeUserDTO> {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form UserDataView
      */
-    public EmployeeUserDataView(ProcessViewBuilder builder) {
+    public EmployeeUserDataView(EmployeeRegisterWrapperDTO builder) {
         super(builder);
         initComponents();
     }
@@ -36,23 +44,23 @@ public final class EmployeeUserDataView extends AbstractProcessView<EmployeeDTO>
         jPanel2 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        description_field = new javax.swing.JTextField();
         jPanel15 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        user_field = new javax.swing.JTextField();
         jPanel16 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        password_field = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jPanel17 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        email_field = new javax.swing.JTextField();
         jPanel18 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        number_phone_field = new javax.swing.JTextField();
         jPanel19 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        employee_type_field = new javax.swing.JComboBox<>();
         jPanel20 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
@@ -63,7 +71,7 @@ public final class EmployeeUserDataView extends AbstractProcessView<EmployeeDTO>
         jLabel21 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
-        setName("Form"); // NOI18N
+        setName("DATOS DE USUARIO"); // NOI18N
         setLayout(new java.awt.CardLayout());
 
         jPanel1.setName("jPanel1"); // NOI18N
@@ -88,9 +96,9 @@ public final class EmployeeUserDataView extends AbstractProcessView<EmployeeDTO>
         jLabel13.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel14.add(jLabel13, java.awt.BorderLayout.WEST);
 
-        jTextField1.setText(bundle.getString("EmployeeUserDataView.jTextField1.text")); // NOI18N
-        jTextField1.setName("jTextField1"); // NOI18N
-        jPanel14.add(jTextField1, java.awt.BorderLayout.CENTER);
+        description_field.setText(bundle.getString("EmployeeUserDataView.Empleado.text")); // NOI18N
+        description_field.setName("Empleado"); // NOI18N
+        jPanel14.add(description_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel14);
 
@@ -102,9 +110,9 @@ public final class EmployeeUserDataView extends AbstractProcessView<EmployeeDTO>
         jLabel14.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel15.add(jLabel14, java.awt.BorderLayout.WEST);
 
-        jTextField2.setText(bundle.getString("EmployeeUserDataView.jTextField2.text")); // NOI18N
-        jTextField2.setName("jTextField2"); // NOI18N
-        jPanel15.add(jTextField2, java.awt.BorderLayout.CENTER);
+        user_field.setText(bundle.getString("EmployeeUserDataView.user_field.text")); // NOI18N
+        user_field.setName("user_field"); // NOI18N
+        jPanel15.add(user_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel15);
 
@@ -116,9 +124,9 @@ public final class EmployeeUserDataView extends AbstractProcessView<EmployeeDTO>
         jLabel15.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel16.add(jLabel15, java.awt.BorderLayout.WEST);
 
-        jTextField3.setText(bundle.getString("EmployeeUserDataView.jTextField3.text")); // NOI18N
-        jTextField3.setName("jTextField3"); // NOI18N
-        jPanel16.add(jTextField3, java.awt.BorderLayout.CENTER);
+        password_field.setText(bundle.getString("EmployeeUserDataView.password_field.text")); // NOI18N
+        password_field.setName("password_field"); // NOI18N
+        jPanel16.add(password_field, java.awt.BorderLayout.CENTER);
 
         jButton2.setText(bundle.getString("EmployeeUserDataView.jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
@@ -134,9 +142,9 @@ public final class EmployeeUserDataView extends AbstractProcessView<EmployeeDTO>
         jLabel16.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel17.add(jLabel16, java.awt.BorderLayout.WEST);
 
-        jTextField4.setText(bundle.getString("EmployeeUserDataView.jTextField4.text")); // NOI18N
-        jTextField4.setName("jTextField4"); // NOI18N
-        jPanel17.add(jTextField4, java.awt.BorderLayout.CENTER);
+        email_field.setText(bundle.getString("EmployeeUserDataView.email_field.text")); // NOI18N
+        email_field.setName("email_field"); // NOI18N
+        jPanel17.add(email_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel17);
 
@@ -148,9 +156,9 @@ public final class EmployeeUserDataView extends AbstractProcessView<EmployeeDTO>
         jLabel17.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel18.add(jLabel17, java.awt.BorderLayout.WEST);
 
-        jTextField5.setText(bundle.getString("EmployeeUserDataView.jTextField5.text")); // NOI18N
-        jTextField5.setName("jTextField5"); // NOI18N
-        jPanel18.add(jTextField5, java.awt.BorderLayout.CENTER);
+        number_phone_field.setText(bundle.getString("EmployeeUserDataView.number_phone_field.text")); // NOI18N
+        number_phone_field.setName("number_phone_field"); // NOI18N
+        jPanel18.add(number_phone_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel18);
 
@@ -162,8 +170,8 @@ public final class EmployeeUserDataView extends AbstractProcessView<EmployeeDTO>
         jLabel18.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel19.add(jLabel18, java.awt.BorderLayout.WEST);
 
-        jComboBox1.setName("jComboBox1"); // NOI18N
-        jPanel19.add(jComboBox1, java.awt.BorderLayout.CENTER);
+        employee_type_field.setName("employee_type_field"); // NOI18N
+        jPanel19.add(employee_type_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel19);
 
@@ -176,6 +184,7 @@ public final class EmployeeUserDataView extends AbstractProcessView<EmployeeDTO>
         jPanel20.add(jLabel19, java.awt.BorderLayout.WEST);
 
         jCheckBox1.setText(bundle.getString("EmployeeUserDataView.jCheckBox1.text")); // NOI18N
+        jCheckBox1.setEnabled(false);
         jCheckBox1.setName("jCheckBox1"); // NOI18N
         jPanel20.add(jCheckBox1, java.awt.BorderLayout.CENTER);
 
@@ -185,11 +194,13 @@ public final class EmployeeUserDataView extends AbstractProcessView<EmployeeDTO>
         jPanel21.setLayout(new java.awt.BorderLayout());
 
         jLabel20.setText(bundle.getString("EmployeeUserDataView.jLabel20.text")); // NOI18N
+        jLabel20.setEnabled(false);
         jLabel20.setName("jLabel20"); // NOI18N
         jLabel20.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel21.add(jLabel20, java.awt.BorderLayout.WEST);
 
         jTextField8.setText(bundle.getString("EmployeeUserDataView.jTextField8.text")); // NOI18N
+        jTextField8.setEnabled(false);
         jTextField8.setName("jTextField8"); // NOI18N
         jPanel21.add(jTextField8, java.awt.BorderLayout.CENTER);
 
@@ -216,10 +227,12 @@ public final class EmployeeUserDataView extends AbstractProcessView<EmployeeDTO>
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField description_field;
+    private javax.swing.JTextField email_field;
+    private javax.swing.JComboBox<String> employee_type_field;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -241,16 +254,59 @@ public final class EmployeeUserDataView extends AbstractProcessView<EmployeeDTO>
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField number_phone_field;
+    private javax.swing.JTextField password_field;
+    private javax.swing.JTextField user_field;
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void getDataView() {
-        getProcessWrapper();
+    public boolean isValuesOK() {
+        boolean res;
+        AbstractValidation valid = new AbstractValidation();
+
+        valid.addRuler("user", description_field, t -> Func.isNotNullEmptyBlank(description_field.getText())
+                && Func.isOnlyText(description_field.getText()),
+                "EL CAMPO USUARIO NO ES VALIDO");
+
+        valid.addRuler("password", user_field, t -> Func.isNotNullEmptyBlank(user_field.getText()),
+                "EL CAMPO CONTRASEÑA NO ES VALIDO");
+
+        valid.addRuler("description", password_field, t -> Func.isValidPassword(password_field.getText()),
+                "EL CAMPO EMPLEADO NO ES VALIDO");
+
+        valid.addRuler("email", email_field, t -> Func.isValidEmail(email_field.getText()),
+                "EL CAMPO EMAIL NO ES VALIDO");
+
+        valid.addRuler("phone_number", number_phone_field, t -> Func.isInteger(number_phone_field.getText()),
+                "EL NUMERO DE TELEFONO NO ES VALIDO");
+
+        valid.addRuler("employee_type", employee_type_field, t -> employee_type_field.getSelectedIndex() <= 0,
+                "EL TIPO DE EMPLEADO SELECCIONADP NO ES VALIDO");
+        res = valid.isValid();
+        if (!res) {
+            JOptionPane.showMessageDialog(this, valid.getErrorMessage(), "CAMPOS NO VALIDOS", JOptionPane.ERROR_MESSAGE);
+        }
+        return res;
     }
+
+    @Override
+    public EmployeeUserDTO getValues(boolean update) {
+        EmployeeUserDTO dto = getDtoWrapper().getEmployee_user();
+        Func.put(dto.getMap(), "user", user_field.getText());
+        Func.put(dto.getMap(), "password", description_field.getText());
+        Func.put(dto.getMap(), "description", Formats.getTextFormat(description_field.getText()));
+        Func.put(dto.getMap(), "email", description_field.getText());
+        Func.put(dto.getMap(), "phone_number", description_field.getText());
+        Func.put(dto.getMap(), "employee_type", description_field.getText());
+        return dto;
+    }
+
+    @Override
+    public void getData() {
+        boolean res = isValuesOK();
+        getValues(false);
+        getDtoWrapper().setEmployee_user_valid(true);
+    }
+
 }

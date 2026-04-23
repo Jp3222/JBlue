@@ -17,7 +17,10 @@ public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
     private static final long serialVersionUID = 1L;
 
     private EmployeeDTO employee;
+    private boolean employee_valid;
+
     private EmployeeUserDTO employee_user;
+    private boolean employee_user_valid;
 
     public EmployeeRegisterWrapperDTO(String module_id, String module_name) {
         super(module_id, module_name);
@@ -39,6 +42,22 @@ public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
 
     public void setEmployee_user(EmployeeUserDTO employee_user) {
         this.employee_user = employee_user;
+    }
+
+    public boolean isEmployee_valid() {
+        return employee_valid;
+    }
+
+    public void setEmployee_valid(boolean employee_valid) {
+        this.employee_valid = employee_valid;
+    }
+
+    public boolean isEmployee_user_valid() {
+        return employee_user_valid;
+    }
+
+    public void setEmployee_user_valid(boolean employee_user_valid) {
+        this.employee_user_valid = employee_user_valid;
     }
 
     @Override

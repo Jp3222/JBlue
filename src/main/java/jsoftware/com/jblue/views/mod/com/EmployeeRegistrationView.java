@@ -4,24 +4,71 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
+import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.compc.ComboBoxController;
+import jsoftware.com.jblue.model.dao.StreetDAO;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.views.framework.AbstractProcessView;
-import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
+import jsoftware.com.jblue.model.dto.StreetDTO;
+import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
+import jsoftware.com.jblue.model.models.AbstractValidation;
+import jsoftware.com.jblue.sys.app.AppConfig;
+import jsoftware.com.jblue.util.Formats;
+import jsoftware.com.jblue.util.Func;
+import jsoftware.com.jblue.util.GraphicsUtils;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
 
 /**
+ * Clase dedicada a la captura de datos del empleado
  *
- * @author juanp
+ * @author Juan Pablo Campos Casasanero
  */
-public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
+public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeRegisterWrapperDTO> implements DBObjectValues<EmployeeDTO> {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form EmployeeView
      */
-    public EmployeeRegistrationView(ProcessViewBuilder builder) {
+    public EmployeeRegistrationView(EmployeeRegisterWrapperDTO builder) {
         super(builder);
         initComponents();
+        build();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        initialState();
+        finalState();
+    }
+
+    @Override
+    public void events() {
+        StreetDAO street_dao = new StreetDAO(AppConfig.isDevMessages(), getDtoWrapper().getModule_name());
+        ComboBoxController<StreetDTO> street_1 = new ComboBoxController(street1_field, street_dao);
+        ComboBoxController<StreetDTO> street_2 = new ComboBoxController(street2_field, street_dao);
+        comboBoxInit(street_1, street1_field.getItemCount() <= 0);
+        comboBoxInit(street_2, street2_field.getItemCount() <= 0);
+    }
+
+    public void comboBoxInit(ComboBoxController<?> c, boolean empty) {
+        if (empty) {
+            c.loadData();
+        }
+    }
+
+    @Override
+    public void components() {
+    }
+
+    @Override
+    public void initialState() {
+    }
+
+    @Override
+    public void finalState() {
     }
 
     /**
@@ -38,42 +85,42 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jPanel2 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        curp_field = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        first_name = new javax.swing.JTextField();
+        first_name_field = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        last_name1_field = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        last_name2_field = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         gender_field = new javax.swing.JComboBox<>();
         jPanel7 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        birthdate_field = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        email_field = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
+        phone_number_field = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        street1_field = new javax.swing.JComboBox<>();
         jPanel11 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        street2_field = new javax.swing.JComboBox<>();
         jPanel12 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
+        inside_number_field = new javax.swing.JTextField();
         jPanel13 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
+        outside_number_field = new javax.swing.JTextField();
 
-        setName("Form"); // NOI18N
+        setName("DATOS DE EMPLEADO"); // NOI18N
         setLayout(new java.awt.CardLayout());
 
         jPanel1.setName("jPanel1"); // NOI18N
@@ -99,9 +146,9 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jPanel14.add(jLabel13, java.awt.BorderLayout.WEST);
 
         java.util.ResourceBundle bundle1 = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/Bundle"); // NOI18N
-        jTextField1.setText(bundle1.getString("EmployeeView.CURP.text")); // NOI18N
-        jTextField1.setName("CURP"); // NOI18N
-        jPanel14.add(jTextField1, java.awt.BorderLayout.CENTER);
+        curp_field.setText(bundle1.getString("EmployeeView.CURP.text")); // NOI18N
+        curp_field.setName("CURP"); // NOI18N
+        jPanel14.add(curp_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel14);
 
@@ -113,9 +160,9 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel3.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        first_name.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
-        first_name.setName("NOMBRE"); // NOI18N
-        jPanel3.add(first_name, java.awt.BorderLayout.CENTER);
+        first_name_field.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
+        first_name_field.setName("NOMBRE"); // NOI18N
+        jPanel3.add(first_name_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel3);
 
@@ -127,9 +174,9 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel3.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel4.add(jLabel3, java.awt.BorderLayout.WEST);
 
-        jTextField2.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
-        jTextField2.setName("APELLIDO PATERNO"); // NOI18N
-        jPanel4.add(jTextField2, java.awt.BorderLayout.CENTER);
+        last_name1_field.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
+        last_name1_field.setName("APELLIDO PATERNO"); // NOI18N
+        jPanel4.add(last_name1_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel4);
 
@@ -141,9 +188,9 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel4.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel5.add(jLabel4, java.awt.BorderLayout.WEST);
 
-        jTextField3.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
-        jTextField3.setName("APELLIDO MATERNO"); // NOI18N
-        jPanel5.add(jTextField3, java.awt.BorderLayout.CENTER);
+        last_name2_field.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
+        last_name2_field.setName("APELLIDO MATERNO"); // NOI18N
+        jPanel5.add(last_name2_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel5);
 
@@ -155,6 +202,7 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel6.add(jLabel5, java.awt.BorderLayout.WEST);
 
+        gender_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No. Definido", "Masculino.", "Femenino." }));
         gender_field.setName("GENERO"); // NOI18N
         jPanel6.add(gender_field, java.awt.BorderLayout.CENTER);
 
@@ -168,9 +216,9 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel7.add(jLabel6, java.awt.BorderLayout.WEST);
 
-        jTextField5.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
-        jTextField5.setName("FECHA DE NACIMIENTO"); // NOI18N
-        jPanel7.add(jTextField5, java.awt.BorderLayout.CENTER);
+        birthdate_field.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
+        birthdate_field.setName("FECHA DE NACIMIENTO"); // NOI18N
+        jPanel7.add(birthdate_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel7);
 
@@ -182,9 +230,9 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel7.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel8.add(jLabel7, java.awt.BorderLayout.WEST);
 
-        jTextField6.setText(bundle1.getString("EmployeeView.CORREO ELECTRONICO.text")); // NOI18N
-        jTextField6.setName("CORREO ELECTRONICO"); // NOI18N
-        jPanel8.add(jTextField6, java.awt.BorderLayout.CENTER);
+        email_field.setText(bundle1.getString("EmployeeView.CORREO ELECTRONICO.text")); // NOI18N
+        email_field.setName("CORREO ELECTRONICO"); // NOI18N
+        jPanel8.add(email_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel8);
 
@@ -196,9 +244,9 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel9.add(jLabel8, java.awt.BorderLayout.WEST);
 
-        jTextField7.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
-        jTextField7.setName("TELEFONO"); // NOI18N
-        jPanel9.add(jTextField7, java.awt.BorderLayout.CENTER);
+        phone_number_field.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
+        phone_number_field.setName("TELEFONO"); // NOI18N
+        jPanel9.add(phone_number_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel9);
 
@@ -210,8 +258,8 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel9.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel10.add(jLabel9, java.awt.BorderLayout.WEST);
 
-        jComboBox1.setName("CALLE 1"); // NOI18N
-        jPanel10.add(jComboBox1, java.awt.BorderLayout.CENTER);
+        street1_field.setName("CALLE 1"); // NOI18N
+        jPanel10.add(street1_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel10);
 
@@ -223,8 +271,8 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel10.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel11.add(jLabel10, java.awt.BorderLayout.WEST);
 
-        jComboBox2.setName("CALLE 2"); // NOI18N
-        jPanel11.add(jComboBox2, java.awt.BorderLayout.CENTER);
+        street2_field.setName("CALLE 2"); // NOI18N
+        jPanel11.add(street2_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel11);
 
@@ -236,9 +284,9 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel11.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel12.add(jLabel11, java.awt.BorderLayout.WEST);
 
-        jTextField10.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
-        jTextField10.setName("NUMERO INTERIOR"); // NOI18N
-        jPanel12.add(jTextField10, java.awt.BorderLayout.CENTER);
+        inside_number_field.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
+        inside_number_field.setName("NUMERO INTERIOR"); // NOI18N
+        jPanel12.add(inside_number_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel12);
 
@@ -250,9 +298,9 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
         jLabel12.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel13.add(jLabel12, java.awt.BorderLayout.WEST);
 
-        jTextField11.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
-        jTextField11.setName("NUMERO EXTERIOR"); // NOI18N
-        jPanel13.add(jTextField11, java.awt.BorderLayout.CENTER);
+        outside_number_field.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
+        outside_number_field.setName("NUMERO EXTERIOR"); // NOI18N
+        jPanel13.add(outside_number_field, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel13);
 
@@ -263,10 +311,12 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField first_name;
+    private javax.swing.JTextField birthdate_field;
+    private javax.swing.JTextField curp_field;
+    private javax.swing.JTextField email_field;
+    private javax.swing.JTextField first_name_field;
     private javax.swing.JComboBox<String> gender_field;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JTextField inside_number_field;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -294,19 +344,78 @@ public class EmployeeRegistrationView extends AbstractProcessView<EmployeeDTO> {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField last_name1_field;
+    private javax.swing.JTextField last_name2_field;
+    private javax.swing.JTextField outside_number_field;
+    private javax.swing.JTextField phone_number_field;
+    private javax.swing.JComboBox<String> street1_field;
+    private javax.swing.JComboBox<String> street2_field;
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void getDataView() {
-    
+    public boolean isValuesOK() {
+        boolean res;
+        AbstractValidation v = new AbstractValidation();
+        v.addRuler("curp", curp_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()));
+        v.addErrorMessage("curp", "LA CURP NO TIENE EL FORMATO INCORRECTO");
+
+        System.out.println(curp_field.getText());
+        System.out.println(curp_field.getText().matches(Func.REGEX_CURP));
+
+        v.addRuler("first_name", first_name_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
+        v.addErrorMessage("first_name", "EL NOMBRE DEBE SER SOLO TEXTO");
+
+        v.addRuler("last_name1", last_name1_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
+        v.addErrorMessage("last_name1", "EL APELLIDO PATERNO DEBE SER SOLO TEXTO");
+
+        v.addRuler("last_name2", last_name2_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
+        v.addErrorMessage("last_name2", "EL APELLIDO MATERNO DEBE SER SOLO TEXTO");
+
+//        v.addRuler("gender", gender_field, t -> Func.isNotNull(t) && GraphicsUtils.isComboBoxOk(gender_field));
+//        v.addErrorMessage("gender", "EL GENERO ES OBLIGATORIO");
+        v.addRuler("street1", street1_field, t -> Func.isNotNull(t) && GraphicsUtils.isComboBoxOk(t));
+        v.addErrorMessage("street1", "LA CALLE 1 NO ES UNA CALLE VALIDA");
+        if (AppConfig.getParameterBoolean("CAMPOS_SECUNDARIOS_OBLIGATORIOS")) {
+            v.addRuler("phone_number", phone_number_field, t -> Func.isNotNull(t) && Func.isInteger(t.getText()));
+            v.addErrorMessage("phone_number", "EL NUMERO TELEFONICO NO TIENE EL FORMATO CORRECTO");
+            v.addRuler("email", email_field, t -> Func.isNotNull(t) && Func.isValidEmail(t.getText()));
+            v.addErrorMessage("email", "EL NUMERO TELEFONICO NO TIENE EL FORMATO CORRECTO");
+        }
+        res = v.isValid();
+        if (!res) {
+            JOptionPane.showMessageDialog(this, v.getErrorMessage());
+        }
+        res = v.isValid();
+        if (!res) {
+            JOptionPane.showMessageDialog(this, v.getErrorMessage(), "CAMPOS NO VALIDOS", JOptionPane.ERROR_MESSAGE);
+        }
+        return res;
+    }
+
+    @Override
+    public EmployeeDTO getValues(boolean update) {
+        EmployeeDTO dto = new EmployeeDTO();
+        Func.putIfNotNull(dto.getMap(), "curp", Formats.getTextFormat(curp_field.getText()));
+        Func.putIfNotNull(dto.getMap(), "first_name", Formats.getTextFormat(first_name_field.getText()));
+        Func.putIfNotNull(dto.getMap(), "last_name1", Formats.getTextFormat(last_name1_field.getText()));
+        Func.putIfNotNull(dto.getMap(), "last_name2", Formats.getTextFormat(last_name2_field.getText()));
+        Func.putIfNotNull(dto.getMap(), "gender", gender_field.getSelectedIndex());
+        Func.putIfNotNull(dto.getMap(), "birthdate", birthdate_field.getText());
+        Func.put(dto.getMap(), "personal_email", email_field.getText());
+        Func.put(dto.getMap(), "personal_phone", phone_number_field.getText());
+        Func.putIfNotNull(dto.getMap(), "street1", street1_field.getSelectedIndex());
+        String s2 = street2_field.getSelectedIndex() <= 0 ? null : String.valueOf(street2_field.getSelectedIndex());
+        Func.put(dto.getMap(), "street2", s2);
+        Func.put(dto.getMap(), "inside_number", Formats.getTextFormat(inside_number_field.getText()));
+        Func.put(dto.getMap(), "outside_number", Formats.getTextFormat(outside_number_field.getText()));
+        return dto;
+    }
+
+    @Override
+    public void getData() {
+        boolean res = isValuesOK();
+        getValues(false);
+        getDtoWrapper().setEmployee_valid(true);
     }
 
 }

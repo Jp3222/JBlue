@@ -5,53 +5,75 @@
 package jsoftware.com.jblue.views.mod.pro;
 
 import java.awt.CardLayout;
-import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
-import jsoftware.com.jblue.views.framework.AbstractProcessView;
-import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.compc.WizardController;
+import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
+import jsoftware.com.jblue.sys.app.AppFiles;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.framework.WizardModel;
 import jsoftware.com.jblue.views.mod.com.EmployeeRegistrationView;
 import jsoftware.com.jblue.views.mod.com.EmployeeUserDataView;
+import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  *
  * @author juanp
  */
-public class EmployeeRegisterProcess extends AbstractProcessView<EmployeeUserDTO> {
+public final class EmployeeRegisterProcess extends AbstractModuleView<EmployeeRegisterWrapperDTO> implements WizardModel<EmployeeRegisterWrapperDTO> {
 
     private static final long serialVersionUID = 1L;
-    private EmployeeRegistrationView register;
-    private EmployeeUserDataView data;
-    private CardLayout ly;
+    private final EmployeeRegistrationView register_view;
+    private final EmployeeUserDataView data_view;
 
     /**
      * Creates new form EmployeeRegisterProcess
      */
-    public EmployeeRegisterProcess(ProcessViewBuilder builder) {
-        super(builder);
+    public EmployeeRegisterProcess(EmployeeRegisterWrapperDTO dto) {
+        super(dto);
         initComponents();
+        register_view = new EmployeeRegistrationView(dto);
+        data_view = new EmployeeUserDataView(dto);
+        //
+        views = new ArrayList<>(2);
+        views.add(register_view);
+        views.add(data_view);
+        //
+        card_layout = (CardLayout) root_panel.getLayout();
+        build();
     }
 
     @Override
-    public void components() {
-        ly = (CardLayout) getLayout();
-        
+    public void build() {
+        components();
+        events();
+        finalState();
+        initialState();
     }
 
     @Override
     public void events() {
-        super.events(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        WizardController wctronller = (WizardController) getDtoWrapper().getController("MAIN");
+        wctronller.setWizard(this);
+        next_panel_button.addActionListener(wctronller);
+        last_panel_button.addActionListener(wctronller);
+    }
+
+    @Override
+    public void components() {
+        root_panel.add(register_view, register_view.getName());
+        root_panel.add(data_view, data_view.getName());
     }
 
     @Override
     public void initialState() {
-        super.initialState(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
     @Override
     public void finalState() {
-        super.finalState(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -72,7 +94,7 @@ public class EmployeeRegisterProcess extends AbstractProcessView<EmployeeUserDTO
         jButton3 = new javax.swing.JButton();
         root_panel = new javax.swing.JPanel();
 
-        setName("Form"); // NOI18N
+        setName("REGISTRO DE EMPLEADOS"); // NOI18N
         setLayout(new java.awt.BorderLayout());
 
         north_panel.setName("north_panel"); // NOI18N
@@ -125,11 +147,6 @@ public class EmployeeRegisterProcess extends AbstractProcessView<EmployeeUserDTO
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    @Override
-    public void getDataView() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton3;
@@ -142,4 +159,120 @@ public class EmployeeRegisterProcess extends AbstractProcessView<EmployeeUserDTO
     private javax.swing.JPanel root_panel;
     private javax.swing.JButton search_object;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void getData() {
+        try {
+            if (current_index >= 0 && current_index < views.size()) {
+                views.get(current_index).getData();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al capturar datos: " + e.getMessage());
+            log(e, "getDataView");
+        }
+    }
+
+    @Override
+    public boolean nextStep() {
+        getData();
+        boolean valid = switch (current_index) {
+            case 0 ->
+                getDtoWrapper().isEmployee_valid();
+            case 1 ->
+                getDtoWrapper().isEmployee_user_valid();
+            default ->
+                false;
+        };
+        if (!valid) {
+            JOptionPane.showMessageDialog(root_panel,
+                    "Por favor, complete correctamente los campos obligatorios de esta sección.",
+                    "Validación", JOptionPane.WARNING_MESSAGE);
+        }
+        return valid;
+    }
+
+    @Override
+    public boolean previousStep() {
+        return true;
+    }
+
+    @Override
+    public void updateUi(int componentId) {
+        switch (componentId) {
+            case NEXT_VIEW_BUTTON ->
+                card_layout.next(root_panel);
+            case PREVIOUS_VIEW_BUTTON ->
+                card_layout.previous(root_panel);
+            case NAVIGATION_STEP_BAR -> {
+                last_panel_button.setEnabled(current_index > 0);
+                if (current_index == views.size() - 1) {
+                    next_panel_button.setText("Finalizar Registro");
+                    next_panel_button.setActionCommand(EXECUTE_FINAL);
+                } else {
+                    next_panel_button.setText("Siguiente");
+                    next_panel_button.setActionCommand(NEXT_STEP);
+                }
+            }
+            default ->
+                throw new AssertionError();
+        }
+    }
+
+    @Override
+    public void executeFinal() {
+        for (AbstractModuleView<EmployeeRegisterWrapperDTO> v : views) {
+            v.getData();
+        }
+        EmployeeRegisterWrapperDTO pw = getDtoWrapper();
+        // 2. Aquí llamarías a tu Service: userService.save(...)
+        System.out.println(pw.toString());
+        JOptionPane.showMessageDialog(this, "Iniciando persistencia de datos en base de datos...");
+        //controller.save();
+
+    }
+
+    @Override
+    public int getCurrentViewIndex() {
+        return current_index;
+    }
+
+    @Override
+    public void setCurrentViewIndex(int index) {
+        current_index = index;
+        if (index < 0 || index >= views.size()) {
+            return;
+        }
+        card_layout.show(this, views.get(index).getName());
+    }
+
+    @Override
+    public void nextIndex() {
+        current_index++;
+    }
+
+    @Override
+    public void previousIndex() {
+        current_index--;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<AbstractModuleView<EmployeeRegisterWrapperDTO>> getViews() {
+        return views;
+    }
+
+    public void log(Exception e, String method_name) {
+        try {
+            FuncLogs.logError(
+                    AppFiles.DIR_PROG_LOG_TODAY,
+                    getClass(),
+                    e,
+                    getDtoWrapper().getModule_name(),
+                    method_name,
+                    e.getMessage()
+            );
+        } catch (IOException ex) {
+            System.getLogger(EmployeeRegisterProcess.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }
 }

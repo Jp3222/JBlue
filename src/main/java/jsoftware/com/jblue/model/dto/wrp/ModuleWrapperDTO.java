@@ -4,8 +4,10 @@
  */
 package jsoftware.com.jblue.model.dto.wrp;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jutil.db.JDBMapObject;
@@ -18,14 +20,43 @@ public class ModuleWrapperDTO extends JDBMapObject {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * ID DEL PROCESO
+     */
     private final String module_id;
+
+    /**
+     * NOMBRE DEL MODULO
+     */
     private final String module_name;
+
+    /**
+     * EMPLEADO ACTUAL DEL SISTEMA
+     */
     private EmployeeUserDTO current_employee;
+
+    /**
+     * ADMINISTRACION ACTUAL
+     */
     private AdministrationHistoryDTO current_administration;
+
+    /**
+     * LISTA DE CONTROLADORES
+     */
+    private final Map<String, Controller> controller_map;
 
     public ModuleWrapperDTO(String module_id, String module_name) {
         this.module_id = module_id;
         this.module_name = module_name;
+        this.controller_map = new HashMap<>(10);
+    }
+
+    public String getModule_id() {
+        return module_id;
+    }
+
+    public String getModule_name() {
+        return module_name;
     }
 
     public EmployeeUserDTO getCurrent_employee() {
@@ -44,29 +75,22 @@ public class ModuleWrapperDTO extends JDBMapObject {
         this.current_administration = current_administration;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    public void putController(String name, Controller controller) {
+        controller_map.put(name, controller);
     }
 
-    public String getModule_id() {
-        return module_id;
-    }
-
-    public String getModule_name() {
-        return module_name;
-    }
-
-    public Map<String, Object> getValues() {
-        return values;
+    public Controller getController(String name) {
+        return controller_map.get(name);
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 47 * hash + Objects.hashCode(this.module_id);
-        hash = 47 * hash + Objects.hashCode(this.module_name);
-        hash = 47 * hash + Objects.hashCode(this.current_employee);
-        hash = 47 * hash + Objects.hashCode(this.current_administration);
+        int hash = 7;
+        hash = 19 * hash + Objects.hashCode(this.module_id);
+        hash = 19 * hash + Objects.hashCode(this.module_name);
+        hash = 19 * hash + Objects.hashCode(this.current_employee);
+        hash = 19 * hash + Objects.hashCode(this.current_administration);
+        hash = 19 * hash + Objects.hashCode(this.controller_map);
         return hash;
     }
 
@@ -91,20 +115,15 @@ public class ModuleWrapperDTO extends JDBMapObject {
         if (!Objects.equals(this.current_employee, other.current_employee)) {
             return false;
         }
-        return Objects.equals(this.current_administration, other.current_administration);
+        if (!Objects.equals(this.current_administration, other.current_administration)) {
+            return false;
+        }
+        return Objects.equals(this.controller_map, other.controller_map);
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("ModuleWrapperDTO{");
-        sb.append("module_id=").append(module_id);
-        sb.append(", module_name=").append(module_name);
-        sb.append(", current_employee=").append(current_employee);
-        sb.append(", current_administration=").append(current_administration);
-        sb.append('}');
-        return sb.toString();
+        return "ModuleWrapperDTO{" + "module_id=" + module_id + ", module_name=" + module_name + ", current_employee=" + current_employee + ", current_administration=" + current_administration + ", controller_map=" + controller_map + '}';
     }
-    
-    
+
 }

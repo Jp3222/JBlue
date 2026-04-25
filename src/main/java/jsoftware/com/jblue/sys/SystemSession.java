@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
+import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.InstanceAuthDTO;
 import jsoftware.com.jblue.model.dto.SessionDTO;
 import jsoftware.com.jblue.sys.app.AppConfig;
@@ -40,6 +40,10 @@ public class SystemSession implements LocalSession<EmployeeUserDTO>, Serializabl
         return instancia;
     }
 
+    public static synchronized void setNull() {
+        instancia = null;
+    }
+
     private Map<String, Object> var_session;
     /**
      * Empleado DTO que ha iniciado sesión actualmente.
@@ -62,7 +66,7 @@ public class SystemSession implements LocalSession<EmployeeUserDTO>, Serializabl
     private String current_db_user;
 
     /**
-     *
+     * Registro de instancia valida
      */
     private InstanceAuthDTO current_instance;
 
@@ -203,8 +207,8 @@ public class SystemSession implements LocalSession<EmployeeUserDTO>, Serializabl
     public String toString() {
         return current_db_user;
     }
-    
-    public boolean isAdministrationValid(){
+
+    public boolean isAdministrationValid() {
         return Func.isNotNull(current_administration);
     }
 }

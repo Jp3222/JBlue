@@ -89,7 +89,7 @@ public class ConfigController extends WindowController {
     void save() {
         properties.setProperty(AppConfig.DB_USER, view.getSUser());
         properties.setProperty(AppConfig.DB_PASSWORD, view.getSPassword());
-        //properties.setProperty(AppConfig.DB_URL, view.getSUrl());
+        properties.setProperty(AppConfig.DB_UUID, view.getUUID());
         properties.setProperty(AppConfig.DB_MOTOR, view.getMotor());
         properties.setProperty(AppConfig.DB_PORT, view.getPort());
         properties.setProperty(AppConfig.DB_HOST, view.getHost());
@@ -98,6 +98,7 @@ public class ConfigController extends WindowController {
         properties.setProperty(AppConfig.TITLE1, view.getTitle1());
         properties.setProperty(AppConfig.TITLE2, view.getTitle2());
         properties.setProperty(AppConfig.LOGIN_ICON, view.getIconPath());
+        
         view.disposeWin();
     }
 

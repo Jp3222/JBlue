@@ -23,9 +23,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
+import jsoftware.com.jblue.model.dto.InstanceAuthDTO;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jblue.model.service.InstanceAuthService;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.util.DTOFactory;
@@ -49,20 +52,22 @@ public class JBlueMainSystem implements MainSystem {
      *
      */
     private final Map<String, Object> resources;
-    private final Properties propiedades;
+    private final Properties properties;
     //private Conexion conexion;
+    private final InstanceAuthService dao;
 
     public JBlueMainSystem() {
-        propiedades = new Properties(20);
+        properties = new Properties(20);
         //
         resources = new HashMap<>(5);
-        resources.put("propierties", propiedades);
+        resources.put("propierties", properties);
         resources.put("sys_flag_logs", true);
+        this.dao = new InstanceAuthService(false, JBlueMainSystem.class.getName());
         So.setDefaultLookAndFeel(new FlatDarculaLaf());
     }
 
-    public Properties getPropiedades() {
-        return propiedades;
+    public Properties getProperties() {
+        return properties;
     }
 
     @Override
@@ -71,7 +76,7 @@ public class JBlueMainSystem implements MainSystem {
         try {
             boolean null_properties = false;
             for (String i : AppConfig.DB_KEYS) {
-                if (propiedades.getProperty(i) == null) {
+                if (properties.getProperty(i) == null) {
                     null_properties = true;
                 }
             }
@@ -87,21 +92,19 @@ public class JBlueMainSystem implements MainSystem {
                 }
             }
             String database_url = "jdbc:%s://%s:%s/%s";
-            propiedades.put(AppConfig.DB_URL, database_url.formatted(
-                    propiedades.getProperty(AppConfig.DB_MOTOR),
-                    propiedades.getProperty(AppConfig.DB_HOST),
-                    propiedades.getProperty(AppConfig.DB_PORT),
-                    propiedades.getProperty(AppConfig.DB_NAME)
+            properties.put(AppConfig.DB_URL, database_url.formatted(properties.getProperty(AppConfig.DB_MOTOR),
+                    properties.getProperty(AppConfig.DB_HOST),
+                    properties.getProperty(AppConfig.DB_PORT),
+                    properties.getProperty(AppConfig.DB_NAME)
             ));
 
             JDBConnectionBuilder builder = new JDBConnectionBuilder();
-            builder.setUser(propiedades.getProperty(AppConfig.DB_USER));
-            builder.setPassword(propiedades.getProperty(AppConfig.DB_PASSWORD));
-            String url = database_url.formatted(
-                    propiedades.getProperty(AppConfig.DB_MOTOR),
-                    propiedades.getProperty(AppConfig.DB_HOST),
-                    propiedades.getProperty(AppConfig.DB_PORT),
-                    propiedades.getProperty(AppConfig.DB_NAME)
+            builder.setUser(properties.getProperty(AppConfig.DB_USER));
+            builder.setPassword(properties.getProperty(AppConfig.DB_PASSWORD));
+            String url = database_url.formatted(properties.getProperty(AppConfig.DB_MOTOR),
+                    properties.getProperty(AppConfig.DB_HOST),
+                    properties.getProperty(AppConfig.DB_PORT),
+                    properties.getProperty(AppConfig.DB_NAME)
             );
             builder.setUrl(url);
             builder.setTimeOut(5000);
@@ -109,13 +112,23 @@ public class JBlueMainSystem implements MainSystem {
             builder.setMaxPollSize(20);
             builder.setFactory(new DTOFactory());
             ConnectionFactory intance = ConnectionFactory.getIntance(builder);
+            System.out.println("FABRICA: " + intance == null);
             try (JDBConnection c = intance.getMainConnection()) {
+                System.out.println("CONEXIONES: ");
+                System.out.println(c.getConnection().isClosed());
                 if (Func.isNull(c)) {
+                    res = false;
                     throw new SQLException("SIN CONEXIONES");
+                }
+                Optional<InstanceAuthDTO> get = dao.get(c, properties.getProperty(AppConfig.DB_UUID), properties.getProperty(AppConfig.DB_USER));
+                if (get.isEmpty()) {
+                    res = false;
+                    throw new SQLException("INSTANCIA NO REGISTRADA");
                 }
                 SystemSession session = SystemSession.getInstancia();
                 if (Func.isNull(session.getCurrent_instance())) {
-                    
+                    res = false;
+                    throw new SQLException("INSTANCIA DEL SISTEMA NO CREADA");
                 }
             }
             log("FABRICA DE CONECIONES CREADA");
@@ -191,7 +204,7 @@ public class JBlueMainSystem implements MainSystem {
     public boolean openSys() {
         log("START SYSTEM");
         try (FileInputStream input = new FileInputStream(AppFiles.FIL_ARC_CONFIG)) {
-            propiedades.loadFromXML(input);
+            properties.loadFromXML(input);
 
         } catch (IOException ex) {
             log(ex, "openSys", ex.getMessage());

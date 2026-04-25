@@ -71,7 +71,7 @@ public class HistoryController extends AbstractViewController {
         } finally {
             connection.setAutoCommit(true);
         }
-        String query = "SELECT * FROM HISTORIAL_DE_MOVIMIENTOS WHERE EMPLEADO = ? AND DATE(`FECHA DE REGISTRO`) = CURDATE() ORDER BY ID DESC";
+        String query = "SELECT * FROM historial_de_movimientos WHERE empleado = ? AND DATE(`fecha de registro`) = CURDATE() ORDER BY ID DESC";
         try (PreparedStatement ps = connection.getNewPreparedStatement(query);) {
             ps.setString(1, dto.getDescription());
             JTableModel tm;

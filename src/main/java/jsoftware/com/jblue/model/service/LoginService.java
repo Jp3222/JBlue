@@ -12,8 +12,8 @@ import jsoftware.com.jblue.model.dao.EmployeeUserDAO;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.HistoryDAO.EmployeeUserHistoryDAO;
 import jsoftware.com.jblue.model.dao.SessionDAO;
-import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
+import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.SessionDTO;
 import jsoftware.com.jblue.model.exp.DataAccesObjectException;
 import jsoftware.com.jblue.model.exp.ServiceException;
@@ -121,11 +121,11 @@ public class LoginService extends AbstractService {
                 throw new LoginFailedException(6, "ERROR DE SERVIDOR");
             }
 
-//            //SI EL USUARIO QUE EJECUTO EL QUERY Y EL DE LAS CREDENCIALES NO SON EL MISMO
-//            res = SystemSession.getInstancia().getCurrentDbUser().equals(LaunchApp.getInstance().getResources("user_db"));
-//            if (!res) {
-//                throw new LoginFailedException(7, "ERROR DE SERVIDOR");
-//            }
+            //SI EL USUARIO QUE EJECUTO EL QUERY Y EL DE LAS CREDENCIALES NO SON EL MISMO
+            res = Func.isNotNull(SystemSession.getInstancia().getCurrent_instance());
+            if (!res) {
+                throw new LoginFailedException(7, "CREDENCIALES DE ADMINISTRACION NO VALIDAS");
+            }
             log("INICIO DE SESION: USUARIO=%s".formatted(user));
             system_session.put("user-session", user);
             connection.commit();
@@ -176,6 +176,7 @@ public class LoginService extends AbstractService {
                 throw new LoginFailedException(2, "ERROR AL REGISTRAR EL FIN DE LA SESSION");
             }
             log("FIN DE SESION: USUARIO=%s".formatted(user));
+            SystemSession.setNull();
             connection.commit();
         } catch (SQLException ex) {
             user_message = "FIN DE SESION FALLIDO";

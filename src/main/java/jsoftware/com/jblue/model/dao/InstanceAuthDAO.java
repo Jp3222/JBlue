@@ -28,12 +28,14 @@ public class InstanceAuthDAO extends AbstractDAO {
     public Optional<InstanceAuthDTO> getInstance(JDBConnection connection, String uuid) throws SQLException {
         Optional<InstanceAuthDTO> res = Optional.empty();
         String query = """
-                    SELECT * 
+                    SELECT 
+                        *
                     FROM 
                         sys_instance_auth 
                     WHERE 
-                        status = 1
-                       AND uuid = ?
+                        status = 1 
+                        AND uuid = ?
+                        AND INSTR(db_user, SUBSTRING_INDEX(CURRENT_USER(), '@', 1)) > 0;
                    """;
         try (PreparedStatement ps = connection.getNewPreparedStatement(query);) {
             ps.setString(1, uuid);

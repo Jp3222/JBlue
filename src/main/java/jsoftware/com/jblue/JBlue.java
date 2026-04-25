@@ -4,21 +4,25 @@
  */
 package jsoftware.com.jblue;
 
-import jsoftware.com.jblue.model.constants.des.ConstainsMod;
+import java.io.IOException;
 import jsoftware.com.jblue.sys.JBlueMainSystem;
-import jsoftware.com.jblue.util.LoggerRegister;
+import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jutil.sys.LaunchApp;
+import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  * Clase principal del proyecto JBlue.
  * <br>
- * Nota 1: En esta clase se puede alterar la version de las clases debido a la
- * migracion a maven
+ * Nota 1: El proyecto fue migrado y corregido.
  * <br>
- * Nota 2: Esta version esta totalmente rota, no usar 1 - JUtilidades
+ * Nota 2: Esta version esta incompleta pero ya es funciona, al igual que la lib
+ * JUtilidades
+ * <br>
+ * Nota 3: Para futuras versiones, se pretende separar la capa de DAO's y DTO's
+ * de este proyecto
  *
  * @author jp
- * @version 2.0
+ * @version 3.0
  */
 public class JBlue {
 
@@ -26,7 +30,7 @@ public class JBlue {
      * @param args the command line arguments
      *
      */
-    public static void main(String... args) {
+    public static void main(String... args) throws IOException {
         /**
          * En caso de no creer necesitar reinicios en el sistema usar el metodo
          * "run"
@@ -36,13 +40,12 @@ public class JBlue {
          * para probar distintas configuraciones
          */
         try {
-            //LoggerRegister.logInfoWriter(ConstainsMod.PROGRAM, JBlue.class, "MAIN", "INICIO DEL SISTEMA");
+            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", "INICIO DEL SISTEMA DESDE JBLUE");
             JBlueMainSystem jBlueMainSystem = new JBlueMainSystem();
             LaunchApp.getInstance(jBlueMainSystem).doWhileRun();
-            //System.out.println("fin");
-            //LoggerRegister.logInfoWriter(ConstainsMod.PROGRAM, JBlue.class, "MAIN", "FIN DEL SISTEMA");
-        } catch (InterruptedException e) {
-            LoggerRegister.logErrorWriter(ConstainsMod.PROGRAM, JBlue.class, e, "main");
+            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", "FIN DEL SISTEMA DESDE JBLUE");
+        } catch (IOException | InterruptedException e) {
+            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, JBlue.class, e, "MAIN", "main", e.getMessage());
         }
 
     }

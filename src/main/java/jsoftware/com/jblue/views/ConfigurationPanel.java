@@ -145,6 +145,8 @@ public final class ConfigurationPanel extends SimpleView implements DBObjectValu
         jTextField3 = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
+        jLabel23 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -214,7 +216,7 @@ public final class ConfigurationPanel extends SimpleView implements DBObjectValu
         jPanel3.add(jLabel8, java.awt.BorderLayout.WEST);
 
         jPanel8.setPreferredSize(new java.awt.Dimension(50, 30));
-        jPanel8.setLayout(new java.awt.GridLayout(1, 8));
+        jPanel8.setLayout(new java.awt.GridLayout(1, 10));
         jPanel8.add(jTextField1);
 
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -231,6 +233,11 @@ public final class ConfigurationPanel extends SimpleView implements DBObjectValu
         jLabel14.setText("-");
         jPanel8.add(jLabel14);
         jPanel8.add(jTextField4);
+
+        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel23.setText("-");
+        jPanel8.add(jLabel23);
+        jPanel8.add(jTextField5);
 
         jPanel3.add(jPanel8, java.awt.BorderLayout.CENTER);
 
@@ -451,6 +458,7 @@ public final class ConfigurationPanel extends SimpleView implements DBObjectValu
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -476,6 +484,7 @@ public final class ConfigurationPanel extends SimpleView implements DBObjectValu
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     private javax.swing.JComboBox<String> motor;
     private javax.swing.JTextField name_db;
     private javax.swing.JPanel option_panel;
@@ -560,6 +569,16 @@ public final class ConfigurationPanel extends SimpleView implements DBObjectValu
     @Override
     public InstanceAuthDTO getValues(boolean update) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public String getUUID() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(jTextField1.getText()).append("-");
+        sb.append(jTextField2.getText()).append("-");
+        sb.append(jTextField3.getText()).append("-");
+        sb.append(jTextField4.getText()).append("-");
+        sb.append(jTextField5.getText());
+        return sb.toString();
     }
 
 }

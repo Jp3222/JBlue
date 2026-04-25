@@ -41,9 +41,9 @@ public final class AppConfig {
     public static final String DB_PORT = "DB PORT";
     public static final String DB_HOST = "DB HOST";
     public static final String DB_NAME = "DB NAME";
-
+    public static final String DB_UUID = "DB UUID";
     public static final String[] DB_KEYS = {
-        DB_USER, DB_PASSWORD, DB_HOST, DB_MOTOR, DB_NAME, DB_PORT
+        DB_USER, DB_PASSWORD, DB_HOST, DB_MOTOR, DB_NAME, DB_PORT, DB_UUID
     };
     //
     public static final String TITLE1 = "TITLE 1";
@@ -224,6 +224,7 @@ public final class AppConfig {
 
     private static Object getParameter(String name) {
         try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection();) {
+            System.out.println(connection.getConnection().isClosed());
             String query = "SELECT value, data_type FROM %s WHERE parameter = '%s' AND status = 1"
                     .formatted(Const.DEV_PARAMETERS_TABLE.getTableName(), name);
             ResultSet rs = connection.query(query);

@@ -91,8 +91,6 @@ public class LoginService extends AbstractService {
             if (!res) {
                 throw new LoginFailedException();
             }
-            System.out.println(employee);
-
             //[3] REGISTRO DE SESION
             session_dao.insert(connection, dto);
             //[4] INFORMACION DE SESSION
@@ -114,7 +112,6 @@ public class LoginService extends AbstractService {
 //            if (!res) {
 //                throw new LoginFailedException(5, "LA ADMINISTRACION ACTUAL NO SE GUARDO CORRECTAMENTE");
 //            }
-
             //SI NO SE GUARDO EL USUARIO DB
             res = Func.isNotNull(SystemSession.getInstancia().getCurrentDbUser());
             if (!res) {

@@ -167,7 +167,6 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
             user_type_field.removeItemAt(1);
         }
         user_status_field.setSelectedIndex(1);
-        //System.out.println("ES UN PROCESO?: " + isProcess() + " - " + getProcessId());
         north_panel.setVisible(!isProcess());
 
         p_date_update.setVisible(!isProcess());

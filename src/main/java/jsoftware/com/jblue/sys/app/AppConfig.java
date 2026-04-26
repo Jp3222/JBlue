@@ -224,7 +224,6 @@ public final class AppConfig {
 
     private static Object getParameter(String name) {
         try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection();) {
-            System.out.println(connection.getConnection().isClosed());
             String query = "SELECT value, data_type FROM %s WHERE parameter = '%s' AND status = 1"
                     .formatted(Const.DEV_PARAMETERS_TABLE.getTableName(), name);
             ResultSet rs = connection.query(query);

@@ -8,11 +8,11 @@ import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
 import jsoftware.com.jblue.model.dao.StreetDAO;
 import jsoftware.com.jblue.model.dao.WaterIntakeTypeDAO;
-import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.models.AbstractValidation;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.Func;
@@ -265,7 +265,6 @@ public final class WaterIntakeDataView extends AbstractProcessView<WaterIntakeDT
             JOptionPane.showMessageDialog(this, "POR FAVOR, ASEGURESE DE QUE LOS DATOS GENERADOS SEAN CORRECTOS", "Datos Generados", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        System.out.println(user.getMap().toString());
         owner_field.setText(user.toString());
         street1_field.setSelectedIndex(Integer.parseInt(user.get("street1_selected").toString()));
         street2_field.setSelectedIndex(Integer.parseInt(user.get("street2_selected").toString()));

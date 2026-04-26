@@ -119,7 +119,6 @@ public class JBMedia {
         if (root == null) {
             return;
         }
-        System.out.println('"' + root.getName() + '"');
         if (root.isFile()) {
             return;
         }

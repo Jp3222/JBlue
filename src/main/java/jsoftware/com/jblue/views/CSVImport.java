@@ -242,7 +242,6 @@ public final class CSVImport extends javax.swing.JPanel implements ViewStates {
 //        aux.append(getFormatt(model.getRow(i)));
 //        try {
 //            //JOptionPane.showMessageDialog(this, DBConnection.INSERT_COL.formatted(name, fields, aux.toString()));
-//            //System.out.println(DBConnection.INSERT_COL.formatted(name, fields, aux.toString()));
 //            fields = fields.replace("\"", "");
 //            String aux2 = aux.toString().replace("\"", "");
 //            boolean insert = con.insert(name, fields, aux);

@@ -111,8 +111,6 @@ public final class WaterIntakesView extends AbstractProcessView<WaterIntakeDTO> 
 
     @Override
     public void finalState() {
-        System.out.println(getProcessTypeName() + ":");
-        System.out.println("ES UN PROCESO?: " + isProcess() + " - " + getProcessId());
         north_panel.setVisible(!isProcess());
         p_status.setVisible(!isProcess());
         p_date_register.setVisible(!isProcess());

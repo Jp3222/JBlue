@@ -112,10 +112,7 @@ public class JBlueMainSystem implements MainSystem {
             builder.setMaxPollSize(20);
             builder.setFactory(new DTOFactory());
             ConnectionFactory intance = ConnectionFactory.getIntance(builder);
-            System.out.println("FABRICA: " + intance == null);
             try (JDBConnection c = intance.getMainConnection()) {
-                System.out.println("CONEXIONES: ");
-                System.out.println(c.getConnection().isClosed());
                 if (Func.isNull(c)) {
                     res = false;
                     throw new SQLException("SIN CONEXIONES");
@@ -169,7 +166,6 @@ public class JBlueMainSystem implements MainSystem {
             }
             //Alchivos del programa
             for (String i : AppFiles.S_ARR_PROG_ARC) {
-                System.out.println(i);
                 aux = new File(i);
                 if (aux.exists()) {
                     log(log_messages.formatted(i, "EXISTENTE"));

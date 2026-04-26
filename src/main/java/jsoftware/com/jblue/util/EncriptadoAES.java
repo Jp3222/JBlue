@@ -4,7 +4,6 @@
  */
 package jsoftware.com.jblue.util;
 
-import jsoftware.com.jutil.jexception.Excp;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -16,6 +15,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
+import jsoftware.com.jutil.jexception.Excp;
 
 /**
  *
@@ -100,10 +100,8 @@ public class EncriptadoAES {
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
         byte[] bytesEncriptados = Base64.getDecoder().decode(dencp);
-        System.out.println(bytesEncriptados.length);
         byte[] datosDesencriptados = cipher.doFinal(bytesEncriptados);
         String datos = new String(datosDesencriptados);
-        System.out.println(datosDesencriptados.length);
         return datos;
     }
 

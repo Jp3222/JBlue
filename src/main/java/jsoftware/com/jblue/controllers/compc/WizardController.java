@@ -28,7 +28,6 @@ public class WizardController extends Controller {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.getActionCommand());
         switch (e.getActionCommand()) {
             case WizardModel.NEXT_STEP ->
                 next();

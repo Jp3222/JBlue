@@ -16,8 +16,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentDTO;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
@@ -298,7 +298,6 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
                 // 5. Agregar el archivo copiado (f) al modelo.
                 // Es crucial agregar el archivo 'f' (el copiado) y no 'file' (el original).
                 model.addElement(dto);
-                System.out.println("Archivo copiado y registrado: " + finalName);
             }
         } catch (IOException ex) {
             System.getLogger(ValidationProcessView.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);

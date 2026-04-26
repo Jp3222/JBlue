@@ -88,7 +88,6 @@ public abstract class OsConfig implements OsConfigModel {
         File file;
         for (String i : documents_path) {
             file = new File(i);
-            System.out.println(file.getPath() + " : " + file.exists());
             if (file.exists()) {
                 return i;
             }

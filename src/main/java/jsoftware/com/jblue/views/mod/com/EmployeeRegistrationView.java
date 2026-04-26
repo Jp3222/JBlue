@@ -359,9 +359,6 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         v.addRuler("curp", curp_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()));
         v.addErrorMessage("curp", "LA CURP NO TIENE EL FORMATO INCORRECTO");
 
-        System.out.println(curp_field.getText());
-        System.out.println(curp_field.getText().matches(Func.REGEX_CURP));
-
         v.addRuler("first_name", first_name_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
         v.addErrorMessage("first_name", "EL NOMBRE DEBE SER SOLO TEXTO");
 

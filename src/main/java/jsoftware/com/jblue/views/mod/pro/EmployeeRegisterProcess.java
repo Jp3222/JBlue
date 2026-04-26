@@ -199,8 +199,12 @@ public final class EmployeeRegisterProcess extends AbstractModuleView<EmployeeRe
     @Override
     public void updateUi(int componentId) {
         switch (componentId) {
-            case NEXT_VIEW_BUTTON ->
+            case NEXT_VIEW_BUTTON -> {
+                if (current_index == views.size() - 1) {
+                    return;
+                }
                 card_layout.next(root_panel);
+            }
             case PREVIOUS_VIEW_BUTTON ->
                 card_layout.previous(root_panel);
             case NAVIGATION_STEP_BAR -> {
@@ -225,7 +229,6 @@ public final class EmployeeRegisterProcess extends AbstractModuleView<EmployeeRe
         }
         EmployeeRegisterWrapperDTO pw = getDtoWrapper();
         // 2. Aquí llamarías a tu Service: userService.save(...)
-        System.out.println(pw.toString());
         JOptionPane.showMessageDialog(this, "Iniciando persistencia de datos en base de datos...");
         //controller.save();
 

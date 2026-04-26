@@ -293,7 +293,6 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
 
         //INFORMACION DE DATOS PARA EL PADRON DE USUARIO
         sb.append("WKI_USER: {\n").append(wki_user.getMap().toString()).append("\n} \n");
-        System.out.println(sb.length());
         return sb.toString();
     }
 

@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import jsoftware.com.jblue.model.dto.StatusDTO;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -47,7 +46,6 @@ public final class StatusDAO extends AbstractDAO implements TableComponentDAO<St
                     arr_aux[i] = rs.getString(j);
                     i++;
                 }
-                System.out.println(Arrays.toString(arr_aux));
                 model.addRow(arr_aux);
             }
         }

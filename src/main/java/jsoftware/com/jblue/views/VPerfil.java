@@ -492,8 +492,6 @@ public final class VPerfil extends SimpleView {
     private void show(ActionEvent e) {
         String action = e.getActionCommand();
         JCheckBox object = (JCheckBox) e.getSource();
-        System.out.println(action);
-        System.out.println(object.isSelected());
         switch (action) {
             case "show_user" ->
                 user_field.setEchoChar((char) (object.isSelected() ? 0 : '*'));

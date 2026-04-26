@@ -89,13 +89,11 @@ public final class EmployeesView extends DBView {
     private void show(ActionEvent e) {
         String action = e.getActionCommand();
         JCheckBox object = (JCheckBox) e.getSource();
-        System.out.println(action);
-        System.out.println(object.isSelected());
         switch (action) {
             case "show_user" ->
-                user_field.setEchoChar((char) (object.isSelected() ? 0 : '*'));
+                user_field.setEchoChar(object.isSelected() ? 0 : '*');
             case "show_password" ->
-                password_field.setEchoChar((char) (object.isSelected() ? 0 : '*'));
+                password_field.setEchoChar(object.isSelected() ? 0 : '*');
         }
     }
 

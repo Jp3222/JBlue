@@ -182,7 +182,6 @@ public final class OwnerRegisterProcessView extends AbstractProcessView<ProcessW
         }
         ProcessWrapperDTO pw = getProcessWrapper();
         // 2. Aquí llamarías a tu Service: userService.save(...)
-        System.out.println(getProcessWrapper().toString());
         JOptionPane.showMessageDialog(this, "Iniciando persistencia de datos en base de datos...");
         //controller.save();
 

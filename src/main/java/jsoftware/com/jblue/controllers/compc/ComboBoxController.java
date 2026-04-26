@@ -54,7 +54,6 @@ public class ComboBoxController<T extends JDBMapObject> extends AbstractComponen
             JComboBox<T> box = getComponent();
             if (list.isEmpty()) {
                 list.addAll(dao.getList(c));
-                System.out.println("dao disparado");
             }
             box.addItem((T) new JDBMapObject() {
                 @Override

@@ -96,11 +96,9 @@ public class LoginController extends WindowController {
             sesion.writer();
 
             if (!LaunchApp.getInstance().cache()) {
-                System.out.println("ERROR EN LA CACHE");
                 log("ERROR EN LA CACHE");
             }
 
-            System.out.println("MEMORIA CACHE LISTA");
             log("MEMORIA CACHE LISTA");
 
             view.dispose();

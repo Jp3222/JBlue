@@ -28,6 +28,7 @@ import java.util.Properties;
 import jsoftware.com.jblue.model.dto.InstanceAuthDTO;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jblue.model.factories.ModuleFactory;
 import jsoftware.com.jblue.model.service.InstanceAuthService;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
@@ -48,6 +49,7 @@ import jsoftware.com.jutil.util.FuncLogs;
 public class JBlueMainSystem implements MainSystem {
 
     public static final String DATA_BASE_KEY = "connection";
+    private final ModuleFactory factory;
     /**
      *
      */
@@ -57,6 +59,7 @@ public class JBlueMainSystem implements MainSystem {
     private final InstanceAuthService dao;
 
     public JBlueMainSystem() {
+        this.factory = ModuleFactory.getInstance();
         properties = new Properties(20);
         //
         resources = new HashMap<>(5);
@@ -191,7 +194,7 @@ public class JBlueMainSystem implements MainSystem {
 
     @Override
     public boolean run() {
-        LoginWindows log = new LoginWindows();
+        LoginWindows log = factory.getLoginProcess();
         log.setVisible(true);
         return log.isVisible();
     }

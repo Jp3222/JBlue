@@ -44,15 +44,16 @@ public class WaterIntakeTypeDAO extends AbstractDAO implements ListComponentDAO<
             ps.setString(2, dto.getCurrentPrice());
             ps.setString(3, dto.getPreviousPrice());
             ps.setString(4, dto.getSurcharge());
-            ps.setBoolean(5, dto.getChargeUnit());
+            //ps.setBoolean(5, dto.getChargeUnit());
             ps.setString(6, dto.getUnitId());
             ps.setString(7, dto.getUnits());
-            ps.setBoolean(8, dto.getApplyRules());
-            ps.setBoolean(9, dto.getRound());
+            //ps.setBoolean(8, dto.getApplyRules());
+            /*ps.setBoolean(9, dto.getRound());
             ps.setBoolean(10, dto.getRoundUp());
             ps.setBigDecimal(11, dto.getBasePrice());
             ps.setBigDecimal(12, dto.getSurchargePercentage());
             ps.setBigDecimal(13, dto.getAnnualIncrease());
+             */
             ps.setInt(14, dto.getStatus());
             ps.setString(15, dto.getLastEmployeeUpdate());
             boolean res = ps.executeUpdate() > 0;

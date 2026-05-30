@@ -7,12 +7,8 @@ package jsoftware.com.jblue.views.framework;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
-import jsoftware.com.jblue.views.ShopCartView;
 import jsoftware.com.jblue.views.UserView;
-import jsoftware.com.jblue.views.mod.StreetView;
-import jsoftware.com.jblue.views.mod.pro.ConsumerRegisterProcessView;
-import jsoftware.com.jblue.views.mod.pro.OwnerChangerProcessView;
-import jsoftware.com.jblue.views.mod.pro.OwnerRegisterProcessView;
+import jsoftware.com.jblue.views.mod.StreetProcess;
 
 /**
  *
@@ -52,7 +48,7 @@ public class ProcessViewBuilder implements Serializable {
 
     public ProcessViewBuilder setProcess_id(String process_id) {
         this.process_id = process_id;
-        this.process_wrapper.setProcess_type_id(Integer.parseInt(process_id));
+        this.process_wrapper.setProcess_type_id(process_id);
         return this;
     }
 
@@ -96,19 +92,11 @@ public class ProcessViewBuilder implements Serializable {
             if (UserView.class.getName().equals(cls)) {
                 return new UserView(i);
             }
-            if (OwnerRegisterProcessView.class.getName().equals(cls)) {
-                return new OwnerRegisterProcessView(i);
-            }
-            if (ConsumerRegisterProcessView.class.getName().equals(cls)) {
-                return new ConsumerRegisterProcessView(i);
-            }
-            if (OwnerChangerProcessView.class.getName().equals(cls)) {
-                return new OwnerChangerProcessView(i);
-            }
-            if (ShopCartView.class.getName().equals(cls)) {
-                return new ShopCartView(i);
-            }
-            if (StreetView.class.getName().equals(cls)) {
+
+//            if (ShopCartProcess.class.getName().equals(cls)) {
+//                return new ShopCartProcess(i);
+//            }
+            if (StreetProcess.class.getName().equals(cls)) {
 
             }
         } catch (Exception ex) {
@@ -120,7 +108,7 @@ public class ProcessViewBuilder implements Serializable {
     public AbstractProcessView<?> builder(Class<?> cls, ProcessViewBuilder i) {
         try {
             // Buscamos el constructor que acepte un objeto de tipo ProcessViewBuilder
-            // Esto asume que todas tus vistas (UserView, StreetView, etc.) 
+            // Esto asume que todas tus vistas (UserView, StreetProcess, etc.) 
             // tienen un constructor: public Vista(ProcessViewBuilder builder)
             return (AbstractProcessView<?>) cls.getConstructor(ProcessViewBuilder.class)
                     .newInstance(i);
@@ -130,6 +118,5 @@ public class ProcessViewBuilder implements Serializable {
         }
         return null;
     }
-    
-    
+
 }

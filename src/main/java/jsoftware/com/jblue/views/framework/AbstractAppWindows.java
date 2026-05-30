@@ -29,10 +29,7 @@ import jsoftware.com.jutil.view.WindowStates;
 public abstract class AbstractAppWindows extends JFrame implements AppInfo, WindowStates {
 
     private static final long serialVersionUID = 1L;
-
-    public AbstractAppWindows() {
-    }
-
+    
     public final void updateTitle(String title) {
         StringBuilder s = new StringBuilder(PROGRAM_NAME);
         s.append(" ");

@@ -5,6 +5,9 @@
 package jsoftware.com.jblue.views.mod.com;
 
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.compc.ComboBoxController;
+import jsoftware.com.jblue.model.dao.EmployeeTypeDAO;
+import jsoftware.com.jblue.model.dto.EmployeeTypesDTO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
 import jsoftware.com.jblue.model.models.AbstractValidation;
@@ -28,6 +31,15 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
     public EmployeeUserDataView(EmployeeRegisterWrapperDTO builder) {
         super(builder);
         initComponents();
+        EmployeeTypeDAO dao = new EmployeeTypeDAO(false, getDtoWrapper().getModule_name());
+        ComboBoxController<EmployeeTypesDTO> con = new ComboBoxController<>(employee_type_field, dao);
+        comboBoxInit(con, employee_type_field.getItemCount() <= 0);
+    }
+
+    public void comboBoxInit(ComboBoxController<?> c, boolean empty) {
+        if (empty) {
+            c.loadData();
+        }
     }
 
     /**
@@ -96,6 +108,7 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
         jLabel13.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel14.add(jLabel13, java.awt.BorderLayout.WEST);
 
+        description_field.setEditable(false);
         description_field.setText(bundle.getString("EmployeeUserDataView.Empleado.text")); // NOI18N
         description_field.setName("Empleado"); // NOI18N
         jPanel14.add(description_field, java.awt.BorderLayout.CENTER);
@@ -215,6 +228,7 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
         jPanel22.add(jLabel21, java.awt.BorderLayout.WEST);
 
         jButton1.setText(bundle.getString("EmployeeUserDataView.jButton1.text")); // NOI18N
+        jButton1.setToolTipText(bundle.getString("EmployeeUserDataView.jButton1.toolTipText")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
         jPanel22.add(jButton1, java.awt.BorderLayout.CENTER);
 
@@ -229,7 +243,7 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField description_field;
     private javax.swing.JTextField email_field;
-    private javax.swing.JComboBox<String> employee_type_field;
+    private javax.swing.JComboBox<EmployeeTypesDTO> employee_type_field;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JCheckBox jCheckBox1;
@@ -259,6 +273,16 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
     private javax.swing.JTextField password_field;
     private javax.swing.JTextField user_field;
     // End of variables declaration//GEN-END:variables
+
+    public void dataGenerate() {
+        description_field.setText(getDtoWrapper().getEmployee().toString());
+        if (Func.isNull(number_phone_field.getText())) {
+            number_phone_field.setText(getDtoWrapper().getEmployee().getPhoneNumber1());
+        }
+        if (Func.isNull(email_field.getText())) {
+            email_field.setText(getDtoWrapper().getEmployee().getEmail());
+        }
+    }
 
     @Override
     public boolean isValuesOK() {

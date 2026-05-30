@@ -5,24 +5,21 @@
 package jsoftware.com.jblue.views.mod.pro;
 
 import java.awt.CardLayout;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.controllers.compc.WizardController;
+import jsoftware.com.jblue.controllers.viewc.EmployeeRegisterController;
 import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
-import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
-import jsoftware.com.jblue.views.framework.WizardModel;
 import jsoftware.com.jblue.views.mod.com.EmployeeRegistrationView;
 import jsoftware.com.jblue.views.mod.com.EmployeeUserDataView;
-import jsoftware.com.jutil.util.FuncLogs;
+import jsoftware.com.jblue.views.vabst.AbstractWizardView;
 
 /**
  *
  * @author juanp
  */
-public final class EmployeeRegisterProcess extends AbstractModuleView<EmployeeRegisterWrapperDTO> implements WizardModel<EmployeeRegisterWrapperDTO> {
+public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRegisterWrapperDTO> {
 
     private static final long serialVersionUID = 1L;
     private final EmployeeRegistrationView register_view;
@@ -33,7 +30,6 @@ public final class EmployeeRegisterProcess extends AbstractModuleView<EmployeeRe
      */
     public EmployeeRegisterProcess(EmployeeRegisterWrapperDTO dto) {
         super(dto);
-        initComponents();
         register_view = new EmployeeRegistrationView(dto);
         data_view = new EmployeeUserDataView(dto);
         //
@@ -55,10 +51,12 @@ public final class EmployeeRegisterProcess extends AbstractModuleView<EmployeeRe
 
     @Override
     public void events() {
-        WizardController wctronller = (WizardController) getDtoWrapper().getController("MAIN");
-        wctronller.setWizard(this);
-        next_panel_button.addActionListener(wctronller);
-        last_panel_button.addActionListener(wctronller);
+        //
+        EmployeeRegisterController employee_controller = (EmployeeRegisterController) getDtoWrapper().getController("CONTROLLER");
+        employee_controller.setView(this);
+        
+        next_panel_button.addActionListener(employee_controller);
+
     }
 
     @Override
@@ -84,94 +82,13 @@ public final class EmployeeRegisterProcess extends AbstractModuleView<EmployeeRe
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        north_panel = new javax.swing.JPanel();
-        np_cp_center = new javax.swing.JPanel();
-        last_panel_button = new javax.swing.JButton();
-        next_panel_button = new javax.swing.JButton();
-        np_cp_west = new javax.swing.JPanel();
-        search_object = new javax.swing.JButton();
-        np_cp_east = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        root_panel = new javax.swing.JPanel();
-
         setName("REGISTRO DE EMPLEADOS"); // NOI18N
-        setLayout(new java.awt.BorderLayout());
-
-        north_panel.setName("north_panel"); // NOI18N
-        north_panel.setPreferredSize(new java.awt.Dimension(900, 30));
-        north_panel.setLayout(new java.awt.BorderLayout(10, 10));
-
-        np_cp_center.setName("np_cp_center"); // NOI18N
-        np_cp_center.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
-
-        last_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/pro/Bundle"); // NOI18N
-        last_panel_button.setText(bundle.getString("EmployeeRegisterProcess.last_panel_button.text")); // NOI18N
-        last_panel_button.setActionCommand(bundle.getString("EmployeeRegisterProcess.last_panel_button.actionCommand")); // NOI18N
-        last_panel_button.setName("last_panel_button"); // NOI18N
-        np_cp_center.add(last_panel_button);
-
-        next_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        next_panel_button.setText(bundle.getString("EmployeeRegisterProcess.next_panel_button.text")); // NOI18N
-        next_panel_button.setActionCommand(bundle.getString("EmployeeRegisterProcess.next_panel_button.actionCommand")); // NOI18N
-        next_panel_button.setName("next_panel_button"); // NOI18N
-        np_cp_center.add(next_panel_button);
-
-        north_panel.add(np_cp_center, java.awt.BorderLayout.CENTER);
-
-        np_cp_west.setName("np_cp_west"); // NOI18N
-        np_cp_west.setPreferredSize(new java.awt.Dimension(100, 30));
-        np_cp_west.setLayout(new java.awt.BorderLayout());
-
-        search_object.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        search_object.setActionCommand(bundle.getString("EmployeeRegisterProcess.search_object.actionCommand")); // NOI18N
-        search_object.setName("search_object"); // NOI18N
-        np_cp_west.add(search_object, java.awt.BorderLayout.CENTER);
-
-        north_panel.add(np_cp_west, java.awt.BorderLayout.WEST);
-
-        np_cp_east.setName("np_cp_east"); // NOI18N
-        np_cp_east.setPreferredSize(new java.awt.Dimension(100, 30));
-        np_cp_east.setLayout(new java.awt.BorderLayout());
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/configuraciones.png"))); // NOI18N
-        jButton3.setName("jButton3"); // NOI18N
-        np_cp_east.add(jButton3, java.awt.BorderLayout.CENTER);
-
-        north_panel.add(np_cp_east, java.awt.BorderLayout.EAST);
-
-        add(north_panel, java.awt.BorderLayout.NORTH);
-
-        root_panel.setName("root_panel"); // NOI18N
-        root_panel.setLayout(new java.awt.CardLayout());
-        add(root_panel, java.awt.BorderLayout.CENTER);
+        setLayout(null);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton last_panel_button;
-    private javax.swing.JButton next_panel_button;
-    private javax.swing.JPanel north_panel;
-    private javax.swing.JPanel np_cp_center;
-    private javax.swing.JPanel np_cp_east;
-    private javax.swing.JPanel np_cp_west;
-    private javax.swing.JPanel root_panel;
-    private javax.swing.JButton search_object;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void getData() {
-        try {
-            if (current_index >= 0 && current_index < views.size()) {
-                views.get(current_index).getData();
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al capturar datos: " + e.getMessage());
-            log(e, "getDataView");
-        }
-    }
-
     @Override
     public boolean nextStep() {
         getData();
@@ -188,38 +105,7 @@ public final class EmployeeRegisterProcess extends AbstractModuleView<EmployeeRe
                     "Por favor, complete correctamente los campos obligatorios de esta sección.",
                     "Validación", JOptionPane.WARNING_MESSAGE);
         }
-        return valid;
-    }
-
-    @Override
-    public boolean previousStep() {
-        return true;
-    }
-
-    @Override
-    public void updateUi(int componentId) {
-        switch (componentId) {
-            case NEXT_VIEW_BUTTON -> {
-                if (current_index == views.size() - 1) {
-                    return;
-                }
-                card_layout.next(root_panel);
-            }
-            case PREVIOUS_VIEW_BUTTON ->
-                card_layout.previous(root_panel);
-            case NAVIGATION_STEP_BAR -> {
-                last_panel_button.setEnabled(current_index > 0);
-                if (current_index == views.size() - 1) {
-                    next_panel_button.setText("Finalizar Registro");
-                    next_panel_button.setActionCommand(EXECUTE_FINAL);
-                } else {
-                    next_panel_button.setText("Siguiente");
-                    next_panel_button.setActionCommand(NEXT_STEP);
-                }
-            }
-            default ->
-                throw new AssertionError();
-        }
+        return !valid;
     }
 
     @Override
@@ -235,47 +121,7 @@ public final class EmployeeRegisterProcess extends AbstractModuleView<EmployeeRe
     }
 
     @Override
-    public int getCurrentViewIndex() {
-        return current_index;
-    }
-
-    @Override
-    public void setCurrentViewIndex(int index) {
-        current_index = index;
-        if (index < 0 || index >= views.size()) {
-            return;
-        }
-        card_layout.show(this, views.get(index).getName());
-    }
-
-    @Override
-    public void nextIndex() {
-        current_index++;
-    }
-
-    @Override
-    public void previousIndex() {
-        current_index--;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
     public List<AbstractModuleView<EmployeeRegisterWrapperDTO>> getViews() {
         return views;
-    }
-
-    public void log(Exception e, String method_name) {
-        try {
-            FuncLogs.logError(
-                    AppFiles.DIR_PROG_LOG_TODAY,
-                    getClass(),
-                    e,
-                    getDtoWrapper().getModule_name(),
-                    method_name,
-                    e.getMessage()
-            );
-        } catch (IOException ex) {
-            System.getLogger(EmployeeRegisterProcess.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
     }
 }

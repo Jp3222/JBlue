@@ -1,31 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jsoftware.com.jblue.model.dto;
-
-import java.math.BigDecimal;
-import java.util.Map;
 
 /**
  *
- * @author jp
+ * @author juanp
  */
 public class WaterIntakeTypeDTO extends AuditableObjectMap {
 
     private static final long serialVersionUID = 1L;
 
-    public WaterIntakeTypeDTO(Map<String, Object> map) {
-        super(map);
-    }
-
     public WaterIntakeTypeDTO() {
-        super();
+        super(15);
     }
 
-    /*
-    , , , , , , , ,  
-     */
+    public String getId() {
+        return get("id").toString();
+    }
+
     public String getTypeName() {
         return get("type_name").toString();
     }
@@ -42,8 +32,8 @@ public class WaterIntakeTypeDTO extends AuditableObjectMap {
         return get("surcharge").toString();
     }
 
-    public boolean getChargeUnit() {
-        return get("charge_unit").toString().equals("1");
+    public String getChargeUnit() {
+        return get("charge_unit").toString();
     }
 
     public String getUnitId() {
@@ -54,28 +44,28 @@ public class WaterIntakeTypeDTO extends AuditableObjectMap {
         return get("units").toString();
     }
 
-    public boolean getApplyRules() {
-        return get("apply_rules").toString().equals("1");
+    public String getApplyRules() {
+        return get("apply_rules").toString();
     }
 
-    public boolean getRound() {
-        return get("round").toString().equals("1");
+    public String getRound() {
+        return get("round").toString();
     }
 
-    public boolean getRoundUp() {
-        return get("round_up").toString().equals("1");
+    public String getRoundUp() {
+        return get("round_up").toString();
     }
 
-    public BigDecimal getBasePrice() {
-        return new BigDecimal(get("base_price").toString());
+    public String getBasePrice() {
+        return get("base_price").toString();
     }
 
-    public BigDecimal getSurchargePercentage() {
-        return new BigDecimal(get("surcharge_percentage").toString());
+    public String getSurchargePercentage() {
+        return get("surcharge_percentage").toString();
     }
 
-    public BigDecimal getAnnualIncrease() {
-        return new BigDecimal(get("annual_increase").toString());
+    public String getAnnualIncrease() {
+        return get("annual_increase").toString();
     }
 
     public String getLastEmployeeUpdate() {

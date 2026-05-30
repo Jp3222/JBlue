@@ -24,7 +24,7 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  *
  * @author juanp
  */
-public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTypeDTO> implements DBObjectValues<WaterIntakeTypeDTO>, TableSearchViewModel<WaterIntakeTypeDTO> {
+public final class WaterIntakeTypeProcess extends AbstractProcessView<WaterIntakeTypeDTO> implements DBObjectValues<WaterIntakeTypeDTO>, TableSearchViewModel<WaterIntakeTypeDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
     /**
      * Creates new form WaterIntakeTypeView
      */
-    public WaterIntakeTypeView(ProcessViewBuilder builder) {
+    public WaterIntakeTypeProcess(ProcessViewBuilder builder) {
         super(builder);
         initComponents();
         model = TableModelFactory.getWaterIntakeTypesTableModel();
@@ -178,14 +178,14 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
 
         register_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/Bundle"); // NOI18N
-        register_button.setText(bundle.getString("WaterIntakeTypeView.register_button.text")); // NOI18N
-        register_button.setActionCommand(bundle.getString("WaterIntakeTypeView.register_button.actionCommand")); // NOI18N
+        register_button.setText(bundle.getString("WaterIntakeTypeProcess.register_button.text")); // NOI18N
+        register_button.setActionCommand(bundle.getString("WaterIntakeTypeProcess.register_button.actionCommand")); // NOI18N
         register_button.setName("register_button"); // NOI18N
         jPanel15.add(register_button);
 
         search_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        search_button.setText(bundle.getString("WaterIntakeTypeView.search_button.text")); // NOI18N
-        search_button.setActionCommand(bundle.getString("WaterIntakeTypeView.search_button.actionCommand")); // NOI18N
+        search_button.setText(bundle.getString("WaterIntakeTypeProcess.search_button.text")); // NOI18N
+        search_button.setActionCommand(bundle.getString("WaterIntakeTypeProcess.search_button.actionCommand")); // NOI18N
         search_button.setName("search_button"); // NOI18N
         jPanel15.add(search_button);
 
@@ -210,7 +210,7 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
 
         jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText(bundle.getString("WaterIntakeTypeView.jLabel4.text")); // NOI18N
+        jLabel4.setText(bundle.getString("WaterIntakeTypeProcess.jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
         jLabel4.setPreferredSize(new java.awt.Dimension(500, 100));
         panel_campos.add(jLabel4);
@@ -218,12 +218,12 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel10.setName("jPanel10"); // NOI18N
         jPanel10.setLayout(new java.awt.BorderLayout());
 
-        jLabel6.setText(bundle.getString("WaterIntakeTypeView.jLabel6.text")); // NOI18N
+        jLabel6.setText(bundle.getString("WaterIntakeTypeProcess.jLabel6.text")); // NOI18N
         jLabel6.setName("jLabel6"); // NOI18N
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel10.add(jLabel6, java.awt.BorderLayout.LINE_START);
 
-        type_name_field.setText(bundle.getString("WaterIntakeTypeView.type_name_field.text")); // NOI18N
+        type_name_field.setText(bundle.getString("WaterIntakeTypeProcess.type_name_field.text")); // NOI18N
         type_name_field.setName("type_name_field"); // NOI18N
         jPanel10.add(type_name_field, java.awt.BorderLayout.CENTER);
 
@@ -232,12 +232,12 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel1.setName("jPanel1"); // NOI18N
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setText(bundle.getString("WaterIntakeTypeView.jLabel2.text")); // NOI18N
+        jLabel2.setText(bundle.getString("WaterIntakeTypeProcess.jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel1.add(jLabel2, java.awt.BorderLayout.LINE_START);
 
-        base_price_field.setText(bundle.getString("WaterIntakeTypeView.base_price_field.text")); // NOI18N
+        base_price_field.setText(bundle.getString("WaterIntakeTypeProcess.base_price_field.text")); // NOI18N
         base_price_field.setName("base_price_field"); // NOI18N
         jPanel1.add(base_price_field, java.awt.BorderLayout.CENTER);
 
@@ -246,12 +246,12 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel2.setName("jPanel2"); // NOI18N
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jLabel3.setText(bundle.getString("WaterIntakeTypeView.jLabel3.text")); // NOI18N
+        jLabel3.setText(bundle.getString("WaterIntakeTypeProcess.jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
         jLabel3.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel2.add(jLabel3, java.awt.BorderLayout.LINE_START);
 
-        jTextField2.setText(bundle.getString("WaterIntakeTypeView.jTextField2.text")); // NOI18N
+        jTextField2.setText(bundle.getString("WaterIntakeTypeProcess.jTextField2.text")); // NOI18N
         jTextField2.setName("jTextField2"); // NOI18N
         jPanel2.add(jTextField2, java.awt.BorderLayout.CENTER);
 
@@ -260,12 +260,12 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel4.setName("jPanel4"); // NOI18N
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        jLabel5.setText(bundle.getString("WaterIntakeTypeView.jLabel5.text")); // NOI18N
+        jLabel5.setText(bundle.getString("WaterIntakeTypeProcess.jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
         jLabel5.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel4.add(jLabel5, java.awt.BorderLayout.LINE_START);
 
-        annual_increase_field.setText(bundle.getString("WaterIntakeTypeView.annual_increase_field.text")); // NOI18N
+        annual_increase_field.setText(bundle.getString("WaterIntakeTypeProcess.annual_increase_field.text")); // NOI18N
         annual_increase_field.setName("annual_increase_field"); // NOI18N
         jPanel4.add(annual_increase_field, java.awt.BorderLayout.CENTER);
 
@@ -277,7 +277,7 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel16.setName("jPanel16"); // NOI18N
         jPanel16.setLayout(new java.awt.BorderLayout());
 
-        apply_rules_field.setText(bundle.getString("WaterIntakeTypeView.apply_rules_field.text")); // NOI18N
+        apply_rules_field.setText(bundle.getString("WaterIntakeTypeProcess.apply_rules_field.text")); // NOI18N
         apply_rules_field.setName("apply_rules_field"); // NOI18N
         jPanel16.add(apply_rules_field, java.awt.BorderLayout.CENTER);
 
@@ -286,7 +286,7 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel19.setName("jPanel19"); // NOI18N
         jPanel19.setLayout(new java.awt.BorderLayout());
 
-        charge_unit_field.setText(bundle.getString("WaterIntakeTypeView.charge_unit_field.text")); // NOI18N
+        charge_unit_field.setText(bundle.getString("WaterIntakeTypeProcess.charge_unit_field.text")); // NOI18N
         charge_unit_field.setName("charge_unit_field"); // NOI18N
         jPanel19.add(charge_unit_field, java.awt.BorderLayout.CENTER);
 
@@ -296,7 +296,7 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel17.setLayout(new java.awt.BorderLayout());
 
         round_field.setSelected(true);
-        round_field.setText(bundle.getString("WaterIntakeTypeView.round_field.text")); // NOI18N
+        round_field.setText(bundle.getString("WaterIntakeTypeProcess.round_field.text")); // NOI18N
         round_field.setName("round_field"); // NOI18N
         jPanel17.add(round_field, java.awt.BorderLayout.CENTER);
 
@@ -306,7 +306,7 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel18.setLayout(new java.awt.BorderLayout());
 
         round_up_field.setSelected(true);
-        round_up_field.setText(bundle.getString("WaterIntakeTypeView.round_up_field.text")); // NOI18N
+        round_up_field.setText(bundle.getString("WaterIntakeTypeProcess.round_up_field.text")); // NOI18N
         round_up_field.setName("round_up_field"); // NOI18N
         jPanel18.add(round_up_field, java.awt.BorderLayout.CENTER);
 
@@ -317,12 +317,12 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel8.setName("jPanel8"); // NOI18N
         jPanel8.setLayout(new java.awt.BorderLayout());
 
-        jLabel7.setText(bundle.getString("WaterIntakeTypeView.jLabel7.text")); // NOI18N
+        jLabel7.setText(bundle.getString("WaterIntakeTypeProcess.jLabel7.text")); // NOI18N
         jLabel7.setName("jLabel7"); // NOI18N
         jLabel7.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel8.add(jLabel7, java.awt.BorderLayout.LINE_START);
 
-        units_field.setText(bundle.getString("WaterIntakeTypeView.units_field.text")); // NOI18N
+        units_field.setText(bundle.getString("WaterIntakeTypeProcess.units_field.text")); // NOI18N
         units_field.setEnabled(false);
         units_field.setName("units_field"); // NOI18N
         jPanel8.add(units_field, java.awt.BorderLayout.CENTER);
@@ -332,7 +332,7 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel9.setName("jPanel9"); // NOI18N
         jPanel9.setLayout(new java.awt.BorderLayout());
 
-        jLabel8.setText(bundle.getString("WaterIntakeTypeView.jLabel8.text")); // NOI18N
+        jLabel8.setText(bundle.getString("WaterIntakeTypeProcess.jLabel8.text")); // NOI18N
         jLabel8.setName("jLabel8"); // NOI18N
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel9.add(jLabel8, java.awt.BorderLayout.LINE_START);
@@ -346,13 +346,13 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel12.setName("jPanel12"); // NOI18N
         jPanel12.setLayout(new java.awt.BorderLayout());
 
-        jLabel10.setText(bundle.getString("WaterIntakeTypeView.jLabel10.text")); // NOI18N
+        jLabel10.setText(bundle.getString("WaterIntakeTypeProcess.jLabel10.text")); // NOI18N
         jLabel10.setName("jLabel10"); // NOI18N
         jLabel10.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel12.add(jLabel10, java.awt.BorderLayout.LINE_START);
 
         current_price_field.setEditable(false);
-        current_price_field.setText(bundle.getString("WaterIntakeTypeView.current_price_field.text")); // NOI18N
+        current_price_field.setText(bundle.getString("WaterIntakeTypeProcess.current_price_field.text")); // NOI18N
         current_price_field.setName("current_price_field"); // NOI18N
         jPanel12.add(current_price_field, java.awt.BorderLayout.CENTER);
 
@@ -361,13 +361,13 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel13.setName("jPanel13"); // NOI18N
         jPanel13.setLayout(new java.awt.BorderLayout());
 
-        jLabel11.setText(bundle.getString("WaterIntakeTypeView.jLabel11.text")); // NOI18N
+        jLabel11.setText(bundle.getString("WaterIntakeTypeProcess.jLabel11.text")); // NOI18N
         jLabel11.setName("jLabel11"); // NOI18N
         jLabel11.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel13.add(jLabel11, java.awt.BorderLayout.LINE_START);
 
         previous_price_field.setEditable(false);
-        previous_price_field.setText(bundle.getString("WaterIntakeTypeView.previous_price_field.text")); // NOI18N
+        previous_price_field.setText(bundle.getString("WaterIntakeTypeProcess.previous_price_field.text")); // NOI18N
         previous_price_field.setName("previous_price_field"); // NOI18N
         jPanel13.add(previous_price_field, java.awt.BorderLayout.CENTER);
 
@@ -376,19 +376,19 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel14.setName("jPanel14"); // NOI18N
         jPanel14.setLayout(new java.awt.BorderLayout());
 
-        jLabel12.setText(bundle.getString("WaterIntakeTypeView.jLabel12.text")); // NOI18N
+        jLabel12.setText(bundle.getString("WaterIntakeTypeProcess.jLabel12.text")); // NOI18N
         jLabel12.setName("jLabel12"); // NOI18N
         jLabel12.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel14.add(jLabel12, java.awt.BorderLayout.LINE_START);
 
         surcharge_field.setEditable(false);
-        surcharge_field.setText(bundle.getString("WaterIntakeTypeView.surcharge_field.text")); // NOI18N
+        surcharge_field.setText(bundle.getString("WaterIntakeTypeProcess.surcharge_field.text")); // NOI18N
         surcharge_field.setName("surcharge_field"); // NOI18N
         jPanel14.add(surcharge_field, java.awt.BorderLayout.CENTER);
 
         panel_campos.add(jPanel14);
 
-        jButton1.setText(bundle.getString("WaterIntakeTypeView.jButton1.text")); // NOI18N
+        jButton1.setText(bundle.getString("WaterIntakeTypeProcess.jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
         panel_campos.add(jButton1);
 
@@ -403,22 +403,22 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
 
         save_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         save_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
-        save_button.setText(bundle.getString("WaterIntakeTypeView.save_button.text")); // NOI18N
-        save_button.setActionCommand(bundle.getString("WaterIntakeTypeView.save_button.actionCommand")); // NOI18N
+        save_button.setText(bundle.getString("WaterIntakeTypeProcess.save_button.text")); // NOI18N
+        save_button.setActionCommand(bundle.getString("WaterIntakeTypeProcess.save_button.actionCommand")); // NOI18N
         save_button.setName("save_button"); // NOI18N
         jPanel3.add(save_button);
 
         update_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         update_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/sincronizar.png"))); // NOI18N
-        update_button.setText(bundle.getString("WaterIntakeTypeView.update_button.text")); // NOI18N
-        update_button.setActionCommand(bundle.getString("WaterIntakeTypeView.update_button.actionCommand")); // NOI18N
+        update_button.setText(bundle.getString("WaterIntakeTypeProcess.update_button.text")); // NOI18N
+        update_button.setActionCommand(bundle.getString("WaterIntakeTypeProcess.update_button.actionCommand")); // NOI18N
         update_button.setName("update_button"); // NOI18N
         jPanel3.add(update_button);
 
         delete_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         delete_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/eliminar.png"))); // NOI18N
-        delete_button.setText(bundle.getString("WaterIntakeTypeView.delete_button.text")); // NOI18N
-        delete_button.setActionCommand(bundle.getString("WaterIntakeTypeView.delete_button.actionCommand")); // NOI18N
+        delete_button.setText(bundle.getString("WaterIntakeTypeProcess.delete_button.text")); // NOI18N
+        delete_button.setActionCommand(bundle.getString("WaterIntakeTypeProcess.delete_button.actionCommand")); // NOI18N
         delete_button.setName("delete_button"); // NOI18N
         jPanel3.add(delete_button);
 
@@ -426,8 +426,8 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
 
         cancel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         cancel_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
-        cancel_button.setText(bundle.getString("WaterIntakeTypeView.cancel_button.text")); // NOI18N
-        cancel_button.setActionCommand(bundle.getString("WaterIntakeTypeView.cancel_button.actionCommand")); // NOI18N
+        cancel_button.setText(bundle.getString("WaterIntakeTypeProcess.cancel_button.text")); // NOI18N
+        cancel_button.setActionCommand(bundle.getString("WaterIntakeTypeProcess.cancel_button.actionCommand")); // NOI18N
         cancel_button.setName("cancel_button"); // NOI18N
         options_panel.add(cancel_button);
 
@@ -444,7 +444,7 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel5.setLayout(new java.awt.BorderLayout(5, 5));
 
         reload_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
-        reload_button.setActionCommand(bundle.getString("WaterIntakeTypeView.reload_button.actionCommand")); // NOI18N
+        reload_button.setActionCommand(bundle.getString("WaterIntakeTypeProcess.reload_button.actionCommand")); // NOI18N
         reload_button.setName("reload_button"); // NOI18N
         reload_button.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel5.add(reload_button, java.awt.BorderLayout.WEST);
@@ -467,13 +467,13 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel11.setLayout(new java.awt.GridLayout(1, 2, 5, 5));
 
         back_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
-        back_button.setActionCommand(bundle.getString("WaterIntakeTypeView.back_button.actionCommand")); // NOI18N
+        back_button.setActionCommand(bundle.getString("WaterIntakeTypeProcess.back_button.actionCommand")); // NOI18N
         back_button.setName("back_button"); // NOI18N
         back_button.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel11.add(back_button);
 
         next_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
-        next_button.setActionCommand(bundle.getString("WaterIntakeTypeView.next_button.actionCommand")); // NOI18N
+        next_button.setActionCommand(bundle.getString("WaterIntakeTypeProcess.next_button.actionCommand")); // NOI18N
         next_button.setName("next_button"); // NOI18N
         next_button.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel11.add(next_button);
@@ -513,13 +513,13 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel32.setLayout(new java.awt.BorderLayout());
 
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel18.setText(bundle.getString("WaterIntakeTypeView.jLabel18.text")); // NOI18N
+        jLabel18.setText(bundle.getString("WaterIntakeTypeProcess.jLabel18.text")); // NOI18N
         jLabel18.setName("jLabel18"); // NOI18N
         jPanel32.add(jLabel18, java.awt.BorderLayout.CENTER);
 
         count.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        count.setText(bundle.getString("WaterIntakeTypeView.count.text")); // NOI18N
-        count.setToolTipText(bundle.getString("WaterIntakeTypeView.count.toolTipText")); // NOI18N
+        count.setText(bundle.getString("WaterIntakeTypeProcess.count.text")); // NOI18N
+        count.setToolTipText(bundle.getString("WaterIntakeTypeProcess.count.toolTipText")); // NOI18N
         count.setName("count"); // NOI18N
         count.setPreferredSize(new java.awt.Dimension(50, 16));
         jPanel32.add(count, java.awt.BorderLayout.LINE_END);
@@ -527,8 +527,8 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         status_bar_panel.add(jPanel32, java.awt.BorderLayout.WEST);
 
         range.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        range.setText(bundle.getString("WaterIntakeTypeView.range.text")); // NOI18N
-        range.setToolTipText(bundle.getString("WaterIntakeTypeView.range.toolTipText")); // NOI18N
+        range.setText(bundle.getString("WaterIntakeTypeProcess.range.text")); // NOI18N
+        range.setToolTipText(bundle.getString("WaterIntakeTypeProcess.range.toolTipText")); // NOI18N
         range.setName("range"); // NOI18N
         status_bar_panel.add(range, java.awt.BorderLayout.CENTER);
 
@@ -537,13 +537,13 @@ public final class WaterIntakeTypeView extends AbstractProcessView<WaterIntakeTy
         jPanel29.setLayout(new java.awt.BorderLayout());
 
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel17.setText(bundle.getString("WaterIntakeTypeView.jLabel17.text")); // NOI18N
+        jLabel17.setText(bundle.getString("WaterIntakeTypeProcess.jLabel17.text")); // NOI18N
         jLabel17.setName("jLabel17"); // NOI18N
         jPanel29.add(jLabel17, java.awt.BorderLayout.CENTER);
 
         total.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        total.setText(bundle.getString("WaterIntakeTypeView.total.text")); // NOI18N
-        total.setToolTipText(bundle.getString("WaterIntakeTypeView.total.toolTipText")); // NOI18N
+        total.setText(bundle.getString("WaterIntakeTypeProcess.total.text")); // NOI18N
+        total.setToolTipText(bundle.getString("WaterIntakeTypeProcess.total.toolTipText")); // NOI18N
         total.setName("total"); // NOI18N
         total.setPreferredSize(new java.awt.Dimension(50, 16));
         jPanel29.add(total, java.awt.BorderLayout.LINE_END);

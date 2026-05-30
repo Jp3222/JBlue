@@ -89,10 +89,12 @@ public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(super.toString()).append("\n");
-        sb.append("EmployeeRegisterWrapperDTO {");
-        sb.append("employee = ").append(employee.getMap().toString());
-        sb.append(", employee_user = ").append(employee_user.getMap().toString());
+        sb.append(super.toString());
+        sb.append("EmployeeRegisterWrapperDTO { ").toString();
+        sb.append("employee = ").append(employee).toString();
+        sb.append("employee_valid = ").append(employee_valid).toString();
+        sb.append("employee_user = ").append(employee_user).toString();
+        sb.append("employee_user_valid = ").append(employee_user_valid).toString();
         sb.append('}');
         return sb.toString();
     }

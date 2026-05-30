@@ -20,11 +20,12 @@ public abstract class AbstractModuleView<T extends ModuleWrapperDTO> extends Sim
     protected CardLayout card_layout;
 
     /**
-     *
+     * DTO envoltorio con todos los objetos necesarios para manejar el proceso
      */
+    
     private final T dto_wrapper;
     /**
-     *
+     * Controlador principal de la vista
      */
     private final Controller controller;
 
@@ -32,8 +33,10 @@ public abstract class AbstractModuleView<T extends ModuleWrapperDTO> extends Sim
     protected int current_index;
 
     public AbstractModuleView(T dto_wrapper) {
+        super();
         this.dto_wrapper = dto_wrapper;
         this.controller = dto_wrapper.getController("MAIN");
+        setName(dto_wrapper.getModule_name());
         views = null;
     }
 

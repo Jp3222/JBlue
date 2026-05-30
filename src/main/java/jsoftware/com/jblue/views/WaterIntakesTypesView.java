@@ -19,8 +19,6 @@ package jsoftware.com.jblue.views;
 import java.awt.CardLayout;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -606,13 +604,7 @@ public final class WaterIntakesTypesView extends DBView<WaterIntakeTypeDTO> impl
 
     @Override
     public WaterIntakeTypeDTO getValues(boolean update) {
-        Map<String, Object> map = new HashMap<>();
-        if (update) {
-
-        } else {
-
-        }
-        WaterIntakeTypeDTO o = new WaterIntakeTypeDTO(map);
+        WaterIntakeTypeDTO o = new WaterIntakeTypeDTO();
         return o;
     }
 

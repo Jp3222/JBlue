@@ -62,4 +62,8 @@ public class PaymentDTO extends AuditableObjectMap implements AuditableModel, JD
         return Integer.parseInt(get("month_paid").toString());
     }
 
+    public String getProcessId() {
+        return get("process_id").toString();
+    }
+
 }

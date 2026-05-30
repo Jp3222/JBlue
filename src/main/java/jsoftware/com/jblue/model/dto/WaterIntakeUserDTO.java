@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jsoftware.com.jblue.model.dto;
 
 /**
@@ -16,6 +12,10 @@ public class WaterIntakeUserDTO extends AuditableObjectMap {
         super(15);
     }
 
+    public String getId() {
+        return get("id").toString();
+    }
+
     public String getUserId() {
         return get("user_id").toString();
     }
@@ -28,12 +28,32 @@ public class WaterIntakeUserDTO extends AuditableObjectMap {
         return get("water_intake_type_id").toString();
     }
 
+    public String getUserTypeId() {
+        return get("user_type_id").toString();
+    }
+
+    public String getUserName() {
+        return get("user_name").toString();
+    }
+
     public String getDescription() {
         return get("description").toString();
     }
 
-    public String getNotes() {
-        return get("notes").toString();
+    public String getObservation() {
+        return get("observation").toString();
+    }
+
+    public String getCurrentFiscalYear() {
+        return get("current_fiscal_year").toString();
+    }
+
+    public String getLastMonthPaid() {
+        return get("last_month_paid").toString();
+    }
+
+    public String getLastAmountPaid() {
+        return get("last_amount_paid").toString();
     }
 
     public String getEmployeeRegister() {
@@ -44,7 +64,7 @@ public class WaterIntakeUserDTO extends AuditableObjectMap {
         return get("last_employee_update").toString();
     }
 
-    public String getOriginalProcessId() {
+    public String getOriginalProcess() {
         return get("original_process").toString();
     }
 
@@ -54,7 +74,7 @@ public class WaterIntakeUserDTO extends AuditableObjectMap {
 
     @Override
     public String toString() {
-        return getDescription();
+        return getUserName();
     }
 
 }

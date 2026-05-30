@@ -44,7 +44,12 @@ public class EmployeeRegisterService extends AbstractService {
                 this.user_message = employee.getUserMessage();
                 return false;
             }
+            
             dto.getEmployee_user().put("employee_id", String.valueOf(employee_id));
+            dto.getEmployee_user().put("office_id", session.getCurrent_instance().getOfficeId());
+            dto.getEmployee_user().put("description", dto.getEmployee().toString());
+            dto.getEmployee_user().put("last_employee_update", session.getCurrentEmployee().getId());
+            
             //
             int user_id = user.insert(connection, dto.getEmployee_user());
             if (user.isError()) {

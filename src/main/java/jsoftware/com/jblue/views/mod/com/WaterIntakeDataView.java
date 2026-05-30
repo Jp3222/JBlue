@@ -4,74 +4,27 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
-import javax.swing.JOptionPane;
-import jsoftware.com.jblue.controllers.compc.ComboBoxController;
-import jsoftware.com.jblue.model.dao.StreetDAO;
-import jsoftware.com.jblue.model.dao.WaterIntakeTypeDAO;
-import jsoftware.com.jblue.model.dto.StreetDTO;
-import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
-import jsoftware.com.jblue.model.models.AbstractValidation;
-import jsoftware.com.jblue.sys.app.AppConfig;
-import jsoftware.com.jblue.util.Func;
-import jsoftware.com.jblue.views.framework.AbstractProcessView;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
-import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 
 /**
  *
  * @author juanp
  */
-public final class WaterIntakeDataView extends AbstractProcessView<WaterIntakeDTO> implements DBObjectValues<WaterIntakeDTO> {
+public final class WaterIntakeDataView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<WaterIntakeDTO> {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form WaterInatkeDataView
      */
-    public WaterIntakeDataView(ProcessViewBuilder builder) {
-        super(builder);
+    public WaterIntakeDataView(ProcessWrapperDTO dto) {
+        super(dto);
         initComponents();
         build();
-    }
-
-    @Override
-    public void build() {
-        components();
-        events();
-
-    }
-
-    @Override
-    public void components() {
-    }
-
-    @Override
-    public void events() {
-        StreetDAO street_dao = new StreetDAO(AppConfig.isDevMessages(), getProcessTypeName());
-        WaterIntakeTypeDAO water_intake_dao = new WaterIntakeTypeDAO(AppConfig.isDevMessages(), getProcessTypeName());
-        ComboBoxController<StreetDTO> street_1 = new ComboBoxController<>(street1_field, street_dao);
-        ComboBoxController<StreetDTO> street_2 = new ComboBoxController<>(street2_field, street_dao);
-        ComboBoxController<WaterIntakeTypeDTO> water_intake_type = new ComboBoxController<>(water_intake_types_field, water_intake_dao);
-        comboBoxInit(street_1, street1_field.getItemCount() <= 0);
-        comboBoxInit(street_2, street2_field.getItemCount() <= 0);
-        comboBoxInit(water_intake_type, water_intake_types_field.getItemCount() <= 0);
-    }
-
-    public void comboBoxInit(ComboBoxController<?> c, boolean empty) {
-        if (empty) {
-            c.loadData();
-        }
-    }
-
-    @Override
-    public void initialState() {
-    }
-
-    @Override
-    public void finalState() {
     }
 
     /**
@@ -260,14 +213,6 @@ public final class WaterIntakeDataView extends AbstractProcessView<WaterIntakeDT
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        UserDTO user = getProcessWrapper().getUser();
-        if (user == null) {
-            JOptionPane.showMessageDialog(this, "POR FAVOR, ASEGURESE DE QUE LOS DATOS GENERADOS SEAN CORRECTOS", "Datos Generados", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-        owner_field.setText(user.toString());
-        street1_field.setSelectedIndex(Integer.parseInt(user.get("street1_selected").toString()));
-        street2_field.setSelectedIndex(Integer.parseInt(user.get("street2_selected").toString()));
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -301,35 +246,18 @@ public final class WaterIntakeDataView extends AbstractProcessView<WaterIntakeDT
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void getDataView() {
-        ProcessWrapperDTO pw = getProcessWrapper();
-        WaterIntakeDTO wk = pw.getWater_intake();
-        if (Func.isNotNull(pw.getUser())) {
-            UserDTO user = pw.getUser();
-            wk.getMap().put("description", user.toString());
-            owner_field.setText(user.toString());
-        }
-        getProcessWrapper().setWater_intake_valid(true);
+    public void getData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public boolean isValuesOK() {
-        AbstractValidation validation = new AbstractValidation();
-        validation.addRuler("owner", owner_field, t -> Func.isNotNull(owner_field.getText()),
-                "EL NOMBRE DEL TITULAT NO ES VALIDO");
-        return true;
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public WaterIntakeDTO getValues(boolean update) {
-        WaterIntakeDTO dto = getProcessWrapper().getWater_intake();
-        Func.putIfNotNull(dto.getMap(), "description", owner_field.getText());
-        Func.putIfNotNull(dto.getMap(), "water_intake_type", water_intake_types_field.getItemAt(water_intake_types_field.getSelectedIndex()).getId());
-        Func.putIfNotNull(dto.getMap(), "street1", street1_field.getItemAt(street1_field.getSelectedIndex()).getId());
-        if (street2_field.getSelectedIndex() >= 1) {
-            Func.putIfNotNull(dto.getMap(), "street2", street2_field.getItemAt(street2_field.getSelectedIndex()).getId());
-        }
-        return getProcessWrapper().getWater_intake();
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

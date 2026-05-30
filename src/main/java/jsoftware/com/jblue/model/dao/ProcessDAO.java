@@ -8,19 +8,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
+import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.ProcessDTO;
 import jsoftware.com.jblue.model.exp.ProcessException;
 import jsoftware.com.jblue.model.querys.ProcessQuery;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.jexception.JExcp;
 import jsoftware.com.jutil.model.AbstractDAO;
 
 /**
@@ -40,13 +37,11 @@ public class ProcessDAO extends AbstractDAO {
 
     private final EmployeeUserDTO current_employee;
     private final AdministrationHistoryDTO current_admin;
-    private final String current_db_user;
 
     public ProcessDAO(boolean flag_dev_log, String name_module) {
         super(flag_dev_log, name_module);
         current_employee = SystemSession.getInstancia().getCurrentEmployee();
         current_admin = SystemSession.getInstancia().getCurrentAdministration();
-        current_db_user = SystemSession.getInstancia().getCurrentDbUser();
     }
 
     public int startProcess(JDBConnection connection, String process_type, String user_id) throws SQLException {
@@ -67,9 +62,8 @@ public class ProcessDAO extends AbstractDAO {
             ps.setString(2, current_employee.getId());
             ps.setString(3, current_admin.getId());
             ps.setString(4, current_employee.getId());
-            ps.setString(5, current_db_user);
-            ps.setString(6, user_id);
-            ps.setString(7, "9");
+            ps.setString(5, user_id);
+            ps.setInt(6, STATUS_INICIADO);
 
             int affectedRows = ps.executeUpdate();
 
@@ -83,88 +77,55 @@ public class ProcessDAO extends AbstractDAO {
             } else {
                 throw new SQLException("TRAMITE NO INICIADO: No se insertó ningún registro.");
             }
-
-        } catch (Exception ex) {
-            // Logueamos el error
-            System.getLogger(ProcessDAO.class.getName()).log(System.Logger.Level.ERROR, "Error en startProcess", ex);
-            throw ex; // Re-lanzamos para que el Service pueda hacer rollback
         }
-
         return generatedId; // Retorna el ID (o 0 si falló)
     }
 
-    public boolean validProcess(JDBConnection connection, int process_id) {
+    public boolean validProcess(JDBConnection connection, int process_id) throws SQLException, ProcessException {
         boolean rt = false;
         try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_VALID);) {
-            LocalDateTime ld = LocalDateTime.now();
-            connection.setAutoCommit(false);
             ps.setString(1, current_employee.getId());
-            ps.setString(3, current_employee.getId());
-            ps.setString(4, current_db_user);
-            ps.setString(5, "10");
-            ps.setInt(6, process_id);
+            ps.setString(2, current_employee.getId());
+            ps.setInt(3, STATUS_VALIDADO);
+            ps.setInt(4, process_id);
             rt = ps.executeUpdate() > 0;
             if (!rt) {
                 throw new ProcessException(1, "TRAMITE NO INICIADO");
             }
-            connection.commit();
             return rt;
-        } catch (Exception e) {
-            connection.rollBack();
-        } finally {
-            connection.setAutoCommit(true);
         }
-        return rt;
     }
 
-    public boolean payProcess(JDBConnection connection, String id) {
+    public boolean payProcess(JDBConnection connection, String id) throws SQLException, ProcessException {
         boolean rt = false;
         try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_PAYMENT);) {
-            LocalDateTime ld = LocalDateTime.now();
-            connection.setAutoCommit(false);
             ps.setString(1, current_employee.getId());
             ps.setString(2, current_admin.getId());
             ps.setString(3, current_employee.getId());
-            ps.setString(4, current_db_user);
-            ps.setString(5, "10");
-            ps.setString(6, id);
+            ps.setInt(4, STATUS_PAGADO);
+            ps.setString(5, id);
             rt = ps.executeUpdate() > 0;
             if (!rt) {
                 throw new ProcessException(1, "TRAMITE NO INICIADO");
             }
-            connection.commit();
             return rt;
-        } catch (Exception e) {
-            connection.rollBack();
-        } finally {
-            connection.setAutoCommit(true);
         }
-        return rt;
     }
 
-    public boolean endProcess(JDBConnection connection, String user_id, String water_inatke_id) {
+    public boolean endProcess(JDBConnection connection, String user_id, String water_inatke_id) throws SQLException, ProcessException {
         boolean rt = false;
         try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_END);) {
-            LocalDateTime ld = LocalDateTime.now();
-            connection.setAutoCommit(false);
             ps.setString(1, current_employee.getId());
             ps.setString(2, current_admin.getId());
             ps.setString(3, current_employee.getId());
-            ps.setString(4, current_db_user);
-            ps.setString(5, "10");
-            ps.setString(6, user_id);
+            ps.setInt(4, STATUS_FINALIZADO);
+            ps.setString(5, user_id);
             rt = ps.executeUpdate() > 0;
             if (!rt) {
                 throw new ProcessException(1, "TRAMITE NO INICIADO");
             }
-            connection.commit();
             return rt;
-        } catch (Exception e) {
-            connection.rollBack();
-        } finally {
-            connection.setAutoCommit(true);
         }
-        return rt;
     }
 
     /**
@@ -174,29 +135,18 @@ public class ProcessDAO extends AbstractDAO {
      * @param id
      * @return
      */
-    public boolean printProcess(JDBConnection connection, String id) {
+    public boolean printProcess(JDBConnection connection, String id) throws SQLException, ProcessException {
         boolean rt = false;
         try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_PRINT);) {
-            LocalDateTime ld = LocalDateTime.now();
-            connection.setAutoCommit(false);
             ps.setString(1, current_employee.getId());
-            ps.setString(2, ld.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            ps.setString(3, current_employee.getId());
-            ps.setString(4, current_db_user);
-            ps.setString(5, "10");
-            ps.setString(6, id);
+            ps.setString(2, current_employee.getId());
+            ps.setString(3, id);
             rt = ps.executeUpdate() > 0;
             if (!rt) {
                 throw new ProcessException(1, "TRAMITE NO INICIADO");
             }
-            connection.commit();
             return rt;
-        } catch (Exception e) {
-            connection.rollBack();
-        } finally {
-            connection.setAutoCommit(true);
         }
-        return rt;
     }
 
     /**
@@ -207,27 +157,18 @@ public class ProcessDAO extends AbstractDAO {
      * @param payment_id
      * @return
      */
-    public boolean cancelProcess(JDBConnection connection, String payment_id) {
+    public boolean cancelProcess(JDBConnection connection, String payment_id) throws SQLException, ProcessException {
         boolean rt = false;
         try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_CANCEL);) {
-            LocalDateTime ld = LocalDateTime.now();
-            connection.setAutoCommit(false);
             ps.setString(1, current_employee.getId());
-            ps.setString(2, current_db_user);
-            ps.setInt(3, STATUS_CANCELADO);
-            ps.setString(4, payment_id);
+            ps.setInt(2, STATUS_CANCELADO);
+            ps.setString(3, payment_id);
             rt = ps.executeUpdate() > 0;
             if (!rt) {
                 throw new ProcessException(1, "TRAMITE NO INICIADO");
             }
-            connection.commit();
             return rt;
-        } catch (Exception e) {
-            connection.rollBack();
-        } finally {
-            connection.setAutoCommit(true);
         }
-        return rt;
     }
 
     /**
@@ -237,50 +178,45 @@ public class ProcessDAO extends AbstractDAO {
      * @param payment_id
      * @return
      */
-    public boolean caducateProcess(JDBConnection connection, String payment_id) {
+    public boolean caducateProcess(JDBConnection connection, String payment_id) throws SQLException, ProcessException {
         boolean rt = false;
         try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_CADUCATE);) {
-            LocalDateTime ld = LocalDateTime.now();
-            connection.setAutoCommit(false);
             ps.setString(1, current_employee.getId());
-            ps.setString(2, current_db_user);
-            ps.setInt(3, STATUS_CADUCADO);
-            ps.setString(4, payment_id);
+            ps.setInt(2, STATUS_CADUCADO);
+            ps.setString(3, payment_id);
             rt = ps.executeUpdate() > 0;
             if (!rt) {
                 throw new ProcessException(1, "TRAMITE NO INICIADO");
             }
-            connection.commit();
             return rt;
-        } catch (Exception e) {
-            connection.rollBack();
-        } finally {
-            connection.setAutoCommit(true);
         }
-        return rt;
     }
 
-    public List<ProcessDTO> getStartProcedures(JDBConnection connection) {
-        return getProcess(connection, 10);
+    public List<ProcessDTO> getStartProcedures(JDBConnection connection) throws SQLException {
+        return getProcess(connection, STATUS_INICIADO);
     }
 
-    public List<ProcessDTO> getValidProcedures(JDBConnection connection) {
-        return getProcess(connection, 11);
+    public List<ProcessDTO> getValidProcedures(JDBConnection connection) throws SQLException {
+        return getProcess(connection, STATUS_VALIDADO);
     }
 
-    public List<ProcessDTO> getPaymentProcedures(JDBConnection connection) {
-        return getProcess(connection, 12);
+    public List<ProcessDTO> getPaymentProcedures(JDBConnection connection) throws SQLException {
+        return getProcess(connection, STATUS_PAGADO);
     }
 
-    public List<ProcessDTO> getEndProcedures(JDBConnection connection) {
-        return getProcess(connection, 13);
+    public List<ProcessDTO> getEndProcedures(JDBConnection connection) throws SQLException {
+        return getProcess(connection, STATUS_FINALIZADO);
     }
 
-    public List<ProcessDTO> getPrintProcedures(JDBConnection connection) {
-        return getProcess(connection, 14);
+    public List<ProcessDTO> getCaducateProcedures(JDBConnection connection) throws SQLException {
+        return getProcess(connection, STATUS_CADUCADO);
     }
 
-    public List<ProcessDTO> getProcess(JDBConnection connection, int status) {
+    public List<ProcessDTO> getCanceledProcedures(JDBConnection connection) throws SQLException {
+        return getProcess(connection, STATUS_CANCELADO);
+    }
+
+    public List<ProcessDTO> getProcess(JDBConnection connection, int status) throws SQLException {
         ArrayList<ProcessDTO> list = new ArrayList<>(50);
         String query = "SELECT * FROM pro_process WHERE status = ?";
         try (PreparedStatement ps = connection.getNewPreparedStatement(query);) {
@@ -299,8 +235,6 @@ public class ProcessDAO extends AbstractDAO {
                     list.add(process);
                 }
             }
-        } catch (SQLException ex) {
-            JExcp.getInstance(false, true).print(ex, getClass(), "getProcess");
         }
         return list;
     }

@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import javax.swing.JCheckBox;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jblue.model.factories.ModuleFactory;
 import jsoftware.com.jblue.model.l4b.LoginRulers;
 import jsoftware.com.jblue.model.service.LoginService;
 import jsoftware.com.jblue.sys.SystemSession;
@@ -42,16 +43,19 @@ import jsoftware.com.jutil.util.FuncLogs;
 public class LoginController extends WindowController {
 
     private static final long serialVersionUID = 1L;
-    private final SystemSession sesion;
-    private final LoginWindows view;
-    private final ConfigWindow view_config;
-    private final LoginService service;
-    private WMainMenu WIN_MAIN_MENU;
 
-    public LoginController(LoginWindows view, ConfigWindow view_config) {
+    private final SystemSession sesion;
+
+    private final LoginService service;
+
+    private ConfigWindow view_config;
+
+    private LoginWindows view;
+
+    private WMainMenu menu;
+
+    public LoginController(boolean flag_dev, String mod_name) {
         this.sesion = SystemSession.getInstancia();
-        this.view = view;
-        this.view_config = view_config;
         this.service = new LoginService(AppConfig.isDevMessages(), "LOGIN");
     }
 
@@ -104,11 +108,13 @@ public class LoginController extends WindowController {
             view.dispose();
 
             //Nuevo menu estandarizado a las aplicaciones
-            WIN_MAIN_MENU = new WMainMenu(view);
-            WIN_MAIN_MENU.setVisible(true);
+            menu = ModuleFactory.getInstance().getWMainMenu();
+            menu.setLogin(view);
+
+            menu.setVisible(true);
             view.setSesionActive(false);
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
+            log(e, "login");
         }
     }
 
@@ -162,4 +168,13 @@ public class LoginController extends WindowController {
             ex.printStackTrace(System.err);
         }
     }
+
+    public void setMenu(WMainMenu menu) {
+        this.menu = menu;
+    }
+
+    public void setView(LoginWindows view) {
+        this.view = view;
+    }
+
 }

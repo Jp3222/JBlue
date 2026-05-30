@@ -17,92 +17,38 @@
 package jsoftware.com.jblue.views.win;
 
 import java.awt.CardLayout;
-import java.awt.event.WindowListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import jsoftware.com.jblue.controllers.winc.MainController;
-import jsoftware.com.jblue.model.dto.StatusDTO;
+import jsoftware.com.jblue.model.dto.wrp.WMainMenuWrapperDTO;
 import jsoftware.com.jblue.model.factories.ModuleFactory;
-import jsoftware.com.jblue.model.factories.ProcessViewFactory;
-import jsoftware.com.jblue.views.CatalogViewFactory;
-import jsoftware.com.jblue.views.CatalogViewerView;
-import jsoftware.com.jblue.views.PaymentConceptView;
-import jsoftware.com.jblue.views.ShopCartView;
-import jsoftware.com.jblue.views.UserView;
-import jsoftware.com.jblue.views.components.UserViewComponent;
-import jsoftware.com.jblue.views.framework.AbstractAppWindows;
-import jsoftware.com.jblue.views.mod.StreetView;
-import jsoftware.com.jblue.views.mod.WaterIntakeTypeView;
-import jsoftware.com.jblue.views.mod.pro.ConsumerRegisterProcessView;
+import jsoftware.com.jblue.views.ShopCartProcess;
+import jsoftware.com.jblue.views.framework.AbstractModuleWindow;
 import jsoftware.com.jblue.views.mod.pro.EmployeeRegisterProcess;
-import jsoftware.com.jblue.views.mod.pro.OwnerChangerProcessView;
-import jsoftware.com.jblue.views.mod.pro.OwnerRegisterProcessView;
 
 /**
  * Esta clase esta dedicada a la vista del menu principal de la aplicacion
  *
  * @author JUAN PABLO CAMPOS CASASANERO
  */
-public final class WMainMenu extends AbstractAppWindows {
+public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
 
     private static final long serialVersionUID = 1L;
+    private final ModuleFactory factory;
 
-    private final ProcessViewFactory factory;
-    private final ModuleFactory factory_mod;
-    //
-    private final CardLayout ly;
-    private final ShopCartView shop_cart_view;
-    private final OwnerRegisterProcessView owner_register_process_view;
-    private final ConsumerRegisterProcessView consumer_register_process_view;
-    private final OwnerChangerProcessView owner_changer_process_view;
-    private final UserView user_process_view;
-    private final StreetView street_view;
-    private final WaterIntakeTypeView water_intakes_type_view;
-    private final PaymentConceptView payment_concept_view;
-    private final CatalogViewerView<StatusDTO> status_type_view;
-    private final EmployeeRegisterProcess employee_registration_view;
-    private final LoginWindows LOGIN;
-    private final AboutUs ABOUT;
-    private final ProfileWindow PROFILE;
-    //
-    private UserViewComponent showVisor;
-    //
-    MainController controller;
+    private final ShopCartProcess shop_cart_process;
+    private final EmployeeRegisterProcess employee_register_process;
 
-    /**
-     * Creates new form NewMenuPrincipal
-     *
-     * @param LOGIN
-     */
-    public WMainMenu(LoginWindows LOGIN) {
+    private LoginWindows login;
+
+    public WMainMenu(WMainMenuWrapperDTO dto_wrapper) {
+        super(dto_wrapper);
         initComponents();
-        this.factory = ProcessViewFactory.getInstance();
-        this.factory_mod = ModuleFactory.getInstance();
-        this.LOGIN = LOGIN;
-        this.ABOUT = new AboutUs();
-        this.PROFILE = new ProfileWindow();
-        shop_cart_view = factory.getShopCarProcess();
-        //PROCESO DE REGISTRO DE TITULAR
-        owner_register_process_view = factory.getUserRegisterProcess();
-        //PROCESO DE REGISTRO DE CONSUMIDOR
-        consumer_register_process_view = factory.getConsumerRegisterProcess();
-        //PROCESO DE CAMBIO DE PROPIETARIO
-        owner_changer_process_view = factory.getOwnerChangerProcess();
-        //PROCESO DE USUARIO
-        user_process_view = factory.getUserProcess();
-        //PROCESO DE CALLES
-        street_view = factory.getStreetView();
-        //PROCESO DE TIPO DE TOMAS DE AGUA POTABLE
-        water_intakes_type_view = factory.getIntakeTypeView();
-        //PROCESO DE CONCEPTOS DE COBRO
-        payment_concept_view = new PaymentConceptView();
-        //
-        employee_registration_view = factory_mod.getRegisterProcess();
-        //
-        status_type_view = CatalogViewFactory.getStatusType(false, "Tipo de status");
-        ly = (CardLayout) views_panel.getLayout();
-        updateTitle(shop_cart_view.getName());
+        card_layout = (CardLayout) views_panel.getLayout();
+        factory = ModuleFactory.getInstance();
+        shop_cart_process = factory.getShopCartProcess();
+        employee_register_process = factory.getRegisterProcess();
+
         build();
     }
 
@@ -116,45 +62,42 @@ public final class WMainMenu extends AbstractAppWindows {
 
     @Override
     public void components() {
-        views_panel.add(shop_cart_view, shop_cart_view.getName());
-        views_panel.add(owner_register_process_view, owner_register_process_view.getName());
-        views_panel.add(consumer_register_process_view, consumer_register_process_view.getName());
-        views_panel.add(owner_changer_process_view, owner_changer_process_view.getName());
-        views_panel.add(user_process_view, user_process_view.getName());
-        views_panel.add(street_view, street_view.getName());
-        views_panel.add(water_intakes_type_view, water_intakes_type_view.getName());
-        views_panel.add(payment_concept_view, payment_concept_view.getName());
-        views_panel.add(status_type_view, status_type_view.getName());
-        views_panel.add(employee_registration_view, employee_registration_view.getName());
+        addModule(shop_cart_process);
+        addModule(employee_register_process);
+    }
 
+    void addModule(JPanel component) {
+        views_panel.add(component, component.getName());
     }
 
     @Override
     public void events() {
-        controller = new MainController(this);
-        addWindowListener((WindowListener) controller);
-        exit_button.addActionListener(controller);
-        btn_home.addActionListener(controller);
+        MainController main_controller = (MainController) getMainController();
+        //main_controller.setLogin(login);
+        addWindowListener(main_controller);
+        exit_button.addActionListener(main_controller);
+        btn_home.addActionListener(main_controller);
         //btn_usuarios.addActionListener(controller);
-        btn_calles.addActionListener(controller);
-        btn_tipo_tomas.addActionListener(controller);
-        btn_tipo_pagos.addActionListener(controller);
+        street_button.addActionListener(main_controller);
+        water_intake_type_button.addActionListener(main_controller);
+        payment_type_button.addActionListener(main_controller);
         //Items del menu "Base de datos".
-        users_view_item.addActionListener(controller);
-        street_view_item.addActionListener(controller);
-        water_intakes_view_item.addActionListener(controller);
-        water_intakes_types_view_item.addActionListener(controller);
-        service_payments_view_item.addActionListener(controller);
-        user_consumer_item.addActionListener(controller);
-        owner_register_process_item.addActionListener(controller);
-        consumer_register_process_item.addActionListener(controller);
-        status_type_item.addActionListener(controller);
-        employee_register.addActionListener(controller);
+        users_view_item.addActionListener(main_controller);
+        street_view_item.addActionListener(main_controller);
+        water_intakes_view_item.addActionListener(main_controller);
+        water_intakes_types_view_item.addActionListener(main_controller);
+        service_payments_view_item.addActionListener(main_controller);
+        user_consumer_item.addActionListener(main_controller);
+        owner_register_process_item.addActionListener(main_controller);
+        consumer_register_process_item.addActionListener(main_controller);
+        status_type_item.addActionListener(main_controller);
+        employee_register.addActionListener(main_controller);
         //
-        parameters_view_item.addActionListener(controller);
+        parameters_view_item.addActionListener(main_controller);
         //
-        about_item_view.addActionListener(controller);
-        profile_item_view.addActionListener(controller);
+        about_item_view.addActionListener(main_controller);
+        profile_item_view.addActionListener(main_controller);
+        main_controller.setView(this);
     }
 
     @Override
@@ -164,10 +107,6 @@ public final class WMainMenu extends AbstractAppWindows {
 
     @Override
     public void finalState() {
-    }
-
-    public void goToHome() {
-        ly.show(views_panel, shop_cart_view.getName());
     }
 
     /**
@@ -188,11 +127,11 @@ public final class WMainMenu extends AbstractAppWindows {
         jPanel2 = new javax.swing.JPanel();
         btn_home = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
-        btn_calles = new javax.swing.JButton();
+        street_button = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
-        btn_tipo_tomas = new javax.swing.JButton();
+        water_intake_type_button = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
-        btn_tipo_pagos = new javax.swing.JButton();
+        payment_type_button = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
@@ -251,7 +190,6 @@ public final class WMainMenu extends AbstractAppWindows {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1000, 600));
-        setPreferredSize(new java.awt.Dimension(1200, 700));
         getContentPane().setLayout(new java.awt.BorderLayout(5, 5));
 
         left_panel.setPreferredSize(new java.awt.Dimension(300, 700));
@@ -293,44 +231,44 @@ public final class WMainMenu extends AbstractAppWindows {
         jPanel7.setPreferredSize(new java.awt.Dimension(100, 50));
         jPanel7.setLayout(new java.awt.BorderLayout());
 
-        btn_calles.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        btn_calles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/calles.png"))); // NOI18N
-        btn_calles.setText("Calles");
-        btn_calles.setToolTipText("Calles");
-        btn_calles.setHideActionText(true);
-        btn_calles.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
-        btn_calles.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jPanel7.add(btn_calles, java.awt.BorderLayout.CENTER);
+        street_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        street_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/calles.png"))); // NOI18N
+        street_button.setText("Calles");
+        street_button.setToolTipText("Calles");
+        street_button.setHideActionText(true);
+        street_button.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        street_button.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jPanel7.add(street_button, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel7);
 
         jPanel8.setPreferredSize(new java.awt.Dimension(100, 50));
         jPanel8.setLayout(new java.awt.BorderLayout());
 
-        btn_tipo_tomas.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        btn_tipo_tomas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/water_intake_x32.png"))); // NOI18N
-        btn_tipo_tomas.setText("Tipo de tomas");
-        btn_tipo_tomas.setToolTipText("Tipo de tomas");
-        btn_tipo_tomas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btn_tipo_tomas.setHideActionText(true);
-        btn_tipo_tomas.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
-        btn_tipo_tomas.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jPanel8.add(btn_tipo_tomas, java.awt.BorderLayout.CENTER);
+        water_intake_type_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        water_intake_type_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/water_intake_x32.png"))); // NOI18N
+        water_intake_type_button.setText("Tipo de tomas");
+        water_intake_type_button.setToolTipText("Tipo de tomas");
+        water_intake_type_button.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        water_intake_type_button.setHideActionText(true);
+        water_intake_type_button.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        water_intake_type_button.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jPanel8.add(water_intake_type_button, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel8);
 
         jPanel9.setPreferredSize(new java.awt.Dimension(100, 50));
         jPanel9.setLayout(new java.awt.BorderLayout());
 
-        btn_tipo_pagos.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        btn_tipo_pagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/tipo de pago.png"))); // NOI18N
-        btn_tipo_pagos.setText("Conceptos de pagos");
-        btn_tipo_pagos.setToolTipText("Tipo de pagos");
-        btn_tipo_pagos.setActionCommand("Conceptos de pago");
-        btn_tipo_pagos.setHideActionText(true);
-        btn_tipo_pagos.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
-        btn_tipo_pagos.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jPanel9.add(btn_tipo_pagos, java.awt.BorderLayout.CENTER);
+        payment_type_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        payment_type_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/tipo de pago.png"))); // NOI18N
+        payment_type_button.setText("Conceptos de pagos");
+        payment_type_button.setToolTipText("Tipo de pagos");
+        payment_type_button.setActionCommand("Conceptos de pago");
+        payment_type_button.setHideActionText(true);
+        payment_type_button.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        payment_type_button.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jPanel9.add(payment_type_button, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel9);
 
@@ -537,10 +475,7 @@ public final class WMainMenu extends AbstractAppWindows {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem about_item_view;
-    private javax.swing.JButton btn_calles;
     private javax.swing.JButton btn_home;
-    private javax.swing.JButton btn_tipo_pagos;
-    private javax.swing.JButton btn_tipo_tomas;
     private javax.swing.JPanel center_panel;
     private javax.swing.JMenuItem consumer_register_process_item;
     private javax.swing.JMenuItem employee_register;
@@ -596,33 +531,20 @@ public final class WMainMenu extends AbstractAppWindows {
     private javax.swing.JMenuItem owner_change_process_item;
     private javax.swing.JMenuItem owner_register_process_item;
     private javax.swing.JMenuItem parameters_view_item;
+    private javax.swing.JButton payment_type_button;
     private javax.swing.JMenuItem profile_item_view;
     private javax.swing.JMenuItem service_payments_view_item;
     private javax.swing.JMenuItem status_type_item;
+    private javax.swing.JButton street_button;
     private javax.swing.JMenuItem street_view_item;
     private javax.swing.JMenuItem user_consumer_item;
     private javax.swing.JMenuItem users_view_item;
     private javax.swing.JPanel views_panel;
+    private javax.swing.JButton water_intake_type_button;
     private javax.swing.JMenuItem water_intakes_types_view_item;
     private javax.swing.JMenuItem water_intakes_view_item;
     // End of variables declaration//GEN-END:variables
     public static final String OUT = "OUT";
-
-    @Override
-    public void dispose() {
-        closeWindows();
-        super.dispose(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        if (showVisor != null && showVisor.isVisible()) {
-            showVisor.dispose();
-        }
-        SwingUtilities.invokeLater(() -> {
-            LOGIN.setVisible(true);
-        });
-    }
-
-    public CardLayout getCardLayout() {
-        return ly;
-    }
 
     public JLabel getLabelTitle() {
         return label_title;
@@ -632,17 +554,15 @@ public final class WMainMenu extends AbstractAppWindows {
         return views_panel;
     }
 
-    public AboutUs getABOUT() {
-        return ABOUT;
+    @Override
+    public void getData() {
     }
 
-    public ProfileWindow getProfileWindow() {
-        return PROFILE;
-    }
-
-    public void closeWindows() {
-        ABOUT.dispose();
-        PROFILE.dispose();
+    public void setLogin(LoginWindows login) {
+        this.login = login;
+        this.login.setMenu(this);
+        MainController main_controller = (MainController) getMainController();
+        main_controller.setLogin(login);
     }
 
 }

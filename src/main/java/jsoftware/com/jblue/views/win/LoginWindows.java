@@ -5,6 +5,7 @@
 package jsoftware.com.jblue.views.win;
 
 import java.awt.Image;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -14,12 +15,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import jsoftware.com.jblue.controllers.FactoryController;
-import jsoftware.com.jblue.controllers.winc.WindowController;
+import jsoftware.com.jblue.controllers.winc.LoginController;
+import jsoftware.com.jblue.model.dto.wrp.LoginWrapperDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
-import jsoftware.com.jblue.views.framework.AbstractAppWindows;
+import jsoftware.com.jblue.views.framework.AbstractModuleWindow;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.swingw.wrappers.TextFieldWrapper;
 import jsoftware.com.jutil.sys.LaunchApp;
@@ -29,22 +30,23 @@ import jsoftware.com.jutil.util.FuncLogs;
  *
  * @author jp
  */
-public final class LoginWindows extends AbstractAppWindows {
+public final class LoginWindows extends AbstractModuleWindow<LoginWrapperDTO> {
 
     private static final long serialVersionUID = 1L;
 
     private final ConfigWindow MENU_CONFIG_BD;
     private final TextFieldWrapper FIELDS[];
 
+    private WMainMenu menu;
+
     /**
      * Creates new form NewLogin
      *
      */
-    public LoginWindows() {
-        super();
-        this.updateTitle("Inicio de Sesion");
-        this.MENU_CONFIG_BD = new ConfigWindow();
+    public LoginWindows(LoginWrapperDTO dto) {
+        super(dto);
         initComponents();
+        this.MENU_CONFIG_BD = new ConfigWindow();
         FIELDS = new TextFieldWrapper[2];
         FIELDS[0] = new TextFieldWrapper(user, "ejem: david123");
         FIELDS[1] = new TextFieldWrapper(password, "contraseña 12345");
@@ -61,15 +63,15 @@ public final class LoginWindows extends AbstractAppWindows {
 
     @Override
     public void events() {
-        WindowController controller = FactoryController.getLoginController(this, MENU_CONFIG_BD);
-
-        login_button.addActionListener(controller);
-        config_button.addActionListener(controller);
-        mostrar.addActionListener(controller);
-        this.addWindowListener(controller);
-        user.addKeyListener(controller);
-        password.addKeyListener(controller);
-        change_password_button.addActionListener(controller);
+        LoginController login_controller = (LoginController) getMainController();
+        login_controller.setView(this);
+        login_button.addActionListener(login_controller);
+        config_button.addActionListener(login_controller);
+        mostrar.addActionListener(login_controller);
+        this.addWindowListener((WindowListener) login_controller);
+        user.addKeyListener(login_controller);
+        password.addKeyListener(login_controller);
+        change_password_button.addActionListener(login_controller);
         for (TextFieldWrapper envjtf : FIELDS) {
             envjtf.borrarAlClick();
             envjtf.borrarAlEscribir();
@@ -352,6 +354,17 @@ public final class LoginWindows extends AbstractAppWindows {
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
         }
+    }
+
+    @Override
+    public void getData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void setMenu(WMainMenu menu) {
+        this.menu = menu;
+        LoginController login_controller = (LoginController) getMainController();
+        login_controller.setMenu(menu);
     }
 
 }

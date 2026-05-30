@@ -19,15 +19,14 @@ import javax.swing.JOptionPane;
 import jsoftware.com.jblue.model.dto.UserDocumentDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.sys.app.AppFiles;
-import jsoftware.com.jblue.views.framework.AbstractProcessView;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
-import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 
 /**
  *
  * @author juanp
  */
-public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> implements DBObjectValues<List<UserDocumentDTO>> {
+public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<List<UserDocumentDTO>> {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,8 +35,8 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
     /**
      * Creates new form ValidationProcess
      */
-    public ValidationProcessView(ProcessViewBuilder builder) {
-        super(builder);
+    public ValidationProcessView(ProcessWrapperDTO dto) {
+        super(dto);
         initComponents();
         this.model = new DefaultListModel<>();
         document_list.setModel(model);
@@ -202,7 +201,7 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
 
         int input = JOptionPane.showConfirmDialog(this, "¿CONFIRMA QUE LOS DOCUMENTOS DE IDENTIDAD DEL USUARIO SON DOCUMENTOS OFICIALES Y VALIDOS?", "pago", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (input == JOptionPane.YES_OPTION) {
-            getProcessWrapper().setUser_document_valid(true);
+            getDtoWrapper().setUser_document_valid(true);
         }
 
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -210,7 +209,7 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int input = JOptionPane.showConfirmDialog(this, "¿DESEA RECHAZAR EL TRAMITE ACTUAL CON STATUS \"RECHAZADO\"?", "pago", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (input == JOptionPane.YES_OPTION) {
-            getProcessWrapper().setUser_document_valid(false);
+            getDtoWrapper().setUser_document_valid(false);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -351,13 +350,8 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
     }
 
     @Override
-    public void getDataView() {
-
-    }
-
-    @Override
     public boolean isValuesOK() {
-        ProcessWrapperDTO pw = getProcessWrapper();
+        ProcessWrapperDTO pw = getDtoWrapper();
 
         // Evaluamos si es válido (no está vacía)
         boolean isValid = !pw.getUser_document_list().isEmpty();
@@ -369,7 +363,7 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
                     "Documentación faltante",
                     JOptionPane.WARNING_MESSAGE);
         }
-        List<UserDocumentDTO> list = getProcessWrapper().getUser_document_list();
+        List<UserDocumentDTO> list = getDtoWrapper().getUser_document_list();
         for (int i = 0; i < model.getSize(); i++) {
             UserDocumentDTO dto = model.getElementAt(i);
             if (isValid) {
@@ -384,7 +378,12 @@ public class ValidationProcessView extends AbstractProcessView<UserDocumentDTO> 
 
     @Override
     public List<UserDocumentDTO> getValues(boolean update) {
-        return getProcessWrapper().getUser_document_list();
+        return getDtoWrapper().getUser_document_list();
+    }
+
+    @Override
+    public void getData() {
+    
     }
 
 }

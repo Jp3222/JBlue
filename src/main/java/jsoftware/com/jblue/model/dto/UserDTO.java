@@ -60,4 +60,8 @@ public class UserDTO extends PersonObject implements Cloneable {
                 .concat(getLastName2());
     }
 
+    public String getOfficeId() {
+        return get("office_id").toString();
+    }
+
 }

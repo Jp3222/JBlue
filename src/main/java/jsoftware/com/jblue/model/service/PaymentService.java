@@ -5,7 +5,6 @@
  */
 package jsoftware.com.jblue.model.service;
 
-import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
@@ -14,6 +13,10 @@ import jsoftware.com.jblue.model.dao.PaymentsDAO;
 import jsoftware.com.jblue.model.dao.ProcessDAO;
 import jsoftware.com.jblue.model.dto.PaymentDTO;
 import jsoftware.com.jblue.model.dto.PaymentListDTO;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
+import jsoftware.com.jblue.model.exp.ProcessException;
+import jsoftware.com.jblue.model.models.AbstractService;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**
@@ -41,7 +44,7 @@ import jsoftware.com.jutil.db.JDBConnection;
  * @version 1.0
  * @since 2026-01-17
  */
-public class PaymentService implements Serializable {
+public class PaymentService extends AbstractService {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,103 +52,49 @@ public class PaymentService implements Serializable {
     private final PaymentListDAO payment_list_dao;
     private final ProcessDAO process_dao;
 
-    public PaymentService(PaymentsDAO payment_dao, PaymentListDAO payment_list_dao, ProcessDAO process_dao) {
-        this.payment_dao = payment_dao;
-        this.payment_list_dao = payment_list_dao;
-        this.process_dao = process_dao;
+    public PaymentService(boolean dev_flag, String process_name) {
+        super(dev_flag, process_name);
+        this.payment_dao = new PaymentsDAO(dev_flag, process_name);
+        this.payment_list_dao = new PaymentListDAO(dev_flag, process_name);
+        this.process_dao = new ProcessDAO(dev_flag, process_name);
     }
 
-    public PaymentService(boolean flag_dev, String name_module) {
-        this.payment_dao = new PaymentsDAO(flag_dev, name_module);
-        this.payment_list_dao = new PaymentListDAO(flag_dev, name_module);
-        this.process_dao = new ProcessDAO(flag_dev, name_module);
-    }
-
-    /**
-     * Procesa y persiste la transacción integral de un pago en el sistema bajo
-     * un modelo de
-     * <b>Atomicidad (ACID)</b>.
-     * <p>
-     * Este método centraliza la orquestación de múltiples DAOs para garantizar
-     * que el registro del pago, el desglose de conceptos y la actualización del
-     * trámite ocurran como una única unidad de trabajo. Si falla un solo paso,
-     * el sistema revierte todos los cambios.</p>
-     * * <b>Flujo de ejecución:</b>
-     * <ol>
-     * <li>Desactivación de <code>autoCommit</code> para iniciar el bloque
-     * transaccional.</li>
-     * <li>Apertura de auditoría en bitácora (Inicio de transacción).</li>
-     * <li>Persistencia del encabezado del pago mediante
-     * {@link #savePayment}.</li>
-     * <li>Cambio de estado del trámite administrativo a 'PAGADO'.</li>
-     * <li>Cierre de auditoría y ejecución de <code>commit()</code>.</li>
-     * </ol>
-     * * <b>Gestión de Seguridad e Integridad:</b>
-     * <ul>
-     * <li>Cualquier anomalía dispara un <code>rollBack()</code>, invalidando
-     * los registros parciales.</li>
-     * <li>En el bloque <code>finally</code>, se restaura siempre el
-     * <code>autoCommit</code> a <code>true</code> para no afectar futuras
-     * operaciones del pool de conexiones.</li>
-     * </ul>
-     *
-     *
-     *
-     * @param connection Objeto {@link JDBConnection} con la sesión activa.
-     * @param procedure_id Identificador único (UUID/ID) del trámite que se está
-     * liquidando.
-     * @param user_name Nombre del operador/empleado que procesa el cobro (para
-     * auditoría).
-     * @param payment DTO con los datos maestros (Monto total, método de pago,
-     * etc.).
-     * @param list_items Lista detallada de los ítems que componen el total del
-     * pago.
-     * @return {@code true} si la transacción completa fue confirmada con éxito.
-     * @throws SQLException Si ocurre un error de integridad, conexión o reglas
-     * de negocio.
-     * @throws Exception Captura errores inesperados de ejecución para asegurar
-     * el rollback.
-     */
-    public boolean saveProcess(JDBConnection connection, String procedure_id, String user_name, PaymentDTO payment, List<PaymentListDTO> list_items) throws SQLException {
+    public boolean saveProcess(JDBConnection connection, String process_id, ProcessWrapperDTO dto) throws SQLException {
         boolean res = false;
         try {
             connection.setAutoCommit(false);
             //REGISTRO DE LA CABEZERA DEL PAGO
-            int key = savePayment(connection, payment);
+            int key = savePayment(connection, dto.getPayment());
             if (key <= 0) {
                 throw new SQLException("REGISTRO DE TOTAL CORRUPO");
             }
 
             //SE AÑADE EL PAGO
-            for (PaymentListDTO i : list_items) {
+            for (PaymentListDTO i : dto.getPayment_concept_list()) {
                 i.getMap().put("payment", key);
             }
             //REGISTRO DE LOS CONCEPTOS DE PAGO
-            res = savePaymentList(connection, list_items);
+            res = savePaymentList(connection, dto.getPayment_concept_list());
             if (!res) {
                 throw new SQLException("REGISTRO DE CONCEPTOS CORRUPO");
             }
 
             //[3]ACTUALIZA EL STATUS DEL TRAMITE A PAGADO
-            res = process_dao.payProcess(connection, procedure_id);
+            res = process_dao.payProcess(connection, dto.getPayment().getProcessId());
             if (!res) {
                 throw new SQLException("ACTUALIZACION DE \"STATUS PAGADO\" CORRUPO");
             }
             //REGISTRO EN BITACORA
             res = HistoryDAO.ProcessHistoryDAO.getInstance().update(connection, "SE PAGO EL TRAMITE: %s DEL USUARIO: %s".formatted(
                     key,
-                    user_name
+                    dto.getUser().toString()
             ));
             if (!res) {
                 throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
             }
             connection.commit();
-        } catch (SQLException e) {
+        } catch (SQLException | ProcessException e) {
             connection.rollBack();
-            throw e;
-        } catch (Exception e) {
-            connection.rollBack();
-            throw e;
         } finally {
             connection.setAutoCommit(true);
         }
@@ -225,6 +174,11 @@ public class PaymentService implements Serializable {
         if (!res) {
             throw new SQLException("REGISTRO DE CONCEPTOS DE PAGO EN BITACORA CORRUPTOS");
         }
+        return res;
+    }
+
+    public boolean getPaymentMadeThisYear(JDBConnection connection, ShopCartWrapperDTO dto) {
+        boolean res = false;
         return res;
     }
 }

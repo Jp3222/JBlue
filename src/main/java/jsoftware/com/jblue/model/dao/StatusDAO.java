@@ -29,7 +29,7 @@ public final class StatusDAO extends AbstractDAO implements TableComponentDAO<St
 
     @Override
     public List<StatusDTO> getList(JDBConnection connection, JTableModel model) throws SQLException {
-        String query = "SELECT * FROM cat_status";
+        String query = "SELECT * FROM cat_status WHERE date_finalize IS NULL";
         try (PreparedStatement ps = connection.getNewCallableStatement(query); ResultSet rs = ps.executeQuery();) {
             ResultSetMetaData md = rs.getMetaData();
             String[] fields = new String[md.getColumnCount()];

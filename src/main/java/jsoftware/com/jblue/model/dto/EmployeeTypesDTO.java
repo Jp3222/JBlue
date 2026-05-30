@@ -64,4 +64,11 @@ public class EmployeeTypesDTO extends JDBMapObject implements StatusObjectModel 
     public LocalDate getDateRegister() {
         return Formats.getLocalDate(get("date_register").toString());
     }
+
+    @Override
+    public String toString() {
+        return getEmployeeType();
+    }
+    
+    
 }

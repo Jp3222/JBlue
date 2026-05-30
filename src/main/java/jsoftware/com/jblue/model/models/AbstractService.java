@@ -4,6 +4,8 @@
  */
 package jsoftware.com.jblue.model.models;
 
+import jsoftware.com.jblue.sys.SystemSession;
+
 /**
  *
  * @author juanp
@@ -14,6 +16,7 @@ public class AbstractService implements ServiceModel {
 
     protected String user_message;
     protected int error_code;
+    protected final SystemSession session;
     private final boolean dev_flag;
     private final String process_name;
 
@@ -22,6 +25,7 @@ public class AbstractService implements ServiceModel {
         this.error_code = 0;
         this.process_name = process_name;
         this.dev_flag = dev_flag;
+        this.session = SystemSession.getInstancia();
     }
 
     @Override

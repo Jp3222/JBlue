@@ -123,7 +123,15 @@ public class ModuleWrapperDTO extends JDBMapObject {
 
     @Override
     public String toString() {
-        return "ModuleWrapperDTO{" + "module_id=" + module_id + ", module_name=" + module_name + ", current_employee=" + current_employee + ", current_administration=" + current_administration + ", controller_map=" + controller_map + '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("ModuleWrapperDTO{");
+        sb.append("module_id=").append(module_id).append("\n");
+        sb.append("module_name = ").append(module_name).append("\n");
+        sb.append("current_employee = ").append(current_employee).append("\n");
+        sb.append("current_administration = ").append(current_administration).append("\n");
+        sb.append("controller_map = ").append(controller_map).append("\n");
+        sb.append('}').append("\n");
+        return sb.toString();
     }
 
 }

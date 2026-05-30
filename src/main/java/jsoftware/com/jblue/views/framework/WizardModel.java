@@ -6,7 +6,6 @@ package jsoftware.com.jblue.views.framework;
 
 import java.io.Serializable;
 import java.util.List;
-import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.ModuleWrapperDTO;
 
 /**
@@ -37,7 +36,7 @@ public interface WizardModel<T extends ModuleWrapperDTO> extends Serializable {
     boolean nextStep();
 
     /**
-     * Gestiona la lógica necesaria para retroceder un paso.
+     * Validasi el paso actual es correcto para retroceder.
      *
      * @return true si es posible regresar.
      */
@@ -59,7 +58,7 @@ public interface WizardModel<T extends ModuleWrapperDTO> extends Serializable {
     /**
      * @return El arreglo de módulos/paneles que componen el asistente.
      */
-    List<AbstractModuleView<EmployeeRegisterWrapperDTO>> getViews();
+    List<AbstractModuleView<T>> getViews();
 
     /**
      * @return El índice de la vista que se está mostrando actualmente.

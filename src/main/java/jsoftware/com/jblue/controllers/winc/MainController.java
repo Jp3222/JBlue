@@ -27,6 +27,7 @@ import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.service.LoginService;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
+import jsoftware.com.jblue.views.win.LoginWindows;
 import jsoftware.com.jblue.views.win.WMainMenu;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.util.FuncLogs;
@@ -39,12 +40,12 @@ public class MainController extends WindowController {
 
     private static final long serialVersionUID = 1L;
 
-    private final WMainMenu view;
+    private WMainMenu view;
+    private LoginWindows login;
     private final LoginService service;
 
-    public MainController(WMainMenu view) {
-        this.view = view;
-        this.service = new LoginService(AppConfig.isDevMessages(), "LOGIN");
+    public MainController() {
+        this.service = new LoginService(AppConfig.isDevMessages(), "MAIN");
     }
 
     @Override
@@ -52,14 +53,6 @@ public class MainController extends WindowController {
         String actionCommand = e.getActionCommand();
         if (actionCommand == null || actionCommand.isBlank()) {
             JOptionPane.showMessageDialog(view, "El comando %s no es valido".formatted(actionCommand));
-            return;
-        }
-        if (view.getABOUT().getName().equals(actionCommand)) {
-            view.getABOUT().setVisible(true);
-            return;
-        }
-        if (view.getProfileWindow().getName().equals(actionCommand)) {
-            view.getProfileWindow().setVisible(true);
             return;
         }
         if (isExit(actionCommand)) {
@@ -75,7 +68,7 @@ public class MainController extends WindowController {
 
     public boolean isExit(String actionCommand) {
         boolean out = actionCommand.equals(WMainMenu.OUT);
-        view.closeWindows();
+//        view.closeWindows();
         if (out) {
             view.dispose();
         }
@@ -104,7 +97,10 @@ public class MainController extends WindowController {
     @Override
     public void windowClosed(WindowEvent we) {
         try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
-            service.logout(connection);
+            boolean logout = service.logout(connection);
+            if (logout) {
+                login.setVisible(true);
+            }
         } catch (SQLException | CorruptUpdateException ex) {
             log(ex, "windowClosed");
         }
@@ -124,6 +120,14 @@ public class MainController extends WindowController {
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
         }
+    }
+
+    public void setView(WMainMenu view) {
+        this.view = view;
+    }
+
+    public void setLogin(LoginWindows login) {
+        this.login = login;
     }
 
 }

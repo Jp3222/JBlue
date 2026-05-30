@@ -54,8 +54,7 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
     private boolean payment_valid;
 
     //Datos de proceso
-    private int process_type_id;
-    private int last_process_type;
+    private String process_type_id;
 
     //Datos originales antes de un update
     private UserDTO user_copy;
@@ -75,8 +74,7 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
         this.user_document_valid = false;
         this.water_intake_valid = false;
         this.payment_valid = false;
-        this.process_type_id = -1;
-        this.last_process_type = -1;
+        this.process_type_id = "-1";
     }
 
     public boolean isUser_valid() {
@@ -111,20 +109,12 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
         this.payment_valid = payment_valid;
     }
 
-    public int getProcess_type_id() {
+    public String getProcess_type_id() {
         return process_type_id;
     }
 
-    public void setProcess_type_id(int process_type_id) {
+    public void setProcess_type_id(String process_type_id) {
         this.process_type_id = process_type_id;
-    }
-
-    public int getLast_process_type() {
-        return last_process_type;
-    }
-
-    public void setLast_process_type(int last_process_type) {
-        this.last_process_type = last_process_type;
     }
 
     public UserDTO getUser_copy() {
@@ -190,22 +180,21 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 53 * hash + Objects.hashCode(this.user);
-        hash = 53 * hash + Objects.hashCode(this.user_document_list);
-        hash = 53 * hash + Objects.hashCode(this.water_intake);
-        hash = 53 * hash + Objects.hashCode(this.water_intake_type);
-        hash = 53 * hash + Objects.hashCode(this.payment);
-        hash = 53 * hash + Objects.hashCode(this.payment_concept_list);
-        hash = 53 * hash + Objects.hashCode(this.wki_user);
-        hash = 53 * hash + (this.user_valid ? 1 : 0);
-        hash = 53 * hash + (this.user_document_valid ? 1 : 0);
-        hash = 53 * hash + (this.water_intake_valid ? 1 : 0);
-        hash = 53 * hash + (this.payment_valid ? 1 : 0);
-        hash = 53 * hash + this.process_type_id;
-        hash = 53 * hash + this.last_process_type;
-        hash = 53 * hash + Objects.hashCode(this.user_copy);
-        hash = 53 * hash + Objects.hashCode(this.water_intake_copy);
-        hash = 53 * hash + Objects.hashCode(this.wki_user_copy);
+        hash = 61 * hash + Objects.hashCode(this.user);
+        hash = 61 * hash + Objects.hashCode(this.user_document_list);
+        hash = 61 * hash + Objects.hashCode(this.water_intake);
+        hash = 61 * hash + Objects.hashCode(this.water_intake_type);
+        hash = 61 * hash + Objects.hashCode(this.payment);
+        hash = 61 * hash + Objects.hashCode(this.payment_concept_list);
+        hash = 61 * hash + Objects.hashCode(this.wki_user);
+        hash = 61 * hash + (this.user_valid ? 1 : 0);
+        hash = 61 * hash + (this.user_document_valid ? 1 : 0);
+        hash = 61 * hash + (this.water_intake_valid ? 1 : 0);
+        hash = 61 * hash + (this.payment_valid ? 1 : 0);
+        hash = 61 * hash + Objects.hashCode(this.process_type_id);
+        hash = 61 * hash + Objects.hashCode(this.user_copy);
+        hash = 61 * hash + Objects.hashCode(this.water_intake_copy);
+        hash = 61 * hash + Objects.hashCode(this.wki_user_copy);
         return hash;
     }
 
@@ -233,10 +222,7 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
         if (this.payment_valid != other.payment_valid) {
             return false;
         }
-        if (this.process_type_id != other.process_type_id) {
-            return false;
-        }
-        if (this.last_process_type != other.last_process_type) {
+        if (!Objects.equals(this.process_type_id, other.process_type_id)) {
             return false;
         }
         if (!Objects.equals(this.user, other.user)) {

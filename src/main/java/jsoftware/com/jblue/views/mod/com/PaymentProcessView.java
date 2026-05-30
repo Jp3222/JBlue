@@ -9,18 +9,18 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import jsoftware.com.jblue.model.dao.PaymentConceptDAO;
-import jsoftware.com.jblue.model.dto.PaymentDTO;
 import jsoftware.com.jblue.model.dto.PaymentListDTO;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
-import jsoftware.com.jblue.views.framework.AbstractProcessView;
-import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**
  *
  * @author juanp
  */
-public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
+public final class PaymentProcessView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<List<PaymentListDTO>> {
 
     private static final long serialVersionUID = 1L;
     private final DefaultTableModel model;
@@ -28,8 +28,8 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
     /**
      * Creates new form PaymentProcess
      */
-    public PaymentProcessView(ProcessViewBuilder builder) throws Exception {
-        super(builder);
+    public PaymentProcessView(ProcessWrapperDTO dto) throws Exception {
+        super(dto);
         this.initComponents();
         this.model = new DefaultTableModel(new String[]{"No.", "Concepto", "Costo", "Tipo"}, 0);
         jTable1.setModel(model);
@@ -38,8 +38,11 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
 
     public void load() throws Exception {
         PaymentConceptDAO dao = new PaymentConceptDAO(true, getName());
-        try (JDBConnection c = connection();) {
-            List<String[]> paymentConcep = dao.getPaymentConcep(c, getProcessId());
+        try (JDBConnection connection = connection();) {
+            List<String[]> paymentConcep = dao.getPaymentConcep(
+                    connection, 
+                    String.valueOf(getDtoWrapper().getProcess_type_id())
+            );
             for (String[] i : paymentConcep) {
                 model.addRow(i);
             }
@@ -159,7 +162,7 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int input = JOptionPane.showConfirmDialog(this, "¿CONFIRMA QUE HA RECIBIDO EL MONTO DEL PAGO EN SU TOTALIDAD?", "pago", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (input == JOptionPane.YES_OPTION) {
-            getProcessWrapper().setPayment_valid(true);
+            getDtoWrapper().setPayment_valid(true);
             for (int i = 0; i < model.getRowCount(); i++) {
                 PaymentListDTO dto = new PaymentListDTO();
                 for (int j = 0; j < model.getRowCount(); j++) {
@@ -189,8 +192,17 @@ public final class PaymentProcessView extends AbstractProcessView<PaymentDTO> {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void getDataView() {
-        List<PaymentListDTO> payment_concept_list = getProcessWrapper().getPayment_concept_list();
+    public void getData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
+    @Override
+    public boolean isValuesOK() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<PaymentListDTO> getValues(boolean update) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

@@ -19,9 +19,10 @@ public class ProcessQuery {
                                                             employee_start,
                                                             administration_start, 
                                                             last_employee_update, 
-                                                            current_db_user
+                                                            current_db_user,
+                                                            user_id,
                                                             status
-                                                            ) VALUES(?,?,?,?,?,?)"
+                                                            ) VALUES(?,?,?,?,CURRENT_USER,?,?)"
                                                     """;
 
     public static final String UPDATE_PROCESS_VALID = """
@@ -29,7 +30,7 @@ public class ProcessQuery {
                                                     employee_valid = ?,
                                                     date_valid = CURRENT_TIMESTAMP,
                                                     last_employee_update = ?, 
-                                                    current_db_user = ?, 
+                                                    current_db_user = CURRENT_USER, 
                                                     status = ?
                                                 WHERE id = ? 
                                                 """;
@@ -38,7 +39,7 @@ public class ProcessQuery {
                                                     employee_payment = ?,
                                                     date_payment = CURRENT_TIMESTAMP,
                                                     last_employee_update = ?, 
-                                                    current_db_user = ?, 
+                                                    current_db_user = CURRENT_USER, 
                                                     status = ?
                                                 WHERE id = ? 
                                                 """;
@@ -49,7 +50,7 @@ public class ProcessQuery {
                                                     date_finalize = CURRENT_TIMESTAMP,
                                                     administration_end = ?
                                                     last_employee_update = ?, 
-                                                    current_db_user = ?, 
+                                                    current_db_user = CURRENT_USER, 
                                                     origina_user = ?,
                                                     water_intake = ?,
                                                     status = ?
@@ -61,15 +62,14 @@ public class ProcessQuery {
                                                     employee_print = ?,
                                                     date_print = CURRENT_TIMESTAMP,
                                                     last_employee_update = ?, 
-                                                    current_db_user = ?, 
-                                                    status =     ?
+                                                    current_db_user = CURRENT_USER
                                                 WHERE id = ? 
                                                 """;
 
     public static final String UPDATE_PROCESS_CADUCATE = """
                                                     UPDATE pro_process SET 
                                                         last_employee_update = ?, 
-                                                        current_db_user = ?, 
+                                                        current_db_user = CURRENT_USER, 
                                                         status = ?,
                                                         date_end = CURRENT_TIMESTAMP;
                                                     WHERE id = ? 
@@ -77,7 +77,7 @@ public class ProcessQuery {
     public static final String UPDATE_PROCESS_CANCEL = """
                                                     UPDATE pro_process SET
                                                         last_emeployee_update = ?,
-                                                        current_db_user,
+                                                        current_db_user = CURRENT_USER,
                                                         status = ?,
                                                         date_end = CURRENT_TIMESTAMP
                                                        WHERE id = ?

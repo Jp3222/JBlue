@@ -4,75 +4,53 @@
  */
 package jsoftware.com.jblue.model.service;
 
-import java.io.Serializable;
 import java.sql.SQLException;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.ProcessDAO;
 import jsoftware.com.jblue.model.dao.WaterIntakeDAO;
-import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.exp.ServiceException;
+import jsoftware.com.jblue.model.models.AbstractService;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**
  *
  * @author juanp
  */
-public class WaterIntakeService implements Serializable {
+public class WaterIntakeService extends AbstractService {
 
     private static final long serialVersionUID = 1L;
 
     private final WaterIntakeDAO wi_dao;
     private final ProcessDAO process_dao;
 
-    public WaterIntakeService(String process_id, WaterIntakeDAO user_dao, ProcessDAO process_dao) {
-        this.wi_dao = user_dao;
-        this.process_dao = process_dao;
+    public WaterIntakeService(boolean dev_flag, String process_name) {
+        super(dev_flag, process_name);
+        wi_dao = new WaterIntakeDAO(dev_flag, process_name);
+        process_dao = new ProcessDAO(dev_flag, process_name);
     }
 
-    public WaterIntakeService(boolean flag_dev, String name_module) {
-        this.wi_dao = new WaterIntakeDAO(flag_dev, name_module);
-        this.process_dao = new ProcessDAO(flag_dev, name_module);
-    }
-
-    public boolean save(JDBConnection connection, String process_type, WaterIntakeDTO dto) throws SQLException, Exception {
+    public boolean saveProcess(JDBConnection connection, String process_type, ProcessWrapperDTO dto) {
         boolean res = false;
         try {
-            connection.setAutoCommit(false);
             //[1]REGISTRA LOS DATOS DE LA NUEVA TOMA DE AGUA POTABLE]
-            int key = wi_dao.insert(connection, dto);
-            res = key > 0;
+            int water_intake_id = wi_dao.insert(connection, dto.getWater_intake());
+            res = water_intake_id > 0;
             if (!res) {
-                throw new SQLException("REGISTRO DE USUARIO ERRONEO");
+                throw new ServiceException(1, "REGISTRO DE USUARIO ERRONEO");
             }
+
             //REGISTRO EN BITACORA
             res = HistoryDAO.getInstance().insert(connection, Const.INDEX_WKI_WATER_INTAKES, "SE REGISTRO LA TOMA: %s - %s".formatted(
-                    key,
-                    dto.getDescription()
+                    water_intake_id,
+                    dto.getWater_intake().getDescription()
             ));
             if (!res) {
-                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
+                throw new ServiceException(2, "REGISTRO EN BITACORA CORRUPTO");
             }
-            //[2]ACTUALIZA EL STATUS A FINALIZADO
-            res = process_dao.endProcess(connection, process_type, String.valueOf(key));
-            if (!res) {
-                throw new SQLException("REGISTRO DEL PROCESO CORRUPTO");
-            }
-            //REGISTRA EN BITACORA
-            res = HistoryDAO.ProcessHistoryDAO.getInstance().insert(connection, "SE REGISTRO EL TRAMITE DE LA TOMA: %s".formatted(
-                    key
-            ));
-            if (!res) {
-                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-            }
-            connection.commit();
-        } catch (SQLException e) {
-            connection.rollBack();
-            throw e;
-        } catch (Exception e) {
-            connection.rollBack();
-            throw e;
-        } finally {
-            connection.setAutoCommit(true);
+        } catch (ServiceException | SQLException ex) {
+            System.getLogger(WaterIntakeService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return res;
     }

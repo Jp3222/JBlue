@@ -5,18 +5,14 @@
 package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.service.OwnerRegisterProcessService;
 import jsoftware.com.jblue.sys.SystemSession;
-import jsoftware.com.jblue.sys.app.AppConfig;
-import jsoftware.com.jblue.sys.app.AppFiles;
-import jsoftware.com.jblue.views.mod.pro.OwnerRegisterProcessView;
+import jsoftware.com.jblue.views.mod.pro.OwnerRegisterProcess;
 import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  *
@@ -26,12 +22,11 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
 
     private static final long serialVersionUID = 1L;
 
-    private final OwnerRegisterProcessView view;
+    private OwnerRegisterProcess view;
     private final OwnerRegisterProcessService service;
 
-    public OwnerRegisterProcessController(OwnerRegisterProcessView view) {
-        this.view = view;
-        this.service = new OwnerRegisterProcessService(AppConfig.isDevMessages(), view.getProcessTypeName());
+    public OwnerRegisterProcessController(boolean flag_dev, String mod_name) {
+        this.service = new OwnerRegisterProcessService(flag_dev, mod_name);
 
     }
 
@@ -53,8 +48,12 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
                 returnMessage(view, false, "LA ADMINISTRACION ACTUAL NO SE HA REGISTRADO O NO ES VALIDA");
                 return;
             }
-            
-            boolean res = service.save(c, view.getProcessId(), view.getProcessWrapper());
+
+            boolean res = service.save(
+                    c,
+                    view.getDtoWrapper().getProcess_type_id(),
+                    view.getDtoWrapper()
+            );
             if (!res) {
 
             }
@@ -63,7 +62,7 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
 
             }
         } catch (Exception e) {
-            log(e, "save");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -82,11 +81,4 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public void log(Exception e, String method_name) {
-        try {
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, view.getProcessTypeName(), method_name, e.getMessage());
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
-    }
 }

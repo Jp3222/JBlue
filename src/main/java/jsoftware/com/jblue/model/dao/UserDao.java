@@ -248,9 +248,6 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;
 
-        } catch (SQLException e) {
-            // La impresión del stack trace y el retorno de false deben manejarse en el Controlador (capa superior)
-            throw e; // Re-lanzar para que el controlador pueda hacer rollback
         }
     }
 
@@ -272,7 +269,7 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
         boolean res = false;
         String query = UserQuerys.UPDATE_USER_STATUS;
         try (PreparedStatement pstmt = connection.getNewPreparedStatement(query)) {
-            pstmt.setInt(1, Const.INDEX_STATUS_ELIMINADO);
+            pstmt.setInt(1, Const.INDEX_STATUS_ELIMINADO_3);
             pstmt.setInt(2, employeeId);
             pstmt.setInt(3, userId);
 
@@ -281,10 +278,6 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
             if (!res) {
                 throw new SQLException("EL QUERY AFECTO %s REGISTROS".formatted(affectedRows));
             }
-        } catch (SQLException e) {
-            throw e;
-        } catch (Exception e) {
-            throw e;
         }
         return res;
     }
@@ -300,7 +293,7 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
      * @return int[] donde index 0 = ID del usuario, index 1 = Status. {-1, -1}
      * si no existe. {0, 0} si ocurre una excepción.
      */
-    public int[] exists(JDBConnection connection, UserDTO dto) {
+    public boolean exists(JDBConnection connection, UserDTO dto) throws SQLException {
         // CORRECCIÓN: Agregamos "id" al SELECT para poder recuperarlo después
         StringBuilder sb = new StringBuilder("SELECT id, status FROM usr_user WHERE ");
         List<Object> params = new ArrayList<>();
@@ -328,31 +321,24 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
             params.add(dto.getLastName1());
             params.add(dto.getLastName2());
         }
-
         // Si el DTO no tiene criterios de búsqueda, evitamos un query inválido
+        boolean res = false;
         if (params.isEmpty()) {
-            return new int[]{-1, -1};
+            return res;
         }
-
         try (PreparedStatement ps = connection.getNewPreparedStatement(sb.toString())) {
             for (int i = 0; i < params.size(); i++) {
                 ps.setObject(i + 1, params.get(i));
             }
-
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    // Ahora ambos campos están disponibles en el ResultSet
-                    int id = rs.getInt("id");
-                    int status = rs.getInt("status");
-                    return new int[]{id, status};
+                res = rs.next();
+                if (res) {
+                    dto.put("id", rs.getString("id"));
+                    dto.put("status", rs.getString("status"));
                 }
             }
-            return new int[]{-1, -1}; // Usuario no encontrado
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return new int[]{0, 0}; // Error de persistencia
         }
+        return res;
     }
 
     /**

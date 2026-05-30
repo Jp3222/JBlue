@@ -27,7 +27,7 @@ public class LoginFailedException extends ServiceException {
     }
 
     public LoginFailedException() {
-        this(1, "NO SE PUDO INICIAR SESION CORRECTAMENTE");
+        this(LOGIN_FAILED_EXCEPTION, "NO SE PUDO INICIAR SESION CORRECTAMENTE");
     }
 
 }

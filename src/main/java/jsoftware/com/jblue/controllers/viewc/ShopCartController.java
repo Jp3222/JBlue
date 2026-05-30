@@ -23,9 +23,9 @@ import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.service.PaymentService;
-import jsoftware.com.jblue.util.GraphicsUtils;
+import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.cache.MemoListCache;
-import jsoftware.com.jblue.views.ShopCartView;
+import jsoftware.com.jblue.views.ShopCartProcess;
 import jsoftware.com.jblue.views.components.ObjectSearchComponent;
 import jsoftware.com.jblue.views.components.UserViewComponent;
 
@@ -38,15 +38,15 @@ public class ShopCartController extends Controller {
     private static final long serialVersionUID = 1L;
 
     private final MemoListCache<UserDTO> memo_cache;
-    private final ShopCartView view;
+    private final ShopCartProcess view;
     private final StringBuilder mov_book;
     private final PaymentService service;
 
-    public ShopCartController(ShopCartView view) {
+    public ShopCartController(ShopCartProcess view) {
         this.view = view;
         this.memo_cache = CacheFactory.USERS;
         this.mov_book = new StringBuilder(3000);
-        this.service = new PaymentService(view.isDev_flag(), view.getProcessTypeName());
+        this.service = new PaymentService(AppConfig.isDevMessages(), view.getDtoWrapper().getModule_name());
     }
 
     @Override
@@ -83,7 +83,6 @@ public class ShopCartController extends Controller {
     }
 
     void lock() {
-        GraphicsUtils.disableTreeLock(view.isRootPanelLock(), view.getRootPanel());
     }
 
     void info() {

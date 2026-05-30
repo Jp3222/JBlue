@@ -4,80 +4,34 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.controllers.compc.ComboBoxController;
-import jsoftware.com.jblue.model.dao.StreetDAO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.UserDocumentDTO;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.models.AbstractValidation;
 import jsoftware.com.jblue.sys.app.AppConfig;
-import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.util.GraphicsUtils;
-import jsoftware.com.jblue.views.framework.AbstractProcessView;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
-import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
-import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  *
  * @author juanp
  */
-public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO> implements DBObjectValues<UserDTO> {
+public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<UserDTO> {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form UserDataView
      */
-    public UserRegisterView(ProcessViewBuilder builder) {
-        super(builder);
+    public UserRegisterView(ProcessWrapperDTO dto) {
+        super(dto);
         initComponents();
-        build();
-    }
-
-    @Override
-    public void build() {
-        components();
-        events();
-        initialState();
-        finalState();
-    }
-
-    @Override
-    public void components() {
-        super.components(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-    }
-
-    @Override
-    public void events() {
-        StreetDAO street_dao = new StreetDAO(AppConfig.isDevMessages(), getProcessTypeName());
-
-        ComboBoxController<StreetDTO> street_1 = new ComboBoxController<>(street1_field, street_dao);
-        ComboBoxController<StreetDTO> street_2 = new ComboBoxController<>(street2_field, street_dao);
-        comboBoxInit(street_1, street1_field.getItemCount() <= 0);
-        comboBoxInit(street_2, street2_field.getItemCount() <= 0);
-    }
-
-    public void comboBoxInit(ComboBoxController<?> c, boolean empty) {
-        if (empty) {
-            c.loadData();
-        }
-    }
-
-    @Override
-    public void initialState() {
-        super.initialState(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-    }
-
-    @Override
-    public void finalState() {
-        super.finalState(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
     /**
@@ -503,17 +457,19 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void getDataView() {
-        if (!isValuesOK()) {
+    public void getData() {
+        boolean res = isValuesOK();
+        if (!res) {
             return;
         }
-        UserDTO o = getValues(false);
-        getProcessWrapper().getUser().getMap().putAll(o.getMap());
+        getDtoWrapper().setUser_valid(res);
+        UserDTO values = getValues(false);
+        getDtoWrapper().getUser().setMap(values.getMap());
     }
 
     @Override
     public boolean isValuesOK() {
-        boolean res = true; // Empezamos asumiendo que es válido
+        boolean res; // Empezamos asumiendo que es válido
 
         AbstractValidation v = new AbstractValidation();
         v.addRuler("curp", curp_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()));
@@ -546,7 +502,6 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
         }
 
         // Guardamos el estado real en el Wrapper
-        getProcessWrapper().setUser_valid(res);
         return res;
     }
 
@@ -554,59 +509,47 @@ public final class UserRegisterView extends AbstractProcessView<UserDocumentDTO>
     public UserDTO getValues(boolean update) {
         Map<String, Object> map = new HashMap<>();
         UserDTO dto = new UserDTO();
-        try {
-            // Obtenemos los valores actuales de los campos de texto
-            String curp = Formats.geDBInputFormat(curp_field.getText());
-            String firstName = Formats.geDBInputFormat(first_name_field.getText());
-            String lastName1 = Formats.geDBInputFormat(last_name1_field.getText());
-            String lastName2 = Formats.geDBInputFormat(last_name2_field.getText());
-            String email = email_field.getText();
-            String number_phone1 = Formats.geDBInputFormat(phone_number1_field.getText());
-            String number_phone2 = Formats.geDBInputFormat(phone_number2_field.getText());
-            String gender = String.valueOf(gender_field.getSelectedIndex());
-            String street1 = street1_field.getItemAt(street1_field.getSelectedIndex()).getId();
-            String street2;
-            if (street2_field.getSelectedIndex() > 0) {
-                street2 = street2_field.getItemAt(street2_field.getSelectedIndex()).getId();
-            } else {
-                street2 = null;
-            }
-            // --- LÓGICA PARA NUEVO REGISTRO ---
-            Func.putIfPresentAndNotBlank(map, "curp", curp);
-            Func.putIfPresentAndNotBlank(map, "first_name", firstName);
-            Func.putIfPresentAndNotBlank(map, "last_name1", lastName1);
-            Func.putIfPresentAndNotBlank(map, "last_name2", lastName2);
-            Func.putIfNotNull(map, "gender", gender);
 
-            Func.putIfNotNull(map, "street1", street1);
-            Func.putIfPresentAndNotBlank(map, "street1_selected", street1_field.getSelectedIndex());
-            if (Func.isNotNull(email)) {
-                Func.putIfPresentAndNotBlank(map, "email", email);
-            }
-            if (Func.isNotNull(number_phone1)) {
-                Func.putIfPresentAndNotBlank(map, "number_phone1", number_phone1);
-            }
-            if (Func.isNotNull(number_phone2)) {
-                Func.putIfPresentAndNotBlank(map, "number_phone2", number_phone2);
-            }
-            Func.putIfPresentAndNotBlank(map, "street2_selected", street2_field.getSelectedIndex());
-            if (Func.isNotNull(street2)) {
-                Func.putIfNotNull(map, "street2", street2);
-            }
+        // Obtenemos los valores actuales de los campos de texto
+        String curp = Formats.geDBInputFormat(curp_field.getText());
+        String firstName = Formats.geDBInputFormat(first_name_field.getText());
+        String lastName1 = Formats.geDBInputFormat(last_name1_field.getText());
+        String lastName2 = Formats.geDBInputFormat(last_name2_field.getText());
+        String email = email_field.getText();
+        String number_phone1 = Formats.geDBInputFormat(phone_number1_field.getText());
+        String number_phone2 = Formats.geDBInputFormat(phone_number2_field.getText());
+        String gender = String.valueOf(gender_field.getSelectedIndex());
+        String street1 = street1_field.getItemAt(street1_field.getSelectedIndex()).getId();
+        String street2;
+        if (street2_field.getSelectedIndex() > 0) {
+            street2 = street2_field.getItemAt(street2_field.getSelectedIndex()).getId();
+        } else {
+            street2 = null;
+        }
+        // --- LÓGICA PARA NUEVO REGISTRO ---
+        Func.putIfPresentAndNotBlank(map, "curp", curp);
+        Func.putIfPresentAndNotBlank(map, "first_name", firstName);
+        Func.putIfPresentAndNotBlank(map, "last_name1", lastName1);
+        Func.putIfPresentAndNotBlank(map, "last_name2", lastName2);
+        Func.putIfNotNull(map, "gender", gender);
 
-        } catch (Exception e) {
-            log(e, "getValues");
+        Func.putIfNotNull(map, "street1", street1);
+        Func.putIfPresentAndNotBlank(map, "street1_selected", street1_field.getSelectedIndex());
+        if (Func.isNotNull(email)) {
+            Func.putIfPresentAndNotBlank(map, "email", email);
+        }
+        if (Func.isNotNull(number_phone1)) {
+            Func.putIfPresentAndNotBlank(map, "number_phone1", number_phone1);
+        }
+        if (Func.isNotNull(number_phone2)) {
+            Func.putIfPresentAndNotBlank(map, "number_phone2", number_phone2);
+        }
+        Func.putIfPresentAndNotBlank(map, "street2_selected", street2_field.getSelectedIndex());
+        if (Func.isNotNull(street2)) {
+            Func.putIfNotNull(map, "street2", street2);
         }
         dto.setMap(map);
         return dto;
-    }
-
-    public void log(Exception e, String method_name) {
-        try {
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, getProcessTypeName(), method_name, e.getMessage());
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
     }
 
 }

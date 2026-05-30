@@ -41,14 +41,17 @@ public class WizardController extends Controller {
     }
 
     public void next() {
+        System.out.println("NEXT INICIO");
         if (!wizard.nextStep()) {
+            System.out.println("NO ES SIGUIENTE");
             return;
         }
         if (wizard.getCurrentViewIndex() < wizard.getViews().size() - 1) {
             wizard.nextIndex();
             wizard.updateUi(WizardModel.NEXT_VIEW_BUTTON);
+            wizard.updateUi(WizardModel.NAVIGATION_STEP_BAR);
         }
-        wizard.updateUi(WizardModel.NAVIGATION_STEP_BAR);
+        System.out.println("FIN NEXT");
     }
 
     public void previous() {

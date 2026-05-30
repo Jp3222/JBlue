@@ -21,36 +21,36 @@ package jsoftware.com.jblue.model.constants.des;
  */
 public interface TableStatusIndexConst {
 
-    /**
-     * Representa un registro vigente y disponible para operaciones normales.
-     */
-    public static final int INDEX_STATUS_ACTIVO = 1;
-
-    /**
-     * Representa un registro deshabilitado temporalmente, no visible en
-     * operaciones comunes.
-     */
-    public static final int INDEX_STATUS_INACTIVO = 2;
-
-    /**
-     * Representa un borrado lógico; el registro permanece en DB para integridad
-     * referencial.
-     */
-    public static final int INDEX_STATUS_ELIMINADO = 3;
-
-    /**
-     * Indica que un proceso o trámite ha concluido satisfactoriamente.
-     */
-    public static final int INDEX_STATUS_FINALIZADO = 4;
-
-    /**
-     * Indica que un proceso o trámite fue abortado sin completarse.
-     */
-    public static final int INDEX_STATUS_CANCELADO = 5;
-
-    /**
-     * Estado de seguridad: el registro existe pero está restringido para el
-     * acceso del cliente/usuario.
-     */
-    public static final int INDEX_STATUS_NO_ACCESIBLE_PARA_EL_USUARIO = 6;
+    public static final int INDEX_STATUS_ACTIVO_1 = 1;
+    public static final int INDEX_STATUS_INACTIVO_2 = 2;
+    public static final int INDEX_STATUS_ELIMINADO_3 = 3;
+    public static final int INDEX_STATUS_FINALIZADO_4 = 4;
+    public static final int INDEX_STATUS_CANCELADO_5 = 5;
+    public static final int INDEX_STATUS_NO_ACCESIBLE_PARA_EL_USUARIO_6 = 6;
+    public static final int INDEX_STATUS_PAGADO_7 = 7;
+    public static final int INDEX_STATUS_PENDIENTE_8 = 8;
+    public static final int INDEX_STATUS_EN_PROCESO_9 = 9;
+    public static final int INDEX_STATUS_INICIADO_10 = 10;
+    public static final int INDEX_STATUS_VALIDADO_11 = 11;
+    public static final int INDEX_STATUS_PAGADO_12 = 12;
+    public static final int INDEX_STATUS_FINALIZADO_13 = 13;
+    public static final int INDEX_STATUS_CADUCADO_14 = 14;
+    public static final int INDEX_STATUS_HABILITADO_15 = 15;
+    public static final int INDEX_STATUS_DESHABILITADO_16 = 16;
+    public static final int INDEX_STATUS_ACTIVO_TEMPORALMENTE_17 = 17;
+    public static final int INDEX_STATUS_REGISTRADO_18 = 18;
+    public static final int INDEX_STATUS_RECHAZADO_19 = 19;
+    public static final int INDEX_STATUS_EN_PROCESO_20 = 20;
+    public static final int INDEX_STATUS_REGISTRADA_21 = 21;
+    public static final int INDEX_STATUS_RECONECTADA_22 = 22;
+    public static final int INDEX_STATUS_DESCONECTADA_23 = 23;
+    public static final int INDEX_STATUS_CONCEPTO_INMUTABLE_24 = 24;
+    public static final int INDEX_STATUS_CONCEPTO_FINALIZADO_25 = 25;
+    public static final int INDEX_STATUS_DOCUMENTO_CAPTURADO_26 = 26;
+    public static final int INDEX_STATUS_DOCUMENTO_VALIDADO_27 = 27;
+    public static final int INDEX_STATUS_DOCUMENTO_RECHAZADO_28 = 28;
+    public static final int INDEX_STATUS_DOCUMENTO_EN_REVISION_29 = 29;
+    public static final int INDEX_STATUS_DOCUMENTO_LIBERADO_30 = 30;
+    public static final int INDEX_STATUS_SITUACION_CRITICA_31 = 31;
+    public static final int INDEX_STATUS_REPORTADO_32 = 32;
 }

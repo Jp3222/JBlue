@@ -38,10 +38,10 @@ public class WaterIntakeUserDAO extends AbstractDAO {
             ps.setString(2, dto.getWaterIntakeId());
             ps.setString(3, dto.getWaterIntakeTypeId());
             ps.setString(4, dto.getDescription());
-            ps.setString(5, dto.getNotes());
+            //ps.setString(5, dto.getNotes());
             ps.setString(6, dto.getEmployeeRegister());
             ps.setString(7, dto.getLastEmployeeUpdate());
-            ps.setString(8, dto.getOriginalProcessId());
+            //ps.setString(8, dto.getOriginalProcessId());
             ps.setString(9, dto.getLastProcessType());
             ps.setInt(10, dto.getStatus());
             res = ps.executeUpdate() == 1;

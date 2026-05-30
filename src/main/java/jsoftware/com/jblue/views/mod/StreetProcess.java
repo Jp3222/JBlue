@@ -12,12 +12,12 @@ import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
  *
  * @author juanp
  */
-public final class StreetView extends  AbstractProcessView<StreetDTO>{
+public final class StreetProcess extends  AbstractProcessView<StreetDTO>{
 
     /**
      * Creates new form StreetView
      */
-    public StreetView(ProcessViewBuilder builder) {
+    public StreetProcess(ProcessViewBuilder builder) {
         super(builder);
         initComponents();
     }
@@ -92,14 +92,14 @@ public final class StreetView extends  AbstractProcessView<StreetDTO>{
 
         register_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/Bundle"); // NOI18N
-        register_button.setText(bundle.getString("StreetView.register_button.text")); // NOI18N
-        register_button.setActionCommand(bundle.getString("StreetView.register_button.actionCommand")); // NOI18N
+        register_button.setText(bundle.getString("StreetProcess.register_button.text")); // NOI18N
+        register_button.setActionCommand(bundle.getString("StreetProcess.register_button.actionCommand")); // NOI18N
         register_button.setName("register_button"); // NOI18N
         jPanel15.add(register_button);
 
         search_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        search_button.setText(bundle.getString("StreetView.search_button.text")); // NOI18N
-        search_button.setActionCommand(bundle.getString("StreetView.search_button.actionCommand")); // NOI18N
+        search_button.setText(bundle.getString("StreetProcess.search_button.text")); // NOI18N
+        search_button.setActionCommand(bundle.getString("StreetProcess.search_button.actionCommand")); // NOI18N
         search_button.setName("search_button"); // NOI18N
         jPanel15.add(search_button);
 
@@ -124,7 +124,7 @@ public final class StreetView extends  AbstractProcessView<StreetDTO>{
 
         jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText(bundle.getString("StreetView.jLabel4.text")); // NOI18N
+        jLabel4.setText(bundle.getString("StreetProcess.jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
         jLabel4.setPreferredSize(new java.awt.Dimension(500, 100));
         panel_campos.add(jLabel4);
@@ -132,12 +132,12 @@ public final class StreetView extends  AbstractProcessView<StreetDTO>{
         jPanel10.setName("jPanel10"); // NOI18N
         jPanel10.setLayout(new java.awt.BorderLayout());
 
-        jLabel6.setText(bundle.getString("StreetView.jLabel6.text")); // NOI18N
+        jLabel6.setText(bundle.getString("StreetProcess.jLabel6.text")); // NOI18N
         jLabel6.setName("jLabel6"); // NOI18N
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel10.add(jLabel6, java.awt.BorderLayout.LINE_START);
 
-        street_name_field.setText(bundle.getString("StreetView.street_name_field.text")); // NOI18N
+        street_name_field.setText(bundle.getString("StreetProcess.street_name_field.text")); // NOI18N
         street_name_field.setName("street_name_field"); // NOI18N
         jPanel10.add(street_name_field, java.awt.BorderLayout.CENTER);
 
@@ -146,7 +146,7 @@ public final class StreetView extends  AbstractProcessView<StreetDTO>{
         jPanel1.setName("jPanel1"); // NOI18N
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setText(bundle.getString("StreetView.jLabel2.text")); // NOI18N
+        jLabel2.setText(bundle.getString("StreetProcess.jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel1.add(jLabel2, java.awt.BorderLayout.LINE_START);
@@ -167,22 +167,22 @@ public final class StreetView extends  AbstractProcessView<StreetDTO>{
 
         save_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         save_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/disquete.png"))); // NOI18N
-        save_button.setText(bundle.getString("StreetView.save_button.text")); // NOI18N
-        save_button.setActionCommand(bundle.getString("StreetView.save_button.actionCommand")); // NOI18N
+        save_button.setText(bundle.getString("StreetProcess.save_button.text")); // NOI18N
+        save_button.setActionCommand(bundle.getString("StreetProcess.save_button.actionCommand")); // NOI18N
         save_button.setName("save_button"); // NOI18N
         jPanel3.add(save_button);
 
         update_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         update_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/sincronizar.png"))); // NOI18N
-        update_button.setText(bundle.getString("StreetView.update_button.text")); // NOI18N
-        update_button.setActionCommand(bundle.getString("StreetView.update_button.actionCommand")); // NOI18N
+        update_button.setText(bundle.getString("StreetProcess.update_button.text")); // NOI18N
+        update_button.setActionCommand(bundle.getString("StreetProcess.update_button.actionCommand")); // NOI18N
         update_button.setName("update_button"); // NOI18N
         jPanel3.add(update_button);
 
         delete_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         delete_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/eliminar.png"))); // NOI18N
-        delete_button.setText(bundle.getString("StreetView.delete_button.text")); // NOI18N
-        delete_button.setActionCommand(bundle.getString("StreetView.delete_button.actionCommand")); // NOI18N
+        delete_button.setText(bundle.getString("StreetProcess.delete_button.text")); // NOI18N
+        delete_button.setActionCommand(bundle.getString("StreetProcess.delete_button.actionCommand")); // NOI18N
         delete_button.setName("delete_button"); // NOI18N
         jPanel3.add(delete_button);
 
@@ -190,8 +190,8 @@ public final class StreetView extends  AbstractProcessView<StreetDTO>{
 
         cancel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         cancel_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
-        cancel_button.setText(bundle.getString("StreetView.cancel_button.text")); // NOI18N
-        cancel_button.setActionCommand(bundle.getString("StreetView.cancel_button.actionCommand")); // NOI18N
+        cancel_button.setText(bundle.getString("StreetProcess.cancel_button.text")); // NOI18N
+        cancel_button.setActionCommand(bundle.getString("StreetProcess.cancel_button.actionCommand")); // NOI18N
         cancel_button.setName("cancel_button"); // NOI18N
         options_panel.add(cancel_button);
 
@@ -208,7 +208,7 @@ public final class StreetView extends  AbstractProcessView<StreetDTO>{
         jPanel5.setLayout(new java.awt.BorderLayout(5, 5));
 
         reload_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
-        reload_button.setActionCommand(bundle.getString("StreetView.reload_button.actionCommand")); // NOI18N
+        reload_button.setActionCommand(bundle.getString("StreetProcess.reload_button.actionCommand")); // NOI18N
         reload_button.setName("reload_button"); // NOI18N
         reload_button.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel5.add(reload_button, java.awt.BorderLayout.WEST);
@@ -231,13 +231,13 @@ public final class StreetView extends  AbstractProcessView<StreetDTO>{
         jPanel11.setLayout(new java.awt.GridLayout(1, 2, 5, 5));
 
         back_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/previous.png"))); // NOI18N
-        back_button.setActionCommand(bundle.getString("StreetView.back_button.actionCommand")); // NOI18N
+        back_button.setActionCommand(bundle.getString("StreetProcess.back_button.actionCommand")); // NOI18N
         back_button.setName("back_button"); // NOI18N
         back_button.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel11.add(back_button);
 
         next_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/next-button.png"))); // NOI18N
-        next_button.setActionCommand(bundle.getString("StreetView.next_button.actionCommand")); // NOI18N
+        next_button.setActionCommand(bundle.getString("StreetProcess.next_button.actionCommand")); // NOI18N
         next_button.setName("next_button"); // NOI18N
         next_button.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanel11.add(next_button);
@@ -277,13 +277,13 @@ public final class StreetView extends  AbstractProcessView<StreetDTO>{
         jPanel32.setLayout(new java.awt.BorderLayout());
 
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel18.setText(bundle.getString("StreetView.jLabel18.text")); // NOI18N
+        jLabel18.setText(bundle.getString("StreetProcess.jLabel18.text")); // NOI18N
         jLabel18.setName("jLabel18"); // NOI18N
         jPanel32.add(jLabel18, java.awt.BorderLayout.CENTER);
 
         count.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        count.setText(bundle.getString("StreetView.count.text")); // NOI18N
-        count.setToolTipText(bundle.getString("StreetView.count.toolTipText")); // NOI18N
+        count.setText(bundle.getString("StreetProcess.count.text")); // NOI18N
+        count.setToolTipText(bundle.getString("StreetProcess.count.toolTipText")); // NOI18N
         count.setName("count"); // NOI18N
         count.setPreferredSize(new java.awt.Dimension(50, 16));
         jPanel32.add(count, java.awt.BorderLayout.LINE_END);
@@ -291,8 +291,8 @@ public final class StreetView extends  AbstractProcessView<StreetDTO>{
         status_bar_panel.add(jPanel32, java.awt.BorderLayout.WEST);
 
         range.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        range.setText(bundle.getString("StreetView.range.text")); // NOI18N
-        range.setToolTipText(bundle.getString("StreetView.range.toolTipText")); // NOI18N
+        range.setText(bundle.getString("StreetProcess.range.text")); // NOI18N
+        range.setToolTipText(bundle.getString("StreetProcess.range.toolTipText")); // NOI18N
         range.setName("range"); // NOI18N
         status_bar_panel.add(range, java.awt.BorderLayout.CENTER);
 
@@ -301,13 +301,13 @@ public final class StreetView extends  AbstractProcessView<StreetDTO>{
         jPanel29.setLayout(new java.awt.BorderLayout());
 
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel17.setText(bundle.getString("StreetView.jLabel17.text")); // NOI18N
+        jLabel17.setText(bundle.getString("StreetProcess.jLabel17.text")); // NOI18N
         jLabel17.setName("jLabel17"); // NOI18N
         jPanel29.add(jLabel17, java.awt.BorderLayout.CENTER);
 
         total.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        total.setText(bundle.getString("StreetView.total.text")); // NOI18N
-        total.setToolTipText(bundle.getString("StreetView.total.toolTipText")); // NOI18N
+        total.setText(bundle.getString("StreetProcess.total.text")); // NOI18N
+        total.setToolTipText(bundle.getString("StreetProcess.total.toolTipText")); // NOI18N
         total.setName("total"); // NOI18N
         total.setPreferredSize(new java.awt.Dimension(50, 16));
         jPanel29.add(total, java.awt.BorderLayout.LINE_END);

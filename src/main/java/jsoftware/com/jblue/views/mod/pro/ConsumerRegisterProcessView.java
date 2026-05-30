@@ -5,36 +5,25 @@
 package jsoftware.com.jblue.views.mod.pro;
 
 import java.awt.CardLayout;
-import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.views.UserView;
-import jsoftware.com.jblue.views.WaterIntakesView;
-import jsoftware.com.jblue.views.framework.AbstractProcessView;
-import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
-import jsoftware.com.jblue.views.mod.com.PaymentProcessView;
-import jsoftware.com.jblue.views.mod.com.ValidationProcessView;
+import java.util.List;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.vabst.AbstractWizardView;
 
 /**
  *
  * @author juanp
  */
-public final class ConsumerRegisterProcessView extends AbstractProcessView<UserDTO> {
+public final class ConsumerRegisterProcessView extends AbstractWizardView<ProcessWrapperDTO> {
 
     private static final long serialVersionUID = 1L;
-    private final UserView user_view;
-    private final ValidationProcessView validation_process_view;
-    private final PaymentProcessView payment_concepts_view;
-    private final WaterIntakesView water_intake_view;
     private CardLayout ly;
 
     /**
      * Creates new form ProcessView
      */
-    public ConsumerRegisterProcessView(ProcessViewBuilder builder) throws Exception {
+    public ConsumerRegisterProcessView(ProcessWrapperDTO builder) throws Exception {
         super(builder);
-        this.user_view = new UserView(builder);
-        this.validation_process_view = new ValidationProcessView(builder);
-        this.payment_concepts_view = new PaymentProcessView(builder);
-        this.water_intake_view = new WaterIntakesView(builder);
         initComponents();
         build();
     }
@@ -61,10 +50,6 @@ public final class ConsumerRegisterProcessView extends AbstractProcessView<UserD
     @Override
     public void components() {
         this.ly = (CardLayout) root_panel.getLayout();
-        this.root_panel.add(user_view, user_view.getName());
-        this.root_panel.add(validation_process_view, validation_process_view.getName());
-        this.root_panel.add(water_intake_view, water_intake_view.getName());
-        this.root_panel.add(payment_concepts_view, payment_concepts_view.getName());
     }
 
     @Override
@@ -161,7 +146,13 @@ public final class ConsumerRegisterProcessView extends AbstractProcessView<UserD
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void getDataView() {
-
+    public void executeFinal() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    @Override
+    public List<AbstractModuleView<ProcessWrapperDTO>> getViews() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

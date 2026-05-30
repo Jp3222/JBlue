@@ -17,23 +17,19 @@
 package jsoftware.com.jblue.controllers;
 
 import jsoftware.com.jblue.controllers.viewc.EmployeeController;
-import jsoftware.com.jblue.controllers.winc.WindowController;
-import jsoftware.com.jblue.controllers.viewc.UserController;
-import jsoftware.com.jblue.controllers.winc.LoginController;
 import jsoftware.com.jblue.controllers.viewc.ShopCartController;
 import jsoftware.com.jblue.controllers.viewc.StreetsController;
+import jsoftware.com.jblue.controllers.viewc.UserController;
 import jsoftware.com.jblue.controllers.viewc.WaterIntakesController;
 import jsoftware.com.jblue.controllers.viewc.WaterIntakesTypesController;
-import jsoftware.com.jblue.controllers.winc.MainController;
+import jsoftware.com.jblue.controllers.winc.LoginController;
+import jsoftware.com.jblue.controllers.winc.WindowController;
 import jsoftware.com.jblue.views.EmployeesView;
-import jsoftware.com.jblue.views.WaterIntakesTypesView;
-import jsoftware.com.jblue.views.UserView;
+import jsoftware.com.jblue.views.ShopCartProcess;
 import jsoftware.com.jblue.views.StreetsView;
-import jsoftware.com.jblue.views.ShopCartView;
+import jsoftware.com.jblue.views.UserView;
+import jsoftware.com.jblue.views.WaterIntakesTypesView;
 import jsoftware.com.jblue.views.WaterIntakesView;
-import jsoftware.com.jblue.views.win.LoginWindows;
-import jsoftware.com.jblue.views.win.ConfigWindow;
-import jsoftware.com.jblue.views.win.WMainMenu;
 
 /**
  *
@@ -41,15 +37,15 @@ import jsoftware.com.jblue.views.win.WMainMenu;
  */
 public class FactoryController {
 
-    public static WindowController getLoginController(LoginWindows view, ConfigWindow view_config) {
-        return new LoginController(view, view_config);
+//    public static WindowController getLoginController(S) {
+//        return new LoginController();
+//    }
+
+    public static WindowController getLoginController(boolean flag_dev, String process_name) {
+        return new LoginController(flag_dev, process_name);
     }
 
-    public static WindowController getLoginController(WMainMenu view) {
-        return new MainController(view);
-    }
-
-    public static Controller getShopCartController(ShopCartView view) {
+    public static Controller getShopCartController(ShopCartProcess view) {
         return new ShopCartController(view);
     }
 

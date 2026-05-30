@@ -62,4 +62,9 @@ public class PersonObject extends AuditableObjectMap {
         return get("street1").toString();
     }
 
+    @Override
+    public String toString() {
+        return getFirstName().concat(" ").concat(getLastName1()).concat(" ").concat(getLastName2());
+    }
+
 }

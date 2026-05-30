@@ -17,28 +17,25 @@
 package jsoftware.com.jblue.views;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import jsoftware.com.jblue.model.dto.PaymentListDTO;
-import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
+import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
 import jsoftware.com.jblue.util.Func;
-import jsoftware.com.jblue.views.framework.AbstractProcessView;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.ListSearchViewModel;
-import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 
 /**
  *
  * @author juan pablo campos casasanero
  * @version 1.0
  */
-public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> implements ListSearchViewModel<WaterIntakeDTO> {
+public final class ShopCartProcess extends AbstractModuleView<ShopCartWrapperDTO> implements ListSearchViewModel<WaterIntakeUserDTO> {
 
     public static String DEFAULT_LAST_MONTH_PAID = "XX";
     public static String DEFAULT_LAST_YEAR_PAID = "XXXX";
@@ -46,72 +43,35 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
 
     private static final long serialVersionUID = 1L;
 
-    private WaterIntakeDTO object_search;
-    private DefaultListModel<WaterIntakeDTO> list_model;
-    private ArrayList<PaymentListDTO> months_paid;
-    private JCheckBox[] months_field_arr;
+    /**
+     * Objecto buscado en el apartado de busqueda
+     */
+    private WaterIntakeUserDTO object_search;
+    /**
+     * Modelo por defecto de la lista
+     */
+    private DefaultListModel<WaterIntakeUserDTO> list_model;
+    /**
+     * Lista de comboboxes
+     */
+    private final List<JCheckBox> list_months_paid;
 
     /**
      * Creates new form VCaja
      */
-    public ShopCartView(ProcessViewBuilder builder) {
+    public ShopCartProcess(ShopCartWrapperDTO builder) {
         super(builder);
         initComponents();
+        list_model = new DefaultListModel<>();
+        wki_user_list.setModel(list_model);
+        list_months_paid = new ArrayList<>(12);
+        list_months_paid.addAll(Arrays.asList(ene, feb, mar, abr, may, jun, jul, sep, oct, nov, dic));
         build();
     }
 
     @Override
     public void build() {
-        components();
-        events();
-        finalState();
-        initialState();
-    }
 
-    @Override
-    public void events() {
-        all_months_button.addActionListener((e) -> {
-            for (JCheckBox i : months_field_arr) {
-                i.setSelected(all_months_button.isSelected());
-            }
-        });
-    }
-
-    @Override
-    public void components() {
-        this.list_model = new DefaultListModel<>();
-        this.months_field_arr = new JCheckBox[]{
-            ene, feb, mar,
-            abr, may, jun,
-            jul, ago, sep,
-            oct, nov, dic
-        };
-
-    }
-
-    @Override
-    public void initialState() {
-        last_month_paid_field.setText(DEFAULT_LAST_MONTH_PAID);
-        last_year_paid_field.setText(DEFAULT_LAST_YEAR_PAID);
-        months_paid_field.setText(DEFAULT_MONTHS_PAID);
-        for (JCheckBox i : months_field_arr) {
-            i.setSelected(false);
-            i.setEnabled(false);
-        }
-
-    }
-
-    @Override
-    public void finalState() {
-
-    }
-
-    public JComponent getRootPanel() {
-        return root_panel;
-    }
-
-    public boolean isRootPanelLock() {
-        return lock_button.isSelected();
     }
 
     /**
@@ -137,18 +97,18 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         search_field_list = new javax.swing.JTextField();
         count_elements_label = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        users_list = new javax.swing.JList<>();
+        wki_user_list = new javax.swing.JList<>();
         user_info_panel = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        owner_name_field = new javax.swing.JTextField();
+        user_name_field = new javax.swing.JTextField();
         info_button = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         user_type_field = new javax.swing.JTextField();
         jPanel13 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        type_toma_field = new javax.swing.JTextField();
+        water_intake_type = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         cost_field = new javax.swing.JTextField();
@@ -156,6 +116,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         jPanel5 = new javax.swing.JPanel();
         all_months_button = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
+        current_year = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         months_paid_field = new javax.swing.JTextField();
@@ -280,9 +241,9 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
 
         search_register_panel.add(jPanel6, java.awt.BorderLayout.NORTH);
 
-        users_list.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        users_list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane2.setViewportView(users_list);
+        wki_user_list.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        wki_user_list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane2.setViewportView(wki_user_list);
 
         search_register_panel.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
@@ -294,13 +255,13 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         jPanel12.setLayout(new java.awt.BorderLayout(10, 0));
 
         jLabel8.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel8.setText("Titular:");
+        jLabel8.setText("Usuario");
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 19));
         jPanel12.add(jLabel8, java.awt.BorderLayout.WEST);
 
-        owner_name_field.setEditable(false);
-        owner_name_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jPanel12.add(owner_name_field, java.awt.BorderLayout.CENTER);
+        user_name_field.setEditable(false);
+        user_name_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jPanel12.add(user_name_field, java.awt.BorderLayout.CENTER);
 
         info_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         info_button.setText("Info de usuario");
@@ -330,10 +291,10 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         jLabel9.setPreferredSize(new java.awt.Dimension(150, 19));
         jPanel13.add(jLabel9, java.awt.BorderLayout.WEST);
 
-        type_toma_field.setEditable(false);
-        type_toma_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        type_toma_field.setPreferredSize(new java.awt.Dimension(200, 36));
-        jPanel13.add(type_toma_field, java.awt.BorderLayout.CENTER);
+        water_intake_type.setEditable(false);
+        water_intake_type.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        water_intake_type.setPreferredSize(new java.awt.Dimension(200, 36));
+        jPanel13.add(water_intake_type, java.awt.BorderLayout.CENTER);
 
         jPanel4.setPreferredSize(new java.awt.Dimension(200, 30));
         jPanel4.setLayout(new java.awt.BorderLayout(10, 0));
@@ -374,6 +335,11 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         jLabel6.setText("Mese a pagar");
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 19));
         jPanel5.add(jLabel6, java.awt.BorderLayout.CENTER);
+
+        current_year.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        current_year.setText("XXXX");
+        current_year.setPreferredSize(new java.awt.Dimension(100, 23));
+        jPanel5.add(current_year, java.awt.BorderLayout.LINE_START);
 
         payment_info_panel.add(jPanel5);
 
@@ -428,6 +394,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         ene.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ene.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ene.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
+        ene.setName("ENE"); // NOI18N
         ene.setPreferredSize(new java.awt.Dimension(10, 47));
         ene.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         ene.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -439,6 +406,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         feb.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         feb.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         feb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
+        feb.setName("FEB"); // NOI18N
         feb.setPreferredSize(new java.awt.Dimension(10, 47));
         feb.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         feb.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -450,6 +418,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         mar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         mar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
+        mar.setName("MAR"); // NOI18N
         mar.setPreferredSize(new java.awt.Dimension(10, 47));
         mar.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         mar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -461,6 +430,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         abr.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         abr.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         abr.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
+        abr.setName("ABR"); // NOI18N
         abr.setPreferredSize(new java.awt.Dimension(10, 47));
         abr.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         abr.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -472,6 +442,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         may.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         may.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         may.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
+        may.setName("MAY"); // NOI18N
         may.setPreferredSize(new java.awt.Dimension(10, 47));
         may.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         may.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -483,6 +454,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         jun.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jun.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jun.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
+        jun.setName("JUN"); // NOI18N
         jun.setPreferredSize(new java.awt.Dimension(10, 47));
         jun.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         jun.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -494,6 +466,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         jul.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jul.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
+        jul.setName("JUL"); // NOI18N
         jul.setPreferredSize(new java.awt.Dimension(10, 47));
         jul.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         jul.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -505,6 +478,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         ago.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ago.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ago.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
+        ago.setName("AGO"); // NOI18N
         ago.setPreferredSize(new java.awt.Dimension(10, 47));
         ago.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         ago.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -516,6 +490,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         sep.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         sep.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         sep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
+        sep.setName("SEP"); // NOI18N
         sep.setPreferredSize(new java.awt.Dimension(10, 47));
         sep.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         sep.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -527,6 +502,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         oct.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         oct.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         oct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
+        oct.setName("OCT"); // NOI18N
         oct.setPreferredSize(new java.awt.Dimension(10, 47));
         oct.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         oct.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -538,6 +514,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         nov.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nov.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         nov.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
+        nov.setName("NOV"); // NOI18N
         nov.setPreferredSize(new java.awt.Dimension(10, 47));
         nov.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         nov.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -549,6 +526,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         dic.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         dic.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         dic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
+        dic.setName("DIC"); // NOI18N
         dic.setPreferredSize(new java.awt.Dimension(10, 47));
         dic.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/verificar.png"))); // NOI18N
         dic.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -571,7 +549,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel21.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        total_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        total_field.setFont(new java.awt.Font("Liberation Sans", 1, 36)); // NOI18N
         total_field.setText("0.0");
         jPanel21.add(total_field, java.awt.BorderLayout.CENTER);
 
@@ -593,7 +571,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
         Jlabel1.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel22.add(Jlabel1, java.awt.BorderLayout.LINE_START);
 
-        cambio_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        cambio_field.setFont(new java.awt.Font("Liberation Sans", 1, 36)); // NOI18N
         cambio_field.setText("0.0");
         jPanel22.add(cambio_field, java.awt.BorderLayout.CENTER);
 
@@ -633,16 +611,19 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
 
         recargos_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         recargos_button.setText("Recargos");
+        recargos_button.setToolTipText("Modulo para cobrar o realizar recargos");
         recargos_button.setActionCommand("surcharges");
         jPanel8.add(recargos_button);
 
         other_pay_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         other_pay_button.setText("Otros Pagos");
+        other_pay_button.setToolTipText("Modulo para pagar cobrar otros conceptos de pago");
         other_pay_button.setActionCommand("other_payments");
         jPanel8.add(other_pay_button);
 
         pay_last_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         pay_last_button.setText("Pagos atrasados");
+        pay_last_button.setToolTipText("Modulo para cobrar años anteriores");
         pay_last_button.setActionCommand("late_payments");
         jPanel8.add(pay_last_button);
 
@@ -767,6 +748,7 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
     private javax.swing.JTextField cost_field;
     private javax.swing.JLabel count;
     private javax.swing.JLabel count_elements_label;
+    private javax.swing.JLabel current_year;
     private javax.swing.JCheckBox dic;
     private javax.swing.JCheckBox ene;
     private javax.swing.JCheckBox feb;
@@ -823,7 +805,6 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
     private javax.swing.JCheckBox oct;
     private javax.swing.JPanel option_panel;
     private javax.swing.JButton other_pay_button;
-    private javax.swing.JTextField owner_name_field;
     private javax.swing.JButton pay_button;
     private javax.swing.JButton pay_last_button;
     private javax.swing.JPanel payment_info_panel;
@@ -844,20 +825,46 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
     private javax.swing.JPanel tools_bar_panel;
     private javax.swing.JLabel total_field;
     private javax.swing.JLabel total_register_field;
-    private javax.swing.JTextField type_toma_field;
     private javax.swing.JPanel user_info_panel;
+    private javax.swing.JTextField user_name_field;
     private javax.swing.JTextField user_type_field;
-    private javax.swing.JList<jsoftware.com.jblue.model.dto.WaterIntakeDTO> users_list;
+    private javax.swing.JTextField water_intake_type;
+    private javax.swing.JList<WaterIntakeUserDTO> wki_user_list;
     // End of variables declaration//GEN-END:variables
+    public static final int MONTHS_PAID = 0;
+    public static final int MONTHS_NOT_PAID = 1;
+    public static final int SELECTED_MONTHS = 2;
 
     @Override
-    public void getDataView() {
+    public void getData() {
 
     }
 
+    public List<JCheckBox> getListMonth(int option) {
+        return switch (option) {
+            case ShopCartProcess.MONTHS_PAID ->
+                list_months_paid
+                .stream()
+                .filter((t) -> t.isSelected() && !t.isEnabled())
+                .toList();
+            case ShopCartProcess.MONTHS_NOT_PAID ->
+                list_months_paid
+                .stream()
+                .filter((t) -> t.isEnabled() && !t.isSelected())
+                .toList();
+            case ShopCartProcess.SELECTED_MONTHS ->
+                list_months_paid
+                .stream()
+                .filter((t) -> t.isEnabled() && t.isSelected())
+                .toList();
+            default ->
+                list_months_paid;
+        };
+    }
+
     @Override
-    public JList<WaterIntakeDTO> getList() {
-        return users_list;
+    public JList<WaterIntakeUserDTO> getList() {
+        return wki_user_list;
     }
 
     @Override
@@ -867,17 +874,17 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
 
     @Override
     public String getTextSearchList() {
-        return search_field_list.getText();
+        return search_field_list.getText().trim().replace(" ", "_").toUpperCase();
     }
 
     @Override
-    public DefaultListModel<WaterIntakeDTO> getListModel() {
+    public DefaultListModel<WaterIntakeUserDTO> getListModel() {
         return list_model;
     }
 
     @Override
     public void setCountElements(int count) {
-        this.count_elements_label.setText(String.valueOf(count));
+        count_elements_label.setText(String.valueOf(count));
     }
 
     @Override
@@ -887,50 +894,46 @@ public final class ShopCartView extends AbstractProcessView<WaterIntakeDTO> impl
 
     @Override
     public void setScreenListInfo() {
-        UserDTO user = (UserDTO) object_search.get("user_object");
-        if (Func.isNull(user)) {
-            JOptionPane.showMessageDialog(this, "USUARIO NO EXISTENTE");
-            return;
-        }
-        WaterIntakeTypeDTO get = (WaterIntakeTypeDTO) object_search.get("water_intake_type_object");
-        if (Func.isNull(get)) {
-            JOptionPane.showMessageDialog(this, "USUARIO TIENE INFORMACION CORRUPTA");
-            return;
-        }
-        user_type_field.setText(user.getUserType());
-        owner_name_field.setText(object_search.getDescription());
-        type_toma_field.setText(get.getTypeName());
-        cost_field.setText(get.getCurrentPrice());
-        months_paid_field.setText(String.valueOf(months_paid.size()));
-    }
+        ShopCartWrapperDTO dto = getDtoWrapper();
+        List<PaymentListDTO> paymentsMade = dto.getPayments_details_made();
 
-    public void setMonths_paid(ArrayList<PaymentListDTO> months_paid) {
-        this.months_paid = months_paid;
-        ArrayList<String> list = extractItemsName(months_paid);
-        for (JCheckBox i : months_field_arr) {
-            i.setSelected(list.contains(i.getText()));
-        }
+        // 1. Procesamos la lista de meses e interfaz
+        list_months_paid.forEach(month -> {
+            boolean isPaid = paymentsMade
+                    .stream()
+                    .anyMatch(payment -> payment.getItemName().equals(month.getName()));
+            if (isPaid) {
+                month.setSelected(true);
+                month.setEnabled(false);
+            }
+        });
+
+        // 2. Mapeo y asignación de datos del usuario
+        WaterIntakeUserDTO user = dto.getWki_user();
+        user_name_field.setText(user.getUserName());
+        user_type_field.setText(user.getUserTypeId());
+        water_intake_type.setText(user.getWaterIntakeTypeId());
+
+        // Formateo seguro con tu función Decode
+        String last_month_paid = Func.Decode(user.getLastMonthPaid(), user.getLastMonthPaid(), "-1", "XX").toString();
+        String current_fiscal_year = Func.Decode(user.getCurrentFiscalYear(), user.getCurrentFiscalYear(), "-1", "XX").toString();
+
+        last_month_paid_field.setText(last_month_paid);
+        last_year_paid_field.setText(current_fiscal_year);
+
+        // CORRECCIÓN: Contamos solo los elementos que quedaron seleccionados (pagados)
+        long totalPaid = getListMonth(ShopCartProcess.MONTHS_PAID).size();
+        months_paid_field.setText(String.valueOf(totalPaid));
     }
 
     @Override
-    public WaterIntakeDTO getObjectSearch() {
+    public WaterIntakeUserDTO getObjectSearch() {
         return object_search;
     }
 
     @Override
-    public void setObjectSearch(WaterIntakeDTO object) {
-        this.object_search = object;
+    public void setObjectSearch(WaterIntakeUserDTO object) {
+        object_search = object;
     }
 
-    /**
-     * Extrae los nombres de los ítems de la lista de pagos.
-     *
-     * @param months_paid ArrayList de DTOs.
-     * @return ArrayList<String> con los nombres de cada concepto.
-     */
-    public ArrayList<String> extractItemsName(ArrayList<PaymentListDTO> months_paid) {
-        return months_paid.stream()
-                .map(dto -> (String) dto.getMap().get("item_name"))
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
 }

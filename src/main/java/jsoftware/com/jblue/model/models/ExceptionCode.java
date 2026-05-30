@@ -76,6 +76,15 @@ public interface ExceptionCode {
      */
     public static final int SERVICE_EXCEPTION = 200;
 
+    public static final int SERVICE_INSERT_EXCEPTION = 201;
+
+    public static final int SERVICE_UPDATE_EXCEPTION = 202;
+
+    public static final int SERVICE_DELETE_EXCEPTION = 202;
+
+    public static final int GENERATE_INFORMATION_EXCEPTION = 203;
+    public static final int LOGIN_FAILED_EXCEPTION = 204;
+
     /**
      * Ruptura en la secuencia lógica de una operación compuesta.
      */

@@ -12,9 +12,8 @@ import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.service.EmployeeRegisterService;
 import jsoftware.com.jblue.sys.SystemSession;
-import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
-import jsoftware.com.jblue.views.mod.com.EmployeeRegistrationView;
+import jsoftware.com.jblue.views.mod.pro.EmployeeRegisterProcess;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.util.FuncLogs;
 
@@ -24,12 +23,11 @@ import jsoftware.com.jutil.util.FuncLogs;
  */
 public class EmployeeRegisterController extends AbstractDBViewController<EmployeeRegisterWrapperDTO> {
 
-    private EmployeeRegistrationView view;
+    private EmployeeRegisterProcess view;
     private EmployeeRegisterService service;
 
-    public EmployeeRegisterController(EmployeeRegistrationView view) {
-        this.view = view;
-        this.service = new EmployeeRegisterService(AppConfig.isDevMessages(), view.getDtoWrapper().getModule_name());
+    public EmployeeRegisterController(boolean flag_dev, String module_name) {
+        this.service = new EmployeeRegisterService(false, module_name);
     }
 
     @Override
@@ -37,8 +35,6 @@ public class EmployeeRegisterController extends AbstractDBViewController<Employe
         switch (e.getActionCommand()) {
             case SAVE_COMMAND ->
                 save();
-            default ->
-                throw new AssertionError();
         }
     }
 
@@ -79,4 +75,9 @@ public class EmployeeRegisterController extends AbstractDBViewController<Employe
     public void cancel() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    public void setView(EmployeeRegisterProcess view) {
+        this.view = view;
+    }
+
 }

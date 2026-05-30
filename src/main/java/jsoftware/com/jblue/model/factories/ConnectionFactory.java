@@ -40,8 +40,8 @@ public class ConnectionFactory {
         return intance;
     }
 
-    private JDBConnectionBuilder builder;
-    private HikariDataSource data_source;
+    private final JDBConnectionBuilder builder;
+    private final HikariDataSource data_source;
 
     private ConnectionFactory(JDBConnectionBuilder builder) {
         this.builder = builder;
@@ -80,10 +80,7 @@ public class ConnectionFactory {
         if (builder == null) {
             return false;
         }
-        if (data_source == null) {
-            return false;
-        }
-        return true;
+        return data_source != null;
     }
 
     public synchronized void close() {

@@ -59,4 +59,49 @@ public class Func extends JFunc {
             }
         }
     }
+
+    /**
+     * Metodo que evalua los casos y retorna el valor dato segun la condicion.
+     * Funciona en parejas: [Condición1, Valor1, Condición2, Valor2, ...]
+     *
+     * * @param object_value Objeto base a evaluar.
+     * @param object_default Valor de retorno si ninguna condición coincide.
+     * @param condition_value Parejas de condición y valor de retorno.
+     * @return El valor correspondiente a la condición que coincida, o el valor
+     * por defecto.
+     */
+    public static Object Decode(Object object_value, Object object_default, Object... condition_value) {
+        if (object_value == null) {
+            throw new NullPointerException("OBJETO EVALUADO NULL");
+        }
+
+        if (object_default == null) {
+            throw new NullPointerException("OBJETO POR DEFECTO NULL");
+        }
+
+        // Si el varargs viene vacío o nulo, retornamos el valor por defecto de inmediato
+        if (condition_value == null || condition_value.length == 0) {
+            return object_default;
+        }
+
+        // CORRECCIÓN: Los argumentos de condición deben ser pares obligatoriamente.
+        // Si la longitud es impar (ej. 3 o 5 elementos), la última condición no tendría valor de retorno.
+        if (condition_value.length % 2 != 0) {
+            throw new IllegalArgumentException("EL ARREGLO DE CONDICIONES DEBE SER PAR [CONDICION, VALOR]");
+        }
+
+        // Iteramos el arreglo de dos en dos (i = condición, i + 1 = valor de retorno)
+        for (int i = 0; i < condition_value.length; i += 2) {
+            Object condicion = condition_value[i];
+            Object valorRetorno = condition_value[i + 1];
+
+            // Evaluamos la igualdad de forma segura previniendo nulos
+            if (object_value.equals(condicion)) {
+                return valorRetorno;
+            }
+        }
+
+        // Si ninguna condición coincidió en el bucle, se envía el backup
+        return object_default;
+    }
 }

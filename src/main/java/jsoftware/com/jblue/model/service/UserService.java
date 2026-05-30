@@ -128,7 +128,7 @@ public class UserService extends AbstractService implements Serializable {
 
             // Lógica de Negocio: Validación de estados específicos
             // Usamos el método getStatus() que realiza el cast final según tu estándar
-            int currentStatus = user.getStatus();
+            int currentStatus = Integer.parseInt(user.getStatus());
 
             /**
              * SI FUE ELIMINADO REVISAR PORQUE Y SI EL BLOQUEO NO ES PROBLEMA

@@ -1,65 +1,87 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jsoftware.com.jblue.model.dto;
 
+import jsoftware.com.jblue.util.Func;
+import jsoftware.com.jutil.db.JDBMapObject;
+
 /**
+ * DTO correspondiente a los usuarios y empleados del sistema (EmployeeUser).
+ * <br>
+ * Utiliza la estructura interna dinámica de Map para transportar las cadenas de
+ * texto de manera flexible entre los formularios de Swing y la capa DAO de
+ * MySQL.
  *
- * @author juanp
+ * @author JUAN PABLO CAMPOS CASASANERO
+ * @since 2025-11-23
+ * @version 1.1
  */
-public class EmployeeUserDTO extends AuditableObjectMap {
+public class EmployeeUserDTO extends JDBMapObject {
 
     private static final long serialVersionUID = 1L;
 
     public EmployeeUserDTO() {
-        super(15);
+        // Inicializa con una capacidad de 22 para albergar los 15 campos de forma eficiente.
+        super(22);
     }
 
+    // Se omite getId() -> Heredado directamente de JDBMapObject
     public String getEmployeeId() {
-        return get("employee_id").toString();
+        return Func.nullSafeToString(get("employee_id"));
     }
 
     public String getOfficeId() {
-        return get("office_id").toString();
+        return Func.nullSafeToString(get("office_id"));
     }
 
     public String getUser() {
-        return get("user").toString();
+        return Func.nullSafeToString(get("user"));
     }
 
     public String getPassword() {
-        return get("password").toString();
+        return Func.nullSafeToString(get("password"));
     }
 
     public String getDescription() {
-        return get("description").toString();
+        return Func.nullSafeToString(get("description"));
     }
 
     public String getEmail() {
-        return get("email").toString();
+        return Func.nullSafeToString(get("email"));
     }
 
     public String getPhoneNumber() {
-        return get("phone_number").toString();
+        return Func.nullSafeToString(get("phone_number"));
     }
 
     public String getEmployeeType() {
-        return get("employee_type").toString();
+        return Func.nullSafeToString(get("employee_type"));
+    }
+
+    public String getStatus() {
+        return Func.nullSafeToString(get("status"));
     }
 
     public String getLastEmployeeUpdate() {
-        return get("last_update_employee").toString();
+        return Func.nullSafeToString(get("last_employee_update"));
     }
 
     public String getLastUpdatePassword() {
-        return get("last_update_password").toString();
+        return Func.nullSafeToString(get("last_update_password"));
+    }
+
+    public String getDateUpdate() {
+        return Func.nullSafeToString(get("date_update"));
+    }
+
+    public String getDateRegister() {
+        return Func.nullSafeToString(get("date_register"));
+    }
+
+    public String getDateEnd() {
+        return Func.nullSafeToString(get("date_end"));
     }
 
     @Override
     public String toString() {
-        return values.toString();
+        return (values != null) ? values.toString() : "{}";
     }
-    
-    
 }

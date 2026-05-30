@@ -9,6 +9,8 @@ import jsoftware.com.jblue.model.dao.EmployeeDAO;
 import jsoftware.com.jblue.model.dao.HistoryDAO.EmployeeHistoryDAO;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.exp.ServiceException;
+import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
+import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jblue.model.models.AbstractService;
 import jsoftware.com.jutil.db.JDBConnection;
 
@@ -47,6 +49,10 @@ public class EmployeeService extends AbstractService {
         } catch (SQLException ex) {
             System.getLogger(EmployeeService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         } catch (ServiceException ex) {
+            System.getLogger(EmployeeService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (CorruptInsertionException ex) {
+            System.getLogger(EmployeeService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (KeyNotGenerateException ex) {
             System.getLogger(EmployeeService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return pk;

@@ -16,10 +16,9 @@
  */
 package jsoftware.com.jblue.model.l4b;
 
-import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.sys.app.AppConfig;
 import java.time.LocalDateTime;
+import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.sys.app.AppConfig;
 
 /**
  *
@@ -32,7 +31,7 @@ public class LoginRulers {
     }
 
     public static boolean isDateEnd(EmployeeDTO o) {
-        return o.getDateEnd() != null && LocalDateTime.now().isAfter(o.getDateEnd());
+        return o.getDateEnd() != null && LocalDateTime.now().isAfter(LocalDateTime.parse(o.getDateEnd()));
     }
 
     public static boolean isEmployeeNull(EmployeeDTO o) {

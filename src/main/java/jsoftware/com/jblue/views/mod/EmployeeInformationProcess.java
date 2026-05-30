@@ -232,10 +232,10 @@ public final class EmployeeInformationProcess extends AbstractProcessView<Employ
         email_field.setText(object_search.getEmail());
         phone_number_field.setText(object_search.getPhoneNumber());
         employee_type.setText(object_search.getEmployeeType());
-        status_field.setText(object_search.getStatusString());
-        date_register.setText(object_search.getDateRegister().toString());
-        date_update.setText(object_search.getDateUpdate().toString());
-        date_end.setText(object_search.getDateEnd().toString());
+        status_field.setText(object_search.getStatus());
+        date_register.setText(object_search.getDateRegister());
+        date_update.setText(object_search.getDateUpdate());
+        date_end.setText(object_search.getDateEnd());
     }
 
 

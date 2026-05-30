@@ -1125,8 +1125,6 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
         water_intakes_type_field.setSelectedItem((WaterIntakeTypeDTO) object_search.get("water_inatke_type_object"));
         street1_field.setSelectedItem((StreetDTO) object_search.get("street1_object"));
         street2_field.setSelectedItem((StreetDTO) object_search.get("street2_object"));
-        inside_number_field.setText(object_search.getInsideNumber());
-        outside_number_field.setText(object_search.getOutsideNumber());
         phone_number1_field.setText(object_search.getPhoneNumber1());
         phone_number2_field.setText(object_search.getPhoneNumber2());
         email_field.setText(object_search.getEmail());

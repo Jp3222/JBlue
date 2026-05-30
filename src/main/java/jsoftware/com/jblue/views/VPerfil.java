@@ -19,7 +19,7 @@ package jsoftware.com.jblue.views;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.views.framework.SimpleView;
 
 /**
@@ -30,7 +30,7 @@ public final class VPerfil extends SimpleView {
 
     private static final long serialVersionUID = 1L;
 
-    private final EmployeeDTO current_employee;
+    private final EmployeeUserDTO current_employee;
 
     /**
      * Creates new form VPerfil

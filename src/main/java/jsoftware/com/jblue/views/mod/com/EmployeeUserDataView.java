@@ -277,10 +277,10 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
     public void dataGenerate() {
         description_field.setText(getDtoWrapper().getEmployee().toString());
         if (Func.isNull(number_phone_field.getText())) {
-            number_phone_field.setText(getDtoWrapper().getEmployee().getPhoneNumber1());
+            number_phone_field.setText(getDtoWrapper().getEmployee().getPersonalNumber());
         }
         if (Func.isNull(email_field.getText())) {
-            email_field.setText(getDtoWrapper().getEmployee().getEmail());
+            email_field.setText(getDtoWrapper().getEmployee().getPersonalEmail());
         }
     }
 

@@ -1,18 +1,22 @@
 package jsoftware.com.jblue.model.dto;
 
 import java.util.Map;
+import jsoftware.com.jblue.util.Func;
+import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
- * Data Transfer Object (DTO) para la tabla usr_user que almacena todos los
- * datos como pares clave-valor dentro de un Map. Las claves son los nombres
- * exactos de las columnas SQL.
+ * DTO correspondiente a la información de los usuarios generales del sistema
+ * (User).
+ * <br>
+ * Utiliza la estructura interna dinámica de Map para transportar las cadenas de
+ * texto de manera flexible entre los formularios de Swing y la capa DAO de
+ * MySQL.
  *
- * NOTA: Los métodos getString y getInteger son duplicados aquí para mantener la
- * estructura original, pero idealmente deberían estar en AbstractMapDTO.
- *
- * * @author JUAN PABLO CAMPOS CASASANERO
+ * @author JUAN PABLO CAMPOS CASASANERO
+ * @since 2025-11-23
+ * @version 1.2
  */
-public class UserDTO extends PersonObject implements Cloneable {
+public class UserDTO extends JDBMapObject {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,48 +24,84 @@ public class UserDTO extends PersonObject implements Cloneable {
         super(map);
     }
 
-    public UserDTO(int size) {
-        super(size);
+    public UserDTO() {
+        // Inicializa con una capacidad de 26 para albergar eficientemente los 18 campos,
+        // evitando que el HashMap interno tenga que redimensionarse en memoria.
+        super(26);
     }
 
-    public UserDTO() {
-        super(21);
+    // Se omite getId() -> Heredado directamente de JDBMapObject de forma limpia
+    public String getRfc() {
+        return Func.nullSafeToString(get("rfc"));
+    }
+
+    public String getCurp() {
+        return Func.nullSafeToString(get("curp"));
+    }
+
+    public String getFirstName() {
+        return Func.nullSafeToString(get("first_name"));
+    }
+
+    public String getLastName1() {
+        return Func.nullSafeToString(get("last_name1"));
+    }
+
+    public String getLastName2() {
+        return Func.nullSafeToString(get("last_name2"));
+    }
+
+    public String getGender() {
+        return Func.nullSafeToString(get("gender"));
+    }
+
+    public String getBirthdate() {
+        return Func.nullSafeToString(get("birthdate"));
+    }
+
+    public String getEmail() {
+        return Func.nullSafeToString(get("email"));
+    }
+
+    public String getPhoneNumber1() {
+        return Func.nullSafeToString(get("phone_number1"));
     }
 
     public String getPhoneNumber2() {
-        return get("phone_number2").toString();
-    }
-
-    public String getStreet2() {
-        return get("street2").toString();
-    }
-
-    public String getInsideNumber() {
-        return get("inside_number").toString();
-    }
-
-    public String getOutsideNumber() {
-        return get("outside_number").toString();
+        return Func.nullSafeToString(get("phone_number2"));
     }
 
     public String getUserType() {
-        return get("user_type").toString();
+        return Func.nullSafeToString(get("user_type"));
     }
 
     public String getLastEmployeeUpdate() {
-        return get("last_employee_ppdate").toString();
+        return Func.nullSafeToString(get("last_employee_update"));
+    }
+
+    public String getOfficeId() {
+        return Func.nullSafeToString(get("office_id"));
+    }
+
+    public String getStatus() {
+        return Func.nullSafeToString(get("status"));
+    }
+
+    public String getDateUpdate() {
+        return Func.nullSafeToString(get("date_update"));
+    }
+
+    public String getDateRegister() {
+        return Func.nullSafeToString(get("date_register"));
+    }
+
+    public String getDateEnd() {
+        return Func.nullSafeToString(get("date_end"));
     }
 
     @Override
     public String toString() {
-        return getFirstName().concat(" ")
-                .concat(getLastName1())
-                .concat(" ")
-                .concat(getLastName2());
+        // Garantiza una salida segura en tus logs de Log4j2 sin riesgo de NullPointerException
+        return (values != null) ? values.toString() : "{}";
     }
-
-    public String getOfficeId() {
-        return get("office_id").toString();
-    }
-
 }

@@ -83,6 +83,9 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        rfc_field = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
+        curp_field1 = new javax.swing.JTextField();
         jPanel14 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         curp_field = new javax.swing.JTextField();
@@ -136,6 +139,20 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
 
         jPanel2.setName("jPanel2"); // NOI18N
         jPanel2.setLayout(new java.awt.GridLayout(15, 0));
+
+        rfc_field.setName("rfc_field"); // NOI18N
+        rfc_field.setLayout(new java.awt.BorderLayout());
+
+        jLabel14.setText(bundle.getString("EmployeeRegistrationView.jLabel14.text")); // NOI18N
+        jLabel14.setName("jLabel14"); // NOI18N
+        jLabel14.setPreferredSize(new java.awt.Dimension(150, 30));
+        rfc_field.add(jLabel14, java.awt.BorderLayout.WEST);
+
+        curp_field1.setText(bundle.getString("EmployeeRegistrationView.RFC.text")); // NOI18N
+        curp_field1.setName("RFC"); // NOI18N
+        rfc_field.add(curp_field1, java.awt.BorderLayout.CENTER);
+
+        jPanel2.add(rfc_field);
 
         jPanel14.setName("jPanel14"); // NOI18N
         jPanel14.setLayout(new java.awt.BorderLayout());
@@ -313,6 +330,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField birthdate_field;
     private javax.swing.JTextField curp_field;
+    private javax.swing.JTextField curp_field1;
     private javax.swing.JTextField email_field;
     private javax.swing.JTextField first_name_field;
     private javax.swing.JComboBox<String> gender_field;
@@ -322,6 +340,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -348,6 +367,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
     private javax.swing.JTextField last_name2_field;
     private javax.swing.JTextField outside_number_field;
     private javax.swing.JTextField phone_number_field;
+    private javax.swing.JPanel rfc_field;
     private javax.swing.JComboBox<String> street1_field;
     private javax.swing.JComboBox<String> street2_field;
     // End of variables declaration//GEN-END:variables

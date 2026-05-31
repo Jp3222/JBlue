@@ -1,80 +1,114 @@
 package jsoftware.com.jblue.model.dto;
 
+import jsoftware.com.jblue.util.Func;
+import jsoftware.com.jutil.db.JDBMapObject;
+
 /**
+ * DTO correspondiente a la vinculación y estado de tomas de agua por usuario
+ * (WaterIntakeUser).
+ * <br>
+ * Utiliza la estructura interna dinámica de Map para transportar las cadenas de
+ * texto de manera flexible entre los componentes de Swing y la capa DAO de
+ * MySQL.
  *
- * @author juanp
+ * @author JUAN PABLO CAMPOS CASASANERO
+ * @since 2026-05-30
+ * @version 1.0
  */
-public class WaterIntakeUserDTO extends AuditableObjectMap {
+public class WaterIntakeUserDTO extends JDBMapObject {
 
     private static final long serialVersionUID = 1L;
 
     public WaterIntakeUserDTO() {
-        super(15);
+        // Inicializa con una capacidad de 32 para albergar de forma eficiente los 21 campos,
+        // garantizando un factor de carga óptimo sin redimensionamientos en memoria.
+        super(32);
     }
 
-    public String getId() {
-        return get("id").toString();
-    }
-
+    // Se omite getId() -> Heredado directamente de JDBMapObject de forma limpia
     public String getUserId() {
-        return get("user_id").toString();
+        return Func.nullSafeToString(get("user_id"));
+    }
+
+    public String getAddressId() {
+        return Func.nullSafeToString(get("address_id"));
     }
 
     public String getWaterIntakeId() {
-        return get("water_intake_id").toString();
+        return Func.nullSafeToString(get("water_intake_id"));
     }
 
     public String getWaterIntakeTypeId() {
-        return get("water_intake_type_id").toString();
+        return Func.nullSafeToString(get("water_intake_type_id"));
     }
 
     public String getUserTypeId() {
-        return get("user_type_id").toString();
+        return Func.nullSafeToString(get("user_type_id"));
+    }
+
+    public String getOfficeId() {
+        return Func.nullSafeToString(get("office_id"));
     }
 
     public String getUserName() {
-        return get("user_name").toString();
+        return Func.nullSafeToString(get("user_name"));
     }
 
     public String getDescription() {
-        return get("description").toString();
+        return Func.nullSafeToString(get("description"));
     }
 
     public String getObservation() {
-        return get("observation").toString();
+        return Func.nullSafeToString(get("observation"));
     }
 
     public String getCurrentFiscalYear() {
-        return get("current_fiscal_year").toString();
+        return Func.nullSafeToString(get("current_fiscal_year"));
     }
 
     public String getLastMonthPaid() {
-        return get("last_month_paid").toString();
+        return Func.nullSafeToString(get("last_month_paid"));
     }
 
     public String getLastAmountPaid() {
-        return get("last_amount_paid").toString();
+        return Func.nullSafeToString(get("last_amount_paid"));
     }
 
     public String getEmployeeRegister() {
-        return get("employee_register").toString();
+        return Func.nullSafeToString(get("employee_register"));
     }
 
     public String getLastEmployeeUpdate() {
-        return get("last_employee_update").toString();
+        return Func.nullSafeToString(get("last_employee_update"));
     }
 
     public String getOriginalProcess() {
-        return get("original_process").toString();
+        return Func.nullSafeToString(get("original_process"));
     }
 
     public String getLastProcessType() {
-        return get("last_process_type").toString();
+        return Func.nullSafeToString(get("last_process_type"));
+    }
+
+    public String getStatus() {
+        return Func.nullSafeToString(get("status"));
+    }
+
+    public String getDateUpdate() {
+        return Func.nullSafeToString(get("date_update"));
+    }
+
+    public String getDateRegister() {
+        return Func.nullSafeToString(get("date_register"));
+    }
+
+    public String getDateEnd() {
+        return Func.nullSafeToString(get("date_end"));
     }
 
     @Override
     public String toString() {
-        return getUserName();
+        // Asegura un vaciado seguro en tus logs de auditoría previniendo excepciones nulas
+        return (values != null) ? values.toString() : "{}";
     }
-
 }

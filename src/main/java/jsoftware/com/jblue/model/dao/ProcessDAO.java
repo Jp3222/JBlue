@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jsoftware.com.jblue.model.dao;
 
 import java.sql.PreparedStatement;
@@ -21,177 +17,183 @@ import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
 
 /**
+ * Data Access Object (DAO) para el control evolutivo de trámites operativos.
+ * <br>
+ * Administra de forma secuencial las fases y estados del Workflow de JBlue.
  *
- * @author juanp
+ * * @author JUAN PABLO CAMPOS CASASANERO
+ * @since 2026-05-30
+ * @version 1.1
  */
 public class ProcessDAO extends AbstractDAO {
 
     private static final long serialVersionUID = 1L;
 
-    public static int STATUS_INICIADO = 10;
-    public static int STATUS_VALIDADO = 11;
-    public static int STATUS_PAGADO = 12;
-    public static int STATUS_FINALIZADO = 13;
-    public static int STATUS_CADUCADO = 14;
-    public static int STATUS_CANCELADO = 5;
+    // Constantes de Estado del Workflow mapeadas en cat_status
+    public static final int STATUS_INICIADO = 10;
+    public static final int STATUS_VALIDADO = 11;
+    public static final int STATUS_PAGADO = 12;
+    public static final int STATUS_FINALIZADO = 13;
+    public static final int STATUS_CADUCADO = 14;
+    public static final int STATUS_CANCELADO = 5;
 
     private final EmployeeUserDTO current_employee;
     private final AdministrationHistoryDTO current_admin;
 
     public ProcessDAO(boolean flag_dev_log, String name_module) {
         super(flag_dev_log, name_module);
-        current_employee = SystemSession.getInstancia().getCurrentEmployee();
-        current_admin = SystemSession.getInstancia().getCurrentAdministration();
+        this.current_employee = SystemSession.getInstancia().getCurrentEmployee();
+        this.current_admin = SystemSession.getInstancia().getCurrentAdministration();
     }
 
+    /**
+     * Fase [1]: Captura de Datos. Registra el inicio de un trámite en
+     * ventanilla.
+     */
     public int startProcess(JDBConnection connection, String process_type, String user_id) throws SQLException {
-        int generatedId = 0; // Cambiamos el retorno a int para devolver el ID
+        int generatedId = 0;
         if (connection == null) {
-            throw new SQLException("CONEXIÓN NO DISPONIBLE");
+            throw new SQLException("CONEXIÓN NO DISPONIBLE EN EL MOTOR");
         }
         if (Filters.isNullOrBlank(process_type, user_id)) {
             throw new IllegalArgumentException("Parámetros erróneos: process_type: " + process_type + ", user: " + user_id);
         }
 
-        // 1. IMPORTANTE: Solicitar que se retornen las llaves generadas
         try (PreparedStatement ps = connection.getNewPreparedStatement(
                 ProcessQuery.INSERT_START_PROCESS,
                 PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-            ps.setString(1, process_type);
-            ps.setString(2, current_employee.getId());
-            ps.setString(3, current_admin.getId());
-            ps.setString(4, current_employee.getId());
-            ps.setString(5, user_id);
+            ps.setInt(1, Integer.parseInt(process_type));
+            ps.setInt(2, Integer.parseInt(current_employee.getId()));
+            ps.setInt(3, Integer.parseInt(current_admin.getId()));
+            ps.setInt(4, Integer.parseInt(current_employee.getId()));
+            ps.setInt(5, Integer.parseInt(user_id));
             ps.setInt(6, STATUS_INICIADO);
-
             int affectedRows = ps.executeUpdate();
-
             if (affectedRows > 0) {
-                // 2. Recuperar el conjunto de llaves generadas
                 try (ResultSet rs = ps.getGeneratedKeys()) {
                     if (rs.next()) {
-                        generatedId = rs.getInt(1); // Obtenemos el ID generado
+                        generatedId = rs.getInt(1);
                     }
                 }
             } else {
-                throw new SQLException("TRAMITE NO INICIADO: No se insertó ningún registro.");
+                throw new SQLException("ERROR TRANSACCIONAL: Trámite no iniciado en base de datos.");
             }
         }
-        return generatedId; // Retorna el ID (o 0 si falló)
+        return generatedId;
     }
 
-    public boolean validProcess(JDBConnection connection, int process_id) throws SQLException, ProcessException {
-        boolean rt = false;
-        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_VALID);) {
-            ps.setString(1, current_employee.getId());
-            ps.setString(2, current_employee.getId());
-            ps.setInt(3, STATUS_VALIDADO);
-            ps.setInt(4, process_id);
-            rt = ps.executeUpdate() > 0;
+    /**
+     * Fase [2]: Validación Documental.
+     */
+    public boolean validProcess(JDBConnection connection, int id, String document_id) throws SQLException, ProcessException {
+        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_VALID)) {
+            ps.setInt(1, Integer.parseInt(current_employee.getId()));
+            ps.setInt(2, Integer.parseInt(document_id));
+            ps.setInt(3, Integer.parseInt(current_employee.getId()));
+            ps.setInt(4, STATUS_VALIDADO);
+            ps.setInt(5, id);
+
+            boolean rt = ps.executeUpdate() > 0;
             if (!rt) {
-                throw new ProcessException(1, "TRAMITE NO INICIADO");
+                throw new ProcessException(1, "ERROR EN VALIDACIÓN: El trámite ID " + id + " no existe o no pudo mutar.");
             }
             return rt;
         }
     }
 
-    public boolean payProcess(JDBConnection connection, String id) throws SQLException, ProcessException {
-        boolean rt = false;
-        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_PAYMENT);) {
-            ps.setString(1, current_employee.getId());
-            ps.setString(2, current_admin.getId());
-            ps.setString(3, current_employee.getId());
+    /**
+     * Fase [4]: Registro de Pago en Cajas.
+     */
+    public boolean payProcess(JDBConnection connection, String payment_id) throws SQLException, ProcessException {
+        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_PAYMENT)) {
+            ps.setInt(1, Integer.parseInt(current_employee.getId()));
+            ps.setInt(2, Integer.parseInt(payment_id));
+            ps.setInt(3, Integer.parseInt(current_employee.getId()));
             ps.setInt(4, STATUS_PAGADO);
-            ps.setString(5, id);
-            rt = ps.executeUpdate() > 0;
-            if (!rt) {
-                throw new ProcessException(1, "TRAMITE NO INICIADO");
-            }
-            return rt;
-        }
-    }
+            //ps.setInt(5, id);
 
-    public boolean endProcess(JDBConnection connection, String user_id, String water_inatke_id) throws SQLException, ProcessException {
-        boolean rt = false;
-        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_END);) {
-            ps.setString(1, current_employee.getId());
-            ps.setString(2, current_admin.getId());
-            ps.setString(3, current_employee.getId());
-            ps.setInt(4, STATUS_FINALIZADO);
-            ps.setString(5, user_id);
-            rt = ps.executeUpdate() > 0;
+            boolean rt = ps.executeUpdate() > 0;
             if (!rt) {
-                throw new ProcessException(1, "TRAMITE NO INICIADO");
+                throw new ProcessException(2, "ERROR EN CAJAS: No se pudo registrar el pago para el trámite ID ");
             }
             return rt;
         }
     }
 
     /**
-     * se lanza si el usuario pride su tarjeta fisica
-     *
-     * @param connection
-     * @param id
-     * @return
+     * Fase [5]: Impresión de Comprobante / Título de Concesión.
      */
-    public boolean printProcess(JDBConnection connection, String id) throws SQLException, ProcessException {
-        boolean rt = false;
-        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_PRINT);) {
-            ps.setString(1, current_employee.getId());
-            ps.setString(2, current_employee.getId());
-            ps.setString(3, id);
-            rt = ps.executeUpdate() > 0;
+    public boolean printProcess(JDBConnection connection, int id) throws SQLException, ProcessException {
+        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_PRINT)) {
+            ps.setInt(1, Integer.parseInt(current_employee.getId()));
+            ps.setInt(2, Integer.parseInt(current_employee.getId()));
+            ps.setInt(3, id);
+
+            boolean rt = ps.executeUpdate() > 0;
             if (!rt) {
-                throw new ProcessException(1, "TRAMITE NO INICIADO");
+                throw new ProcessException(3, "ERROR DE EMISIÓN: No se pudo firmar la impresión del trámite ID " + id);
             }
             return rt;
         }
     }
 
     /**
-     * se lanza si el empleado decide cancelar el tramite, no se ha validado o
-     * no se ha realizado un pago dentro de los proximos 30 dias
-     *
-     * @param connection
-     * @param payment_id
-     * @return
+     * Fase [6]: Finalización e incorporación definitiva al Padrón Activo.
      */
-    public boolean cancelProcess(JDBConnection connection, String payment_id) throws SQLException, ProcessException {
-        boolean rt = false;
-        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_CANCEL);) {
-            ps.setString(1, current_employee.getId());
+    public boolean endProcess(JDBConnection connection, int id, String wki_user_id) throws SQLException, ProcessException {
+        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_END)) {
+            ps.setInt(1, Integer.parseInt(current_employee.getId()));
+            ps.setInt(2, Integer.parseInt(wki_user_id));
+            ps.setInt(3, Integer.parseInt(current_admin.getId()));
+            ps.setInt(4, Integer.parseInt(current_employee.getId()));
+            ps.setInt(5, STATUS_FINALIZADO);
+            ps.setInt(6, id);
+
+            boolean rt = ps.executeUpdate() > 0;
+            if (!rt) {
+                throw new ProcessException(4, "ERROR DE CIERRE: No se pudo consolidar el alta en el padrón para el trámite ID " + id);
+            }
+            return rt;
+        }
+    }
+
+    /**
+     * Cancelación explícita del trámite por dictamen o desistimiento del
+     * ciudadano.
+     */
+    public boolean cancelProcess(JDBConnection connection, int id) throws SQLException, ProcessException {
+        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_CANCEL)) {
+            ps.setInt(1, Integer.parseInt(current_employee.getId()));
             ps.setInt(2, STATUS_CANCELADO);
-            ps.setString(3, payment_id);
-            rt = ps.executeUpdate() > 0;
+            ps.setInt(3, id);
+
+            boolean rt = ps.executeUpdate() > 0;
             if (!rt) {
-                throw new ProcessException(1, "TRAMITE NO INICIADO");
+                throw new ProcessException(5, "ERROR EN ABORTO: No se pudo cancelar el trámite ID " + id);
             }
             return rt;
         }
     }
 
     /**
-     * Se lanza cuando han transcurrido 30 dias despues de inicial el tramite
-     *
-     * @param connection
-     * @param payment_id
-     * @return
+     * Cierre automático por caducidad (Expiración del plazo de 30 días).
      */
-    public boolean caducateProcess(JDBConnection connection, String payment_id) throws SQLException, ProcessException {
-        boolean rt = false;
-        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_CADUCATE);) {
-            ps.setString(1, current_employee.getId());
+    public boolean caducateProcess(JDBConnection connection, int id) throws SQLException, ProcessException {
+        try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_CADUCATE)) {
+            ps.setInt(1, Integer.parseInt(current_employee.getId()));
             ps.setInt(2, STATUS_CADUCADO);
-            ps.setString(3, payment_id);
-            rt = ps.executeUpdate() > 0;
+            ps.setInt(3, id);
+
+            boolean rt = ps.executeUpdate() > 0;
             if (!rt) {
-                throw new ProcessException(1, "TRAMITE NO INICIADO");
+                throw new ProcessException(6, "ERROR EN VENCIMIENTO: No se pudo caducar el trámite ID " + id);
             }
             return rt;
         }
     }
 
+    // --- MÉTODOS DE FILTRADO Y CONSULTAS ---
     public List<ProcessDTO> getStartProcedures(JDBConnection connection) throws SQLException {
         return getProcess(connection, STATUS_INICIADO);
     }
@@ -216,21 +218,27 @@ public class ProcessDAO extends AbstractDAO {
         return getProcess(connection, STATUS_CANCELADO);
     }
 
+    /**
+     * Recupera y mapea de manera dinámica la lista de trámites filtrados por su
+     * estatus actual.
+     */
     public List<ProcessDTO> getProcess(JDBConnection connection, int status) throws SQLException {
-        ArrayList<ProcessDTO> list = new ArrayList<>(50);
+        List<ProcessDTO> list = new ArrayList<>(50);
         String query = "SELECT * FROM pro_process WHERE status = ?";
-        try (PreparedStatement ps = connection.getNewPreparedStatement(query);) {
+
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
             ps.setInt(1, status);
-            try (ResultSet rs = ps.executeQuery();) {
+            try (ResultSet rs = ps.executeQuery()) {
                 ResultSetMetaData md = rs.getMetaData();
                 int size = md.getColumnCount();
+
                 while (rs.next()) {
-                    ProcessDTO process = new ProcessDTO(size);
+                    // CORRECCIÓN: Se remueve el parámetro 'size' del constructor. 
+                    // El DTO administra su propio mapa interno de capacidad fija 40.
+                    ProcessDTO process = new ProcessDTO();
                     for (int i = 1; i <= size; i++) {
-                        process.getMap().put(
-                                md.getColumnLabel(i),
-                                rs.getString(md.getColumnLabel(i))
-                        );
+                        String label = md.getColumnLabel(i);
+                        process.getMap().put(label, rs.getString(label));
                     }
                     list.add(process);
                 }
@@ -238,5 +246,4 @@ public class ProcessDAO extends AbstractDAO {
         }
         return list;
     }
-
 }

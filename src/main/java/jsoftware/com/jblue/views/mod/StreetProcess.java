@@ -4,21 +4,29 @@
  */
 package jsoftware.com.jblue.views.mod;
 
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JOptionPane;
 import jsoftware.com.jblue.model.dto.StreetDTO;
-import jsoftware.com.jblue.views.framework.AbstractProcessView;
-import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
+import jsoftware.com.jblue.model.dto.wrp.StreetWrapperDTO;
+import jsoftware.com.jblue.model.models.AbstractValidation;
+import jsoftware.com.jblue.util.Func;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
 
 /**
  *
  * @author juanp
  */
-public final class StreetProcess extends  AbstractProcessView<StreetDTO>{
+public final class StreetProcess extends AbstractModuleView<StreetWrapperDTO> implements DBObjectValues<StreetDTO> {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form StreetView
      */
-    public StreetProcess(ProcessViewBuilder builder) {
-        super(builder);
+    public StreetProcess(StreetWrapperDTO dto) {
+        super(dto);
         initComponents();
     }
 
@@ -44,9 +52,6 @@ public final class StreetProcess extends  AbstractProcessView<StreetDTO>{
         jPanel10 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         street_name_field = new javax.swing.JTextField();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        colony_id_field = new javax.swing.JComboBox<>();
         options_panel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         save_button = new javax.swing.JButton();
@@ -142,19 +147,6 @@ public final class StreetProcess extends  AbstractProcessView<StreetDTO>{
         jPanel10.add(street_name_field, java.awt.BorderLayout.CENTER);
 
         panel_campos.add(jPanel10);
-
-        jPanel1.setName("jPanel1"); // NOI18N
-        jPanel1.setLayout(new java.awt.BorderLayout());
-
-        jLabel2.setText(bundle.getString("StreetProcess.jLabel2.text")); // NOI18N
-        jLabel2.setName("jLabel2"); // NOI18N
-        jLabel2.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel1.add(jLabel2, java.awt.BorderLayout.LINE_START);
-
-        colony_id_field.setName("colony_id_field"); // NOI18N
-        jPanel1.add(colony_id_field, java.awt.BorderLayout.CENTER);
-
-        panel_campos.add(jPanel1);
 
         register_panel.add(panel_campos, java.awt.BorderLayout.CENTER);
 
@@ -321,25 +313,18 @@ public final class StreetProcess extends  AbstractProcessView<StreetDTO>{
         add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    @Override
-    public void getDataView() {
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton back_button;
     private javax.swing.JButton cancel_button;
-    private javax.swing.JComboBox<String> colony_id_field;
     private javax.swing.JLabel count;
     private javax.swing.JButton delete_button;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel15;
@@ -370,4 +355,35 @@ public final class StreetProcess extends  AbstractProcessView<StreetDTO>{
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void getData() {
+        StreetWrapperDTO dto = getDtoWrapper();
+        boolean res = isValuesOK();
+        if (!res) {
+            return;
+        }
+        dto.setValid(res);
+        StreetDTO values = getValues(false);
+        dto.getStreet().setMap(values.getMap());
+    }
+
+    @Override
+    public boolean isValuesOK() {
+        AbstractValidation v = new AbstractValidation();
+        v.addRuler("street_name", street_name_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()));
+        v.addErrorMessage("street_name", "EL NOMBRE DE LA CALLE NO ES VALIDO");
+        boolean res = v.isValid();
+        if (!res) {
+            JOptionPane.showMessageDialog(this, v.getErrorMessage());
+        }
+        return res;
+    }
+
+    @Override
+    public StreetDTO getValues(boolean update) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("street_name", Func.nullSafeToString(street_name_field.getText()));
+        return new StreetDTO(map);
+    }
 }

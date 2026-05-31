@@ -1,173 +1,189 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jsoftware.com.jblue.model.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import jsoftware.com.jblue.model.dto.StreetDTO;
+import jsoftware.com.jblue.model.exp.DataAccesObjectException;
+import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
+import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
+import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
 
 /**
+ * Data Access Object (DAO) para la gestión del catálogo de calles.
+ * <br>
+ * Implementa el mapeo dinámico por deltas y el control estricto de tipos de
+ * datos.
  *
- * @author juanp
+ * @author JUAN PABLO CAMPOS CASASANERO
+ * @since 2026-05-31
+ * @version 1.1
  */
 public class StreetDAO extends AbstractDAO implements ListComponentDAO<StreetDTO> {
+
+    private static final long serialVersionUID = 1L;
 
     public StreetDAO(boolean flag_dev_log, String name_module) {
         super(flag_dev_log, name_module);
     }
 
+    /**
+     * Recupera el catálogo general de calles activas en el sistema.
+     */
     @Override
-    public List<StreetDTO> getList(JDBConnection connection) throws SQLException, Exception {
-        List<StreetDTO> list = new ArrayList<>(15);
+    public List<StreetDTO> getList(JDBConnection connection) throws SQLException {
+        List<StreetDTO> list = new ArrayList<>(50);
         String query = "SELECT * FROM cat_street WHERE status = 1";
-        try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
-            try (ResultSet rs = ps.executeQuery();) {
-                ResultSetMetaData md = rs.getMetaData();
-                int size = md.getColumnCount();
-                String[] fields = new String[size];
-                for (int i = 0; i < fields.length; i++) {
-                    fields[i] = md.getColumnLabel(i + 1);
-                }
-                StreetDTO o;
-                while (rs.next()) {
-                    o = new StreetDTO();
-                    for (String i : fields) {
-                        o.getMap().put(i, rs.getString(i));
-                    }
-                    list.add(o);
-                }
+
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query); ResultSet rs = ps.executeQuery()) {
+
+            ResultSetMetaData md = rs.getMetaData();
+            int size = md.getColumnCount();
+            String[] fields = new String[size];
+
+            for (int i = 0; i < size; i++) {
+                fields[i] = md.getColumnLabel(i + 1);
             }
-        } catch (Exception e) {
-            System.getLogger(StreetDAO.class.getName()).log(System.Logger.Level.ALL, e.getMessage());
+
+            while (rs.next()) {
+                StreetDTO dto = new StreetDTO();
+                for (String field : fields) {
+                    dto.getMap().put(field, rs.getString(field));
+                }
+                list.add(dto);
+            }
         }
         return list;
     }
 
-    public int insert(JDBConnection connection, StreetDTO o) {
-        String query = "INSERT INTO cat_street(street_name) VALUES(?)";
-        int key = -1;
-        // El try-with-resources es correcto
-        try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);) {
+    /**
+     * Inserta una nueva calle en el catálogo.
+     * <p>
+     * Realiza el casteo final a tipos numéricos para las relaciones foráneas de
+     * MySQL y enriquece el DTO tras completarse la operación.
+     * </p>
+     */
+    public int insert(JDBConnection connection, StreetDTO dto) throws SQLException, DataAccesObjectException {
+        int generated_id = -1;
+        String query = "INSERT INTO cat_street (street_name, colony_id, status) VALUES (?, ?, ?)";
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, dto.getStreetName());
+            ps.setString(2, dto.getColonyId());
+            ps.setString(3, dto.getStatus());
 
-            // **CORRECCIÓN 1: Establecer el parámetro del DTO**
-            ps.setString(1, o.getStreetName());
-
-            // **CORRECCIÓN 2: Usar executeUpdate (o simplemente ejecutar)**
-            int res = ps.executeUpdate(); // Ejecuta la inserción
-            if (res == PreparedStatement.EXECUTE_FAILED) {
-                throw new SQLException("REGISTRO ERRONEO");
+            if (ps.executeUpdate() != PreparedStatement.EXECUTE_FAILED) {
+                throw new CorruptInsertionException();
             }
-            // **CORRECCIÓN 3: Manejo correcto de Generated Keys**
-            try (ResultSet gk = ps.getGeneratedKeys();) {
-                if (!gk.next()) { // Es OBLIGATORIO llamar a .next()
-                    throw new SQLException("LLAVE NO GENERADA");
+            try (ResultSet gk = ps.getGeneratedKeys()) {
+                if (!gk.next()) {
+                    throw new KeyNotGenerateException();
                 }
-                key = gk.getInt(1); // El ID generado está en el índice 1
+                generated_id = gk.getInt(1);
+
+                // Enriquecimiento del DTO alineado a las reglas de JBlue
+                dto.put("id", String.valueOf(generated_id));
+                String now = Formats.getLocalDateTime(LocalDateTime.now());
+                dto.put("date_update", now);
+                dto.put("date_register", now);
             }
-        } catch (SQLException ex) {
-            System.getLogger(StreetDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-        return key;
+        return generated_id;
     }
 
-    public boolean update(JDBConnection connection, StreetDTO old_dto, StreetDTO new_dto) {
+    /**
+     * Modifica selectivamente los campos modificados en la vista Swing mediante
+     * mapeo por deltas.
+     */
+    public boolean update(JDBConnection connection, StreetDTO old_dto, StreetDTO new_dto) throws SQLException {
         boolean res = false;
         Map<String, Object> diff_map = Func.getChangedStringEntries(old_dto.getMap(), new_dto.getMap());
+
         if (diff_map.isEmpty()) {
             return true;
         }
+
         String query = getQueryUpdate(diff_map);
-        // El try-with-resources es correcto
-        try (PreparedStatement ps = connection.getNewPreparedStatement(query);) {
+
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
             int i = 1;
-            if (!diff_map.isEmpty()) {
-                for (Map.Entry<String, Object> entry : diff_map.entrySet()) {
-                    ps.setString(i, entry.getValue().toString());
-                    i++;
+            for (Map.Entry<String, Object> entry : diff_map.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue().toString();
+
+                // Control dinámico de tipos para evitar inyecciones corruptas de strings en llaves numéricas
+                if ("colony_id".equalsIgnoreCase(key)) {
+                    ps.setInt(i, Integer.parseInt(value));
+                } else {
+                    ps.setString(i, value);
                 }
+                i++;
             }
-            ps.setString(i, new_dto.getId());
+
+            // Inyectar el ID correspondiente al WHERE
+            ps.setInt(i, Integer.parseInt(new_dto.getId()));
+
             res = ps.executeUpdate() > 0;
             if (!res) {
-                throw new SQLException("ELIMINACION LOGICA CORRUPTA");
+                throw new SQLException("MODIFICACIÓN CORRUPTA: El registro no existe o su estatus fue alterado.");
             }
-        } catch (SQLException ex) {
-            System.getLogger(StreetDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return res;
     }
 
+    /**
+     * Construye dinámicamente la estructura SQL del update basada en los deltas
+     * detectados.
+     */
     public String getQueryUpdate(Map<String, Object> map) {
-        // 1. Validar que hay campos para actualizar
         if (map == null || map.isEmpty()) {
-            // En un DAO, lanzar una excepción o retornar null/cadena vacía es mejor que generar un SQL inválido.
-            throw new IllegalArgumentException("El mapa de campos a actualizar no puede ser nulo o vacío.");
+            throw new IllegalArgumentException("El mapa de deltas no contiene elementos para actualizar.");
         }
-        StringBuilder sb = new StringBuilder(100);
+
+        StringBuilder sb = new StringBuilder(150);
         sb.append("UPDATE cat_street SET ");
-        // 2. Iterar solo sobre las claves que NO deben estar en el SET (ej: id)
+
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             String key = entry.getKey();
-
-            // Evitar que la clave primaria (ID) o el estado se incluyan accidentalmente en el SET
-            if (!"id".equalsIgnoreCase(key) && !"status".equalsIgnoreCase(key)) {
+            // Filtrar llaves estructurales inmutables desde este método
+            if (!"id".equalsIgnoreCase(key) && !"status".equalsIgnoreCase(key) && !"date_register".equalsIgnoreCase(key)) {
                 sb.append(key).append(" = ?,");
             }
         }
-        // 3. Manejo de mapa con solo campos excluidos (e.g., solo pasó el ID)
-        // Si la longitud de sb es la misma que la inicial ("UPDATE cat_street SET "), significa que no se agregaron campos.
+
         if (sb.toString().endsWith("SET ")) {
-            throw new IllegalArgumentException("El mapa solo contiene campos excluidos de la actualización.");
+            throw new IllegalArgumentException("El mapa solo contiene campos estructurales excluidos.");
         }
-        // 4. CORRECCIÓN CRÍTICA: Eliminar la coma final (,) y añadir espacio
-        // sb.length() - 1 apunta a la coma
+
         sb.deleteCharAt(sb.length() - 1);
-        sb.append(" ");
-        // 5. Añadir la cláusula WHERE (asumiendo que 'id' es requerido)
-        // La clave 'id' deberá ser proporcionada al PreparedStatement más tarde.
-        sb.append("WHERE id = ? AND status = 1");
+        sb.append(" WHERE id = ? AND status = 1");
+
         return sb.toString();
     }
 
-    // Asumiendo que StreetDTO.getId() devuelve un Long. Si devuelve String, ajustar el setX
-    public boolean delete(JDBConnection connection, StreetDTO o) throws SQLException { // Propagar SQLException para un manejo superior
-        // CORRECCIÓN 1: Error tipográfico en la función SQL
+    /**
+     * Realiza la baja lógica de la calle modificando su estado a inhabilitado.
+     */
+    public boolean delete(JDBConnection connection, StreetDTO dto) throws SQLException {
         String query = "UPDATE cat_street SET status = 3, date_end = CURRENT_TIMESTAMP WHERE id = ? AND status = 1";
         boolean res = false;
-
         try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
-            // CORRECCIÓN 2: Usar el método setX() apropiado (ej. setLong, asumiendo que el ID es numérico)
-            ps.setString(1, o.getId());
+            ps.setInt(1, Integer.parseInt(dto.getId()));
 
-            int updatedRows = ps.executeUpdate();
-            res = updatedRows > 0;
+            int update_rows = ps.executeUpdate();
+            res = update_rows != PreparedStatement.EXECUTE_FAILED && update_rows == 1;
 
             if (!res) {
-                // Un fallo en la actualización (updatedRows == 0) significa que el registro
-                // con ese ID y status=1 no existe. Es una falla controlada (Optimistic Lock).
-
-                // Mejor práctica: Lanzar una excepción específica de negocio (ej. EntityNotFoundException)
-                // para que la capa superior sepa que el registro no existe, en lugar de un error de SQL.
-                // Para mantener el tipo de excepción original:
-                throw new SQLException("El registro (ID: " + o.getId() + ") no pudo ser eliminado. Probablemente ya está inactivo o no existe.", "23000", 404);
+                throw new SQLException("ELIMINACIÓN LÓGICA CORRUPTA: La calle con ID " + dto.getId() + " ya está inactiva o fue eliminada previamente.");
             }
-
-        } catch (SQLException e) {
-            // Mejor práctica: Registrar el error...
-            System.getLogger(StreetDAO.class.getName()).log(System.Logger.Level.ERROR, "Fallo al realizar la eliminación lógica.", e);
-            throw e;
         }
-
         return res;
     }
 }

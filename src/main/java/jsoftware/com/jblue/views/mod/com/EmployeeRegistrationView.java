@@ -4,6 +4,14 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.time.LocalDate;
+import java.util.Locale;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
 import jsoftware.com.jblue.model.dao.StreetDAO;
@@ -26,6 +34,7 @@ import jsoftware.com.jblue.views.framework.DBObjectValues;
 public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeRegisterWrapperDTO> implements DBObjectValues<EmployeeDTO> {
 
     private static final long serialVersionUID = 1L;
+    private DatePicker datePicker;
 
     /**
      * Creates new form EmployeeView
@@ -46,11 +55,11 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
 
     @Override
     public void events() {
-        StreetDAO street_dao = new StreetDAO(AppConfig.isDevMessages(), getDtoWrapper().getModule_name());
-        ComboBoxController<StreetDTO> street_1 = new ComboBoxController(street1_field, street_dao);
-        ComboBoxController<StreetDTO> street_2 = new ComboBoxController(street2_field, street_dao);
-        comboBoxInit(street_1, street1_field.getItemCount() <= 0);
-        comboBoxInit(street_2, street2_field.getItemCount() <= 0);
+        StreetDAO streetDao = new StreetDAO(AppConfig.isDevMessages(), getDtoWrapper().getModule_name());
+        ComboBoxController<StreetDTO> street1 = new ComboBoxController(street1_field, streetDao);
+        ComboBoxController<StreetDTO> street2 = new ComboBoxController(street2_field, streetDao);
+        comboBoxInit(street1, street1_field.getItemCount() <= 0);
+        comboBoxInit(street2, street2_field.getItemCount() <= 0);
     }
 
     public void comboBoxInit(ComboBoxController<?> c, boolean empty) {
@@ -61,6 +70,26 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
 
     @Override
     public void components() {
+        // 1. Instanciar los ajustes (Vacíos o con idioma/formato básico)
+        DatePickerSettings dps = new DatePickerSettings();
+        dps.setLocale(Locale.forLanguageTag("es-MX"));
+        dps.setFormatForDatesCommonEra("yyyy-MM-dd");
+        // 2. CORRECCIÓN CRÍTICA: Instanciar el DatePicker PASANDO los ajustes primero
+        datePicker = new DatePicker(dps);
+        // 3. AHORA SÍ: Aplicar los límites de rango sobre los ajustes (Ya tienen un padre asociado)
+        dps.setDateRangeLimits(LocalDate.MIN, LocalDate.now());
+        dps.setVisiblePreviousYearButton(true);
+        dps.setVisibleNextYearButton(false);
+        int j = 0;
+        for (Component i : datePicker.getComponents()) {
+            System.out.println(i + " - " + i.getName() + ": " + i.getClass().getName());
+        }
+        JButton button = (JButton) datePicker.getComponent(1);
+        button.setPreferredSize(new Dimension(80, 25));
+        button.setText("FECHA");
+        button.setToolTipText("SELECCIONE LA FECHA");
+        // 4. Inyectar al contenedor de Swing y refrescar la UI
+        jPanel7.add(datePicker, BorderLayout.CENTER);
     }
 
     @Override
@@ -103,7 +132,6 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         gender_field = new javax.swing.JComboBox<>();
         jPanel7 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        birthdate_field = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         email_field = new javax.swing.JTextField();
@@ -233,10 +261,6 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel7.add(jLabel6, java.awt.BorderLayout.WEST);
 
-        birthdate_field.setText(bundle1.getString("EmployeeView.jTextField6.text")); // NOI18N
-        birthdate_field.setName("FECHA DE NACIMIENTO"); // NOI18N
-        jPanel7.add(birthdate_field, java.awt.BorderLayout.CENTER);
-
         jPanel2.add(jPanel7);
 
         jPanel8.setName("jPanel8"); // NOI18N
@@ -328,7 +352,6 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField birthdate_field;
     private javax.swing.JTextField curp_field;
     private javax.swing.JTextField curp_field1;
     private javax.swing.JTextField email_field;
@@ -376,8 +399,8 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
     public boolean isValuesOK() {
         boolean res;
         AbstractValidation v = new AbstractValidation();
-        v.addRuler("curp", curp_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()));
-        v.addErrorMessage("curp", "LA CURP NO TIENE EL FORMATO INCORRECTO");
+//        v.addRuler("curp", curp_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()));
+//        v.addErrorMessage("curp", "LA CURP NO TIENE EL FORMATO INCORRECTO");
 
         v.addRuler("first_name", first_name_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
         v.addErrorMessage("first_name", "EL NOMBRE DEBE SER SOLO TEXTO");
@@ -400,10 +423,6 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         }
         res = v.isValid();
         if (!res) {
-            JOptionPane.showMessageDialog(this, v.getErrorMessage());
-        }
-        res = v.isValid();
-        if (!res) {
             JOptionPane.showMessageDialog(this, v.getErrorMessage(), "CAMPOS NO VALIDOS", JOptionPane.ERROR_MESSAGE);
         }
         return res;
@@ -417,7 +436,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         Func.putIfNotNull(dto.getMap(), "last_name1", Formats.getTextFormat(last_name1_field.getText()));
         Func.putIfNotNull(dto.getMap(), "last_name2", Formats.getTextFormat(last_name2_field.getText()));
         Func.putIfNotNull(dto.getMap(), "gender", gender_field.getSelectedIndex());
-        Func.putIfNotNull(dto.getMap(), "birthdate", birthdate_field.getText());
+        Func.putIfNotNull(dto.getMap(), "birthdate", datePicker.getText());
         Func.put(dto.getMap(), "personal_email", email_field.getText());
         Func.put(dto.getMap(), "personal_phone", phone_number_field.getText());
         Func.putIfNotNull(dto.getMap(), "street1", street1_field.getSelectedIndex());
@@ -430,9 +449,18 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
 
     @Override
     public void getData() {
+        EmployeeRegisterWrapperDTO dto = getDtoWrapper();
         boolean res = isValuesOK();
-        getValues(false);
-        getDtoWrapper().setEmployee_valid(true);
+        // CORRECCIÓN: Siempre se notifica el resultado real al Wrapper para evitar brincos de validación vacíos
+        dto.setEmployee_valid(res);
+        if (!res) {
+            return;
+        }
+        // Si es válido, se extrae el DTO y se vincula al Wrapper unificado
+        EmployeeDTO employeeData = getValues(false);
+        dto.getEmployee().setMap(employeeData.getMap());
+        // Nota: Asegúrate de guardar este employeeData en tu Wrapper si tu arquitectura lo requiere, 
+        // por ejemplo: getDtoWrapper().setEmployeeData(employeeData);
     }
 
 }

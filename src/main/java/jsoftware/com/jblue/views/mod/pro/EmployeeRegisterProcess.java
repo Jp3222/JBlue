@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.viewc.EmployeeRegisterController;
 import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.framework.ShowDataModel;
 import jsoftware.com.jblue.views.mod.com.EmployeeRegistrationView;
 import jsoftware.com.jblue.views.mod.com.EmployeeUserDataView;
 import jsoftware.com.jblue.views.vabst.AbstractWizardView;
@@ -19,7 +20,7 @@ import jsoftware.com.jblue.views.vabst.AbstractWizardView;
  *
  * @author juanp
  */
-public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRegisterWrapperDTO> {
+public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRegisterWrapperDTO> implements ShowDataModel {
 
     private static final long serialVersionUID = 1L;
     private final EmployeeRegistrationView register_view;
@@ -36,8 +37,8 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
         views = new ArrayList<>(2);
         views.add(register_view);
         views.add(data_view);
-        //
         card_layout = (CardLayout) root_panel.getLayout();
+        //
         build();
     }
 
@@ -51,12 +52,13 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
 
     @Override
     public void events() {
-        //
-        EmployeeRegisterController employee_controller = (EmployeeRegisterController) getDtoWrapper().getController("CONTROLLER");
-        employee_controller.setView(this);
-        
-        next_panel_button.addActionListener(employee_controller);
-
+        // Registrar esta vista contenedora principal en el controlador de negocio de Empleados
+        EmployeeRegisterController employeeController = (EmployeeRegisterController) getDtoWrapper().getController("CONTROLLER");
+        if (employeeController != null) {
+            employeeController.setView(this);
+        }
+        // NOTA: El botón "next_panel_button" NO recibe listeners de negocio aquí; 
+        // es gobernado de forma limpia por bindController() mediante el WizardController.
     }
 
     @Override
@@ -67,6 +69,7 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
 
     @Override
     public void initialState() {
+        super.initialState(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
     @Override
@@ -82,7 +85,7 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setName("REGISTRO DE EMPLEADOS"); // NOI18N
+        setName(""); // NOI18N
         setLayout(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -91,7 +94,10 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
     // End of variables declaration//GEN-END:variables
     @Override
     public boolean nextStep() {
+        // Sincroniza los componentes visuales del paso actual hacia los Strings del mapa del DTO
         getData();
+
+        // Evaluar las banderas de validación del DTO según el paso del asistente
         boolean valid = switch (current_index) {
             case 0 ->
                 getDtoWrapper().isEmployee_valid();
@@ -100,23 +106,32 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
             default ->
                 false;
         };
+
         if (!valid) {
-            JOptionPane.showMessageDialog(root_panel,
+            JOptionPane.showMessageDialog(this,
                     "Por favor, complete correctamente los campos obligatorios de esta sección.",
-                    "Validación", JOptionPane.WARNING_MESSAGE);
+                    "Validación de Datos", JOptionPane.WARNING_MESSAGE);
         }
-        return !valid;
+        return valid;
     }
 
     @Override
     public void executeFinal() {
+        // 1. Forzar la recolección masiva de la data de todos los sub-paneles
         for (AbstractModuleView<EmployeeRegisterWrapperDTO> v : views) {
             v.getData();
         }
-        EmployeeRegisterWrapperDTO pw = getDtoWrapper();
-        // 2. Aquí llamarías a tu Service: userService.save(...)
-        JOptionPane.showMessageDialog(this, "Iniciando persistencia de datos en base de datos...");
-        //controller.save();
+
+        // 2. Recuperar el controlador del caso de uso encargado de la persistencia
+        EmployeeRegisterController employeeController = (EmployeeRegisterController) getDtoWrapper().getController("CONTROLLER");
+
+        if (employeeController != null) {
+            // El controlador leerá el WrapperDTO enriquecido, aplicará los casts numéricos en el DAO y guardará en MySQL
+            JOptionPane.showMessageDialog(this, "Guardando registro del nuevo empleado en el sistema...", "Procesando", JOptionPane.INFORMATION_MESSAGE);
+
+            // Suponiendo que tu controlador implementa el método de persistencia:
+            // employeeController.insert(); 
+        }
 
     }
 
@@ -124,4 +139,16 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
     public List<AbstractModuleView<EmployeeRegisterWrapperDTO>> getViews() {
         return views;
     }
+
+    @Override
+    public void showData() {
+        System.out.println("sho");
+        for (AbstractModuleView<EmployeeRegisterWrapperDTO> i : views) {
+            System.out.println(i.getName());
+            if (i instanceof ShowDataModel s) {
+                s.showData();
+            }
+        }
+    }
+
 }

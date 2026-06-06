@@ -6,22 +6,26 @@ package jsoftware.com.jblue.views.mod.com;
 
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
+import jsoftware.com.jblue.controllers.viewc.EmployeeRegisterController;
 import jsoftware.com.jblue.model.dao.EmployeeTypeDAO;
+import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.dto.EmployeeTypesDTO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
 import jsoftware.com.jblue.model.models.AbstractValidation;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.Func;
+import jsoftware.com.jblue.util.FuncGenerate;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
+import jsoftware.com.jblue.views.framework.ShowDataModel;
 
 /**
  * Clase dedicada a la captura de datos de usuario para el empleado
  *
  * @author Juan Pablo Campos Casasanero
  */
-public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegisterWrapperDTO> implements DBObjectValues<EmployeeUserDTO> {
+public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegisterWrapperDTO> implements DBObjectValues<EmployeeUserDTO>, ShowDataModel {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,7 +38,41 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
         EmployeeTypeDAO dao = new EmployeeTypeDAO(false, getDtoWrapper().getModule_name());
         ComboBoxController<EmployeeTypesDTO> con = new ComboBoxController<>(employee_type_field, dao);
         comboBoxInit(con, employee_type_field.getItemCount() <= 0);
+        build();
     }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        finalState();
+        initialState();
+    }
+
+    @Override
+    public void events() {
+         // Registrar esta vista contenedora principal en el controlador de negocio de Empleados
+        EmployeeRegisterController employeeController = (EmployeeRegisterController) getDtoWrapper().getController("CONTROLLER");
+        if (employeeController != null) {
+            generate_data.addActionListener(employeeController);
+        }
+        // NOTA: El botón "next_panel_button" NO recibe listeners de negocio aquí; 
+        // es gobernado de forma limpia por bindController() mediante el WizardController.
+    }
+
+    @Override
+    public void components() {
+    }
+
+    @Override
+    public void initialState() {
+    }
+
+    @Override
+    public void finalState() {
+    }
+    
+    
 
     public void comboBoxInit(ComboBoxController<?> c, boolean empty) {
         if (empty) {
@@ -81,7 +119,7 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
         jTextField8 = new javax.swing.JTextField();
         jPanel22 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        generate_data = new javax.swing.JButton();
 
         setName("DATOS DE USUARIO"); // NOI18N
         setLayout(new java.awt.CardLayout());
@@ -227,10 +265,11 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
         jLabel21.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel22.add(jLabel21, java.awt.BorderLayout.WEST);
 
-        jButton1.setText(bundle.getString("EmployeeUserDataView.jButton1.text")); // NOI18N
-        jButton1.setToolTipText(bundle.getString("EmployeeUserDataView.jButton1.toolTipText")); // NOI18N
-        jButton1.setName("jButton1"); // NOI18N
-        jPanel22.add(jButton1, java.awt.BorderLayout.CENTER);
+        generate_data.setText(bundle.getString("EmployeeUserDataView.generate_data.text")); // NOI18N
+        generate_data.setToolTipText(bundle.getString("EmployeeUserDataView.generate_data.toolTipText")); // NOI18N
+        generate_data.setActionCommand(bundle.getString("EmployeeUserDataView.generate_data.actionCommand")); // NOI18N
+        generate_data.setName("generate_data"); // NOI18N
+        jPanel22.add(generate_data, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel22);
 
@@ -244,7 +283,7 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
     private javax.swing.JTextField description_field;
     private javax.swing.JTextField email_field;
     private javax.swing.JComboBox<EmployeeTypesDTO> employee_type_field;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton generate_data;
     private javax.swing.JButton jButton2;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
@@ -316,7 +355,7 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
 
     @Override
     public EmployeeUserDTO getValues(boolean update) {
-        EmployeeUserDTO dto = getDtoWrapper().getEmployee_user();
+        EmployeeUserDTO dto = new EmployeeUserDTO();
         Func.put(dto.getMap(), "user", user_field.getText());
         Func.put(dto.getMap(), "password", description_field.getText());
         Func.put(dto.getMap(), "description", Formats.getTextFormat(description_field.getText()));
@@ -328,9 +367,48 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
 
     @Override
     public void getData() {
+        EmployeeRegisterWrapperDTO dto = getDtoWrapper();
         boolean res = isValuesOK();
-        getValues(false);
-        getDtoWrapper().setEmployee_user_valid(true);
+        if (!res) {
+            return;
+        }
+        EmployeeUserDTO values = getValues(false);
+        dto.getEmployee_user().setMap(values.getMap());
+        dto.setEmployee_user_valid(res);
+    }
+
+    @Override
+    public void showData() {
+        EmployeeRegisterWrapperDTO dto = getDtoWrapper();
+        EmployeeDTO employee = dto.getEmployee();
+        String user_name = employee.getFirstName()
+                .concat("_")
+                .concat(employee.getLastName1())
+                .concat("_")
+                .concat(employee.getLastName2());
+        description_field.setText(user_name);
+
+        String password = password_field.getText();
+        if (Func.isNullEmptyBlank(password)) {
+            password = FuncGenerate.getPassword(8);
+        }
+        password_field.setText(password);
+
+        String email = email_field.getText();
+        if (Func.isNullEmptyBlank(email)) {
+            email = employee.getPersonalEmail();
+        }
+        email_field.setText(email);
+
+        String number_phone = number_phone_field.getText();
+        if (Func.isNullEmptyBlank(number_phone)) {
+            number_phone = employee.getPersonalNumber();
+        }
+        number_phone_field.setText(number_phone);
+
+        if (employee_type_field.getSelectedIndex() <= 0) {
+            employee_type_field.setSelectedIndex(1);
+        }
     }
 
 }

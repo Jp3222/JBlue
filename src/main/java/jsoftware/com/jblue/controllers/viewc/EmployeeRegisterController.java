@@ -35,6 +35,8 @@ public class EmployeeRegisterController extends AbstractDBViewController<Employe
         switch (e.getActionCommand()) {
             case SAVE_COMMAND ->
                 save();
+            case "GENERATE" ->
+                generate();
         }
     }
 
@@ -42,6 +44,9 @@ public class EmployeeRegisterController extends AbstractDBViewController<Employe
     public void save() {
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
             SystemSession ss = SystemSession.getInstancia();
+            if (ss.isLock()) {
+                returnMessage(view, false, "LA SESION HA CADUCADO, CIERRE EL PROGRAMA Y VUELVA A INTENTAR");
+            }
             if (!ss.isAdministrationValid()) {
                 returnMessage(view, false, "LA ADMINISTRACION ACTUAL NO SE HA REGISTRADO O NO ES VALIDA");
                 return;
@@ -78,6 +83,10 @@ public class EmployeeRegisterController extends AbstractDBViewController<Employe
 
     public void setView(EmployeeRegisterProcess view) {
         this.view = view;
+    }
+
+    private void generate() {
+        view.showData();
     }
 
 }

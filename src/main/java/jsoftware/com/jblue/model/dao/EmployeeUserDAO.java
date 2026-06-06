@@ -21,7 +21,7 @@ import jsoftware.com.jutil.model.AbstractDAO;
  * Data Access Object (DAO) para la gestión de accesos y credenciales del
  * personal.
  * <br>
- * Administra las transacciones sobre la tabla usr_employee_user.
+ * Administra las transacciones sobre la tabla emp_user.
  *
  * * @author JUAN PABLO CAMPOS CASASANERO
  * @since 2026-03-21
@@ -54,7 +54,7 @@ public class EmployeeUserDAO extends AbstractDAO {
     public int insert(JDBConnection connection, EmployeeUserDTO dto) throws SQLException, CorruptInsertionException, KeyNotGenerateException {
         int generated_id = 0;
         String query = """
-                       INSERT INTO usr_employee_user
+                       INSERT INTO emp_user
                        (employee_id, office_id, user, password, description, 
                         email, phone_number, employee_type, status, last_employee_update)
                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -115,7 +115,7 @@ public class EmployeeUserDAO extends AbstractDAO {
      */
     public Optional<EmployeeUserDTO> get(JDBConnection connection, String user, String password) throws SQLException {
         Optional<EmployeeUserDTO> result = Optional.empty();
-        String query = "SELECT * FROM usr_employee_user WHERE user = ? AND password = ? AND status = 1";
+        String query = "SELECT * FROM emp_user WHERE user = ? AND password = ? AND status = 1";
 
         try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
             // Corrección en el orden secuencial de asignación de parámetros
@@ -188,7 +188,7 @@ public class EmployeeUserDAO extends AbstractDAO {
         parameters.add(Integer.valueOf(newUser.getLastEmployeeUpdate()));
 
         String setClause = String.join("=?, ", setColumns) + "=?";
-        String query = "UPDATE usr_employee_user SET " + setClause + " WHERE id = ?";
+        String query = "UPDATE emp_user SET " + setClause + " WHERE id = ?";
 
         try (Connection conn = connection.getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             int index = 1;

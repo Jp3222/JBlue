@@ -282,4 +282,9 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
         return sb.toString();
     }
 
+    @Override
+    public void clear() {
+        
+    }
+
 }

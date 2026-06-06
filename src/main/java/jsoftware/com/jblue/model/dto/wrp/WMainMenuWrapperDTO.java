@@ -10,8 +10,14 @@ package jsoftware.com.jblue.model.dto.wrp;
  */
 public class WMainMenuWrapperDTO extends ModuleWrapperDTO {
 
+    private static final long serialVersionUID = 1L;
+
     public WMainMenuWrapperDTO(String module_id, String module_name) {
         super(module_id, module_name);
+    }
+
+    @Override
+    public void clear() {
     }
 
 }

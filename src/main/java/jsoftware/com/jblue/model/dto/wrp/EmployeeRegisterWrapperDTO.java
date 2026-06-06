@@ -99,4 +99,12 @@ public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
         return sb.toString();
     }
 
+    @Override
+    public void clear() {
+        employee.getMap().clear();
+        employee_user.getMap().clear();
+        employee_valid = false;
+        employee_user_valid = false;
+    }
+
 }

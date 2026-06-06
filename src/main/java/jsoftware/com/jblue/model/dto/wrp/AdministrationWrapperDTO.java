@@ -13,6 +13,8 @@ import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
  */
 public class AdministrationWrapperDTO extends ModuleWrapperDTO {
 
+    private static final long serialVersionUID = 1L;
+
     private AdministrationHistoryDTO administration_history;
 
     public AdministrationWrapperDTO(String module_id, String module_name) {
@@ -33,6 +35,11 @@ public class AdministrationWrapperDTO extends ModuleWrapperDTO {
 
     public void setValues(Map<String, Object> values) {
         this.values = values;
+    }
+
+    @Override
+    public void clear() {
+        administration_history.getMap().clear();
     }
 
 }

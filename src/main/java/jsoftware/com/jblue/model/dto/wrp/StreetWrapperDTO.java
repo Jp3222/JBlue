@@ -73,4 +73,9 @@ public class StreetWrapperDTO extends ModuleWrapperDTO {
         return sb.toString();
     }
 
+    @Override
+    public void clear() {
+        street.getMap().clear();
+    }
+
 }

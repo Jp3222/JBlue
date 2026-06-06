@@ -120,4 +120,14 @@ public class ShopCartWrapperDTO extends ModuleWrapperDTO {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public void clear() {
+        payment_details.clear();
+        payment_header.getMap().clear();
+        payments_details_made.clear();
+        payments_header_made.clear();
+        wki_type.getMap().clear();
+        wki_user.getMap().clear();
+    }
 }

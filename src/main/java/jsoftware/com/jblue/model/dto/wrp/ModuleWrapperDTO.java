@@ -16,7 +16,7 @@ import jsoftware.com.jutil.db.JDBMapObject;
  *
  * @author juanp
  */
-public class ModuleWrapperDTO extends JDBMapObject {
+public abstract class ModuleWrapperDTO extends JDBMapObject {
 
     private static final long serialVersionUID = 1L;
 
@@ -134,4 +134,5 @@ public class ModuleWrapperDTO extends JDBMapObject {
         return sb.toString();
     }
 
+    public abstract void clear();
 }

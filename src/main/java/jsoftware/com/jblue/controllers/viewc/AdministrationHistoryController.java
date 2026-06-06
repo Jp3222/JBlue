@@ -26,14 +26,14 @@ import jsoftware.com.jblue.views.AdministrationHistoryView;
  */
 public class AdministrationHistoryController extends AbstractDBViewController {
 
-    private final AdministrationHistoryView view;
+    private AdministrationHistoryView view;
 
     /**
      *
      * @param view
      */
-    public AdministrationHistoryController(AdministrationHistoryView view) {
-        this.view = view;
+    public AdministrationHistoryController() {
+        
     }
 
     @Override
@@ -67,6 +67,10 @@ public class AdministrationHistoryController extends AbstractDBViewController {
 
     @Override
     public void cancel() {
+    }
+
+    public void setView(AdministrationHistoryView view) {
+        this.view = view;
     }
 
 }

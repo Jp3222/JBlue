@@ -6,18 +6,21 @@ package jsoftware.com.jblue.model.factories;
 
 import java.io.Serializable;
 import jsoftware.com.jblue.controllers.compc.WizardController;
+import jsoftware.com.jblue.controllers.viewc.AdministrationHistoryController;
 import jsoftware.com.jblue.controllers.viewc.EmployeeRegisterController;
 import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
 import jsoftware.com.jblue.controllers.winc.LoginController;
 import jsoftware.com.jblue.controllers.winc.MainController;
 import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
+import jsoftware.com.jblue.model.dto.wrp.AdministrationWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.LoginWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.WMainMenuWrapperDTO;
 import jsoftware.com.jblue.sys.SystemSession;
+import jsoftware.com.jblue.views.AdministrationHistoryView;
 import jsoftware.com.jblue.views.ShopCartProcess;
 import jsoftware.com.jblue.views.mod.pro.EmployeeRegisterProcess;
 import jsoftware.com.jblue.views.mod.pro.OwnerRegisterProcess;
@@ -123,6 +126,19 @@ public class ModuleFactory implements Serializable {
         //Nueva vista
         EmployeeRegisterProcess mod = new EmployeeRegisterProcess(dto);
         return mod;
+    }
+
+    public AdministrationHistoryView getAdministrationHistoryView() {
+        AdministrationWrapperDTO dto = new AdministrationWrapperDTO("16", "ADMINISTRACION ACTUAL");
+        dto.setCurrent_administration(administration_dto);
+        dto.setCurrent_employee(employee);
+        //CONTROLADOR DE EVENTOS
+        AdministrationHistoryController controller = new AdministrationHistoryController();
+        dto.putController("MAIN", controller);
+        //NUEVA VISTA
+        AdministrationHistoryView mod = new AdministrationHistoryView(dto);
+        return mod;
+
     }
 
 }

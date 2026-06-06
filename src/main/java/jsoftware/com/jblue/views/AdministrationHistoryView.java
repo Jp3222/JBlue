@@ -16,24 +16,23 @@
  */
 package jsoftware.com.jblue.views;
 
-import jsoftware.com.jblue.controllers.viewc.AdministrationHistoryController;
-import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.views.framework.SimpleView;
+import jsoftware.com.jblue.model.dto.wrp.AdministrationWrapperDTO;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
 
 /**
  *
  * @author juanp
  */
-public final class AdministrationHistoryView extends SimpleView {
+public final class AdministrationHistoryView extends AbstractModuleView<AdministrationWrapperDTO>{
 
     private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form AdministrationHistoryView
      */
-    public AdministrationHistoryView() {
+    public AdministrationHistoryView(AdministrationWrapperDTO dto) {
+        super(dto);
         initComponents();
-        controller = new AdministrationHistoryController(this);
         build();
     }
 
@@ -47,10 +46,10 @@ public final class AdministrationHistoryView extends SimpleView {
 
     @Override
     public void events() {
-        save_button.addActionListener(controller);
-        update_button.addActionListener(controller);
-        delete_button.addActionListener(controller);
-        cancel_button.addActionListener(controller);
+        save_button.addActionListener(getMainController());
+        update_button.addActionListener(getMainController());
+        delete_button.addActionListener(getMainController());
+        cancel_button.addActionListener(getMainController());
 
     }
 
@@ -97,7 +96,7 @@ public final class AdministrationHistoryView extends SimpleView {
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        root_employee = new javax.swing.JComboBox<>();
+        jTextField1 = new javax.swing.JTextField();
         jPanel13 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         admin_employee = new javax.swing.JComboBox<>();
@@ -237,7 +236,9 @@ public final class AdministrationHistoryView extends SimpleView {
         jLabel1.setPreferredSize(new java.awt.Dimension(200, 30));
         jPanel4.add(jLabel1, java.awt.BorderLayout.LINE_START);
 
-        jPanel4.add(root_employee, java.awt.BorderLayout.CENTER);
+        jTextField1.setEditable(false);
+        jTextField1.setText("- - - -");
+        jPanel4.add(jTextField1, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel4);
 
@@ -477,18 +478,18 @@ public final class AdministrationHistoryView extends SimpleView {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<EmployeeDTO> admin_employee;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.EmployeeDTO> admin_employee;
     private javax.swing.JButton back_button;
     private javax.swing.JButton cancel_button;
     private javax.swing.JLabel count;
     private javax.swing.JButton delete_button;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<EmployeeDTO> jComboBox4;
-    private javax.swing.JComboBox<EmployeeDTO> jComboBox5;
-    private javax.swing.JComboBox<EmployeeDTO> jComboBox6;
-    private javax.swing.JComboBox<EmployeeDTO> jComboBox7;
-    private javax.swing.JComboBox<EmployeeDTO> jComboBox8;
-    private javax.swing.JComboBox<EmployeeDTO> jComboBox9;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.EmployeeDTO> jComboBox4;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.EmployeeDTO> jComboBox5;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.EmployeeDTO> jComboBox6;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.EmployeeDTO> jComboBox7;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.EmployeeDTO> jComboBox8;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.EmployeeDTO> jComboBox9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -528,6 +529,7 @@ public final class AdministrationHistoryView extends SimpleView {
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton next_button;
     private javax.swing.JPanel north_panel;
     private javax.swing.JPanel np_cp_center;
@@ -536,12 +538,11 @@ public final class AdministrationHistoryView extends SimpleView {
     private javax.swing.JTable objects_table;
     private javax.swing.JPanel option_panel;
     private javax.swing.JPanel panel_tabla;
-    private javax.swing.JComboBox<EmployeeDTO> president_employee;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.EmployeeDTO> president_employee;
     private javax.swing.JLabel range;
     private javax.swing.JButton register_button;
     private javax.swing.JPanel register_panel;
     private javax.swing.JButton reload_button;
-    private javax.swing.JComboBox<EmployeeDTO> root_employee;
     private javax.swing.JPanel root_panel;
     private javax.swing.JButton save_button;
     private javax.swing.JButton search_button;
@@ -549,8 +550,13 @@ public final class AdministrationHistoryView extends SimpleView {
     private javax.swing.JButton search_object;
     private javax.swing.JPanel search_panel;
     private javax.swing.JPanel status_bar_panel;
-    private javax.swing.JComboBox<EmployeeDTO> tesurer_employee;
+    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.EmployeeDTO> tesurer_employee;
     private javax.swing.JLabel total;
     private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void getData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

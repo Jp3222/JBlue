@@ -313,15 +313,11 @@
                             </Constraint>
                           </Constraints>
                         </Component>
-                        <Component class="javax.swing.JComboBox" name="root_employee">
+                        <Component class="javax.swing.JTextField" name="jTextField1">
                           <Properties>
-                            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                              <StringArray count="0"/>
-                            </Property>
+                            <Property name="editable" type="boolean" value="false"/>
+                            <Property name="text" type="java.lang.String" value="- - - -"/>
                           </Properties>
-                          <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;jsoftware.com.jblue.model.dto.EmployeeDTO&gt;"/>
-                          </AuxValues>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                               <BorderConstraints direction="Center"/>

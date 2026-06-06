@@ -9,9 +9,9 @@ package jsoftware.com.jblue.model.dto.wrp;
  * @author juanp
  */
 public class WMainMenuWrapperDTO extends ModuleWrapperDTO {
-    
+
     public WMainMenuWrapperDTO(String module_id, String module_name) {
         super(module_id, module_name);
     }
-    
+
 }

@@ -11,7 +11,6 @@ import jsoftware.com.jblue.model.dao.InstanceAuthDAO;
 import jsoftware.com.jblue.model.dto.InstanceAuthDTO;
 import jsoftware.com.jblue.model.exp.ServiceException;
 import jsoftware.com.jblue.model.models.AbstractService;
-import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.util.FuncLogs;
@@ -40,8 +39,6 @@ public class InstanceAuthService extends AbstractService {
             if (!progra_user.equals(instance.getDbUser())) {
                 throw new ServiceException(2, "CREDENCIAL DE ACCESO CORRUPTA");
             }
-            SystemSession sys = SystemSession.getInstancia();
-            sys.setCurrent_instance(instance);
         } catch (SQLException ex) {
             user_message = "HA OCURRIDO UN ERROR INESPERADO";
             error_code = ex.getErrorCode();

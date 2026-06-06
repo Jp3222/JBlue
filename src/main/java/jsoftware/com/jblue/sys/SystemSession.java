@@ -1,13 +1,16 @@
 package jsoftware.com.jblue.sys;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.model.dao.SessionDAO;
 import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.InstanceAuthDTO;
 import jsoftware.com.jblue.model.dto.SessionDTO;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.sys.LocalSession;
@@ -124,6 +127,12 @@ public class SystemSession implements LocalSession<EmployeeUserDTO>, Serializabl
                     JOptionPane.WARNING_MESSAGE
             );
         }
+    }
+
+    public boolean isLock() throws SQLException {
+        SessionDAO dao = new SessionDAO(false, "SystemSession");
+        boolean currentStatus = dao.isSessionClose(ConnectionFactory.getIntance().getMainConnection(), current_session);
+        return currentStatus;
     }
 
     /**

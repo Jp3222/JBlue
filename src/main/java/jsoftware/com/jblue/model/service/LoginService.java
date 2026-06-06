@@ -35,7 +35,7 @@ public class LoginService extends AbstractService {
 
     private static final long serialVersionUID = 1L;
 
-    private final SystemSession system_session;
+    private SystemSession system_session;
     private final EmployeeUserDAO employee_dao;
     private final AdministrationHistoryDAO administration_history_dao;
     private final EmployeeUserHistoryDAO history_dao;
@@ -54,6 +54,7 @@ public class LoginService extends AbstractService {
         boolean res = false;
         SessionDTO dto = new SessionDTO();
         connection.setAutoCommit(false);
+        system_session = SystemSession.getInstancia();
         try {
             //[1] BUSCAR SI EXISTE EL EMPLEADO
             String us = EncriptadoAES.doEncrypt(user, password);

@@ -16,7 +16,7 @@
  */
 package jsoftware.com.jblue.sys;
 
-import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -51,9 +51,16 @@ public class JBlueMainSystem implements MainSystem {
     public static final String DATA_BASE_KEY = "connection";
     private final ModuleFactory factory;
     /**
-     *
+     * RECURSOS DEL SISTEMA
+     * <br>ESTA ESTRUCTURA ALBERGARA OBJETOS QUE SERAN RECUPERADOS EN LA FASE DE
+     * ARRANQUE DEL SISTEMA PARA QUE PUEDAN SER REQUERIDOS DURANTE LA EJECUCION
+     * DEL PROGRAMA, USAR CON MODERACION
      */
     private final Map<String, Object> resources;
+
+    /**
+     * PROPIEDADES DE LA BASE DE DATOS
+     */
     private final Properties properties;
     //private Conexion conexion;
     private final InstanceAuthService dao;
@@ -66,7 +73,7 @@ public class JBlueMainSystem implements MainSystem {
         resources.put("propierties", properties);
         resources.put("sys_flag_logs", true);
         this.dao = new InstanceAuthService(false, JBlueMainSystem.class.getName());
-        So.setDefaultLookAndFeel(new FlatDarculaLaf());
+        So.setDefaultLookAndFeel(new FlatMacLightLaf());
     }
 
     public Properties getProperties() {
@@ -120,13 +127,17 @@ public class JBlueMainSystem implements MainSystem {
                     res = false;
                     throw new SQLException("SIN CONEXIONES");
                 }
+                //OBTENEMOS LAS CREDENCIALES DEL ACCESO AL SISTEMA
                 Optional<InstanceAuthDTO> get = dao.get(c, properties.getProperty(AppConfig.DB_UUID), properties.getProperty(AppConfig.DB_USER));
                 if (get.isEmpty()) {
                     res = false;
                     throw new SQLException("INSTANCIA NO REGISTRADA");
                 }
-                SystemSession session = SystemSession.getInstancia();
-                if (Func.isNull(session.getCurrent_instance())) {
+                //GUARDAMOS LA INSTANCIA EN LA MEMORIA DEL SISTEMA
+                InstanceAuthDTO instance = get.get();
+                resources.put("software_key", instance);
+                //VERIFICAMOS QUE LA INSTANCIA SEA ACCESIBLE
+                if (Func.isNull(resources.get("software_key"))) {
                     res = false;
                     throw new SQLException("INSTANCIA DEL SISTEMA NO CREADA");
                 }

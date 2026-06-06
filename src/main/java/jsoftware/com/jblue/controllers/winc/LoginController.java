@@ -22,6 +22,7 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.swing.JCheckBox;
+import jsoftware.com.jblue.model.dto.InstanceAuthDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.factories.ModuleFactory;
 import jsoftware.com.jblue.model.l4b.LoginRulers;
@@ -29,6 +30,7 @@ import jsoftware.com.jblue.model.service.LoginService;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
+import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.win.ConfigWindow;
 import jsoftware.com.jblue.views.win.LoginWindows;
 import jsoftware.com.jblue.views.win.WMainMenu;
@@ -86,7 +88,12 @@ public class LoginController extends WindowController {
             if (!LoginRulers.isWorkTime()) {
                 returnMessage(view, "NO ES TIMPO DE TRABAJAR");
             }
-
+            InstanceAuthDTO instance = (InstanceAuthDTO) LaunchApp.getInstance().getResources("software_key");
+            if (Func.isNull(instance)) {
+                returnMessage(view, "[0]LA SESION HA CADUCADO, POR FAVOR REINICIE EL PROGRAMA");
+                return;
+            }
+            SystemSession.getInstancia().setCurrent_instance(instance);
             boolean res = service.login(connection, view.getUserString(), view.getPasswordString());
 
             if (!res) {

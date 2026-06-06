@@ -60,8 +60,6 @@ public class SessionDAO extends AbstractDAO {
                 id = rs.getInt(1);
                 dto.put("id", String.valueOf(id));
             }
-        } catch (SQLException | CorruptInsertionException | KeyNotGenerateException e) {
-            throw e;
         }
         return id;
     }
@@ -82,13 +80,11 @@ public class SessionDAO extends AbstractDAO {
             if (!res) {
                 throw new CorruptUpdateException();
             }
-        } catch (SQLException | CorruptUpdateException e) {
-            throw e;
         }
         return res;
     }
 
-    public boolean haveActiveSession(JDBConnection connection, String employee_id) throws Exception {
+    public boolean haveActiveSession(JDBConnection connection, String employee_id) throws SQLException {
         boolean res = false;
         String query = "SELECT id FROM hys_session WHERE employee_id = ? AND status = 1";
         try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
@@ -96,8 +92,23 @@ public class SessionDAO extends AbstractDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 res = rs.next();
             }
-        } catch (Exception e) {
-            throw e;
+        }
+        return res;
+    }
+
+    public boolean isSessionClose(JDBConnection connection, SessionDTO dto) throws SQLException {
+        boolean res;
+        String query = "SELECT status, date_register FROM hys_session WHERE ID = ? AND status = 4";
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
+            ps.setString(1, dto.getId());
+            ps.setString(2, dto.getEmployeeId());
+            try (ResultSet rs = ps.executeQuery()) {
+                res = rs.next();
+                if (res) {
+                    dto.put("status", rs.getString("status"));
+                    dto.put("date_out", rs.getString("date_out"));
+                }
+            }
         }
         return res;
     }

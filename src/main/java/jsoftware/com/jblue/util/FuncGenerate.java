@@ -16,6 +16,10 @@ public class FuncGenerate {
     public static final String SC_VALID = "!#$%&/()=?¡¿,.<>+-/*";
     private static final int SIZE = LOWER_CASE_ABC.length() + UPPER_CASE_ABC.length() + NUMBERS.length() + SC_VALID.length();
 
+    public static String getPassword(int size) {
+        return getPassword(size, true, true, true, false);
+    }
+
     public static String getPassword(int size, boolean number, boolean lower, boolean upper, boolean sc) {
         StringBuilder sb = new StringBuilder(SIZE);
 
@@ -34,7 +38,7 @@ public class FuncGenerate {
         if (upper) {
             sb.append(UPPER_CASE_ABC);
         }
-        
+
         if (!number && !lower && !upper && !sc) {
             sb.append(LOWER_CASE_ABC).append(UPPER_CASE_ABC);
         }

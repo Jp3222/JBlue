@@ -23,6 +23,8 @@ import jsoftware.com.jutil.util.FuncLogs;
  */
 public class EmployeeRegisterController extends AbstractDBViewController<EmployeeRegisterWrapperDTO> {
 
+    private static final long serialVersionUID = 1L;
+
     private EmployeeRegisterProcess view;
     private EmployeeRegisterService service;
 
@@ -42,6 +44,7 @@ public class EmployeeRegisterController extends AbstractDBViewController<Employe
 
     @Override
     public void save() {
+        System.out.println("save");
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
             SystemSession ss = SystemSession.getInstancia();
             if (ss.isLock()) {

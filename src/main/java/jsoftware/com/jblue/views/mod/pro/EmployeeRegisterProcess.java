@@ -56,6 +56,7 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
         EmployeeRegisterController employeeController = (EmployeeRegisterController) getDtoWrapper().getController("CONTROLLER");
         if (employeeController != null) {
             employeeController.setView(this);
+            next_panel_button.addActionListener(employeeController);
         }
         // NOTA: El botón "next_panel_button" NO recibe listeners de negocio aquí; 
         // es gobernado de forma limpia por bindController() mediante el WizardController.
@@ -69,7 +70,11 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
 
     @Override
     public void initialState() {
-        super.initialState(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        super.initialState(); 
+        for (AbstractModuleView<EmployeeRegisterWrapperDTO> i : views) {
+            i.initialState();
+        }
+        getDtoWrapper().clear();
     }
 
     @Override

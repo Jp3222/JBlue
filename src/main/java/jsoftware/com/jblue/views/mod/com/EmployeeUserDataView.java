@@ -51,7 +51,7 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
 
     @Override
     public void events() {
-         // Registrar esta vista contenedora principal en el controlador de negocio de Empleados
+        // Registrar esta vista contenedora principal en el controlador de negocio de Empleados
         EmployeeRegisterController employeeController = (EmployeeRegisterController) getDtoWrapper().getController("CONTROLLER");
         if (employeeController != null) {
             generate_data.addActionListener(employeeController);
@@ -71,8 +71,6 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
     @Override
     public void finalState() {
     }
-    
-    
 
     public void comboBoxInit(ComboBoxController<?> c, boolean empty) {
         if (empty) {
@@ -313,38 +311,27 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
     private javax.swing.JTextField user_field;
     // End of variables declaration//GEN-END:variables
 
-    public void dataGenerate() {
-        description_field.setText(getDtoWrapper().getEmployee().toString());
-        if (Func.isNull(number_phone_field.getText())) {
-            number_phone_field.setText(getDtoWrapper().getEmployee().getPersonalNumber());
-        }
-        if (Func.isNull(email_field.getText())) {
-            email_field.setText(getDtoWrapper().getEmployee().getPersonalEmail());
-        }
-    }
-
     @Override
     public boolean isValuesOK() {
         boolean res;
         AbstractValidation valid = new AbstractValidation();
-
-        valid.addRuler("user", description_field, t -> Func.isNotNullEmptyBlank(description_field.getText())
-                && Func.isOnlyText(description_field.getText()),
-                "EL CAMPO USUARIO NO ES VALIDO");
-
-        valid.addRuler("password", user_field, t -> Func.isNotNullEmptyBlank(user_field.getText()),
-                "EL CAMPO CONTRASEÑA NO ES VALIDO");
-
-        valid.addRuler("description", password_field, t -> Func.isValidPassword(password_field.getText()),
+        valid.addRuler("description", description_field, t -> Func.isNotNullEmptyBlank(t.getText()),
                 "EL CAMPO EMPLEADO NO ES VALIDO");
 
-        valid.addRuler("email", email_field, t -> Func.isValidEmail(email_field.getText()),
+        valid.addRuler("user", user_field, t -> Func.isNotNullEmptyBlank(t.getText())
+                && Func.isOnlyText(t.getText()),
+                "EL CAMPO USUARIO NO ES VALIDO");
+
+        valid.addRuler("password", password_field, t -> Func.isNotNullEmptyBlank(t.getText()),
+                "EL CAMPO CONTRASEÑA NO ES VALIDO");
+
+        valid.addRuler("email", email_field, t -> Func.isValidEmail(t.getText()),
                 "EL CAMPO EMAIL NO ES VALIDO");
 
-        valid.addRuler("phone_number", number_phone_field, t -> Func.isInteger(number_phone_field.getText()),
+        valid.addRuler("phone_number", number_phone_field, t -> Func.isNotNullEmptyBlank(t.getText()) || (Func.isInteger(t.getText())),
                 "EL NUMERO DE TELEFONO NO ES VALIDO");
 
-        valid.addRuler("employee_type", employee_type_field, t -> employee_type_field.getSelectedIndex() <= 0,
+        valid.addRuler("employee_type", employee_type_field, t -> employee_type_field.getSelectedIndex() > 0,
                 "EL TIPO DE EMPLEADO SELECCIONADP NO ES VALIDO");
         res = valid.isValid();
         if (!res) {

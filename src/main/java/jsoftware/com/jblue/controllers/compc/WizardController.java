@@ -3,6 +3,7 @@ package jsoftware.com.jblue.controllers.compc;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.Controller;
+import jsoftware.com.jblue.controllers.DBControllerModel;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.WizardModel;
 
@@ -39,6 +40,11 @@ public class WizardController extends Controller {
                 previous();
             case WizardModel.EXECUTE_FINAL ->
                 executeFinal();
+            case DBControllerModel.SAVE_COMMAND, DBControllerModel.UPDATE_COMMAND -> {
+            }
+            case DBControllerModel.CANCEL_COMMAND -> {
+                view.setStartMode();
+            }
             default ->
                 defaultCase("EL COMANDO %s NO ES VALIDO", "COMANDO NO VALIDO", JOptionPane.ERROR_MESSAGE);
         }

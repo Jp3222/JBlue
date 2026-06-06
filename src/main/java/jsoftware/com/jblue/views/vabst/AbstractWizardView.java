@@ -6,6 +6,7 @@ package jsoftware.com.jblue.views.vabst;
 
 import java.io.IOException;
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.DBControllerModel;
 import jsoftware.com.jblue.controllers.compc.WizardController;
 import jsoftware.com.jblue.model.dto.wrp.ModuleWrapperDTO;
 import jsoftware.com.jblue.sys.app.AppFiles;
@@ -40,6 +41,8 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
     public void initialState() {
         next_panel_button.setEnabled(true);
         last_panel_button.setEnabled(false);
+        current_index = 0;
+        card_layout.show(root_panel, views.get(0).getName());
     }
 
     /**
@@ -147,7 +150,7 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
                     last_panel_button.setEnabled(current_index > 0);
                     if (current_index == views.size() - 1) {
                         next_panel_button.setText("Finalizar Registro");
-                        next_panel_button.setActionCommand(EXECUTE_FINAL);
+                        next_panel_button.setActionCommand(DBControllerModel.SAVE_COMMAND);
                     } else {
                         next_panel_button.setText("Siguiente");
                         next_panel_button.setActionCommand(NEXT_STEP);
@@ -218,6 +221,10 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
         }
     }
 
+    @Override
+    public void setStartMode() {
+        initComponents();
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JButton jButton6;
     protected javax.swing.JButton last_panel_button;

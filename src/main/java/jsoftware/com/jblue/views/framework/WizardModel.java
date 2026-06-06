@@ -81,4 +81,6 @@ public interface WizardModel<T extends ModuleWrapperDTO> extends Serializable {
      * Decrementa el puntero del asistente (i--).
      */
     void previousIndex();
+
+    public void setStartMode();
 }

@@ -29,11 +29,17 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
         this.setName(dto_wrapper.getModule_name());
         //CONTROLADOR DEL ASISTENTE
         WizardController wctronller = (WizardController) getDtoWrapper().getController("MAIN");
-        wctronller.setWizard(this);
-        
+        wctronller.setView(this);
+
         //MOVIMIENTOS DE SIGUIENTE Y ATRAS
         next_panel_button.addActionListener(wctronller);
         last_panel_button.addActionListener(wctronller);
+    }
+
+    @Override
+    public void initialState() {
+        next_panel_button.setEnabled(true);
+        last_panel_button.setEnabled(false);
     }
 
     /**
@@ -120,27 +126,39 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
 
     @Override
     public void updateUi(int componentId) {
-        switch (componentId) {
-            case NEXT_VIEW_BUTTON -> {
-                if (current_index == views.size() - 1) {
-                    return;
-                }
-                card_layout.next(root_panel);
+        try {
+            if (views == null || views.isEmpty()) {
+                return;
             }
-            case PREVIOUS_VIEW_BUTTON ->
-                card_layout.previous(root_panel);
-            case NAVIGATION_STEP_BAR -> {
-                last_panel_button.setEnabled(current_index > 0);
-                if (current_index == views.size() - 1) {
-                    next_panel_button.setText("Finalizar Registro");
-                    next_panel_button.setActionCommand(EXECUTE_FINAL);
-                } else {
-                    next_panel_button.setText("Siguiente");
-                    next_panel_button.setActionCommand(NEXT_STEP);
+            switch (componentId) {
+                case NEXT_VIEW_BUTTON -> {
+                    if (current_index == views.size() - 1) {
+                        return;
+                    }
+                    card_layout.next(root_panel);
                 }
+                case PREVIOUS_VIEW_BUTTON -> {
+                    if (current_index <= 0) {
+                        return;
+                    }
+                    card_layout.previous(root_panel);
+                }
+                case NAVIGATION_STEP_BAR -> {
+                    last_panel_button.setEnabled(current_index > 0);
+                    if (current_index == views.size() - 1) {
+                        next_panel_button.setText("Finalizar Registro");
+                        next_panel_button.setActionCommand(EXECUTE_FINAL);
+                    } else {
+                        next_panel_button.setText("Siguiente");
+                        next_panel_button.setActionCommand(NEXT_STEP);
+                    }
+                }
+                default ->
+                    throw new AssertionError("COMANDO NO DISPONIBLE: " + componentId);
             }
-            default ->
-                throw new AssertionError();
+        } catch (Exception e) {
+            log(e, "updateUi");
+            JOptionPane.showMessageDialog(this, "ERROR AL CARGA LA VISTA");
         }
     }
 
@@ -151,8 +169,8 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
                 views.get(current_index).getData();
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al capturar datos: " + e.getMessage());
             log(e, "getDataView");
+            JOptionPane.showMessageDialog(this, "Error al capturar datos: " + e.getMessage());
         }
     }
 
@@ -163,11 +181,16 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
 
     @Override
     public void setCurrentViewIndex(int index) {
-        current_index = index;
-        if (index < 0 || index >= views.size()) {
-            return;
+        try {
+            current_index = index;
+            if (index < 0 || index >= views.size()) {
+                return;
+            }
+            card_layout.show(this, views.get(index).getName());
+        } catch (Exception e) {
+            log(e, "setCurrentViewIndex");
+            JOptionPane.showMessageDialog(this, "INDICES CORRUPTOS");
         }
-        card_layout.show(this, views.get(index).getName());
     }
 
     @Override

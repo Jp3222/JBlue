@@ -8,6 +8,7 @@ import jsoftware.com.jblue.model.dto.TransactionHistoryDTO;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
 import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.model.AbstractDAO;
 
 /**
  * DAO encargado de la persistencia y actualización del historial maestro de
@@ -20,7 +21,13 @@ import jsoftware.com.jutil.db.JDBConnection;
  * @since 2026-06-07
  * @version 1.0
  */
-public class TransactionHistoryDAO {
+public class TransactionHistoryDAO extends AbstractDAO {
+
+    private static final long serialVersionUID = 1L;
+
+    public TransactionHistoryDAO(boolean flag_dev_log, String name_module) {
+        super(flag_dev_log, name_module);
+    }
 
     /**
      * Inserta el registro inicial de una transacción en la base de datos (Paso

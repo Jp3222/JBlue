@@ -22,13 +22,13 @@ public class EmployeeService extends AbstractService {
 
     private static final long serialVersionUID = 1L;
 
-    private EmployeeDAO dao;
-    private EmployeeHistoryDAO hys;
+    private EmployeeDAO employee_dao;
+    private EmployeeHistoryDAO history_dao;
 
     public EmployeeService(boolean dev_flag, String process_name) {
         super(dev_flag, process_name);
-        dao = new EmployeeDAO(dev_flag, user_message);
-        hys = EmployeeHistoryDAO.getInstance();
+        employee_dao = new EmployeeDAO(dev_flag, user_message);
+        history_dao = EmployeeHistoryDAO.getInstance();
     }
 
     public int insert(JDBConnection connection, EmployeeDTO dto) {
@@ -36,18 +36,19 @@ public class EmployeeService extends AbstractService {
         boolean res = false;
         try {
             //REGISTRO DE EMPLEADO
-            pk = dao.insert(connection, dto);
+            pk = employee_dao.insert(connection, dto);
             res = pk > 0;
             if (!res) {
                 throw new ServiceException(1, "LOS DATOS DEL EMPLEADO NO SE HAN REGISTRADO CORRECTAMENTE");
             }
             //REGISTRO EN BITACORA
-            res = hys.insert(connection, "SE REGISTRO EL EMPLEADO: %s - %s");
+            res = history_dao.insert(connection, "SE REGISTRO EL EMPLEADO: %s - %s");
             if (!res) {
                 throw new ServiceException(1, "REGISTRO EN BITACORA CORRUPTO");
             }
         } catch (SQLException ex) {
-            System.getLogger(EmployeeService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            error_code = 0;
+            user_message = "";
         } catch (ServiceException ex) {
             System.getLogger(EmployeeService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         } catch (CorruptInsertionException ex) {

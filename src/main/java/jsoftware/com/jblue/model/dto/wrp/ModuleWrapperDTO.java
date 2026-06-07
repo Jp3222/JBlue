@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jsoftware.com.jblue.model.dto.wrp;
 
 import java.util.HashMap;
@@ -10,45 +6,58 @@ import java.util.Objects;
 import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
+import jsoftware.com.jblue.model.dto.TransactionHistoryDTO;
+import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
+ * Contexto y contenedor maestro abstracto para los módulos operativos de JBlue.
+ * Centraliza la auditoría, empleados, administraciones y controladores del
+ * sistema.
  *
- * @author juanp
+ * * @author JUAN PABLO CAMPOS CASASANERO
+ * @since 2026-06-07
+ * @version 1.1
  */
 public abstract class ModuleWrapperDTO extends JDBMapObject {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * ID DEL PROCESO
-     */
     private final String module_id;
-
-    /**
-     * NOMBRE DEL MODULO
-     */
     private final String module_name;
+    private final Map<String, Controller> controller_map;
+    private final TransactionHistoryDTO transaction; // Corregido typo: transacion -> transaction
 
-    /**
-     * EMPLEADO ACTUAL DEL SISTEMA
-     */
     private EmployeeUserDTO current_employee;
-
-    /**
-     * ADMINISTRACION ACTUAL
-     */
     private AdministrationHistoryDTO current_administration;
 
-    /**
-     * LISTA DE CONTROLADORES
-     */
-    private final Map<String, Controller> controller_map;
-
     public ModuleWrapperDTO(String module_id, String module_name) {
+        this(module_id, module_name, null, null);
+    }
+
+    public ModuleWrapperDTO(String module_id, String module_name, String transaction_type_mov) {
+        this(module_id, module_name, transaction_type_mov, null);
+    }
+
+    public ModuleWrapperDTO(String module_id, String module_name, String transaction_type_mov, String observation) {
+        super(16); // Inicialización del mapa interno heredado de JDBMapObject
         this.module_id = module_id;
         this.module_name = module_name;
-        this.controller_map = new HashMap<>(10);
+        this.controller_map = new HashMap<>(16); // Optimización a potencia de 2 para controladores
+
+        // Inicialización segura del DTO de Auditoría Maestra
+        this.transaction = new TransactionHistoryDTO();
+        this.transaction.put("module_id", module_id);
+        this.transaction.put("type_mov", transaction_type_mov);
+        this.transaction.put("affected_table", "0"); // Por defecto o polimórfico inicial
+        this.transaction.put("status", "34");        // Estatus inicial [34 - EN PROCESO]
+
+        // Corrección de lógica inversa: Si la observación viene vacía, se genera una por defecto
+        if (Func.isNullEmptyBlank(observation)) {
+            this.transaction.put("observation", "REGISTRO INICIADO DESDE EL MÓDULO: " + module_name);
+        } else {
+            this.transaction.put("observation", observation);
+        }
     }
 
     public String getModule_id() {
@@ -63,8 +72,16 @@ public abstract class ModuleWrapperDTO extends JDBMapObject {
         return current_employee;
     }
 
+    /**
+     * Inyecta el empleado actual del sistema y sincroniza de forma segura el ID
+     * requerido por la transacción de auditoría, evitando NullPointerException.
+     */
     public void setCurrent_employee(EmployeeUserDTO current_employee) {
         this.current_employee = current_employee;
+        if (current_employee != null) {
+            // Sincronización segura y tardía una vez que el objeto existe
+            this.transaction.put("employee_id", current_employee.getId());
+        }
     }
 
     public AdministrationHistoryDTO getCurrent_administration() {
@@ -75,6 +92,10 @@ public abstract class ModuleWrapperDTO extends JDBMapObject {
         this.current_administration = current_administration;
     }
 
+    public TransactionHistoryDTO getTransaction() {
+        return transaction;
+    }
+
     public void putController(String name, Controller controller) {
         controller_map.put(name, controller);
     }
@@ -83,14 +104,13 @@ public abstract class ModuleWrapperDTO extends JDBMapObject {
         return controller_map.get(name);
     }
 
+    // El borrado limpia los estados dinámicos del módulo concreto
+    public abstract void clear();
+
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 19 * hash + Objects.hashCode(this.module_id);
-        hash = 19 * hash + Objects.hashCode(this.module_name);
-        hash = 19 * hash + Objects.hashCode(this.current_employee);
-        hash = 19 * hash + Objects.hashCode(this.current_administration);
-        hash = 19 * hash + Objects.hashCode(this.controller_map);
+        int hash = 5;
+        hash = 29 * hash + Objects.hashCode(this.module_id);
         return hash;
     }
 
@@ -99,40 +119,19 @@ public abstract class ModuleWrapperDTO extends JDBMapObject {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
         final ModuleWrapperDTO other = (ModuleWrapperDTO) obj;
-        if (!Objects.equals(this.module_id, other.module_id)) {
-            return false;
-        }
-        if (!Objects.equals(this.module_name, other.module_name)) {
-            return false;
-        }
-        if (!Objects.equals(this.current_employee, other.current_employee)) {
-            return false;
-        }
-        if (!Objects.equals(this.current_administration, other.current_administration)) {
-            return false;
-        }
-        return Objects.equals(this.controller_map, other.controller_map);
+        return Objects.equals(this.module_id, other.module_id);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("ModuleWrapperDTO{");
-        sb.append("module_id=").append(module_id).append("\n");
-        sb.append("module_name = ").append(module_name).append("\n");
-        sb.append("current_employee = ").append(current_employee).append("\n");
-        sb.append("current_administration = ").append(current_administration).append("\n");
-        sb.append("controller_map = ").append(controller_map).append("\n");
-        sb.append('}').append("\n");
+        sb.append("module_id=").append(module_id).append(", ");
+        sb.append("module_name=").append(module_name).append("}");
         return sb.toString();
     }
-
-    public abstract void clear();
 }

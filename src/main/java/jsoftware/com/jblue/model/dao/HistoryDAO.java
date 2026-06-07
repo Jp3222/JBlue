@@ -55,6 +55,14 @@ public class HistoryDAO extends AbstractDAO implements TableComponentDAO<History
         return insert(connection, affected_table, Const.INDEX_END_TRANSACTION, description);
     }
 
+    public int startTransactionReturn(JDBConnection connection, int affected_table, String description) throws SQLException, CorruptInsertionException, KeyNotGenerateException {
+        return insertAndReturn(connection, affected_table, Const.INDEX_START_TRANSACTION, description);
+    }
+
+    public int endTransactionReturn(JDBConnection connection, int affected_table, String description) throws SQLException, CorruptInsertionException, KeyNotGenerateException {
+        return insertAndReturn(connection, affected_table, Const.INDEX_END_TRANSACTION, description);
+    }
+
     public boolean insert(JDBConnection connection, int affected_table, String description) throws SQLException {
         return insert(connection, affected_table, Const.INDEX_INSERT, description);
     }

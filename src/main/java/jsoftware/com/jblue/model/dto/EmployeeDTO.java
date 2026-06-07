@@ -4,27 +4,28 @@ import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
- * DTO correspondiente a la información personal e institucional de los
- * empleados (Employee).
+ * DTO correspondiente a los datos generales, de identificación fiscal y
+ * contacto de empleados (Employee).
  * <br>
- * Utiliza la estructura interna dinámica de Map para transportar las cadenas de
- * texto de manera flexible entre los formularios de Swing y la capa DAO de
- * MySQL.
+ * Utiliza la estructura heredada dinámica de Map para transportar las cadenas
+ * de texto de manera flexible entre los componentes de Swing y la capa DAO de
+ * MySQL, apegándose estrictamente al estándar de diseño de JBlue.
  *
  * @author JUAN PABLO CAMPOS CASASANERO
  * @since 2025-11-23
- * @version 1.1
+ * @version 1.0
  */
 public class EmployeeDTO extends JDBMapObject {
 
     private static final long serialVersionUID = 1L;
 
     public EmployeeDTO() {
-        // Inicializa con una capacidad de 26 para albergar los 18 campos de forma eficiente,
-        // evitando que el HashMap interno tenga que redimensionarse en memoria.
-        super(26);
+        // Inicializa con una capacidad de 32 para albergar de forma eficiente los 18 campos (incluyendo id),
+        // garantizando un factor de carga óptimo sin re-hasheos o redimensionamientos en memoria.
+        super(32);
     }
 
+    // Se omite getId() -> Heredado directamente de JDBMapObject de forma limpia
     public String getRfc() {
         return Func.nullSafeToString(get("rfc"));
     }
@@ -95,7 +96,7 @@ public class EmployeeDTO extends JDBMapObject {
 
     @Override
     public String toString() {
-        // Garantiza una salida segura en tus logs de Log4j2 sin riesgo de NullPointerException
+        // Garantiza un vaciado limpio de strings en logs de auditoría o consola previniendo NullPointerException
         return (values != null) ? values.toString() : "{}";
     }
 }

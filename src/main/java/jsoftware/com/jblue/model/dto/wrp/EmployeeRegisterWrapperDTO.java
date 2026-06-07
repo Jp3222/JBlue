@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jsoftware.com.jblue.model.dto.wrp;
 
 import java.util.Objects;
@@ -9,8 +5,13 @@ import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 
 /**
+ * Wrapper especializado para el contexto del caso de uso: Registro de
+ * Empleados. Encapsula la información civil, credenciales de usuario del
+ * sistema y sus estados de validación.
  *
- * @author juanp
+ * * @author JUAN PABLO CAMPOS CASASANERO
+ * @since 2026-06-07
+ * @version 1.0
  */
 public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
 
@@ -23,9 +24,11 @@ public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
     private boolean employee_user_valid;
 
     public EmployeeRegisterWrapperDTO(String module_id, String module_name) {
-        super(module_id, module_name);
-        this.employee = new EmployeeDTO();
-        this.employee_user = new EmployeeUserDTO();
+        // Inicializa el contexto macro en el padre con tipo de movimiento "1" e indicación de auditoría
+        super(module_id, module_name, "1", "REGISTRO DE EMPLEADO POR MODULO DEL SISTEMA");
+        // Corrección: Acceso seguro a la transacción mediante el método getter público
+        // Setea el ID 51 correspondiente al catálogo de la tabla afectada de empleados
+        getTransaction().put("affected_table", "51");
     }
 
     public EmployeeDTO getEmployee() {
@@ -73,12 +76,10 @@ public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
+
         final EmployeeRegisterWrapperDTO other = (EmployeeRegisterWrapperDTO) obj;
         if (!Objects.equals(this.employee, other.employee)) {
             return false;
@@ -89,22 +90,28 @@ public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(super.toString());
-        sb.append("EmployeeRegisterWrapperDTO { ").toString();
-        sb.append("employee = ").append(employee).toString();
-        sb.append("employee_valid = ").append(employee_valid).toString();
-        sb.append("employee_user = ").append(employee_user).toString();
-        sb.append("employee_user_valid = ").append(employee_user_valid).toString();
-        sb.append('}');
+        sb.append(super.toString()); // Reutiliza la metadata del padre (IDs, Nombres de módulo)
+        sb.append("EmployeeRegisterWrapperDTO { ");
+        sb.append("employee = ").append(employee).append(", ");
+        sb.append("employee_valid = ").append(employee_valid).append(", ");
+        sb.append("employee_user = ").append(employee_user).append(", ");
+        sb.append("employee_user_valid = ").append(employee_user_valid);
+        sb.append(" }");
         return sb.toString();
     }
 
     @Override
     public void clear() {
-        employee.getMap().clear();
-        employee_user.getMap().clear();
-        employee_valid = false;
-        employee_user_valid = false;
-    }
+        // Corrección Defensiva: Solo limpia los mapas si los objetos ya fueron instanciados en el flujo
+        if (employee != null && employee.getMap() != null) {
+            employee.getMap().clear();
+        }
+        if (employee_user != null && employee_user.getMap() != null) {
+            employee_user.getMap().clear();
+        }
 
+        // Reseteo de banderas lógicas del Wizard
+        this.employee_valid = false;
+        this.employee_user_valid = false;
+    }
 }

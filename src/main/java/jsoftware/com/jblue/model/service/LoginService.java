@@ -4,9 +4,9 @@
  */
 package jsoftware.com.jblue.model.service;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
+import jsoftware.com.jblue.model.cryp.BCryptCrypto;
 import jsoftware.com.jblue.model.dao.AdministrationHistoryDAO;
 import jsoftware.com.jblue.model.dao.EmployeeUserDAO;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
@@ -22,7 +22,6 @@ import jsoftware.com.jblue.model.exp.service.LoginFailedException;
 import jsoftware.com.jblue.model.models.AbstractService;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppFiles;
-import jsoftware.com.jblue.util.EncriptadoAES;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.util.FuncLogs;
@@ -57,8 +56,8 @@ public class LoginService extends AbstractService {
         system_session = SystemSession.getInstancia();
         try {
             //[1] BUSCAR SI EXISTE EL EMPLEADO
-            String us = EncriptadoAES.doEncrypt(user, password);
-            String pw = EncriptadoAES.doEncrypt(password, user);
+            String us = BCryptCrypto.encryp(user);
+            String pw = BCryptCrypto.encryp(password);
             Optional<EmployeeUserDTO> option = employee_dao.get(connection, us, pw);
             res = option.isEmpty();
             if (res) {
@@ -207,18 +206,10 @@ public class LoginService extends AbstractService {
     }
 
     public void log(Exception e, String method_name) {
-        try {
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, getProcess_name(), method_name, e.getMessage());
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
+        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, getProcess_name(), method_name, e.getMessage());
     }
 
     public void log(String message) {
-        try {
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", message);
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
+        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", message);
     }
 }

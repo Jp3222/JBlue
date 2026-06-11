@@ -5,7 +5,6 @@
 package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import static jsoftware.com.jblue.controllers.DBControllerModel.SAVE_COMMAND;
 import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
@@ -50,23 +49,24 @@ public class EmployeeRegisterController extends AbstractDBViewController<Employe
             if (ss.isLock()) {
                 returnMessage(view, false, "LA SESION HA CADUCADO, CIERRE EL PROGRAMA Y VUELVA A INTENTAR");
             }
-            if (!ss.isAdministrationValid()) {
-                returnMessage(view, false, "LA ADMINISTRACION ACTUAL NO SE HA REGISTRADO O NO ES VALIDA");
+//            if (!ss.isAdministrationValid()) {
+//                returnMessage(view, false, "LA ADMINISTRACION ACTUAL NO SE HA REGISTRADO O NO ES VALIDA");
+//                return;
+//            }
+            boolean res = service.insert(c, view.getDtoWrapper());
+            if (service.isError()) {
+                returnMessage(view, service.getUserMessage());
                 return;
             }
-            boolean res = service.insert(c, view.getDtoWrapper());
             returnMessage(view, res);
         } catch (Exception e) {
             log(e, "save");
+            returnMessage(view, false, "ERROR INTERNO");
         }
     }
 
     public void log(Exception e, String method_name) {
-        try {
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, view.getDtoWrapper().getModule_name(), method_name, e.getMessage());
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
+        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, view.getDtoWrapper().getModule_name(), method_name, e.getMessage());
     }
 
     @Override

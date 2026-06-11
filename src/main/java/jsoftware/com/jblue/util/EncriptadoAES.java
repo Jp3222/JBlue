@@ -5,21 +5,26 @@
 package jsoftware.com.jblue.util;
 
 import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import jsoftware.com.jblue.model.exp.ServiceException;
 import jsoftware.com.jutil.jexception.Excp;
 
 /**
  *
  * @author jp
+ * @since 2022-10-21
  */
 public class EncriptadoAES {
 
@@ -74,6 +79,47 @@ public class EncriptadoAES {
         String encriptado = Base64.getEncoder().encodeToString(bytesEncriptados);
 
         return encriptado;
+    }
+
+    private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
+    private static final int IV_SIZE = 16; // Tamaño del bloque AES
+
+    /**
+     * Aplica la encriptación AES/CBC a la cadena de texto inyectando un IV
+     * aleatorio al inicio. Unifica las excepciones criptográficas en un solo
+     * punto de control.
+     *
+     * @param datos Cadena de texto plano a encriptar.
+     * @param claveSecreta Clave maestra para el cifrado.
+     * @return Información encriptada en formato Base64 (IV + Datos Cifrados).
+     * @throws ServiceException Si ocurre un fallo en los componentes de
+     * seguridad.
+     */
+    public static String doEncrypt2(String datos, String claveSecreta) throws GeneralSecurityException, UnsupportedEncodingException {
+        // 1. Derivación de la llave (Asegúrate de que createKey use SHA-256 para generar una llave de 256 bits)
+        SecretKeySpec secretKey = createKey(claveSecreta);
+        // 2. Generación de un Vector de Inicialización (IV) criptográficamente seguro y único por operación
+        byte[] iv = new byte[IV_SIZE];
+        SecureRandom random = new SecureRandom();
+        random.nextBytes(iv);
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+
+        // 3. Inicialización del cifrador en modo CBC
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
+
+        // 4. Cifrado de los datos planos en UTF-8
+        byte[] datosEncriptar = datos.getBytes("UTF-8");
+        byte[] bytesEncriptados = cipher.doFinal(datosEncriptar);
+
+        // 5. Concatenación del IV y el bloque cifrado (El IV no es secreto, se necesita para desencriptar)
+        byte[] ivYBytesEncriptados = new byte[IV_SIZE + bytesEncriptados.length];
+        System.arraycopy(iv, 0, ivYBytesEncriptados, 0, IV_SIZE);
+        System.arraycopy(bytesEncriptados, 0, ivYBytesEncriptados, IV_SIZE, bytesEncriptados.length);
+
+        // 6. Conversión final a String seguro para MySQL
+        return Base64.getEncoder().encodeToString(ivYBytesEncriptados);
+
     }
 
     /**

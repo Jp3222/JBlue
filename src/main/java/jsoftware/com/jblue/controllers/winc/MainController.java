@@ -19,7 +19,6 @@ package jsoftware.com.jblue.controllers.winc;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.model.exp.imp.CorruptUpdateException;
@@ -107,19 +106,11 @@ public class MainController extends WindowController {
     }
 
     public void log(Exception e, String method_name) {
-        try {
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "MAIN", method_name, e.getMessage());
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
+        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "MAIN", method_name, e.getMessage());
     }
 
     public void log(String message) {
-        try {
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", message);
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
+        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", message);
     }
 
     public void setView(WMainMenu view) {

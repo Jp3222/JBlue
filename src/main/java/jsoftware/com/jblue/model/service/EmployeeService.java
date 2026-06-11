@@ -47,14 +47,11 @@ public class EmployeeService extends AbstractService {
                 throw new ServiceException(1, "REGISTRO EN BITACORA CORRUPTO");
             }
         } catch (SQLException ex) {
-            error_code = 0;
-            user_message = "";
+            returnMessageError(ex.getErrorCode(), ex.getMessage());
         } catch (ServiceException ex) {
-            System.getLogger(EmployeeService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        } catch (CorruptInsertionException ex) {
-            System.getLogger(EmployeeService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        } catch (KeyNotGenerateException ex) {
-            System.getLogger(EmployeeService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            returnMessageError(ex.getErrorCode(), ex.getUserMessage());
+        } catch (CorruptInsertionException | KeyNotGenerateException ex) {
+            returnMessageError(ex.getErrorCode(), ex.getMessage());
         }
         return pk;
     }

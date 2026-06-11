@@ -4,7 +4,13 @@
  */
 package jsoftware.com.jblue.model.service;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import jsoftware.com.jblue.model.dao.EmployeeUserDAO;
 import jsoftware.com.jblue.model.dao.HistoryDAO.EmployeeUserHistoryDAO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
@@ -12,6 +18,7 @@ import jsoftware.com.jblue.model.exp.ServiceException;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
 import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jblue.model.models.AbstractService;
+import jsoftware.com.jblue.util.EncriptadoAES;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**
@@ -33,6 +40,14 @@ public class EmployeeUserService extends AbstractService {
         int pk = 0;
         boolean res = false;
         try {
+            //ENCRIPTACION DE LAS CREDENCIALES
+            String user = EncriptadoAES.doEncrypt(dto.getUser(), dto.getPassword());
+            String password = EncriptadoAES.doEncrypt(dto.getPassword(), dto.getUser());
+            
+            //ASIGNACION DE CREDENCIALES ENCRIPTADAS
+            dto.put("user", user);
+            dto.put("password", password);
+
             //REGISTRO DE EMPLEADO
             pk = dao.insert(connection, dto);
             res = pk > 0;
@@ -44,10 +59,12 @@ public class EmployeeUserService extends AbstractService {
             if (!res) {
                 throw new ServiceException(2, "REGISTRO EN BITACORA CORRUPTO");
             }
-        } catch (SQLException | ServiceException ex) {
-            System.getLogger(EmployeeService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        } catch (CorruptInsertionException | KeyNotGenerateException ex) {
-            System.getLogger(EmployeeUserService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (SQLException ex) {
+            returnMessageError(ex.getErrorCode(), ex.getMessage());
+        } catch (ServiceException | CorruptInsertionException | KeyNotGenerateException ex) {
+            returnMessageError(ex.getErrorCode(), ex.getUserMessage());
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
+            returnMessageError(3, "ERROR DE ENCRIPTACION, CONTACTE AL USUARIO ROOT");
         }
         return pk;
     }

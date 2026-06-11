@@ -1,6 +1,5 @@
 package jsoftware.com.jblue.model.service;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
@@ -8,6 +7,7 @@ import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
 import jsoftware.com.jblue.model.exp.DataAccesObjectException;
 import jsoftware.com.jblue.model.exp.ServiceException;
 import jsoftware.com.jblue.model.models.AbstractService;
+import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.util.FuncLogs;
@@ -41,12 +41,17 @@ public class EmployeeRegisterService extends AbstractService {
     public boolean insert(JDBConnection connection, EmployeeRegisterWrapperDTO dto) {
         // Corrección: Inicialización por defecto para evitar errores de compilación al testear la interfaz
         boolean commitSuccess = false;
-
-        // SE HACE ESTO TEMPORALMENTE PARA NO EJECUTAR NINGUNA OPERACION 
-        // MIENTRAS SE PRUEBA LAS VALIDACIONES DE LA INTERFACES GRAFICA
-//      if (!commitSuccess) {
-//          return false;
-//      }
+        /**
+         * SE VERIFICA SI EL PROGRAMA ESTA EN SOLO LECTURA
+         */
+        if (AppConfig.isDevMessages()) {
+            System.out.println(dto.toString());
+        }
+        //SI EL SISTEMA ESTA EN SOLO LECTURA NO REALIZA REGISTRO ALGUNO
+        if (AppConfig.getParameterBoolean("SOLO_LECTURA")) {
+            returnMessageError("EL SISTEMA ESTA EN MODO LECTURA");
+            return false;
+        }
         // Paso 1: Inicialización de auditoría macro (Independiente del autocommit)
         int transaction_id = transaction.insert(connection, dto.getTransaction());
         if (transaction_id <= 0) {
@@ -56,7 +61,6 @@ public class EmployeeRegisterService extends AbstractService {
 
         try {
             connection.setAutoCommit(false);
-
             // Paso 2: Apertura de bitácora de grano fino
             int start_id = hys.startTransactionReturn(connection, Const.INDEX_EMP_USER, "INICIO DE UNA TRANSACCION - EMP");
             if (start_id <= 0) {
@@ -115,14 +119,12 @@ public class EmployeeRegisterService extends AbstractService {
 
         // Si la auditoría macro falla, lo mandamos a los logs físicos a disco
         if (!updateOk || transaction.isError()) {
-            try {
-                FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, dto.getModule_name(),
-                        "[%s - WARN]: No se pudo actualizar el estado macro a OK en la auditoría: %s"
-                                .formatted(getProcess_name(), transaction.getUserMessage()));
-            } catch (IOException ex) {
-                System.getLogger(EmployeeRegisterService.class.getName())
-                        .log(System.Logger.Level.ERROR, "Fallo de E/S crítico al escribir el archivo log.", ex);
-            }
+            FuncLogs.logError(
+                    AppFiles.DIR_PROG_LOG_TODAY,
+                    dto.getModule_name(),
+                    "[%s - WARN]: No se pudo actualizar el estado macro a OK en la auditoría: %s"
+                            .formatted(getProcess_name(), transaction.getUserMessage())
+            );
         }
 
         return commitSuccess;

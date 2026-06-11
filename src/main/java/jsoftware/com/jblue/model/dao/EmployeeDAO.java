@@ -61,7 +61,7 @@ public class EmployeeDAO extends AbstractDAO {
                         personal_email, personal_number, street1, street2, inside_number, 
                         outside_number, status)
                        VALUES
-                       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
                        """;
 
         try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -88,7 +88,6 @@ public class EmployeeDAO extends AbstractDAO {
             setNull(ps, 13, dto.getOutsideNumber());
 
             // 5. Estado Inicial
-            ps.setString(14, dto.getStatus());
 
             int affectedRows = ps.executeUpdate();
             if (affectedRows == PreparedStatement.EXECUTE_FAILED || affectedRows != 1) {

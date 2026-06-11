@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
+import jsoftware.com.jblue.model.exp.imp.CorruptUpdateException;
 import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -57,7 +58,7 @@ public class EmployeeUserDAO extends AbstractDAO {
                        INSERT INTO emp_user
                        (employee_id, office_id, user, password, description, 
                         email, phone_number, employee_type, status, last_employee_update)
-                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)
                        """;
 
         try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -77,8 +78,7 @@ public class EmployeeUserDAO extends AbstractDAO {
 
             // 4. Configuración, Estado y Auditoría
             ps.setString(8, dto.getEmployeeType());
-            ps.setString(9, dto.getStatus());
-            ps.setInt(10, Integer.parseInt(dto.getLastEmployeeUpdate()));
+            ps.setInt(9, Integer.parseInt(dto.getLastEmployeeUpdate()));
 
             int affectedRows = ps.executeUpdate();
             if (affectedRows == PreparedStatement.EXECUTE_FAILED || affectedRows != 1) {
@@ -207,6 +207,36 @@ public class EmployeeUserDAO extends AbstractDAO {
             ps.setInt(index, Integer.parseInt(newUser.getId()));
             return ps.executeUpdate() > 0;
         }
+    }
+
+    /**
+     * Ejecuta la sentencia SQL UPDATE directamente en la tabla emp_user.
+     *
+     * * @param connection Conexión JDBC limpia.
+     * @param map fields del DTO con los Strings de transporte.
+     * @return true si se afectó la fila esperada; de lo contrario, false.
+     * @throws DataAccesObjectException Si ocurre un error de sintaxis o bloqueo
+     * en MySQL.
+     */
+    public boolean updateCredential(JDBConnection connection, String id, String current_employee, String user, String password) throws SQLException, CorruptUpdateException {
+        boolean res = false;
+        // Consulta SQL estructurada según tu DDL de emp_user
+        String sql = "UPDATE emp_user SET user = ?, password = ?, last_employee_update = ?, last_update_password = CURRENT_TIMESTAMP WHERE id = ?";
+        try (PreparedStatement ps = connection.getNewPreparedStatement(sql);) {
+            // Mapeo manual y casteo final según el requerimiento de la columna en MySQL
+            ps.setString(1, user);
+            ps.setString(2, password); // Aquí ya va el String de 60 caracteres de BCrypt
+            ps.setString(3, current_employee);
+            ps.setString(4, id); // Cast final de String a Integer para la PK
+            int rowsAffected = ps.executeUpdate();
+            res = rowsAffected > 0;
+            if (!res) {
+                System.out.println("SI JALO");
+                throw new CorruptUpdateException();
+            }
+            System.out.println("NO JALO");
+        }
+        return res;
     }
 
     private <T> void autoSet(T oldValue, T newValue, String columnName, List<String> setColumns, List<Object> parameters) {

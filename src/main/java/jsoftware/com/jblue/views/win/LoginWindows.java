@@ -6,7 +6,6 @@ package jsoftware.com.jblue.views.win;
 
 import java.awt.Image;
 import java.awt.event.WindowListener;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Properties;
 import javax.swing.ImageIcon;
@@ -349,11 +348,7 @@ public final class LoginWindows extends AbstractModuleWindow<LoginWrapperDTO> {
     }
 
     public void log(Exception e, String method_name) {
-        try {
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "INICIO DE SESSION", method_name, e.getMessage());
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
+        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "INICIO DE SESSION", method_name, e.getMessage());
     }
 
     @Override

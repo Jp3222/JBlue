@@ -4,7 +4,6 @@
  */
 package jsoftware.com.jblue.model.service;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
 import jsoftware.com.jblue.model.dao.InstanceAuthDAO;
@@ -52,11 +51,7 @@ public class InstanceAuthService extends AbstractService {
     }
 
     public void log(Exception e, String method_name) {
-        try {
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, getProcess_name(), method_name, e.getMessage());
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
+        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, getProcess_name(), method_name, e.getMessage());
     }
 
 }

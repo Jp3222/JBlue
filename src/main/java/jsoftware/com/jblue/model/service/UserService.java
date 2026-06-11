@@ -4,7 +4,6 @@
  */
 package jsoftware.com.jblue.model.service;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
@@ -232,17 +231,13 @@ public class UserService extends AbstractService implements Serializable {
     }
 
     public void log(Exception e, String method_name) {
-        try {
-            FuncLogs.logError(
-                    AppFiles.DIR_PROG_LOG_TODAY,
-                    getClass(), e,
-                    getClass().getName(),
-                    method_name,
-                    e.getMessage()
-            );
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
+        FuncLogs.logError(
+                AppFiles.DIR_PROG_LOG_TODAY,
+                getClass(), e,
+                getClass().getName(),
+                method_name,
+                e.getMessage()
+        );
     }
 
 }

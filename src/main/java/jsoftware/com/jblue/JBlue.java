@@ -44,7 +44,7 @@ public class JBlue {
             JBlueMainSystem jBlueMainSystem = new JBlueMainSystem();
             LaunchApp.getInstance(jBlueMainSystem).doWhileRun();
             FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", "FIN DEL SISTEMA DESDE JBLUE");
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
             FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, JBlue.class, e, "MAIN", "main", e.getMessage());
         }
 

@@ -238,18 +238,10 @@ public class JBlueMainSystem implements MainSystem {
     }
 
     public void log(String message) {
-        try {
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", message);
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
+        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", message);
     }
 
     public void log(Exception e, String method_name, String message) {
-        try {
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "MAIN", method_name, message);
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
+        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "MAIN", method_name, message);
     }
 }

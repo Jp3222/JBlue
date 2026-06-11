@@ -18,7 +18,6 @@ package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.controllers.DBControllerModel;
@@ -137,16 +136,12 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
     }
 
     public void log(Exception e, String method_name) {
-        try {
-            FuncLogs.logError(
-                    AppFiles.DIR_PROG_LOG_TODAY,
-                    getClass(), e,
-                    getClass().getName(),
-                    method_name,
-                    e.getMessage()
-            );
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
+        FuncLogs.logError(
+                AppFiles.DIR_PROG_LOG_TODAY,
+                getClass(), e,
+                getClass().getName(),
+                method_name,
+                e.getMessage()
+        );
     }
 }

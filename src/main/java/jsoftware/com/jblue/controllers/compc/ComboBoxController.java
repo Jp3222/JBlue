@@ -17,7 +17,6 @@
 package jsoftware.com.jblue.controllers.compc;
 
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -90,16 +89,12 @@ public class ComboBoxController<T extends JDBMapObject> extends AbstractComponen
     }
 
     public void log(Exception e, String method_name) {
-        try {
-            FuncLogs.logError(
-                    AppFiles.DIR_PROG_LOG_TODAY,
-                    getClass(), e,
-                    getClass().getName(),
-                    method_name,
-                    e.getMessage()
-            );
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-        }
+        FuncLogs.logError(
+                AppFiles.DIR_PROG_LOG_TODAY,
+                getClass(), e,
+                getClass().getName(),
+                method_name,
+                e.getMessage()
+        );
     }
 }

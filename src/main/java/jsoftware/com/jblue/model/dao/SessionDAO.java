@@ -101,7 +101,7 @@ public class SessionDAO extends AbstractDAO {
         String query = "SELECT status, date_register FROM hys_session WHERE ID = ? AND status = 4";
         try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
             ps.setString(1, dto.getId());
-            ps.setString(2, dto.getEmployeeId());
+            //ps.setString(2, dto.getEmployeeId());
             try (ResultSet rs = ps.executeQuery()) {
                 res = rs.next();
                 if (res) {

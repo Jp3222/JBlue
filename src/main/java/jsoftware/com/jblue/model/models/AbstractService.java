@@ -127,6 +127,6 @@ public abstract class AbstractService implements ServiceModel {
     @Override
     public boolean isError() {
         // Mapeo directo: Si el código muta del 0 estándar al rango de error, se levanta el semáforo
-        return error_code >= SERVICE_EXECUTE_ERROR;
+        return error_code > SERVICE_EXECUTE_ERROR;
     }
 }

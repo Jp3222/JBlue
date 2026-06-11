@@ -17,7 +17,7 @@ public interface ServiceModel extends Serializable {
 
     // Las constantes son implícitamente public static final en interfaces
     int SERVICE_EXECUTE_OK = 0;
-    int SERVICE_EXECUTE_ERROR = -1000;
+    int SERVICE_EXECUTE_ERROR = 1000;
 
     /**
      * Recupera el mensaje formateado y seguro destinado a mostrarse en la

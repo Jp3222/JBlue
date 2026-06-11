@@ -60,7 +60,6 @@ public class WizardController extends Controller {
 
         // Ejecución ordenada del flujo de la UI
         view.updateUi(WizardModel.NEXT_VIEW_BUTTON);
-        view.nextIndex();
         view.updateUi(WizardModel.NAVIGATION_STEP_BAR);
     }
 

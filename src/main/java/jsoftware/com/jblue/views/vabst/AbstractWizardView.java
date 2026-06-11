@@ -4,7 +4,6 @@
  */
 package jsoftware.com.jblue.views.vabst;
 
-import java.io.IOException;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.DBControllerModel;
 import jsoftware.com.jblue.controllers.compc.WizardController;
@@ -12,7 +11,6 @@ import jsoftware.com.jblue.model.dto.wrp.ModuleWrapperDTO;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.WizardModel;
-import jsoftware.com.jblue.views.mod.pro.EmployeeRegisterProcess;
 import jsoftware.com.jutil.util.FuncLogs;
 
 /**
@@ -139,12 +137,16 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
                         return;
                     }
                     card_layout.next(root_panel);
+                    if (current_index == views.size() - 1) {
+                        nextIndex();
+                    }
                 }
                 case PREVIOUS_VIEW_BUTTON -> {
                     if (current_index <= 0) {
                         return;
                     }
                     card_layout.previous(root_panel);
+                    previousIndex();
                 }
                 case NAVIGATION_STEP_BAR -> {
                     last_panel_button.setEnabled(current_index > 0);
@@ -207,18 +209,14 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
     }
 
     private void log(Exception e, String method_name) {
-        try {
-            FuncLogs.logError(
-                    AppFiles.DIR_PROG_LOG_TODAY,
-                    getClass(),
-                    e,
-                    getDtoWrapper().getModule_name(),
-                    method_name,
-                    e.getMessage()
-            );
-        } catch (IOException ex) {
-            System.getLogger(EmployeeRegisterProcess.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
+        FuncLogs.logError(
+                AppFiles.DIR_PROG_LOG_TODAY,
+                getClass(),
+                e,
+                getDtoWrapper().getModule_name(),
+                method_name,
+                e.getMessage()
+        );
     }
 
     @Override

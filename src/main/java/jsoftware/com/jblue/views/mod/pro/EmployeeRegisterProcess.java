@@ -70,7 +70,7 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
 
     @Override
     public void initialState() {
-        super.initialState(); 
+        super.initialState();
         for (AbstractModuleView<EmployeeRegisterWrapperDTO> i : views) {
             i.initialState();
         }
@@ -109,7 +109,7 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
             case 1 ->
                 getDtoWrapper().isEmployee_user_valid();
             default ->
-                false;
+                getDtoWrapper().isEmployee_user_valid();
         };
 
         if (!valid) {

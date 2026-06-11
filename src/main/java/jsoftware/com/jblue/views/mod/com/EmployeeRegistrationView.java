@@ -7,7 +7,6 @@ package jsoftware.com.jblue.views.mod.com;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.time.LocalDate;
 import java.util.Locale;
@@ -80,10 +79,6 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         dps.setDateRangeLimits(LocalDate.MIN, LocalDate.now());
         dps.setVisiblePreviousYearButton(true);
         dps.setVisibleNextYearButton(false);
-        int j = 0;
-        for (Component i : datePicker.getComponents()) {
-            System.out.println(i + " - " + i.getName() + ": " + i.getClass().getName());
-        }
         JButton button = (JButton) datePicker.getComponent(1);
         button.setPreferredSize(new Dimension(80, 25));
         button.setText("FECHA");

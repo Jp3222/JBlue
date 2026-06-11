@@ -343,12 +343,12 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
     @Override
     public EmployeeUserDTO getValues(boolean update) {
         EmployeeUserDTO dto = new EmployeeUserDTO();
-        Func.put(dto.getMap(), "user", user_field.getText());
-        Func.put(dto.getMap(), "password", description_field.getText());
-        Func.put(dto.getMap(), "description", Formats.getTextFormat(description_field.getText()));
+        Func.putIfNotNull(dto.getMap(), "user", user_field.getText());
+        Func.putIfNotNull(dto.getMap(), "password", description_field.getText());
+        Func.putIfNotNull(dto.getMap(), "description", Formats.getTextFormat(description_field.getText()));
         Func.put(dto.getMap(), "email", description_field.getText());
         Func.put(dto.getMap(), "phone_number", description_field.getText());
-        Func.put(dto.getMap(), "employee_type", description_field.getText());
+        Func.putIfNotNull(dto.getMap(), "employee_type", description_field.getText());
         return dto;
     }
 
@@ -356,12 +356,12 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
     public void getData() {
         EmployeeRegisterWrapperDTO dto = getDtoWrapper();
         boolean res = isValuesOK();
+        dto.setEmployee_user_valid(res);
         if (!res) {
             return;
         }
         EmployeeUserDTO values = getValues(false);
         dto.getEmployee_user().setMap(values.getMap());
-        dto.setEmployee_user_valid(res);
     }
 
     @Override

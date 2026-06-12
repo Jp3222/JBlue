@@ -1,8 +1,10 @@
 package jsoftware.com.jblue.model.models;
 
 import jsoftware.com.jblue.sys.SystemSession;
+import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  * Base abstracta para la capa de servicios del framework JBlue. Centraliza la
@@ -127,6 +129,17 @@ public abstract class AbstractService implements ServiceModel {
     @Override
     public boolean isError() {
         // Mapeo directo: Si el código muta del 0 estándar al rango de error, se levanta el semáforo
-        return error_code > SERVICE_EXECUTE_ERROR;
+        return (error_code >= SERVICE_EXECUTE_ERROR) || (error_code > 0);
+    }
+
+    protected void log(Exception e, String method_name) {
+        FuncLogs.logError(
+                AppFiles.DIR_PROG_LOG_TODAY,
+                getClass(),
+                e,
+                process_name,
+                method_name,
+                e.getMessage()
+        );
     }
 }

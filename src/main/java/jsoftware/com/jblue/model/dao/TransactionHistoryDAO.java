@@ -92,7 +92,7 @@ public class TransactionHistoryDAO extends AbstractDAO {
         // Corrección: Se elimina la coma errónea que estaba antes del WHERE ", WHERE id = ?"
         String sql = "UPDATE hys_transaction_history SET "
                 + "hys_start_id = ?, "
-                + "hys_endt_id = ?, "
+                + "hys_end_id = ?, "
                 + "status = 1 "
                 + "WHERE id = ?";
 

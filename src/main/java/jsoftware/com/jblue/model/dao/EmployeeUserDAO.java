@@ -113,14 +113,13 @@ public class EmployeeUserDAO extends AbstractDAO {
      * @throws SQLException Si ocurre un error en la ejecución del
      * PreparedStatement.
      */
-    public Optional<EmployeeUserDTO> get(JDBConnection connection, String user, String password) throws SQLException {
+    public Optional<EmployeeUserDTO> get(JDBConnection connection, String user) throws SQLException {
         Optional<EmployeeUserDTO> result = Optional.empty();
-        String query = "SELECT * FROM emp_user WHERE user = ? AND password = ? AND status = 1";
+        String query = "SELECT * FROM emp_user WHERE user = ? AND status = 1";
 
         try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
             // Corrección en el orden secuencial de asignación de parámetros
             ps.setString(1, user);
-            ps.setString(2, password);
 
             try (ResultSet rs = ps.executeQuery()) {
                 // Estructura segura sin duplicación de saltos en el cursor

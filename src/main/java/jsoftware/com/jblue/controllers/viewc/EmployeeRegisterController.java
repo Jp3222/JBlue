@@ -43,7 +43,7 @@ public class EmployeeRegisterController extends AbstractDBViewController<Employe
 
     @Override
     public void save() {
-        System.out.println("save");
+        boolean res = false;
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
             SystemSession ss = SystemSession.getInstancia();
             if (ss.isLock()) {
@@ -53,16 +53,17 @@ public class EmployeeRegisterController extends AbstractDBViewController<Employe
 //                returnMessage(view, false, "LA ADMINISTRACION ACTUAL NO SE HA REGISTRADO O NO ES VALIDA");
 //                return;
 //            }
-            boolean res = service.insert(c, view.getDtoWrapper());
+            view.beforeSaveData();
+            res = service.insert(c, view.getDtoWrapper());
             if (service.isError()) {
                 returnMessage(view, service.getUserMessage());
-                return;
             }
-            returnMessage(view, res);
         } catch (Exception e) {
             log(e, "save");
             returnMessage(view, false, "ERROR INTERNO");
         }
+        returnMessage(view, res);
+        view.afterSaveData(res);
     }
 
     public void log(Exception e, String method_name) {

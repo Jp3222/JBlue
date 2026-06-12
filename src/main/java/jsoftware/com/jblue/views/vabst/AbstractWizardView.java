@@ -133,24 +133,20 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
             }
             switch (componentId) {
                 case NEXT_VIEW_BUTTON -> {
-                    if (current_index == views.size() - 1) {
+                    if (current_index == views.size()) {
                         return;
                     }
                     card_layout.next(root_panel);
-                    if (current_index == views.size() - 1) {
-                        nextIndex();
-                    }
                 }
                 case PREVIOUS_VIEW_BUTTON -> {
                     if (current_index <= 0) {
                         return;
                     }
                     card_layout.previous(root_panel);
-                    previousIndex();
                 }
                 case NAVIGATION_STEP_BAR -> {
                     last_panel_button.setEnabled(current_index > 0);
-                    if (current_index == views.size() - 1) {
+                    if (current_index == views.size()) {
                         next_panel_button.setText("Finalizar Registro");
                         next_panel_button.setActionCommand(DBControllerModel.SAVE_COMMAND);
                     } else {

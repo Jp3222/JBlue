@@ -130,8 +130,16 @@ public abstract class ModuleWrapperDTO extends JDBMapObject {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("ModuleWrapperDTO{");
-        sb.append("module_id=").append(module_id).append(", ");
-        sb.append("module_name=").append(module_name).append("}");
+        sb.append("\n module_id=").append(module_id).append(", ");
+        sb.append("\n module_name=").append(module_name).append(",");
+        sb.append("\n transaction=").append(Func.nullSafeToString(transaction.getMap().toString())).append(",");
+        sb.append("\n current_employee=").append(Func.nullSafeToString(current_employee.getMap().toString())).append(",");
+        sb.append("\n current_administration=");
+        if (current_administration == null) {
+            sb.append("null").append(",");
+        } else {
+            sb.append(Func.nullSafeToString(current_administration.getMap().toString())).append(",");
+        }
         return sb.toString();
     }
 }

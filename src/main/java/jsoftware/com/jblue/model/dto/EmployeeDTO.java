@@ -96,7 +96,6 @@ public class EmployeeDTO extends JDBMapObject {
 
     @Override
     public String toString() {
-        // Garantiza un vaciado limpio de strings en logs de auditoría o consola previniendo NullPointerException
-        return (values != null) ? values.toString() : "{}";
+        return getFirstName().concat("_").concat(getLastName1()).concat("_").concat(getLastName2());
     }
 }

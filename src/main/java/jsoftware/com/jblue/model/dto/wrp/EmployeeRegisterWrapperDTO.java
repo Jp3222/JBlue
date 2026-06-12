@@ -95,12 +95,13 @@ public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.toString()); // Reutiliza la metadata del padre (IDs, Nombres de módulo)
-        sb.append("EmployeeRegisterWrapperDTO { ");
-        sb.append("employee = ").append(employee.getMap().toString()).append(", ");
-        sb.append("employee_valid = ").append(employee_valid).append(", ");
-        sb.append("employee_user = ").append(employee_user.getMap().toString()).append(", ");
-        sb.append("employee_user_valid = ").append(employee_user_valid);
-        sb.append(" }");
+        sb.append("\n EmployeeRegisterWrapperDTO { ");
+        sb.append("\n  employee = ").append(employee.getMap().toString()).append(", ");
+        sb.append("\n  employee_valid = ").append(employee_valid).append(", ");
+        sb.append("\n  employee_user = ").append(employee_user.getMap().toString()).append(", ");
+        sb.append("\n  employee_user_valid = ").append(employee_user_valid);
+        sb.append("\n }");
+        sb.append("\n}");
         return sb.toString();
     }
 

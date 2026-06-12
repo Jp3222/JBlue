@@ -42,11 +42,14 @@ public class EmployeeService extends AbstractService {
                 throw new ServiceException(1, "LOS DATOS DEL EMPLEADO NO SE HAN REGISTRADO CORRECTAMENTE");
             }
             //REGISTRO EN BITACORA
-            res = history_dao.insert(connection, "SE REGISTRO EL EMPLEADO: %s - %s");
+            res = history_dao.insert(connection, 
+                    "SE REGISTRO EL EMPLEADO: %s ID:%s".formatted(dto.toString(), pk)
+            );
             if (!res) {
                 throw new ServiceException(1, "REGISTRO EN BITACORA CORRUPTO");
             }
         } catch (SQLException ex) {
+            log(ex, "insert");
             returnMessageError(ex.getErrorCode(), ex.getMessage());
         } catch (ServiceException ex) {
             returnMessageError(ex.getErrorCode(), ex.getUserMessage());

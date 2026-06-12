@@ -52,7 +52,7 @@ public class EmployeeRegisterService extends AbstractService {
             returnMessageError("EL SISTEMA ESTA EN MODO LECTURA");
             return false;
         }
-        // Paso 1: Inicialización de auditoría macro (Independiente del autocommit)
+        // PASO 1: REGISTRO EN HISTORIAL DE TRANSACCIONES
         int transaction_id = transaction.insert(connection, dto.getTransaction());
         if (transaction_id <= 0) {
             returnMessageError(-1, "LA OPERACION NO SE PUDO REGISTRAR EN BITACORA MAESTRA");
@@ -61,46 +61,48 @@ public class EmployeeRegisterService extends AbstractService {
 
         try {
             connection.setAutoCommit(false);
-            // Paso 2: Apertura de bitácora de grano fino
-            int start_id = hys.startTransactionReturn(connection, Const.INDEX_EMP_USER, "INICIO DE UNA TRANSACCION - EMP");
+            //PASO 2: REGISTRO DE INICIO DE UNA TRANSACCION
+            int start_id = hys.startTransactionReturn(connection, Const.INDEX_HYS_PROGRAM_HISTORY, "INICIO DE UNA TRANSACCION - EMP");
             if (start_id <= 0) {
                 throw new ServiceException(1, "REGISTRO EN BITACORA CORRUPTO - START_TRANSACTION");
             }
+            //PASO 2.1: RECUPERACION DE ID - INICIO DE LA TRANSACCION
             dto.getTransaction().put("hys_start_id", String.valueOf(start_id));
 
-            // Paso 3: Inserción de la entidad Empleado (Datos civiles)
+            //PASO 3: REGISTRO DE DATOS DEL EMPLEADO
             int employee_id = employee.insert(connection, dto.getEmployee());
             if (employee.isError()) {
                 throw new ServiceException(employee.getErrorCode(), employee.getUserMessage());
             }
 
-            // Paso 4: Enriquecimiento dinámico para credenciales de acceso (Traspaso de Strings)
+            //PASO 3.1: RECOPILACION DE DATOS
             dto.getEmployee_user().put("employee_id", String.valueOf(employee_id));
             dto.getEmployee_user().put("office_id", session.getCurrent_instance().getOfficeId());
             dto.getEmployee_user().put("description", dto.getEmployee().toString());
             dto.getEmployee_user().put("last_employee_update", session.getCurrentEmployee().getId());
 
-            // Paso 5: Inserción de credenciales de usuario
+            //PASO 4: REGISTRO DE DATOS EN EL PADRON DE EMPLEADOS
             int user_id = user.insert(connection, dto.getEmployee_user());
             if (user.isError()) {
                 throw new ServiceException(user.getErrorCode(), user.getUserMessage());
             }
+            //PASO 4.1 RECUPERACION DEL ID DE LA ENTIDAD GENERADA
             dto.getTransaction().put("enty_id", String.valueOf(user_id));
 
-            // Paso 6: Cierre de la bitácora de grano fino
-            int end_id = hys.endTransactionReturn(connection, Const.INDEX_EMP_USER, "FIN DE UNA TRANSACCION - EMP");
+            // PASO 5: REGISTRO DEL FIN DE LA TRANSACCION
+            int end_id = hys.endTransactionReturn(connection, Const.INDEX_HYS_PROGRAM_HISTORY, "FIN DE UNA TRANSACCION - EMP");
             if (end_id <= 0) {
                 throw new ServiceException(2, "REGISTRO EN BITACORA CORRUPTO - END_TRANSACTION");
             }
-            // Nota: Validar si tu base de datos requiere "hys_end_id" o "hys_endt_id"
+            //PASO 5.1: RECUPERACION DE ID - FIN DE LA TRANSACCION
             dto.getTransaction().put("hys_end_id", String.valueOf(end_id));
 
-            // Paso 7: Consolidación del bloque atómico
+            //PASO 6 SI NO HUBO ERRORES SE CONFIRMA LA TRANSACCION
             connection.commit();
             commitSuccess = true;
-
         } catch (SQLException e) {
             rollback(connection);
+            log(e, "insert");
             returnMessageError(e.getErrorCode(), e.getMessage());
         } catch (ServiceException | DataAccesObjectException e) {
             rollback(connection);
@@ -113,7 +115,6 @@ public class EmployeeRegisterService extends AbstractService {
         if (!commitSuccess) {
             return false;
         }
-
         // Paso 8: Actualización del estado macro a OK en la auditoría
         boolean updateOk = transaction.updateStatusOk(connection, dto.getTransaction());
 

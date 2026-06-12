@@ -91,28 +91,34 @@ public class TransactionHistoryDAO extends AbstractDAO {
     public boolean updateStatusOK(JDBConnection conn, TransactionHistoryDTO dto) throws SQLException {
         // Corrección: Se elimina la coma errónea que estaba antes del WHERE ", WHERE id = ?"
         String sql = "UPDATE hys_transaction_history SET "
+                + "enty_id = ?"
                 + "hys_start_id = ?, "
                 + "hys_end_id = ?, "
                 + "status = 1 "
                 + "WHERE id = ?";
 
         try (PreparedStatement ps = conn.getNewPreparedStatement(sql)) {
-
             // 1. Manejo y casteo defensivo para hys_start_id (Índice 1)
             if (dto.getHysStartId() == null || dto.getHysStartId().trim().isEmpty()) {
                 ps.setNull(1, java.sql.Types.INTEGER);
             } else {
-                ps.setInt(1, Integer.parseInt(dto.getHysStartId()));
+                ps.setInt(1, Integer.parseInt(dto.getEntyId()));
+            }
+            // 1. Manejo y casteo defensivo para hys_start_id (Índice 1)
+            if (dto.getHysStartId() == null || dto.getHysStartId().trim().isEmpty()) {
+                ps.setNull(2, java.sql.Types.INTEGER);
+            } else {
+                ps.setInt(2, Integer.parseInt(dto.getHysStartId()));
             }
             // 2. Manejo y casteo defensivo para hys_end_id (Índice 2)
             if (dto.getHysEndId() == null || dto.getHysEndId().trim().isEmpty()) {
-                ps.setNull(2, java.sql.Types.INTEGER);
+                ps.setNull(3, java.sql.Types.INTEGER);
             } else {
-                ps.setInt(2, Integer.parseInt(dto.getHysEndId()));
+                ps.setInt(3, Integer.parseInt(dto.getHysEndId()));
             }
             // 3. Casteo explícito para la llave primaria del WHERE (Índice 3)
             // Se extrae directamente del JDBMapObject usando la llave "id"
-            ps.setString(3, dto.getId());
+            ps.setString(4, dto.getId());
 
             return ps.executeUpdate() > 0;
         }

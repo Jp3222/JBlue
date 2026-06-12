@@ -344,11 +344,11 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
     public EmployeeUserDTO getValues(boolean update) {
         EmployeeUserDTO dto = new EmployeeUserDTO();
         Func.putIfNotNull(dto.getMap(), "user", user_field.getText());
-        Func.putIfNotNull(dto.getMap(), "password", description_field.getText());
+        Func.putIfNotNull(dto.getMap(), "password", password_field.getText());
         Func.putIfNotNull(dto.getMap(), "description", Formats.getTextFormat(description_field.getText()));
-        Func.put(dto.getMap(), "email", description_field.getText());
-        Func.put(dto.getMap(), "phone_number", description_field.getText());
-        Func.putIfNotNull(dto.getMap(), "employee_type", description_field.getText());
+        Func.put(dto.getMap(), "email", email_field.getText());
+        Func.put(dto.getMap(), "phone_number", number_phone_field.getText());
+        Func.putIfNotNull(dto.getMap(), "employee_type", employee_type_field.getItemAt(employee_type_field.getSelectedIndex()).getId());
         return dto;
     }
 

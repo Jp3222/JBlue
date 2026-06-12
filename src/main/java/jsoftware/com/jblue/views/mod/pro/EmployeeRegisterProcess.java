@@ -106,14 +106,12 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
         boolean valid = switch (current_index) {
             case 0 ->
                 getDtoWrapper().isEmployee_valid();
-            case 1 ->
-                getDtoWrapper().isEmployee_user_valid();
             default ->
                 getDtoWrapper().isEmployee_user_valid();
         };
-
         if (!valid) {
-            JOptionPane.showMessageDialog(this,
+            JOptionPane.showMessageDialog(
+                    this,
                     "Por favor, complete correctamente los campos obligatorios de esta sección.",
                     "Validación de Datos", JOptionPane.WARNING_MESSAGE);
         }
@@ -126,10 +124,8 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
         for (AbstractModuleView<EmployeeRegisterWrapperDTO> v : views) {
             v.getData();
         }
-
         // 2. Recuperar el controlador del caso de uso encargado de la persistencia
         EmployeeRegisterController employeeController = (EmployeeRegisterController) getDtoWrapper().getController("CONTROLLER");
-
         if (employeeController != null) {
             // El controlador leerá el WrapperDTO enriquecido, aplicará los casts numéricos en el DAO y guardará en MySQL
             JOptionPane.showMessageDialog(this, "Guardando registro del nuevo empleado en el sistema...", "Procesando", JOptionPane.INFORMATION_MESSAGE);
@@ -147,13 +143,24 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
 
     @Override
     public void showData() {
-        System.out.println("sho");
         for (AbstractModuleView<EmployeeRegisterWrapperDTO> i : views) {
             System.out.println(i.getName());
             if (i instanceof ShowDataModel s) {
                 s.showData();
             }
         }
+    }
+
+    public void beforeSaveData() {
+        next_panel_button.setEnabled(false);
+    }
+
+    public void afterSaveData(boolean mov) {
+        next_panel_button.setEnabled(true);
+        if (mov) {
+            initialState();
+        }
+        
     }
 
 }

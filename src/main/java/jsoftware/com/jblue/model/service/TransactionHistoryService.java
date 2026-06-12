@@ -99,12 +99,20 @@ public class TransactionHistoryService extends AbstractService {
 
     public boolean updateStatusOk(JDBConnection connection, TransactionHistoryDTO dto) {
         boolean res = false;
+        connection.setAutoCommit(false);
         try {
             res = dao.updateStatusOK(connection, dto);
+            if (res) {
+                commit(connection);
+            } else {
+                rollback(connection);
+            }
         } catch (SQLException ex) {
             rollback(connection);
             this.error_code = SERVICE_EXECUTE_ERROR;
             this.user_message = "Error DAO: " + ex.getMessage();
+        } finally {
+            connection.setAutoCommit(true);
         }
         return res;
     }

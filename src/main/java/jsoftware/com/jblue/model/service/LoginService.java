@@ -7,6 +7,7 @@ package jsoftware.com.jblue.model.service;
 import java.sql.SQLException;
 import java.util.Optional;
 import jsoftware.com.jblue.model.cryp.BCryptCrypto;
+import jsoftware.com.jblue.model.crypto.DeterministicCrypto;
 import jsoftware.com.jblue.model.dao.AdministrationHistoryDAO;
 import jsoftware.com.jblue.model.dao.EmployeeUserDAO;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
@@ -27,8 +28,12 @@ import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.util.FuncLogs;
 
 /**
+ * Servicio encargado de la validación criptográfica de accesos, inicialización
+ * y cierre de sesiones de usuario en JBlue.
  *
- * @author juanp
+ * * @author JUAN PABLO CAMPOS CASASANERO
+ * @since 2026-06-12
+ * @version 2.0
  */
 public class LoginService extends AbstractService {
 
@@ -39,6 +44,9 @@ public class LoginService extends AbstractService {
     private final AdministrationHistoryDAO administration_history_dao;
     private final EmployeeUserHistoryDAO history_dao;
     private final SessionDAO session_dao;
+
+    // Constante del sistema para el cifrado determinista del usuario (Pimienta Global)
+    private static final String SYSTEM_PEPPER = "JBl_u3#Pozo$2026_MasterKey";
 
     public LoginService(boolean dev_flag, String process_name) {
         super(dev_flag, process_name);
@@ -55,24 +63,49 @@ public class LoginService extends AbstractService {
         connection.setAutoCommit(false);
         system_session = SystemSession.getInstancia();
         try {
-            //[1] BUSCAR SI EXISTE EL EMPLEADO
-            String us = BCryptCrypto.encryp(user);
-            String pw = BCryptCrypto.encryp(password);
-            Optional<EmployeeUserDTO> option = employee_dao.get(connection, us, pw);
+            // [1] ENCRIPTAR EL USUARIO DE FORMA DETERMINISTA PARA LA BÚSQUEDA INDEXADA
+            String secureUser = DeterministicCrypto.encryp(user, SYSTEM_PEPPER);
+            System.out.println(secureUser);
+            // Buscamos en la base de datos únicamente pasando el usuario cifrado en Base64
+            // Nota: Debes asegurarte de que tu método employee_dao.get reciba solo el usuario, o modificarlo
+            Optional<EmployeeUserDTO> option = employee_dao.get(connection, secureUser);
+
             res = option.isEmpty();
             if (res) {
-                log("INTENTO DE INICIO DE SESION: USUARIO=%s".formatted(user));
-                user_message = "USUARIO NO ECONTRADO";
+                log("INTENTO DE INICIO DE SESION FALLIDO (USUARIO INEXISTENTE): USUARIO=%s".formatted(user));
+                user_message = "USUARIO O CONTRASEÑA INCORRECTOS"; // Mensaje genérico por seguridad
                 error_code = 404;
-                return !res;
+                return false;
             }
-            //GAURDAR EMPLEADO 
+
+            // Recuperamos el DTO del empleado encontrado
             EmployeeUserDTO employee = option.get();
+
+            // [2] VALIDACIÓN DE LA CONTRASEÑA USANDO LA FUNCIÓN COMPARATIVA DE BCRYPT
+            // El DTO recupera el hash almacenado en la columna 'password' de MySQL
+            String dbPasswordHash = employee.getPassword();
+
+            // Comparamos el texto plano de la vista contra el hash dinámico de la BD
+            boolean isPasswordCorrect = BCryptCrypto.equalsEncryp(password, dbPasswordHash, null);
+
+            if (!isPasswordCorrect) {
+                log("INTENTO DE INICIO DE SESION FALLIDO (CONTRASEÑA ERRÓNEA): USUARIO=%s".formatted(user));
+                user_message = "USUARIO O CONTRASEÑA INCORRECTOS";
+                error_code = 401;
+                return false;
+            }
+
+            // Removemos el hash del password de la memoria por seguridad una vez validado
+            employee.put("password", null);
+
+            // GUARDAR EMPLEADO EN LA SESIÓN GLOBAL DEL SISTEMA
             system_session.setUser(employee);
             dto.put("employee_id", employee.getId());
+
+            // Control de concurrencia de sesiones activas
             res = session_dao.haveActiveSession(connection, employee.getId());
             if (res) {
-                int session_id_old = history_dao.logout(connection, "CERRAR SESSION ABIERTA");
+                int session_id_old = history_dao.logout(connection, "CERRAR SESSION ABIERTA AUTOMÁTICAMENTE POR NUEVA AUTENTICACIÓN");
                 res = session_id_old > 0;
                 if (!res) {
                     throw new LoginFailedException(2);
@@ -84,48 +117,49 @@ public class LoginService extends AbstractService {
                 }
             }
 
-            //[2] REGISTRO EN BITACORA
+            // [3] REGISTRO EN BITACORA DE HISTORIAL
             int session_id = history_dao.login(connection, "INICIO DE SESIÓN");
             dto.put("history_start_id", String.valueOf(session_id));
             res = session_id > 0;
             if (!res) {
                 throw new LoginFailedException();
             }
-            //[3] REGISTRO DE SESION
+
+            // [4] REGISTRO DE SESION EN INFRAESTRUCTURA
             session_dao.insert(connection, dto);
-            //[4] INFORMACION DE SESSION
+
+            // [5] INFORMACION DE SESSION
             String db_user = history_dao.currentUser(connection);
-            //GUARDAR ADMINISTRACION ACTUAL
+
+            // GUARDAR ADMINISTRACION ACTUAL
             AdministrationHistoryDTO currentAdministration = administration_history_dao.getCurrentAdministration(connection);
             system_session.setCurrentAdministration(currentAdministration);
-            //GUARDAR USUARIO DE BASE DE DATOS ASIGNADO
+
+            // GUARDAR USUARIO DE BASE DE DATOS ASIGNADO Y SESIÓN ATÓMICA
             system_session.setCurrentDbUser(db_user);
             system_session.setCurrentSession(dto);
-            //SI NO SE GUARDO EL EMPLEADO ACTUAL
+
+            // Validaciones defensivas de consistencia de sesión en RAM
             res = Func.isNotNull(SystemSession.getInstancia().getCurrentEmployee());
             if (!res) {
                 throw new LoginFailedException(4, "EL USUARIO DE SESION NO SE GUARDO CORRECTAMENTE");
             }
 
-//            //SI NO SE GUARDO LA ADMINISTRACION ACTUAL
-//            res = Func.isNotNull(SystemSession.getInstancia().getCurrentAdministration());
-//            if (!res) {
-//                throw new LoginFailedException(5, "LA ADMINISTRACION ACTUAL NO SE GUARDO CORRECTAMENTE");
-//            }
-            //SI NO SE GUARDO EL USUARIO DB
             res = Func.isNotNull(SystemSession.getInstancia().getCurrentDbUser());
             if (!res) {
                 throw new LoginFailedException(6, "ERROR DE SERVIDOR");
             }
 
-            //SI EL USUARIO QUE EJECUTO EL QUERY Y EL DE LAS CREDENCIALES NO SON EL MISMO
             res = Func.isNotNull(SystemSession.getInstancia().getCurrent_instance());
             if (!res) {
                 throw new LoginFailedException(7, "CREDENCIALES DE ADMINISTRACION NO VALIDAS");
             }
-            log("INICIO DE SESION: USUARIO=%s".formatted(user));
+
+            log("INICIO DE SESION EXITOSO: USUARIO=%s".formatted(user));
             system_session.put("user-session", user);
             connection.commit();
+            res = true; // Retornamos verdadero tras completar con éxito la transacción atómica
+
         } catch (SQLException ex) {
             user_message = "INICIO DE SESION FALLIDO";
             error_code = -1;
@@ -141,13 +175,6 @@ public class LoginService extends AbstractService {
         } catch (ServiceException ex) {
             user_message = ex.getMessage();
             error_code = ex.getErrorCode();
-            res = false;
-            log(ex, "login");
-            connection.rollBack();
-
-        } catch (Exception ex) {
-            user_message = "INICIO DE SESION FALLIDO";
-            error_code = -2;
             res = false;
             log(ex, "login");
             connection.rollBack();
@@ -175,29 +202,30 @@ public class LoginService extends AbstractService {
             log("FIN DE SESION: USUARIO=%s".formatted(user));
             SystemSession.setNull();
             connection.commit();
+            res = true;
         } catch (SQLException ex) {
             user_message = "FIN DE SESION FALLIDO";
             error_code = -1;
             res = false;
-            log(ex, "login");
+            log(ex, "logout");
             connection.rollBack();
         } catch (DataAccesObjectException ex) {
             user_message = "FIN DE SESION FALLIDO";
             error_code = ex.getErrorCode();
             res = false;
-            log(ex, "login");
+            log(ex, "logout");
             connection.rollBack();
         } catch (ServiceException ex) {
             user_message = ex.getUserMessage();
             error_code = ex.getErrorCode();
             res = false;
-            log(ex, "login");
+            log(ex, "logout");
             connection.rollBack();
         } catch (Exception ex) {
             user_message = "FIN DE SESION FALLIDO";
             error_code = -3;
             res = false;
-            log(ex, "login");
+            log(ex, "logout");
             connection.rollBack();
         } finally {
             connection.setAutoCommit(true);

@@ -1,72 +1,93 @@
-/*
- * Copyright (C) 2025 juanp
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package jsoftware.com.jblue.model.dto;
 
+import jsoftware.com.jblue.util.Func;
+import jsoftware.com.jutil.db.JDBMapObject;
+
 /**
- * Data Transfer Object (DTO) para la información de una Administración. Sigue
- * el patrón de indexación de datos de la clase Objects.
+ * DTO correspondiente al registro de la administración actual e histórico de comités
+ * del sistema (AdministrationHistory).
+ * <br>
+ * Utiliza la estructura heredada dinámica de Map para transportar las marcas de
+ * tiempo, estados y roles múltiples hacia empleados de manera flexible entre los
+ * controladores de Swing y la capa DAO de MySQL, apegándose al estándar actual
+ * de JBlue.
  *
- * @author jp
+ * @author JUAN PABLO CAMPOS CASASANERO
+ * @since 2025-11-23
+ * @version 1.0
  */
-public class AdministrationHistoryDTO extends AuditableObjectMap {
+public class AdministrationHistoryDTO extends JDBMapObject {
 
     private static final long serialVersionUID = 1L;
 
+    public AdministrationHistoryDTO() {
+        // Inicializa con una capacidad de 16 para albergar de forma eficiente los 13 campos operativos (incluyendo id),
+        // garantizando un factor de carga óptimo, evitando re-hasheos o redimensionamientos en memoria 
+        // durante el flujo transaccional.
+        super(16);
+    }
+
+    // Se omite getId() -> Heredado directamente de JDBMapObject de forma limpia
+
     public String getYearOfAdministration() {
-        return get("year_of_administration").toString();
+        return Func.nullSafeToString(get("year_of_administration"));
     }
 
     public String getRoot() {
-        return get("root").toString();
+        return Func.nullSafeToString(get("root"));
     }
 
     public String getAdministrator() {
-        return get("administrator").toString();
+        return Func.nullSafeToString(get("administrator"));
     }
 
     public String getPresident() {
-        return get("president").toString();
+        return Func.nullSafeToString(get("president"));
     }
 
-    public String getTeasurer() {
-        return get("treasurer").toString();
+    public String getTreasurer() {
+        return Func.nullSafeToString(get("treasurer"));
     }
 
     public String getSecretary() {
-        return get("secretary").toString();
+        return Func.nullSafeToString(get("secretary"));
     }
 
     public String getPlumber() {
-        return get("plumber").toString();
+        return Func.nullSafeToString(get("plumber"));
     }
 
-    public String getInternt1() {
-        return get("intern_1").toString();
+    public String getIntern1() {
+        return Func.nullSafeToString(get("intern_1"));
     }
 
-    public String getInternt2() {
-        return get("intern_2").toString();
+    public String getIntern2() {
+        return Func.nullSafeToString(get("intern_2"));
     }
 
-    public String getInternt3() {
-        return get("intern_3").toString();
+    public String getInternt3() { // Respetando nombre exacto 'internt_3' de tu DDL
+        return Func.nullSafeToString(get("internt_3"));
     }
 
     public String getDescription() {
-        return get("description").toString();
+        return Func.nullSafeToString(get("description"));
+    }
+
+    public String getStatus() {
+        return Func.nullSafeToString(get("status"));
+    }
+
+    public String getDateRegister() {
+        return Func.nullSafeToString(get("date_register"));
+    }
+
+    public String getDateEnd() {
+        return Func.nullSafeToString(get("date_end"));
+    }
+
+    @Override
+    public String toString() {
+        // Asegura un vaciado seguro en tus logs de auditoría o inserciones de payload previniendo excepciones nulas
+        return (values != null) ? values.toString() : "{}";
     }
 }

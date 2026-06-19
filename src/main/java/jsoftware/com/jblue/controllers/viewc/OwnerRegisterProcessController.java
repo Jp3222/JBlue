@@ -35,8 +35,6 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
         switch (e.getActionCommand()) {
             case SAVE_COMMAND ->
                 save();
-            default ->
-                throw new AssertionError();
         }
     }
 
@@ -48,18 +46,21 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
                 returnMessage(view, false, "LA ADMINISTRACION ACTUAL NO SE HA REGISTRADO O NO ES VALIDA");
                 return;
             }
-            
-            boolean res = service.save(c, view.getDtoWrapper());
-            if (!res) {
 
+            boolean res = service.save(c, view.getDtoWrapper());
+            if (service.isError()) {
+                returnMessage(view, false, service.getUserMessage());
+                return;
             }
+
             int showConfirmDialog = JOptionPane.showConfirmDialog(view, "¿DESEAS EXPORTAR LOS FORMATOS?");
             if (showConfirmDialog == JOptionPane.YES_OPTION) {
 
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            returnMessage(view, false, e.getMessage());
         }
+        returnMessage(view, true);
     }
 
     @Override

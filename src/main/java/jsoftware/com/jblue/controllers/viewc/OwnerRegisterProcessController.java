@@ -48,12 +48,8 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
                 returnMessage(view, false, "LA ADMINISTRACION ACTUAL NO SE HA REGISTRADO O NO ES VALIDA");
                 return;
             }
-
-            boolean res = service.save(
-                    c,
-                    view.getDtoWrapper().getProcess_type_id(),
-                    view.getDtoWrapper()
-            );
+            
+            boolean res = service.save(c, view.getDtoWrapper());
             if (!res) {
 
             }
@@ -79,6 +75,10 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
     @Override
     public void cancel() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void setView(OwnerRegisterProcess aThis) {
+        this.view = aThis;
     }
 
 }

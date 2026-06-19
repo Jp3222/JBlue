@@ -4,6 +4,7 @@
  */
 package jsoftware.com.jblue.views.vabst;
 
+import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.DBControllerModel;
 import jsoftware.com.jblue.controllers.compc.WizardController;
@@ -29,7 +30,7 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
         //CONTROLADOR DEL ASISTENTE
         WizardController wctronller = (WizardController) getDtoWrapper().getController("MAIN");
         wctronller.setView(this);
-
+        card_layout = (CardLayout) root_panel.getLayout();
         //MOVIMIENTOS DE SIGUIENTE Y ATRAS
         next_panel_button.addActionListener(wctronller);
         last_panel_button.addActionListener(wctronller);
@@ -217,7 +218,7 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
 
     @Override
     public void setStartMode() {
-        initComponents();
+        initialState();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JButton jButton6;

@@ -35,7 +35,7 @@ public abstract class ProcessValidators extends AbstractValidation {
         addRuler("dto-not-null",
                 process_wrapper_dto,
                 t -> Func.isNull(t)
-                && Func.isNotNull(process_wrapper_dto.getProcess_type_id())
+                && Func.isNotNull(process_wrapper_dto.getModule_id())
                 && Func.isNotNull(process_wrapper_dto.getModule_id())
                 && Func.isNotNull(process_wrapper_dto.getModule_name())
                 && Func.isNotNull(process_wrapper_dto.getModule_name()),
@@ -45,8 +45,8 @@ public abstract class ProcessValidators extends AbstractValidation {
             addRuler("user-not-null", process_wrapper_dto.getUser(), t -> Func.isNotNull(t), ERR_MSG1.formatted("DEL USUARIO"));
             addRuler("cur-employee-not-null", process_wrapper_dto.getCurrent_employee(), t -> Func.isNotNull(t), ERR_MSG1.formatted("DEL EMPLEADO ACTUAL"));
             addRuler("cur-admin-null", process_wrapper_dto.getCurrent_administration(), t -> Func.isNotNull(t), ERR_MSG1.formatted("DE LA ADMINISTRACION"));
-            addRuler("payment-not-null", process_wrapper_dto.getPayment(), t -> Func.isNotNull(t), ERR_MSG1.formatted("DE LA CEBEZERA DEL PAGO"));
-            addRuler("payment-list-not-null", process_wrapper_dto.getPayment_concept_list(), t -> Func.isNotNull(t), ERR_MSG1.formatted("DE LOS CONCEPTOS DE PAGO"));
+            addRuler("payment-not-null", process_wrapper_dto.getPayment_header(), t -> Func.isNotNull(t), ERR_MSG1.formatted("DE LA CEBEZERA DEL PAGO"));
+            addRuler("payment-list-not-null", process_wrapper_dto.getPayment_details(), t -> Func.isNotNull(t), ERR_MSG1.formatted("DE LOS CONCEPTOS DE PAGO"));
             addRuler("water-inatke-not-null", process_wrapper_dto.getWater_intake(), t -> Func.isNotNull(t),
                     ERR_MSG1.formatted("DE LA TOMA"));
             addRuler("wki-user-not-null", process_wrapper_dto.getWki_user(), t -> Func.isNotNull(t),

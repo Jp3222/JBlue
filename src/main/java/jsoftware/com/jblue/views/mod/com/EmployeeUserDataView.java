@@ -394,7 +394,7 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
         number_phone_field.setText(number_phone);
 
         if (employee_type_field.getSelectedIndex() <= 0) {
-            employee_type_field.setSelectedIndex(1);
+            employee_type_field.setSelectedIndex(6);
         }
     }
 

@@ -12,9 +12,11 @@ import jsoftware.com.jblue.model.dao.PaymentConceptDAO;
 import jsoftware.com.jblue.model.dto.PaymentListDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  *
@@ -28,7 +30,7 @@ public final class PaymentProcessView extends AbstractModuleView<ProcessWrapperD
     /**
      * Creates new form PaymentProcess
      */
-    public PaymentProcessView(ProcessWrapperDTO dto) throws Exception {
+    public PaymentProcessView(ProcessWrapperDTO dto) {
         super(dto);
         this.initComponents();
         this.model = new DefaultTableModel(new String[]{"No.", "Concepto", "Costo", "Tipo"}, 0);
@@ -36,18 +38,23 @@ public final class PaymentProcessView extends AbstractModuleView<ProcessWrapperD
         load();
     }
 
-    public void load() throws Exception {
+    public void load() {
         PaymentConceptDAO dao = new PaymentConceptDAO(true, getName());
         try (JDBConnection connection = connection();) {
             List<String[]> paymentConcep = dao.getPaymentConcep(
-                    connection, 
-                    String.valueOf(getDtoWrapper().getProcess_type_id())
+                    connection,
+                    String.valueOf(getDtoWrapper().getModule_id())
             );
             for (String[] i : paymentConcep) {
                 model.addRow(i);
             }
         } catch (Exception e) {
-            throw e;
+            FuncLogs.logError(
+                    AppFiles.DIR_PROG_LOG_TODAY,
+                    getClass(), e,
+                    getDtoWrapper().getModule_name(),
+                    "load",
+                    e.getMessage());
         }
     }
 
@@ -162,7 +169,7 @@ public final class PaymentProcessView extends AbstractModuleView<ProcessWrapperD
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int input = JOptionPane.showConfirmDialog(this, "¿CONFIRMA QUE HA RECIBIDO EL MONTO DEL PAGO EN SU TOTALIDAD?", "pago", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (input == JOptionPane.YES_OPTION) {
-            getDtoWrapper().setPayment_valid(true);
+            getDtoWrapper().setPayment_header_valid(true);
             for (int i = 0; i < model.getRowCount(); i++) {
                 PaymentListDTO dto = new PaymentListDTO();
                 for (int j = 0; j < model.getRowCount(); j++) {

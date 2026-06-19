@@ -201,7 +201,7 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
 
         int input = JOptionPane.showConfirmDialog(this, "¿CONFIRMA QUE LOS DOCUMENTOS DE IDENTIDAD DEL USUARIO SON DOCUMENTOS OFICIALES Y VALIDOS?", "pago", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (input == JOptionPane.YES_OPTION) {
-            getDtoWrapper().setUser_document_valid(true);
+            getDtoWrapper().setDocument_list_valid(true);
         }
 
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -209,7 +209,7 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int input = JOptionPane.showConfirmDialog(this, "¿DESEA RECHAZAR EL TRAMITE ACTUAL CON STATUS \"RECHAZADO\"?", "pago", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (input == JOptionPane.YES_OPTION) {
-            getDtoWrapper().setUser_document_valid(false);
+            getDtoWrapper().setDocument_list_valid(false);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -354,7 +354,7 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
         ProcessWrapperDTO pw = getDtoWrapper();
 
         // Evaluamos si es válido (no está vacía)
-        boolean isValid = !pw.getUser_document_list().isEmpty();
+        boolean isValid = !pw.getDocument_list().isEmpty();
 
         if (!isValid) {
             // Si NO es válido, avisamos al usuario
@@ -363,7 +363,7 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
                     "Documentación faltante",
                     JOptionPane.WARNING_MESSAGE);
         }
-        List<UserDocumentDTO> list = getDtoWrapper().getUser_document_list();
+        List<UserDocumentDTO> list = getDtoWrapper().getDocument_list();
         for (int i = 0; i < model.getSize(); i++) {
             UserDocumentDTO dto = model.getElementAt(i);
             if (isValid) {
@@ -378,12 +378,12 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
 
     @Override
     public List<UserDocumentDTO> getValues(boolean update) {
-        return getDtoWrapper().getUser_document_list();
+        return getDtoWrapper().getDocument_list();
     }
 
     @Override
     public void getData() {
-    
+
     }
 
 }

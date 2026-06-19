@@ -7,14 +7,12 @@ package jsoftware.com.jblue.views.mod.com;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.models.AbstractValidation;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.Func;
-import jsoftware.com.jblue.util.GraphicsUtils;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 
@@ -46,6 +44,10 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         register_panel = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         user_data_panel = new javax.swing.JPanel();
+        p_rfc = new javax.swing.JPanel();
+        jLabel40 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         p_curp = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         curp_field = new javax.swing.JTextField();
@@ -66,26 +68,10 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         jLabel25 = new javax.swing.JLabel();
         gender_field = new javax.swing.JComboBox<>();
         jLabel26 = new javax.swing.JLabel();
-        p_street1 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        street1_field = new javax.swing.JComboBox<>();
-        jLabel29 = new javax.swing.JLabel();
-        p_street2 = new javax.swing.JPanel();
-        jLabel20 = new javax.swing.JLabel();
-        street2_field = new javax.swing.JComboBox<>();
-        jLabel36 = new javax.swing.JLabel();
         p_born_date = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        p_in_number = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        inside_number_field = new javax.swing.JTextField();
-        jLabel30 = new javax.swing.JLabel();
-        p_out_number = new javax.swing.JPanel();
-        jLabel21 = new javax.swing.JLabel();
-        outside_number_field = new javax.swing.JTextField();
-        jLabel37 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         email_field = new javax.swing.JTextField();
@@ -98,10 +84,6 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         jLabel19 = new javax.swing.JLabel();
         phone_number2_field = new javax.swing.JTextField();
         jLabel35 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        add_photo_button = new javax.swing.JButton();
-        jLabel39 = new javax.swing.JLabel();
-        jLabel40 = new javax.swing.JLabel();
 
         setName("DATOS DE USUARIO"); // NOI18N
         setLayout(new java.awt.CardLayout());
@@ -120,6 +102,24 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         user_data_panel.setName("user_data_panel"); // NOI18N
         user_data_panel.setPreferredSize(new java.awt.Dimension(500, 600));
         user_data_panel.setLayout(new java.awt.GridLayout(14, 1, 0, 10));
+
+        p_rfc.setName("p_rfc"); // NOI18N
+        p_rfc.setLayout(new java.awt.BorderLayout());
+
+        jLabel40.setText(bundle.getString("UserRegisterView.jLabel40.text")); // NOI18N
+        jLabel40.setName("jLabel40"); // NOI18N
+        jLabel40.setPreferredSize(new java.awt.Dimension(150, 25));
+        p_rfc.add(jLabel40, java.awt.BorderLayout.WEST);
+
+        jTextField1.setText(bundle.getString("UserRegisterView.jTextField1.text")); // NOI18N
+        jTextField1.setName("jTextField1"); // NOI18N
+        p_rfc.add(jTextField1, java.awt.BorderLayout.CENTER);
+
+        jButton1.setText(bundle.getString("UserRegisterView.jButton1.text")); // NOI18N
+        jButton1.setName("jButton1"); // NOI18N
+        p_rfc.add(jButton1, java.awt.BorderLayout.LINE_END);
+
+        user_data_panel.add(p_rfc);
 
         p_curp.setName("p_curp"); // NOI18N
         p_curp.setLayout(new java.awt.BorderLayout());
@@ -222,44 +222,6 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
 
         user_data_panel.add(p_gender);
 
-        p_street1.setName("p_street1"); // NOI18N
-        p_street1.setPreferredSize(new java.awt.Dimension(500, 50));
-        p_street1.setLayout(new java.awt.BorderLayout());
-
-        jLabel6.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel6.setText(bundle.getString("UserRegisterView.jLabel6.text")); // NOI18N
-        jLabel6.setName("jLabel6"); // NOI18N
-        jLabel6.setPreferredSize(new java.awt.Dimension(150, 25));
-        p_street1.add(jLabel6, java.awt.BorderLayout.WEST);
-
-        street1_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        street1_field.setName("Calle"); // NOI18N
-        street1_field.setPreferredSize(new java.awt.Dimension(100, 30));
-        p_street1.add(street1_field, java.awt.BorderLayout.CENTER);
-
-        jLabel29.setName("jLabel29"); // NOI18N
-        jLabel29.setPreferredSize(new java.awt.Dimension(60, 30));
-        p_street1.add(jLabel29, java.awt.BorderLayout.LINE_END);
-
-        user_data_panel.add(p_street1);
-
-        p_street2.setName("p_street2"); // NOI18N
-        p_street2.setLayout(new java.awt.BorderLayout());
-
-        jLabel20.setText(bundle.getString("UserRegisterView.jLabel20.text")); // NOI18N
-        jLabel20.setName("jLabel20"); // NOI18N
-        jLabel20.setPreferredSize(new java.awt.Dimension(150, 25));
-        p_street2.add(jLabel20, java.awt.BorderLayout.WEST);
-
-        street2_field.setName("Calle 2"); // NOI18N
-        p_street2.add(street2_field, java.awt.BorderLayout.CENTER);
-
-        jLabel36.setName("jLabel36"); // NOI18N
-        jLabel36.setPreferredSize(new java.awt.Dimension(60, 30));
-        p_street2.add(jLabel36, java.awt.BorderLayout.LINE_END);
-
-        user_data_panel.add(p_street2);
-
         p_born_date.setName("p_born_date"); // NOI18N
         p_born_date.setLayout(new java.awt.BorderLayout());
 
@@ -277,45 +239,6 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         p_born_date.add(jFormattedTextField1, java.awt.BorderLayout.CENTER);
 
         user_data_panel.add(p_born_date);
-
-        p_in_number.setName("p_in_number"); // NOI18N
-        p_in_number.setPreferredSize(new java.awt.Dimension(500, 50));
-        p_in_number.setLayout(new java.awt.BorderLayout());
-
-        jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel1.setText(bundle.getString("UserRegisterView.jLabel1.text")); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
-        jLabel1.setPreferredSize(new java.awt.Dimension(150, 25));
-        p_in_number.add(jLabel1, java.awt.BorderLayout.WEST);
-
-        inside_number_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        inside_number_field.setToolTipText(bundle.getString("UserRegisterView.inside_number_field.toolTipText")); // NOI18N
-        inside_number_field.setName("Numero Interior"); // NOI18N
-        inside_number_field.setPreferredSize(new java.awt.Dimension(100, 30));
-        p_in_number.add(inside_number_field, java.awt.BorderLayout.CENTER);
-
-        jLabel30.setName("jLabel30"); // NOI18N
-        jLabel30.setPreferredSize(new java.awt.Dimension(60, 30));
-        p_in_number.add(jLabel30, java.awt.BorderLayout.LINE_END);
-
-        user_data_panel.add(p_in_number);
-
-        p_out_number.setName("p_out_number"); // NOI18N
-        p_out_number.setLayout(new java.awt.BorderLayout());
-
-        jLabel21.setText(bundle.getString("UserRegisterView.jLabel21.text")); // NOI18N
-        jLabel21.setName("jLabel21"); // NOI18N
-        jLabel21.setPreferredSize(new java.awt.Dimension(150, 25));
-        p_out_number.add(jLabel21, java.awt.BorderLayout.WEST);
-
-        outside_number_field.setName("Numero Exterior"); // NOI18N
-        p_out_number.add(outside_number_field, java.awt.BorderLayout.CENTER);
-
-        jLabel37.setName("jLabel37"); // NOI18N
-        jLabel37.setPreferredSize(new java.awt.Dimension(60, 30));
-        p_out_number.add(jLabel37, java.awt.BorderLayout.LINE_END);
-
-        user_data_panel.add(p_out_number);
 
         jPanel2.setName("jPanel2"); // NOI18N
         jPanel2.setLayout(new java.awt.BorderLayout());
@@ -368,91 +291,54 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
 
         user_data_panel.add(jPanel4);
 
-        jPanel1.setName("jPanel1"); // NOI18N
-        jPanel1.setLayout(new java.awt.BorderLayout());
-
-        add_photo_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/agregar-archivo.png"))); // NOI18N
-        add_photo_button.setText(bundle.getString("UserRegisterView.add_photo_button.text")); // NOI18N
-        add_photo_button.setActionCommand(bundle.getString("UserRegisterView.add_photo_button.actionCommand")); // NOI18N
-        add_photo_button.setEnabled(false);
-        add_photo_button.setName("add_photo_button"); // NOI18N
-        jPanel1.add(add_photo_button, java.awt.BorderLayout.CENTER);
-
-        jLabel39.setName("jLabel39"); // NOI18N
-        jLabel39.setPreferredSize(new java.awt.Dimension(60, 30));
-        jPanel1.add(jLabel39, java.awt.BorderLayout.LINE_END);
-
-        jLabel40.setText(bundle.getString("UserRegisterView.jLabel40.text")); // NOI18N
-        jLabel40.setName("jLabel40"); // NOI18N
-        jLabel40.setPreferredSize(new java.awt.Dimension(150, 25));
-        jPanel1.add(jLabel40, java.awt.BorderLayout.WEST);
-
-        user_data_panel.add(jPanel1);
-
         register_panel.add(user_data_panel, java.awt.BorderLayout.CENTER);
 
         add(register_panel, "register");
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton add_photo_button;
     private javax.swing.JTextField curp_field;
     private javax.swing.JTextField email_field;
     private javax.swing.JTextField first_name_field;
     private javax.swing.JComboBox<String> gender_field;
-    private javax.swing.JTextField inside_number_field;
+    private javax.swing.JButton jButton1;
     private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
-    private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField last_name1_field;
     private javax.swing.JTextField last_name2_field;
-    private javax.swing.JTextField outside_number_field;
     private javax.swing.JPanel p_born_date;
     private javax.swing.JPanel p_curp;
     private javax.swing.JPanel p_gender;
-    private javax.swing.JPanel p_in_number;
-    private javax.swing.JPanel p_out_number;
-    private javax.swing.JPanel p_street1;
-    private javax.swing.JPanel p_street2;
+    private javax.swing.JPanel p_rfc;
     private javax.swing.JPanel pc_am;
     private javax.swing.JPanel pc_ap;
     private javax.swing.JPanel pc_nombre;
     private javax.swing.JTextField phone_number1_field;
     private javax.swing.JTextField phone_number2_field;
     private javax.swing.JPanel register_panel;
-    private javax.swing.JComboBox<StreetDTO> street1_field;
-    private javax.swing.JComboBox<StreetDTO> street2_field;
     private javax.swing.JPanel user_data_panel;
     // End of variables declaration//GEN-END:variables
 
@@ -484,11 +370,6 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         v.addRuler("last_name2", last_name2_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
         v.addErrorMessage("last_name2", "EL APELLIDO MATERNO DEBE SER SOLO TEXTO");
 
-//        v.addRuler("gender", gender_field, t -> Func.isNotNull(t) && GraphicsUtils.isComboBoxOk(gender_field));
-//        v.addErrorMessage("gender", "EL GENERO ES OBLIGATORIO");
-        v.addRuler("street1", street1_field, t -> Func.isNotNull(t) && GraphicsUtils.isComboBoxOk(t));
-        v.addErrorMessage("street1", "LA CALLE 1 NO ES UNA CALLE VALIDA");
-
         if (AppConfig.getParameterBoolean("CAMPOS_SECUNDARIOS_OBLIGATORIOS")) {
             v.addRuler("phone_number", phone_number1_field, t -> Func.isNotNull(t) && Func.isInteger(t.getText()));
             v.addErrorMessage("phone_number", "EL NUMERO TELEFONICO NO TIENE EL FORMATO CORRECTO");
@@ -519,22 +400,12 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         String number_phone1 = Formats.geDBInputFormat(phone_number1_field.getText());
         String number_phone2 = Formats.geDBInputFormat(phone_number2_field.getText());
         String gender = String.valueOf(gender_field.getSelectedIndex());
-        String street1 = street1_field.getItemAt(street1_field.getSelectedIndex()).getId();
-        String street2;
-        if (street2_field.getSelectedIndex() > 0) {
-            street2 = street2_field.getItemAt(street2_field.getSelectedIndex()).getId();
-        } else {
-            street2 = null;
-        }
         // --- LÓGICA PARA NUEVO REGISTRO ---
         Func.putIfPresentAndNotBlank(map, "curp", curp);
         Func.putIfPresentAndNotBlank(map, "first_name", firstName);
         Func.putIfPresentAndNotBlank(map, "last_name1", lastName1);
         Func.putIfPresentAndNotBlank(map, "last_name2", lastName2);
         Func.putIfNotNull(map, "gender", gender);
-
-        Func.putIfNotNull(map, "street1", street1);
-        Func.putIfPresentAndNotBlank(map, "street1_selected", street1_field.getSelectedIndex());
         if (Func.isNotNull(email)) {
             Func.putIfPresentAndNotBlank(map, "email", email);
         }
@@ -543,10 +414,6 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         }
         if (Func.isNotNull(number_phone2)) {
             Func.putIfPresentAndNotBlank(map, "number_phone2", number_phone2);
-        }
-        Func.putIfPresentAndNotBlank(map, "street2_selected", street2_field.getSelectedIndex());
-        if (Func.isNotNull(street2)) {
-            Func.putIfNotNull(map, "street2", street2);
         }
         dto.setMap(map);
         return dto;

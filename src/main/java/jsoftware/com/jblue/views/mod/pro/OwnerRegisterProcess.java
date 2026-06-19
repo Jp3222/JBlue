@@ -16,23 +16,77 @@
  */
 package jsoftware.com.jblue.views.mod.pro;
 
+import java.util.Arrays;
 import java.util.List;
+import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.viewc.EmployeeRegisterController;
+import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.framework.ShowDataModel;
+import jsoftware.com.jblue.views.mod.com.EndProcessView;
+import jsoftware.com.jblue.views.mod.com.PaymentProcessView;
+import jsoftware.com.jblue.views.mod.com.StreetRegisterView;
+import jsoftware.com.jblue.views.mod.com.UserRegisterView;
+import jsoftware.com.jblue.views.mod.com.ValidationProcessView;
 import jsoftware.com.jblue.views.vabst.AbstractWizardView;
 
 /**
  *
  * @author juanp
  */
-public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrapperDTO> {
+public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrapperDTO> implements ShowDataModel {
 
     private static final long serialVersionUID = 1L;
+
+    private final UserRegisterView step1;
+    private final StreetRegisterView step2;
+    private final ValidationProcessView step3;
+    private final PaymentProcessView step4;
+    private final EndProcessView step5;
 
     public OwnerRegisterProcess(ProcessWrapperDTO dto) {
         super(dto);
         initComponents();
+        step1 = new UserRegisterView(dto);
+        step2 = new StreetRegisterView(dto);
+        step3 = new ValidationProcessView(dto);
+        step4 = new PaymentProcessView(dto);
+        step5 = new EndProcessView(dto);
+        views.addAll(Arrays.asList(step1, step2, step3, step4, step5));
         build();
+    }
+
+    @Override
+    public void events() {
+        // Registrar esta vista contenedora principal en el controlador de negocio de Empleados
+        OwnerRegisterProcessController employeeController = (OwnerRegisterProcessController) getDtoWrapper().getController("CONTROLLER");
+        if (employeeController != null) {
+            employeeController.setView(this);
+            next_panel_button.addActionListener(employeeController);
+        }
+        // NOTA: El botón "next_panel_button" NO recibe listeners de negocio aquí; 
+        // es gobernado de forma limpia por bindController() mediante el WizardController.
+    }
+
+    @Override
+    public void components() {
+        for (AbstractModuleView<ProcessWrapperDTO> i : views) {
+            root_panel.add(i, i.getName());
+        }
+    }
+
+    @Override
+    public void initialState() {
+        super.initialState();
+        for (AbstractModuleView<ProcessWrapperDTO> i : views) {
+            i.initialState();
+        }
+        getDtoWrapper().clear();
+    }
+
+    @Override
+    public void finalState() {
     }
 
     /**
@@ -115,13 +169,71 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
     // End of variables declaration//GEN-END:variables
 
     @Override
+    public boolean nextStep() {
+        // Sincroniza los componentes visuales del paso actual hacia los Strings del mapa del DTO
+        getData();
+
+        // Evaluar las banderas de validación del DTO según el paso del asistente
+        boolean valid = switch (current_index) {
+            case 0 ->
+                getDtoWrapper().isUser_valid();
+            case 1 ->
+                getDtoWrapper().isDocument_list_valid();
+            case 3 ->
+                getDtoWrapper().isWater_intake_valid();
+            default ->
+                getDtoWrapper().isPayment_header_valid();
+        };
+        if (!valid) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Por favor, complete correctamente los campos obligatorios de esta sección.",
+                    "Validación de Datos", JOptionPane.WARNING_MESSAGE);
+        }
+        return valid;
+    }
+
+    @Override
     public void executeFinal() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // 1. Forzar la recolección masiva de la data de todos los sub-paneles
+        for (AbstractModuleView<ProcessWrapperDTO> v : views) {
+            v.getData();
+        }
+        // 2. Recuperar el controlador del caso de uso encargado de la persistencia
+        EmployeeRegisterController employeeController = (EmployeeRegisterController) getDtoWrapper().getController("CONTROLLER");
+        if (employeeController != null) {
+            // El controlador leerá el WrapperDTO enriquecido, aplicará los casts numéricos en el DAO y guardará en MySQL
+            JOptionPane.showMessageDialog(this, "Guardando registro del nuevo empleado en el sistema...", "Procesando", JOptionPane.INFORMATION_MESSAGE);
+
+            // Suponiendo que tu controlador implementa el método de persistencia:
+            // employeeController.insert(); 
+        }
+
     }
 
     @Override
     public List<AbstractModuleView<ProcessWrapperDTO>> getViews() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return views;
     }
 
+    @Override
+    public void showData() {
+        for (AbstractModuleView<ProcessWrapperDTO> i : views) {
+            if (i instanceof ShowDataModel s) {
+                s.showData();
+            }
+        }
+    }
+
+    public void beforeSaveData() {
+        next_panel_button.setEnabled(false);
+    }
+
+    public void afterSaveData(boolean mov) {
+        next_panel_button.setEnabled(true);
+        if (mov) {
+            initialState();
+        }
+
+    }
 }

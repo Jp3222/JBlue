@@ -4,28 +4,30 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
+import java.util.List;
 import java.util.Map;
 import javax.swing.table.TableModel;
 import jsoftware.com.jblue.model.dto.PaymentListDTO;
-import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentDTO;
-import jsoftware.com.jblue.views.framework.AbstractProcessView;
-import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.vabst.AbstractWizardView;
 
 /**
  *
  * @author juanp
  */
-public final class EndProcessView extends AbstractProcessView<ProcessWrapperDTO> {
+public final class EndProcessView extends AbstractWizardView<ProcessWrapperDTO> {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form EndProcessView
      */
-    public EndProcessView(ProcessViewBuilder builder) {
+    public EndProcessView(ProcessWrapperDTO builder) {
         super(builder);
         initComponents();
+        build();
     }
 
     /**
@@ -105,9 +107,9 @@ public final class EndProcessView extends AbstractProcessView<ProcessWrapperDTO>
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void getDataView() {
+    public void getData() {
 
-        ProcessWrapperDTO o = getProcessWrapper();
+        ProcessWrapperDTO o = getDtoWrapper();
         TableModel model = jTable1.getModel();
         model.getRowCount();
         int i = 0;
@@ -118,7 +120,7 @@ public final class EndProcessView extends AbstractProcessView<ProcessWrapperDTO>
             model.setValueAt(val, i, 1);
             i++;
         }
-        for (UserDocumentDTO doc : o.getUser_document_list()) {
+        for (UserDocumentDTO doc : o.getDocument_list()) {
             for (Map.Entry<String, Object> entry : doc.getMap().entrySet()) {
                 String key = entry.getKey();
                 String val = entry.getValue().toString();
@@ -127,7 +129,7 @@ public final class EndProcessView extends AbstractProcessView<ProcessWrapperDTO>
                 i++;
             }
         }
-        for (PaymentListDTO py : o.getPayment_concept_list()) {
+        for (PaymentListDTO py : o.getPayment_details()) {
             for (Map.Entry<String, Object> entry : py.getMap().entrySet()) {
                 String key = entry.getKey();
                 String val = entry.getValue().toString();
@@ -143,5 +145,14 @@ public final class EndProcessView extends AbstractProcessView<ProcessWrapperDTO>
             model.setValueAt(val, i, 1);
             i++;
         }
+    }
+
+    @Override
+    public void executeFinal() {
+    }
+
+    @Override
+    public List<AbstractModuleView<ProcessWrapperDTO>> getViews() {
+        return null;
     }
 }

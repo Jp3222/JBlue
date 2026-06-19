@@ -25,6 +25,7 @@ import jsoftware.com.jblue.model.factories.ModuleFactory;
 import jsoftware.com.jblue.views.ShopCartProcess;
 import jsoftware.com.jblue.views.framework.AbstractModuleWindow;
 import jsoftware.com.jblue.views.mod.pro.EmployeeRegisterProcess;
+import jsoftware.com.jblue.views.mod.pro.OwnerRegisterProcess;
 
 /**
  * Esta clase esta dedicada a la vista del menu principal de la aplicacion
@@ -38,7 +39,7 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
 
     private final ShopCartProcess shop_cart_process;
     private final EmployeeRegisterProcess employee_register_process;
-
+    private final OwnerRegisterProcess owner_register_process;
     private LoginWindows login;
 
     public WMainMenu(WMainMenuWrapperDTO dto_wrapper) {
@@ -48,7 +49,7 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
         factory = ModuleFactory.getInstance();
         shop_cart_process = factory.getShopCartProcess();
         employee_register_process = factory.getRegisterProcess();
-
+        owner_register_process = factory.getOwnerRegisterProcess();
         build();
     }
 
@@ -64,6 +65,7 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
     public void components() {
         addModule(shop_cart_process);
         addModule(employee_register_process);
+        addModule(owner_register_process);
     }
 
     void addModule(JPanel component) {

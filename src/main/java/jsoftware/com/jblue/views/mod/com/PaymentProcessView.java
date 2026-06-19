@@ -36,6 +36,31 @@ public final class PaymentProcessView extends AbstractModuleView<ProcessWrapperD
         this.model = new DefaultTableModel(new String[]{"No.", "Concepto", "Costo", "Tipo"}, 0);
         jTable1.setModel(model);
         load();
+        build();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        initialState();
+        finalState();
+    }
+
+    @Override
+    public void components() {
+    }
+
+    @Override
+    public void events() {
+    }
+
+    @Override
+    public void initialState() {
+    }
+
+    @Override
+    public void finalState() {
     }
 
     public void load() {
@@ -200,16 +225,15 @@ public final class PaymentProcessView extends AbstractModuleView<ProcessWrapperD
 
     @Override
     public void getData() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public boolean isValuesOK() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return true;
     }
 
     @Override
     public List<PaymentListDTO> getValues(boolean update) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return null;
     }
 }

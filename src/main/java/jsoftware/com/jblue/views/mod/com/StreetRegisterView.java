@@ -24,6 +24,30 @@ public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> im
         initComponents();
     }
 
+    @Override
+    public void build() {
+        components();
+        events();
+        initialState();
+        finalState();
+    }
+
+    @Override
+    public void components() {
+    }
+
+    @Override
+    public void events() {
+    }
+
+    @Override
+    public void initialState() {
+    }
+
+    @Override
+    public void finalState() {
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

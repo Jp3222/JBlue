@@ -16,6 +16,7 @@
  */
 package jsoftware.com.jblue.views.mod.pro;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -53,8 +54,17 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
         step3 = new ValidationProcessView(dto);
         step4 = new PaymentProcessView(dto);
         step5 = new EndProcessView(dto);
+        views = new ArrayList<>(5);
         views.addAll(Arrays.asList(step1, step2, step3, step4, step5));
         build();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        initialState();
+        finalState();
     }
 
     @Override

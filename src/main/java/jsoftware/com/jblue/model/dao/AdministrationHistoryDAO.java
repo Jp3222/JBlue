@@ -16,10 +16,15 @@
  */
 package jsoftware.com.jblue.model.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
+import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
+import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
 
@@ -133,8 +138,8 @@ public class AdministrationHistoryDAO extends AbstractDAO {
      *
      * @param connection La conexión JDBC activa.
      * @return El DTO de la historia de administración actual
-     * ({@code AdministrationHistoryDTO}) o {@code null} si no se encuentra
-     * un registro activo.
+     * ({@code AdministrationHistoryDTO}) o {@code null} si no se encuentra un
+     * registro activo.
      * @throws RuntimeException Si ocurre un error de SQL durante la consulta.
      */
     public AdministrationHistoryDTO getCurrentAdministration(JDBConnection connection) {
@@ -167,8 +172,8 @@ public class AdministrationHistoryDAO extends AbstractDAO {
      * <p>
      * Este método utiliza los metadatos del ResultSet para iterar sobre todas
      * las columnas del resultado y asignarlas al mapa interno del DTO. Esto
-     * asume que {@code AdministrationHistoryDTO} implementa la lógica de un
-     * DTO basado en mapa (como en {@code AbstractMapDTO}).
+     * asume que {@code AdministrationHistoryDTO} implementa la lógica de un DTO
+     * basado en mapa (como en {@code AbstractMapDTO}).
      * </p>
      *
      * @param rs El ResultSet posicionado en una fila válida (ya ejecutado).
@@ -220,6 +225,163 @@ public class AdministrationHistoryDAO extends AbstractDAO {
         sb.append(" IS NOT NULL"); // CORREGIDO
 
         return sb.toString();
+    }
+
+    /**
+     * Inserta el registro del histórico de administración para la gestión del
+     * comité. Mapea de forma manual los Strings del DTO a los tipos requeridos
+     * por MySQL, administrando los puestos opcionales y enriqueciendo el DTO
+     * con el ID final.
+     *
+     * @param connection Conexión activa bajo la transacción del Service
+     * (autoCommit = false)
+     * @param dto DTO con el Map de parámetros provenientes de la Vista
+     * @return true si el registro fue exitoso y el DTO fue enriquecido
+     * @throws SQLException Si ocurre un fallo en el motor de la base de datos
+     * @throws CorruptInsertionException Si la ejecución no afecta exactamente a
+     * 1 fila
+     * @throws KeyNotGenerateException Si MySQL no logra retornar el ID
+     * incremental
+     */
+    public boolean insert(JDBConnection connection, AdministrationHistoryDTO dto) throws SQLException, CorruptInsertionException, KeyNotGenerateException {
+        boolean res = false;
+        String INSERT = "INSERT INTO hys_administration_history ("
+                + "year_of_administration, root, administrator, president, treasurer, "
+                + "secretary, plumber, intern_1, intern_2, internt_3, " // Usando 'internt_3' según tu DDL
+                + "description, status, date_end"
+                + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = connection.getNewPreparedStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, dto.getYearOfAdministration());
+            ps.setString(2, dto.getRoot());
+            ps.setString(3, dto.getAdministrator());
+            ps.setString(4, dto.getPresident());
+            ps.setString(5, dto.getTreasurer());
+            ps.setString(6, dto.getSecretary());
+            ps.setString(7, dto.getPlumber());
+            ps.setString(8, dto.getIntern1());
+            ps.setString(9, dto.getIntern2());
+            ps.setString(10, dto.getInternt3());
+            ps.setString(11, dto.getDescription());
+            ps.setString(12, dto.getStatus());
+            ps.setString(13, dto.getDateEnd());
+            // 4. EJECUCIÓN Y VALIDACIÓN ATÓMICA
+            res = ps.executeUpdate() == 1;
+            if (!res) {
+                throw new CorruptInsertionException();
+            }
+            // 5. CAPTURA DE LLAVE AUTOGENERADA Y ENRIQUECIMIENTO
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (!rs.next()) {
+                    throw new KeyNotGenerateException();
+                }
+                int generatedId = rs.getInt(1);
+                dto.put("id", String.valueOf(generatedId)); // Enriquecimiento post-éxito
+                res = true;
+            }
+        }
+        return res;
+    }
+
+    /**
+     * Actualiza un registro existente en la tabla hys_administration_history.
+     * Sigue el estándar de JBlue: la Vista maneja Strings, el DTO los
+     * transporta y el DAO realiza el casting final, abstrayendo los valores
+     * nulos.
+     *
+     * @param connection Conexión activa bajo la transacción del Service
+     * (autoCommit = false)
+     * @param dto DTO que contiene los cambios y el ID del registro a modificar
+     * @return true si la actualización fue exitosa y afectó exactamente a la
+     * fila esperada
+     * @throws SQLException Si ocurre un error en el motor de la base de datos
+     * @throws CorruptInsertionException Si la ejecución afecta a 0 o a más de 1
+     * fila
+     */
+    public boolean update(JDBConnection connection, AdministrationHistoryDTO dto)
+            throws SQLException, CorruptInsertionException {
+
+        boolean success = false;
+
+        String UPDATE = "UPDATE hys_administration_history SET "
+                + "year_of_administration = ?, "
+                + "root = ?, "
+                + "administrator = ?, "
+                + "president = ?, "
+                + "treasurer = ?, "
+                + "secretary = ?, "
+                + "plumber = ?, "
+                + "intern_1 = ?, "
+                + "intern_2 = ?, "
+                + "internt_3 = ?, "
+                + "description = ?, "
+                + "status = ?, "
+                + "date_end = ? "
+                + "WHERE id = ?";
+
+        try (PreparedStatement ps = connection.getNewPreparedStatement(UPDATE)) {
+
+            // 1. OBLIGATORIOS Y CONTROL FISCAL
+            ps.setInt(1, Integer.parseInt(dto.getYearOfAdministration()));
+
+            // 'root' maneja contingencia por si la vista lo manda vacío
+            String rootStr = dto.getRoot();
+            ps.setInt(2, (rootStr == null || rootStr.trim().isEmpty()) ? 1 : Integer.parseInt(rootStr));
+
+            // 2. PUESTOS DE CONTROL (Casting y manejo de opcionales NULL con método utilitario)
+            setOptionalInteger(ps, 3, dto.getAdministrator());
+            ps.setInt(4, Integer.parseInt(dto.getPresident()));
+            ps.setInt(5, Integer.parseInt(dto.getTreasurer()));
+            setOptionalInteger(ps, 6, dto.getSecretary());
+            setOptionalInteger(ps, 7, dto.getPlumber());
+            setOptionalInteger(ps, 8, dto.getIntern1());
+            setOptionalInteger(ps, 9, dto.getIntern2());
+            setOptionalInteger(ps, 10, dto.getInternt3()); // Campo 'internt_3' del DDL
+
+            // 3. CAMPOS DESCRIPTIVOS Y TIMESTAMPS
+            ps.setString(11, dto.getDescription());
+            ps.setInt(12, Integer.parseInt(dto.getStatus()));
+
+            // Tratamiento de la fecha de finalización (date_end)
+            String dateEndStr = dto.getDateEnd();
+            if (dateEndStr == null || dateEndStr.trim().isEmpty() || dateEndStr.equalsIgnoreCase("N/A")) {
+                ps.setNull(13, Types.TIMESTAMP);
+            } else {
+                ps.setString(13, dateEndStr);
+            }
+
+            // 4. CONDICIÓN LLAVE PRIMARIA (Criterio WHERE)
+            ps.setInt(14, Integer.parseInt(dto.getId()));
+
+            // 5. EJECUCIÓN TRANSACCIONAL DEFINITIVA
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new CorruptInsertionException();
+            } else if (rowsAffected > 1) {
+                throw new CorruptInsertionException();
+            }
+
+            success = true;
+
+        } catch (SQLException | CorruptInsertionException e) {
+            // Se propaga para permitir el rollback seguro desde la capa Service
+            throw e;
+        }
+
+        return success;
+    }
+
+    /**
+     * Método utilitario interno para procesar enteros opcionales provenientes
+     * del DTO evitando NullPointerException o formatos vacíos en la UI.
+     */
+    private void setOptionalInteger(PreparedStatement ps, int parameterIndex, String value) throws SQLException {
+        if (value == null || value.trim().isEmpty() || value.equalsIgnoreCase("N/A")) {
+            ps.setNull(parameterIndex, Types.INTEGER);
+        } else {
+            ps.setInt(parameterIndex, Integer.parseInt(value));
+        }
     }
 
 }

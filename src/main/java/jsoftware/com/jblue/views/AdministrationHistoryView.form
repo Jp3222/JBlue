@@ -209,11 +209,10 @@
                             </Constraint>
                           </Constraints>
                         </Component>
-                        <Component class="javax.swing.JSpinner" name="jSpinner1">
+                        <Component class="javax.swing.JTextField" name="current_year_fiscal_field">
                           <Properties>
-                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[150, 30]"/>
-                            </Property>
+                            <Property name="editable" type="boolean" value="false"/>
+                            <Property name="text" type="java.lang.String" value="XXXX"/>
                           </Properties>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -313,7 +312,7 @@
                             </Constraint>
                           </Constraints>
                         </Component>
-                        <Component class="javax.swing.JTextField" name="jTextField1">
+                        <Component class="javax.swing.JTextField" name="root_user_field">
                           <Properties>
                             <Property name="editable" type="boolean" value="false"/>
                             <Property name="text" type="java.lang.String" value="- - - -"/>

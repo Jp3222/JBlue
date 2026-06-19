@@ -16,14 +16,18 @@
  */
 package jsoftware.com.jblue.views;
 
+import java.time.LocalDate;
+import jsoftware.com.jblue.model.dto.InstanceAuthDTO;
 import jsoftware.com.jblue.model.dto.wrp.AdministrationWrapperDTO;
+import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.framework.ShowDataModel;
 
 /**
  *
  * @author juanp
  */
-public final class AdministrationHistoryView extends AbstractModuleView<AdministrationWrapperDTO>{
+public final class AdministrationHistoryView extends AbstractModuleView<AdministrationWrapperDTO> implements ShowDataModel {
 
     private static final long serialVersionUID = 1L;
 
@@ -63,6 +67,10 @@ public final class AdministrationHistoryView extends AbstractModuleView<Administ
 
     @Override
     public void finalState() {
+        LocalDate now = LocalDate.now();
+        current_year_fiscal_field.setText(String.valueOf(now.getYear()));
+        InstanceAuthDTO current_instance = SystemSession.getInstancia().getCurrent_instance();
+        root_user_field.setText(current_instance.getOwnerName());
     }
 
     /**
@@ -88,7 +96,7 @@ public final class AdministrationHistoryView extends AbstractModuleView<Administ
         jPanel14 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        current_year_fiscal_field = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -96,7 +104,7 @@ public final class AdministrationHistoryView extends AbstractModuleView<Administ
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        root_user_field = new javax.swing.JTextField();
         jPanel13 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         admin_employee = new javax.swing.JComboBox<>();
@@ -204,8 +212,9 @@ public final class AdministrationHistoryView extends AbstractModuleView<Administ
         jLabel12.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel15.add(jLabel12, java.awt.BorderLayout.LINE_START);
 
-        jSpinner1.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel15.add(jSpinner1, java.awt.BorderLayout.CENTER);
+        current_year_fiscal_field.setEditable(false);
+        current_year_fiscal_field.setText("XXXX");
+        jPanel15.add(current_year_fiscal_field, java.awt.BorderLayout.CENTER);
 
         jPanel14.add(jPanel15, java.awt.BorderLayout.NORTH);
 
@@ -236,9 +245,9 @@ public final class AdministrationHistoryView extends AbstractModuleView<Administ
         jLabel1.setPreferredSize(new java.awt.Dimension(200, 30));
         jPanel4.add(jLabel1, java.awt.BorderLayout.LINE_START);
 
-        jTextField1.setEditable(false);
-        jTextField1.setText("- - - -");
-        jPanel4.add(jTextField1, java.awt.BorderLayout.CENTER);
+        root_user_field.setEditable(false);
+        root_user_field.setText("- - - -");
+        jPanel4.add(root_user_field, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel4);
 
@@ -482,6 +491,7 @@ public final class AdministrationHistoryView extends AbstractModuleView<Administ
     private javax.swing.JButton back_button;
     private javax.swing.JButton cancel_button;
     private javax.swing.JLabel count;
+    private javax.swing.JTextField current_year_fiscal_field;
     private javax.swing.JButton delete_button;
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.EmployeeDTO> jComboBox4;
@@ -526,10 +536,8 @@ public final class AdministrationHistoryView extends AbstractModuleView<Administ
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton next_button;
     private javax.swing.JPanel north_panel;
     private javax.swing.JPanel np_cp_center;
@@ -544,6 +552,7 @@ public final class AdministrationHistoryView extends AbstractModuleView<Administ
     private javax.swing.JPanel register_panel;
     private javax.swing.JButton reload_button;
     private javax.swing.JPanel root_panel;
+    private javax.swing.JTextField root_user_field;
     private javax.swing.JButton save_button;
     private javax.swing.JButton search_button;
     private javax.swing.JTextField search_field;
@@ -558,5 +567,10 @@ public final class AdministrationHistoryView extends AbstractModuleView<Administ
     @Override
     public void getData() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void showData() {
+
     }
 }

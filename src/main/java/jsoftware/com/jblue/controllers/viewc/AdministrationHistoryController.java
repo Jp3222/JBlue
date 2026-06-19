@@ -18,22 +18,29 @@ package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
+import jsoftware.com.jblue.model.dto.wrp.AdministrationWrapperDTO;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jblue.model.service.AdministrationHistoryService;
 import jsoftware.com.jblue.views.AdministrationHistoryView;
+import jsoftware.com.jutil.db.JDBConnection;
 
 /**
  *
  * @author juanp
  */
-public class AdministrationHistoryController extends AbstractDBViewController {
+public class AdministrationHistoryController extends AbstractDBViewController<AdministrationWrapperDTO> {
+
+    private static final long serialVersionUID = 1L;
 
     private AdministrationHistoryView view;
+    private AdministrationHistoryService service;
 
     /**
      *
      * @param view
      */
     public AdministrationHistoryController() {
-        
+
     }
 
     @Override
@@ -54,7 +61,16 @@ public class AdministrationHistoryController extends AbstractDBViewController {
 
     @Override
     public void save() {
-
+        AdministrationWrapperDTO dto = view.getDtoWrapper();
+        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
+            service.insert(connection, dto);
+            if (service.isError()) {
+                returnMessage(view, false, service.getUserMessage());
+            } else {
+                returnMessage(view, true);
+            }
+        } catch (Exception e) {
+        }
     }
 
     @Override

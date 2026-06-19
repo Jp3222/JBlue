@@ -6,15 +6,10 @@ package jsoftware.com.jblue.model.service;
 
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.util.List;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
-import jsoftware.com.jblue.model.dao.ProcessDAO;
 import jsoftware.com.jblue.model.dao.UserDao;
-import jsoftware.com.jblue.model.dao.UserDocumentDAO;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.dto.UserDocumentDTO;
-import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.exp.ServiceException;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
 import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
@@ -33,67 +28,51 @@ public class UserService extends AbstractService implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final UserDao user_dao;
-    private final ProcessDAO process_dao;
-    private final UserDocumentDAO doc_dao;
     private final HistoryDAO.UserHistoryDAO history_dao;
-    private final HistoryDAO.DocumentHistoryDAO history_doc_dao;
 
     public UserService(boolean flag_dev, String name_module) {
         super(flag_dev, name_module);
         user_dao = new UserDao(flag_dev, name_module);
-        process_dao = new ProcessDAO(flag_dev, name_module);
-        doc_dao = new UserDocumentDAO(flag_dev, name_module);
         history_dao = HistoryDAO.UserHistoryDAO.getInstance();
-        history_doc_dao = HistoryDAO.DocumentHistoryDAO.getInstance();
     }
 
-    /**
-     * METODO QUE INICIA UN TRAMITE Y SIGUE EL SIGUIENTE FLUJO
-     * <br>[1]- REGISTRA EL TRAMITE CON STATUS: INICIADO
-     * <br>[2]- REGISTRA LA INFORMACION PERSONAL DEL USUARIO
-     * <br>[3]- REGISTRA LOS DOCUMENTOS DE IDENTIDAD DEL USUARIO Y DEL TRAMITE
-     * REALIZADO
-     *
-     * @param connection - CONEXION ACTIVA DE BASE DE DATOS
-     * @param process_type - TIPO DE TRAMITE
-     * @param dto - WRAPPER CON TODA LA INFROMACION DEL TRAMITE
-     * @return EL ID DEL USUARIO REGISTRADO
-     */
-    public int saveProcess(JDBConnection connection, String process_type, ProcessWrapperDTO dto) throws SQLException, ServiceException, CorruptInsertionException, KeyNotGenerateException {
-        //GENERACION DEL ID USUARIO
-        int user_id = saveUser(connection, dto.getUser());
-
-        //GENERACION DEL ID DEL TRAMITE
-        int process_id = process_dao.startProcess(connection, process_type, String.valueOf(user_id));
-
-        //SE REGISTRA EL TRAMITE ORIGINAL SOLO SI ES UNA NUEVA TOMA
-        if (process_type.equals("1") && dto.getWater_intake().getId() == null) {
-            dto.getWater_intake().put("original_process", process_id);
+    public int save(JDBConnection connection, UserDTO dto) {
+        boolean res = false;
+        int user_id = -1;
+        try {
+            //SE REGISTRA EL USUARIO
+            user_id = user_dao.insert(connection, dto);
+            res = user_id > 0;
+            if (!res) {
+                throw new ServiceException(ServiceException.SERVICE_INSERT_EXCEPTION, "ERROR AL REGISTRAR EL USUARIO");
+            }
+            //SE REGISTRA EL MOVIMIENTO EN EL HISTORIAL
+            res = history_dao.insert(connection, "SE REGISTRO EL USUARIO: %s - %s".formatted(
+                    dto.getId(), dto.toString()
+            ));
+            if (!res) {
+                throw new ServiceException(ServiceException.SERVICE_INSERT_EXCEPTION, "ERROR AL REGISTRAR EN BITACORA.");
+            }
+            commit(connection);
+        } catch (SQLException | CorruptInsertionException | KeyNotGenerateException | ServiceException ex) {
+            rollback(connection);
+            returnMessageError("ERROR AL REGISTRAR EL USUARIO");
+            FuncLogs.logError(
+                    AppFiles.DIR_PROG_LOG_TODAY,
+                    getClass(), ex,
+                    getProcess_name(), "save",
+                    ex.getMessage()
+            );
         }
-
-        //SE REGISTRA EL ULTIMO TRAMITE REALIZADO
-        dto.getWater_intake().put("last_process_type", process_type);
-
-        //SE EL TRAMITE QUE SE PAGARA
-        dto.getPayment().put("process_id", process_id);
-
-        //SE GRABA EL ID DEL USUARIO Y DEL TRAMITE A LOS DOCUMENTOS DE IDENTIFICACION
-        for (UserDocumentDTO i : dto.getUser_document_list()) {
-            i.put("user_id", user_id);
-            i.put("process_id", process_id);
-        }
-
-        //SE GUARDAN LOS DOCUMENTOS
-        boolean res = saveUserDocumentList(connection, process_type, dto.getUser().toString(), dto.getUser_document_list());
-
         return user_id;
     }
-    
+
     /**
      * Metodo que verifica la existencia de un usuario y su status actual
+     *
      * @param connection
      * @param user
-     * @return 
+     * @return
      */
     public boolean exist(JDBConnection connection, UserDTO user) {
         boolean res;
@@ -198,46 +177,6 @@ public class UserService extends AbstractService implements Serializable {
             res = false;
         }
         return res;
-    }
-
-    public int saveUser(JDBConnection connection, UserDTO dto) throws SQLException, ServiceException, CorruptInsertionException, KeyNotGenerateException {
-        //SE REGISTRA EL USUARIO
-        int user_id = user_dao.insert(connection, dto);
-        boolean res = user_id > 0;
-        if (!res) {
-            throw new ServiceException(ServiceException.SERVICE_INSERT_EXCEPTION, "ERROR AL REGISTRAR EL USUARIO");
-        }
-        //SE REGISTRA EL MOVIMIENTO EN EL HISTORIAL
-        res = history_dao.insert(connection, "SE REGISTRO EL USUARIO: %s - %s".formatted(
-                dto.getId(), dto.toString()
-        ));
-        if (!res) {
-            throw new ServiceException(ServiceException.SERVICE_INSERT_EXCEPTION, "ERROR AL REGISTRAR EN BITACORA.");
-        }
-        return user_id;
-    }
-
-    public boolean saveUserDocumentList(JDBConnection connection, String process_type, String usr_name, List<UserDocumentDTO> list) throws SQLException, CorruptInsertionException, ServiceException {
-        boolean res = doc_dao.insert(connection, list);
-        if (!res) {
-            throw new ServiceException(ServiceException.SERVICE_INSERT_EXCEPTION, "ERROR AL REGISTRAR DOCUMENTACION DEL USUARIO.");
-        }
-        //SE REGISTRA EL MOVIMIENTO EN EL HISTORIAL
-        res = history_doc_dao.insert(connection, "SE REGISTRO DOCUMENTACION DEL USUARIO: %s.".formatted(usr_name));
-        if (!res) {
-            throw new ServiceException(ServiceException.SERVICE_INSERT_EXCEPTION, "ERROR AL REGISTRAR EN BITACORA");
-        }
-        return true;
-    }
-
-    public void log(Exception e, String method_name) {
-        FuncLogs.logError(
-                AppFiles.DIR_PROG_LOG_TODAY,
-                getClass(), e,
-                getClass().getName(),
-                method_name,
-                e.getMessage()
-        );
     }
 
 }

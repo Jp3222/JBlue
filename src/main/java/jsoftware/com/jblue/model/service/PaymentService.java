@@ -64,23 +64,23 @@ public class PaymentService extends AbstractService {
         try {
             connection.setAutoCommit(false);
             //REGISTRO DE LA CABEZERA DEL PAGO
-            int key = savePayment(connection, dto.getPayment());
+            int key = savePayment(connection, dto.getPayment_header());
             if (key <= 0) {
                 throw new SQLException("REGISTRO DE TOTAL CORRUPO");
             }
 
             //SE AÑADE EL PAGO
-            for (PaymentListDTO i : dto.getPayment_concept_list()) {
+            for (PaymentListDTO i : dto.getPayment_details()) {
                 i.getMap().put("payment", key);
             }
             //REGISTRO DE LOS CONCEPTOS DE PAGO
-            res = savePaymentList(connection, dto.getPayment_concept_list());
+            res = savePaymentList(connection, dto.getPayment_details());
             if (!res) {
                 throw new SQLException("REGISTRO DE CONCEPTOS CORRUPO");
             }
 
             //[3]ACTUALIZA EL STATUS DEL TRAMITE A PAGADO
-            res = process_dao.payProcess(connection, dto.getPayment().getProcessId());
+            res = process_dao.payProcess(connection, dto.getPayment_header().getProcessId());
             if (!res) {
                 throw new SQLException("ACTUALIZACION DE \"STATUS PAGADO\" CORRUPO");
             }

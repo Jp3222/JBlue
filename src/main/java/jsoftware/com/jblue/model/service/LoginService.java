@@ -65,7 +65,6 @@ public class LoginService extends AbstractService {
         try {
             // [1] ENCRIPTAR EL USUARIO DE FORMA DETERMINISTA PARA LA BÚSQUEDA INDEXADA
             String secureUser = DeterministicCrypto.encryp(user, SYSTEM_PEPPER);
-            System.out.println(secureUser);
             // Buscamos en la base de datos únicamente pasando el usuario cifrado en Base64
             // Nota: Debes asegurarte de que tu método employee_dao.get reciba solo el usuario, o modificarlo
             Optional<EmployeeUserDTO> option = employee_dao.get(connection, secureUser);

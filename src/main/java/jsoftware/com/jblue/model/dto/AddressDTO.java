@@ -4,27 +4,23 @@ import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
- * DTO correspondiente a la gestión de direcciones de usuarios (Address).
- * <br>
- * Utiliza la estructura interna dinámica de Map para transportar las cadenas de
- * texto de manera flexible entre los formularios de Swing y la capa DAO de
- * MySQL.
+ * DTO correspondiente al catálogo y registro de direcciones físicas de usuarios (UsrAddress).
+ * <br><br>
+ * <strong>Estándar JBlue:</strong> Regula el transporte seguro de strings de control,
+ * el mapeo condicional de propiedad y la nulidad defensiva en las cadenas explicativas.
  *
  * @author JUAN PABLO CAMPOS CASASANERO
- * @since 2026-05-30
- * @version 1.0
+ * @since 2026-06-19
+ * @version 1.1
  */
 public class AddressDTO extends JDBMapObject {
 
     private static final long serialVersionUID = 1L;
 
     public AddressDTO() {
-        // Inicializa con una capacidad de 16 para albergar de forma eficiente los 12 campos,
-        // garantizando un factor de carga óptimo sin redimensionamientos en memoria.
-        super(16);
+        super(32);
     }
 
-    // Se omite getId() -> Heredado directamente de JDBMapObject de forma limpia
     public String getUserId() {
         return Func.nullSafeToString(get("user_id"));
     }
@@ -43,6 +39,14 @@ public class AddressDTO extends JDBMapObject {
 
     public String getOutsideNumber() {
         return Func.nullSafeToString(get("outside_number"));
+    }
+
+    public String getIsOwner() {
+        return Func.nullSafeToString(get("is_owner"));
+    }
+
+    public String getObservation() {
+        return Func.nullSafeToString(get("observation"));
     }
 
     public String getEmployeeId() {
@@ -71,7 +75,6 @@ public class AddressDTO extends JDBMapObject {
 
     @Override
     public String toString() {
-        // Asegura un vaciado seguro en tus logs de Log4j2 sin riesgo de NullPointerException
         return (values != null) ? values.toString() : "{}";
     }
 }

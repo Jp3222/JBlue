@@ -6,16 +6,12 @@
 package jsoftware.com.jblue.model.factories;
 
 import java.io.Serializable;
-import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
-import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
-import jsoftware.com.jblue.sys.SystemSession;
-import jsoftware.com.jblue.sys.app.AppConfig;
-import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 
 /**
  *
  * @author juanp
  */
+@Deprecated
 public final class ProcessViewFactory implements Serializable {
 
     public static final ProcessViewFactory instance = new ProcessViewFactory();
@@ -25,17 +21,17 @@ public final class ProcessViewFactory implements Serializable {
         return instance;
 
     }
-
-    private final ProcessViewBuilder init;
-    private final EmployeeUserDTO current_employee;
-
-    public ProcessViewFactory() {
-        this.current_employee = SystemSession.getInstancia().getCurrentEmployee();
-        this.init = new ProcessViewBuilder()
-                .setDev_flag(AppConfig.isDevMessages())
-                .setProcess(true)
-                .setProcess_wrapper(new ProcessWrapperDTO("0", "name"));
-    }
+//
+//    private final ProcessViewBuilder init;
+//    private final EmployeeUserDTO current_employee;
+//
+//    public ProcessViewFactory() {
+//        this.current_employee = SystemSession.getInstancia().getCurrentEmployee();
+//        this.init = new ProcessViewBuilder()
+//                .setDev_flag(AppConfig.isDevMessages())
+//                .setProcess(true)
+//                .setProcess_wrapper(new ProcessWrapperDTO("0", "name"));
+//    }
 //
 //    public OwnerRegisterProcessView getUserRegisterProcess() {
 //        ProcessViewBuilder o = new ProcessViewBuilder(init)

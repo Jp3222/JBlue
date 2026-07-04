@@ -16,6 +16,7 @@ import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.wrp.AdministrationWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.LoginWrapperDTO;
+import jsoftware.com.jblue.model.dto.wrp.OwnerRegisterProcessWrapper;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.WMainMenuWrapperDTO;
@@ -99,7 +100,7 @@ public class ModuleFactory implements Serializable {
     }
 
     public OwnerRegisterProcess getOwnerRegisterProcess() {
-        ProcessWrapperDTO dto = new ProcessWrapperDTO("1", "ALTA DE TITULAR");
+        ProcessWrapperDTO dto = new OwnerRegisterProcessWrapper("10", "ALTA DE TITULAR");
         dto.setCurrent_administration(administration_dto);
         dto.setCurrent_employee(employee);
         //Controlador del asistente

@@ -8,16 +8,17 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.table.TableModel;
 import jsoftware.com.jblue.model.dto.PaymentListDTO;
-import jsoftware.com.jblue.model.dto.UserDocumentDTO;
+import jsoftware.com.jblue.model.dto.UserDocumentationDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.vabst.AbstractWizardView;
 
 /**
  *
  * @author juanp
  */
-public final class EndProcessView extends AbstractWizardView<ProcessWrapperDTO> {
+public final class EndProcessView extends AbstractWizardView<ProcessWrapperDTO> implements DBObjectValues<ProcessWrapperDTO>{
 
     private static final long serialVersionUID = 1L;
 
@@ -134,7 +135,6 @@ public final class EndProcessView extends AbstractWizardView<ProcessWrapperDTO> 
 
     @Override
     public void getData() {
-
         ProcessWrapperDTO o = getDtoWrapper();
         TableModel model = jTable1.getModel();
         model.getRowCount();
@@ -146,7 +146,7 @@ public final class EndProcessView extends AbstractWizardView<ProcessWrapperDTO> 
             model.setValueAt(val, i, 1);
             i++;
         }
-        for (UserDocumentDTO doc : o.getDocument_list()) {
+        for (UserDocumentationDTO doc : o.getDocument_list()) {
             for (Map.Entry<String, Object> entry : doc.getMap().entrySet()) {
                 String key = entry.getKey();
                 String val = entry.getValue().toString();
@@ -180,5 +180,15 @@ public final class EndProcessView extends AbstractWizardView<ProcessWrapperDTO> 
     @Override
     public List<AbstractModuleView<ProcessWrapperDTO>> getViews() {
         return null;
+    }
+
+    @Override
+    public boolean isValuesOK() {
+        return true;
+    }
+
+    @Override
+    public ProcessWrapperDTO getValues(boolean update) {
+        return getDtoWrapper();
     }
 }

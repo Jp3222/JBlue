@@ -106,7 +106,7 @@
                     <Property name="name" type="java.lang.String" value="document_list" noResource="true"/>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;UserDocumentDTO&gt;"/>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;UserDocumentationDTO&gt;"/>
                   </AuxValues>
                 </Component>
               </SubComponents>

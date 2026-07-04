@@ -16,7 +16,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.model.dto.UserDocumentDTO;
+import jsoftware.com.jblue.model.dto.UserDocumentationDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
@@ -26,11 +26,11 @@ import jsoftware.com.jblue.views.framework.DBObjectValues;
  *
  * @author juanp
  */
-public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<List<UserDocumentDTO>> {
+public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<List<UserDocumentationDTO>> {
 
     private static final long serialVersionUID = 1L;
 
-    private DefaultListModel<UserDocumentDTO> model;
+    private DefaultListModel<UserDocumentationDTO> model;
 
     /**
      * Creates new form ValidationProcess
@@ -241,7 +241,7 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
     private javax.swing.JButton add_doc1;
     private javax.swing.JButton add_doc2;
     private javax.swing.JButton add_doc3;
-    private javax.swing.JList<UserDocumentDTO> document_list;
+    private javax.swing.JList<UserDocumentationDTO> document_list;
     private javax.swing.JFileChooser file_chooser;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
@@ -298,7 +298,7 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
                 // ASUMIMOS que el elemento en el modelo es un File o un objeto que expone el nombre.
                 // Si el nombre en la lista coincide con el prefijo, incrementamos el contador
                 // Esto previene sobrescribir: IDENTIFICACION1, IDENTIFICACION2, etc.
-                if (document_list.getModel().getElementAt(j).getDocumentName().startsWith(namePrefix)) {
+                if (document_list.getModel().getElementAt(j).getName().startsWith(namePrefix)) {
                     count++;
                 }
             }
@@ -310,7 +310,7 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
             // 4. Llamar al método de copia, pasando el nombre deseado
             File f = copySelectedFileToProgramDirectory(this, file_chooser, file, finalName);
 
-            UserDocumentDTO dto = new UserDocumentDTO();
+            UserDocumentationDTO dto = new UserDocumentationDTO();
             dto.put("document_name", f.getName());
             dto.put("document_path", f.getPath());
             dto.put("doc_file", Files.readAllBytes(f.toPath()));
@@ -387,9 +387,9 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
                     "Documentación faltante",
                     JOptionPane.WARNING_MESSAGE);
         }
-        List<UserDocumentDTO> list = getDtoWrapper().getDocument_list();
+        List<UserDocumentationDTO> list = getDtoWrapper().getDocument_list();
         for (int i = 0; i < model.getSize(); i++) {
-            UserDocumentDTO dto = model.getElementAt(i);
+            UserDocumentationDTO dto = model.getElementAt(i);
             if (isValid) {
                 dto.put("status", 1);
             }
@@ -397,11 +397,11 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
         }
 
         // Actualizamos el estado en el Wrapper para que el botón 'Siguiente' lo vea
-        return isValid;
+        return true;
     }
 
     @Override
-    public List<UserDocumentDTO> getValues(boolean update) {
+    public List<UserDocumentationDTO> getValues(boolean update) {
         return getDtoWrapper().getDocument_list();
     }
 

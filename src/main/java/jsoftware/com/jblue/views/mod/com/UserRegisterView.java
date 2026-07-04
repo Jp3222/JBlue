@@ -7,6 +7,7 @@ package jsoftware.com.jblue.views.mod.com;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.models.AbstractValidation;
@@ -42,6 +43,10 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
 
     @Override
     public void components() {
+        OwnerRegisterProcessController main = (OwnerRegisterProcessController) getDtoWrapper().getController("MAIN");
+        if (Func.isNotNull(main)) {
+            search_user_button.addActionListener(main);
+        }
     }
 
     @Override
@@ -50,6 +55,16 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
 
     @Override
     public void initialState() {
+        this.rfc_field.setEnabled(true);
+        this.curp_field.setEnabled(false);
+        this.first_name_field.setEnabled(false);
+        this.last_name1_field.setEnabled(false);
+        this.last_name2_field.setEnabled(false);
+        this.gender_field.setEnabled(false);
+        this.birdate_field.setEnabled(false);
+        this.email_field.setEnabled(false);
+        this.phone_number1_field.setEnabled(false);
+        this.phone_number2_field.setEnabled(false);
     }
 
     @Override
@@ -70,8 +85,8 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         user_data_panel = new javax.swing.JPanel();
         p_rfc = new javax.swing.JPanel();
         jLabel40 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        rfc_field = new javax.swing.JTextField();
+        search_user_button = new javax.swing.JButton();
         p_curp = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         curp_field = new javax.swing.JTextField();
@@ -95,7 +110,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         p_born_date = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        birdate_field = new org.jdesktop.swingx.JXDatePicker();
         jPanel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         email_field = new javax.swing.JTextField();
@@ -135,13 +150,13 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         jLabel40.setPreferredSize(new java.awt.Dimension(150, 25));
         p_rfc.add(jLabel40, java.awt.BorderLayout.WEST);
 
-        jTextField1.setText(bundle.getString("UserRegisterView.jTextField1.text")); // NOI18N
-        jTextField1.setName("jTextField1"); // NOI18N
-        p_rfc.add(jTextField1, java.awt.BorderLayout.CENTER);
+        rfc_field.setText(bundle.getString("UserRegisterView.rfc_field.text")); // NOI18N
+        rfc_field.setName("rfc_field"); // NOI18N
+        p_rfc.add(rfc_field, java.awt.BorderLayout.CENTER);
 
-        jButton1.setText(bundle.getString("UserRegisterView.jButton1.text")); // NOI18N
-        jButton1.setName("jButton1"); // NOI18N
-        p_rfc.add(jButton1, java.awt.BorderLayout.LINE_END);
+        search_user_button.setText(bundle.getString("UserRegisterView.search_user_button.text")); // NOI18N
+        search_user_button.setName("search_user_button"); // NOI18N
+        p_rfc.add(search_user_button, java.awt.BorderLayout.LINE_END);
 
         user_data_panel.add(p_rfc);
 
@@ -258,9 +273,8 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         jLabel38.setPreferredSize(new java.awt.Dimension(60, 30));
         p_born_date.add(jLabel38, java.awt.BorderLayout.LINE_END);
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
-        jFormattedTextField1.setName("jFormattedTextField1"); // NOI18N
-        p_born_date.add(jFormattedTextField1, java.awt.BorderLayout.CENTER);
+        birdate_field.setName("birdate_field"); // NOI18N
+        p_born_date.add(birdate_field, java.awt.BorderLayout.CENTER);
 
         user_data_panel.add(p_born_date);
 
@@ -321,12 +335,11 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.jdesktop.swingx.JXDatePicker birdate_field;
     private javax.swing.JTextField curp_field;
     private javax.swing.JTextField email_field;
     private javax.swing.JTextField first_name_field;
     private javax.swing.JComboBox<String> gender_field;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel14;
@@ -350,7 +363,6 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField last_name1_field;
     private javax.swing.JTextField last_name2_field;
     private javax.swing.JPanel p_born_date;
@@ -363,12 +375,15 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
     private javax.swing.JTextField phone_number1_field;
     private javax.swing.JTextField phone_number2_field;
     private javax.swing.JPanel register_panel;
+    private javax.swing.JTextField rfc_field;
+    private javax.swing.JButton search_user_button;
     private javax.swing.JPanel user_data_panel;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void getData() {
         boolean res = isValuesOK();
+        res = true;
         if (!res) {
             return;
         }
@@ -407,7 +422,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         }
 
         // Guardamos el estado real en el Wrapper
-        return res;
+        return true;
     }
 
     @Override
@@ -443,4 +458,11 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         return dto;
     }
 
+    public void lock(boolean lock) {
+        if (lock) {
+
+        } else {
+
+        }
+    }
 }

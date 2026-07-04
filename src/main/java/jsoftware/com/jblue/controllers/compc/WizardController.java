@@ -58,7 +58,6 @@ public class WizardController extends Controller {
         if (!nextStep) {
             return; // La vista ya debió mostrar su respectivo JOptionPane de error interno
         }
-
         // Ejecución ordenada del flujo de la UI
         view.nextIndex();
         view.updateUi(WizardModel.NEXT_VIEW_BUTTON);

@@ -12,7 +12,6 @@ import jsoftware.com.jblue.model.dto.ProcessDTO;
 import jsoftware.com.jblue.model.exp.ProcessException;
 import jsoftware.com.jblue.model.querys.ProcessQuery;
 import jsoftware.com.jblue.sys.SystemSession;
-import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.model.AbstractDAO;
 
@@ -50,25 +49,21 @@ public class ProcessDAO extends AbstractDAO {
      * Fase [1]: Captura de Datos. Registra el inicio de un trámite en
      * ventanilla.
      */
-    public int startProcess(JDBConnection connection, String process_type, String user_id) throws SQLException {
+    public int startProcess(JDBConnection connection, ProcessDTO dto) throws SQLException {
         int generatedId = 0;
-        if (connection == null) {
-            throw new SQLException("CONEXIÓN NO DISPONIBLE EN EL MOTOR");
-        }
-        if (Filters.isNullOrBlank(process_type, user_id)) {
-            throw new IllegalArgumentException("Parámetros erróneos: process_type: " + process_type + ", user: " + user_id);
-        }
-
-        try (PreparedStatement ps = connection.getNewPreparedStatement(
-                ProcessQuery.INSERT_START_PROCESS,
-                PreparedStatement.RETURN_GENERATED_KEYS)) {
-
-            ps.setInt(1, Integer.parseInt(process_type));
-            ps.setInt(2, Integer.parseInt(current_employee.getId()));
-            ps.setInt(3, Integer.parseInt(current_admin.getId()));
-            ps.setInt(4, Integer.parseInt(current_employee.getId()));
-            ps.setInt(5, Integer.parseInt(user_id));
-            ps.setInt(6, STATUS_INICIADO);
+        String query = """
+                       INSERT INTO
+                       (process_type, sequence_process, employee_start, user_id, administration_start, current_db_user, status, last_employee_update) 
+                       VALUES
+                       (?, ?, ?, ?, ?, CURRENT_USER, 10, ?)
+                       """;
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, Integer.parseInt(dto.getProcessType()));
+            ps.setInt(2, Integer.parseInt(dto.getSequenceProcess()));
+            ps.setInt(3, Integer.parseInt(dto.getEmployeeStart()));
+            ps.setInt(4, Integer.parseInt(dto.getUserId()));
+            ps.setInt(5, Integer.parseInt(dto.getAdministrationStart()));
+            ps.setInt(6, Integer.parseInt(dto.getDateStart()));
             int affectedRows = ps.executeUpdate();
             if (affectedRows > 0) {
                 try (ResultSet rs = ps.getGeneratedKeys()) {

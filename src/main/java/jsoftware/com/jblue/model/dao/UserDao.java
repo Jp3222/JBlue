@@ -258,11 +258,9 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
     }
 
     /**
-     * Verifica la existencia de un usuario por ID, RFC, CURP o Nombre Completo.
-     * <br>
-     * Si el usuario existe, el método enriquece el DTO inyectando el ID y el
-     * Status recuperados directamente de la base de datos tras el éxito de la
-     * operación.
+     * Verifica la existencia de un usuario por ID, RFC, CURP o Nombre Completo
+     * de manera secuencial. Si el usuario existe, el método enriquece el DTO
+     * inyectando el ID y el Status recuperados.
      *
      * @param connection Conexión activa a la base de datos de JBlue.
      * @param dto Datos del usuario a buscar.
@@ -272,67 +270,145 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
      * PreparedStatement.
      */
     public boolean exists(JDBConnection connection, UserDTO dto) throws SQLException {
-        StringBuilder sb = new StringBuilder("SELECT id, status FROM usr_user WHERE ");
-        List<Object> params = new ArrayList<>();
 
-        // 1. Criterio por ID (Casteo manual a Integer requerido por la columna en MySQL)
+        // 1. Criterio secuencial por ID
         if (Func.isNotNullEmptyBlank(dto.getId())) {
-            sb.append("id = ? ");
-            params.add(Integer.valueOf(dto.getId()));
+            if (existsById(connection, dto)) {
+                return true;
+            }
         }
 
-        // 2. Criterio por RFC (Evita duplicados de identificación fiscal)
+        // 2. Criterio secuencial por RFC
         if (Func.isNotNullEmptyBlank(dto.getRfc())) {
-            if (!params.isEmpty()) {
-                sb.append(" OR ");
+            if (existsByRfc(connection, dto)) {
+                return true;
             }
-            sb.append("rfc = ? ");
-            params.add(dto.getRfc());
         }
 
-        // 3. Criterio por CURP (Identificación oficial única)
+        // 3. Criterio secuencial por CURP
         if (Func.isNotNullEmptyBlank(dto.getCurp())) {
-            if (!params.isEmpty()) {
-                sb.append(" OR ");
+            if (existsByCurp(connection, dto)) {
+                return true;
             }
-            sb.append("curp = ? ");
-            params.add(dto.getCurp());
         }
 
-        // 4. Criterio por Nombre Completo (Validación compuesta)
+        // 4. Criterio secuencial por Nombre Completo (Validación compuesta mínima requerida)
         if (Func.isNotNullEmptyBlank(dto.getFirstName()) && Func.isNotNullEmptyBlank(dto.getLastName1())) {
-            if (!params.isEmpty()) {
-                sb.append(" OR ");
+            if (existsByName(connection, dto)) {
+                return true;
             }
-            sb.append("(first_name = ? AND last_name1 = ? AND last_name2 = ?) ");
-            params.add(dto.getFirstName());
-            params.add(dto.getLastName1());
-            // Protegemos el segundo apellido opcional para que no rompa la consulta
-            params.add(Func.isNotNullEmptyBlank(dto.getLastName2()) ? dto.getLastName2() : null);
         }
 
-        // Si el DTO no tiene ningún criterio de búsqueda, evitamos una consulta SQL inválida
-        boolean res = false;
-        if (params.isEmpty()) {
-            return res;
-        }
+        return false;
+    }
 
-        try (PreparedStatement ps = connection.getNewPreparedStatement(sb.toString())) {
-            // Mapeo manual de parámetros dinámicos
-            for (int i = 0; i < params.size(); i++) {
-                ps.setObject(i + 1, params.get(i));
-            }
+    /**
+     * Busca en la base de datos un usuario por id, si existe añade los datos id
+     * y status al dto y retorna true, si no retorna un falso sin agregar datos
+     * al objeto
+     *
+     * @param connection - conexion activa
+     * @param dto - objeto usuario
+     * @return true y solo true si el id existen en la base de datos
+     * @throws SQLException
+     */
+    private boolean existsById(JDBConnection connection, UserDTO dto) throws SQLException {
+        String query = "SELECT id, status FROM usr_user WHERE id = ?";
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
+            // Cast manual requerido por el tipo de columna INT en MySQL
+            ps.setInt(1, Integer.parseInt(dto.getId()));
 
             try (ResultSet rs = ps.executeQuery()) {
-                res = rs.next();
-                if (res) {
-                    // Flujo JBlue: El método enriquece el DTO tras el éxito de la operación
+                if (rs.next()) {
                     dto.put("id", rs.getString("id"));
                     dto.put("status", rs.getString("status"));
+                    return true;
                 }
             }
         }
-        return res;
+        return false;
+    }
+
+    /**
+     * Busca en la base de datos un usuario por rfc, si existe añade los datos
+     * id y status al dto y retorna true, si no retorna un falso sin agregar
+     * datos al objeto
+     *
+     * @param connection - conexion activa
+     * @param dto - objeto usuario
+     * @return true y solo true si el id existen en la base de datos
+     * @throws SQLException
+     */
+    private boolean existsByRfc(JDBConnection connection, UserDTO dto) throws SQLException {
+        String query = "SELECT id, status FROM usr_user WHERE rfc = ?";
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
+            ps.setString(1, dto.getRfc());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    dto.put("id", rs.getString("id"));
+                    dto.put("status", rs.getString("status"));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Busca en la base de datos un usuario por curp, si existe añade los datos
+     * id y status al dto y retorna true, si no retorna un falso sin agregar
+     * datos al objeto
+     *
+     * @param connection - conexion activa
+     * @param dto - objeto usuario
+     * @return true y solo true si el id existen en la base de datos
+     * @throws SQLException
+     */
+    private boolean existsByCurp(JDBConnection connection, UserDTO dto) throws SQLException {
+        String query = "SELECT id, status FROM usr_user WHERE curp = ?";
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
+            ps.setString(1, dto.getCurp());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    dto.put("id", rs.getString("id"));
+                    dto.put("status", rs.getString("status"));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Busca en la base de datos un usuario por nombre, apellido paterni y
+     * apellido materni, si existe o hay una coincidencia con los primeros dos
+     * campos añade los datos id y status al dto y retorna true, si no retorna
+     * un falso sin agregar datos al objeto
+     *
+     * @param connection - conexion activa
+     * @param dto - objeto usuario
+     * @return true y solo true si el id existen en la base de datos
+     * @throws SQLException
+     */
+    private boolean existsByName(JDBConnection connection, UserDTO dto) throws SQLException {
+        String query = "SELECT id, status FROM usr_user WHERE first_name = ? AND last_name1 = ? AND last_name2 = ?";
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
+            ps.setString(1, dto.getFirstName());
+            ps.setString(2, dto.getLastName1());
+            // Mapeo seguro si el segundo apellido es nulo en la interfaz Swing
+            ps.setString(3, Func.isNotNullEmptyBlank(dto.getLastName2()) ? dto.getLastName2() : null);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    dto.put("id", rs.getString("id"));
+                    dto.put("status", rs.getString("status"));
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

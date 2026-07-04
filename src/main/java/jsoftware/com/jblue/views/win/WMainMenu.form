@@ -201,7 +201,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="owner_register_process_item">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Alta de nuevo titular"/>
-                <Property name="actionCommand" type="java.lang.String" value="Registro de titular"/>
+                <Property name="actionCommand" type="java.lang.String" value="ALTA DE TITULAR"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="consumer_register_process_item">

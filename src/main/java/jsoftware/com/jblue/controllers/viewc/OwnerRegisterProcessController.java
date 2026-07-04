@@ -35,11 +35,18 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
         switch (e.getActionCommand()) {
             case SAVE_COMMAND ->
                 save();
+            case "search" ->
+                search();
+            case "payment_confirm" ->
+                payment_confirm();
+            case "documet_confirm" ->
+                document_confirm();
         }
     }
 
     @Override
     public void save() {
+        boolean res = false;
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
             SystemSession ss = SystemSession.getInstancia();
             if (!ss.isAdministrationValid()) {
@@ -47,20 +54,22 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
                 return;
             }
 
-            boolean res = service.save(c, view.getDtoWrapper());
+            res = service.save(c, view.getDtoWrapper());
             if (service.isError()) {
                 returnMessage(view, false, service.getUserMessage());
                 return;
             }
-
+            
             int showConfirmDialog = JOptionPane.showConfirmDialog(view, "¿DESEAS EXPORTAR LOS FORMATOS?");
             if (showConfirmDialog == JOptionPane.YES_OPTION) {
-
+                JOptionPane.showMessageDialog(view, "EL FORMATO HA SIDO EXPORTADO CORRECTAMENTE", "FORMATOS", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Exception e) {
             returnMessage(view, false, e.getMessage());
         }
-        returnMessage(view, true);
+        if (res) {
+            returnMessage(view, true);
+        }
     }
 
     @Override
@@ -80,6 +89,18 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
 
     public void setView(OwnerRegisterProcess aThis) {
         this.view = aThis;
+    }
+
+    private void search() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void payment_confirm() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void document_confirm() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

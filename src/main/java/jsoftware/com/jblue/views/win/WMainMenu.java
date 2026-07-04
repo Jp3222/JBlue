@@ -431,7 +431,7 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
         jMenu4.add(jMenuItem2);
 
         owner_register_process_item.setText("Alta de nuevo titular");
-        owner_register_process_item.setActionCommand("Registro de titular");
+        owner_register_process_item.setActionCommand("ALTA DE TITULAR");
         jMenu4.add(owner_register_process_item);
 
         consumer_register_process_item.setText("Alta de nuevo consumidor");

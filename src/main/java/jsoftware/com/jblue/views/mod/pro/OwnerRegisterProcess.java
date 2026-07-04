@@ -48,7 +48,6 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
 
     public OwnerRegisterProcess(ProcessWrapperDTO dto) {
         super(dto);
-        initComponents();
         step1 = new UserRegisterView(dto);
         step2 = new StreetRegisterView(dto);
         step3 = new ValidationProcessView(dto);
@@ -108,74 +107,12 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        north_panel = new javax.swing.JPanel();
-        np_cp_center = new javax.swing.JPanel();
-        last_panel_button = new javax.swing.JButton();
-        next_panel_button = new javax.swing.JButton();
-        np_cp_west = new javax.swing.JPanel();
-        cancel_process_button = new javax.swing.JButton();
-        np_cp_east = new javax.swing.JPanel();
-        save_process_button = new javax.swing.JButton();
-        root_panel = new javax.swing.JPanel();
-
         setName("Registro de titular"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 300));
-        setLayout(new java.awt.BorderLayout());
-
-        north_panel.setPreferredSize(new java.awt.Dimension(900, 30));
-        north_panel.setLayout(new java.awt.BorderLayout(10, 10));
-
-        np_cp_center.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
-
-        last_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        last_panel_button.setText("Regresar");
-        last_panel_button.setToolTipText("Seccion Anterior");
-        last_panel_button.setActionCommand("previous_step");
-        np_cp_center.add(last_panel_button);
-
-        next_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        next_panel_button.setText("Siguiente");
-        next_panel_button.setToolTipText("Siguiente Seccion");
-        next_panel_button.setActionCommand("next_step");
-        np_cp_center.add(next_panel_button);
-
-        north_panel.add(np_cp_center, java.awt.BorderLayout.CENTER);
-
-        np_cp_west.setPreferredSize(new java.awt.Dimension(100, 30));
-        np_cp_west.setLayout(new java.awt.BorderLayout());
-
-        cancel_process_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
-        cancel_process_button.setToolTipText("Cancelar Tramite");
-        cancel_process_button.setActionCommand("search_object");
-        np_cp_west.add(cancel_process_button, java.awt.BorderLayout.CENTER);
-
-        north_panel.add(np_cp_west, java.awt.BorderLayout.WEST);
-
-        np_cp_east.setPreferredSize(new java.awt.Dimension(100, 30));
-        np_cp_east.setLayout(new java.awt.BorderLayout());
-
-        save_process_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/configuraciones.png"))); // NOI18N
-        save_process_button.setToolTipText("Guardar Informacion Actual");
-        np_cp_east.add(save_process_button, java.awt.BorderLayout.CENTER);
-
-        north_panel.add(np_cp_east, java.awt.BorderLayout.EAST);
-
-        add(north_panel, java.awt.BorderLayout.NORTH);
-
-        root_panel.setLayout(new java.awt.CardLayout());
-        add(root_panel, java.awt.BorderLayout.CENTER);
+        setLayout(null);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cancel_process_button;
-    private javax.swing.JButton last_panel_button;
-    private javax.swing.JButton next_panel_button;
-    private javax.swing.JPanel north_panel;
-    private javax.swing.JPanel np_cp_center;
-    private javax.swing.JPanel np_cp_east;
-    private javax.swing.JPanel np_cp_west;
-    private javax.swing.JPanel root_panel;
-    private javax.swing.JButton save_process_button;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -186,13 +123,13 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
         // Evaluar las banderas de validación del DTO según el paso del asistente
         boolean valid = switch (current_index) {
             case 0 ->
-                getDtoWrapper().isUser_valid();
+                true;
             case 1 ->
-                getDtoWrapper().isDocument_list_valid();
+                true;
             case 3 ->
-                getDtoWrapper().isWater_intake_valid();
+                true;
             default ->
-                getDtoWrapper().isPayment_header_valid();
+                true;
         };
         if (!valid) {
             JOptionPane.showMessageDialog(

@@ -4,8 +4,8 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
+import jsoftware.com.jblue.model.dto.AddressDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
-import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
@@ -14,7 +14,7 @@ import jsoftware.com.jblue.views.framework.DBObjectValues;
  *
  * @author juanp
  */
-public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<UserDTO> {
+public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<AddressDTO> {
 
     /**
      * Creates new form StreetRegisterView
@@ -76,6 +76,14 @@ public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> im
         jLabel21 = new javax.swing.JLabel();
         outside_number_field = new javax.swing.JTextField();
         jLabel37 = new javax.swing.JLabel();
+        p_observation = new javax.swing.JPanel();
+        jLabel23 = new javax.swing.JLabel();
+        observation_field = new javax.swing.JTextField();
+        jLabel39 = new javax.swing.JLabel();
+        p_is_owner = new javax.swing.JPanel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel38 = new javax.swing.JLabel();
+        is_owner_field = new javax.swing.JCheckBox();
 
         setName("Form"); // NOI18N
         setLayout(new java.awt.BorderLayout());
@@ -106,6 +114,7 @@ public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> im
         p_street1.add(jLabel6, java.awt.BorderLayout.WEST);
 
         street1_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        street1_field.setToolTipText(bundle.getString("StreetRegisterView.street1_field.toolTipText")); // NOI18N
         street1_field.setName("street1_field"); // NOI18N
         street1_field.setPreferredSize(new java.awt.Dimension(100, 30));
         p_street1.add(street1_field, java.awt.BorderLayout.CENTER);
@@ -124,6 +133,7 @@ public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> im
         jLabel20.setPreferredSize(new java.awt.Dimension(150, 25));
         p_street2.add(jLabel20, java.awt.BorderLayout.WEST);
 
+        street2_field.setToolTipText(bundle.getString("StreetRegisterView.street2_field.toolTipText")); // NOI18N
         street2_field.setName("street2_field"); // NOI18N
         p_street2.add(street2_field, java.awt.BorderLayout.CENTER);
 
@@ -172,6 +182,42 @@ public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> im
 
         user_data_panel.add(p_out_number);
 
+        p_observation.setName("p_observation"); // NOI18N
+        p_observation.setLayout(new java.awt.BorderLayout());
+
+        jLabel23.setText(bundle.getString("StreetRegisterView.jLabel23.text")); // NOI18N
+        jLabel23.setName("jLabel23"); // NOI18N
+        jLabel23.setPreferredSize(new java.awt.Dimension(150, 25));
+        p_observation.add(jLabel23, java.awt.BorderLayout.WEST);
+
+        observation_field.setName("observation_field"); // NOI18N
+        p_observation.add(observation_field, java.awt.BorderLayout.CENTER);
+
+        jLabel39.setName("jLabel39"); // NOI18N
+        jLabel39.setPreferredSize(new java.awt.Dimension(60, 30));
+        p_observation.add(jLabel39, java.awt.BorderLayout.LINE_END);
+
+        user_data_panel.add(p_observation);
+
+        p_is_owner.setName("p_is_owner"); // NOI18N
+        p_is_owner.setLayout(new java.awt.BorderLayout());
+
+        jLabel22.setText(bundle.getString("StreetRegisterView.jLabel22.text")); // NOI18N
+        jLabel22.setName("jLabel22"); // NOI18N
+        jLabel22.setPreferredSize(new java.awt.Dimension(150, 25));
+        p_is_owner.add(jLabel22, java.awt.BorderLayout.WEST);
+
+        jLabel38.setName("jLabel38"); // NOI18N
+        jLabel38.setPreferredSize(new java.awt.Dimension(60, 30));
+        p_is_owner.add(jLabel38, java.awt.BorderLayout.LINE_END);
+
+        is_owner_field.setText(bundle.getString("StreetRegisterView.is_owner_field.text")); // NOI18N
+        is_owner_field.setToolTipText(bundle.getString("StreetRegisterView.is_owner_field.toolTipText")); // NOI18N
+        is_owner_field.setName("is_owner_field"); // NOI18N
+        p_is_owner.add(is_owner_field, java.awt.BorderLayout.CENTER);
+
+        user_data_panel.add(p_is_owner);
+
         register_panel.add(user_data_panel, java.awt.BorderLayout.CENTER);
 
         add(register_panel, java.awt.BorderLayout.CENTER);
@@ -183,29 +229,37 @@ public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> im
 
     @Override
     public boolean isValuesOK() {
-        boolean res = false;
+        boolean res = true;
         return res;
     }
 
     @Override
-    public UserDTO getValues(boolean update) {
-        return new UserDTO();
+    public AddressDTO getValues(boolean update) {
+        return new AddressDTO();
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField inside_number_field;
+    private javax.swing.JCheckBox is_owner_field;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JTextField observation_field;
     private javax.swing.JTextField outside_number_field;
     private javax.swing.JPanel p_in_number;
+    private javax.swing.JPanel p_is_owner;
+    private javax.swing.JPanel p_observation;
     private javax.swing.JPanel p_out_number;
     private javax.swing.JPanel p_street1;
     private javax.swing.JPanel p_street2;

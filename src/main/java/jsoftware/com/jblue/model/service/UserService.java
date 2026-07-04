@@ -89,8 +89,7 @@ public class UserService extends AbstractService implements Serializable {
             boolean id_err = (id_raw == null) || Func.isNullEmptyBlank(id_raw.toString());
 
             if (id_err) {
-                error_code = 1;
-                user_message = "EL ID RECUPERADO NO ES VALIDO";
+                returnMessageError(1, "EL ID RECUPERADO NO ES VALIDO");
                 return false; // Forzamos false por inconsistencia de datos
             }
 
@@ -99,8 +98,7 @@ public class UserService extends AbstractService implements Serializable {
             boolean status_err = (status_raw == null) || Func.isNullEmptyBlank(status_raw.toString());
 
             if (status_err) {
-                error_code = 2;
-                user_message = "EL STATUS RECUPERADO NO ES VALIDO";
+                returnMessageError(2, "EL STATUS RECUPERADO NO ES VALIDO");
                 return false;
             }
 

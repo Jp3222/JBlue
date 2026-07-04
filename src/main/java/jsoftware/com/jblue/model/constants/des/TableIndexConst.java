@@ -69,5 +69,29 @@ public interface TableIndexConst {
     static final int INDEX_CAT_UNIT_MEASURE = 61;
     static final int INDEX_SYS_INSTANCE_AUTH = 62;
     static final int INDEX_HYS_SESSION = 64;
+    static final int INDEX_HYS_HISTORY_INSTANCE_SESSION = 65;
+    static final int INDEX_CAT_ENVIROMENT = 66;
+    static final int INDEX_CAT_MENU = 67;
+    static final int INDEX_LOGBOOK_TO_INSTANCE_AUTH = 68;
+    static final int INDEX_SNP_WATER_INTAKE_TYPES = 69;
+    static final int INDEX_SYS_MENU = 70;
+    static final int INDEX_SYS_PAYMENT_CONCEPT_ASSIGNMENT = 71;
+    static final int INDEX_USR_BLOCKED_VALUES = 72;
+    static final int INDEX_CAT_SEQUENCES = 73;
+    static final int INDEX_CAT_TYPE_LOCK = 74;
+    static final int INDEX_LOGBOOK_TO_SECUENCES = 75;
+    static final int INDEX_PYM_PAYMENT_HEADER = 76;
+    static final int INDEX_PYM_PAYMENT_DETAILS = 77;
+    static final int INDEX_PYM_PAYMENT_REPRINT = 78;
+    static final int INDEX_USR_ADDRESS = 79;
+    static final int INDEX_CAT_TRANSACTION_TYPE = 80;
+    static final int INDEX_HYS_FIELD = 81;
+    static final int INDEX_HYS_TRANSACTION_HISTORY = 82;
+    static final int INDEX_LOGBOOK_TO_EMP_USER = 83;
+    static final int INDEX_CAT_FIELDS = 84;
+    static final int INDEX_DOC_DOCUMENT_RECORD = 85;
+    static final int INDEX_DOC_USER_DOCUMENTATION = 86;
+    static final int INDEX_PYM_PAYMENT_LINE = 87;
+    static final int INDEX_SYS_OFFICE_RECORD = 88;
 
 }

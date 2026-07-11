@@ -11,6 +11,7 @@ import jsoftware.com.jblue.model.dto.ProcessDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentationDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
 
 /**
@@ -41,7 +42,10 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
 
     private WaterIntakeDTO water_intake;
     private boolean water_intake_valid;
-
+    
+    //TIPO DE TOMA
+    private WaterIntakeTypeDTO water_intake_type;
+    
     //PASO 4
     private PaymentDTO payment_header;
     private boolean payment_header_valid;

@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import jsoftware.com.jblue.model.dto.BlockedValuesDTO;
+import jsoftware.com.jblue.model.dto.DocumentRecordDTO;
+import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
 import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jblue.util.Formats;
@@ -79,11 +82,121 @@ public class BlockedValuesDAO extends AbstractDAO {
     }
 
     /**
+     * Método general que verifica la existencia de valores bloqueados de forma
+     * jerárquica. Implementa corto circuito: se detiene en la primera
+     * coincidencia encontrada.
+     */
+    public Optional<BlockedValuesDTO> exists(JDBConnection connection, UserDTO usr, WaterIntakeUserDTO wui, DocumentRecordDTO doc, int id) throws SQLException {
+        Optional<BlockedValuesDTO> result = Optional.empty();
+
+        // 1. Corto circuito evaluando por UserDTO
+        if (usr != null) {
+            result = exists(connection, usr);
+        }
+
+        // 2. Si no encontró nada y viene WaterIntakeUserDTO...
+        if (result.isEmpty() && wui != null) {
+            result = exists(connection, wui);
+        }
+
+        // 3. Si sigue vacío y viene DocumentRecordDTO...
+        if (result.isEmpty() && doc != null) {
+            result = exists(connection, doc);
+        }
+
+        // 4. Si sigue vacío y viene un ID numérico válido (> 0)
+        if (result.isEmpty() && id > 0) {
+            result = findById(connection, id);
+        }
+        return result;
+    }
+
+    /**
+     * Recupera el estado de un valor bloqueado mediante su clave primaria.
+     */
+    public Optional<BlockedValuesDTO> exists(JDBConnection connection, UserDTO usr) throws SQLException {
+        Optional<BlockedValuesDTO> result = Optional.empty();
+        String query = "SELECT * FROM usr_blocked_values WHERE lock_value IN(?,?,?,?,?,?,?) AND status = 1";
+
+        try (Connection conn = connection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, usr.getEmail());
+            pstmt.setString(2, usr.getPhoneNumber1());
+            pstmt.setString(3, usr.getPhoneNumber2());
+            pstmt.setString(4, usr.getRfc());
+            pstmt.setString(5, usr.getCurp());
+            pstmt.setString(6, usr.getId());
+            pstmt.setString(7, usr.getCurp());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    ResultSetMetaData md = rs.getMetaData();
+                    BlockedValuesDTO dto = new BlockedValuesDTO();
+                    for (int i = 1; i <= md.getColumnCount(); i++) {
+                        String label = md.getColumnLabel(i);
+                        dto.getMap().put(label, rs.getString(label));
+                    }
+                    result = Optional.of(dto);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Recupera el estado de un valor bloqueado mediante su clave primaria.
+     */
+    public Optional<BlockedValuesDTO> exists(JDBConnection connection, WaterIntakeUserDTO usr) throws SQLException {
+        Optional<BlockedValuesDTO> result = Optional.empty();
+        String query = "SELECT * FROM usr_blocked_values WHERE lock_value = ? AND status = 1";
+
+        try (Connection conn = connection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, usr.getId());
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    ResultSetMetaData md = rs.getMetaData();
+                    BlockedValuesDTO dto = new BlockedValuesDTO();
+                    for (int i = 1; i <= md.getColumnCount(); i++) {
+                        String label = md.getColumnLabel(i);
+                        dto.getMap().put(label, rs.getString(label));
+                    }
+                    result = Optional.of(dto);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Recupera el estado de un valor bloqueado mediante su clave primaria.
+     */
+    public Optional<BlockedValuesDTO> exists(JDBConnection connection, DocumentRecordDTO usr) throws SQLException {
+        Optional<BlockedValuesDTO> result = Optional.empty();
+        String query = "SELECT * FROM usr_blocked_values WHERE status = 1 AND lock_value BETWEEN ? AND ?";
+
+        try (Connection conn = connection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, usr.getDocumentStart());
+            pstmt.setString(2, usr.getDocumentStart());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    ResultSetMetaData md = rs.getMetaData();
+                    BlockedValuesDTO dto = new BlockedValuesDTO();
+                    for (int i = 1; i <= md.getColumnCount(); i++) {
+                        String label = md.getColumnLabel(i);
+                        dto.getMap().put(label, rs.getString(label));
+                    }
+                    result = Optional.of(dto);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
      * Recupera el estado de un valor bloqueado mediante su clave primaria.
      */
     public Optional<BlockedValuesDTO> findById(JDBConnection connection, int id) throws SQLException {
         Optional<BlockedValuesDTO> result = Optional.empty();
-        String query = "SELECT * FROM usr_blocked_values WHERE id = ?";
+        String query = "SELECT * FROM usr_blocked_values WHERE id = ? AND status = 1";
 
         try (Connection conn = connection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, id);

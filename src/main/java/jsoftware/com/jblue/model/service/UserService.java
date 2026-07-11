@@ -12,10 +12,12 @@ import jsoftware.com.jblue.model.dao.BlockedUserDAO;
 import jsoftware.com.jblue.model.dao.BlockedValuesDAO;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.UserDao;
+import jsoftware.com.jblue.model.dto.BlockedUserDTO;
 import jsoftware.com.jblue.model.dto.BlockedValuesDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
 import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
+import jsoftware.com.jblue.model.factories.DTOsDefaultFactory;
 import jsoftware.com.jblue.model.models.AbstractService;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.util.Func;
@@ -93,7 +95,7 @@ public class UserService extends AbstractService implements Serializable {
      * @return
      */
     public boolean exist(JDBConnection connection, UserDTO user) {
-        boolean res;
+        boolean res = false;
         try {
             // Delegamos la búsqueda al DAO y enriquecemos el DTO
             res = user_dao.exists(connection, user);
@@ -108,7 +110,7 @@ public class UserService extends AbstractService implements Serializable {
 
             if (id_err) {
                 returnMessageError(1, "EL ID RECUPERADO NO ES VALIDO");
-                return false; // Forzamos false por inconsistencia de datos
+                return true; // Forzamos false por inconsistencia de datos
             }
 
             // CORRECCIÓN: Ahora validamos la llave "status" (no "id" repetido)
@@ -117,7 +119,7 @@ public class UserService extends AbstractService implements Serializable {
 
             if (status_err) {
                 returnMessageError(2, "EL STATUS RECUPERADO NO ES VALIDO");
-                return false;
+                return true;
             }
 
             // Lógica de Negocio: Validación de estados específicos
@@ -125,56 +127,30 @@ public class UserService extends AbstractService implements Serializable {
             int currentStatus = Integer.parseInt(user.getStatus());
 
             /**
-             * SI FUE ELIMINADO REVISAR PORQUE Y SI EL BLOQUEO NO ES PROBLEMA
-             * PARA UNA NUEVA TOMA, QUITARLO
-             */
-            if (currentStatus == Const.INDEX_STATUS_ELIMINADO_3) {
-                error_code = 3;
-                user_message = "ESTE USUARIO FUE DEHABILITADO, REVISAR LOS MODULOS DE AUDITORIA CORRESPONDIENTES A ESTE EVENTO";
-                return false;
-            }
-
-            /**
-             * SI FUE DESHABILITADO REVISAR PORQUE Y SI EL BLOQUEO NO ES
-             * PROBLEMA PARA UNA NUEVA TOMA, QUITARLO
-             */
-            if (currentStatus == Const.INDEX_STATUS_INACTIVO_2) {
-                error_code = 4;
-                user_message = "ESTE USUARIO FUE DEHABILITADO, REVISAR LOS MODULOS DE AUDITORIA CORRESPONDIENTES A ESTE EVENTO";
-                return false;
-            }
-
-            /**
-             * SI FUE PUESTO EN SITUACION CRITICA REVISAR PORQUE Y SI EL BLOQUEO
-             * NO ES PROBLEMA PARA UNA NUEVA TOMA, QUITARLO
-             */
-            if (currentStatus == Const.INDEX_STATUS_SITUACION_CRITICA_31) {
-                error_code = 5; // Cambiado a 5 para diferenciar de Inactivo
-                user_message = "ESTE USUARIO ESTA EN SITUACION CRITICA, REVISAR LOS MODULOS DE AUDITORIA CORRESPONDIENTES A ESTE EVENTO";
-                return false;
-            }
-
-            /**
-             * SI FUE REPORTADO REVISAR PORQUE Y SI EL BLOQUEO NO ES PROBLEMA
-             * PARA UNA NUEVA TOMA, QUITARLO
-             */
-            if (currentStatus == Const.INDEX_STATUS_REPORTADO_32) {
-                error_code = 6; // Cambiado a 5 para diferenciar de Inactivo
-                user_message = "ESTE USUARIO FUE REPORTADO, REVISAR LOS MODULOS DE AUDITORIA CORRESPONDIENTES A ESTE EVENTO";
-                return false;
-            }
-
-            /**
-             * NO SE PUEDE DAR DE ALTA UN USUARIO QUE YA ESTA REGISTRADO
-             * POSIBLEMENTE EN OTRO PADRON, EN ESTE CASO CONTACTAR CON LA OTRA
-             * OFICINA Y SI NO ES UN PROBLEMA OTRA TOMA, QUITAR EL PROQUEO
+             * [1] SI EL USUARIO TIENE INFORMACION EXISTENTE EN OTRA OFICINA,
+             * VERIFICAR SI EXISTE UN BLOQUEO AUTORIZADO
+             * <br>
+             * [2]SI NO EXISTE UN BLOQUEO AUTORIZADO, ESTE SE GENERARA
+             * AUTORMATICAMENTE
              */
             Object office_raw = user.getOfficeId();
             boolean office_id = (office_raw == null) || Func.isNullEmptyBlank(user.getOfficeId());
             if (currentStatus == Const.INDEX_STATUS_ACTIVO_1 && office_id && !user.getOfficeId().equals(session.getCurrent_instance().getOfficeId())) {
-                error_code = 7; // Cambiado a 5 para diferenciar de Inactivo
-                user_message = "ESTE USUARIO CUENTA CON UN REGISTRO ACTIVO EN OTRA ENTIDAD";
-                return false;
+                //VERIFICAR SI EL BLOQUEO AUTORIZADO EXISTE
+                Optional<BlockedUserDTO> bloq = blocked_dao.existLockAut(connection, Integer.parseInt(user.getId()));
+                //SI NO ES ASI, GENERARLO
+                if (bloq.isEmpty()) {
+                    BlockedUserDTO dto = DTOsDefaultFactory
+                            .getInstance()
+                            .getProcessLockDTO(
+                                    user.getLastEmployeeUpdate(),
+                                    user.getOfficeId()
+                            );
+                    dto.put("user_id", user.getId());
+                    blocked_dao.insert(connection, dto);
+                    returnMessageError(7, "LA INFORMACION DEL USUARIO EXISTE EN OTRA OFICINA, DEBERA REVISAR LA INFORMACION Y SI ES CONSISTENTE QUITAR EL BLOQUEO");
+                    return true;
+                }
             }
 
             /**
@@ -182,15 +158,51 @@ public class UserService extends AbstractService implements Serializable {
              * CASO DAR DE ALTA UNA NUEVA TOMA, NO UN NUEVO TITULAR
              */
             if (currentStatus == Const.INDEX_STATUS_ACTIVO_1) {
-                error_code = 8; // Cambiado a 5 para diferenciar de Inactivo
-                user_message = "ESTE USUARIO CUENTA CON UN REGISTRO ACTIVO";
-                return false;
+                returnMessageError(7, "LA INFORMACION DEL USUARIO YA EXISTE, POR LO QUE NO SE PUEDE REGISTRAR COMO NUEVO TITULAR");
+                return true;
             }
+
+            /**
+             * SI FUE DESHABILITADO REVISAR PORQUE Y SI EL MOTIVO NO ES
+             * PROBLEMA, PUEDE HABILITARLO NUEVAMNETE
+             */
+            if (currentStatus == Const.INDEX_STATUS_INACTIVO_2) {
+                returnMessageError(4, "ESTE USUARIO FUE DESHABILITADO, REVISAR LOS MODULOS DE AUDITORIA CORRESPONDIENTES A ESTE EVENTO");
+                return true;
+            }
+            /**
+             * SI FUE ELIMINADO Y REQUIERE VOLVER A HABILITARSE SE DEBERA TRATAR
+             * EL CASO CON UN ADMINISTRADOR O ALGUIEN CON USUARIO ROOT
+             */
+            if (currentStatus == Const.INDEX_STATUS_ELIMINADO_3) {
+                returnMessageError(3, "ESTE USUARIO FUE ELIMINADO, POR LO QUE LA INFORMACION DEBERA TRATARSE CON SU ADMINISTRADOR CORRESPONDIENTE");
+                return true;
+            }
+
+            /**
+             * SI FUE PUESTO EN SITUACION CRITICA REVISAR PORQUE Y SI EL BLOQUEO
+             * NO ES PROBLEMA PARA UNA NUEVA TOMA, QUITARLO
+             */
+            if (currentStatus == Const.INDEX_STATUS_SITUACION_CRITICA_31) {
+                returnMessageError(5, "ESTE USUARIO SE ENCUENTRA EN SITUACION CRITICA, REVISAR LOS MODULOS DE AUDITORIA CORRESPONDIENTES A ESTE EVENTO");
+                return true;
+            }
+
+            /**
+             * SI FUE REPORTADO REVISAR PORQUE Y SI EL BLOQUEO NO ES PROBLEMA
+             * PARA UNA NUEVA TOMA, QUITARLO
+             */
+            if (currentStatus == Const.INDEX_STATUS_REPORTADO_32) {
+                returnMessageError(6, "ESTE USUARIO SE ENCUENTRA REPORTADO, REVISAR LOS MODULOS DE AUDITORIA CORRESPONDIENTES A ESTE EVENTO");
+                return true;
+            }
+
         } catch (SQLException ex) {
-            // Captura de errores de MySQL (ideal para Railway)
-            user_message = "ERROR INESPERADO AL CONSULTAR USUARIO";
-            error_code = ex.getErrorCode();
-            res = false;
+            returnMessageError(ex.getMessage());
+            log(ex, "exist");
+        } catch (CorruptInsertionException | KeyNotGenerateException ex) {
+            returnMessageError(ex.getErrorCode(), ex.getUserMessage());
+            log(ex, "exist");
         }
         return res;
     }

@@ -108,15 +108,18 @@ public class OwnerRegisterProcessService extends AbstractService {
             String final_office = ss.getCurrent_instance().getOfficeId();
             String final_employee = ss.getCurrentEmployee().getId();
             UserDTO user = dto.getUser();
+            //SI NO EXISTE, SE COLOCAN DATOS POR DEFECTO
+            user.put("office_id", final_office);
+            user.put("last_employee_update", final_employee);
+            user.put("status", "0");//SI EL METODO EXIST NO ENCUENTRA NADA SE DEBE VALIDAR EL STATUS
+            
             //SI EL USUARIO EXISTE, SE NOTIFICARA LAS OPERACIONES ALTERNATIVAS
             if (user_service.exist(connection, user)) {
+                
                 rollback(connection);
                 returnMessageError(user_service.getErrorCode(), user_service.getUserMessage());
                 return false;
             }
-            //SI NO EXISTE, SE COLOCAN DATOS POR DEFECTO
-            user.put("office_id", final_office);
-            user.put("last_employee_update", final_employee);
             //SI EL PAGO FUE REALIZADO PRESENCIALMENTE TODOS LOS REGISTROS SERAN ACTIVOS,
             //SI NO, SE MARCAN COMO INACTIVOS
             String final_status = dto.isPayment_header_valid() ? "1" : "2";

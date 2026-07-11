@@ -6,11 +6,14 @@ package jsoftware.com.jblue.model.service;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.Optional;
 import jsoftware.com.jblue.model.constants.Const;
+import jsoftware.com.jblue.model.dao.BlockedUserDAO;
+import jsoftware.com.jblue.model.dao.BlockedValuesDAO;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.UserDao;
+import jsoftware.com.jblue.model.dto.BlockedValuesDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
-import jsoftware.com.jblue.model.exp.ServiceException;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
 import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jblue.model.models.AbstractService;
@@ -28,11 +31,15 @@ public class UserService extends AbstractService implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final UserDao user_dao;
+    private final BlockedUserDAO blocked_dao;
+    private final BlockedValuesDAO value_bloq_dao;
     private final HistoryDAO.UserHistoryDAO history_dao;
 
     public UserService(boolean flag_dev, String name_module) {
         super(flag_dev, name_module);
         user_dao = new UserDao(flag_dev, name_module);
+        blocked_dao = new BlockedUserDAO(flag_dev, name_module);
+        value_bloq_dao = new BlockedValuesDAO(flag_dev, name_module);
         history_dao = HistoryDAO.UserHistoryDAO.getInstance();
     }
 
@@ -40,21 +47,32 @@ public class UserService extends AbstractService implements Serializable {
         boolean res = false;
         int user_id = -1;
         try {
+            Optional<BlockedValuesDTO> opt = value_bloq_dao.exists(connection, dto);
+            if (!opt.isEmpty()) {
+                BlockedValuesDTO g = opt.get();
+                String msg = "EL SIGUIENTE VALOR: %s FUE BLOQUEADO EN LA FECHA %s CON FOLIO: %s POR EL SIGUIENTE MOTIVO: ";
+                returnMessageError(Integer.parseInt(g.getId()), msg.formatted(
+                        g.getLockValue(),
+                        g.getDateRegister(),
+                        g.getObservationLock()
+                ));
+                return user_id;
+            }
             //SE REGISTRA EL USUARIO
             user_id = user_dao.insert(connection, dto);
             res = user_id > 0;
             if (!res) {
-                throw new ServiceException(ServiceException.SERVICE_INSERT_EXCEPTION, "ERROR AL REGISTRAR EL USUARIO");
+                returnMessageError("REGISTRO DE USUARIO CORRUPTO");
             }
             //SE REGISTRA EL MOVIMIENTO EN EL HISTORIAL
             res = history_dao.insert(connection, "SE REGISTRO EL USUARIO: %s - %s".formatted(
                     dto.getId(), dto.toString()
             ));
             if (!res) {
-                throw new ServiceException(ServiceException.SERVICE_INSERT_EXCEPTION, "ERROR AL REGISTRAR EN BITACORA.");
+                returnMessageError("REGISTRO EN BITACORA CORRUPTO");
             }
             commit(connection);
-        } catch (SQLException | CorruptInsertionException | KeyNotGenerateException | ServiceException ex) {
+        } catch (SQLException | CorruptInsertionException | KeyNotGenerateException ex) {
             rollback(connection);
             returnMessageError("ERROR AL REGISTRAR EL USUARIO");
             FuncLogs.logError(

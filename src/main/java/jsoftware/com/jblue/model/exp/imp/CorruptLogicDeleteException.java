@@ -12,8 +12,15 @@ import jsoftware.com.jblue.model.exp.DataAccesObjectException;
  */
 public class CorruptLogicDeleteException extends DataAccesObjectException {
 
-    public CorruptLogicDeleteException() {
-        super(CORRUPT_INSERTION_EXCEPTION, "EL CAMBIO DE STATUS NO PUDO SER REALIZADO");
+    public CorruptLogicDeleteException(int error_code, String user_message, String dev_msg) {
+        super(error_code, user_message, dev_msg);
     }
 
+    public CorruptLogicDeleteException(String dev_msg) {
+        this(
+                CORRUPT_LOGIC_DELETE_EXCEPTION, 
+                "EL MOVIMIENTO DE ELIMINACION NO PUDO SER REALIZADO", 
+                dev_msg
+        );
+    }
 }

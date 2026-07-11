@@ -78,7 +78,7 @@ public class SessionDAO extends AbstractDAO {
             ps.setString(2, dto.getEmployeeId());
             res = ps.executeUpdate() > 0;
             if (!res) {
-                throw new CorruptUpdateException();
+                throw new CorruptUpdateException("EL MOVIMIENTO ACTUALIZO 0 REGISTROS");
             }
         }
         return res;

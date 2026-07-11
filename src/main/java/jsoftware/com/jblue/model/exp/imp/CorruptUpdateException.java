@@ -13,8 +13,12 @@ import static jsoftware.com.jblue.model.models.ExceptionCode.CORRUPT_INSERTION_E
  */
 public class CorruptUpdateException extends DataAccesObjectException {
 
-    public CorruptUpdateException() {
-        super(CORRUPT_INSERTION_EXCEPTION, "LA ACTUALIZACION DE DATOS NO PUDO SER REALIZADA");
+    public CorruptUpdateException(int error_code, String user_message, String dev_msg) {
+        super(error_code, user_message, dev_msg);
+    }
+
+    public CorruptUpdateException(String dev_msg) {
+        this(CORRUPT_INSERTION_EXCEPTION, "LA ACTUALIZACION DE DATOS NO PUDO SER REALIZADA", dev_msg);
     }
 
 }

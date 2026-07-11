@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
+import jsoftware.com.jblue.model.exp.imp.CorruptLogicDeleteException;
 import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jblue.model.querys.UserQuerys;
 import jsoftware.com.jblue.util.Formats;
@@ -209,19 +209,23 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
         }
     }
 
-    public boolean delete(JDBConnection connection, int userId, int employeeId) throws SQLException {
+    public boolean delete(JDBConnection connection, int userId, int employeeId) throws SQLException, CorruptLogicDeleteException {
         boolean res = false;
-        String query = UserQuerys.UPDATE_USER_STATUS;
+        String query = """
+                        UPDATE usr_user SET
+                            status = 3,
+                            last_employee_update = ?
+                            date_end = CURRENT_TIMESTAMP
+                        WHERE id = ? AND status NOT IN(3, 6)
+                       """;
         try (PreparedStatement pstmt = connection.getNewPreparedStatement(query)) {
-            pstmt.setInt(1, Const.INDEX_STATUS_ELIMINADO_3);
-            pstmt.setInt(2, employeeId);
-            pstmt.setInt(3, userId);
-
+            pstmt.setInt(1, employeeId);
+            pstmt.setInt(2, userId);
             int affectedRows = pstmt.executeUpdate();
-            res = affectedRows == 1;
-            if (!res) {
-                throw new SQLException("EL QUERY AFECTÓ %s REGISTROS".formatted(affectedRows));
+            if (affectedRows != 1) {
+                throw new CorruptLogicDeleteException("EL MOVIMIENTO TRATO DE AFECTAR A: %s REGISTROS".formatted(affectedRows));
             }
+            res = true;
         }
         return res;
     }
@@ -313,7 +317,7 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
      * @throws SQLException
      */
     private boolean existsById(JDBConnection connection, UserDTO dto) throws SQLException {
-        String query = "SELECT id, status FROM usr_user WHERE id = ?";
+        String query = "SELECT id, status, office_id FROM usr_user WHERE id = ?";
         try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
             // Cast manual requerido por el tipo de columna INT en MySQL
             ps.setInt(1, Integer.parseInt(dto.getId()));
@@ -322,6 +326,7 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
                 if (rs.next()) {
                     dto.put("id", rs.getString("id"));
                     dto.put("status", rs.getString("status"));
+                    dto.put("office_id", rs.getString("office_id"));
                     return true;
                 }
             }
@@ -340,7 +345,7 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
      * @throws SQLException
      */
     private boolean existsByRfc(JDBConnection connection, UserDTO dto) throws SQLException {
-        String query = "SELECT id, status FROM usr_user WHERE rfc = ?";
+        String query = "SELECT id, status , office_id FROM usr_user WHERE rfc = ?";
         try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
             ps.setString(1, dto.getRfc());
 
@@ -348,6 +353,7 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
                 if (rs.next()) {
                     dto.put("id", rs.getString("id"));
                     dto.put("status", rs.getString("status"));
+                    dto.put("office_id", rs.getString("office_id"));
                     return true;
                 }
             }
@@ -366,7 +372,7 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
      * @throws SQLException
      */
     private boolean existsByCurp(JDBConnection connection, UserDTO dto) throws SQLException {
-        String query = "SELECT id, status FROM usr_user WHERE curp = ?";
+        String query = "SELECT id, status, office_id FROM usr_user WHERE curp = ?";
         try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
             ps.setString(1, dto.getCurp());
 
@@ -374,6 +380,7 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
                 if (rs.next()) {
                     dto.put("id", rs.getString("id"));
                     dto.put("status", rs.getString("status"));
+                    dto.put("office_id", rs.getString("office_id"));
                     return true;
                 }
             }
@@ -393,7 +400,7 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
      * @throws SQLException
      */
     private boolean existsByName(JDBConnection connection, UserDTO dto) throws SQLException {
-        String query = "SELECT id, status FROM usr_user WHERE first_name = ? AND last_name1 = ? AND last_name2 = ?";
+        String query = "SELECT id, status, office_id FROM usr_user WHERE first_name = ? AND last_name1 = ? AND last_name2 = ?";
         try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
             ps.setString(1, dto.getFirstName());
             ps.setString(2, dto.getLastName1());
@@ -404,6 +411,7 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
                 if (rs.next()) {
                     dto.put("id", rs.getString("id"));
                     dto.put("status", rs.getString("status"));
+                    dto.put("office_id", rs.getString("office_id"));
                     return true;
                 }
             }

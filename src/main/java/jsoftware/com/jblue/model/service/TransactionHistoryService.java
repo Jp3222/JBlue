@@ -109,8 +109,7 @@ public class TransactionHistoryService extends AbstractService {
             }
         } catch (SQLException ex) {
             rollback(connection);
-            this.error_code = SERVICE_EXECUTE_ERROR;
-            this.user_message = "Error DAO: " + ex.getMessage();
+            returnMessageError(ex.getErrorCode(), ex.getMessage());
         } finally {
             connection.setAutoCommit(true);
         }

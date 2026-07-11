@@ -25,7 +25,7 @@ public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
 
     public EmployeeRegisterWrapperDTO(String module_id, String module_name) {
         // Inicializa el contexto macro en el padre con tipo de movimiento "1" e indicación de auditoría
-        super(module_id, module_name, "1", "REGISTRO DE EMPLEADO POR MODULO DEL SISTEMA");
+        super(module_id, module_name, "2", "REGISTRO DE EMPLEADO POR MODULO DEL SISTEMA");
         this.employee = new EmployeeDTO();
         this.employee_user = new EmployeeUserDTO();
         this.employee_valid = false;

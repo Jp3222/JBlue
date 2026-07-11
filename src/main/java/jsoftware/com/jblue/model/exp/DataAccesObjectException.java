@@ -14,8 +14,20 @@ public class DataAccesObjectException extends BlueException implements Exception
 
     private static final long serialVersionUID = 1L;
 
+    public DataAccesObjectException() {
+        super();
+    }
+
+    public DataAccesObjectException(String dev_msg) {
+        super(dev_msg);
+    }
+
     public DataAccesObjectException(int error_code, String user_message) {
         super(error_code, user_message);
+    }
+
+    public DataAccesObjectException(int error_code, String user_message, String dev_msg) {
+        super(error_code, user_message, dev_msg);
     }
 
 }

@@ -26,7 +26,7 @@ public class BlueException extends Exception implements ExceptionCode {
     }
 
     public BlueException(int error_code, String user_message) {
-        this(error_code, user_message, user_message);
+        this(error_code, user_message, "ERROR GENERICO");
     }
 
     public BlueException(int error_code, String user_message, String dev_msg) {

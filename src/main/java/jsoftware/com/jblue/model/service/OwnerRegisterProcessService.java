@@ -10,8 +10,11 @@ import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dto.AddressDTO;
 import jsoftware.com.jblue.model.dto.DocumentRecordDTO;
+import jsoftware.com.jblue.model.dto.PaymentDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentationDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.exp.ServiceException;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
@@ -37,6 +40,7 @@ public class OwnerRegisterProcessService extends AbstractService {
     private final DocumentRecordService document_record_service;
     private final PaymentService payment_service;
     private final WaterIntakeService water_intake_service;
+    private final WaterIntakeUserService wki_user_service;
     private final TransactionHistoryService transaction_service;
     private final HistoryDAO history_dao;
 
@@ -48,6 +52,7 @@ public class OwnerRegisterProcessService extends AbstractService {
         document_record_service = new DocumentRecordService(flag_dev, user_message);
         payment_service = new PaymentService(flag_dev, process_name);
         water_intake_service = new WaterIntakeService(flag_dev, process_name);
+        wki_user_service = new WaterIntakeUserService(flag_dev, process_name);
         transaction_service = new TransactionHistoryService(flag_dev, process_name);
         history_dao = HistoryDAO.getInstance();
     }
@@ -112,9 +117,9 @@ public class OwnerRegisterProcessService extends AbstractService {
             //SI NO EXISTE, SE COLOCAN DATOS POR DEFECTO
             user.put("office_id", final_office);
             user.put("last_employee_update", final_employee);
-            //SI EL PAGO FUE REALIZADO PRESENCUALMENTE TODOS LOS REGISTROS SERAN ACTIVOS,
+            //SI EL PAGO FUE REALIZADO PRESENCIALMENTE TODOS LOS REGISTROS SERAN ACTIVOS,
             //SI NO, SE MARCAN COMO INACTIVOS
-            String final_status = dto.getPayment_header().getStatus() == 1 ? "1" : "2";
+            String final_status = dto.isPayment_header_valid() ? "1" : "2";
             user.put("status", final_status);
             int user_id = user_service.save(connection, user);
             if (user_service.isError()) {
@@ -141,6 +146,12 @@ public class OwnerRegisterProcessService extends AbstractService {
                 return false;
             }
             DocumentRecordDTO document_record = dto.getDocument_record();
+            document_record.put("employee_register_id", final_employee);
+            document_record.put("status", "2");
+            if (dto.isDocument_record_valid()) {
+                document_record.put("employee_valid_id", final_employee);
+                document_record.put("status", "1");
+            }
             document_record.put("document_start", list.getFirst().getId());
             document_record.put("document_end", list.getLast().getId());
             commitSuccess = document_record_service.save(connection, document_record) > 0;
@@ -149,6 +160,30 @@ public class OwnerRegisterProcessService extends AbstractService {
                 returnMessageError(document_record_service.getErrorCode(), document_record_service.getUserMessage());
                 return false;
             }
+            WaterIntakeDTO wki = dto.getWater_intake();
+            wki.put("status", "2");
+            wki.put("employee_register", final_employee);
+            wki.put("last_employee_update", final_employee);
+            if (dto.isWater_intake_valid()) {
+                wki.put("status", "1");
+                wki.put("last_employee_update", final_employee);
+            }
+            commitSuccess = water_intake_service.saveProcess(connection, wki);
+            if (!commitSuccess) {
+                rollback(connection);
+                returnMessageError(water_intake_service.getErrorCode(), water_intake_service.getUserMessage());
+                return false;
+            }
+            WaterIntakeUserDTO wki_user = dto.getWki_user();
+            PaymentDTO pym = dto.getPayment_header();
+            wki_user.put("status", "2");
+            wki_user.put("employee_register", final_employee);
+            wki_user.put("last_employee_update", final_employee);
+            if (pym.getStatus() == 1) {
+                wki_user.put("status", final_status);
+                wki_user.put("last_employee_update", final_employee);
+            }
+            this.wki_user_service.saveProcess(connection, wki_user);
             //----------------------------------------------------------------//
             // PASO 5: REGISTRO DEL FIN DE LA TRANSACCION
             int end_id = history_dao.endTransactionReturn(connection, Const.INDEX_HYS_PROGRAM_HISTORY, "FIN DE UNA TRANSACCION");

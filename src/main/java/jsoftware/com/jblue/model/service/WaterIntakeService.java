@@ -9,7 +9,7 @@ import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.ProcessDAO;
 import jsoftware.com.jblue.model.dao.WaterIntakeDAO;
-import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
 import jsoftware.com.jblue.model.exp.ServiceException;
 import jsoftware.com.jblue.model.models.AbstractService;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -31,11 +31,11 @@ public class WaterIntakeService extends AbstractService {
         process_dao = new ProcessDAO(dev_flag, process_name);
     }
 
-    public boolean saveProcess(JDBConnection connection, String process_type, ProcessWrapperDTO dto) {
+    public boolean saveProcess(JDBConnection connection, WaterIntakeDTO dto) {
         boolean res = false;
         try {
             //[1]REGISTRA LOS DATOS DE LA NUEVA TOMA DE AGUA POTABLE]
-            int water_intake_id = wi_dao.insert(connection, dto.getWater_intake());
+            int water_intake_id = wi_dao.insert(connection, dto);
             res = water_intake_id > 0;
             if (!res) {
                 throw new ServiceException(1, "REGISTRO DE USUARIO ERRONEO");
@@ -44,7 +44,7 @@ public class WaterIntakeService extends AbstractService {
             //REGISTRO EN BITACORA
             res = HistoryDAO.getInstance().insert(connection, Const.INDEX_WKI_WATER_INTAKES, "SE REGISTRO LA TOMA: %s - %s".formatted(
                     water_intake_id,
-                    dto.getWater_intake().getDescription()
+                    dto.getDescription()
             ));
             if (!res) {
                 throw new ServiceException(2, "REGISTRO EN BITACORA CORRUPTO");

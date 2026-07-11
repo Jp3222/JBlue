@@ -230,10 +230,8 @@ public class EmployeeUserDAO extends AbstractDAO {
             int rowsAffected = ps.executeUpdate();
             res = rowsAffected > 0;
             if (!res) {
-                System.out.println("SI JALO");
-                throw new CorruptUpdateException();
+                throw new CorruptUpdateException("EL MOVIMIENTO ACTUALIZO 0 REGISTROS");
             }
-            System.out.println("NO JALO");
         }
         return res;
     }

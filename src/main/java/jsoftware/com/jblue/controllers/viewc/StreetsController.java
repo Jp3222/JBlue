@@ -16,22 +16,16 @@
  */
 package jsoftware.com.jblue.controllers.viewc;
 
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.net.URI;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.controllers.DBControllerModel;
-import jsoftware.com.jblue.model.constants.Const;
-import jsoftware.com.jblue.model.dao.HysHistoryDAO;
-import jsoftware.com.jblue.model.dao.StreetDAO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
+import jsoftware.com.jblue.model.dto.wrp.StreetWrapperDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
-import jsoftware.com.jblue.views.StreetsView;
+import jsoftware.com.jblue.model.service.StreetService;
+import jsoftware.com.jblue.sys.SystemSession;
+import jsoftware.com.jblue.views.mod.StreetProcess;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**
@@ -40,13 +34,11 @@ import jsoftware.com.jutil.db.JDBConnection;
  */
 public class StreetsController extends AbstractDBViewController<StreetDTO> implements DBControllerModel {
 
-    private final StreetsView view;
-    private final StreetDAO dao;
+    private StreetProcess view;
+    private StreetService service;
 
-    public StreetsController(StreetsView view) {
-        this.view = view;
-        this.dao = new StreetDAO(true, "calles");
-
+    public StreetsController() {
+        this.service = new StreetService(true, StreetsController.class.getName());
     }
 
     @Override
@@ -60,15 +52,6 @@ public class StreetsController extends AbstractDBViewController<StreetDTO> imple
                 delete();
             case CANCEL_COMMAND ->
                 cancel();
-            case "google-maps" -> {
-                try {
-                    String uri = "https://www.google.com.mx/maps/place/Cuauhtemoc,+62757+Cuautla,+Mor./@18.8677895,-98.930224,16z/data=!3m1!4b1!4m6!3m5!1s0x85ce6ead484a42d1:0xe9451cff404f4b4c!8m2!3d18.8678174!4d-98.9259142!16s%2Fg%2F1tj9tnz6?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D";
-                    Desktop.getDesktop().browse(URI.create((uri)));
-
-                } catch (IOException ex) {
-                    Logger.getLogger(StreetsController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
             default ->
                 defaultCase("El comando %s no existe".formatted(e.getActionCommand()), StreetsController.this.getClass().getName(), -1);
         }
@@ -76,56 +59,91 @@ public class StreetsController extends AbstractDBViewController<StreetDTO> imple
 
     @Override
     public void save() {
-        if (!view.isValuesOK()) {
-            return;
-        }
-        StreetDTO o = view.getValues(false);
-        if (o == null || o.getMap().isEmpty()) {
-            returnMessage(view, "HA OCURRIDO UN ERROR INTERNO");
-            return;
-        }
+        boolean res = false;
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
-            boolean save = save(c, o);
-            returnMessage(view, save);
+            SystemSession ss = SystemSession.getInstancia();
+            if (!ss.isAdministrationValid()) {
+                returnMessage(view, "LA ADMINISTRACION ACTUAL NO ES VALIDA");
+                return;
+            }
+            if (!ss.isLock()) {
+                returnMessage(view, "LA ADMINISTRACION ACTUAL NO ES VALIDA");
+                return;
+            }
+            if (!view.isValuesOK()) {
+                return;
+            }
+            StreetWrapperDTO dto = view.getDtoWrapper();
+            res = service.save(c, ss, dto);
+            if (service.isError()) {
+                returnMessage(view, false, service.getUserMessage());
+                return;
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            returnMessage(view, false, e.getMessage());
         }
-    }
-
-    @Override
-    public void delete() {
-        if (!view.isValuesOK()) {
-            return;
-        }
-        StreetDTO o = view.getObjectSearch();
-        if (o == null || o.getMap().isEmpty()) {
-            returnMessage(view, "HA OCURRIDO UN ERROR INTERNO");
-            return;
-        }
-        try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
-            boolean save = delete(c, o);
-            returnMessage(view, save);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (res) {
+            returnMessage(view, true);
         }
     }
 
     @Override
     public void update() {
-        if (!view.isValuesOK()) {
-            return;
-        }
-        StreetDTO new_dto = view.getValues(false);
-        StreetDTO old_dto = view.getObjectSearch();
-        if (new_dto == null || new_dto.getMap().isEmpty()) {
-            returnMessage(view, "HA OCURRIDO UN ERROR INTERNO");
-            return;
-        }
+        boolean res = false;
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
-            boolean save = update(c, old_dto, new_dto);
-            returnMessage(view, save);
+            SystemSession ss = SystemSession.getInstancia();
+            if (!ss.isAdministrationValid()) {
+                returnMessage(view, "LA ADMINISTRACION ACTUAL NO ES VALIDA");
+                return;
+            }
+            if (!ss.isLock()) {
+                returnMessage(view, "LA ADMINISTRACION ACTUAL NO ES VALIDA");
+                return;
+            }
+            if (!view.isValuesOK()) {
+                return;
+            }
+            StreetWrapperDTO dto = view.getDtoWrapper();
+            res = service.update(c, ss, dto);
+            if (service.isError()) {
+                returnMessage(view, false, service.getUserMessage());
+                return;
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            returnMessage(view, false, e.getMessage());
+        }
+        if (res) {
+            returnMessage(view, true);
+        }
+    }
+
+    @Override
+    public void delete() {
+        boolean res = false;
+        try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
+            SystemSession ss = SystemSession.getInstancia();
+            if (!ss.isAdministrationValid()) {
+                returnMessage(view, "LA ADMINISTRACION ACTUAL NO ES VALIDA");
+                return;
+            }
+            if (!ss.isLock()) {
+                returnMessage(view, "LA ADMINISTRACION ACTUAL NO ES VALIDA");
+                return;
+            }
+            if (!view.isValuesOK()) {
+                return;
+            }
+            StreetWrapperDTO dto = view.getDtoWrapper();
+            res = service.delete(c, ss, dto);
+            if (service.isError()) {
+                returnMessage(view, false, service.getUserMessage());
+                return;
+            }
+        } catch (Exception e) {
+            returnMessage(view, false, e.getMessage());
+        }
+        if (res) {
+            returnMessage(view, true);
         }
     }
 
@@ -142,83 +160,8 @@ public class StreetsController extends AbstractDBViewController<StreetDTO> imple
         }
     }
 
-    private boolean save(JDBConnection connection, StreetDTO o) {
-        boolean res = false;
-        int key = -1;
-        try {
-            connection.setAutoCommit(false);
-
-            key = dao.insert(connection, o);
-            res = key > 0;
-            if (!res) {
-                throw new SQLException("REGISTRO DE CALLE CORRUPTO");
-            }
-            res = HysHistoryDAO.getINSTANCE().save(
-                    Const.INDEX_CAT_STREET,
-                    Const.INDEX_INSERT,
-                    "SE REGISTRO LA CALLE: %s - %s".formatted(key, o.getStreetName())
-            );
-            if (!res) {
-                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-            }
-            connection.commit();
-        } catch (Exception e) {
-            connection.rollBack();
-        } finally {
-            connection.setAutoCommit(true);
-        }
-        return res;
+    public void setView(StreetProcess view) {
+        this.view = view;
     }
 
-    public boolean delete(JDBConnection connection, StreetDTO o) {
-        boolean res = false;
-        try {
-            connection.setAutoCommit(false);
-
-            res = dao.delete(connection, o);
-            if (!res) {
-                throw new SQLException("REGISTRO DE CALLE CORRUPTO");
-            }
-            res = HysHistoryDAO.getINSTANCE().save(
-                    Const.INDEX_CAT_STREET,
-                    Const.INDEX_INSERT,
-                    "SE REGISTRO LA CALLE: %s - %s".formatted(o.getId(), o.getStreetName())
-            );
-            if (!res) {
-                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-            }
-            connection.commit();
-        } catch (Exception e) {
-            connection.rollBack();
-        } finally {
-            connection.setAutoCommit(true);
-        }
-        return res;
-    }
-
-    public boolean update(JDBConnection connection, StreetDTO old_dto, StreetDTO new_dto) {
-        boolean res = false;
-        try {
-            connection.setAutoCommit(false);
-
-            res = dao.update(connection, old_dto, new_dto);
-            if (!res) {
-                throw new SQLException("REGISTRO DE CALLE CORRUPTO");
-            }
-            res = HysHistoryDAO.getINSTANCE().save(
-                    Const.INDEX_CAT_STREET,
-                    Const.INDEX_INSERT,
-                    "SE ACTUALIZO LA CALLE: %s - %s".formatted(new_dto.getId(), new_dto.getStreetName())
-            );
-            if (!res) {
-                throw new SQLException("REGISTRO EN BITACORA CORRUPTO");
-            }
-            connection.commit();
-        } catch (Exception e) {
-            connection.rollBack();
-        } finally {
-            connection.setAutoCommit(true);
-        }
-        return res;
-    }
 }

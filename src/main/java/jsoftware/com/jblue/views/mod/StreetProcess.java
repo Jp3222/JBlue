@@ -7,6 +7,7 @@ package jsoftware.com.jblue.views.mod;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.viewc.StreetsController;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.wrp.StreetWrapperDTO;
 import jsoftware.com.jblue.model.models.AbstractValidation;
@@ -28,6 +29,45 @@ public final class StreetProcess extends AbstractModuleView<StreetWrapperDTO> im
     public StreetProcess(StreetWrapperDTO dto) {
         super(dto);
         initComponents();
+        build();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        initComponents();
+        finalState();
+    }
+
+    @Override
+    public void events() {
+        StreetsController street_controller = (StreetsController) getDtoWrapper().getController("MAIN");
+        if (street_controller != null) {
+            street_controller.setView(this);
+            save_button.addActionListener(getMainController());
+            update_button.addActionListener(getMainController());
+            delete_button.addActionListener(getMainController());
+            cancel_button.addActionListener(getMainController());
+        }
+    }
+
+    @Override
+    public void components() {
+    }
+
+    @Override
+    public void initialState() {
+        street_name_field.setText(null);
+        save_button.setEnabled(true);
+        update_button.setEnabled(false);
+        delete_button.setEnabled(false);
+        cancel_button.setEnabled(true);
+    }
+
+    @Override
+    public void finalState() {
+
     }
 
     /**
@@ -386,4 +426,5 @@ public final class StreetProcess extends AbstractModuleView<StreetWrapperDTO> im
         map.put("street_name", Func.nullSafeToString(street_name_field.getText()));
         return new StreetDTO(map);
     }
+
 }

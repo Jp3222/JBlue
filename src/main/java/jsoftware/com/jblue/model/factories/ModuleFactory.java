@@ -9,6 +9,7 @@ import jsoftware.com.jblue.controllers.compc.WizardController;
 import jsoftware.com.jblue.controllers.viewc.AdministrationHistoryController;
 import jsoftware.com.jblue.controllers.viewc.EmployeeRegisterController;
 import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
+import jsoftware.com.jblue.controllers.viewc.StreetsController;
 import jsoftware.com.jblue.controllers.winc.LoginController;
 import jsoftware.com.jblue.controllers.winc.MainController;
 import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
@@ -19,10 +20,12 @@ import jsoftware.com.jblue.model.dto.wrp.LoginWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.OwnerRegisterProcessWrapper;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
+import jsoftware.com.jblue.model.dto.wrp.StreetWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.WMainMenuWrapperDTO;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.views.AdministrationHistoryView;
 import jsoftware.com.jblue.views.ShopCartProcess;
+import jsoftware.com.jblue.views.mod.StreetProcess;
 import jsoftware.com.jblue.views.mod.pro.EmployeeRegisterProcess;
 import jsoftware.com.jblue.views.mod.pro.OwnerRegisterProcess;
 import jsoftware.com.jblue.views.win.LoginWindows;
@@ -140,6 +143,18 @@ public class ModuleFactory implements Serializable {
         AdministrationHistoryView mod = new AdministrationHistoryView(dto);
         return mod;
 
+    }
+
+    public StreetProcess getStreetProcess() {
+        StreetWrapperDTO dto = new StreetWrapperDTO("6", "CALLES REGISTRADAS");
+        dto.setCurrent_administration(administration_dto);
+        dto.setCurrent_employee(employee);
+        //CONTROLADOR DE EVENTOS
+        StreetsController controller = new StreetsController();
+        dto.putController("MAIN", controller);
+        //NUEVA VISTA
+        StreetProcess mod = new StreetProcess(dto);
+        return mod;
     }
 
 }

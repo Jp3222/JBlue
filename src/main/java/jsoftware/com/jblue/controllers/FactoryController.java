@@ -26,7 +26,6 @@ import jsoftware.com.jblue.controllers.winc.LoginController;
 import jsoftware.com.jblue.controllers.winc.WindowController;
 import jsoftware.com.jblue.views.EmployeesView;
 import jsoftware.com.jblue.views.ShopCartProcess;
-import jsoftware.com.jblue.views.StreetsView;
 import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.WaterIntakesTypesView;
 import jsoftware.com.jblue.views.WaterIntakesView;
@@ -49,8 +48,8 @@ public class FactoryController {
         return new ShopCartController(view);
     }
 
-    public static Controller getStreetsController(StreetsView view) {
-        return new StreetsController(view);
+    public static Controller getStreetsController() {
+        return new StreetsController();
     }
 
     public static Controller getUserController(UserView view) {

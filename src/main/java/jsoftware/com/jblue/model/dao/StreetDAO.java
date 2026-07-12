@@ -11,6 +11,7 @@ import java.util.Map;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.exp.DataAccesObjectException;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
+import jsoftware.com.jblue.model.exp.imp.CorruptUpdateException;
 import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.Func;
@@ -71,14 +72,14 @@ public class StreetDAO extends AbstractDAO implements ListComponentDAO<StreetDTO
      * MySQL y enriquece el DTO tras completarse la operación.
      * </p>
      */
-    public int insert(JDBConnection connection, StreetDTO dto) throws SQLException, DataAccesObjectException {
-        int generated_id = -1;
-        String query = "INSERT INTO cat_street (street_name, colony_id, status) VALUES (?, ?, ?)";
+    public boolean insert(JDBConnection connection, StreetDTO dto) throws SQLException, DataAccesObjectException {
+        boolean res = false;
+        String query = "INSERT INTO cat_street (street_name, colony_id, status, employee_last_update) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, dto.getStreetName());
             ps.setString(2, dto.getColonyId());
             ps.setString(3, dto.getStatus());
-
+            ps.setString(4, dto.getLastEmployeeUpdate());
             if (ps.executeUpdate() != PreparedStatement.EXECUTE_FAILED) {
                 throw new CorruptInsertionException();
             }
@@ -86,23 +87,23 @@ public class StreetDAO extends AbstractDAO implements ListComponentDAO<StreetDTO
                 if (!gk.next()) {
                     throw new KeyNotGenerateException();
                 }
-                generated_id = gk.getInt(1);
-
+                int generated_id = gk.getInt(1);
                 // Enriquecimiento del DTO alineado a las reglas de JBlue
                 dto.put("id", String.valueOf(generated_id));
                 String now = Formats.getLocalDateTime(LocalDateTime.now());
                 dto.put("date_update", now);
                 dto.put("date_register", now);
+                res = true;
             }
         }
-        return generated_id;
+        return res;
     }
 
     /**
      * Modifica selectivamente los campos modificados en la vista Swing mediante
      * mapeo por deltas.
      */
-    public boolean update(JDBConnection connection, StreetDTO old_dto, StreetDTO new_dto) throws SQLException {
+    public boolean update(JDBConnection connection, StreetDTO old_dto, StreetDTO new_dto) throws SQLException, CorruptUpdateException {
         boolean res = false;
         Map<String, Object> diff_map = Func.getChangedStringEntries(old_dto.getMap(), new_dto.getMap());
 
@@ -132,7 +133,7 @@ public class StreetDAO extends AbstractDAO implements ListComponentDAO<StreetDTO
 
             res = ps.executeUpdate() > 0;
             if (!res) {
-                throw new SQLException("MODIFICACIÓN CORRUPTA: El registro no existe o su estatus fue alterado.");
+                throw new CorruptUpdateException("MODIFICACIÓN CORRUPTA: El registro no existe o su estatus fue alterado.");
             }
         }
         return res;

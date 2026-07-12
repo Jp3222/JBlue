@@ -42,6 +42,10 @@ public class StreetDTO extends JDBMapObject {
         return Func.nullSafeToString(get("status"));
     }
 
+    public String getLastEmployeeUpdate() {
+        return Func.nullSafeToString(get("employee_last_update"));
+    }
+
     public String getDateUpdate() {
         return Func.nullSafeToString(get("date_update"));
     }

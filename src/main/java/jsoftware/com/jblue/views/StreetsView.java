@@ -80,7 +80,7 @@ public final class StreetsView extends DBView implements DBObjectValues<StreetDT
      */
     @Override
     public void events() {
-        controller = FactoryController.getStreetsController(this);
+        controller = FactoryController.getStreetsController();
         back_button.addActionListener(table_controller);
         next_button.addActionListener(table_controller);
         reload_button.addActionListener(table_controller);

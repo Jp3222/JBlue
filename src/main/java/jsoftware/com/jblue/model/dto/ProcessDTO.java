@@ -7,8 +7,8 @@ import jsoftware.com.jutil.db.JDBMapObject;
  * DTO correspondiente al motor de trámites y máquina de estados (Process).
  * <br>
  * Utiliza la estructura interna dinámica de Map para transportar las cadenas de
- * texto de manera flexible entre las interfaces de Swing y la capa DAO de MySQL,
- * soportando la mutación progresiva del ciclo de vida del trámite.
+ * texto de manera flexible entre las interfaces de Swing y la capa DAO de
+ * MySQL, soportando la mutación progresiva del ciclo de vida del trámite.
  *
  * @author JUAN PABLO CAMPOS CASASANERO
  * @since 2025-10-18
@@ -21,11 +21,10 @@ public class ProcessDTO extends JDBMapObject {
     public ProcessDTO() {
         // Inicializa con una capacidad de 40 para albergar de forma eficiente los 27 campos,
         // garantizando un factor de carga óptimo sin redimensionamientos en memoria.
-        super(40); 
+        super(40);
     }
 
     // Se omite getId() -> Heredado directamente de JDBMapObject de forma limpia
-
     public String getProcessType() {
         return Func.nullSafeToString(get("process_type"));
     }
@@ -83,11 +82,11 @@ public class ProcessDTO extends JDBMapObject {
     }
 
     /**
-     * Mapea la columna de la base de datos manteniendo compatibilidad 
-     * exacta con el identificador 'employe_print'.
+     * Mapea la columna de la base de datos manteniendo compatibilidad exacta
+     * con el identificador 'employee_print'.
      */
-    public String getEmployePrint() {
-        return Func.nullSafeToString(get("employe_print"));
+    public String getEmployeePrint() {
+        return Func.nullSafeToString(get("employee_print"));
     }
 
     public String getDatePrint() {

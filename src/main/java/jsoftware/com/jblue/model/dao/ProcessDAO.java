@@ -52,8 +52,8 @@ public class ProcessDAO extends AbstractDAO {
     public int startProcess(JDBConnection connection, ProcessDTO dto) throws SQLException {
         int generatedId = 0;
         String query = """
-                       INSERT INTO
-                       (process_type, sequence_process, employee_start, user_id, administration_start, current_db_user, status, last_employee_update) 
+                       INSERT INTO pro_process
+                       (process_type, sequence_process, employee_start, administration_start, current_db_user, status, last_employee_update) 
                        VALUES
                        (?, ?, ?, ?, ?, CURRENT_USER, 10, ?)
                        """;
@@ -61,9 +61,8 @@ public class ProcessDAO extends AbstractDAO {
             ps.setInt(1, Integer.parseInt(dto.getProcessType()));
             ps.setInt(2, Integer.parseInt(dto.getSequenceProcess()));
             ps.setInt(3, Integer.parseInt(dto.getEmployeeStart()));
-            ps.setInt(4, Integer.parseInt(dto.getUserId()));
-            ps.setInt(5, Integer.parseInt(dto.getAdministrationStart()));
-            ps.setInt(6, Integer.parseInt(dto.getDateStart()));
+            ps.setInt(4, Integer.parseInt(dto.getAdministrationStart()));
+            ps.setInt(5, Integer.parseInt(dto.getDateStart()));
             int affectedRows = ps.executeUpdate();
             if (affectedRows > 0) {
                 try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -78,11 +77,68 @@ public class ProcessDAO extends AbstractDAO {
         return generatedId;
     }
 
+    public boolean userRegister(JDBConnection connection, ProcessDTO dto) throws SQLException, ProcessException {
+        String query = """
+                        UPDATE pro_process SET
+                            user_id = ?, 
+                            current_db_user = ?,
+                            last_employee_update = ?}
+                        WHERE id = ?
+                       
+                       """;
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
+            ps.setString(1, dto.getUserId());
+            ps.setString(2, dto.getCurrentDbUser());
+            ps.setString(3, dto.getLastEmployeeUpdate());
+            ps.setString(4, dto.getId());
+            boolean rt = ps.executeUpdate() > 0;
+            if (!rt) {
+                throw new ProcessException(1, "ERROR EN VALIDACIÓN: El trámite ID " + dto.getId() + " no existe o no pudo mutar.");
+            }
+            return rt;
+        }
+    }
+
     /**
      * Fase [2]: Validación Documental.
      */
     public boolean validProcess(JDBConnection connection, int id, String document_id) throws SQLException, ProcessException {
+        String query = """
+                        UPDATE pro_process SET
+                            user_id = ?, 
+                            current_db_user = ?,
+                            last_employee_update = ?}
+                        WHERE id = ?
+                       
+                       """;
         try (PreparedStatement ps = connection.getNewPreparedStatement(ProcessQuery.UPDATE_PROCESS_VALID)) {
+            ps.setInt(1, Integer.parseInt(current_employee.getId()));
+            ps.setInt(2, Integer.parseInt(document_id));
+            ps.setInt(3, Integer.parseInt(current_employee.getId()));
+            ps.setInt(4, STATUS_VALIDADO);
+            ps.setInt(5, id);
+
+            boolean rt = ps.executeUpdate() > 0;
+            if (!rt) {
+                throw new ProcessException(1, "ERROR EN VALIDACIÓN: El trámite ID " + id + " no existe o no pudo mutar.");
+            }
+            return rt;
+        }
+    }
+
+    /**
+     * Fase [2]: Validación Documental.
+     */
+    public boolean waterIntakeRegister(JDBConnection connection, int id, String document_id) throws SQLException, ProcessException {
+        String query = """
+                        UPDATE pro_process SET
+                            user_id = ?, 
+                            current_db_user = ?,
+                            last_employee_update = ?}
+                        WHERE id = ?
+                       
+                       """;
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
             ps.setInt(1, Integer.parseInt(current_employee.getId()));
             ps.setInt(2, Integer.parseInt(document_id));
             ps.setInt(3, Integer.parseInt(current_employee.getId()));

@@ -27,7 +27,6 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
 
     public OwnerRegisterProcessController(boolean flag_dev, String mod_name) {
         this.service = new OwnerRegisterProcessService(flag_dev, mod_name);
-
     }
 
     @Override
@@ -49,17 +48,23 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
         boolean res = false;
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
             SystemSession ss = SystemSession.getInstancia();
+            //VALIDAR LA ADMINISTRACION
             if (!ss.isAdministrationValid()) {
                 returnMessage(view, false, "LA ADMINISTRACION ACTUAL NO SE HA REGISTRADO O NO ES VALIDA");
                 return;
             }
-
+            //VALIDAR LA SESSION
+            if (ss.isLock()) {
+                returnMessage(view, false, "LA SESION ACTUAL HA CADUCADO");
+                return;
+            }
+            //EJECUTAR EL MOVIMIENTO
             res = service.save(c, view.getDtoWrapper());
             if (service.isError()) {
                 returnMessage(view, false, service.getUserMessage());
                 return;
             }
-            
+            //CONFIRMAR LA REIMPRESION DE FORMATO
             int showConfirmDialog = JOptionPane.showConfirmDialog(view, "¿DESEAS EXPORTAR LOS FORMATOS?");
             if (showConfirmDialog == JOptionPane.YES_OPTION) {
                 JOptionPane.showMessageDialog(view, "EL FORMATO HA SIDO EXPORTADO CORRECTAMENTE", "FORMATOS", JOptionPane.INFORMATION_MESSAGE);

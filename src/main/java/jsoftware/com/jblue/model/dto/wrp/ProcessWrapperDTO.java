@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Objects;
 import jsoftware.com.jblue.model.dto.AddressDTO;
 import jsoftware.com.jblue.model.dto.DocumentRecordDTO;
-import jsoftware.com.jblue.model.dto.PaymentDTO;
-import jsoftware.com.jblue.model.dto.PaymentListDTO;
 import jsoftware.com.jblue.model.dto.ProcessDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentationDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
+import jsoftware.com.jpaymentlib.model.dto.PaymentDetailDTO;
+import jsoftware.com.jpaymentlib.model.dto.PaymentHeaderDTO;
 
 /**
  * Objeto de transferencia de datos envolvente (Wrapper) para procesos
@@ -42,16 +42,16 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
 
     private WaterIntakeDTO water_intake;
     private boolean water_intake_valid;
-    
+
     //TIPO DE TOMA
     private WaterIntakeTypeDTO water_intake_type;
-    
+
     //PASO 4
-    private PaymentDTO payment_header;
+    private PaymentHeaderDTO payment_header;
     private boolean payment_header_valid;
 
     //PASO 5
-    private List<PaymentListDTO> payment_details;
+    private List<PaymentDetailDTO> payment_details;
     private boolean payment_detail_valid;
 
     //PASO 6
@@ -139,11 +139,11 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
         this.water_intake_valid = water_intake_valid;
     }
 
-    public PaymentDTO getPayment_header() {
+    public PaymentHeaderDTO getPayment_header() {
         return payment_header;
     }
 
-    public void setPayment_header(PaymentDTO payment_header) {
+    public void setPayment_header(PaymentHeaderDTO payment_header) {
         this.payment_header = payment_header;
     }
 
@@ -155,11 +155,11 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
         this.payment_header_valid = payment_header_valid;
     }
 
-    public List<PaymentListDTO> getPayment_details() {
+    public List<PaymentDetailDTO> getPayment_details() {
         return payment_details;
     }
 
-    public void setPayment_details(List<PaymentListDTO> payment_details) {
+    public void setPayment_details(List<PaymentDetailDTO> payment_details) {
         this.payment_details = payment_details;
     }
 
@@ -296,7 +296,7 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
         document_list = new ArrayList<>();
         document_record = new DocumentRecordDTO(); // Corregido: Limpieza total
         water_intake = new WaterIntakeDTO();
-        payment_header = new PaymentDTO();
+        payment_header = new PaymentHeaderDTO();
         payment_details = new ArrayList<>();
         wki_user = new WaterIntakeUserDTO();
 

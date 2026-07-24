@@ -80,17 +80,15 @@ public class ProcessDAO extends AbstractDAO {
     public boolean userRegister(JDBConnection connection, ProcessDTO dto) throws SQLException, ProcessException {
         String query = """
                         UPDATE pro_process SET
-                            user_id = ?, 
                             current_db_user = ?,
-                            last_employee_update = ?}
+                            last_employee_update = ?
                         WHERE id = ?
                        
                        """;
         try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
-            ps.setString(1, dto.getUserId());
-            ps.setString(2, dto.getCurrentDbUser());
-            ps.setString(3, dto.getLastEmployeeUpdate());
-            ps.setString(4, dto.getId());
+            ps.setString(1, dto.getCurrentDbUser());
+            ps.setString(2, dto.getLastEmployeeUpdate());
+            ps.setString(3, dto.getId());
             boolean rt = ps.executeUpdate() > 0;
             if (!rt) {
                 throw new ProcessException(1, "ERROR EN VALIDACIÓN: El trámite ID " + dto.getId() + " no existe o no pudo mutar.");
@@ -289,7 +287,7 @@ public class ProcessDAO extends AbstractDAO {
                     ProcessDTO process = new ProcessDTO();
                     for (int i = 1; i <= size; i++) {
                         String label = md.getColumnLabel(i);
-                        process.getMap().put(label, rs.getString(label));
+                        process.put(label, rs.getString(label));
                     }
                     list.add(process);
                 }

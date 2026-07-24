@@ -3,6 +3,8 @@ package jsoftware.com.jblue.model.service;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.ProcessDAO;
 import jsoftware.com.jblue.model.dao.SequenceDAO;
@@ -16,6 +18,10 @@ import jsoftware.com.jblue.model.exp.DataAccesObjectException;
 import jsoftware.com.jblue.model.exp.ProcessException;
 import jsoftware.com.jblue.model.models.AbstractService;
 import jsoftware.com.jblue.sys.SystemSession;
+import jsoftware.com.jpaymentlib.model.dto.PaymentDetailDTO;
+import jsoftware.com.jpaymentlib.model.dto.PaymentHeaderDTO;
+import jsoftware.com.jpaymentlib.model.dto.wrp.PaymentWrapper;
+import jsoftware.com.jpaymentlib.model.service.PaymentHeaderService;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**
@@ -35,10 +41,9 @@ public class ProcessService extends AbstractService implements Serializable {
     private final AddressService address_service;
     private final UserDocumentationService documentation_service;
     private final DocumentRecordService document_record_service;
+    private final WaterIntakeUserService water_intake_service;
+    private final PaymentHeaderService header_service;
     private final PaymentService payment_service;
-    private final WaterIntakeService water_intake_service;
-    private final WaterIntakeUserService wki_user_service;
-    private final TransactionHistoryService transaction_service;
     private final HistoryDAO history_dao;
 
     public ProcessService(boolean flag_dev, String process_name) {
@@ -50,10 +55,9 @@ public class ProcessService extends AbstractService implements Serializable {
         address_service = new AddressService(flag_dev, process_name);
         documentation_service = new UserDocumentationService(flag_dev, process_name);
         document_record_service = new DocumentRecordService(flag_dev, process_name);
+        water_intake_service = new WaterIntakeUserService(flag_dev, process_name);
+        header_service = new PaymentHeaderService(flag_dev, process_name);
         payment_service = new PaymentService(flag_dev, process_name);
-        water_intake_service = new WaterIntakeService(flag_dev, process_name);
-        wki_user_service = new WaterIntakeUserService(flag_dev, process_name);
-        transaction_service = new TransactionHistoryService(flag_dev, process_name);
         history_dao = HistoryDAO.getInstance();
     }
 
@@ -189,7 +193,7 @@ public class ProcessService extends AbstractService implements Serializable {
             wki.put("status", "1");
             wki.put("last_employee_update", final_employee);
         }
-        res = water_intake_service.saveProcess(connection, wki);
+        res = water_intake_service.saveProcess(connection, null);
         if (!res) {
             rollback(connection);
             returnMessageError(water_intake_service.getErrorCode(), water_intake_service.getUserMessage());
@@ -204,15 +208,33 @@ public class ProcessService extends AbstractService implements Serializable {
      * línea de captura con vigencia limitada.
      */
     public boolean payment(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) {
-//        String metodoPago = dto.get("payment_method"); // "TRANSFERENCIA", "EFECTIVO", etc.
-//        String tiempoPago = dto.getStr("payment_time");   // "MISMO_DIA", "POSTERIOR"
-//
-//        if ("POSTERIOR".equals(tiempoPago) || "TRANSFERENCIA".equals(metodoPago)) {
-//            // Generar secuencia de pago temporal con penalización potencial si expira
-//            dto.put("status_tramite", "PENDIENTE_LIQUIDACION");
-//        } else {
-//            dto.put("status_tramite", "PAGADO");
-//        }
+        Optional<PaymentWrapper> opt = header_service.saveProcess(connection, null);
+
+        if (opt.isEmpty()) {
+            returnMessageError(0, "ERROR AL CALCULAR MONTOS E IMPORTES");
+            return false;
+        }
+
+        PaymentWrapper get = opt.get();
+        PaymentHeaderDTO header = get.getHeader();
+        header.put("process_id", dto.getProcess().getId());
+        header.put("sequence", dto.getProcess().getSequenceProcess());
+        header.put("uuid", UUID.randomUUID().toString());
+        header.put("user_id", dto.getUser().getId());
+        header.put("wki_user_id", dto.getWki_user().getId());
+        header.put("office_id", ss.getCurrent_instance().getOfficeId());
+        header.put("cash_box_turn_id", null);
+        header.put("authorized_by", null);
+        header.put("payment_method_id", "1");
+        header.put("payment_type_id", "4");
+        header.put("is_surcharge_paid", !header.getTotalSurcharge().equals("0.00"));
+        header.put("print_count", "0");
+        header.put("status", "1");
+        header.put("employee_id", ss.getCurrentEmployee().getId());
+        dto.setPayment_header(header);
+        //
+        List<PaymentDetailDTO> detail = get.getDetail();
+        dto.setPayment_details(detail);
         return true;
     }
 
@@ -222,7 +244,7 @@ public class ProcessService extends AbstractService implements Serializable {
     public boolean finalized(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) {
         boolean res = false;
         try {
-            int status = dto.getPayment_header().getStatus();
+            int status = Integer.parseInt(dto.getPayment_header().getStatus());
             if (status != 1) {
                 return res;
             }

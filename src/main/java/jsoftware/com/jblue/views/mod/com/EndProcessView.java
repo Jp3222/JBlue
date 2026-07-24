@@ -7,12 +7,12 @@ package jsoftware.com.jblue.views.mod.com;
 import java.util.List;
 import java.util.Map;
 import javax.swing.table.TableModel;
-import jsoftware.com.jblue.model.dto.PaymentListDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentationDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.vabst.AbstractWizardView;
+import jsoftware.com.jpaymentlib.model.dto.PaymentDetailDTO;
 
 /**
  *
@@ -155,7 +155,7 @@ public final class EndProcessView extends AbstractWizardView<ProcessWrapperDTO> 
                 i++;
             }
         }
-        for (PaymentListDTO py : o.getPayment_details()) {
+        for (PaymentDetailDTO py : o.getPayment_details()) {
             for (Map.Entry<String, Object> entry : py.getMap().entrySet()) {
                 String key = entry.getKey();
                 String val = entry.getValue().toString();

@@ -97,7 +97,34 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
     }
 
     private void search() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean res = false;
+        try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
+            SystemSession ss = SystemSession.getInstancia();
+            //VALIDAR LA ADMINISTRACION
+            if (!ss.isAdministrationValid()) {
+                returnMessage(view, false, "LA ADMINISTRACION ACTUAL NO SE HA REGISTRADO O NO ES VALIDA");
+                return;
+            }
+            //VALIDAR LA SESSION
+            if (ss.isLock()) {
+                returnMessage(view, false, "LA SESION ACTUAL HA CADUCADO");
+                return;
+            }
+            //EJECUTAR EL MOVIMIENTO
+            res = service.search(c, view.getDtoWrapper());
+            if (service.isError()) {
+                returnMessage(view, false, service.getUserMessage());
+                return;
+            }
+            //CONFIRMAR LA REIMPRESION DE FORMATO
+            JOptionPane.showMessageDialog(view, "SE CARGARAN LOS DATOS ENCONTRADOS");
+            view.updateData();
+        } catch (Exception e) {
+            returnMessage(view, false, e.getMessage());
+        }
+        if (res) {
+            returnMessage(view, true);
+        }
     }
 
     private void payment_confirm() {

@@ -478,4 +478,34 @@ public class UserDao extends AbstractDAO implements TableComponentDAO<UserDTO>, 
     public JTableModel buildModel(JDBConnection connection, JTableModel model) {
         return null;
     }
+
+    /**
+     * ASIGNA DATOS EXISTENTES A UN DTO, BUSCANDO POR RFC
+     *
+     * @param connection - CONEXION ACTIVA
+     * @param user - DTO CON RFC
+     * @return true si los datos fueron asignados correctamente
+     * @throws SQLException
+     */
+    public boolean set(JDBConnection connection, UserDTO user) throws SQLException {
+        String query = "SELECT * FROM usr_user WHERE rfc = ? AND status = 1";
+        try (PreparedStatement ps = connection.getNewPreparedStatement(query)) {
+            ps.setString(1, user.getRfc());
+            try (ResultSet rs = ps.executeQuery()) {
+                ResultSetMetaData md = rs.getMetaData();
+                int size = md.getColumnCount();
+                String[] fields = new String[size];
+                for (int i = 0; i < size; i++) {
+                    fields[i] = md.getColumnLabel(i + 1);
+                }
+                while (rs.next()) {
+                    UserDTO aux = new UserDTO();
+                    for (String field : fields) {
+                        aux.getMap().put(field, rs.getString(field));
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

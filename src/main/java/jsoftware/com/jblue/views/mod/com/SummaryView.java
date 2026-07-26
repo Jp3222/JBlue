@@ -18,14 +18,14 @@ import jsoftware.com.jpaymentlib.model.dto.PaymentDetailDTO;
  *
  * @author juanp
  */
-public final class EndProcessView extends AbstractWizardView<ProcessWrapperDTO> implements DBObjectValues<ProcessWrapperDTO>{
+public final class SummaryView extends AbstractWizardView<ProcessWrapperDTO> implements DBObjectValues<ProcessWrapperDTO>{
 
     private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form EndProcessView
      */
-    public EndProcessView(ProcessWrapperDTO builder) {
+    public SummaryView(ProcessWrapperDTO builder) {
         super(builder);
         initComponents();
         build();
@@ -74,7 +74,7 @@ public final class EndProcessView extends AbstractWizardView<ProcessWrapperDTO> 
         jButton2 = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(900, 700));
-        setName("Form"); // NOI18N
+        setName("RESUMEN DEL TRAMITE"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
 
@@ -109,15 +109,15 @@ public final class EndProcessView extends AbstractWizardView<ProcessWrapperDTO> 
 
         label1.setName("label1"); // NOI18N
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/com/Bundle"); // NOI18N
-        label1.setText(bundle.getString("EndProcessView.label1.text")); // NOI18N
+        label1.setText(bundle.getString("SummaryView.label1.text")); // NOI18N
         jPanel1.add(label1);
 
         jButton1.setFont(new java.awt.Font("Noto Sans", 0, 14)); // NOI18N
-        jButton1.setText(bundle.getString("EndProcessView.jButton1.text")); // NOI18N
+        jButton1.setText(bundle.getString("SummaryView.jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
         jPanel1.add(jButton1);
 
-        jButton2.setText(bundle.getString("EndProcessView.jButton2.text")); // NOI18N
+        jButton2.setText(bundle.getString("SummaryView.jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
         jPanel1.add(jButton2);
 

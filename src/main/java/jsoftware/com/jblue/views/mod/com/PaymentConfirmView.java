@@ -22,7 +22,7 @@ import jsoftware.com.jutil.util.FuncLogs;
  *
  * @author juanp
  */
-public final class PaymentProcessView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<List<PaymentListDTO>> {
+public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<List<PaymentListDTO>> {
 
     private static final long serialVersionUID = 1L;
     private final DefaultTableModel model;
@@ -30,7 +30,7 @@ public final class PaymentProcessView extends AbstractModuleView<ProcessWrapperD
     /**
      * Creates new form PaymentProcess
      */
-    public PaymentProcessView(ProcessWrapperDTO dto) {
+    public PaymentConfirmView(ProcessWrapperDTO dto) {
         super(dto);
         this.initComponents();
         this.model = new DefaultTableModel(new String[]{"No.", "Concepto", "Costo", "Tipo"}, 0);
@@ -118,7 +118,7 @@ public final class PaymentProcessView extends AbstractModuleView<ProcessWrapperD
         jLabel1.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/com/Bundle"); // NOI18N
-        jLabel1.setText(bundle.getString("PaymentProcessView.jLabel1.text")); // NOI18N
+        jLabel1.setText(bundle.getString("PaymentConfirmView.jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
         jLabel1.setPreferredSize(new java.awt.Dimension(150, 50));
         register_panel.add(jLabel1, java.awt.BorderLayout.NORTH);
@@ -157,7 +157,7 @@ public final class PaymentProcessView extends AbstractModuleView<ProcessWrapperD
         jPanel4.setLayout(new java.awt.BorderLayout());
 
         jLabel3.setFont(new java.awt.Font("Noto Sans", 1, 18)); // NOI18N
-        jLabel3.setText(bundle.getString("PaymentProcessView.jLabel3.text")); // NOI18N
+        jLabel3.setText(bundle.getString("PaymentConfirmView.jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
         jPanel4.add(jLabel3, java.awt.BorderLayout.PAGE_START);
 
@@ -165,11 +165,11 @@ public final class PaymentProcessView extends AbstractModuleView<ProcessWrapperD
         jPanel5.setLayout(new java.awt.GridLayout(15, 0));
 
         jLabel5.setFont(new java.awt.Font("Noto Sans", 1, 18)); // NOI18N
-        jLabel5.setText(bundle.getString("PaymentProcessView.jLabel5.text")); // NOI18N
+        jLabel5.setText(bundle.getString("PaymentConfirmView.jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
         jPanel5.add(jLabel5);
 
-        jButton1.setText(bundle.getString("PaymentProcessView.jButton1.text")); // NOI18N
+        jButton1.setText(bundle.getString("PaymentConfirmView.jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -178,7 +178,7 @@ public final class PaymentProcessView extends AbstractModuleView<ProcessWrapperD
         });
         jPanel5.add(jButton1);
 
-        jButton2.setText(bundle.getString("PaymentProcessView.jButton2.text")); // NOI18N
+        jButton2.setText(bundle.getString("PaymentConfirmView.jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
         jPanel5.add(jButton2);
 

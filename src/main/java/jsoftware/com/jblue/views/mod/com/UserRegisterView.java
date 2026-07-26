@@ -16,12 +16,13 @@ import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
+import jsoftware.com.jblue.views.framework.ShowDataModel;
 
 /**
  *
  * @author juanp
  */
-public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<UserDTO> {
+public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<UserDTO>, ShowDataModel {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,9 +44,9 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
 
     @Override
     public void components() {
-        OwnerRegisterProcessController main = (OwnerRegisterProcessController) getDtoWrapper().getController("MAIN");
-        if (Func.isNotNull(main)) {
-            search_user_button.addActionListener(main);
+        OwnerRegisterProcessController owner_controller = (OwnerRegisterProcessController) getDtoWrapper().getController("CONTROLLER");
+        if (Func.isNotNull(owner_controller)) {
+            search_user_button.addActionListener(owner_controller);
         }
     }
 
@@ -155,7 +156,9 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         p_rfc.add(rfc_field, java.awt.BorderLayout.CENTER);
 
         search_user_button.setText(bundle.getString("UserRegisterView.search_user_button.text")); // NOI18N
+        search_user_button.setActionCommand(bundle.getString("UserRegisterView.search_user_button.actionCommand")); // NOI18N
         search_user_button.setName("search_user_button"); // NOI18N
+        search_user_button.setPreferredSize(new java.awt.Dimension(80, 30));
         p_rfc.add(search_user_button, java.awt.BorderLayout.LINE_END);
 
         user_data_panel.add(p_rfc);
@@ -172,7 +175,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         p_curp.add(curp_field, java.awt.BorderLayout.CENTER);
 
         jLabel23.setName("jLabel23"); // NOI18N
-        jLabel23.setPreferredSize(new java.awt.Dimension(60, 30));
+        jLabel23.setPreferredSize(new java.awt.Dimension(80, 30));
         p_curp.add(jLabel23, java.awt.BorderLayout.LINE_END);
 
         user_data_panel.add(p_curp);
@@ -194,7 +197,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         pc_nombre.add(first_name_field, java.awt.BorderLayout.CENTER);
 
         jLabel7.setName("jLabel7"); // NOI18N
-        jLabel7.setPreferredSize(new java.awt.Dimension(60, 30));
+        jLabel7.setPreferredSize(new java.awt.Dimension(80, 30));
         pc_nombre.add(jLabel7, java.awt.BorderLayout.LINE_END);
 
         user_data_panel.add(pc_nombre);
@@ -216,7 +219,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         pc_ap.add(last_name1_field, java.awt.BorderLayout.CENTER);
 
         jLabel9.setName("jLabel9"); // NOI18N
-        jLabel9.setPreferredSize(new java.awt.Dimension(60, 30));
+        jLabel9.setPreferredSize(new java.awt.Dimension(80, 30));
         pc_ap.add(jLabel9, java.awt.BorderLayout.LINE_END);
 
         user_data_panel.add(pc_ap);
@@ -238,7 +241,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         pc_am.add(last_name2_field, java.awt.BorderLayout.CENTER);
 
         jLabel10.setName("jLabel10"); // NOI18N
-        jLabel10.setPreferredSize(new java.awt.Dimension(60, 30));
+        jLabel10.setPreferredSize(new java.awt.Dimension(80, 30));
         pc_am.add(jLabel10, java.awt.BorderLayout.LINE_END);
 
         user_data_panel.add(pc_am);
@@ -256,7 +259,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         p_gender.add(gender_field, java.awt.BorderLayout.CENTER);
 
         jLabel26.setName("jLabel26"); // NOI18N
-        jLabel26.setPreferredSize(new java.awt.Dimension(60, 30));
+        jLabel26.setPreferredSize(new java.awt.Dimension(80, 30));
         p_gender.add(jLabel26, java.awt.BorderLayout.LINE_END);
 
         user_data_panel.add(p_gender);
@@ -270,7 +273,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         p_born_date.add(jLabel27, java.awt.BorderLayout.WEST);
 
         jLabel38.setName("jLabel38"); // NOI18N
-        jLabel38.setPreferredSize(new java.awt.Dimension(60, 30));
+        jLabel38.setPreferredSize(new java.awt.Dimension(80, 30));
         p_born_date.add(jLabel38, java.awt.BorderLayout.LINE_END);
 
         birdate_field.setName("birdate_field"); // NOI18N
@@ -290,7 +293,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         jPanel2.add(email_field, java.awt.BorderLayout.CENTER);
 
         jLabel32.setName("jLabel32"); // NOI18N
-        jLabel32.setPreferredSize(new java.awt.Dimension(60, 30));
+        jLabel32.setPreferredSize(new java.awt.Dimension(80, 30));
         jPanel2.add(jLabel32, java.awt.BorderLayout.LINE_END);
 
         user_data_panel.add(jPanel2);
@@ -307,7 +310,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         jPanel3.add(phone_number1_field, java.awt.BorderLayout.CENTER);
 
         jLabel34.setName("jLabel34"); // NOI18N
-        jLabel34.setPreferredSize(new java.awt.Dimension(60, 30));
+        jLabel34.setPreferredSize(new java.awt.Dimension(80, 30));
         jPanel3.add(jLabel34, java.awt.BorderLayout.LINE_END);
 
         user_data_panel.add(jPanel3);
@@ -324,7 +327,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         jPanel4.add(phone_number2_field, java.awt.BorderLayout.CENTER);
 
         jLabel35.setName("jLabel35"); // NOI18N
-        jLabel35.setPreferredSize(new java.awt.Dimension(60, 30));
+        jLabel35.setPreferredSize(new java.awt.Dimension(80, 30));
         jPanel4.add(jLabel35, java.awt.BorderLayout.LINE_END);
 
         user_data_panel.add(jPanel4);
@@ -464,5 +467,10 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         } else {
 
         }
+    }
+
+    @Override
+    public void showData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

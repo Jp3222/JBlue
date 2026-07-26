@@ -26,7 +26,7 @@ import jsoftware.com.jblue.views.framework.DBObjectValues;
  *
  * @author juanp
  */
-public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<List<UserDocumentationDTO>> {
+public class UserDocumentValidationView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<List<UserDocumentationDTO>> {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
     /**
      * Creates new form ValidationProcess
      */
-    public ValidationProcessView(ProcessWrapperDTO dto) {
+    public UserDocumentValidationView(ProcessWrapperDTO dto) {
         super(dto);
         initComponents();
         this.model = new DefaultListModel<>();
@@ -134,7 +134,7 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
         jLabel1.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/com/Bundle"); // NOI18N
-        jLabel1.setText(bundle.getString("ValidationProcessView.jLabel1.text")); // NOI18N
+        jLabel1.setText(bundle.getString("UserDocumentValidationView.jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
         jLabel1.setPreferredSize(new java.awt.Dimension(150, 50));
         jPanel1.add(jLabel1, java.awt.BorderLayout.NORTH);
@@ -154,17 +154,17 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
 
         java.util.ResourceBundle bundle1 = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/Bundle"); // NOI18N
         add_doc1.setText(bundle1.getString("ValidationProcessView.Añadir.text")); // NOI18N
-        add_doc1.setActionCommand(bundle.getString("ValidationProcessView.add_doc1.actionCommand")); // NOI18N
+        add_doc1.setActionCommand(bundle.getString("UserDocumentValidationView.add_doc1.actionCommand")); // NOI18N
         add_doc1.setName("Añadir"); // NOI18N
         jPanel3.add(add_doc1);
 
         add_doc2.setText(bundle1.getString("ValidationProcessView.Quitar.text")); // NOI18N
-        add_doc2.setActionCommand(bundle.getString("ValidationProcessView.add_doc2.actionCommand")); // NOI18N
+        add_doc2.setActionCommand(bundle.getString("UserDocumentValidationView.add_doc2.actionCommand")); // NOI18N
         add_doc2.setName("Quitar"); // NOI18N
         jPanel3.add(add_doc2);
 
-        add_doc3.setText(bundle.getString("ValidationProcessView.add_doc3.text")); // NOI18N
-        add_doc3.setActionCommand(bundle.getString("ValidationProcessView.add_doc3.actionCommand")); // NOI18N
+        add_doc3.setText(bundle.getString("UserDocumentValidationView.add_doc3.text")); // NOI18N
+        add_doc3.setActionCommand(bundle.getString("UserDocumentValidationView.add_doc3.actionCommand")); // NOI18N
         add_doc3.setName("add_doc3"); // NOI18N
         jPanel3.add(add_doc3);
 
@@ -196,7 +196,7 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
         jLabel9.setName(""); // NOI18N
         jPanel3.add(jLabel9);
 
-        jButton3.setText(bundle.getString("ValidationProcessView.jButton3.text")); // NOI18N
+        jButton3.setText(bundle.getString("UserDocumentValidationView.jButton3.text")); // NOI18N
         jButton3.setName("jButton3"); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -205,7 +205,7 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
         });
         jPanel3.add(jButton3);
 
-        jButton1.setText(bundle.getString("ValidationProcessView.jButton1.text")); // NOI18N
+        jButton1.setText(bundle.getString("UserDocumentValidationView.jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -266,7 +266,7 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
         }
         return null;
     }
-// Dentro de ValidationProcessView (o la clase que contenga los botones)
+// Dentro de UserDocumentValidationView (o la clase que contenga los botones)
 
 // Necesitas una función auxiliar para obtener la extensión del archivo
     private String getFileExtension(File file) {
@@ -323,10 +323,10 @@ public class ValidationProcessView extends AbstractModuleView<ProcessWrapperDTO>
                 model.addElement(dto);
             }
         } catch (IOException ex) {
-            System.getLogger(ValidationProcessView.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            System.getLogger(UserDocumentValidationView.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
-    // Reemplaza la versión anterior por esta (debería estar dentro de ValidationProcessView o un servicio)
+    // Reemplaza la versión anterior por esta (debería estar dentro de UserDocumentValidationView o un servicio)
 
     public File copySelectedFileToProgramDirectory(Component parentComponent, JFileChooser fileChooser, File sourceFile, String desiredFileName) {
 

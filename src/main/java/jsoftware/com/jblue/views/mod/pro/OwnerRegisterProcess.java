@@ -16,6 +16,7 @@
  */
 package jsoftware.com.jblue.views.mod.pro;
 
+import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,11 +26,12 @@ import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.ShowDataModel;
-import jsoftware.com.jblue.views.mod.com.EndProcessView;
-import jsoftware.com.jblue.views.mod.com.PaymentProcessView;
-import jsoftware.com.jblue.views.mod.com.StreetRegisterView;
+import jsoftware.com.jblue.views.mod.com.AddressRegisterView;
+import jsoftware.com.jblue.views.mod.com.PaymentConfirmView;
+import jsoftware.com.jblue.views.mod.com.SummaryView;
+import jsoftware.com.jblue.views.mod.com.UserDocumentValidationView;
 import jsoftware.com.jblue.views.mod.com.UserRegisterView;
-import jsoftware.com.jblue.views.mod.com.ValidationProcessView;
+import jsoftware.com.jblue.views.mod.com.WaterIntakeRegisterView;
 import jsoftware.com.jblue.views.vabst.AbstractWizardView;
 
 /**
@@ -41,20 +43,23 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
     private static final long serialVersionUID = 1L;
 
     private final UserRegisterView step1;
-    private final StreetRegisterView step2;
-    private final ValidationProcessView step3;
-    private final PaymentProcessView step4;
-    private final EndProcessView step5;
+    private final AddressRegisterView step2;
+    private final UserDocumentValidationView step3;
+    private final WaterIntakeRegisterView step4;
+    private final PaymentConfirmView step5;
+    private final SummaryView step6;
 
     public OwnerRegisterProcess(ProcessWrapperDTO dto) {
         super(dto);
         step1 = new UserRegisterView(dto);
-        step2 = new StreetRegisterView(dto);
-        step3 = new ValidationProcessView(dto);
-        step4 = new PaymentProcessView(dto);
-        step5 = new EndProcessView(dto);
+        step2 = new AddressRegisterView(dto);
+        step3 = new UserDocumentValidationView(dto);
+        step4 = new WaterIntakeRegisterView(dto);
+        step5 = new PaymentConfirmView(dto);
+        step6 = new SummaryView(dto);
         views = new ArrayList<>(5);
-        views.addAll(Arrays.asList(step1, step2, step3, step4, step5));
+        views.addAll(Arrays.asList(step1, step2, step3, step4, step5, step6));
+        card_layout = (CardLayout) root_panel.getLayout();
         build();
     }
 
@@ -114,22 +119,22 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-
     @Override
     public boolean nextStep() {
         // Sincroniza los componentes visuales del paso actual hacia los Strings del mapa del DTO
         getData();
-
         // Evaluar las banderas de validación del DTO según el paso del asistente
         boolean valid = switch (current_index) {
             case 0 ->
-                true;
+                getDtoWrapper().isUser_valid();
             case 1 ->
-                true;
+                getDtoWrapper().isAddress_valid();
             case 3 ->
-                true;
+                getDtoWrapper().isDocument_record_valid();
+            case 4 ->
+                getDtoWrapper().isPayment_header_valid();
             default ->
-                true;
+                getDtoWrapper().isWater_intake_valid();
         };
         if (!valid) {
             JOptionPane.showMessageDialog(
@@ -151,7 +156,6 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
         if (employeeController != null) {
             // El controlador leerá el WrapperDTO enriquecido, aplicará los casts numéricos en el DAO y guardará en MySQL
             JOptionPane.showMessageDialog(this, "Guardando registro del nuevo empleado en el sistema...", "Procesando", JOptionPane.INFORMATION_MESSAGE);
-
             // Suponiendo que tu controlador implementa el método de persistencia:
             // employeeController.insert(); 
         }
@@ -181,6 +185,9 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
         if (mov) {
             initialState();
         }
+    }
 
+    public void updateData() {
+    
     }
 }

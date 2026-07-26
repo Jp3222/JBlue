@@ -14,12 +14,14 @@ import jsoftware.com.jblue.views.framework.DBObjectValues;
  *
  * @author juanp
  */
-public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<AddressDTO> {
+public class AddressRegisterView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<AddressDTO> {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form StreetRegisterView
      */
-    public StreetRegisterView(ProcessWrapperDTO dto) {
+    public AddressRegisterView(ProcessWrapperDTO dto) {
         super(dto);
         initComponents();
     }
@@ -85,7 +87,7 @@ public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> im
         jLabel38 = new javax.swing.JLabel();
         is_owner_field = new javax.swing.JCheckBox();
 
-        setName("Form"); // NOI18N
+        setName("DIRECCION DE USUARIO"); // NOI18N
         setLayout(new java.awt.BorderLayout());
 
         register_panel.setName("register_panel"); // NOI18N
@@ -94,7 +96,7 @@ public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> im
         jLabel8.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/com/Bundle"); // NOI18N
-        jLabel8.setText(bundle.getString("StreetRegisterView.jLabel8.text")); // NOI18N
+        jLabel8.setText(bundle.getString("AddressRegisterView.jLabel8.text")); // NOI18N
         jLabel8.setName("jLabel8"); // NOI18N
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 50));
         register_panel.add(jLabel8, java.awt.BorderLayout.NORTH);
@@ -108,13 +110,13 @@ public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> im
         p_street1.setLayout(new java.awt.BorderLayout());
 
         jLabel6.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel6.setText(bundle.getString("StreetRegisterView.jLabel6.text")); // NOI18N
+        jLabel6.setText(bundle.getString("AddressRegisterView.jLabel6.text")); // NOI18N
         jLabel6.setName("jLabel6"); // NOI18N
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 25));
         p_street1.add(jLabel6, java.awt.BorderLayout.WEST);
 
         street1_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        street1_field.setToolTipText(bundle.getString("StreetRegisterView.street1_field.toolTipText")); // NOI18N
+        street1_field.setToolTipText(bundle.getString("AddressRegisterView.street1_field.toolTipText")); // NOI18N
         street1_field.setName("street1_field"); // NOI18N
         street1_field.setPreferredSize(new java.awt.Dimension(100, 30));
         p_street1.add(street1_field, java.awt.BorderLayout.CENTER);
@@ -128,12 +130,12 @@ public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> im
         p_street2.setName("p_street2"); // NOI18N
         p_street2.setLayout(new java.awt.BorderLayout());
 
-        jLabel20.setText(bundle.getString("StreetRegisterView.jLabel20.text")); // NOI18N
+        jLabel20.setText(bundle.getString("AddressRegisterView.jLabel20.text")); // NOI18N
         jLabel20.setName("jLabel20"); // NOI18N
         jLabel20.setPreferredSize(new java.awt.Dimension(150, 25));
         p_street2.add(jLabel20, java.awt.BorderLayout.WEST);
 
-        street2_field.setToolTipText(bundle.getString("StreetRegisterView.street2_field.toolTipText")); // NOI18N
+        street2_field.setToolTipText(bundle.getString("AddressRegisterView.street2_field.toolTipText")); // NOI18N
         street2_field.setName("street2_field"); // NOI18N
         p_street2.add(street2_field, java.awt.BorderLayout.CENTER);
 
@@ -148,13 +150,13 @@ public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> im
         p_in_number.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jLabel1.setText(bundle.getString("StreetRegisterView.jLabel1.text")); // NOI18N
+        jLabel1.setText(bundle.getString("AddressRegisterView.jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
         jLabel1.setPreferredSize(new java.awt.Dimension(150, 25));
         p_in_number.add(jLabel1, java.awt.BorderLayout.WEST);
 
         inside_number_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        inside_number_field.setToolTipText(bundle.getString("StreetRegisterView.inside_number_field.toolTipText")); // NOI18N
+        inside_number_field.setToolTipText(bundle.getString("AddressRegisterView.inside_number_field.toolTipText")); // NOI18N
         inside_number_field.setName("inside_number_field"); // NOI18N
         inside_number_field.setPreferredSize(new java.awt.Dimension(100, 30));
         p_in_number.add(inside_number_field, java.awt.BorderLayout.CENTER);
@@ -168,7 +170,7 @@ public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> im
         p_out_number.setName("p_out_number"); // NOI18N
         p_out_number.setLayout(new java.awt.BorderLayout());
 
-        jLabel21.setText(bundle.getString("StreetRegisterView.jLabel21.text")); // NOI18N
+        jLabel21.setText(bundle.getString("AddressRegisterView.jLabel21.text")); // NOI18N
         jLabel21.setName("jLabel21"); // NOI18N
         jLabel21.setPreferredSize(new java.awt.Dimension(150, 25));
         p_out_number.add(jLabel21, java.awt.BorderLayout.WEST);
@@ -185,7 +187,7 @@ public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> im
         p_observation.setName("p_observation"); // NOI18N
         p_observation.setLayout(new java.awt.BorderLayout());
 
-        jLabel23.setText(bundle.getString("StreetRegisterView.jLabel23.text")); // NOI18N
+        jLabel23.setText(bundle.getString("AddressRegisterView.jLabel23.text")); // NOI18N
         jLabel23.setName("jLabel23"); // NOI18N
         jLabel23.setPreferredSize(new java.awt.Dimension(150, 25));
         p_observation.add(jLabel23, java.awt.BorderLayout.WEST);
@@ -202,7 +204,7 @@ public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> im
         p_is_owner.setName("p_is_owner"); // NOI18N
         p_is_owner.setLayout(new java.awt.BorderLayout());
 
-        jLabel22.setText(bundle.getString("StreetRegisterView.jLabel22.text")); // NOI18N
+        jLabel22.setText(bundle.getString("AddressRegisterView.jLabel22.text")); // NOI18N
         jLabel22.setName("jLabel22"); // NOI18N
         jLabel22.setPreferredSize(new java.awt.Dimension(150, 25));
         p_is_owner.add(jLabel22, java.awt.BorderLayout.WEST);
@@ -211,8 +213,8 @@ public class StreetRegisterView extends AbstractModuleView<ProcessWrapperDTO> im
         jLabel38.setPreferredSize(new java.awt.Dimension(60, 30));
         p_is_owner.add(jLabel38, java.awt.BorderLayout.LINE_END);
 
-        is_owner_field.setText(bundle.getString("StreetRegisterView.is_owner_field.text")); // NOI18N
-        is_owner_field.setToolTipText(bundle.getString("StreetRegisterView.is_owner_field.toolTipText")); // NOI18N
+        is_owner_field.setText(bundle.getString("AddressRegisterView.is_owner_field.text")); // NOI18N
+        is_owner_field.setToolTipText(bundle.getString("AddressRegisterView.is_owner_field.toolTipText")); // NOI18N
         is_owner_field.setName("is_owner_field"); // NOI18N
         p_is_owner.add(is_owner_field, java.awt.BorderLayout.CENTER);
 

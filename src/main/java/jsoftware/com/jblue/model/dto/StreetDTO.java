@@ -61,6 +61,6 @@ public class StreetDTO extends JDBMapObject {
     @Override
     public String toString() {
         // Asegura una impresión limpia en los logs de Log4j2 previniendo excepciones nulas
-        return (values != null) ? values.toString() : "{}";
+        return getStreetName();
     }
 }

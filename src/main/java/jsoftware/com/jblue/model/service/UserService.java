@@ -207,4 +207,16 @@ public class UserService extends AbstractService implements Serializable {
         return res;
     }
 
+    public void set(JDBConnection c, UserDTO user) {
+        try {
+            boolean set = user_dao.set(c, user);
+            if (!set) {
+                returnMessageError(1, "LOS DATOS NO PUDIERON SER ASIGNADOS");
+            }
+        } catch (SQLException ex) {
+            returnMessageError(ex.getMessage());
+            log(ex, "exist");
+        }
+    }
+
 }

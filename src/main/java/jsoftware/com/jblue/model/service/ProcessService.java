@@ -274,4 +274,16 @@ public class ProcessService extends AbstractService implements Serializable {
     public boolean print(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) {
         return true;
     }
+
+    public boolean exists(JDBConnection c, UserDTO user) {
+        boolean exist = user_service.exist(c, user);
+        if (user_service.isError()) {
+            returnMessageError(user_service.getErrorCode(), user_service.getUserMessage());
+            return false;
+        }
+        if (exist) {
+            user_service.set(c, user);
+        }
+        return exist;
+    }
 }

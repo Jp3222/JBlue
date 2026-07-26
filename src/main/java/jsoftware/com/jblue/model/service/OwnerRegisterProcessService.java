@@ -7,6 +7,7 @@ package jsoftware.com.jblue.model.service;
 import java.sql.SQLException;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
+import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.exp.ServiceException;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
@@ -134,6 +135,26 @@ public class OwnerRegisterProcessService extends AbstractService {
                     "[%s - WARN]: No se pudo actualizar el estado macro a OK en la auditoría: %s"
                             .formatted(getProcess_name(), transaction_service.getUserMessage())
             );
+        }
+        return res;
+    }
+
+    public boolean search(JDBConnection connection, ProcessWrapperDTO dtoWrapper) {
+        boolean res;
+        try {
+            UserDTO user = dtoWrapper.getUser();
+            res = process_service.exists(connection, user);
+            if (process_service.isError()) {
+                returnMessageError(process_service.getErrorCode(), process_service.getUserMessage());
+                return false;
+            }
+            if (res) {
+                return true;
+            }
+        } catch (Exception e) {
+            rollback(connection);
+            res = false;
+            returnMessageError(e.getMessage());
         }
         return res;
     }

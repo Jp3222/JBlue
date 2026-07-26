@@ -64,9 +64,6 @@ public class ModuleFactory implements Serializable {
         LoginWrapperDTO dto = new LoginWrapperDTO("1", "INICIO DE SESION");
         dto.setCurrent_administration(administration_dto);
         dto.setCurrent_employee(employee);
-        //Controlador del asistente
-        //WizardController controller = new WizardController();
-        //dto.putController("MAIN", controller);
         //Controlador de eventos
         LoginController rc = new LoginController(false, dto.getModule_name());
         dto.putController("MAIN", rc);

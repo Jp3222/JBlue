@@ -31,7 +31,7 @@ import jsoftware.com.jblue.views.framework.DBObjectValues;
  * @author Juan Pablo Campos Casasanero
  */
 public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeRegisterWrapperDTO> implements DBObjectValues<EmployeeDTO> {
-
+    
     private static final long serialVersionUID = 1L;
     private DatePicker datePicker;
 
@@ -43,7 +43,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         initComponents();
         build();
     }
-
+    
     @Override
     public void build() {
         components();
@@ -51,7 +51,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         initialState();
         finalState();
     }
-
+    
     @Override
     public void events() {
         StreetDAO streetDao = new StreetDAO(AppConfig.isDevMessages(), getDtoWrapper().getModule_name());
@@ -60,13 +60,13 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         comboBoxInit(street1, street1_field.getItemCount() <= 0);
         comboBoxInit(street2, street2_field.getItemCount() <= 0);
     }
-
+    
     public void comboBoxInit(ComboBoxController<?> c, boolean empty) {
         if (empty) {
             c.loadData();
         }
     }
-
+    
     @Override
     public void components() {
         // 1. Instanciar los ajustes (Vacíos o con idioma/formato básico)
@@ -86,11 +86,24 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         // 4. Inyectar al contenedor de Swing y refrescar la UI
         jPanel7.add(datePicker, BorderLayout.CENTER);
     }
-
+    
     @Override
     public void initialState() {
+        rfc_field.setText(null);
+        curp_field.setText(null);
+        first_name_field.setText(null);
+        last_name1_field.setText(null);
+        last_name2_field.setText(null);
+        gender_field.setSelectedIndex(0);
+        datePicker.setDate(LocalDate.now());
+        email_field.setText(null);
+        phone_number_field.setText(null);
+        street1_field.setSelectedIndex(0);
+        street2_field.setSelectedIndex(0);
+        inside_number_field.setText(null);
+        outside_number_field.setText(null);
     }
-
+    
     @Override
     public void finalState() {
     }
@@ -107,9 +120,9 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        rfc_field = new javax.swing.JPanel();
+        rfc_field_panel = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
-        curp_field1 = new javax.swing.JTextField();
+        rfc_field = new javax.swing.JTextField();
         jPanel14 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         curp_field = new javax.swing.JTextField();
@@ -163,19 +176,19 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         jPanel2.setName("jPanel2"); // NOI18N
         jPanel2.setLayout(new java.awt.GridLayout(15, 0));
 
-        rfc_field.setName("rfc_field"); // NOI18N
-        rfc_field.setLayout(new java.awt.BorderLayout());
+        rfc_field_panel.setName("rfc_field_panel"); // NOI18N
+        rfc_field_panel.setLayout(new java.awt.BorderLayout());
 
         jLabel14.setText(bundle.getString("EmployeeRegistrationView.jLabel14.text")); // NOI18N
         jLabel14.setName("jLabel14"); // NOI18N
         jLabel14.setPreferredSize(new java.awt.Dimension(150, 30));
-        rfc_field.add(jLabel14, java.awt.BorderLayout.WEST);
+        rfc_field_panel.add(jLabel14, java.awt.BorderLayout.WEST);
 
-        curp_field1.setText(bundle.getString("EmployeeRegistrationView.RFC.text")); // NOI18N
-        curp_field1.setName("RFC"); // NOI18N
-        rfc_field.add(curp_field1, java.awt.BorderLayout.CENTER);
+        rfc_field.setText(bundle.getString("EmployeeRegistrationView.RFC.text")); // NOI18N
+        rfc_field.setName("RFC"); // NOI18N
+        rfc_field_panel.add(rfc_field, java.awt.BorderLayout.CENTER);
 
-        jPanel2.add(rfc_field);
+        jPanel2.add(rfc_field_panel);
 
         jPanel14.setName("jPanel14"); // NOI18N
         jPanel14.setLayout(new java.awt.BorderLayout());
@@ -348,7 +361,6 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField curp_field;
-    private javax.swing.JTextField curp_field1;
     private javax.swing.JTextField email_field;
     private javax.swing.JTextField first_name_field;
     private javax.swing.JComboBox<String> gender_field;
@@ -385,7 +397,8 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
     private javax.swing.JTextField last_name2_field;
     private javax.swing.JTextField outside_number_field;
     private javax.swing.JTextField phone_number_field;
-    private javax.swing.JPanel rfc_field;
+    private javax.swing.JTextField rfc_field;
+    private javax.swing.JPanel rfc_field_panel;
     private javax.swing.JComboBox<String> street1_field;
     private javax.swing.JComboBox<String> street2_field;
     // End of variables declaration//GEN-END:variables
@@ -399,10 +412,10 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
 
         v.addRuler("first_name", first_name_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
         v.addErrorMessage("first_name", "EL NOMBRE DEBE SER SOLO TEXTO");
-
+        
         v.addRuler("last_name1", last_name1_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
         v.addErrorMessage("last_name1", "EL APELLIDO PATERNO DEBE SER SOLO TEXTO");
-
+        
         v.addRuler("last_name2", last_name2_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
         v.addErrorMessage("last_name2", "EL APELLIDO MATERNO DEBE SER SOLO TEXTO");
 
@@ -422,10 +435,11 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         }
         return res;
     }
-
+    
     @Override
     public EmployeeDTO getValues(boolean update) {
         EmployeeDTO dto = new EmployeeDTO();
+        Func.putIfNotNull(dto.getMap(), "rfc", Formats.getTextFormat(rfc_field.getText()));
         Func.putIfNotNull(dto.getMap(), "curp", Formats.getTextFormat(curp_field.getText()));
         Func.putIfNotNull(dto.getMap(), "first_name", Formats.getTextFormat(first_name_field.getText()));
         Func.putIfNotNull(dto.getMap(), "last_name1", Formats.getTextFormat(last_name1_field.getText()));
@@ -441,7 +455,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         Func.put(dto.getMap(), "outside_number", Formats.getTextFormat(outside_number_field.getText()));
         return dto;
     }
-
+    
     @Override
     public void getData() {
         EmployeeRegisterWrapperDTO dto = getDtoWrapper();
@@ -457,5 +471,5 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         // Nota: Asegúrate de guardar este employeeData en tu Wrapper si tu arquitectura lo requiere, 
         // por ejemplo: getDtoWrapper().setEmployeeData(employeeData);
     }
-
+    
 }

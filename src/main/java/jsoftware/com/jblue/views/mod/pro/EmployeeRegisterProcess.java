@@ -144,7 +144,6 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
     @Override
     public void showData() {
         for (AbstractModuleView<EmployeeRegisterWrapperDTO> i : views) {
-            System.out.println(i.getName());
             if (i instanceof ShowDataModel s) {
                 s.showData();
             }
@@ -160,7 +159,7 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
         if (mov) {
             initialState();
         }
-        
+
     }
 
 }

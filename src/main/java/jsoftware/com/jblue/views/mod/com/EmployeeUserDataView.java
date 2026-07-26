@@ -66,6 +66,12 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
 
     @Override
     public void initialState() {
+        description_field.setText(null);
+        user_field.setText(null);
+        password_field.setText(null);
+        email_field.setText(null);
+        number_phone_field.setText(null);
+        employee_type_field.setSelectedIndex(0);
     }
 
     @Override

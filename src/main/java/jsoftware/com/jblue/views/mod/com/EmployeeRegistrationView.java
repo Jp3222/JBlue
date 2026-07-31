@@ -140,6 +140,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         gender_field = new javax.swing.JComboBox<>();
         jPanel7 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
+        datePicker1 = new com.github.lgooddatepicker.components.DatePicker();
         jPanel8 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         email_field = new javax.swing.JTextField();
@@ -269,6 +270,9 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 30));
         jPanel7.add(jLabel6, java.awt.BorderLayout.WEST);
 
+        datePicker1.setName("datePicker1"); // NOI18N
+        jPanel7.add(datePicker1, java.awt.BorderLayout.CENTER);
+
         jPanel2.add(jPanel7);
 
         jPanel8.setName("jPanel8"); // NOI18N
@@ -361,6 +365,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField curp_field;
+    private com.github.lgooddatepicker.components.DatePicker datePicker1;
     private javax.swing.JTextField email_field;
     private javax.swing.JTextField first_name_field;
     private javax.swing.JComboBox<String> gender_field;
@@ -447,7 +452,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         Func.putIfNotNull(dto.getMap(), "gender", gender_field.getSelectedIndex());
         Func.putIfNotNull(dto.getMap(), "birthdate", datePicker.getText());
         Func.put(dto.getMap(), "personal_email", email_field.getText());
-        Func.put(dto.getMap(), "personal_phone", phone_number_field.getText());
+        Func.put(dto.getMap(), "personal_number", phone_number_field.getText());
         Func.putIfNotNull(dto.getMap(), "street1", street1_field.getSelectedIndex());
         String s2 = street2_field.getSelectedIndex() <= 0 ? null : String.valueOf(street2_field.getSelectedIndex());
         Func.put(dto.getMap(), "street2", s2);

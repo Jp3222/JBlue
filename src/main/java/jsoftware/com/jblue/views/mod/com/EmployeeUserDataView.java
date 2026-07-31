@@ -402,6 +402,7 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
         if (employee_type_field.getSelectedIndex() <= 0) {
             employee_type_field.setSelectedIndex(6);
         }
+        JOptionPane.showMessageDialog(this, "CORRIGA LOS DATOS NECESARIOS");
     }
 
 }

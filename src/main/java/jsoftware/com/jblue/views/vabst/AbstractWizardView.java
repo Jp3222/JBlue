@@ -42,6 +42,8 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
         last_panel_button.setEnabled(false);
         current_index = 0;
         card_layout.show(root_panel, views.get(0).getName());
+        next_panel_button.setText("Siguiente");
+        next_panel_button.setActionCommand(WizardModel.NEXT_STEP);
     }
 
     /**

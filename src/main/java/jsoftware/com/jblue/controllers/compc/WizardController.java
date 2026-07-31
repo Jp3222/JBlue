@@ -55,11 +55,13 @@ public class WizardController extends Controller {
     public void next() {
         // CORRECCIÓN: Se evalúa una sola vez y se guarda el resultado en una variable local
         boolean nextStep = view.nextStep();
+        System.out.println("SIGUIENTE PASO: " +  nextStep);
         if (!nextStep) {
             return; // La vista ya debió mostrar su respectivo JOptionPane de error interno
         }
         // Ejecución ordenada del flujo de la UI
         view.nextIndex();
+        System.out.println(view.getCurrentViewIndex());
         view.updateUi(WizardModel.NEXT_VIEW_BUTTON);
         view.updateUi(WizardModel.NAVIGATION_STEP_BAR);
     }

@@ -111,7 +111,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         p_born_date = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
-        birdate_field = new org.jdesktop.swingx.JXDatePicker();
+        birdate_field = new com.github.lgooddatepicker.components.DatePicker();
         jPanel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         email_field = new javax.swing.JTextField();
@@ -338,7 +338,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.jdesktop.swingx.JXDatePicker birdate_field;
+    private com.github.lgooddatepicker.components.DatePicker birdate_field;
     private javax.swing.JTextField curp_field;
     private javax.swing.JTextField email_field;
     private javax.swing.JTextField first_name_field;
@@ -471,6 +471,18 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
 
     @Override
     public void showData() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ProcessWrapperDTO dto = getDtoWrapper();
+        if (dto.isUser_exists()) {
+            UserDTO user = dto.getUser();
+            rfc_field.setText(user.getRfc());
+            first_name_field.setText(user.getFirstName());
+            last_name1_field.setText(user.getLastName1());
+            last_name2_field.setText(user.getLastName2());
+            gender_field.setSelectedIndex(Integer.parseInt(user.getGender()));
+            birdate_field.setDate(Formats.getLocalDate(user.getBirthdate()));
+            phone_number1_field.setText(user.getPhoneNumber1());
+            phone_number2_field.setText(user.getPhoneNumber2());
+            email_field.setText(user.getEmail());
+        }
     }
 }

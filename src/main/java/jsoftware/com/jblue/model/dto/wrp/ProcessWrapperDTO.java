@@ -27,7 +27,7 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
     private static final long serialVersionUID = 1L;
 
     protected ProcessDTO process;
-
+    private boolean user_exists;
     //PASO 1
     private UserDTO user;
     private boolean user_valid;
@@ -69,6 +69,14 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
 
     public ProcessDTO getProcess() {
         return process;
+    }
+
+    public void setUser_exists(boolean user_exists) {
+        this.user_exists = user_exists;
+    }
+
+    public boolean isUser_exists() {
+        return user_exists;
     }
 
     public void setProcess(ProcessDTO process) {

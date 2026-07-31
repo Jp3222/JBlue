@@ -27,7 +27,7 @@ public abstract class AbstractModuleView<T extends ModuleWrapperDTO> extends Sim
     /**
      * Controlador principal de la vista
      */
-    private final Controller controller;
+    public final Controller controller;
 
     protected List<AbstractModuleView<T>> views;
     protected int current_index;

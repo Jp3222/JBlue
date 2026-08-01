@@ -40,6 +40,10 @@ public class InstanceAuthDTO extends AuditableObjectMap {
         return get("office_id").toString();
     }
 
+    public String getCommitteeId() {
+        return get("committee_id").toString();
+    }
+
     public String getMasterUser() {
         return get("master_user").toString();
     }

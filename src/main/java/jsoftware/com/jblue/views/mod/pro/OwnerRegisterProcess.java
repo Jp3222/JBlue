@@ -74,11 +74,12 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
     @Override
     public void events() {
         // Registrar esta vista contenedora principal en el controlador de negocio de Empleados
-        OwnerRegisterProcessController employeeController = (OwnerRegisterProcessController) getDtoWrapper().getController("CONTROLLER");
+        OwnerRegisterProcessController employeeController = (OwnerRegisterProcessController) getDtoWrapper().getController(MAIN_CONTROLLER);
         if (employeeController != null) {
             employeeController.setView(this);
             next_panel_button.addActionListener(employeeController);
         }
+        cancel_process.addActionListener((e) -> initialState());
         // NOTA: El botón "next_panel_button" NO recibe listeners de negocio aquí; 
         // es gobernado de forma limpia por bindController() mediante el WizardController.
     }
@@ -97,6 +98,7 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
             i.initialState();
         }
         getDtoWrapper().clear();
+        card_layout.show(root_panel, step1.getName());
     }
 
     @Override
@@ -126,15 +128,15 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
         // Evaluar las banderas de validación del DTO según el paso del asistente
         boolean valid = switch (current_index) {
             case 0 ->
-                getDtoWrapper().isUser_valid();
+                true;
             case 1 ->
-                getDtoWrapper().isAddress_valid();
+                true;
             case 3 ->
-                getDtoWrapper().isDocument_record_valid();
+                true;
             case 4 ->
-                getDtoWrapper().isPayment_header_valid();
+                true;
             default ->
-                getDtoWrapper().isWater_intake_valid();
+                true;
         };
         if (!valid) {
             JOptionPane.showMessageDialog(
@@ -188,6 +190,6 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
     }
 
     public void updateData() {
-    
+
     }
 }

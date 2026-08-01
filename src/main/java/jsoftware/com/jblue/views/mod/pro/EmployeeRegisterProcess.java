@@ -58,6 +58,7 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
             employeeController.setView(this);
             next_panel_button.addActionListener(employeeController);
         }
+        cancel_process.addActionListener((e) -> initialState());
         // NOTA: El botón "next_panel_button" NO recibe listeners de negocio aquí; 
         // es gobernado de forma limpia por bindController() mediante el WizardController.
     }

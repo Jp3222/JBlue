@@ -59,9 +59,9 @@ public class EmployeeDAO extends AbstractDAO {
                        INSERT INTO emp_employee
                        (rfc, curp, first_name, last_name1, last_name2, gender, birthdate, 
                         personal_email, personal_number, street1, street2, inside_number, 
-                        outside_number, status)
+                        outside_number, committee_id, status, last_employee_update)
                        VALUES
-                       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+                       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1,?)
                        """;
 
         try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -86,6 +86,9 @@ public class EmployeeDAO extends AbstractDAO {
             setNull(ps, 11, dto.getStreet2());
             setNull(ps, 12, dto.getInsideNumber());
             setNull(ps, 13, dto.getOutsideNumber());
+            
+            setNull(ps, 14, dto.getCommitteeId());
+            setNull(ps, 15, dto.getLastEmployeeUpdate());
 
             // 5. Estado Inicial
 

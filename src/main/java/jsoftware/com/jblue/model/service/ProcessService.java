@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.ProcessDAO;
+import jsoftware.com.jblue.model.dao.ProcessWaterIntakeUserDAO;
 import jsoftware.com.jblue.model.dao.SequenceDAO;
 import jsoftware.com.jblue.model.dto.AddressDTO;
 import jsoftware.com.jblue.model.dto.DocumentRecordDTO;
@@ -36,6 +37,7 @@ public class ProcessService extends AbstractService implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final ProcessDAO dao;
+    private final ProcessWaterIntakeUserDAO pro_dao;
     private final SequenceDAO sequence_dao;
     private final UserService user_service;
     private final AddressService address_service;
@@ -50,6 +52,7 @@ public class ProcessService extends AbstractService implements Serializable {
         super(flag_dev, process_name);
         // CORREGIDO: Inicialización de los DAOs para evitar NullPointerException
         this.dao = new ProcessDAO(flag_dev, process_name);
+        pro_dao = new ProcessWaterIntakeUserDAO(flag_dev, process_name);
         this.sequence_dao = new SequenceDAO(flag_dev, process_name);
         user_service = new UserService(flag_dev, process_name);
         address_service = new AddressService(flag_dev, process_name);
@@ -78,6 +81,7 @@ public class ProcessService extends AbstractService implements Serializable {
             if (!res) {
                 returnMessageError("REGISTRO EN BITACORA CORRUPTO - TRAMITE");
             }
+            res = pro_dao.insert(connection, dto.getProcess_water_intake_user());
             res = userRegister(connection, ss, dto);
             if (!res && user_service.isError()) {
                 returnMessageError(user_service.getErrorCode(), user_service.getUserMessage());
@@ -117,6 +121,10 @@ public class ProcessService extends AbstractService implements Serializable {
         //SI NO, SE MARCAN COMO INACTIVOS
         String final_status = dto.isPayment_header_valid() ? "1" : "2";
         user.put("status", final_status);
+        //SI ES UN ALTA DE TITULAR
+        if (dto.getProcess().getProcessType().equals("1")) {
+            user.put("user_type", "1");// SE ASIGNA ROL DE TITULAR
+        }
         int user_id = user_service.save(connection, user);
         if (user_service.isError()) {
             return false;

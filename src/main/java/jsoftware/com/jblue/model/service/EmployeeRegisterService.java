@@ -44,9 +44,6 @@ public class EmployeeRegisterService extends AbstractService {
         /**
          * SE VERIFICA SI EL PROGRAMA ESTA EN SOLO LECTURA
          */
-        if (AppConfig.isDevMessages()) {
-            System.out.println(dto.toString());
-        }
         //SI EL SISTEMA ESTA EN SOLO LECTURA NO REALIZA REGISTRO ALGUNO
         if (AppConfig.getParameterBoolean("SOLO_LECTURA")) {
             returnMessageError("EL SISTEMA ESTA EN MODO LECTURA");
@@ -69,6 +66,8 @@ public class EmployeeRegisterService extends AbstractService {
             //PASO 2.1: RECUPERACION DE ID - INICIO DE LA TRANSACCION
             dto.getTransaction().put("hys_start_id", String.valueOf(start_id));
 
+            dto.getEmployee().put("last_employee_update", session.getCurrentEmployee().getId());
+            dto.getEmployee().put("committee_id", session.getCurrent_instance().getCommitteeId());
             //PASO 3: REGISTRO DE DATOS DEL EMPLEADO
             int employee_id = employee.insert(connection, dto.getEmployee());
             if (employee.isError()) {
@@ -100,6 +99,9 @@ public class EmployeeRegisterService extends AbstractService {
             //PASO 6 SI NO HUBO ERRORES SE CONFIRMA LA TRANSACCION
             connection.commit();
             commitSuccess = true;
+            if (AppConfig.isDevMessages()) {
+                System.out.println(dto.toString());
+            }
         } catch (SQLException e) {
             rollback(connection);
             log(e, "insert");

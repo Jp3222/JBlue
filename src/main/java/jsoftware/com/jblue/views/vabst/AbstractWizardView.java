@@ -28,7 +28,7 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
         initComponents();
         this.setName(dto_wrapper.getModule_name());
         //CONTROLADOR DEL ASISTENTE
-        WizardController wctronller = (WizardController) getDtoWrapper().getController("MAIN");
+        WizardController wctronller = (WizardController) getDtoWrapper().getController(WIZARD_CONTROLLER);
         wctronller.setView(this);
         card_layout = (CardLayout) root_panel.getLayout();
         //MOVIMIENTOS DE SIGUIENTE Y ATRAS
@@ -62,7 +62,7 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
         np_cp_west = new javax.swing.JPanel();
         search_object = new javax.swing.JButton();
         np_cp_east = new javax.swing.JPanel();
-        jButton6 = new javax.swing.JButton();
+        cancel_process = new javax.swing.JButton();
         root_panel = new javax.swing.JPanel();
 
         setName("Form"); // NOI18N
@@ -105,9 +105,9 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
         np_cp_east.setPreferredSize(new java.awt.Dimension(100, 30));
         np_cp_east.setLayout(new java.awt.BorderLayout());
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/configuraciones.png"))); // NOI18N
-        jButton6.setName("jButton6"); // NOI18N
-        np_cp_east.add(jButton6, java.awt.BorderLayout.CENTER);
+        cancel_process.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/cruz.png"))); // NOI18N
+        cancel_process.setName("cancel_process"); // NOI18N
+        np_cp_east.add(cancel_process, java.awt.BorderLayout.CENTER);
 
         north_panel.add(np_cp_east, java.awt.BorderLayout.EAST);
 
@@ -190,7 +190,7 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
             if (index < 0 || index >= views.size()) {
                 return;
             }
-            card_layout.show(this, views.get(index).getName());
+            card_layout.show(root_panel, views.get(index).getName());
         } catch (Exception e) {
             log(e, "setCurrentViewIndex");
             JOptionPane.showMessageDialog(this, "INDICES CORRUPTOS");
@@ -223,7 +223,7 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
         initialState();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    protected javax.swing.JButton jButton6;
+    protected javax.swing.JButton cancel_process;
     protected javax.swing.JButton last_panel_button;
     protected javax.swing.JButton next_panel_button;
     protected javax.swing.JPanel north_panel;

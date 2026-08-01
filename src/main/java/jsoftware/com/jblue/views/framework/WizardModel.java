@@ -17,6 +17,8 @@ import jsoftware.com.jblue.model.dto.wrp.ModuleWrapperDTO;
  */
 public interface WizardModel<T extends ModuleWrapperDTO> extends Serializable {
 
+    public static final String WIZARD_CONTROLLER = "MAIN";
+    public static final String MAIN_CONTROLLER = "CONTROLLER";
     // --- Comandos de Acción ---
     public static final String NEXT_STEP = "next_step";
     public static final String PREVIOUS_STEP = "previous_step";

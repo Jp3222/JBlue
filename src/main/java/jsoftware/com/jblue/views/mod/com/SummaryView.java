@@ -4,21 +4,19 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
-import java.util.List;
 import java.util.Map;
 import javax.swing.table.TableModel;
 import jsoftware.com.jblue.model.dto.UserDocumentationDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
-import jsoftware.com.jblue.views.vabst.AbstractWizardView;
 import jsoftware.com.jpaymentlib.model.dto.PaymentDetailDTO;
 
 /**
  *
  * @author juanp
  */
-public final class SummaryView extends AbstractWizardView<ProcessWrapperDTO> implements DBObjectValues<ProcessWrapperDTO>{
+public final class SummaryView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<ProcessWrapperDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,9 +36,7 @@ public final class SummaryView extends AbstractWizardView<ProcessWrapperDTO> imp
         initialState();
         finalState();
     }
-    
-    
-    
+
     @Override
     public void components() {
     }
@@ -171,15 +167,6 @@ public final class SummaryView extends AbstractWizardView<ProcessWrapperDTO> imp
             model.setValueAt(val, i, 1);
             i++;
         }
-    }
-
-    @Override
-    public void executeFinal() {
-    }
-
-    @Override
-    public List<AbstractModuleView<ProcessWrapperDTO>> getViews() {
-        return null;
     }
 
     @Override

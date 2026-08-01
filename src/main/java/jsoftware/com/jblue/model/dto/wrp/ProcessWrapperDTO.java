@@ -6,6 +6,7 @@ import java.util.Objects;
 import jsoftware.com.jblue.model.dto.AddressDTO;
 import jsoftware.com.jblue.model.dto.DocumentRecordDTO;
 import jsoftware.com.jblue.model.dto.ProcessDTO;
+import jsoftware.com.jblue.model.dto.ProcessWaterIntakeUserDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentationDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
@@ -27,6 +28,7 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
     private static final long serialVersionUID = 1L;
 
     protected ProcessDTO process;
+    private ProcessWaterIntakeUserDTO process_water_intake_user;
     private boolean user_exists;
     //PASO 1
     private UserDTO user;
@@ -67,20 +69,50 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
         this.clear();
     }
 
+    @Override
+    public final void clear() {
+        process = new ProcessDTO();
+        process_water_intake_user = new ProcessWaterIntakeUserDTO();
+        user = new UserDTO();
+        address = new AddressDTO();
+        document_list = new ArrayList<>();
+        document_record = new DocumentRecordDTO(); // Corregido: Limpieza total
+        water_intake = new WaterIntakeDTO();
+        payment_header = new PaymentHeaderDTO();
+        payment_details = new ArrayList<>();
+        wki_user = new WaterIntakeUserDTO();
+        user_valid = false;
+        address_valid = false;
+        document_list_valid = false;
+        water_intake_valid = false;
+        payment_header_valid = false;
+        payment_detail_valid = false;
+        document_record_valid = false;
+        wki_user_valid = false;
+    }
+
     public ProcessDTO getProcess() {
         return process;
     }
 
-    public void setUser_exists(boolean user_exists) {
-        this.user_exists = user_exists;
+    public void setProcess(ProcessDTO process) {
+        this.process = process;
+    }
+
+    public ProcessWaterIntakeUserDTO getProcess_water_intake_user() {
+        return process_water_intake_user;
+    }
+
+    public void setProcess_water_intake_user(ProcessWaterIntakeUserDTO process_water_intake_user) {
+        this.process_water_intake_user = process_water_intake_user;
     }
 
     public boolean isUser_exists() {
         return user_exists;
     }
 
-    public void setProcess(ProcessDTO process) {
-        this.process = process;
+    public void setUser_exists(boolean user_exists) {
+        this.user_exists = user_exists;
     }
 
     public UserDTO getUser() {
@@ -145,6 +177,14 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
 
     public void setWater_intake_valid(boolean water_intake_valid) {
         this.water_intake_valid = water_intake_valid;
+    }
+
+    public WaterIntakeTypeDTO getWater_intake_type() {
+        return water_intake_type;
+    }
+
+    public void setWater_intake_type(WaterIntakeTypeDTO water_intake_type) {
+        this.water_intake_type = water_intake_type;
     }
 
     public PaymentHeaderDTO getPayment_header() {
@@ -213,24 +253,27 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 59 * hash + Objects.hashCode(this.process);
-        hash = 59 * hash + Objects.hashCode(this.user);
-        hash = 59 * hash + (this.user_valid ? 1 : 0);
-        hash = 59 * hash + Objects.hashCode(this.address);
-        hash = 59 * hash + (this.address_valid ? 1 : 0);
-        hash = 59 * hash + Objects.hashCode(this.document_list);
-        hash = 59 * hash + (this.document_list_valid ? 1 : 0);
-        hash = 59 * hash + Objects.hashCode(this.water_intake);
-        hash = 59 * hash + (this.water_intake_valid ? 1 : 0);
-        hash = 59 * hash + Objects.hashCode(this.payment_header);
-        hash = 59 * hash + (this.payment_header_valid ? 1 : 0);
-        hash = 59 * hash + Objects.hashCode(this.payment_details);
-        hash = 59 * hash + (this.payment_detail_valid ? 1 : 0);
-        hash = 59 * hash + Objects.hashCode(this.document_record);
-        hash = 59 * hash + (this.document_record_valid ? 1 : 0);
-        hash = 59 * hash + Objects.hashCode(this.wki_user);
-        hash = 59 * hash + (this.wki_user_valid ? 1 : 0);
+        int hash = 3;
+        hash = 79 * hash + Objects.hashCode(this.process);
+        hash = 79 * hash + Objects.hashCode(this.process_water_intake_user);
+        hash = 79 * hash + (this.user_exists ? 1 : 0);
+        hash = 79 * hash + Objects.hashCode(this.user);
+        hash = 79 * hash + (this.user_valid ? 1 : 0);
+        hash = 79 * hash + Objects.hashCode(this.address);
+        hash = 79 * hash + (this.address_valid ? 1 : 0);
+        hash = 79 * hash + Objects.hashCode(this.document_list);
+        hash = 79 * hash + (this.document_list_valid ? 1 : 0);
+        hash = 79 * hash + Objects.hashCode(this.water_intake);
+        hash = 79 * hash + (this.water_intake_valid ? 1 : 0);
+        hash = 79 * hash + Objects.hashCode(this.water_intake_type);
+        hash = 79 * hash + Objects.hashCode(this.payment_header);
+        hash = 79 * hash + (this.payment_header_valid ? 1 : 0);
+        hash = 79 * hash + Objects.hashCode(this.payment_details);
+        hash = 79 * hash + (this.payment_detail_valid ? 1 : 0);
+        hash = 79 * hash + Objects.hashCode(this.document_record);
+        hash = 79 * hash + (this.document_record_valid ? 1 : 0);
+        hash = 79 * hash + Objects.hashCode(this.wki_user);
+        hash = 79 * hash + (this.wki_user_valid ? 1 : 0);
         return hash;
     }
 
@@ -239,11 +282,16 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
         if (this == obj) {
             return true;
         }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
             return false;
         }
         final ProcessWrapperDTO other = (ProcessWrapperDTO) obj;
-
+        if (this.user_exists != other.user_exists) {
+            return false;
+        }
         if (this.user_valid != other.user_valid) {
             return false;
         }
@@ -268,8 +316,10 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
         if (this.wki_user_valid != other.wki_user_valid) {
             return false;
         }
-
         if (!Objects.equals(this.process, other.process)) {
+            return false;
+        }
+        if (!Objects.equals(this.process_water_intake_user, other.process_water_intake_user)) {
             return false;
         }
         if (!Objects.equals(this.user, other.user)) {
@@ -282,6 +332,9 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
             return false;
         }
         if (!Objects.equals(this.water_intake, other.water_intake)) {
+            return false;
+        }
+        if (!Objects.equals(this.water_intake_type, other.water_intake_type)) {
             return false;
         }
         if (!Objects.equals(this.payment_header, other.payment_header)) {
@@ -297,49 +350,31 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
     }
 
     @Override
-    public final void clear() {
-        process = new ProcessDTO();
-        user = new UserDTO();
-        address = new AddressDTO();
-        document_list = new ArrayList<>();
-        document_record = new DocumentRecordDTO(); // Corregido: Limpieza total
-        water_intake = new WaterIntakeDTO();
-        payment_header = new PaymentHeaderDTO();
-        payment_details = new ArrayList<>();
-        wki_user = new WaterIntakeUserDTO();
-
-        user_valid = false;
-        address_valid = false;
-        document_list_valid = false;
-        water_intake_valid = false;
-        payment_header_valid = false;
-        payment_detail_valid = false;
-        document_record_valid = false;
-        wki_user_valid = false;
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("ProcessWrapperDTO{");
-        sb.append("process=").append(process);
-        sb.append(", user=").append(user);
+        sb.append("process=").append(process.getMap().toString());
+        sb.append(", process_water_intake_user=").append(process_water_intake_user.getMap().toString());
+        sb.append(", user_exists=").append(user_exists);
+        sb.append(", user=").append(user.getMap().toString());
         sb.append(", user_valid=").append(user_valid);
-        sb.append(", address=").append(address);
+        sb.append(", address=").append(address.getMap().toString());
         sb.append(", address_valid=").append(address_valid);
-        sb.append(", document_list=").append(document_list);
+        sb.append(", document_list=").append(document_list.toString());
         sb.append(", document_list_valid=").append(document_list_valid);
-        sb.append(", water_intake=").append(water_intake);
+        sb.append(", water_intake=").append(water_intake.getMap().toString());
         sb.append(", water_intake_valid=").append(water_intake_valid);
-        sb.append(", payment_header=").append(payment_header);
+        sb.append(", water_intake_type=").append(water_intake_type.getMap().toString());
+        sb.append(", payment_header=").append(payment_header.getMap().toString());
         sb.append(", payment_header_valid=").append(payment_header_valid);
-        sb.append(", payment_details=").append(payment_details);
+        sb.append(", payment_details=").append(payment_details.toString());
         sb.append(", payment_detail_valid=").append(payment_detail_valid);
-        sb.append(", document_record=").append(document_record);
+        sb.append(", document_record=").append(document_record.getMap().toString());
         sb.append(", document_record_valid=").append(document_record_valid);
-        sb.append(", wki_user=").append(wki_user);
+        sb.append(", wki_user=").append(wki_user.getMap().toString());
         sb.append(", wki_user_valid=").append(wki_user_valid);
         sb.append('}');
         return sb.toString();
     }
+
 }

@@ -78,8 +78,16 @@ public class EmployeeDTO extends JDBMapObject {
         return Func.nullSafeToString(get("outside_number"));
     }
 
+    public String getCommitteeId() {
+        return Func.nullSafeToString(get("committee_id"));
+    }
+
     public String getStatus() {
         return Func.nullSafeToString(get("status"));
+    }
+
+    public String getLastEmployeeUpdate() {
+        return Func.nullSafeToString(get("last_employee_update"));
     }
 
     public String getDateUpdate() {

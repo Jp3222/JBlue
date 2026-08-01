@@ -4,9 +4,12 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
+import jsoftware.com.jblue.controllers.compc.ComboBoxController;
+import jsoftware.com.jblue.model.dao.StreetDAO;
 import jsoftware.com.jblue.model.dto.AddressDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
+import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 
@@ -36,6 +39,17 @@ public class AddressRegisterView extends AbstractModuleView<ProcessWrapperDTO> i
 
     @Override
     public void components() {
+        StreetDAO streetDao = new StreetDAO(AppConfig.isDevMessages(), getDtoWrapper().getModule_name());
+        ComboBoxController<StreetDTO> street1 = new ComboBoxController<>(street1_field, streetDao);
+        ComboBoxController<StreetDTO> street2 = new ComboBoxController<>(street2_field, streetDao);
+        comboBoxInit(street1, street1_field.getItemCount() <= 0);
+        comboBoxInit(street2, street2_field.getItemCount() <= 0);
+    }
+
+    public void comboBoxInit(ComboBoxController<?> c, boolean empty) {
+        if (empty) {
+            c.loadData();
+        }
     }
 
     @Override
@@ -87,7 +101,7 @@ public class AddressRegisterView extends AbstractModuleView<ProcessWrapperDTO> i
         jLabel38 = new javax.swing.JLabel();
         is_owner_field = new javax.swing.JCheckBox();
 
-        setName("DIRECCION DE USUARIO"); // NOI18N
+        setName("DOMICILIO DE USUARIO"); // NOI18N
         setLayout(new java.awt.BorderLayout());
 
         register_panel.setName("register_panel"); // NOI18N

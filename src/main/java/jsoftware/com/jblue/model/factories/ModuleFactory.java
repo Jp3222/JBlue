@@ -25,6 +25,7 @@ import jsoftware.com.jblue.model.dto.wrp.WMainMenuWrapperDTO;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.views.AdministrationHistoryView;
 import jsoftware.com.jblue.views.ShopCartProcess;
+import jsoftware.com.jblue.views.framework.WizardModel;
 import jsoftware.com.jblue.views.mod.StreetProcess;
 import jsoftware.com.jblue.views.mod.pro.EmployeeRegisterProcess;
 import jsoftware.com.jblue.views.mod.pro.OwnerRegisterProcess;
@@ -105,10 +106,10 @@ public class ModuleFactory implements Serializable {
         dto.setCurrent_employee(employee);
         //Controlador del asistente
         WizardController controller = new WizardController();
-        dto.putController("MAIN", controller);
+        dto.putController(WizardModel.WIZARD_CONTROLLER, controller);
         //Controlador de eventos
         OwnerRegisterProcessController rc = new OwnerRegisterProcessController(false, dto.getModule_name());
-        dto.putController("CONTROLLER", rc);
+        dto.putController(WizardModel.MAIN_CONTROLLER, rc);
         //Nueva vista
         OwnerRegisterProcess mod = new OwnerRegisterProcess(dto);
         return mod;
@@ -120,10 +121,10 @@ public class ModuleFactory implements Serializable {
         dto.setCurrent_employee(employee);
         //Controlador del asistente
         WizardController controller = new WizardController();
-        dto.putController("MAIN", controller);
+        dto.putController(WizardModel.WIZARD_CONTROLLER, controller);
         //Controlador de eventos
         EmployeeRegisterController rc = new EmployeeRegisterController(false, dto.getModule_name());
-        dto.putController("CONTROLLER", rc);
+        dto.putController(WizardModel.MAIN_CONTROLLER, rc);
         //Nueva vista
         EmployeeRegisterProcess mod = new EmployeeRegisterProcess(dto);
         return mod;

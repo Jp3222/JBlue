@@ -91,7 +91,7 @@ public class TransactionHistoryDAO extends AbstractDAO {
     public boolean updateStatusOK(JDBConnection conn, TransactionHistoryDTO dto) throws SQLException {
         // Corrección: Se elimina la coma errónea que estaba antes del WHERE ", WHERE id = ?"
         String sql = "UPDATE hys_transaction_history SET "
-                + "enty_id = ?"
+                + "enty_id = ?, "
                 + "hys_start_id = ?, "
                 + "hys_end_id = ?, "
                 + "status = 1 "

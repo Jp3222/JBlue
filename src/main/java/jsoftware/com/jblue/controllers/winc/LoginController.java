@@ -76,16 +76,18 @@ public class LoginController extends WindowController {
         }
     }
 
-    private final String WHERE = "user = '%s' and password = '%s'";
-
     public synchronized void login() {
         try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
             if (view.isSesionActive()) {
                 return;
             }
+            boolean valid_hour = LoginRulers.validHour();
             view.setSesionActive(true);
-            if (!LoginRulers.isWorkTime()) {
+            if (valid_hour && (!LoginRulers.isWorkTime())) {
                 returnMessage(view, "NO ES TIMPO DE TRABAJAR");
+                if (valid_hour) {
+                    return;
+                }
             }
             InstanceAuthDTO instance = (InstanceAuthDTO) LaunchApp.getInstance().getResources("software_key");
             if (Func.isNull(instance)) {
@@ -96,7 +98,8 @@ public class LoginController extends WindowController {
             boolean res = service.login(connection, view.getUserString(), view.getPasswordString());
 
             if (!res) {
-                //JOptionPane.showMessageDialog(view, service.getUserMessage() + ":" + service.getUserMessage());
+                // JOptionPane.showMessageDialog(view, service.getUserMessage() + ":" +
+                // service.getUserMessage());
                 returnMessage(view, "[" + service.getErrorCode() + "] " + service.getUserMessage());
                 view.setSesionActive(false);
                 return;
@@ -113,14 +116,15 @@ public class LoginController extends WindowController {
 
             view.dispose();
 
-            //Nuevo menu estandarizado a las aplicaciones
+            // Nuevo menu estandarizado a las aplicaciones
             menu = ModuleFactory.getInstance().getWMainMenu();
             menu.setLogin(view);
 
             menu.setVisible(true);
-            view.setSesionActive(false);
         } catch (SQLException e) {
             log(e, "login");
+        } finally {
+            view.setSesionActive(false);
         }
     }
 
@@ -132,8 +136,12 @@ public class LoginController extends WindowController {
     }
 
     public void config() {
-        view.dispose();
-        view_config.setVisible(true);
+        if (view != null) {
+            view.dispose();
+        }
+        if (view_config != null) {
+            view_config.setVisible(true);
+        }
     }
 
     public void show() {

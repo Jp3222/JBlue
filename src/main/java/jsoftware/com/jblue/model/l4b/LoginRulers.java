@@ -26,6 +26,10 @@ import jsoftware.com.jblue.sys.app.AppConfig;
  */
 public class LoginRulers {
 
+    public static boolean validHour() {
+        return AppConfig.isHourValidate();
+    }
+
     public static boolean isWorkTime() {
         return !AppConfig.isWorkTime();
     }

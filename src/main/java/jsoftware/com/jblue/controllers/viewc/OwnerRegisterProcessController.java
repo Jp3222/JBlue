@@ -5,9 +5,14 @@
 package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.exp.SystemException;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.service.OwnerRegisterProcessService;
 import jsoftware.com.jblue.sys.SystemSession;
@@ -24,9 +29,11 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
 
     private OwnerRegisterProcess view;
     private final OwnerRegisterProcessService service;
+    private final Map<String, JTable> models_map;
 
     public OwnerRegisterProcessController(boolean flag_dev, String mod_name) {
         this.service = new OwnerRegisterProcessService(flag_dev, mod_name);
+        models_map = new HashMap<>();
     }
 
     @Override
@@ -40,6 +47,8 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
                 payment_confirm();
             case "documet_confirm" ->
                 document_confirm();
+            case "load_payment_concept" ->
+                loadPaymentConcept(e.getActionCommand());
         }
     }
 
@@ -48,18 +57,10 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
         boolean res = false;
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
             SystemSession ss = SystemSession.getInstancia();
-            //VALIDAR LA ADMINISTRACION
-            if (!ss.isAdministrationValid()) {
-                returnMessage(view, false, "LA ADMINISTRACION ACTUAL NO SE HA REGISTRADO O NO ES VALIDA");
-                return;
-            }
-            //VALIDAR LA SESSION
-            if (ss.isLock()) {
-                returnMessage(view, false, "LA SESION ACTUAL HA CADUCADO");
-                return;
-            }
+            //VALIDACIONES INTERNAS DEL SISTEMA
+            ss.systemValid();
             //EJECUTAR EL MOVIMIENTO
-            res = service.save(c, view.getDtoWrapper());
+            res = service.save(c, ss, view.getDtoWrapper());
             if (service.isError()) {
                 returnMessage(view, false, service.getUserMessage());
                 return;
@@ -69,7 +70,7 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
             if (showConfirmDialog == JOptionPane.YES_OPTION) {
                 JOptionPane.showMessageDialog(view, "EL FORMATO HA SIDO EXPORTADO CORRECTAMENTE", "FORMATOS", JOptionPane.INFORMATION_MESSAGE);
             }
-        } catch (Exception e) {
+        } catch (SQLException | SystemException e) {
             returnMessage(view, false, e.getMessage());
         }
         if (res) {
@@ -96,31 +97,38 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
         this.view = aThis;
     }
 
+    public void add(String comand, JTable model) {
+        models_map.put(comand, model);
+    }
+
     private void search() {
+        System.out.println("SEARCH - ");
         boolean res = false;
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
             SystemSession ss = SystemSession.getInstancia();
-            //VALIDAR LA ADMINISTRACION
-            if (!ss.isAdministrationValid()) {
-                returnMessage(view, false, "LA ADMINISTRACION ACTUAL NO SE HA REGISTRADO O NO ES VALIDA");
-                return;
-            }
+            //VALIDACIONES QUE NO PERMITEN REGISTRO
+            ss.systemValid();
             //VALIDAR LA SESSION
             if (ss.isLock()) {
                 returnMessage(view, false, "LA SESION ACTUAL HA CADUCADO");
                 return;
             }
+            ProcessWrapperDTO dto = view.getDtoWrapper();
             //EJECUTAR EL MOVIMIENTO
-            res = service.search(c, view.getDtoWrapper());
+            res = service.search(c, dto);
             if (service.isError()) {
                 returnMessage(view, false, service.getUserMessage());
                 return;
             }
             //CONFIRMAR LA REIMPRESION DE FORMATO
-            JOptionPane.showMessageDialog(view, "SE CARGARAN LOS DATOS ENCONTRADOS");
-            view.updateData();
-        } catch (Exception e) {
+            if (dto.isUser_exists()) {
+                JOptionPane.showMessageDialog(view, "EXISTEN DATOS ASOCIADOS A ESTE RFC, SI DESEA HACER ALGUNA CORRECCION, FAVOR DE IR AL MODULO DE EDICION DE INFORMACION");
+            }
+            view.showData();
+        } catch (SQLException e) {
             returnMessage(view, false, e.getMessage());
+        } catch (SystemException ex) {
+            returnMessage(view, false, ex.getUserMessage());
         }
         if (res) {
             returnMessage(view, true);
@@ -128,11 +136,65 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
     }
 
     private void payment_confirm() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int input = JOptionPane.showConfirmDialog(view, "¿DESEA CONFIRMAR PAGO?", "CONFIRMAR PAGO", JOptionPane.INFORMATION_MESSAGE);
+        ProcessWrapperDTO dto = view.getDtoWrapper();
+        //VALIDA QUE EL EMPLEADO ACTUAL RECIBIO EL PAGO
+        if (input == JOptionPane.YES_OPTION) {
+            //SI, SI SE ASIGNA TRUE PARA GENEREAR LA CABEZERA Y EL DESGLOSE
+            dto.setPayment_header_valid(true);
+            dto.setPayment_detail_valid(true);
+            dto.setGenerate_payment_line(false);
+        } else {
+            //SI, NO SE ASIGNA FALSE Y APARTE SE GENERARA UNA LINEA DE PAGO
+            dto.setPayment_header_valid(false);
+            dto.setPayment_detail_valid(false);
+            dto.setGenerate_payment_line(true);
+        }
     }
 
     private void document_confirm() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int input = JOptionPane.showConfirmDialog(view, "¿COFIRMA QUE LA INFORMACION DE LOS DOCUMENTOS ES CORRECTA?", "VALIDAR DOCUMENTOS", JOptionPane.INFORMATION_MESSAGE);
+        ProcessWrapperDTO dto = view.getDtoWrapper();
+
+        //VALIDA QUE LOS DOCUMEMTOS PRESENTADOS SON VALIDOS Y CON LA INFORMACION CONSISTENTE PARA EL TRAMITE
+        if (input == JOptionPane.YES_OPTION) {
+            // SI LO SON SE PUEDE CONTINUAR CON EL TRAMITE
+            dto.setDocument_list_valid(true);
+            dto.setDocument_record_valid(true);
+        } else {
+            //SI NO LO SON, SE REGISTRA LA INFORMACION CAPTURADA DEL USUARIO Y SU RFC Y/O CURP SE PONE EN SITUACION CRITICA
+            dto.setDocument_list_valid(false);
+            dto.setDocument_record_valid(false);
+            lock(dto);
+        }
+    }
+
+    private void lock(ProcessWrapperDTO dto) {
+        try (JDBConnection connnection = ConnectionFactory.getIntance().getProcessConnection()) {
+            SystemSession ss = SystemSession.getInstancia();
+            boolean res = service.userLocked(connnection, ss, dto);
+            if (service.isError()) {
+                returnMessage(view, false, service.getUserMessage());
+                return;
+            }
+            if (res) {
+                returnMessage(view, res, "EL USUARIO SE HA COLOCADO EN SITUACION CRITICA");
+            }
+        } catch (SQLException ex) {
+            returnMessage(view, false, ex.getMessage());
+        }
+    }
+
+    public void loadPaymentConcept(String comand) {
+        try (JDBConnection connnection = ConnectionFactory.getIntance().getProcessConnection()) {
+            SystemSession ss = SystemSession.getInstancia();
+            ProcessWrapperDTO dto = view.getDtoWrapper();
+            JTable get = models_map.get(comand);
+            service.load(connnection, ss, dto, get);
+        } catch (SQLException ex) {
+            returnMessage(view, false, ex.getMessage());
+        }
+        view.showData();
     }
 
 }

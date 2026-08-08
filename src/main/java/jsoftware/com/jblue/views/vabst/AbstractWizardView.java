@@ -26,7 +26,7 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
         super(dto_wrapper);
         //COMPONENTES INICIALES
         initComponents();
-        this.setName(dto_wrapper.getModule_name());
+        setName(dto_wrapper.getModule_name());
         //CONTROLADOR DEL ASISTENTE
         WizardController wctronller = (WizardController) getDtoWrapper().getController(WIZARD_CONTROLLER);
         wctronller.setView(this);

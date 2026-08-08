@@ -79,7 +79,19 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
             employeeController.setView(this);
             next_panel_button.addActionListener(employeeController);
         }
-        cancel_process.addActionListener((e) -> initialState());
+        //CANCELAR TRAMITE
+        cancel_process.addActionListener((e) -> {
+            int input = JOptionPane.showConfirmDialog(this,
+                    "¿DESEA CANCELAR EL TRAMITE?",
+                    "CANCELAR TRAMITE",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+            if (input != JOptionPane.YES_OPTION) {
+                return;
+            }
+            initialState();
+        });
         // NOTA: El botón "next_panel_button" NO recibe listeners de negocio aquí; 
         // es gobernado de forma limpia por bindController() mediante el WizardController.
     }
@@ -125,6 +137,7 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
     public boolean nextStep() {
         // Sincroniza los componentes visuales del paso actual hacia los Strings del mapa del DTO
         getData();
+        System.out.println(getDtoWrapper().getProcess().toString());
         // Evaluar las banderas de validación del DTO según el paso del asistente
         boolean valid = switch (current_index) {
             case 0 ->
@@ -189,7 +202,4 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
         }
     }
 
-    public void updateData() {
-
-    }
 }

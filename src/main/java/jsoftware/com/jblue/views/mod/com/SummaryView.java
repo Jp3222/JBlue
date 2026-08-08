@@ -4,8 +4,8 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
-import java.util.Map;
 import javax.swing.table.TableModel;
+import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentationDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
@@ -135,38 +135,50 @@ public final class SummaryView extends AbstractModuleView<ProcessWrapperDTO> imp
         TableModel model = jTable1.getModel();
         model.getRowCount();
         int i = 0;
-        for (Map.Entry<String, Object> entry : o.getUser().getMap().entrySet()) {
-            String key = entry.getKey();
-            String val = entry.getValue().toString();
-            model.setValueAt(key, i, 0);
-            model.setValueAt(val, i, 1);
-            i++;
-        }
+        //DATOS DEL USUARIO
+        UserDTO user = o.getUser();
+        i = add(model, "RFC", user.getRfc(), i);
+        i = add(model, "CURP", user.getCurp(), i);
+        i = add(model, "NOMBRE", user.getFirstName(), i);
+        i = add(model, "A. PATERNO", user.getLastName1(), i);
+        i = add(model, "A. MATERNO", user.getLastName2(), i);
+        i = add(model, "GENERO", gender(Integer.parseInt(user.getGender())), i);
+        i = add(model, "CORREO E", user.getEmail(), i);
+        i = add(model, "TEL. 1", user.getPhoneNumber1(), i);
+        i = add(model, "TEL. 2", user.getPhoneNumber2(), i);
+        i = add(model, "TIPO DE USUARIO", owner(user.getUserType(), user.get("user_type_string").toString()), i);
+        
+        //DOCUMENTOS SOLICITADOS
         for (UserDocumentationDTO doc : o.getDocument_list()) {
-            for (Map.Entry<String, Object> entry : doc.getMap().entrySet()) {
-                String key = entry.getKey();
-                String val = entry.getValue().toString();
-                model.setValueAt(key, i, 0);
-                model.setValueAt(val, i, 1);
-                i++;
-            }
-        }
-        for (PaymentDetailDTO py : o.getPayment_details()) {
-            for (Map.Entry<String, Object> entry : py.getMap().entrySet()) {
-                String key = entry.getKey();
-                String val = entry.getValue().toString();
-                model.setValueAt(key, i, 0);
-                model.setValueAt(val, i, 1);
-                i++;
-            }
-        }
-        for (Map.Entry<String, Object> entry : o.getWater_intake().getMap().entrySet()) {
-            String key = entry.getKey();
-            String val = entry.getValue().toString();
-            model.setValueAt(key, i, 0);
-            model.setValueAt(val, i, 1);
+            model.setValueAt(doc.getTypeId(), i, 0);
+            model.setValueAt(doc.getName(), i, 1);
             i++;
         }
+        
+        //CONCEPTOS A PAGAR
+        for (PaymentDetailDTO j : o.getPayment_details()) {
+            model.setValueAt(j.getPaymentConceptId(), i, 0);
+            model.setValueAt(j.getTotalAmount(), i, 1);
+            i++;
+        }
+    }
+
+    private int add(TableModel model, String field, String value, int index) {
+        model.setValueAt(field, index, 0);
+        model.setValueAt(value, index, 1);
+        return index++;
+    }
+
+    private String gender(int i) {
+        String[] o = {"NO DEFINIDO", "HOMBRE", "MUJER"};
+        return o[i];
+    }
+
+    private String owner(String i, String s) {
+        if (i.equals("1")) {
+            return "TITULAR";
+        }
+        return s;
     }
 
     @Override

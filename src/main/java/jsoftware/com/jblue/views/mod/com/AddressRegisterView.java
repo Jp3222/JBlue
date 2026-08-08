@@ -17,7 +17,7 @@ import jsoftware.com.jblue.views.framework.DBObjectValues;
  *
  * @author juanp
  */
-public class AddressRegisterView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<AddressDTO> {
+public final class AddressRegisterView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<AddressDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,6 +27,7 @@ public class AddressRegisterView extends AbstractModuleView<ProcessWrapperDTO> i
     public AddressRegisterView(ProcessWrapperDTO dto) {
         super(dto);
         initComponents();
+        build();
     }
 
     @Override
@@ -51,13 +52,21 @@ public class AddressRegisterView extends AbstractModuleView<ProcessWrapperDTO> i
             c.loadData();
         }
     }
-
     @Override
     public void events() {
     }
 
     @Override
     public void initialState() {
+        if (street1_field.getItemCount() > 0) {
+            street1_field.setSelectedIndex(0);
+        }
+        if (street2_field.getItemCount() > 0) {
+            street2_field.setSelectedIndex(0);
+        }
+        inside_number_field.setText(null);
+        outside_number_field.setText(null);
+        is_owner_field.setSelected(false);
     }
 
     @Override

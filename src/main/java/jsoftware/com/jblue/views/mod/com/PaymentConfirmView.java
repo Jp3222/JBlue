@@ -4,28 +4,22 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
-import java.sql.SQLException;
 import java.util.List;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import jsoftware.com.jblue.model.dao.PaymentConceptDAO;
+import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
 import jsoftware.com.jblue.model.dto.PaymentListDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
-import jsoftware.com.jblue.model.factories.ConnectionFactory;
-import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
-import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.util.FuncLogs;
+import jsoftware.com.jblue.views.framework.ShowDataModel;
+import jsoftware.com.jblue.views.framework.WizardModel;
 
 /**
  *
  * @author juanp
  */
-public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<List<PaymentListDTO>> {
+public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<List<PaymentListDTO>>, ShowDataModel {
 
     private static final long serialVersionUID = 1L;
-    private final DefaultTableModel model;
 
     /**
      * Creates new form PaymentProcess
@@ -33,9 +27,6 @@ public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperD
     public PaymentConfirmView(ProcessWrapperDTO dto) {
         super(dto);
         this.initComponents();
-        this.model = new DefaultTableModel(new String[]{"No.", "Concepto", "Costo", "Tipo"}, 0);
-        jTable1.setModel(model);
-        load();
         build();
     }
 
@@ -53,6 +44,13 @@ public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperD
 
     @Override
     public void events() {
+        OwnerRegisterProcessController main_controller = (OwnerRegisterProcessController) getDtoWrapper().getController(WizardModel.MAIN_CONTROLLER);
+        if (main_controller != null) {
+            concept_generate_button.addActionListener(main_controller);
+            payment_register_button.addActionListener(main_controller);
+            main_controller.add(concept_generate_button.getActionCommand(), jTable1);
+            System.out.println(getDtoWrapper().getProcess().toString());
+        }
     }
 
     @Override
@@ -61,30 +59,6 @@ public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperD
 
     @Override
     public void finalState() {
-    }
-
-    public void load() {
-        PaymentConceptDAO dao = new PaymentConceptDAO(true, getName());
-        try (JDBConnection connection = connection();) {
-            List<String[]> paymentConcep = dao.getPaymentConcep(
-                    connection,
-                    String.valueOf(getDtoWrapper().getModule_id())
-            );
-            for (String[] i : paymentConcep) {
-                model.addRow(i);
-            }
-        } catch (Exception e) {
-            FuncLogs.logError(
-                    AppFiles.DIR_PROG_LOG_TODAY,
-                    getClass(), e,
-                    getDtoWrapper().getModule_name(),
-                    "load",
-                    e.getMessage());
-        }
-    }
-
-    JDBConnection connection() throws SQLException {
-        return ConnectionFactory.getIntance().getMainConnection();
     }
 
     /**
@@ -105,8 +79,8 @@ public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperD
         jLabel3 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        concept_generate_button = new javax.swing.JButton();
+        payment_register_button = new javax.swing.JButton();
 
         setName("PAGO DE CONCEPTOS"); // NOI18N
         setLayout(new java.awt.CardLayout());
@@ -169,18 +143,15 @@ public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperD
         jLabel5.setName("jLabel5"); // NOI18N
         jPanel5.add(jLabel5);
 
-        jButton1.setText(bundle.getString("PaymentConfirmView.jButton1.text")); // NOI18N
-        jButton1.setName("jButton1"); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel5.add(jButton1);
+        concept_generate_button.setText(bundle.getString("PaymentConfirmView.concept_generate_button.text")); // NOI18N
+        concept_generate_button.setActionCommand(bundle.getString("PaymentConfirmView.concept_generate_button.actionCommand")); // NOI18N
+        concept_generate_button.setName("concept_generate_button"); // NOI18N
+        jPanel5.add(concept_generate_button);
 
-        jButton2.setText(bundle.getString("PaymentConfirmView.jButton2.text")); // NOI18N
-        jButton2.setName("jButton2"); // NOI18N
-        jPanel5.add(jButton2);
+        payment_register_button.setText(bundle.getString("PaymentConfirmView.payment_register_button.text")); // NOI18N
+        payment_register_button.setActionCommand(bundle.getString("PaymentConfirmView.payment_register_button.actionCommand")); // NOI18N
+        payment_register_button.setName("payment_register_button"); // NOI18N
+        jPanel5.add(payment_register_button);
 
         jPanel4.add(jPanel5, java.awt.BorderLayout.CENTER);
 
@@ -191,27 +162,8 @@ public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperD
         add(register_panel, "card2");
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int input = JOptionPane.showConfirmDialog(this, "¿CONFIRMA QUE HA RECIBIDO EL MONTO DEL PAGO EN SU TOTALIDAD?", "pago", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-        if (input == JOptionPane.YES_OPTION) {
-            getDtoWrapper().setPayment_header_valid(true);
-            for (int i = 0; i < model.getRowCount(); i++) {
-                PaymentListDTO dto = new PaymentListDTO();
-                for (int j = 0; j < model.getRowCount(); j++) {
-                    dto.put("payment_concept_id", model.getValueAt(j, 0));
-                    dto.put("payment_concept_id", model.getValueAt(j, 1));
-                    dto.put("payment_concept_id", model.getValueAt(j, 2
-                    ));
-                }
-
-            }
-        }
-
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton concept_generate_button;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
@@ -220,6 +172,7 @@ public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperD
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton payment_register_button;
     private javax.swing.JPanel register_panel;
     // End of variables declaration//GEN-END:variables
 
@@ -235,5 +188,11 @@ public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperD
     @Override
     public List<PaymentListDTO> getValues(boolean update) {
         return null;
+    }
+
+    @Override
+    public void showData() {
+        jTable1.updateUI();
+        System.out.println(jTable1.getRowCount());
     }
 }

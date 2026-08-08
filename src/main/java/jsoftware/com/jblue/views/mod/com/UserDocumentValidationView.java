@@ -197,6 +197,7 @@ public class UserDocumentValidationView extends AbstractModuleView<ProcessWrappe
         jPanel3.add(jLabel9);
 
         jButton3.setText(bundle.getString("UserDocumentValidationView.jButton3.text")); // NOI18N
+        jButton3.setToolTipText(bundle.getString("UserDocumentValidationView.jButton3.toolTipText")); // NOI18N
         jButton3.setName("jButton3"); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -206,6 +207,7 @@ public class UserDocumentValidationView extends AbstractModuleView<ProcessWrappe
         jPanel3.add(jButton3);
 
         jButton1.setText(bundle.getString("UserDocumentValidationView.jButton1.text")); // NOI18N
+        jButton1.setToolTipText(bundle.getString("UserDocumentValidationView.jButton1.toolTipText")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

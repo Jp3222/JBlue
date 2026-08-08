@@ -9,12 +9,13 @@ import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
+import jsoftware.com.jblue.views.framework.ShowDataModel;
 
 /**
  *
  * @author juanp
  */
-public final class WaterIntakeRegisterView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<WaterIntakeDTO> {
+public final class WaterIntakeRegisterView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<WaterIntakeDTO>, ShowDataModel {
 
     private static final long serialVersionUID = 1L;
 
@@ -281,6 +282,13 @@ public final class WaterIntakeRegisterView extends AbstractModuleView<ProcessWra
     @Override
     public WaterIntakeDTO getValues(boolean update) {
         return new WaterIntakeDTO();
+    }
+
+    @Override
+    public void showData() {
+        if (true) {
+            
+        }
     }
 
 }

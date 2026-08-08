@@ -17,6 +17,7 @@ import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.ShowDataModel;
+import jsoftware.com.jblue.views.framework.WizardModel;
 
 /**
  *
@@ -32,6 +33,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
     public UserRegisterView(ProcessWrapperDTO dto) {
         super(dto);
         initComponents();
+        build();
     }
 
     @Override
@@ -44,7 +46,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
 
     @Override
     public void components() {
-        OwnerRegisterProcessController owner_controller = (OwnerRegisterProcessController) getDtoWrapper().getController("CONTROLLER");
+        OwnerRegisterProcessController owner_controller = (OwnerRegisterProcessController) getDtoWrapper().getController(WizardModel.MAIN_CONTROLLER);
         if (Func.isNotNull(owner_controller)) {
             search_user_button.addActionListener(owner_controller);
         }
@@ -56,20 +58,49 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
 
     @Override
     public void initialState() {
+        if (AppConfig.getParameterBoolean("VALIDA_RFC")) {
+            this.rfc_field.setEnabled(true);
+            this.curp_field.setEnabled(false);
+            this.first_name_field.setEnabled(false);
+            this.last_name1_field.setEnabled(false);
+            this.last_name2_field.setEnabled(false);
+            this.gender_field.setEnabled(false);
+            this.birdate_field.setEnabled(false);
+            this.email_field.setEnabled(false);
+            this.phone_number1_field.setEnabled(false);
+            this.phone_number2_field.setEnabled(false);
+        } else {
+            unlock();
+        }
+        this.rfc_field.setText(null);
+        this.curp_field.setText(null);
+        this.first_name_field.setText(null);
+        this.last_name1_field.setText(null);
+        this.last_name2_field.setText(null);
+        this.gender_field.setSelectedIndex(0);
+        this.birdate_field.setDate(null);
+        this.email_field.setText(null);
+        this.phone_number1_field.setText(null);
+        this.phone_number2_field.setText(null);
+    }
+
+    private void unlock() {
         this.rfc_field.setEnabled(true);
-        this.curp_field.setEnabled(false);
-        this.first_name_field.setEnabled(false);
-        this.last_name1_field.setEnabled(false);
-        this.last_name2_field.setEnabled(false);
-        this.gender_field.setEnabled(false);
-        this.birdate_field.setEnabled(false);
-        this.email_field.setEnabled(false);
-        this.phone_number1_field.setEnabled(false);
-        this.phone_number2_field.setEnabled(false);
+        this.curp_field.setEnabled(true);
+        this.first_name_field.setEnabled(true);
+        this.last_name1_field.setEnabled(true);
+        this.last_name2_field.setEnabled(true);
+        this.gender_field.setEnabled(true);
+        this.birdate_field.setEnabled(true);
+        this.email_field.setEnabled(true);
+        this.phone_number1_field.setEnabled(true);
+        this.phone_number2_field.setEnabled(true);
     }
 
     @Override
     public void finalState() {
+        //ESTE CAMPO SERA VISIBLE SI SE TRATA DE REGISTRAR OTRO TIPO DE USUARIO QUE NO SEA CONSUMIDOR
+        p_user_type.setVisible(!getDtoWrapper().getProcess().getProcessType().equals("1"));
     }
 
     /**
@@ -124,6 +155,10 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         jLabel19 = new javax.swing.JLabel();
         phone_number2_field = new javax.swing.JTextField();
         jLabel35 = new javax.swing.JLabel();
+        p_user_type = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        user_type_field = new javax.swing.JComboBox<>();
 
         setName("DATOS DE USUARIO"); // NOI18N
         setLayout(new java.awt.CardLayout());
@@ -332,6 +367,23 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
 
         user_data_panel.add(jPanel4);
 
+        p_user_type.setName("p_user_type"); // NOI18N
+        p_user_type.setLayout(new java.awt.BorderLayout());
+
+        jLabel20.setText(bundle.getString("UserRegisterView.jLabel20.text")); // NOI18N
+        jLabel20.setName("jLabel20"); // NOI18N
+        jLabel20.setPreferredSize(new java.awt.Dimension(150, 25));
+        p_user_type.add(jLabel20, java.awt.BorderLayout.WEST);
+
+        jLabel36.setName("jLabel36"); // NOI18N
+        jLabel36.setPreferredSize(new java.awt.Dimension(80, 30));
+        p_user_type.add(jLabel36, java.awt.BorderLayout.LINE_END);
+
+        user_type_field.setName("user_type_field"); // NOI18N
+        p_user_type.add(user_type_field, java.awt.BorderLayout.CENTER);
+
+        user_data_panel.add(p_user_type);
+
         register_panel.add(user_data_panel, java.awt.BorderLayout.CENTER);
 
         add(register_panel, "register");
@@ -348,6 +400,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel25;
@@ -357,6 +410,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
@@ -372,6 +426,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
     private javax.swing.JPanel p_curp;
     private javax.swing.JPanel p_gender;
     private javax.swing.JPanel p_rfc;
+    private javax.swing.JPanel p_user_type;
     private javax.swing.JPanel pc_am;
     private javax.swing.JPanel pc_ap;
     private javax.swing.JPanel pc_nombre;
@@ -381,6 +436,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
     private javax.swing.JTextField rfc_field;
     private javax.swing.JButton search_user_button;
     private javax.swing.JPanel user_data_panel;
+    private javax.swing.JComboBox<String> user_type_field;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -390,9 +446,11 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         if (!res) {
             return;
         }
-        getDtoWrapper().setUser_valid(res);
+        ProcessWrapperDTO wp = getDtoWrapper();
+        wp.setUser_valid(res);
         UserDTO values = getValues(false);
-        getDtoWrapper().getUser().setMap(values.getMap());
+        wp.getUser().setMap(values.getMap());
+
     }
 
     @Override
@@ -483,6 +541,8 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
             phone_number1_field.setText(user.getPhoneNumber1());
             phone_number2_field.setText(user.getPhoneNumber2());
             email_field.setText(user.getEmail());
+        } else {
+            unlock();
         }
     }
 }

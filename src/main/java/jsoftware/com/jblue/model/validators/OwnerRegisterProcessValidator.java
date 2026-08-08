@@ -25,18 +25,20 @@ public class OwnerRegisterProcessValidator extends ProcessValidators {
     }
 
     @Override
-    protected boolean WaterIntakeRegisterValid(int mov_time) {
+    protected boolean movProcess(int mov_time) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    protected boolean FinalizeProcessValid(int mov_time) {
+    protected boolean paymentProcess(int mov_time) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    protected boolean PrintValid(int mov_time) {
+    protected boolean finalizeProcess(int mov_time) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+
 
 }

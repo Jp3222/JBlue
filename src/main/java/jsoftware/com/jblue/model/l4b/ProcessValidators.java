@@ -36,32 +36,33 @@ public abstract class ProcessValidators extends AbstractValidation {
                 process_wrapper_dto,
                 t -> Func.isNull(t)
                 && Func.isNotNull(process_wrapper_dto.getModule_id())
-                && Func.isNotNull(process_wrapper_dto.getModule_id())
                 && Func.isNotNull(process_wrapper_dto.getModule_name())
-                && Func.isNotNull(process_wrapper_dto.getModule_name()),
+                && Func.isNotNull(process_wrapper_dto.getCurrent_employee())
+                && Func.isNotNull(process_wrapper_dto.getCurrent_administration()),
                 ERR_MSG1.formatted("DEL TRAMITE")
         );
         if (mov_time == BEFORE) {
-            addRuler("user-not-null", process_wrapper_dto.getUser(), t -> Func.isNotNull(t), ERR_MSG1.formatted("DEL USUARIO"));
-            addRuler("cur-employee-not-null", process_wrapper_dto.getCurrent_employee(), t -> Func.isNotNull(t), ERR_MSG1.formatted("DEL EMPLEADO ACTUAL"));
-            addRuler("cur-admin-null", process_wrapper_dto.getCurrent_administration(), t -> Func.isNotNull(t), ERR_MSG1.formatted("DE LA ADMINISTRACION"));
-            addRuler("payment-not-null", process_wrapper_dto.getPayment_header(), t -> Func.isNotNull(t), ERR_MSG1.formatted("DE LA CEBEZERA DEL PAGO"));
-            addRuler("payment-list-not-null", process_wrapper_dto.getPayment_details(), t -> Func.isNotNull(t), ERR_MSG1.formatted("DE LOS CONCEPTOS DE PAGO"));
-            addRuler("water-inatke-not-null", process_wrapper_dto.getWater_intake(), t -> Func.isNotNull(t),
-                    ERR_MSG1.formatted("DE LA TOMA"));
-            addRuler("wki-user-not-null", process_wrapper_dto.getWki_user(), t -> Func.isNotNull(t),
-                    ERR_MSG1.formatted("DEL USUARIO DE TOMA"));
-
+            addRuler("process_id",
+                    process_wrapper_dto.getProcess(),
+                    t -> Func.isNotNull(t.getProcessType()),
+                    "EL TIPO DE TRAMITE NO HA SIDO DEFINIDO"
+            );
+        } else {
+            addRuler("process_id",
+                    process_wrapper_dto.getProcess(),
+                    t -> Func.isNotNull(t.getSequenceProcess()),
+                    "EL TIPO DE TRAMITE NO HA SIDO DEFINIDO"
+            );
         }
         return isValid();
     }
 
     protected abstract boolean validProcess(int mov_time);
 
-    protected abstract boolean WaterIntakeRegisterValid(int mov_time);
+    protected abstract boolean movProcess(int mov_time);
 
-    protected abstract boolean FinalizeProcessValid(int mov_time);
+    protected abstract boolean paymentProcess(int mov_time);
 
-    protected abstract boolean PrintValid(int mov_time);
+    protected abstract boolean finalizeProcess(int mov_time);
 
 }

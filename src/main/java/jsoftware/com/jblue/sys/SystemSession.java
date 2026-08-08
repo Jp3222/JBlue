@@ -10,6 +10,7 @@ import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.InstanceAuthDTO;
 import jsoftware.com.jblue.model.dto.SessionDTO;
+import jsoftware.com.jblue.model.exp.SystemException;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.Func;
@@ -126,6 +127,37 @@ public class SystemSession implements LocalSession<EmployeeUserDTO>, Serializabl
                     "Advertencias del Sistema",
                     JOptionPane.WARNING_MESSAGE
             );
+        }
+    }
+
+    /**
+     * METODO QUE REALIZA VALIDACIONES INTERNAS DEL SISTEMA
+     *
+     * @throws SystemException - En caso de que alguna validacion interna no sea
+     * valida
+     * @throws SQLException
+     */
+    public void systemValid() throws SystemException, SQLException {
+        if (!isOpen()) {
+            throw new SystemException(1, "SESION NO ABIERTA");
+        }
+        if (isLock()) {
+            throw new SystemException(2, "SESION CERRADA");
+        }
+        //Permite el paso
+        if (Func.isNull(current_employee)) {
+            throw new SystemException(3, "El usuario no se ha registrado correctamente. No podrá realizar algunos registros.\n");
+        }
+        //permite el paso
+        if (AppConfig.getParameterBoolean("VALIDA_ADMINISTRACIO") && Func.isNull(current_administration)) {
+            throw new SystemException(4, "La administración actual no ha sido registrada. No podrá realizar ningún registro administrativo.\n");
+        }
+        //no permite el paso
+        if (Func.isNull(current_session)) {
+            throw new SystemException(5, "El objeto de session actual no ha sido registrado correctamente. No podrá realizar ningún registro administrativo.\n");
+        }
+        if (AppConfig.getParameterBoolean("SOLO_LECTURA")) {
+            throw new SystemException(6, "EL SISTEMA ESTA EN MODO LECTURA");
         }
     }
 

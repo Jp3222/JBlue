@@ -14,6 +14,7 @@ import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
 import jsoftware.com.jpaymentlib.model.dto.PaymentDetailDTO;
 import jsoftware.com.jpaymentlib.model.dto.PaymentHeaderDTO;
+import jsoftware.com.jpaymentlib.model.dto.PaymentLines;
 
 /**
  * Objeto de transferencia de datos envolvente (Wrapper) para procesos
@@ -56,6 +57,8 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
     private List<PaymentDetailDTO> payment_details;
     private boolean payment_detail_valid;
 
+    private PaymentLines payment_line;
+    private boolean generate_payment_line;
     //PASO 6
     private DocumentRecordDTO document_record;
     private boolean document_record_valid; // Integrado para mantener la simetría del flujo
@@ -70,7 +73,7 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
     }
 
     @Override
-    public final void clear() {
+    public void clear() {
         process = new ProcessDTO();
         process_water_intake_user = new ProcessWaterIntakeUserDTO();
         user = new UserDTO();
@@ -78,6 +81,7 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
         document_list = new ArrayList<>();
         document_record = new DocumentRecordDTO(); // Corregido: Limpieza total
         water_intake = new WaterIntakeDTO();
+        water_intake_type = new WaterIntakeTypeDTO();
         payment_header = new PaymentHeaderDTO();
         payment_details = new ArrayList<>();
         wki_user = new WaterIntakeUserDTO();
@@ -217,6 +221,22 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
 
     public void setPayment_detail_valid(boolean payment_detail_valid) {
         this.payment_detail_valid = payment_detail_valid;
+    }
+
+    public void setPayment_line(PaymentLines payment_line) {
+        this.payment_line = payment_line;
+    }
+
+    public PaymentLines getPayment_line() {
+        return payment_line;
+    }
+
+    public void setGenerate_payment_line(boolean generate_payment_line) {
+        this.generate_payment_line = generate_payment_line;
+    }
+
+    public boolean isGenerate_payment_line() {
+        return generate_payment_line;
     }
 
     public DocumentRecordDTO getDocument_record() {

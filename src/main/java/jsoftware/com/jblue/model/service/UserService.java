@@ -207,9 +207,15 @@ public class UserService extends AbstractService implements Serializable {
         return res;
     }
 
-    public void set(JDBConnection c, UserDTO user) {
+    /**
+     * METODO QUE ASIGNA DATOS EXISTENTES
+     *
+     * @param connection - conexion activa
+     * @param user - dto del usuario
+     */
+    public void set(JDBConnection connection, UserDTO user) {
         try {
-            boolean set = user_dao.set(c, user);
+            boolean set = user_dao.set(connection, user);
             if (!set) {
                 returnMessageError(1, "LOS DATOS NO PUDIERON SER ASIGNADOS");
             }

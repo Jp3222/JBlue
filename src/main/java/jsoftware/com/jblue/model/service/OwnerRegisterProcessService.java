@@ -5,8 +5,10 @@
 package jsoftware.com.jblue.model.service;
 
 import java.sql.SQLException;
+import javax.swing.JTable;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
+import jsoftware.com.jblue.model.dao.ViewsDAO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.exp.ServiceException;
@@ -17,6 +19,7 @@ import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jutil.db.JDBConnection;
+import jsoftware.com.jutil.swingw.modelos.JTableModel;
 import jsoftware.com.jutil.util.FuncLogs;
 
 /**
@@ -29,12 +32,14 @@ public class OwnerRegisterProcessService extends AbstractService {
     private final ProcessService process_service;
     private final TransactionHistoryService transaction_service;
     private final HistoryDAO history_dao;
+    private final ViewsDAO dao;
 
     public OwnerRegisterProcessService(boolean flag_dev, String process_name) {
         super(flag_dev, process_name);
         process_service = new ProcessService(flag_dev, process_name);
         transaction_service = new TransactionHistoryService(flag_dev, process_name);
         history_dao = HistoryDAO.getInstance();
+        dao = new ViewsDAO(flag_dev, user_message);
     }
 
     /**
@@ -44,25 +49,15 @@ public class OwnerRegisterProcessService extends AbstractService {
      * @param dto
      * @return
      */
-    public boolean save(JDBConnection connection, ProcessWrapperDTO dto) throws SQLException {
+    public boolean save(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) throws SQLException {
         // Corrección: Inicialización por defecto para evitar errores de compilación al testear la interfaz
         boolean res = false;
-        SystemSession ss = SystemSession.getInstancia();
-        if (ss.isLock()) {
-            returnMessageError("LA SESION ACTUAL HA CADUCADO");
-            return false;
-        }
-
-        if (ss.isAdministrationValid()) {
-            returnMessageError("LA ADMINISTRACION ACTUAL NO HA SIDO REGISTRADA");
-            return false;
+        if (AppConfig.isDevMessages()) {
+            System.out.println(dto.toString());
         }
         /**
          * SE VERIFICA SI EL PROGRAMA ESTA EN SOLO LECTURA
          */
-        if (AppConfig.isDevMessages()) {
-            System.out.println(dto.toString());
-        }
         //SI EL SISTEMA ESTA EN SOLO LECTURA NO REALIZA REGISTRO ALGUNO
         if (AppConfig.getParameterBoolean("SOLO_LECTURA")) {
             returnMessageError("EL SISTEMA ESTA EN MODO LECTURA");
@@ -139,23 +134,36 @@ public class OwnerRegisterProcessService extends AbstractService {
         return res;
     }
 
-    public boolean search(JDBConnection connection, ProcessWrapperDTO dtoWrapper) {
+    public boolean search(JDBConnection connection, ProcessWrapperDTO dto) {
         boolean res;
         try {
-            UserDTO user = dtoWrapper.getUser();
+            UserDTO user = dto.getUser();
             res = process_service.exists(connection, user);
             if (process_service.isError()) {
                 returnMessageError(process_service.getErrorCode(), process_service.getUserMessage());
                 return false;
             }
-            if (res) {
-                return true;
-            }
+            dto.setUser_exists(res);
         } catch (Exception e) {
             rollback(connection);
             res = false;
             returnMessageError(e.getMessage());
         }
         return res;
+    }
+
+    public boolean userLocked(JDBConnection connnection, SystemSession ss, ProcessWrapperDTO dto) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public boolean load(JDBConnection connnection, SystemSession ss, ProcessWrapperDTO dto, JTable model) {
+        try {
+            JTableModel conceptPayment = dao.conceptPayment(connnection, dto.getProcess());
+            model.setModel(conceptPayment);
+            return true;
+        } catch (SQLException ex) {
+            System.getLogger(OwnerRegisterProcessService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return false;
     }
 }

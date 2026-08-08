@@ -58,11 +58,11 @@ public class ProcessDAO extends AbstractDAO {
                        (?, ?, ?, ?, ?, CURRENT_USER, 10, ?)
                        """;
         try (PreparedStatement ps = connection.getNewPreparedStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ps.setInt(1, Integer.parseInt(dto.getProcessType()));
-            ps.setInt(2, Integer.parseInt(dto.getSequenceProcess()));
-            ps.setInt(3, Integer.parseInt(dto.getEmployeeStart()));
-            ps.setInt(4, Integer.parseInt(dto.getAdministrationStart()));
-            ps.setInt(5, Integer.parseInt(dto.getDateStart()));
+            ps.setString(1, dto.getProcessType());
+            ps.setString(2, dto.getSequenceProcess());
+            ps.setString(3, dto.getEmployeeStart());
+            ps.setString(4, dto.getAdministrationStart());
+            ps.setString(5, dto.getDateStart());
             int affectedRows = ps.executeUpdate();
             if (affectedRows > 0) {
                 try (ResultSet rs = ps.getGeneratedKeys()) {

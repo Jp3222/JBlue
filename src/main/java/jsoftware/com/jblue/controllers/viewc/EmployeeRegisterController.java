@@ -46,7 +46,7 @@ public class EmployeeRegisterController extends AbstractDBViewController<Employe
         boolean res = false;
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
             SystemSession ss = SystemSession.getInstancia();
-            if (ss.isLock()) {
+            if (ss.isLock(c)) {
                 returnMessage(view, false, "LA SESION HA CADUCADO, CIERRE EL PROGRAMA Y VUELVA A INTENTAR");
             }
 //            if (!ss.isAdministrationValid()) {

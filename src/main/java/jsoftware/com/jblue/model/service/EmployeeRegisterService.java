@@ -41,12 +41,17 @@ public class EmployeeRegisterService extends AbstractService {
     public boolean insert(JDBConnection connection, EmployeeRegisterWrapperDTO dto) {
         // Corrección: Inicialización por defecto para evitar errores de compilación al testear la interfaz
         boolean commitSuccess = false;
-        /**
-         * SE VERIFICA SI EL PROGRAMA ESTA EN SOLO LECTURA
-         */
-        //SI EL SISTEMA ESTA EN SOLO LECTURA NO REALIZA REGISTRO ALGUNO
-        if (AppConfig.getParameterBoolean("SOLO_LECTURA")) {
-            returnMessageError("EL SISTEMA ESTA EN MODO LECTURA");
+        try {
+            /**
+             * SE VERIFICA SI EL PROGRAMA ESTA EN SOLO LECTURA
+             */
+            //SI EL SISTEMA ESTA EN SOLO LECTURA NO REALIZA REGISTRO ALGUNO
+            if (AppConfig.getParameterBoolean(connection, "SOLO_LECTURA")) {
+                returnMessageError("EL SISTEMA ESTA EN MODO LECTURA");
+                return false;
+            }
+        } catch (SQLException ex) {
+            returnMessageError(ex.getErrorCode(), ex.getMessage());
             return false;
         }
         // PASO 1: REGISTRO EN HISTORIAL DE TRANSACCIONES
@@ -99,7 +104,7 @@ public class EmployeeRegisterService extends AbstractService {
             //PASO 6 SI NO HUBO ERRORES SE CONFIRMA LA TRANSACCION
             connection.commit();
             commitSuccess = true;
-            if (AppConfig.isDevMessages()) {
+            if (false) {
                 System.out.println(dto.toString());
             }
         } catch (SQLException e) {

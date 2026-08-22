@@ -24,7 +24,6 @@ import jsoftware.com.jblue.controllers.DBControllerModel;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.service.UserService;
-import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.components.ComponentFactory;
@@ -50,7 +49,7 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
 
     public UserController(UserView view) {
         this.view = view;
-        user_service = new UserService(AppConfig.isDevMessages(), view.getProcessTypeName());
+        user_service = new UserService(false, view.getProcessTypeName());
     }
 
     @Override

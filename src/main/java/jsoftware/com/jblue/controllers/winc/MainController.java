@@ -24,7 +24,6 @@ import javax.swing.JOptionPane;
 import jsoftware.com.jblue.model.exp.imp.CorruptUpdateException;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.service.LoginService;
-import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.win.LoginWindows;
 import jsoftware.com.jblue.views.win.WMainMenu;
@@ -44,7 +43,7 @@ public class MainController extends WindowController {
     private final LoginService service;
 
     public MainController() {
-        this.service = new LoginService(AppConfig.isDevMessages(), "MAIN");
+        this.service = new LoginService(false, "MAIN");
     }
 
     @Override

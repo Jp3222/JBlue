@@ -23,7 +23,6 @@ import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.service.PaymentService;
-import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.ShopCartProcess;
 import jsoftware.com.jblue.views.components.ObjectSearchComponent;
@@ -46,7 +45,7 @@ public class ShopCartController extends Controller {
         this.view = view;
         this.memo_cache = CacheFactory.USERS;
         this.mov_book = new StringBuilder(3000);
-        this.service = new PaymentService(AppConfig.isDevMessages(), view.getDtoWrapper().getModule_name());
+        this.service = new PaymentService(false, view.getDtoWrapper().getModule_name());
     }
 
     @Override

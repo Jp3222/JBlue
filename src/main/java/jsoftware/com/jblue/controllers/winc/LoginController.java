@@ -24,7 +24,6 @@ import javax.swing.JCheckBox;
 import jsoftware.com.jblue.model.dto.InstanceAuthDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.factories.ModuleFactory;
-import jsoftware.com.jblue.model.l4b.LoginRulers;
 import jsoftware.com.jblue.model.service.LoginService;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
@@ -57,7 +56,7 @@ public class LoginController extends WindowController {
 
     public LoginController(boolean flag_dev, String mod_name) {
         this.sesion = SystemSession.getInstancia();
-        this.service = new LoginService(AppConfig.isDevMessages(), "LOGIN");
+        this.service = new LoginService(false, "LOGIN");
     }
 
     @Override
@@ -77,13 +76,13 @@ public class LoginController extends WindowController {
     }
 
     public synchronized void login() {
-        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
+        try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
             if (view.isSesionActive()) {
                 return;
             }
-            boolean valid_hour = LoginRulers.validHour();
+            boolean valid_hour = AppConfig.isHourValidate(c);
             view.setSesionActive(true);
-            if (valid_hour && (!LoginRulers.isWorkTime())) {
+            if (valid_hour && (!AppConfig.isWorkTime(c))) {
                 returnMessage(view, "NO ES TIMPO DE TRABAJAR");
                 if (valid_hour) {
                     return;
@@ -95,7 +94,7 @@ public class LoginController extends WindowController {
                 return;
             }
             SystemSession.getInstancia().setCurrent_instance(instance);
-            boolean res = service.login(connection, view.getUserString(), view.getPasswordString());
+            boolean res = service.login(c, view.getUserString(), view.getPasswordString());
 
             if (!res) {
                 // JOptionPane.showMessageDialog(view, service.getUserMessage() + ":" +
@@ -105,7 +104,7 @@ public class LoginController extends WindowController {
                 return;
             }
 
-            sesion.getWarnings();
+            sesion.getWarnings(c);
             sesion.writer();
 
             if (!LaunchApp.getInstance().cache()) {

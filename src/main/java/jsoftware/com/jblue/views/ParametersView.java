@@ -16,12 +16,15 @@
  */
 package jsoftware.com.jblue.views;
 
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import jsoftware.com.jblue.model.constants.Const;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.views.framework.SimpleView;
+import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
@@ -71,21 +74,25 @@ public final class ParametersView extends SimpleView {
 
     @Override
     public void initialState() {
-        open_hour_field.setText(AppConfig.getOpenHour().format(DateTimeFormatter.ofPattern(Const.TIME_FORMAT)));
-        close_hour_field.setText(AppConfig.getCloseHour().format(DateTimeFormatter.ofPattern(Const.TIME_FORMAT)));
-        last_pay_day_field.setValue(AppConfig.getPayDay());
-        auto_pay_field.setSelected(AppConfig.isPayDay());
-        hour_validate_field.setSelected(AppConfig.isHourValidate());
-        master_password_field.setText(AppConfig.getMaterPassword());
-        master_user_field.setText(AppConfig.getMaterUser());
-        dev_messages.setSelected(AppConfig.isDevMessages());
-        db_messages.setSelected(AppConfig.isDbMessages());
-        test_messages.setSelected(AppConfig.isTestMessages());
-        dev_function.setSelected(AppConfig.isDevFunction());
-        test_function.setSelected(AppConfig.isTestFunction());
-        dev_logs.setSelected(AppConfig.isLogsDev());
-        test_logs.setSelected(AppConfig.isLogsTest());
-        db_logs.setSelected(AppConfig.isLogsDB());
+        try (JDBConnection c = ConnectionFactory.getIntance().getCacheConnection()) {
+            open_hour_field.setText(AppConfig.getOpenHour(c).format(DateTimeFormatter.ofPattern(Const.TIME_FORMAT)));
+            close_hour_field.setText(AppConfig.getCloseHour(c).format(DateTimeFormatter.ofPattern(Const.TIME_FORMAT)));
+            last_pay_day_field.setValue(AppConfig.getPayDay(c));
+            auto_pay_field.setSelected(AppConfig.isPayDay(c));
+            hour_validate_field.setSelected(AppConfig.isHourValidate(c));
+            master_password_field.setText(AppConfig.getMaterPassword(c));
+            master_user_field.setText(AppConfig.getMaterUser(c));
+            dev_messages.setSelected(false);
+            db_messages.setSelected(AppConfig.isDbMessages(c));
+            test_messages.setSelected(AppConfig.isTestMessages(c));
+            dev_function.setSelected(AppConfig.isDevFunction(c));
+            test_function.setSelected(AppConfig.isTestFunction(c));
+            dev_logs.setSelected(AppConfig.isLogsDev(c));
+            test_logs.setSelected(AppConfig.isLogsTest(c));
+            db_logs.setSelected(AppConfig.isLogsDB(c));
+        } catch (SQLException ex) {
+            System.getLogger(ParametersView.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
         loadData();
 
     }

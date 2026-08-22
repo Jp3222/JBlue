@@ -89,13 +89,7 @@ public class ServicePaymentLogic extends AbstractPayment {
                 throw new PaymentExeption(1001, "EL PAGO NO SE GENERO CORRECTAMENTE", "REGISTRO CORRUPTO");
             }
             //SE REGISTRA LA LISTA DE ITEMS PAGADOS
-            res = payments_list_dao.insertPaymentList(
-                    connection,
-                    key,
-                    month_paid_list,
-                    new BigDecimal(water_intake_type.getCurrentPrice()),
-                    PAGADO
-            );
+
             if (!res) {
                 throw new PaymentExeption(1001, "LA LISTA DE CONCEPTOS NO SE REGISTRO CORRECTAMENTE", "REGISTRO CORRUPTO");
             }

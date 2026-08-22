@@ -18,7 +18,6 @@ import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
 import jsoftware.com.jblue.model.models.AbstractValidation;
-import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.util.GraphicsUtils;
@@ -31,7 +30,7 @@ import jsoftware.com.jblue.views.framework.DBObjectValues;
  * @author Juan Pablo Campos Casasanero
  */
 public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeRegisterWrapperDTO> implements DBObjectValues<EmployeeDTO> {
-    
+
     private static final long serialVersionUID = 1L;
     private DatePicker datePicker;
 
@@ -43,7 +42,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         initComponents();
         build();
     }
-    
+
     @Override
     public void build() {
         components();
@@ -51,22 +50,22 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         initialState();
         finalState();
     }
-    
+
     @Override
     public void events() {
-        StreetDAO streetDao = new StreetDAO(AppConfig.isDevMessages(), getDtoWrapper().getModule_name());
+        StreetDAO streetDao = new StreetDAO(false, getDtoWrapper().getModule_name());
         ComboBoxController<StreetDTO> street1 = new ComboBoxController(street1_field, streetDao);
         ComboBoxController<StreetDTO> street2 = new ComboBoxController(street2_field, streetDao);
         comboBoxInit(street1, street1_field.getItemCount() <= 0);
         comboBoxInit(street2, street2_field.getItemCount() <= 0);
     }
-    
+
     public void comboBoxInit(ComboBoxController<?> c, boolean empty) {
         if (empty) {
             c.loadData();
         }
     }
-    
+
     @Override
     public void components() {
         // 1. Instanciar los ajustes (Vacíos o con idioma/formato básico)
@@ -86,7 +85,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         // 4. Inyectar al contenedor de Swing y refrescar la UI
         jPanel7.add(datePicker, BorderLayout.CENTER);
     }
-    
+
     @Override
     public void initialState() {
         rfc_field.setText(null);
@@ -103,7 +102,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         inside_number_field.setText(null);
         outside_number_field.setText(null);
     }
-    
+
     @Override
     public void finalState() {
     }
@@ -417,10 +416,10 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
 
         v.addRuler("first_name", first_name_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
         v.addErrorMessage("first_name", "EL NOMBRE DEBE SER SOLO TEXTO");
-        
+
         v.addRuler("last_name1", last_name1_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
         v.addErrorMessage("last_name1", "EL APELLIDO PATERNO DEBE SER SOLO TEXTO");
-        
+
         v.addRuler("last_name2", last_name2_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
         v.addErrorMessage("last_name2", "EL APELLIDO MATERNO DEBE SER SOLO TEXTO");
 
@@ -428,19 +427,17 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
 //        v.addErrorMessage("gender", "EL GENERO ES OBLIGATORIO");
         v.addRuler("street1", street1_field, t -> Func.isNotNull(t) && GraphicsUtils.isComboBoxOk(t));
         v.addErrorMessage("street1", "LA CALLE 1 NO ES UNA CALLE VALIDA");
-        if (AppConfig.getParameterBoolean("CAMPOS_SECUNDARIOS_OBLIGATORIOS")) {
-            v.addRuler("phone_number", phone_number_field, t -> Func.isNotNull(t) && Func.isInteger(t.getText()));
-            v.addErrorMessage("phone_number", "EL NUMERO TELEFONICO NO TIENE EL FORMATO CORRECTO");
-            v.addRuler("email", email_field, t -> Func.isNotNull(t) && Func.isValidEmail(t.getText()));
-            v.addErrorMessage("email", "EL NUMERO TELEFONICO NO TIENE EL FORMATO CORRECTO");
-        }
+        v.addRuler("phone_number", phone_number_field, t -> Func.isNotNull(t) && Func.isInteger(t.getText()));
+        v.addErrorMessage("phone_number", "EL NUMERO TELEFONICO NO TIENE EL FORMATO CORRECTO");
+        v.addRuler("email", email_field, t -> Func.isNotNull(t) && Func.isValidEmail(t.getText()));
+        v.addErrorMessage("email", "EL NUMERO TELEFONICO NO TIENE EL FORMATO CORRECTO");
         res = v.isValid();
         if (!res) {
             JOptionPane.showMessageDialog(this, v.getErrorMessage(), "CAMPOS NO VALIDOS", JOptionPane.ERROR_MESSAGE);
         }
         return res;
     }
-    
+
     @Override
     public EmployeeDTO getValues(boolean update) {
         EmployeeDTO dto = new EmployeeDTO();
@@ -460,7 +457,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         Func.put(dto.getMap(), "outside_number", Formats.getTextFormat(outside_number_field.getText()));
         return dto;
     }
-    
+
     @Override
     public void getData() {
         EmployeeRegisterWrapperDTO dto = getDtoWrapper();
@@ -476,5 +473,5 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         // Nota: Asegúrate de guardar este employeeData en tu Wrapper si tu arquitectura lo requiere, 
         // por ejemplo: getDtoWrapper().setEmployeeData(employeeData);
     }
-    
+
 }

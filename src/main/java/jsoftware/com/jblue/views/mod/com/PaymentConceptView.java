@@ -26,11 +26,147 @@ public class PaymentConceptView extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        register_panel = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        payment_concept_data_panel = new javax.swing.JPanel();
+        p_name = new javax.swing.JPanel();
+        jLabel40 = new javax.swing.JLabel();
+        name_field = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
+        p_description = new javax.swing.JPanel();
+        jLabel22 = new javax.swing.JLabel();
+        description_field = new javax.swing.JTextField();
+        jLabel23 = new javax.swing.JLabel();
+        p_document_id = new javax.swing.JPanel();
+        jLabel25 = new javax.swing.JLabel();
+        document_id_field = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
+        p_document_based = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        document_based = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+
         setName("Form"); // NOI18N
-        setLayout(new java.awt.BorderLayout());
+        setPreferredSize(new java.awt.Dimension(900, 700));
+        setLayout(new java.awt.CardLayout());
+
+        register_panel.setName("register_panel"); // NOI18N
+        register_panel.setLayout(new java.awt.BorderLayout());
+
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/com/Bundle"); // NOI18N
+        jLabel8.setText(bundle.getString("PaymentConceptView.jLabel8.text")); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
+        jLabel8.setName("jLabel8"); // NOI18N
+        jLabel8.setPreferredSize(new java.awt.Dimension(150, 50));
+        register_panel.add(jLabel8, java.awt.BorderLayout.NORTH);
+
+        payment_concept_data_panel.setName("payment_concept_data_panel"); // NOI18N
+        payment_concept_data_panel.setPreferredSize(new java.awt.Dimension(500, 600));
+        payment_concept_data_panel.setLayout(new java.awt.GridLayout(14, 1, 0, 10));
+
+        p_name.setName("p_name"); // NOI18N
+        p_name.setLayout(new java.awt.BorderLayout());
+
+        jLabel40.setText(bundle.getString("PaymentConceptView.jLabel40.text")); // NOI18N
+        jLabel40.setName("jLabel40"); // NOI18N
+        jLabel40.setPreferredSize(new java.awt.Dimension(150, 25));
+        p_name.add(jLabel40, java.awt.BorderLayout.WEST);
+
+        name_field.setText(bundle.getString("PaymentConceptView.name_field.text")); // NOI18N
+        name_field.setName("name_field"); // NOI18N
+        p_name.add(name_field, java.awt.BorderLayout.CENTER);
+
+        jLabel24.setName("jLabel24"); // NOI18N
+        jLabel24.setPreferredSize(new java.awt.Dimension(80, 30));
+        p_name.add(jLabel24, java.awt.BorderLayout.LINE_END);
+
+        payment_concept_data_panel.add(p_name);
+
+        p_description.setName("p_description"); // NOI18N
+        p_description.setLayout(new java.awt.BorderLayout());
+
+        jLabel22.setText(bundle.getString("PaymentConceptView.jLabel22.text")); // NOI18N
+        jLabel22.setName("jLabel22"); // NOI18N
+        jLabel22.setPreferredSize(new java.awt.Dimension(150, 25));
+        p_description.add(jLabel22, java.awt.BorderLayout.WEST);
+
+        description_field.setName("description_field"); // NOI18N
+        p_description.add(description_field, java.awt.BorderLayout.CENTER);
+
+        jLabel23.setName("jLabel23"); // NOI18N
+        jLabel23.setPreferredSize(new java.awt.Dimension(80, 30));
+        p_description.add(jLabel23, java.awt.BorderLayout.LINE_END);
+
+        payment_concept_data_panel.add(p_description);
+
+        p_document_id.setName("p_document_id"); // NOI18N
+        p_document_id.setLayout(new java.awt.BorderLayout());
+
+        jLabel25.setText(bundle.getString("PaymentConceptView.jLabel25.text")); // NOI18N
+        jLabel25.setName("jLabel25"); // NOI18N
+        jLabel25.setPreferredSize(new java.awt.Dimension(150, 25));
+        p_document_id.add(jLabel25, java.awt.BorderLayout.LINE_START);
+
+        document_id_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No. Definido", "Masculino.", "Femenino." }));
+        document_id_field.setName("document_id_field"); // NOI18N
+        p_document_id.add(document_id_field, java.awt.BorderLayout.CENTER);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
+        jButton1.setText(bundle.getString("PaymentConceptView.jButton1.text")); // NOI18N
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.setPreferredSize(new java.awt.Dimension(80, 30));
+        p_document_id.add(jButton1, java.awt.BorderLayout.LINE_END);
+
+        payment_concept_data_panel.add(p_document_id);
+
+        p_document_based.setName("p_document_based"); // NOI18N
+        p_document_based.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setText(bundle.getString("PaymentConceptView.jLabel2.text")); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel2.setMaximumSize(new java.awt.Dimension(60, 20));
+        jLabel2.setName("jLabel2"); // NOI18N
+        jLabel2.setPreferredSize(new java.awt.Dimension(150, 25));
+        p_document_based.add(jLabel2, java.awt.BorderLayout.WEST);
+
+        document_based.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        document_based.setToolTipText(bundle.getString("PaymentConceptView.document_based.toolTipText")); // NOI18N
+        document_based.setName("document_based"); // NOI18N
+        document_based.setPreferredSize(new java.awt.Dimension(100, 30));
+        p_document_based.add(document_based, java.awt.BorderLayout.CENTER);
+
+        jLabel7.setName("jLabel7"); // NOI18N
+        jLabel7.setPreferredSize(new java.awt.Dimension(80, 30));
+        p_document_based.add(jLabel7, java.awt.BorderLayout.LINE_END);
+
+        payment_concept_data_panel.add(p_document_based);
+
+        register_panel.add(payment_concept_data_panel, java.awt.BorderLayout.CENTER);
+
+        add(register_panel, "register");
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField description_field;
+    private javax.swing.JTextField document_based;
+    private javax.swing.JComboBox<String> document_id_field;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JTextField name_field;
+    private javax.swing.JPanel p_description;
+    private javax.swing.JPanel p_document_based;
+    private javax.swing.JPanel p_document_id;
+    private javax.swing.JPanel p_name;
+    private javax.swing.JPanel payment_concept_data_panel;
+    private javax.swing.JPanel register_panel;
     // End of variables declaration//GEN-END:variables
 }

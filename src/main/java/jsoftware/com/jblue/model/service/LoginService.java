@@ -154,8 +154,8 @@ public class LoginService extends AbstractService {
                 throw new LoginFailedException(7, "CREDENCIALES DE ADMINISTRACION NO VALIDAS");
             }
 
-            log("INICIO DE SESION EXITOSO: USUARIO=%s".formatted(user));
-            system_session.put("user-session", user);
+            log("INICIO DE SESION EXITOSO: USUARIO=%s".formatted(secureUser));
+            system_session.put("user-session", secureUser);
             connection.commit();
             res = true; // Retornamos verdadero tras completar con éxito la transacción atómica
 

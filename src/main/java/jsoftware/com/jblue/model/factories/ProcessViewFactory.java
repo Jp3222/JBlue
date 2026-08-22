@@ -28,7 +28,7 @@ public final class ProcessViewFactory implements Serializable {
 //    public ProcessViewFactory() {
 //        this.current_employee = SystemSession.getInstancia().getCurrentEmployee();
 //        this.init = new ProcessViewBuilder()
-//                .setDev_flag(AppConfig.isDevMessages())
+//                .setDev_flag(False)
 //                .setProcess(true)
 //                .setProcess_wrapper(new ProcessWrapperDTO("0", "name"));
 //    }

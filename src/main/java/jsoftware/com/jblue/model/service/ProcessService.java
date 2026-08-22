@@ -19,6 +19,7 @@ import jsoftware.com.jblue.model.exp.DataAccesObjectException;
 import jsoftware.com.jblue.model.exp.ProcessException;
 import jsoftware.com.jblue.model.models.AbstractService;
 import jsoftware.com.jblue.sys.SystemSession;
+import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jpaymentlib.model.dto.PaymentDetailDTO;
 import jsoftware.com.jpaymentlib.model.dto.PaymentHeaderDTO;
 import jsoftware.com.jpaymentlib.model.dto.wrp.PaymentWrapper;
@@ -71,17 +72,21 @@ public class ProcessService extends AbstractService implements Serializable {
     public boolean start(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) {
         boolean res = false;
         try {
-            connection.setAutoCommit(false);
-
             // Se obtiene el folio consecutivo desde la base de datos
             String sequence = sequence_dao.getNextValString(connection, "TRAMITES");
-            dto.put("sequence", sequence);
+            if (Func.isNullEmptyBlank(sequence)) {
+                returnMessageError("NO SE PUDO GENERAR EL FOLIO DEL TRAMITE");
+            }
+            dto.getProcess().put("sequence_process", sequence);
 
             res = dao.startProcess(connection, dto.getProcess()) > 0;
             if (!res) {
                 returnMessageError("REGISTRO EN BITACORA CORRUPTO - TRAMITE");
             }
             res = pro_dao.insert(connection, dto.getProcess_water_intake_user());
+            if (!res) {
+                returnMessageError("REGISTRO DE TRAMITE CORRUPTO");
+            }
             res = userRegister(connection, ss, dto);
             if (!res && user_service.isError()) {
                 returnMessageError(user_service.getErrorCode(), user_service.getUserMessage());
@@ -89,11 +94,8 @@ public class ProcessService extends AbstractService implements Serializable {
             if (!res && address_service.isError()) {
                 returnMessageError(address_service.getErrorCode(), address_service.getUserMessage());
             }
-            commit(connection);
-            connection.setAutoCommit(true); // Solo cambia si el commit fue exitoso
         } catch (SQLException | DataAccesObjectException ex) {
             returnMessageError(ex.getMessage());
-            rollback(connection);
             log(ex, "valid");
             res = false;
         }
@@ -149,6 +151,51 @@ public class ProcessService extends AbstractService implements Serializable {
         boolean res = false;
         try {
             String final_office = ss.getCurrent_instance().getOfficeId();
+            String final_admin = ss.getCurrentAdministration().getId();
+            String final_employee = ss.getCurrentEmployee().getId();
+            dto.getProcess().put("", dao);
+            res = dao.validProcess(connection, dto.getProcess());
+            if (!res) {
+                returnMessageError("REGISTRO EN BITACORA CORRUPTO - TRAMITE");
+            }
+            List<UserDocumentationDTO> list = dto.getDocument_list();
+            res = documentation_service.insert(connection, list);
+            if (!res) {
+                rollback(connection);
+                returnMessageError(documentation_service.getErrorCode(), documentation_service.getUserMessage());
+                return false;
+            }
+            DocumentRecordDTO document_record = dto.getDocument_record();
+            document_record.put("employee_register_id", final_employee);
+            document_record.put("status", "2");
+            if (dto.isDocument_record_valid()) {
+                document_record.put("employee_valid_id", final_employee);
+                document_record.put("status", "1");
+            }
+            document_record.put("document_start", list.getFirst().getId());
+            document_record.put("document_end", list.getLast().getId());
+            res = document_record_service.save(connection, document_record) > 0;
+            if (!res) {
+                rollback(connection);
+                returnMessageError(document_record_service.getErrorCode(), document_record_service.getUserMessage());
+                return false;
+            }
+        } catch (SQLException | ProcessException ex) {
+            returnMessageError(ex.getMessage());
+            log(ex, "valid");
+            res = false;
+        }
+        return res;
+    }
+
+    /**
+     * PASO 2: VALIDACIÓN DE DOCUMENTOS Modifica el estado del trámite tras la
+     * revisión física/digital de requisitos.
+     */
+    public boolean invalid(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) {
+        boolean res = false;
+        try {
+            String final_office = ss.getCurrent_instance().getOfficeId();
             String final_employee = ss.getCurrentEmployee().getId();
             res = dao.startProcess(connection, dto.getProcess()) > 0;
             if (!res) {
@@ -163,7 +210,7 @@ public class ProcessService extends AbstractService implements Serializable {
             }
             DocumentRecordDTO document_record = dto.getDocument_record();
             document_record.put("employee_register_id", final_employee);
-            document_record.put("status", "2");
+            document_record.put("status", "33");
             if (dto.isDocument_record_valid()) {
                 document_record.put("employee_valid_id", final_employee);
                 document_record.put("status", "1");
@@ -216,7 +263,7 @@ public class ProcessService extends AbstractService implements Serializable {
      * línea de captura con vigencia limitada.
      */
     public boolean payment(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) {
-        Optional<PaymentWrapper> opt = header_service.saveProcess(connection, null);
+        Optional<PaymentWrapper> opt = header_service.getPaymentHeader(connection, null);
 
         if (opt.isEmpty()) {
             returnMessageError(0, "ERROR AL CALCULAR MONTOS E IMPORTES");

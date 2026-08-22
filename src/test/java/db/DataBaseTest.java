@@ -11,7 +11,6 @@ import java.util.Properties;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
-import jsoftware.com.jblue.util.DTOFactory;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.db.JDBConnectionBuilder;
 import org.junit.jupiter.api.Test;
@@ -64,7 +63,7 @@ public class DataBaseTest {
         builder.setTimeOut(5000);
         builder.setMinimumIdle(5000);
         builder.setMaxPollSize(20);
-        builder.setFactory(new DTOFactory());
+        //builder.setFactory(new DTOFactory());
         ConnectionFactory intance = ConnectionFactory.getIntance(builder);
         if (intance.isOpen()) {
             try (JDBConnection connection = intance.getMainConnection();) {

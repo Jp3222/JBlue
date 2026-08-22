@@ -66,7 +66,7 @@ public class StreetsController extends AbstractDBViewController<StreetDTO> imple
                 returnMessage(view, "LA ADMINISTRACION ACTUAL NO ES VALIDA");
                 return;
             }
-            if (!ss.isLock()) {
+            if (!ss.isLock(c)) {
                 returnMessage(view, "LA ADMINISTRACION ACTUAL NO ES VALIDA");
                 return;
             }
@@ -96,7 +96,7 @@ public class StreetsController extends AbstractDBViewController<StreetDTO> imple
                 returnMessage(view, "LA ADMINISTRACION ACTUAL NO ES VALIDA");
                 return;
             }
-            if (!ss.isLock()) {
+            if (!ss.isLock(c)) {
                 returnMessage(view, "LA ADMINISTRACION ACTUAL NO ES VALIDA");
                 return;
             }
@@ -126,7 +126,7 @@ public class StreetsController extends AbstractDBViewController<StreetDTO> imple
                 returnMessage(view, "LA ADMINISTRACION ACTUAL NO ES VALIDA");
                 return;
             }
-            if (!ss.isLock()) {
+            if (!ss.isLock(c)) {
                 returnMessage(view, "LA ADMINISTRACION ACTUAL NO ES VALIDA");
                 return;
             }

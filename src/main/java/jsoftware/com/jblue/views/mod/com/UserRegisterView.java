@@ -4,12 +4,14 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.models.AbstractValidation;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.Formats;
@@ -18,6 +20,7 @@ import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.ShowDataModel;
 import jsoftware.com.jblue.views.framework.WizardModel;
+import jsoftware.com.jutil.db.JDBConnection;
 
 /**
  *
@@ -58,19 +61,23 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
 
     @Override
     public void initialState() {
-        if (AppConfig.getParameterBoolean("VALIDA_RFC")) {
-            this.rfc_field.setEnabled(true);
-            this.curp_field.setEnabled(false);
-            this.first_name_field.setEnabled(false);
-            this.last_name1_field.setEnabled(false);
-            this.last_name2_field.setEnabled(false);
-            this.gender_field.setEnabled(false);
-            this.birdate_field.setEnabled(false);
-            this.email_field.setEnabled(false);
-            this.phone_number1_field.setEnabled(false);
-            this.phone_number2_field.setEnabled(false);
-        } else {
-            unlock();
+        try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
+            if (AppConfig.getParameterBoolean(c, "VALIDA_RFC")) {
+                this.rfc_field.setEnabled(true);
+                this.curp_field.setEnabled(false);
+                this.first_name_field.setEnabled(false);
+                this.last_name1_field.setEnabled(false);
+                this.last_name2_field.setEnabled(false);
+                this.gender_field.setEnabled(false);
+                this.birdate_field.setEnabled(false);
+                this.email_field.setEnabled(false);
+                this.phone_number1_field.setEnabled(false);
+                this.phone_number2_field.setEnabled(false);
+            } else {
+                unlock();
+            }
+        } catch (SQLException ex) {
+            System.getLogger(UserRegisterView.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         this.rfc_field.setText(null);
         this.curp_field.setText(null);
@@ -469,13 +476,10 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
 
         v.addRuler("last_name2", last_name2_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
         v.addErrorMessage("last_name2", "EL APELLIDO MATERNO DEBE SER SOLO TEXTO");
-
-        if (AppConfig.getParameterBoolean("CAMPOS_SECUNDARIOS_OBLIGATORIOS")) {
-            v.addRuler("phone_number", phone_number1_field, t -> Func.isNotNull(t) && Func.isInteger(t.getText()));
-            v.addErrorMessage("phone_number", "EL NUMERO TELEFONICO NO TIENE EL FORMATO CORRECTO");
-            v.addRuler("email", email_field, t -> Func.isNotNull(t) && Func.isValidEmail(t.getText()));
-            v.addErrorMessage("email", "EL NUMERO TELEFONICO NO TIENE EL FORMATO CORRECTO");
-        }
+        v.addRuler("phone_number", phone_number1_field, t -> Func.isNotNull(t) && Func.isInteger(t.getText()));
+        v.addErrorMessage("phone_number", "EL NUMERO TELEFONICO NO TIENE EL FORMATO CORRECTO");
+        v.addRuler("email", email_field, t -> Func.isNotNull(t) && Func.isValidEmail(t.getText()));
+        v.addErrorMessage("email", "EL NUMERO TELEFONICO NO TIENE EL FORMATO CORRECTO");
 
         res = v.isValid();
         if (!res) {

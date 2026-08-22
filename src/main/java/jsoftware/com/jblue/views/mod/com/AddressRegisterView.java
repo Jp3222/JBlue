@@ -9,7 +9,6 @@ import jsoftware.com.jblue.model.dao.StreetDAO;
 import jsoftware.com.jblue.model.dto.AddressDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
-import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 
@@ -40,7 +39,7 @@ public final class AddressRegisterView extends AbstractModuleView<ProcessWrapper
 
     @Override
     public void components() {
-        StreetDAO streetDao = new StreetDAO(AppConfig.isDevMessages(), getDtoWrapper().getModule_name());
+        StreetDAO streetDao = new StreetDAO(false, getDtoWrapper().getModule_name());
         ComboBoxController<StreetDTO> street1 = new ComboBoxController<>(street1_field, streetDao);
         ComboBoxController<StreetDTO> street2 = new ComboBoxController<>(street2_field, streetDao);
         comboBoxInit(street1, street1_field.getItemCount() <= 0);

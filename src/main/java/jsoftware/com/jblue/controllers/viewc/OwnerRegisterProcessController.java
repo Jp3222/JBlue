@@ -58,7 +58,7 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
             SystemSession ss = SystemSession.getInstancia();
             //VALIDACIONES INTERNAS DEL SISTEMA
-            ss.systemValid();
+            ss.systemValid(c);
             //EJECUTAR EL MOVIMIENTO
             res = service.save(c, ss, view.getDtoWrapper());
             if (service.isError()) {
@@ -102,14 +102,13 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
     }
 
     private void search() {
-        System.out.println("SEARCH - ");
         boolean res = false;
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
             SystemSession ss = SystemSession.getInstancia();
             //VALIDACIONES QUE NO PERMITEN REGISTRO
-            ss.systemValid();
+            ss.systemValid(c);
             //VALIDAR LA SESSION
-            if (ss.isLock()) {
+            if (ss.isLock(c)) {
                 returnMessage(view, false, "LA SESION ACTUAL HA CADUCADO");
                 return;
             }

@@ -18,7 +18,6 @@ package jsoftware.com.jblue.model.l4b;
 
 import java.time.LocalDateTime;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.sys.app.AppConfig;
 
 /**
  *
@@ -26,13 +25,6 @@ import jsoftware.com.jblue.sys.app.AppConfig;
  */
 public class LoginRulers {
 
-    public static boolean validHour() {
-        return AppConfig.isHourValidate();
-    }
-
-    public static boolean isWorkTime() {
-        return !AppConfig.isWorkTime();
-    }
 
     public static boolean isDateEnd(EmployeeDTO o) {
         return o.getDateEnd() != null && LocalDateTime.now().isAfter(LocalDateTime.parse(o.getDateEnd()));

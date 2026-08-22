@@ -20,14 +20,11 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import jsoftware.com.jblue.model.dao.PaymentListDAO;
-import jsoftware.com.jblue.model.dao.PaymentsDAO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.sys.SystemSession;
-import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.PaymentsRulers;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.sys.LaunchApp;
@@ -58,15 +55,10 @@ public abstract class AbstractPayment implements PaymentModel {
 
     protected StringBuilder mov_book;
 
-    protected final PaymentsDAO payments_dao;
-    protected final PaymentListDAO payments_list_dao;
-
     public AbstractPayment() {
         this.mov = new HashMap<>();
         this.current_employee = SystemSession.getInstancia().getCurrentEmployee();
         this.connection = (JDBConnection) LaunchApp.getInstance().getResources("connection");
-        payments_dao = new PaymentsDAO(AppConfig.isLogsDev(), "PAGOS");
-        payments_list_dao = new PaymentListDAO(AppConfig.isLogsDev(), "PAGOS");
     }
 
     protected boolean isUserNull() {

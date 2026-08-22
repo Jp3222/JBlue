@@ -26,13 +26,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import jsoftware.com.jblue.model.dto.InstanceAuthDTO;
-import jsoftware.com.jblue.model.factories.CacheFactory;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.factories.ModuleFactory;
 import jsoftware.com.jblue.model.service.InstanceAuthService;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
-import jsoftware.com.jblue.util.DTOFactory;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.win.ConfigWindow;
 import jsoftware.com.jblue.views.win.LoginWindows;
@@ -120,7 +118,7 @@ public class JBlueMainSystem implements MainSystem {
             builder.setTimeOut(5000);
             builder.setMinimumIdle(5000);
             builder.setMaxPollSize(20);
-            builder.setFactory(new DTOFactory());
+            //builder.setFactory(new DTOFactory());
             ConnectionFactory intance = ConnectionFactory.getIntance(builder);
             try (JDBConnection c = intance.getMainConnection()) {
                 if (Func.isNull(c)) {
@@ -196,11 +194,12 @@ public class JBlueMainSystem implements MainSystem {
 
     @Override
     public boolean cache() {
-        boolean rs = CacheFactory.isLoaded || CacheFactory.loadCaches();
-        if (rs) {
-            log("CACHE CARGADA");
-        }
-        return rs;
+//        boolean rs = CacheFactory.isLoaded || CacheFactory.loadCaches();
+//        if (rs) {
+//            log("CACHE CARGADA");
+//        }
+//        return rs;
+        return true;
     }
 
     @Override

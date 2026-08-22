@@ -16,8 +16,6 @@
  */
 package jsoftware.com.jblue.sys;
 
-import jsoftware.com.jblue.sys.app.AppConfig;
-
 /**
  * Esta clase esta dedicada a la declaracion de banderas con el proposito de
  * probar, habilitar o desactivar funciones que puedan tener un efecto negativo,
@@ -31,47 +29,47 @@ import jsoftware.com.jblue.sys.app.AppConfig;
  * @author juan pablo campos casasanero
  */
 public final class DevFlags {
-
-    /**
-     * Banderaa para todas las vistas nuevas
-     */
-    public static boolean DEV_VEW_NEWS = AppConfig.isTestFunction();
-
-    /**
-     * Bandera para todos los mensajes puestos en condigo sobre el codigo
-     */
-    public static boolean DEV_MSG_CODE = AppConfig.isDevMessages();
-
-    /**
-     * Bandera para todos los mensajes puestos en el codigo sobre la base de
-     * datos
-     */
-    public static boolean DEV_MSG_DATA_BASE = AppConfig.isDbMessages();
-
-    /**
-     * Bandera para ejecutar funciones en desarrollo
-     */
-    public static boolean DEV_EXE_FUNCION = AppConfig.isDevFunction();
-
-    /**
-     * Bandera para ejecutar funciones a prueba
-     */
-    public static boolean TST_EXE_FUNCION = AppConfig.isTestFunction();
-
-    /**
-     *
-     */
-    public static boolean LOGS_DEV = AppConfig.isLogsDev();
-
-    /**
-     *
-     */
-    public static boolean LOGS_TEST = AppConfig.isLogsTest();
-
-    /**
-     *
-     */
-    public static boolean LOGS_DB = AppConfig.isLogsDB();
+//
+//    /**
+//     * Banderaa para todas las vistas nuevas
+//     */
+//    public static boolean DEV_VEW_NEWS = AppConfig.isTestFunction();
+//
+//    /**
+//     * Bandera para todos los mensajes puestos en condigo sobre el codigo
+//     */
+//    public static boolean DEV_MSG_CODE = False;
+//
+//    /**
+//     * Bandera para todos los mensajes puestos en el codigo sobre la base de
+//     * datos
+//     */
+//    public static boolean DEV_MSG_DATA_BASE = AppConfig.isDbMessages();
+//
+//    /**
+//     * Bandera para ejecutar funciones en desarrollo
+//     */
+//    public static boolean DEV_EXE_FUNCION = AppConfig.isDevFunction();
+//
+//    /**
+//     * Bandera para ejecutar funciones a prueba
+//     */
+//    public static boolean TST_EXE_FUNCION = AppConfig.isTestFunction();
+//
+//    /**
+//     *
+//     */
+//    public static boolean LOGS_DEV = AppConfig.isLogsDev();
+//
+//    /**
+//     *
+//     */
+//    public static boolean LOGS_TEST = AppConfig.isLogsTest();
+//
+//    /**
+//     *
+//     */
+//    public static boolean LOGS_DB = AppConfig.isLogsDB();
 
     private DevFlags() {
     }

@@ -12,6 +12,7 @@ import jsoftware.com.jblue.model.dao.ViewsDAO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.exp.ServiceException;
+import jsoftware.com.jblue.model.exp.SystemException;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
 import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jblue.model.models.AbstractService;
@@ -52,14 +53,14 @@ public class OwnerRegisterProcessService extends AbstractService {
     public boolean save(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) throws SQLException {
         // Corrección: Inicialización por defecto para evitar errores de compilación al testear la interfaz
         boolean res = false;
-        if (AppConfig.isDevMessages()) {
+        if (false) {
             System.out.println(dto.toString());
         }
         /**
          * SE VERIFICA SI EL PROGRAMA ESTA EN SOLO LECTURA
          */
         //SI EL SISTEMA ESTA EN SOLO LECTURA NO REALIZA REGISTRO ALGUNO
-        if (AppConfig.getParameterBoolean("SOLO_LECTURA")) {
+        if (AppConfig.getParameterBoolean(connection, "SOLO_LECTURA")) {
             returnMessageError("EL SISTEMA ESTA EN MODO LECTURA");
             return false;
         }
@@ -78,26 +79,27 @@ public class OwnerRegisterProcessService extends AbstractService {
                 throw new ServiceException(1, "REGISTRO EN BITACORA CORRUPTO - START_TRANSACTION");
             }
             dto.getTransaction().put("hys_start_id", String.valueOf(start_id));
+            //INICIO DEL TRAMITE
             res = process_service.start(connection, ss, dto);
             if (!res) {
                 returnMessageError(process_service.getErrorCode(), process_service.getUserMessage());
             }
-
+            //VALIDACION DE TRAMITE
             res = process_service.valid(connection, ss, dto);
             if (!res) {
                 returnMessageError(process_service.getErrorCode(), process_service.getUserMessage());
             }
-
+            //VALIDACION DE PAGO
             res = process_service.payment(connection, ss, dto);
             if (!res) {
                 returnMessageError(process_service.getErrorCode(), process_service.getUserMessage());
             }
-
+            //MOVIMIENTO FINAL
             res = process_service.finalized(connection, ss, dto);
             if (!res) {
                 returnMessageError(process_service.getErrorCode(), process_service.getUserMessage());
             }
-
+            //FIN DE LA TRANSACCION
             int end_id = history_dao.endTransactionReturn(connection, Const.INDEX_HYS_PROGRAM_HISTORY, "FIN DE UNA TRANSACCION");
             if (end_id <= 0) {
                 rollback(connection);
@@ -105,10 +107,11 @@ public class OwnerRegisterProcessService extends AbstractService {
             }
             //PASO 5.1: RECUPERACION DE ID - FIN DE LA TRANSACCION
             dto.getTransaction().put("hys_end_id", String.valueOf(end_id));
+            ss.systemValid(connection);
             //PASO 6 SI NO HUBO ERRORES SE CONFIRMA LA TRANSACCION
             commit(connection);
             res = true;
-        } catch (SQLException | ServiceException | CorruptInsertionException | KeyNotGenerateException e) {
+        } catch (SQLException | ServiceException | CorruptInsertionException | KeyNotGenerateException | SystemException e) {
             rollback(connection);
             res = false;
             returnMessageError(e.getMessage());
@@ -152,8 +155,87 @@ public class OwnerRegisterProcessService extends AbstractService {
         return res;
     }
 
-    public boolean userLocked(JDBConnection connnection, SystemSession ss, ProcessWrapperDTO dto) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean userLocked(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) {
+        // Corrección: Inicialización por defecto para evitar errores de compilación al testear la interfaz
+        boolean res = false;
+        if (false) {
+            System.out.println(dto.toString());
+        }
+        try {
+            /**
+             * SE VERIFICA SI EL PROGRAMA ESTA EN SOLO LECTURA
+             */
+            //SI EL SISTEMA ESTA EN SOLO LECTURA NO REALIZA REGISTRO ALGUNO
+            if (AppConfig.getParameterBoolean(connection, "SOLO_LECTURA")) {
+                returnMessageError("EL SISTEMA ESTA EN MODO LECTURA");
+                return false;
+            }
+        } catch (SQLException ex) {
+            returnMessageError(ex.getMessage());
+            return false;
+        }
+        // PASO 1: REGISTRO EN HISTORIAL DE TRANSACCIONES
+        int transaction_id = transaction_service.insert(connection, dto.getTransaction());
+        if (transaction_id <= 0) {
+            returnMessageError(-1, "LA OPERACION NO SE PUDO REGISTRAR EN BITACORA MAESTRA");
+            return false;
+        }
+        try {
+            connection.setAutoCommit(false);
+            //PASO 2: REGISTRO DE INICIO DE UNA TRANSACCION
+            int start_id = history_dao.startTransactionReturn(connection, Const.INDEX_HYS_PROGRAM_HISTORY, "INICIO DE UNA TRANSACCION");
+            if (start_id <= 0) {
+                rollback(connection);
+                throw new ServiceException(1, "REGISTRO EN BITACORA CORRUPTO - START_TRANSACTION");
+            }
+            dto.getTransaction().put("hys_start_id", String.valueOf(start_id));
+            //INICIO DEL TRAMITE
+            res = process_service.start(connection, ss, dto);
+            if (!res) {
+                returnMessageError(process_service.getErrorCode(), process_service.getUserMessage());
+            }
+            //VALIDACION DE TRAMITE
+            res = process_service.valid(connection, ss, dto);
+            if (!res) {
+                returnMessageError(process_service.getErrorCode(), process_service.getUserMessage());
+            }
+
+            //FIN DE LA TRANSACCION
+            int end_id = history_dao.endTransactionReturn(connection, Const.INDEX_HYS_PROGRAM_HISTORY, "FIN DE UNA TRANSACCION");
+            if (end_id <= 0) {
+                rollback(connection);
+                throw new ServiceException(2, "REGISTRO EN BITACORA CORRUPTO - END_TRANSACTION");
+            }
+            //PASO 5.1: RECUPERACION DE ID - FIN DE LA TRANSACCION
+            dto.getTransaction().put("hys_end_id", String.valueOf(end_id));
+            ss.systemValid(connection);
+            //PASO 6 SI NO HUBO ERRORES SE CONFIRMA LA TRANSACCION
+            commit(connection);
+            res = true;
+        } catch (SQLException | ServiceException | CorruptInsertionException | KeyNotGenerateException | SystemException e) {
+            rollback(connection);
+            res = false;
+            returnMessageError(e.getMessage());
+        } finally {
+            connection.setAutoCommit(true);
+        }
+        // Cortamos de inmediato si la transacción base falló
+        if (!res) {
+            return false;
+        }
+        // Paso 8: Actualización del estado macro a OK en la auditoría
+        boolean updateOk = transaction_service.updateStatusOk(connection, dto.getTransaction());
+
+        // Si la auditoría macro falla, lo mandamos a los logs físicos a disco
+        if (!updateOk || transaction_service.isError()) {
+            FuncLogs.logError(
+                    AppFiles.DIR_PROG_LOG_TODAY,
+                    dto.getModule_name(),
+                    "[%s - WARN]: No se pudo actualizar el estado macro a OK en la auditoría: %s"
+                            .formatted(getProcess_name(), transaction_service.getUserMessage())
+            );
+        }
+        return res;
     }
 
     public boolean load(JDBConnection connnection, SystemSession ss, ProcessWrapperDTO dto, JTable model) {

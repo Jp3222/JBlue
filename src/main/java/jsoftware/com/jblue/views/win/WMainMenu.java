@@ -40,6 +40,7 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
     private final ShopCartProcess shop_cart_process;
     private final EmployeeRegisterProcess employee_register_process;
     private final OwnerRegisterProcess owner_register_process;
+    
     private LoginWindows login;
 
     public WMainMenu(WMainMenuWrapperDTO dto_wrapper) {
@@ -99,6 +100,8 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
         //
         about_item_view.addActionListener(main_controller);
         profile_item_view.addActionListener(main_controller);
+        //
+        
         main_controller.setView(this);
     }
 
@@ -176,6 +179,11 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
         jMenu9 = new javax.swing.JMenu();
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
+        jMenu13 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem15 = new javax.swing.JMenuItem();
+        jMenuItem22 = new javax.swing.JMenuItem();
+        jMenuItem23 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         owner_register_process_item = new javax.swing.JMenuItem();
@@ -423,6 +431,22 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
 
         jMenu2.add(jMenu9);
 
+        jMenu13.setText("Negocio");
+
+        jMenuItem6.setText("Especificaciones de Pago");
+        jMenu13.add(jMenuItem6);
+
+        jMenuItem15.setText("Conceptos de Pago");
+        jMenu13.add(jMenuItem15);
+
+        jMenuItem22.setText("Importes de Pago");
+        jMenu13.add(jMenuItem22);
+
+        jMenuItem23.setText("Reglas de Pago");
+        jMenu13.add(jMenuItem23);
+
+        jMenu2.add(jMenu13);
+
         jMenuBar1.add(jMenu2);
 
         jMenu4.setText("Tramites");
@@ -489,6 +513,7 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu11;
     private javax.swing.JMenu jMenu12;
+    private javax.swing.JMenu jMenu13;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
@@ -504,6 +529,7 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem18;
@@ -511,9 +537,12 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem20;
     private javax.swing.JMenuItem jMenuItem21;
+    private javax.swing.JMenuItem jMenuItem22;
+    private javax.swing.JMenuItem jMenuItem23;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;

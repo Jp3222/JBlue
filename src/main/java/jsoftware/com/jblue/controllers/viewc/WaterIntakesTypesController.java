@@ -26,7 +26,6 @@ import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.service.WaterIntakeTypeService;
 import jsoftware.com.jblue.sys.SystemSession;
-import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.WaterIntakesTypesView;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -46,7 +45,7 @@ public class WaterIntakesTypesController extends AbstractDBViewController<WaterI
 
     public WaterIntakesTypesController(WaterIntakesTypesView view) {
         this.view = view;
-        this.service = new WaterIntakeTypeService(AppConfig.isDevMessages(), "TIPO DE TOMAS DE AGUA POTABLE");
+        this.service = new WaterIntakeTypeService(true, "TIPO DE TOMAS DE AGUA POTABLE");
     }
 
     @Override

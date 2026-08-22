@@ -1045,7 +1045,7 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
     private javax.swing.JPanel status_bar_panel;
     private javax.swing.JComboBox<StreetDTO> street1_field;
     private javax.swing.JComboBox<StreetDTO> street2_field;
-    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.StreetDTO> street_filter;
+    private javax.swing.JComboBox<StreetDTO> street_filter;
     private javax.swing.JPanel table_panel;
     private javax.swing.JLabel total_field;
     private javax.swing.JLabel total_label;
@@ -1053,7 +1053,7 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
     private javax.swing.JPanel user_data_panel;
     private javax.swing.JComboBox<String> user_status_field;
     private javax.swing.JComboBox<UserTypeDTO> user_type_field;
-    private javax.swing.JComboBox<jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO> water_intakes_filter;
+    private javax.swing.JComboBox<WaterIntakeTypeDTO> water_intakes_filter;
     private javax.swing.JComboBox<WaterIntakeTypeDTO> water_intakes_type_field;
     // End of variables declaration//GEN-END:variables
 

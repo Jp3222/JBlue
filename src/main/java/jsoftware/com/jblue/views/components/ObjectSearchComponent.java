@@ -42,7 +42,7 @@ public final class ObjectSearchComponent<T extends JDBMapObject> extends JDialog
     private static final long serialVersionUID = 1L;
 
     public static StreetDTO getStreet(JFrame padre) {
-        final ObjectSearchComponent<StreetDTO> o = new ObjectSearchComponent<>(padre, true, CacheFactory.STREETS);
+        ObjectSearchComponent<StreetDTO> o = new ObjectSearchComponent(padre, true, CacheFactory.STREETS);
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;
@@ -51,7 +51,7 @@ public final class ObjectSearchComponent<T extends JDBMapObject> extends JDialog
     }
 
     public static UserDTO getUser(JFrame padre) {
-        ObjectSearchComponent<UserDTO> o = new ObjectSearchComponent<>(padre, true, CacheFactory.USERS);
+        ObjectSearchComponent<UserDTO> o = new ObjectSearchComponent(padre, true, CacheFactory.USERS);
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;
@@ -60,7 +60,7 @@ public final class ObjectSearchComponent<T extends JDBMapObject> extends JDialog
     }
 
     public static WaterIntakeTypeDTO getWaterIntakeType(JFrame padre) {
-        ObjectSearchComponent<WaterIntakeTypeDTO> o = new ObjectSearchComponent<>(padre, true, CacheFactory.WATER_INTAKES_TYPES);
+        ObjectSearchComponent<WaterIntakeTypeDTO> o = new ObjectSearchComponent(padre, true, CacheFactory.WATER_INTAKES_TYPES);
         o.setVisible(true);
         if (o.getReturnStatus() == ObjectSearchComponent.RET_CANCEL) {
             return null;

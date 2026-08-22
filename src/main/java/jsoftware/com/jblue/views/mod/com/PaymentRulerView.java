@@ -8,12 +8,12 @@ package jsoftware.com.jblue.views.mod.com;
  *
  * @author juanp
  */
-public class PaymentImportView extends javax.swing.JPanel {
+public class PaymentRulerView extends javax.swing.JPanel {
 
     /**
-     * Creates new form PaymentImportView
+     * Creates new form PaymentRulerView
      */
-    public PaymentImportView() {
+    public PaymentRulerView() {
         initComponents();
     }
 
@@ -31,8 +31,8 @@ public class PaymentImportView extends javax.swing.JPanel {
         user_data_panel = new javax.swing.JPanel();
         p_rfc = new javax.swing.JPanel();
         jLabel40 = new javax.swing.JLabel();
-        search_user_button = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
+        search_user_button = new javax.swing.JButton();
         p_curp = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         curp_field = new javax.swing.JTextField();
@@ -51,20 +51,28 @@ public class PaymentImportView extends javax.swing.JPanel {
         jLabel10 = new javax.swing.JLabel();
         p_gender = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
+        gender_field = new javax.swing.JComboBox<>();
         jLabel26 = new javax.swing.JLabel();
-        last_name2_field1 = new javax.swing.JTextField();
         p_born_date = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        birdate_field = new com.github.lgooddatepicker.components.DatePicker();
         jPanel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
+        email_field = new javax.swing.JTextField();
         jLabel32 = new javax.swing.JLabel();
-        gender_field = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         phone_number1_field = new javax.swing.JTextField();
         jLabel34 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel19 = new javax.swing.JLabel();
+        phone_number2_field = new javax.swing.JTextField();
+        jLabel35 = new javax.swing.JLabel();
+        p_user_type = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        user_type_field = new javax.swing.JComboBox<>();
 
         setName("Form"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
@@ -75,7 +83,7 @@ public class PaymentImportView extends javax.swing.JPanel {
 
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/com/Bundle"); // NOI18N
-        jLabel8.setText(bundle.getString("PaymentImportView.jLabel8.text")); // NOI18N
+        jLabel8.setText(bundle.getString("PaymentRulerView.jLabel8.text")); // NOI18N
         jLabel8.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jLabel8.setName("jLabel8"); // NOI18N
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 50));
@@ -88,32 +96,32 @@ public class PaymentImportView extends javax.swing.JPanel {
         p_rfc.setName("p_rfc"); // NOI18N
         p_rfc.setLayout(new java.awt.BorderLayout());
 
-        jLabel40.setText(bundle.getString("PaymentImportView.jLabel40.text")); // NOI18N
+        jLabel40.setText(bundle.getString("PaymentRulerView.jLabel40.text")); // NOI18N
         jLabel40.setName("jLabel40"); // NOI18N
         jLabel40.setPreferredSize(new java.awt.Dimension(150, 25));
         p_rfc.add(jLabel40, java.awt.BorderLayout.WEST);
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setName("jComboBox1"); // NOI18N
+        p_rfc.add(jComboBox1, java.awt.BorderLayout.CENTER);
+
         search_user_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
-        search_user_button.setText(bundle.getString("PaymentImportView.search_user_button.text")); // NOI18N
-        search_user_button.setActionCommand(bundle.getString("PaymentImportView.search_user_button.actionCommand")); // NOI18N
+        search_user_button.setText(bundle.getString("PaymentRulerView.search_user_button.text")); // NOI18N
+        search_user_button.setActionCommand(bundle.getString("PaymentRulerView.search_user_button.actionCommand")); // NOI18N
         search_user_button.setName("search_user_button"); // NOI18N
         search_user_button.setPreferredSize(new java.awt.Dimension(80, 30));
         p_rfc.add(search_user_button, java.awt.BorderLayout.LINE_END);
-
-        jComboBox1.setName("jComboBox1"); // NOI18N
-        p_rfc.add(jComboBox1, java.awt.BorderLayout.CENTER);
 
         user_data_panel.add(p_rfc);
 
         p_curp.setName("p_curp"); // NOI18N
         p_curp.setLayout(new java.awt.BorderLayout());
 
-        jLabel22.setText(bundle.getString("PaymentImportView.jLabel22.text")); // NOI18N
+        jLabel22.setText(bundle.getString("PaymentRulerView.jLabel22.text")); // NOI18N
         jLabel22.setName("jLabel22"); // NOI18N
         jLabel22.setPreferredSize(new java.awt.Dimension(150, 25));
         p_curp.add(jLabel22, java.awt.BorderLayout.WEST);
 
-        curp_field.setText(bundle.getString("PaymentImportView.curp_field.text")); // NOI18N
         curp_field.setName("curp_field"); // NOI18N
         p_curp.add(curp_field, java.awt.BorderLayout.CENTER);
 
@@ -126,7 +134,7 @@ public class PaymentImportView extends javax.swing.JPanel {
         pc_nombre.setName("pc_nombre"); // NOI18N
         pc_nombre.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setText(bundle.getString("PaymentImportView.jLabel2.text")); // NOI18N
+        jLabel2.setText(bundle.getString("PaymentRulerView.jLabel2.text")); // NOI18N
         jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel2.setMaximumSize(new java.awt.Dimension(60, 20));
         jLabel2.setName("jLabel2"); // NOI18N
@@ -136,7 +144,7 @@ public class PaymentImportView extends javax.swing.JPanel {
         first_name_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         first_name_field.setName("first_name_field"); // NOI18N
         first_name_field.setPreferredSize(new java.awt.Dimension(100, 30));
-        first_name_field.setToolTipText(bundle.getString("PaymentImportView.first_name_field.toolTipText")); // NOI18N
+        first_name_field.setToolTipText(bundle.getString("PaymentRulerView.first_name_field.toolTipText")); // NOI18N
         pc_nombre.add(first_name_field, java.awt.BorderLayout.CENTER);
 
         jLabel7.setName("jLabel7"); // NOI18N
@@ -149,7 +157,7 @@ public class PaymentImportView extends javax.swing.JPanel {
         pc_ap.setPreferredSize(new java.awt.Dimension(250, 30));
         pc_ap.setLayout(new java.awt.BorderLayout());
 
-        jLabel3.setText(bundle.getString("PaymentImportView.jLabel3.text")); // NOI18N
+        jLabel3.setText(bundle.getString("PaymentRulerView.jLabel3.text")); // NOI18N
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
         jLabel3.setPreferredSize(new java.awt.Dimension(150, 25));
@@ -158,7 +166,7 @@ public class PaymentImportView extends javax.swing.JPanel {
         last_name1_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         last_name1_field.setName("last_name1_field"); // NOI18N
         last_name1_field.setPreferredSize(new java.awt.Dimension(100, 30));
-        last_name1_field.setToolTipText(bundle.getString("PaymentImportView.last_name1_field.toolTipText")); // NOI18N
+        last_name1_field.setToolTipText(bundle.getString("PaymentRulerView.last_name1_field.toolTipText")); // NOI18N
         pc_ap.add(last_name1_field, java.awt.BorderLayout.CENTER);
 
         jLabel9.setName("jLabel9"); // NOI18N
@@ -171,7 +179,7 @@ public class PaymentImportView extends javax.swing.JPanel {
         pc_am.setPreferredSize(new java.awt.Dimension(250, 30));
         pc_am.setLayout(new java.awt.BorderLayout());
 
-        jLabel4.setText(bundle.getString("PaymentImportView.jLabel4.text")); // NOI18N
+        jLabel4.setText(bundle.getString("PaymentRulerView.jLabel4.text")); // NOI18N
         jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
         jLabel4.setPreferredSize(new java.awt.Dimension(150, 25));
@@ -180,7 +188,7 @@ public class PaymentImportView extends javax.swing.JPanel {
         last_name2_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         last_name2_field.setName("last_name2_field"); // NOI18N
         last_name2_field.setPreferredSize(new java.awt.Dimension(100, 30));
-        last_name2_field.setToolTipText(bundle.getString("PaymentImportView.last_name2_field.toolTipText")); // NOI18N
+        last_name2_field.setToolTipText(bundle.getString("PaymentRulerView.last_name2_field.toolTipText")); // NOI18N
         pc_am.add(last_name2_field, java.awt.BorderLayout.CENTER);
 
         jLabel10.setName("jLabel10"); // NOI18N
@@ -192,27 +200,25 @@ public class PaymentImportView extends javax.swing.JPanel {
         p_gender.setName("p_gender"); // NOI18N
         p_gender.setLayout(new java.awt.BorderLayout());
 
-        jLabel25.setText(bundle.getString("PaymentImportView.jLabel25.text")); // NOI18N
+        jLabel25.setText(bundle.getString("PaymentRulerView.jLabel25.text")); // NOI18N
         jLabel25.setName("jLabel25"); // NOI18N
         jLabel25.setPreferredSize(new java.awt.Dimension(150, 25));
         p_gender.add(jLabel25, java.awt.BorderLayout.LINE_START);
 
+        gender_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No. Definido", "Masculino.", "Femenino." }));
+        gender_field.setName("gender_field"); // NOI18N
+        p_gender.add(gender_field, java.awt.BorderLayout.CENTER);
+
         jLabel26.setName("jLabel26"); // NOI18N
         jLabel26.setPreferredSize(new java.awt.Dimension(80, 30));
         p_gender.add(jLabel26, java.awt.BorderLayout.LINE_END);
-
-        last_name2_field1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        last_name2_field1.setToolTipText(bundle.getString("PaymentImportView.last_name2_field1.toolTipText")); // NOI18N
-        last_name2_field1.setName("last_name2_field1"); // NOI18N
-        last_name2_field1.setPreferredSize(new java.awt.Dimension(100, 30));
-        p_gender.add(last_name2_field1, java.awt.BorderLayout.CENTER);
 
         user_data_panel.add(p_gender);
 
         p_born_date.setName("p_born_date"); // NOI18N
         p_born_date.setLayout(new java.awt.BorderLayout());
 
-        jLabel27.setText(bundle.getString("PaymentImportView.jLabel27.text")); // NOI18N
+        jLabel27.setText(bundle.getString("PaymentRulerView.jLabel27.text")); // NOI18N
         jLabel27.setName("jLabel27"); // NOI18N
         jLabel27.setPreferredSize(new java.awt.Dimension(150, 25));
         p_born_date.add(jLabel27, java.awt.BorderLayout.WEST);
@@ -221,34 +227,32 @@ public class PaymentImportView extends javax.swing.JPanel {
         jLabel38.setPreferredSize(new java.awt.Dimension(80, 30));
         p_born_date.add(jLabel38, java.awt.BorderLayout.LINE_END);
 
-        jCheckBox1.setText(bundle.getString("PaymentImportView.jCheckBox1.text")); // NOI18N
-        jCheckBox1.setName("jCheckBox1"); // NOI18N
-        p_born_date.add(jCheckBox1, java.awt.BorderLayout.CENTER);
+        birdate_field.setName("birdate_field"); // NOI18N
+        p_born_date.add(birdate_field, java.awt.BorderLayout.CENTER);
 
         user_data_panel.add(p_born_date);
 
         jPanel2.setName("jPanel2"); // NOI18N
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jLabel11.setText(bundle.getString("PaymentImportView.jLabel11.text")); // NOI18N
+        jLabel11.setText(bundle.getString("PaymentRulerView.jLabel11.text")); // NOI18N
         jLabel11.setName("jLabel11"); // NOI18N
         jLabel11.setPreferredSize(new java.awt.Dimension(150, 25));
         jPanel2.add(jLabel11, java.awt.BorderLayout.WEST);
 
+        email_field.setName("email_field"); // NOI18N
+        jPanel2.add(email_field, java.awt.BorderLayout.CENTER);
+
         jLabel32.setName("jLabel32"); // NOI18N
         jLabel32.setPreferredSize(new java.awt.Dimension(80, 30));
         jPanel2.add(jLabel32, java.awt.BorderLayout.LINE_END);
-
-        gender_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No. Definido", "Masculino.", "Femenino." }));
-        gender_field.setName("gender_field"); // NOI18N
-        jPanel2.add(gender_field, java.awt.BorderLayout.CENTER);
 
         user_data_panel.add(jPanel2);
 
         jPanel3.setName("jPanel3"); // NOI18N
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        jLabel14.setText(bundle.getString("PaymentImportView.jLabel14.text")); // NOI18N
+        jLabel14.setText(bundle.getString("PaymentRulerView.jLabel14.text")); // NOI18N
         jLabel14.setName("jLabel14"); // NOI18N
         jLabel14.setPreferredSize(new java.awt.Dimension(150, 25));
         jPanel3.add(jLabel14, java.awt.BorderLayout.WEST);
@@ -262,6 +266,40 @@ public class PaymentImportView extends javax.swing.JPanel {
 
         user_data_panel.add(jPanel3);
 
+        jPanel4.setName("jPanel4"); // NOI18N
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        jLabel19.setText(bundle.getString("PaymentRulerView.jLabel19.text")); // NOI18N
+        jLabel19.setName("jLabel19"); // NOI18N
+        jLabel19.setPreferredSize(new java.awt.Dimension(150, 25));
+        jPanel4.add(jLabel19, java.awt.BorderLayout.WEST);
+
+        phone_number2_field.setName("phone_number2_field"); // NOI18N
+        jPanel4.add(phone_number2_field, java.awt.BorderLayout.CENTER);
+
+        jLabel35.setName("jLabel35"); // NOI18N
+        jLabel35.setPreferredSize(new java.awt.Dimension(80, 30));
+        jPanel4.add(jLabel35, java.awt.BorderLayout.LINE_END);
+
+        user_data_panel.add(jPanel4);
+
+        p_user_type.setName("p_user_type"); // NOI18N
+        p_user_type.setLayout(new java.awt.BorderLayout());
+
+        jLabel20.setText(bundle.getString("PaymentRulerView.jLabel20.text")); // NOI18N
+        jLabel20.setName("jLabel20"); // NOI18N
+        jLabel20.setPreferredSize(new java.awt.Dimension(150, 25));
+        p_user_type.add(jLabel20, java.awt.BorderLayout.WEST);
+
+        jLabel36.setName("jLabel36"); // NOI18N
+        jLabel36.setPreferredSize(new java.awt.Dimension(80, 30));
+        p_user_type.add(jLabel36, java.awt.BorderLayout.LINE_END);
+
+        user_type_field.setName("user_type_field"); // NOI18N
+        p_user_type.add(user_type_field, java.awt.BorderLayout.CENTER);
+
+        user_data_panel.add(p_user_type);
+
         register_panel.add(user_data_panel, java.awt.BorderLayout.CENTER);
 
         add(register_panel, "register");
@@ -269,15 +307,18 @@ public class PaymentImportView extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.github.lgooddatepicker.components.DatePicker birdate_field;
     private javax.swing.JTextField curp_field;
+    private javax.swing.JTextField email_field;
     private javax.swing.JTextField first_name_field;
     private javax.swing.JComboBox<String> gender_field;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel25;
@@ -286,6 +327,8 @@ public class PaymentImportView extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
@@ -294,19 +337,22 @@ public class PaymentImportView extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JTextField last_name1_field;
     private javax.swing.JTextField last_name2_field;
-    private javax.swing.JTextField last_name2_field1;
     private javax.swing.JPanel p_born_date;
     private javax.swing.JPanel p_curp;
     private javax.swing.JPanel p_gender;
     private javax.swing.JPanel p_rfc;
+    private javax.swing.JPanel p_user_type;
     private javax.swing.JPanel pc_am;
     private javax.swing.JPanel pc_ap;
     private javax.swing.JPanel pc_nombre;
     private javax.swing.JTextField phone_number1_field;
+    private javax.swing.JTextField phone_number2_field;
     private javax.swing.JPanel register_panel;
     private javax.swing.JButton search_user_button;
     private javax.swing.JPanel user_data_panel;
+    private javax.swing.JComboBox<String> user_type_field;
     // End of variables declaration//GEN-END:variables
 }

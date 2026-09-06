@@ -21,7 +21,7 @@ import java.util.Map;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import jsoftware.com.jblue.model.dto.PaymentConceptDTO;
+import jsoftware.com.jblue.model.trash._PaymentConceptDTO;
 import jsoftware.com.jblue.util.GraphicsUtils;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.DBView;
@@ -33,12 +33,12 @@ import org.apache.commons.collections4.map.HashedMap;
  *
  * @author juan pablo campos casasanero
  */
-public final class PaymentConceptView extends DBView<PaymentConceptDTO> implements DBObjectValues<PaymentConceptDTO> {
+public final class PaymentConceptView extends DBView<_PaymentConceptDTO> implements DBObjectValues<_PaymentConceptDTO> {
 
     private static final long serialVersionUID = 1L;
 
     private JTableModel model;
-    private PaymentConceptDTO object_search;
+    private _PaymentConceptDTO object_search;
     private final CardLayout ly;
 
     /**
@@ -526,11 +526,11 @@ public final class PaymentConceptView extends DBView<PaymentConceptDTO> implemen
 
     @Override
     public void setObjectSearch(JDBMapObject o) {
-        this.object_search = (PaymentConceptDTO) o;
+        this.object_search = (_PaymentConceptDTO) o;
     }
 
     @Override
-    public PaymentConceptDTO getObjectSearch() {
+    public _PaymentConceptDTO getObjectSearch() {
         return object_search;
     }
 
@@ -553,12 +553,12 @@ public final class PaymentConceptView extends DBView<PaymentConceptDTO> implemen
     }
 
     @Override
-    public PaymentConceptDTO getValues(boolean update) {
+    public _PaymentConceptDTO getValues(boolean update) {
         Map<String, Object> map = new HashedMap<>(7);
         if (update) {
         } else {
         }
-        return new PaymentConceptDTO(map);
+        return new _PaymentConceptDTO(map);
     }
 
 }

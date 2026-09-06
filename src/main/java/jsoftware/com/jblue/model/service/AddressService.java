@@ -39,14 +39,13 @@ public class AddressService extends AbstractService {
             }
             res = dao.insert(connection, dto);
             if (!res) {
-                returnMessageError("NO SE PUDO REGISTRAR LA CALLE");
-                return res;
+                return returnMessageError("NO SE PUDO REGISTRAR LA CALLE");
             }
             res = hys.insert(connection, Const.INDEX_USR_ADDRESS, "SE REGISTRO EL DOMICILIO NO: %s".formatted(dto.getId()));
             if (!res) {
-                returnMessageError("REGISTRO EN BITACORA CORRUPTO");
-                return res;
+                return returnMessageError("REGISTRO EN BITACORA CORRUPTO");
             }
+            res = true;
         } catch (SQLException e) {
             returnMessageError(e.getErrorCode(), e.getMessage());
             log(e, "insert");

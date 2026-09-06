@@ -18,7 +18,7 @@ package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
 import jsoftware.com.jblue.controllers.AbstractViewController;
-import jsoftware.com.jblue.model.dto.PaymentDTO;
+import jsoftware.com.jblue.model.trash._PaymentDTO;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.VContabilidad;
 
@@ -28,7 +28,7 @@ import jsoftware.com.jblue.views.VContabilidad;
  */
 public final class ContableController extends AbstractViewController {
 
-    private MemoListCache<PaymentDTO> cache;
+    private MemoListCache<_PaymentDTO> cache;
     private VContabilidad view;
     private double total;
 

@@ -53,7 +53,7 @@ public class OwnerRegisterProcessService extends AbstractService {
     public boolean save(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) throws SQLException {
         // Corrección: Inicialización por defecto para evitar errores de compilación al testear la interfaz
         boolean res = false;
-        if (false) {
+        if (AppConfig.isDevMessages(connection)) {
             System.out.println(dto.toString());
         }
         /**
@@ -84,21 +84,30 @@ public class OwnerRegisterProcessService extends AbstractService {
             if (!res) {
                 returnMessageError(process_service.getErrorCode(), process_service.getUserMessage());
             }
+
             //VALIDACION DE TRAMITE
             res = process_service.valid(connection, ss, dto);
             if (!res) {
                 returnMessageError(process_service.getErrorCode(), process_service.getUserMessage());
             }
+
             //VALIDACION DE PAGO
             res = process_service.payment(connection, ss, dto);
             if (!res) {
                 returnMessageError(process_service.getErrorCode(), process_service.getUserMessage());
             }
+
             //MOVIMIENTO FINAL
             res = process_service.finalized(connection, ss, dto);
             if (!res) {
                 returnMessageError(process_service.getErrorCode(), process_service.getUserMessage());
             }
+            //MOVIMIENTO REALIZADO
+            res = process_service.mov(connection, ss, dto);
+            if (!res) {
+                returnMessageError(process_service.getErrorCode(), process_service.getUserMessage());
+            }
+
             //FIN DE LA TRANSACCION
             int end_id = history_dao.endTransactionReturn(connection, Const.INDEX_HYS_PROGRAM_HISTORY, "FIN DE UNA TRANSACCION");
             if (end_id <= 0) {
@@ -111,6 +120,9 @@ public class OwnerRegisterProcessService extends AbstractService {
             //PASO 6 SI NO HUBO ERRORES SE CONFIRMA LA TRANSACCION
             commit(connection);
             res = true;
+            if (AppConfig.isDevMessages(connection)) {
+                System.out.println(dto.toString());
+            }
         } catch (SQLException | ServiceException | CorruptInsertionException | KeyNotGenerateException | SystemException e) {
             rollback(connection);
             res = false;
@@ -195,7 +207,7 @@ public class OwnerRegisterProcessService extends AbstractService {
                 returnMessageError(process_service.getErrorCode(), process_service.getUserMessage());
             }
             //VALIDACION DE TRAMITE
-            res = process_service.valid(connection, ss, dto);
+            res = process_service.invalid(connection, ss, dto);
             if (!res) {
                 returnMessageError(process_service.getErrorCode(), process_service.getUserMessage());
             }
@@ -235,6 +247,16 @@ public class OwnerRegisterProcessService extends AbstractService {
                             .formatted(getProcess_name(), transaction_service.getUserMessage())
             );
         }
+        return res;
+    }
+
+    public boolean exist(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) {
+        boolean res = false;
+        res = dto.getId() != null;
+        if (!res) {
+            return false;
+        }
+        process_service.exists(connection, dto.getProcess(), dto.getProcess().getStatus());
         return res;
     }
 

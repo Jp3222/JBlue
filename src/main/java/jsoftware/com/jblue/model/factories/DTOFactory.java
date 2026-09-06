@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
-import jsoftware.com.jblue.model.dto.PaymentDTO;
+import jsoftware.com.jblue.model.trash._PaymentDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeDTO;
@@ -29,7 +29,7 @@ public class DTOFactory {
         map.put(WaterIntakeTypeDTO.class.getName(), () -> new WaterIntakeDTO());
         map.put(StreetDTO.class.getName(), () -> new StreetDTO());
         map.put(EmployeeDTO.class.getName(), () -> new EmployeeDTO());
-        map.put(PaymentDTO.class.getName(), () -> new PaymentDTO());
+        map.put(_PaymentDTO.class.getName(), () -> new _PaymentDTO());
     }
 
     public static <T extends JDBMapObject> T get(Class<T> cls) {

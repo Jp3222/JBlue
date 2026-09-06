@@ -37,32 +37,35 @@ public class StreetService extends AbstractService {
         boolean res = false;
         try {
             connection.setAutoCommit(false);
+            String final_employee = ss.getCurrentEmployee().getId();
+            String final_colony = ss.getCurrent_instance().getColonyId();
+
+            //REGISTRO DEL OBJETO
             StreetDTO street = dto.getStreet();
-            street.put("colony_id", ss.getCurrent_instance().getColonyId());
-            street.put("status", String.valueOf(Const.INDEX_STATUS_ACTIVO_1));
-            street.put("employee_last_update", dto.getCurrent_employee().getId());
+            street.put("colony_id", final_colony);
+            street.put("employee_last_update", final_employee);
             res = dao.insert(connection, street);
             if (!res) {
-                returnMessageError("EL REGISTRO NO PUDO LLEVARSE ACABO");
-                rollback(connection);
-                return false;
+                return returnMessageError(connection, "LA CALLE " + street.getStreetName() + " NO PUDO SER REGISTRADA");
             }
+
+            //REGISTRO EN BITACORA
             res = hys.insert(
                     connection,
                     Const.INDEX_INSERT,
                     "SE REGISTRO LA CALLE: %s - %s".formatted(street.getId(), street.getStreetName())
             );
             if (!res) {
-                returnMessageError("REGISTRO EN BITACORA CORRUPTO");
-                rollback(connection);
-                return false;
+                return returnMessageError(connection, "REGISTRO EN BITACORA CORRUPTO");
+
             }
             res = true;
             connection.commit();
+            returnMessageError(SERVICE_EXECUTE_OK, "OPERACION EXITOSA");
         } catch (SQLException e) {
-            returnMessageError(e.getMessage());
+            returnMessageError(connection, e.getMessage());
         } catch (DataAccesObjectException e) {
-            returnMessageError(e.getErrorCode(), e.getUserMessage());
+            returnMessageError(connection, e.getUserMessage());
         } finally {
             connection.setAutoCommit(true);
         }

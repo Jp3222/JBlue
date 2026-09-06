@@ -114,6 +114,7 @@
                 <MenuItem class="javax.swing.JMenuItem" name="street_view_item">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Calles Registradas"/>
+                    <Property name="actionCommand" type="java.lang.String" value="CALLES REGISTRADAS"/>
                   </Properties>
                 </MenuItem>
               </SubComponents>

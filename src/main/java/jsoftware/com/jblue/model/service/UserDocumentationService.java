@@ -2,7 +2,6 @@ package jsoftware.com.jblue.model.service;
 
 import java.sql.SQLException;
 import java.util.List;
-import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.UserDocumentationDAO;
 import jsoftware.com.jblue.model.dto.UserDocumentationDTO;
@@ -51,20 +50,6 @@ public class UserDocumentationService extends AbstractService {
             if (generatedIds == null || generatedIds.isEmpty() || generatedIds.size() != dtoList.size()) {
                 returnMessageError("NO SE PUDIERON REGISTRAR LOS DOCUMENTOS ASOCIADOS");
                 return false;
-            }
-
-            // 2. Registro consecutivo en la bitácora interna de programa por cada documento exitoso
-            for (UserDocumentationDTO dto : dtoList) {
-                res = hys.insert(
-                        connection,
-                        Const.INDEX_DOC_USER_DOCUMENTATION,
-                        "SE REGISTRO EL DOCUMENTO DIGITAL NO: %s - TIPO: %s".formatted(dto.getId(), dto.getTypeId())
-                );
-
-                if (!res) {
-                    returnMessageError("REGISTRO EN BITACORA CORRUPTO - DOCUMENTACION");
-                    return false;
-                }
             }
 
         } catch (SQLException e) {

@@ -10,7 +10,6 @@ import jsoftware.com.jblue.model.dto.UserDocumentationDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
-import jsoftware.com.jpaymentlib.model.dto.PaymentDetailDTO;
 
 /**
  *
@@ -147,20 +146,14 @@ public final class SummaryView extends AbstractModuleView<ProcessWrapperDTO> imp
         i = add(model, "TEL. 1", user.getPhoneNumber1(), i);
         i = add(model, "TEL. 2", user.getPhoneNumber2(), i);
         i = add(model, "TIPO DE USUARIO", owner(user.getUserType(), user.get("user_type_string").toString()), i);
-        
+
         //DOCUMENTOS SOLICITADOS
         for (UserDocumentationDTO doc : o.getDocument_list()) {
             model.setValueAt(doc.getTypeId(), i, 0);
             model.setValueAt(doc.getName(), i, 1);
             i++;
         }
-        
-        //CONCEPTOS A PAGAR
-        for (PaymentDetailDTO j : o.getPayment_details()) {
-            model.setValueAt(j.getPaymentConceptId(), i, 0);
-            model.setValueAt(j.getTotalAmount(), i, 1);
-            i++;
-        }
+
     }
 
     private int add(TableModel model, String field, String value, int index) {

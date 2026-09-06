@@ -62,17 +62,7 @@ public class StreetsController extends AbstractDBViewController<StreetDTO> imple
         boolean res = false;
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
             SystemSession ss = SystemSession.getInstancia();
-            if (!ss.isAdministrationValid()) {
-                returnMessage(view, "LA ADMINISTRACION ACTUAL NO ES VALIDA");
-                return;
-            }
-            if (!ss.isLock(c)) {
-                returnMessage(view, "LA ADMINISTRACION ACTUAL NO ES VALIDA");
-                return;
-            }
-            if (!view.isValuesOK()) {
-                return;
-            }
+            ss.systemValid(c);
             StreetWrapperDTO dto = view.getDtoWrapper();
             res = service.save(c, ss, dto);
             if (service.isError()) {

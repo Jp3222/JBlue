@@ -137,19 +137,19 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
     public boolean nextStep() {
         // Sincroniza los componentes visuales del paso actual hacia los Strings del mapa del DTO
         getData();
-        System.out.println(getDtoWrapper().getProcess().toString());
+        ProcessWrapperDTO dto = getDtoWrapper();
         // Evaluar las banderas de validación del DTO según el paso del asistente
         boolean valid = switch (current_index) {
             case 0 ->
-                true;
+                dto.isUser_valid();
             case 1 ->
-                true;
+                dto.isAddress_valid();
             case 3 ->
-                true;
+                dto.isDocument_record_valid();
             case 4 ->
-                true;
+                dto.isWater_intake_valid();
             default ->
-                true;
+                dto.isWater_intake_valid();
         };
         if (!valid) {
             JOptionPane.showMessageDialog(

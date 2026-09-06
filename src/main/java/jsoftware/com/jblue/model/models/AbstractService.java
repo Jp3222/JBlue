@@ -85,17 +85,27 @@ public abstract class AbstractService implements ServiceModel {
      * Helper defensivo interno para inyectar estados de error provocados por la
      * red o la infraestructura del servidor local del pozo.
      */
-    protected void returnMessageError(String msg) {
-        returnMessageError(SERVICE_EXECUTE_ERROR, msg);
+    protected boolean returnMessageError(JDBConnection connection, String msg) {
+        rollback(connection);
+        return returnMessageError(SERVICE_EXECUTE_ERROR, msg);
     }
 
     /**
      * Helper defensivo interno para inyectar estados de error provocados por la
      * red o la infraestructura del servidor local del pozo.
      */
-    protected void returnMessageError(int error, String msg) {
+    protected boolean returnMessageError(String msg) {
+        return returnMessageError(SERVICE_EXECUTE_ERROR, msg);
+    }
+
+    /**
+     * Helper defensivo interno para inyectar estados de error provocados por la
+     * red o la infraestructura del servidor local del pozo.
+     */
+    protected boolean returnMessageError(int error, String msg) {
         this.error_code = error;
         this.user_message = msg;
+        return error_code != SERVICE_EXECUTE_OK;
     }
 
     /**

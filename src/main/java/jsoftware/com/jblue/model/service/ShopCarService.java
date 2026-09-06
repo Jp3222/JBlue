@@ -12,7 +12,7 @@ import jsoftware.com.jblue.model.models.AbstractService;
  */
 public class ShopCarService extends AbstractService {
 
-    private PaymentService payment_service;
+    private PaymentService2 payment_service;
 
     public ShopCarService(boolean dev_flag, String process_name) {
         super(dev_flag, process_name);

@@ -139,15 +139,13 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
         ProcessWrapperDTO dto = view.getDtoWrapper();
         //VALIDA QUE EL EMPLEADO ACTUAL RECIBIO EL PAGO
         if (input == JOptionPane.YES_OPTION) {
-            //SI, SI SE ASIGNA TRUE PARA GENEREAR LA CABEZERA Y EL DESGLOSE
-            dto.setPayment_header_valid(true);
-            dto.setPayment_detail_valid(true);
-            dto.setGenerate_payment_line(false);
+            //SI EL PAGO ES VALIDADO, SE ASIGNA TRUE AL PAGO Y FALSE A LA GENERACION DE UNA LINEA
+            dto.setPayment_valid(true);
+            dto.setPayment_line_valid(false);
         } else {
-            //SI, NO SE ASIGNA FALSE Y APARTE SE GENERARA UNA LINEA DE PAGO
-            dto.setPayment_header_valid(false);
-            dto.setPayment_detail_valid(false);
-            dto.setGenerate_payment_line(true);
+            //SI, NO SE ASIGNA FALSE Y TRUE A LA GENERACION DE LA LINEA
+            dto.setPayment_valid(false);
+            dto.setPayment_line_valid(true);
         }
     }
 
@@ -171,7 +169,8 @@ public class OwnerRegisterProcessController extends AbstractDBViewController<Pro
     private void lock(ProcessWrapperDTO dto) {
         try (JDBConnection connnection = ConnectionFactory.getIntance().getProcessConnection()) {
             SystemSession ss = SystemSession.getInstancia();
-            boolean res = service.userLocked(connnection, ss, dto);
+            boolean res = false;
+            res = service.userLocked(connnection, ss, dto);
             if (service.isError()) {
                 returnMessage(view, false, service.getUserMessage());
                 return;

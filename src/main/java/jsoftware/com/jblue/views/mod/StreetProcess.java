@@ -119,7 +119,7 @@ public final class StreetProcess extends AbstractModuleView<StreetWrapperDTO> im
         jLabel17 = new javax.swing.JLabel();
         total = new javax.swing.JLabel();
 
-        setName("Form"); // NOI18N
+        setName("CALLES REGISTRADAS"); // NOI18N
         setLayout(new java.awt.BorderLayout());
 
         tools_panel.setName("tools_panel"); // NOI18N

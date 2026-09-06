@@ -23,7 +23,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JList;
 import javax.swing.JTextField;
-import jsoftware.com.jblue.model.dto.PaymentListDTO;
+import jsoftware.com.jblue.model.trash._PaymentListDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
 import jsoftware.com.jblue.util.Func;
@@ -895,7 +895,7 @@ public final class ShopCartProcess extends AbstractModuleView<ShopCartWrapperDTO
     @Override
     public void setScreenListInfo() {
         ShopCartWrapperDTO dto = getDtoWrapper();
-        List<PaymentListDTO> paymentsMade = dto.getPayments_details_made();
+        List<_PaymentListDTO> paymentsMade = dto.getPayments_details_made();
 
         // 1. Procesamos la lista de meses e interfaz
         list_months_paid.forEach(month -> {

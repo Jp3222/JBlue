@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.service.PaymentService;
+import jsoftware.com.jblue.model.service.PaymentService2;
 import jsoftware.com.jblue.util.cache.MemoListCache;
 import jsoftware.com.jblue.views.ShopCartProcess;
 import jsoftware.com.jblue.views.components.ObjectSearchComponent;
@@ -39,13 +39,13 @@ public class ShopCartController extends Controller {
     private final MemoListCache<UserDTO> memo_cache;
     private final ShopCartProcess view;
     private final StringBuilder mov_book;
-    private final PaymentService service;
+    private final PaymentService2 service;
 
     public ShopCartController(ShopCartProcess view) {
         this.view = view;
         this.memo_cache = CacheFactory.USERS;
         this.mov_book = new StringBuilder(3000);
-        this.service = new PaymentService(false, view.getDtoWrapper().getModule_name());
+        this.service = new PaymentService2(false, view.getDtoWrapper().getModule_name());
     }
 
     @Override

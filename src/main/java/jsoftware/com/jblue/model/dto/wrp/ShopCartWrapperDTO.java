@@ -7,8 +7,8 @@ package jsoftware.com.jblue.model.dto.wrp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import jsoftware.com.jblue.model.dto.PaymentDTO;
-import jsoftware.com.jblue.model.dto.PaymentListDTO;
+import jsoftware.com.jblue.model.trash._PaymentDTO;
+import jsoftware.com.jblue.model.trash._PaymentListDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
 
@@ -20,12 +20,12 @@ public class ShopCartWrapperDTO extends ModuleWrapperDTO {
 
     private static final long serialVersionUID = 1L;
     //DATOS PARA REALIZAR UN PAGO 
-    private final PaymentDTO payment_header;
-    private final List<PaymentListDTO> payment_details;
+    private final _PaymentDTO payment_header;
+    private final List<_PaymentListDTO> payment_details;
 
     //DATOS DE PAGOS ANTERIORES
-    private final List<PaymentDTO> payments_header_made;
-    private final List<PaymentListDTO> payments_details_made;
+    private final List<_PaymentDTO> payments_header_made;
+    private final List<_PaymentListDTO> payments_details_made;
 
     //INFORMACION DEL PADRON
     private final WaterIntakeUserDTO wki_user;
@@ -33,7 +33,7 @@ public class ShopCartWrapperDTO extends ModuleWrapperDTO {
 
     public ShopCartWrapperDTO(String module_id, String module_name) {
         super(module_id, module_name);
-        payment_header = new PaymentDTO();
+        payment_header = new _PaymentDTO();
         payment_details = new ArrayList<>();
         payments_header_made = new ArrayList<>();
         payments_details_made = new ArrayList<>();
@@ -41,19 +41,19 @@ public class ShopCartWrapperDTO extends ModuleWrapperDTO {
         wki_type = new WaterIntakeTypeDTO();
     }
 
-    public PaymentDTO getPayment_header() {
+    public _PaymentDTO getPayment_header() {
         return payment_header;
     }
 
-    public List<PaymentListDTO> getPayment_details() {
+    public List<_PaymentListDTO> getPayment_details() {
         return payment_details;
     }
 
-    public List<PaymentDTO> getPayments_header_made() {
+    public List<_PaymentDTO> getPayments_header_made() {
         return payments_header_made;
     }
 
-    public List<PaymentListDTO> getPayments_details_made() {
+    public List<_PaymentListDTO> getPayments_details_made() {
         return payments_details_made;
     }
 

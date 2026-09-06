@@ -6,7 +6,7 @@ package jsoftware.com.jblue.views.mod.com;
 
 import java.util.List;
 import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
-import jsoftware.com.jblue.model.dto.PaymentListDTO;
+import jsoftware.com.jblue.model.trash._PaymentListDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
@@ -17,7 +17,7 @@ import jsoftware.com.jblue.views.framework.WizardModel;
  *
  * @author juanp
  */
-public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<List<PaymentListDTO>>, ShowDataModel {
+public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<List<_PaymentListDTO>>, ShowDataModel {
 
     private static final long serialVersionUID = 1L;
 
@@ -186,7 +186,7 @@ public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperD
     }
 
     @Override
-    public List<PaymentListDTO> getValues(boolean update) {
+    public List<_PaymentListDTO> getValues(boolean update) {
         return null;
     }
 

@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.controllers.viewc.EmployeeRegisterController;
 import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
@@ -167,7 +166,7 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
             v.getData();
         }
         // 2. Recuperar el controlador del caso de uso encargado de la persistencia
-        EmployeeRegisterController employeeController = (EmployeeRegisterController) getDtoWrapper().getController("CONTROLLER");
+        OwnerRegisterProcessController employeeController = (OwnerRegisterProcessController) getDtoWrapper().getController(MAIN_CONTROLLER);
         if (employeeController != null) {
             // El controlador leerá el WrapperDTO enriquecido, aplicará los casts numéricos en el DAO y guardará en MySQL
             JOptionPane.showMessageDialog(this, "Guardando registro del nuevo empleado en el sistema...", "Procesando", JOptionPane.INFORMATION_MESSAGE);

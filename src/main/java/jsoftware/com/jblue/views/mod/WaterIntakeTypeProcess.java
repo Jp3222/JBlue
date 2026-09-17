@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.factories.TableModelFactory;
-import jsoftware.com.jblue.model.models.AbstractValidation;
+import jsoftware.com.jblue.model.abst.AbstractValidation;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;

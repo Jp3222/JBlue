@@ -226,8 +226,10 @@ public class UserDocumentValidationView extends AbstractModuleView<ProcessWrappe
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
         int input = JOptionPane.showConfirmDialog(this, "¿CONFIRMA QUE LOS DOCUMENTOS DE IDENTIDAD DEL USUARIO SON DOCUMENTOS OFICIALES Y VALIDOS?", "pago", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        ProcessWrapperDTO dto = getDtoWrapper();
         if (input == JOptionPane.YES_OPTION) {
-            getDtoWrapper().setDocument_list_valid(true);
+            dto.setDocument_list_valid(true);
+            dto.setDocument_record_valid(true);
         }
 
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -235,7 +237,9 @@ public class UserDocumentValidationView extends AbstractModuleView<ProcessWrappe
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int input = JOptionPane.showConfirmDialog(this, "¿DESEA RECHAZAR EL TRAMITE ACTUAL CON STATUS \"RECHAZADO\"?", "pago", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (input == JOptionPane.YES_OPTION) {
-            getDtoWrapper().setDocument_list_valid(false);
+            ProcessWrapperDTO dto = getDtoWrapper();
+            dto.setDocument_list_valid(false);
+            dto.setDocument_record_valid(false);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -389,15 +393,17 @@ public class UserDocumentValidationView extends AbstractModuleView<ProcessWrappe
                     "Documentación faltante",
                     JOptionPane.WARNING_MESSAGE);
         }
-        List<UserDocumentationDTO> list = getDtoWrapper().getDocument_list();
+        ProcessWrapperDTO dto = getDtoWrapper();
+        List<UserDocumentationDTO> list = dto.getDocument_list();
         for (int i = 0; i < model.getSize(); i++) {
-            UserDocumentationDTO dto = model.getElementAt(i);
+            UserDocumentationDTO j = model.getElementAt(i);
             if (isValid) {
-                dto.put("status", 1);
+                j.put("status", 1);
             }
-            list.add(dto);
+            list.add(j);
         }
-
+        dto.setDocument_list_valid(true);
+        dto.setDocument_record_valid(true);
         // Actualizamos el estado en el Wrapper para que el botón 'Siguiente' lo vea
         return true;
     }

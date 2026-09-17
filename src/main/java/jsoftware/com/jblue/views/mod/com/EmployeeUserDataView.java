@@ -12,7 +12,7 @@ import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.dto.EmployeeTypesDTO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
-import jsoftware.com.jblue.model.models.AbstractValidation;
+import jsoftware.com.jblue.model.abst.AbstractValidation;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.util.FuncGenerate;

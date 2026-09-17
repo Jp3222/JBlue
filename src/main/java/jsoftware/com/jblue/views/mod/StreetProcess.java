@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.viewc.StreetsController;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.wrp.StreetWrapperDTO;
-import jsoftware.com.jblue.model.models.AbstractValidation;
+import jsoftware.com.jblue.model.abst.AbstractValidation;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;

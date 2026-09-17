@@ -5,14 +5,16 @@
 package jsoftware.com.jblue.views.mod.com;
 
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
 import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.UserTypeDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
-import jsoftware.com.jblue.model.models.AbstractValidation;
+import jsoftware.com.jblue.model.abst.AbstractValidation;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.Func;
@@ -443,18 +445,21 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
     private javax.swing.JTextField rfc_field;
     private javax.swing.JButton search_user_button;
     private javax.swing.JPanel user_data_panel;
-    private javax.swing.JComboBox<String> user_type_field;
+    private javax.swing.JComboBox<UserTypeDTO> user_type_field;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void getData() {
         boolean res = isValuesOK();
-        res = true;
+        //SI LOS DATOS NO SON CORRECTOS SE CORTA EL METODO
         if (!res) {
             return;
         }
+        //SI LO SON
         ProcessWrapperDTO wp = getDtoWrapper();
+        //SE MARCAN COMO VALIDOS
         wp.setUser_valid(res);
+        //SE GUARDA EL USUARIO
         UserDTO values = getValues(false);
         wp.getUser().setMap(values.getMap());
 
@@ -463,7 +468,7 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
     @Override
     public boolean isValuesOK() {
         boolean res; // Empezamos asumiendo que es válido
-
+        //VALIDACIONES BASICAS.
         AbstractValidation v = new AbstractValidation();
         v.addRuler("curp", curp_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()));
         v.addErrorMessage("curp", "LA CURP NO TIENE EL FORMATO INCORRECTO");
@@ -474,9 +479,8 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         v.addRuler("last_name1", last_name1_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
         v.addErrorMessage("last_name1", "EL APELLIDO PATERNO DEBE SER SOLO TEXTO");
 
-        v.addRuler("last_name2", last_name2_field, t -> Func.isNotNull(t) && Func.isNotNullEmptyBlank(t.getText()) && Func.isOnlyText(t.getText()));
-        v.addErrorMessage("last_name2", "EL APELLIDO MATERNO DEBE SER SOLO TEXTO");
         v.addRuler("phone_number", phone_number1_field, t -> Func.isNotNull(t) && Func.isInteger(t.getText()));
+
         v.addErrorMessage("phone_number", "EL NUMERO TELEFONICO NO TIENE EL FORMATO CORRECTO");
         v.addRuler("email", email_field, t -> Func.isNotNull(t) && Func.isValidEmail(t.getText()));
         v.addErrorMessage("email", "EL NUMERO TELEFONICO NO TIENE EL FORMATO CORRECTO");
@@ -485,50 +489,41 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         if (!res) {
             JOptionPane.showMessageDialog(this, v.getErrorMessage());
         }
-
-        // Guardamos el estado real en el Wrapper
-        return true;
+        return res;
     }
 
     @Override
     public UserDTO getValues(boolean update) {
+        //RECOPILACION DE DATOS
         Map<String, Object> map = new HashMap<>();
-        UserDTO dto = new UserDTO();
-
-        // Obtenemos los valores actuales de los campos de texto
+        String rfc = Formats.geDBInputFormat(rfc_field.getText());
         String curp = Formats.geDBInputFormat(curp_field.getText());
         String firstName = Formats.geDBInputFormat(first_name_field.getText());
         String lastName1 = Formats.geDBInputFormat(last_name1_field.getText());
         String lastName2 = Formats.geDBInputFormat(last_name2_field.getText());
+        String gender = String.valueOf(gender_field.getSelectedIndex());
+        String birday = birdate_field.getDate().format(DateTimeFormatter.ISO_DATE);
+        birday = Formats.geDBInputFormat(birday);
         String email = email_field.getText();
         String number_phone1 = Formats.geDBInputFormat(phone_number1_field.getText());
         String number_phone2 = Formats.geDBInputFormat(phone_number2_field.getText());
-        String gender = String.valueOf(gender_field.getSelectedIndex());
-        // --- LÓGICA PARA NUEVO REGISTRO ---
-        Func.putIfPresentAndNotBlank(map, "curp", curp);
-        Func.putIfPresentAndNotBlank(map, "first_name", firstName);
-        Func.putIfPresentAndNotBlank(map, "last_name1", lastName1);
-        Func.putIfPresentAndNotBlank(map, "last_name2", lastName2);
+        int selectedIndex = user_type_field.getSelectedIndex();
+        String user_type = user_type_field.getItemAt(selectedIndex).getId();
+
+        // --- LÓGICA PARA NUEVO REGISTRO ---//
+        Func.putIfNotNull(map, "rfc", rfc);
+        Func.putIfNotNull(map, "curp", curp);
+        Func.putIfNotNull(map, "first_name", firstName);
+        Func.putIfNotNull(map, "last_name1", lastName1);
+        Func.putIfNotNull(map, "last_name2", lastName2);
         Func.putIfNotNull(map, "gender", gender);
-        if (Func.isNotNull(email)) {
-            Func.putIfPresentAndNotBlank(map, "email", email);
-        }
-        if (Func.isNotNull(number_phone1)) {
-            Func.putIfPresentAndNotBlank(map, "number_phone1", number_phone1);
-        }
-        if (Func.isNotNull(number_phone2)) {
-            Func.putIfPresentAndNotBlank(map, "number_phone2", number_phone2);
-        }
-        dto.setMap(map);
-        return dto;
-    }
-
-    public void lock(boolean lock) {
-        if (lock) {
-
-        } else {
-
-        }
+        Func.putIfNotNull(map, "birthdate", birday);
+        Func.putIfNotNull(map, "email", email);
+        Func.putIfNotNull(map, "phone_number1", number_phone1);
+        Func.putIfNotNull(map, "phone_number2", number_phone2);
+        Func.putIfNotNull(map, "user_type", user_type);
+        //CREACION DE DTO
+        return new UserDTO(map);
     }
 
     @Override

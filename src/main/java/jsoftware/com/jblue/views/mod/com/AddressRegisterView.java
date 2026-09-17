@@ -4,11 +4,15 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
+import java.util.HashMap;
+import java.util.Map;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
 import jsoftware.com.jblue.model.dao.StreetDAO;
 import jsoftware.com.jblue.model.dto.AddressDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.abst.AbstractValidation;
+import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 
@@ -51,6 +55,7 @@ public final class AddressRegisterView extends AbstractModuleView<ProcessWrapper
             c.loadData();
         }
     }
+
     @Override
     public void events() {
     }
@@ -249,16 +254,52 @@ public final class AddressRegisterView extends AbstractModuleView<ProcessWrapper
 
     @Override
     public void getData() {
+        boolean res = isValuesOK();
+        if (!res) {
+            return;
+        }
+        ProcessWrapperDTO dto = getDtoWrapper();
+        dto.setAddress_valid(res);
+        AddressDTO address = getValues(false);
+        dto.setAddress(address);
     }
 
     @Override
     public boolean isValuesOK() {
         boolean res = true;
+        AbstractValidation v = new AbstractValidation();
+        v.addRuler("street1-not-null", street1_field,
+                t -> Func.isNotNull(t) && t.getSelectedIndex() > 0,
+                "CALLE 1 SELECCIONADO NO VALIDO");
+
+        v.addRuler("street2-not-null", street2_field,
+                t -> Func.isNotNull(t),
+                "CALL 2 SELECCIONADO NO VALIDO");
+
+        v.addRuler("observation-not-null", observation_field,
+                t -> Func.isNotNull(t),
+                "ITEM OBSERVACIONES NO VALIDO");
+
         return res;
     }
 
     @Override
     public AddressDTO getValues(boolean update) {
+        Map<String, Object> map = new HashMap<>();
+        String street1_id = street1_field.getItemAt(street1_field.getSelectedIndex()).getId();
+        String street2_id = street1_field.getItemAt(street1_field.getSelectedIndex()).getId();
+        String inside_number = inside_number_field.getText();
+        String outside_number = outside_number_field.getText();
+        String is_owner = is_owner_field.isSelected() ? "1" : "2";
+        String observation = observation_field.getText();
+
+        Func.putIfNotNull(map, "street1_id", street1_id);
+        Func.putIfNotNull(map, "street2_id", street2_id);
+        Func.putIfNotNull(map, "inside_number", inside_number);
+        Func.putIfNotNull(map, "outside_number", outside_number);
+        Func.putIfNotNull(map, "is_owner", is_owner);
+        Func.putIfNotNull(map, "observation", observation);
+
         return new AddressDTO();
     }
 

@@ -6,8 +6,8 @@ package jsoftware.com.jblue.views.mod.com;
 
 import java.util.List;
 import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
-import jsoftware.com.jblue.model.trash._PaymentListDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.trash._PaymentListDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.ShowDataModel;
@@ -73,13 +73,13 @@ public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperD
         register_panel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        concept_generate_button = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jPanel4 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        concept_generate_button = new javax.swing.JButton();
         payment_register_button = new javax.swing.JButton();
 
         setName("PAGO DE CONCEPTOS"); // NOI18N
@@ -100,7 +100,19 @@ public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperD
         jPanel2.setName("jPanel2"); // NOI18N
         jPanel2.setLayout(new java.awt.BorderLayout());
 
+        jPanel4.setName("jPanel4"); // NOI18N
+        jPanel4.setPreferredSize(new java.awt.Dimension(400, 50));
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        concept_generate_button.setText(bundle.getString("PaymentConfirmView.concept_generate_button.text")); // NOI18N
+        concept_generate_button.setActionCommand(bundle.getString("PaymentConfirmView.concept_generate_button.actionCommand")); // NOI18N
+        concept_generate_button.setName("concept_generate_button"); // NOI18N
+        jPanel4.add(concept_generate_button, java.awt.BorderLayout.LINE_START);
+
+        jPanel2.add(jPanel4, java.awt.BorderLayout.NORTH);
+
         jScrollPane1.setName("jScrollPane1"); // NOI18N
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(500, 500));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -126,36 +138,27 @@ public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperD
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel4.setName("jPanel4"); // NOI18N
-        jPanel4.setPreferredSize(new java.awt.Dimension(400, 100));
-        jPanel4.setLayout(new java.awt.BorderLayout());
+        jPanel1.setName("jPanel1"); // NOI18N
+        jPanel1.setPreferredSize(new java.awt.Dimension(30, 50));
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel3.setFont(new java.awt.Font("Noto Sans", 1, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jLabel3.setText(bundle.getString("PaymentConfirmView.jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
-        jPanel4.add(jLabel3, java.awt.BorderLayout.PAGE_START);
+        jPanel1.add(jLabel3, java.awt.BorderLayout.LINE_START);
 
-        jPanel5.setName("jPanel5"); // NOI18N
-        jPanel5.setLayout(new java.awt.GridLayout(15, 0));
-
-        jLabel5.setFont(new java.awt.Font("Noto Sans", 1, 18)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jLabel5.setText(bundle.getString("PaymentConfirmView.jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
-        jPanel5.add(jLabel5);
-
-        concept_generate_button.setText(bundle.getString("PaymentConfirmView.concept_generate_button.text")); // NOI18N
-        concept_generate_button.setActionCommand(bundle.getString("PaymentConfirmView.concept_generate_button.actionCommand")); // NOI18N
-        concept_generate_button.setName("concept_generate_button"); // NOI18N
-        jPanel5.add(concept_generate_button);
+        jPanel1.add(jLabel5, java.awt.BorderLayout.CENTER);
 
         payment_register_button.setText(bundle.getString("PaymentConfirmView.payment_register_button.text")); // NOI18N
         payment_register_button.setActionCommand(bundle.getString("PaymentConfirmView.payment_register_button.actionCommand")); // NOI18N
         payment_register_button.setName("payment_register_button"); // NOI18N
-        jPanel5.add(payment_register_button);
+        payment_register_button.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel1.add(payment_register_button, java.awt.BorderLayout.LINE_END);
 
-        jPanel4.add(jPanel5, java.awt.BorderLayout.CENTER);
-
-        jPanel2.add(jPanel4, java.awt.BorderLayout.LINE_END);
+        jPanel2.add(jPanel1, java.awt.BorderLayout.SOUTH);
 
         register_panel.add(jPanel2, java.awt.BorderLayout.CENTER);
 
@@ -167,9 +170,9 @@ public final class PaymentConfirmView extends AbstractModuleView<ProcessWrapperD
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton payment_register_button;

@@ -32,14 +32,14 @@ public abstract class ModuleWrapperDTO extends JDBMapObject {
     private AdministrationHistoryDTO current_administration;
 
     public ModuleWrapperDTO(String module_id, String module_name) {
-        this(module_id, module_name, null, null);
+        this(module_id, module_name, 0, null);
     }
 
-    public ModuleWrapperDTO(String module_id, String module_name, String transaction_type_mov) {
+    public ModuleWrapperDTO(String module_id, String module_name, int transaction_type_mov) {
         this(module_id, module_name, transaction_type_mov, null);
     }
 
-    public ModuleWrapperDTO(String module_id, String module_name, String transaction_type_mov, String observation) {
+    public ModuleWrapperDTO(String module_id, String module_name, int transaction_type_mov, String observation) {
         super(16); // Inicialización del mapa interno heredado de JDBMapObject
         this.module_id = module_id;
         this.module_name = module_name;
@@ -47,16 +47,15 @@ public abstract class ModuleWrapperDTO extends JDBMapObject {
 
         // Inicialización segura del DTO de Auditoría Maestra
         this.transaction = new TransactionHistoryDTO();
-        this.transaction.put("module_id", module_id);
-        this.transaction.put("type_mov", transaction_type_mov);
-        this.transaction.put("affected_table", "0"); // Por defecto o polimórfico inicial
-        this.transaction.put("status", "34");        // Estatus inicial [34 - EN PROCESO]
-
+        this.transaction.setModule_id(Integer.parseInt(module_id));
+        this.transaction.setType_mov(transaction_type_mov);
+        this.transaction.setAffected_table(0);
+        this.transaction.setStatus(34);
         // Corrección de lógica inversa: Si la observación viene vacía, se genera una por defecto
         if (Func.isNullEmptyBlank(observation)) {
-            this.transaction.put("observation", "REGISTRO INICIADO DESDE EL MÓDULO: " + module_name);
+            this.transaction.setObservation("REGISTRO INICIADO DESDE EL MÓDULO: " + module_name);
         } else {
-            this.transaction.put("observation", observation);
+            this.transaction.setObservation(observation);
         }
     }
 
@@ -80,7 +79,8 @@ public abstract class ModuleWrapperDTO extends JDBMapObject {
         this.current_employee = current_employee;
         if (current_employee != null) {
             // Sincronización segura y tardía una vez que el objeto existe
-            this.transaction.put("employee_id", current_employee.getId());
+            transaction.setEmployee_id(Integer.parseInt(current_employee.getId()));
+            transaction.setOffice_id(Integer.parseInt(current_employee.getOfficeId()));
         }
     }
 
@@ -132,7 +132,7 @@ public abstract class ModuleWrapperDTO extends JDBMapObject {
         sb.append("ModuleWrapperDTO{");
         sb.append("\n module_id=").append(module_id).append(", ");
         sb.append("\n module_name=").append(module_name).append(",");
-        sb.append("\n transaction=").append(Func.nullSafeToString(transaction.getMap().toString())).append(",");
+        sb.append("\n transaction=").append(transaction.toString()).append(",");
         sb.append("\n current_employee=").append(Func.nullSafeToString(current_employee.getMap().toString())).append(",");
         sb.append("\n current_administration=");
         if (current_administration == null) {

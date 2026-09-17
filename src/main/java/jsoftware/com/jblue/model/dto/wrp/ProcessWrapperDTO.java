@@ -59,7 +59,7 @@ public class ProcessWrapperDTO extends ModuleWrapperDTO {
     private WaterIntakeUserDTO wki_user;
     private boolean wki_user_valid;
 
-    public ProcessWrapperDTO(String module_id, String module_name, String transaction_type_mov, String observation) {
+    public ProcessWrapperDTO(String module_id, String module_name, int transaction_type_mov, String observation) {
         super(module_id, module_name, transaction_type_mov, observation);
         this.clear();
     }

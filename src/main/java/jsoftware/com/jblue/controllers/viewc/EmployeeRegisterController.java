@@ -28,7 +28,7 @@ public class EmployeeRegisterController extends AbstractDBViewController<Employe
     private EmployeeRegisterService service;
 
     public EmployeeRegisterController(boolean flag_dev, String module_name) {
-        this.service = new EmployeeRegisterService(false, module_name);
+        this.service = new EmployeeRegisterService(flag_dev, module_name);
     }
 
     @Override
@@ -46,15 +46,9 @@ public class EmployeeRegisterController extends AbstractDBViewController<Employe
         boolean res = false;
         try (JDBConnection c = ConnectionFactory.getIntance().getMainConnection()) {
             SystemSession ss = SystemSession.getInstancia();
-            if (ss.isLock(c)) {
-                returnMessage(view, false, "LA SESION HA CADUCADO, CIERRE EL PROGRAMA Y VUELVA A INTENTAR");
-            }
-//            if (!ss.isAdministrationValid()) {
-//                returnMessage(view, false, "LA ADMINISTRACION ACTUAL NO SE HA REGISTRADO O NO ES VALIDA");
-//                return;
-//            }
+            ss.systemValid(c);
             view.beforeSaveData();
-            res = service.insert(c, view.getDtoWrapper());
+            res = service.insert(c, ss, view.getDtoWrapper());
             if (service.isError()) {
                 returnMessage(view, service.getUserMessage());
             }

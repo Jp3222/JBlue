@@ -94,9 +94,10 @@ public class LoginController extends WindowController {
                 return;
             }
             SystemSession.getInstancia().setCurrent_instance(instance);
-            boolean res = service.login(c, view.getUserString(), view.getPasswordString());
+            SystemSession ss = SystemSession.getInstancia();
+            boolean res = service.login(c, ss, view.getUserString(), view.getPasswordString());
 
-            if (!res) {
+            if (!res || service.isError()) {
                 // JOptionPane.showMessageDialog(view, service.getUserMessage() + ":" +
                 // service.getUserMessage());
                 returnMessage(view, "[" + service.getErrorCode() + "] " + service.getUserMessage());

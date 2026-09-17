@@ -11,7 +11,7 @@ import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.HistoryDTO;
 import jsoftware.com.jblue.model.exp.ServiceException;
-import jsoftware.com.jblue.model.models.AbstractService;
+import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
@@ -19,12 +19,12 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  *
  * @author juanp
  */
-public class HistoryService extends AbstractService {
+public class HistoryService2 extends AbstractService {
 
     private static final long serialVersionUID = 1L;
     private HistoryDAO history_dao;
 
-    public HistoryService(boolean dev_flag, String process_name) {
+    public HistoryService2(boolean dev_flag, String process_name) {
         super(dev_flag, process_name);
         history_dao = HistoryDAO.getNewInstance(dev_flag, user_message);
     }

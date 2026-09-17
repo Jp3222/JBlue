@@ -2,9 +2,9 @@ package jsoftware.com.jblue.model.service;
 
 import java.sql.SQLException;
 import jsoftware.com.jblue.model.dao.TransactionHistoryDAO;
-import jsoftware.com.jblue.model.dto.TransactionHistoryDTO;
+import jsoftware.com.jblue.model.dto.TransactionHistoryDTO2;
 import jsoftware.com.jblue.model.exp.DataAccesObjectException;
-import jsoftware.com.jblue.model.models.AbstractService;
+import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.db.JDBConnection;
 
@@ -18,12 +18,12 @@ import jsoftware.com.jutil.db.JDBConnection;
  * @since 2026-06-07
  * @version 1.1
  */
-public class TransactionHistoryService extends AbstractService {
+public class TransactionHistoryService2 extends AbstractService {
 
     private static final long serialVersionUID = 1L;
     private final TransactionHistoryDAO dao;
 
-    public TransactionHistoryService(boolean dev_flag, String process_name) {
+    public TransactionHistoryService2(boolean dev_flag, String process_name) {
         super(dev_flag, process_name);
         this.dao = new TransactionHistoryDAO(dev_flag, process_name);
     }
@@ -38,7 +38,7 @@ public class TransactionHistoryService extends AbstractService {
      * @return El ID autogenerado asignado por MySQL, o -1 si ocurre un fallo de
      * validación o persistencia.
      */
-    public int insert(JDBConnection connection, TransactionHistoryDTO dto) {
+    public int insert(JDBConnection connection, TransactionHistoryDTO2 dto) {
         // 1. Filtros Defensivos Iniciales con Retorno Inmediato
         if (Func.isNull(connection) || connection.isClose()) {
             returnMessageError("ERROR DE CONEXIÓN O RED: La conexión no está activa.");
@@ -97,7 +97,7 @@ public class TransactionHistoryService extends AbstractService {
         return generatedId;
     }
 
-    public boolean updateStatusOk(JDBConnection connection, TransactionHistoryDTO dto) {
+    public boolean updateStatusOk(JDBConnection connection, TransactionHistoryDTO2 dto) {
         boolean res = false;
         connection.setAutoCommit(false);
         try {

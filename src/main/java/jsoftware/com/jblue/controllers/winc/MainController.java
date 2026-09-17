@@ -21,9 +21,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import jsoftware.com.jblue.model.exp.imp.CorruptUpdateException;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.service.LoginService;
+import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.win.LoginWindows;
 import jsoftware.com.jblue.views.win.WMainMenu;
@@ -95,11 +95,12 @@ public class MainController extends WindowController {
     @Override
     public void windowClosed(WindowEvent we) {
         try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
-            boolean logout = service.logout(connection);
+            SystemSession ss = SystemSession.getInstancia();
+            boolean logout = service.logout(connection, ss);
             if (logout) {
                 login.setVisible(true);
             }
-        } catch (SQLException | CorruptUpdateException ex) {
+        } catch (SQLException ex) {
             log(ex, "windowClosed");
         }
     }

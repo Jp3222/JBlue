@@ -11,7 +11,7 @@ import jsoftware.com.jblue.model.dao.StatusDAO;
 import jsoftware.com.jblue.model.dao.StreetDAO;
 import jsoftware.com.jblue.model.dto.StatusDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
-import jsoftware.com.jblue.model.models.AbstractService;
+import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**

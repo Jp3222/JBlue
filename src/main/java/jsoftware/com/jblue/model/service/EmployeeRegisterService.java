@@ -1,16 +1,14 @@
 package jsoftware.com.jblue.model.service;
 
 import java.sql.SQLException;
-import jsoftware.com.jblue.model.constants.Const;
-import jsoftware.com.jblue.model.dao.HistoryDAO;
+import jsoftware.com.jblue.model.dto.EmployeeDTO;
+import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
+import jsoftware.com.jblue.model.dto.TransactionHistoryDTO;
 import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
-import jsoftware.com.jblue.model.exp.DataAccesObjectException;
 import jsoftware.com.jblue.model.exp.ServiceException;
-import jsoftware.com.jblue.model.models.AbstractService;
-import jsoftware.com.jblue.sys.app.AppConfig;
-import jsoftware.com.jblue.sys.app.AppFiles;
+import jsoftware.com.jblue.model.abst.AbstractService;
+import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.util.FuncLogs;
 
 /**
  * Servicio maestro encargado de coordinar el caso de uso compuesto: Registro de
@@ -19,7 +17,7 @@ import jsoftware.com.jutil.util.FuncLogs;
  *
  * @author JUAN PABLO CAMPOS CASASANERO
  * @since 2026-04-22
- * @version 1.7
+ * @version 1.9
  */
 public class EmployeeRegisterService extends AbstractService {
 
@@ -27,114 +25,84 @@ public class EmployeeRegisterService extends AbstractService {
 
     private final EmployeeService employee;
     private final EmployeeUserService user;
-    private final HistoryDAO hys;
     private final TransactionHistoryService transaction;
 
     public EmployeeRegisterService(boolean dev_flag, String process_name) {
         super(dev_flag, process_name);
         this.employee = new EmployeeService(dev_flag, process_name);
         this.user = new EmployeeUserService(dev_flag, process_name);
-        this.hys = HistoryDAO.getInstance();
         this.transaction = new TransactionHistoryService(dev_flag, process_name);
     }
 
-    public boolean insert(JDBConnection connection, EmployeeRegisterWrapperDTO dto) {
-        // Corrección: Inicialización por defecto para evitar errores de compilación al testear la interfaz
-        boolean commitSuccess = false;
-        try {
-            /**
-             * SE VERIFICA SI EL PROGRAMA ESTA EN SOLO LECTURA
-             */
-            //SI EL SISTEMA ESTA EN SOLO LECTURA NO REALIZA REGISTRO ALGUNO
-            if (AppConfig.getParameterBoolean(connection, "SOLO_LECTURA")) {
-                returnMessageError("EL SISTEMA ESTA EN MODO LECTURA");
-                return false;
-            }
-        } catch (SQLException ex) {
-            returnMessageError(ex.getErrorCode(), ex.getMessage());
-            return false;
-        }
-        // PASO 1: REGISTRO EN HISTORIAL DE TRANSACCIONES
-        int transaction_id = transaction.insert(connection, dto.getTransaction());
-        if (transaction_id <= 0) {
-            returnMessageError(-1, "LA OPERACION NO SE PUDO REGISTRAR EN BITACORA MAESTRA");
-            return false;
+    public boolean insert(JDBConnection connection, SystemSession ss, EmployeeRegisterWrapperDTO dto) {
+        if (connection == null || ss == null || dto == null) {
+            return returnMessageError("PARÁMETROS DE ENTRADA INVÁLIDOS");
         }
 
+        TransactionHistoryDTO transaction_dto = dto.getTransaction();
+        boolean res = false;
+
+        // [1] REGISTRO DE TRANSACCIÓN INICIAL (Status 34: Incompleto / En proceso)
+        // Se ejecuta fuera del bloque transaccional principal para asegurar la persistencia de la auditoría
         try {
+            res = transaction.insert(connection, ss, transaction_dto);
+            if (!res) {
+                return returnMessageError("TRANSACCIÓN FALLIDA: NO SE PUDO REGISTRAR LA BITÁCORA INICIAL");
+            }
+        } catch (SQLException | ServiceException e) {
+            return returnMessageError("ERROR AL INICIAR BITÁCORA DE TRANSACCIÓN: " + e.getMessage());
+        }
+
+        // BLOQUE TRANSACCIONAL PRINCIPAL (Empleado + Usuario + Confirmación de Estado)
+        try {
+            // [2] Iniciar bloque atómico
             connection.setAutoCommit(false);
-            //PASO 2: REGISTRO DE INICIO DE UNA TRANSACCION
-            int start_id = hys.startTransactionReturn(connection, Const.INDEX_HYS_PROGRAM_HISTORY, "INICIO DE UNA TRANSACCION - EMP");
-            if (start_id <= 0) {
-                throw new ServiceException(1, "REGISTRO EN BITACORA CORRUPTO - START_TRANSACTION");
-            }
-            //PASO 2.1: RECUPERACION DE ID - INICIO DE LA TRANSACCION
-            dto.getTransaction().put("hys_start_id", String.valueOf(start_id));
 
-            dto.getEmployee().put("last_employee_update", session.getCurrentEmployee().getId());
-            dto.getEmployee().put("committee_id", session.getCurrent_instance().getCommitteeId());
-            //PASO 3: REGISTRO DE DATOS DEL EMPLEADO
-            int employee_id = employee.insert(connection, dto.getEmployee());
-            if (employee.isError()) {
-                throw new ServiceException(employee.getErrorCode(), employee.getUserMessage());
+            String final_employee = ss.getCurrentEmployee().getOfficeId();
+            String final_office = ss.getCurrent_instance().getOfficeId();
+            String final_committee = ss.getCurrent_instance().getCommitteeId();
+
+            // [3] Registro de Empleado
+            EmployeeDTO emp = dto.getEmployee();
+            emp.put("committee_id", final_committee);
+            emp.put("last_employee_update", final_employee);
+
+            res = employee.insert(connection, ss, emp);
+            if (!res || employee.isError()) {
+                rollback(connection);
+                return returnMessageError(employee.getUserMessage());
             }
 
-            //PASO 3.1: RECOPILACION DE DATOS
-            dto.getEmployee_user().put("employee_id", String.valueOf(employee_id));
-            dto.getEmployee_user().put("office_id", session.getCurrent_instance().getOfficeId());
-            dto.getEmployee_user().put("description", dto.getEmployee().toString());
-            dto.getEmployee_user().put("last_employee_update", session.getCurrentEmployee().getId());
+            // [4] Registro de Usuario asociado al Empleado
+            EmployeeUserDTO usr = dto.getEmployee_user();
+            usr.put("employee_id", emp.getId());
+            usr.put("office_id", final_office);
+            usr.put("description", emp.toString());
+            usr.put("last_employee_update", final_employee);
 
-            //PASO 4: REGISTRO DE DATOS EN EL PADRON DE EMPLEADOS
-            int user_id = user.insert(connection, dto.getEmployee_user());
-            if (user.isError()) {
-                throw new ServiceException(user.getErrorCode(), user.getUserMessage());
+            res = user.insert(connection, ss, usr);
+            if (!res || user.isError()) {
+                rollback(connection);
+                return returnMessageError(user.getUserMessage());
             }
-            //PASO 4.1 RECUPERACION DEL ID DE LA ENTIDAD GENERADA
-            dto.getTransaction().put("enty_id", String.valueOf(user_id));
 
-            // PASO 5: REGISTRO DEL FIN DE LA TRANSACCION
-            int end_id = hys.endTransactionReturn(connection, Const.INDEX_HYS_PROGRAM_HISTORY, "FIN DE UNA TRANSACCION - EMP");
-            if (end_id <= 0) {
-                throw new ServiceException(2, "REGISTRO EN BITACORA CORRUPTO - END_TRANSACTION");
+            // [5] Actualización del estado de la transacción a Status 1 (Activo / Exitoso)
+            // Se realiza dentro del bloque atómico antes del commit definitivo
+            res = transaction.update(connection, ss, transaction_dto);
+            if (!res) {
+                rollback(connection);
+                return returnMessageError("TRANSACCIÓN FALLIDA AL CONFIRMAR ESTADO DE AUDITORÍA");
             }
-            //PASO 5.1: RECUPERACION DE ID - FIN DE LA TRANSACCION
-            dto.getTransaction().put("hys_end_id", String.valueOf(end_id));
 
-            //PASO 6 SI NO HUBO ERRORES SE CONFIRMA LA TRANSACCION
-            connection.commit();
-            commitSuccess = true;
-            if (false) {
-                System.out.println(dto.toString());
-            }
-        } catch (SQLException e) {
+            // [6] Confirmar cambios completos de Empleado, Usuario y Estado de Transacción
+            commit(connection);
+            return returnMessageError(SERVICE_EXECUTE_OK, "OPERACIÓN EXITOSA");
+
+        } catch (SQLException | ServiceException e) {
             rollback(connection);
-            log(e, "insert");
-            returnMessageError(e.getErrorCode(), e.getMessage());
-        } catch (ServiceException | DataAccesObjectException e) {
-            rollback(connection);
-            returnMessageError(e.getErrorCode(), e.getMessage());
+            return returnMessageError("ERROR DE SISTEMA: " + e.getMessage());
         } finally {
             connection.setAutoCommit(true);
         }
-
-        // Cortamos de inmediato si la transacción base falló
-        if (!commitSuccess) {
-            return false;
-        }
-        // Paso 8: Actualización del estado macro a OK en la auditoría
-        boolean updateOk = transaction.updateStatusOk(connection, dto.getTransaction());
-
-        // Si la auditoría macro falla, lo mandamos a los logs físicos a disco
-        if (!updateOk || transaction.isError()) {
-            FuncLogs.logError(
-                    AppFiles.DIR_PROG_LOG_TODAY,
-                    dto.getModule_name(),
-                    "[%s - WARN]: No se pudo actualizar el estado macro a OK en la auditoría: %s"
-                            .formatted(getProcess_name(), transaction.getUserMessage())
-            );
-        }
-
-        return commitSuccess;
     }
 }

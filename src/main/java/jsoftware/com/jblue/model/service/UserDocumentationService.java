@@ -6,7 +6,7 @@ import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.UserDocumentationDAO;
 import jsoftware.com.jblue.model.dto.UserDocumentationDTO;
 import jsoftware.com.jblue.model.exp.DataAccesObjectException;
-import jsoftware.com.jblue.model.models.AbstractService;
+import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**

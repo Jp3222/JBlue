@@ -11,7 +11,7 @@ import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dto.BlockedUserDTO;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
 import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
-import jsoftware.com.jblue.model.models.AbstractService;
+import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**

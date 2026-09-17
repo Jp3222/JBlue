@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.ProcessDAO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
-import jsoftware.com.jblue.model.models.AbstractService;
+import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jpaymentlib.model.dao.PaymentDetailDAO;
 import jsoftware.com.jpaymentlib.model.dao.PaymentHeaderDAO;
 import jsoftware.com.jutil.db.JDBConnection;

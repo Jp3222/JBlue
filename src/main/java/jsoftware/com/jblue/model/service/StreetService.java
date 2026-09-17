@@ -12,7 +12,7 @@ import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.wrp.StreetWrapperDTO;
 import jsoftware.com.jblue.model.exp.DataAccesObjectException;
 import jsoftware.com.jblue.model.exp.imp.CorruptUpdateException;
-import jsoftware.com.jblue.model.models.AbstractService;
+import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jutil.db.JDBConnection;
 

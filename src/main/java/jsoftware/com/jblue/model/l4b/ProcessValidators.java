@@ -5,7 +5,7 @@
 package jsoftware.com.jblue.model.l4b;
 
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
-import jsoftware.com.jblue.model.models.AbstractValidation;
+import jsoftware.com.jblue.model.abst.AbstractValidation;
 import jsoftware.com.jblue.util.Func;
 
 /**

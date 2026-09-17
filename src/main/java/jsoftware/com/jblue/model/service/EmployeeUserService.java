@@ -4,16 +4,18 @@
  */
 package jsoftware.com.jblue.model.service;
 
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import jsoftware.com.jblue.model.cryp.BCryptCrypto;
-import jsoftware.com.jblue.model.crypto.DeterministicCrypto;
+import jsoftware.com.jblue.model.cryp.DeterministicCrypto;
 import jsoftware.com.jblue.model.dao.EmployeeUserDAO;
-import jsoftware.com.jblue.model.dao.HistoryDAO.EmployeeUserHistoryDAO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
+import jsoftware.com.jblue.model.dto.ProgramHistoryDTO;
 import jsoftware.com.jblue.model.exp.ServiceException;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
 import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
-import jsoftware.com.jblue.model.models.AbstractService;
+import jsoftware.com.jblue.model.abst.AbstractService;
+import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**
@@ -30,7 +32,8 @@ public class EmployeeUserService extends AbstractService {
     private static final long serialVersionUID = 1L;
 
     private EmployeeUserDAO dao;
-    private EmployeeUserHistoryDAO hys;
+    //private EmployeeUserHistoryDAO hys;
+    private HistoryService history;
 
     // Frase semilla del sistema para el cifrado determinista del usuario
     private static final String SYSTEM_PEPPER = "JBl_u3#Pozo$2026_MasterKey";
@@ -39,10 +42,10 @@ public class EmployeeUserService extends AbstractService {
         super(dev_flag, process_name);
         // Se asume que adaptaste el constructor de tu DAO o pasas las banderas correspondientes
         dao = new EmployeeUserDAO(dev_flag, user_message);
-        hys = EmployeeUserHistoryDAO.getInstance();
+        //hys = EmployeeUserHistoryDAO.getInstance();
     }
 
-    public int insert(JDBConnection connection, EmployeeUserDTO dto) {
+    public boolean insert(JDBConnection connection, SystemSession ss, EmployeeUserDTO dto) {
         int pk = 0;
         boolean res = false;
         try {
@@ -52,7 +55,7 @@ public class EmployeeUserService extends AbstractService {
             String rawPassword = dto.getPassword();
 
             if (rawUser == null || rawPassword == null) {
-                throw new ServiceException(400, "EL USUARIO Y LA CONTRASEÑA SON REQUERIDOS EN EL DTO");
+                return returnMessageError(400, "EL USUARIO Y LA CONTRASEÑA SON REQUERIDOS EN EL DTO");
             }
 
             // 3. Procesamos criptográficamente las credenciales
@@ -70,26 +73,20 @@ public class EmployeeUserService extends AbstractService {
             if (!res) {
                 throw new ServiceException(1, "LOS DATOS DEL USUARIO NO SE HAN REGISTRADO CORRECTAMENTE");
             }
-
-            // 6. REGISTRO EN BITACORA MACRO (Formateando el log de auditoría con los datos limpios)
-            String logDescription = "SE REGISTRO EN EL PADRON DE EMPLEADOS: %s - ID: %d"
-                    .formatted(rawUser, pk); // Guardamos el rastro con el usuario legible para auditoría humana interna
-
-            res = hys.insert(connection, logDescription);
+            ProgramHistoryDTO hys = ss.getProgramHistoryDTO(51, pk);
+            hys.setDescription("REGISTRO DEL USUARIO: " + dto.getId() + " - " + dto.getDescription());
+            res = history.insert(connection, ss, hys);
             if (!res) {
-                throw new ServiceException(2, "REGISTRO EN BITACORA CORRUPTO");
+                returnMessageError(1, "REGISTRO EN BITACORA CORRUPTO");
             }
-
-            if (isDev_flag()) {
-                System.out.println("[%s - SUCCESS]: Usuario registrado con éxito. Generó PK: %d"
-                        .formatted(getProcess_name(), pk));
-            }
+            return returnMessageError(SERVICE_EXECUTE_OK, "OPERACION EXITOSA");
         } catch (SQLException ex) {
-            returnMessageError(ex.getErrorCode(), ex.getMessage());
+            res = returnMessageError(ex.getErrorCode(), ex.getMessage());
         } catch (ServiceException | CorruptInsertionException | KeyNotGenerateException ex) {
-            // Unificamos el manejo de errores gracias a las excepciones controladas de JBlue
-            returnMessageError(ex.getErrorCode(), ex.getUserMessage());
+            res = returnMessageError(ex.getErrorCode(), ex.getUserMessage());
+        } catch (UnknownHostException ex) {
+            res = returnMessageError(ex.getMessage());
         }
-        return pk;
+        return res;
     }
 }

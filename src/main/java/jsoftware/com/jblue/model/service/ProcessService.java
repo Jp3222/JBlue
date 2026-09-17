@@ -17,7 +17,7 @@ import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.exp.DataAccesObjectException;
 import jsoftware.com.jblue.model.exp.ProcessException;
-import jsoftware.com.jblue.model.models.AbstractService;
+import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jpaymentlib.model.dto.PaymentDTO;
@@ -71,7 +71,8 @@ public class ProcessService extends AbstractService implements Serializable {
     public boolean start(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) {
         boolean res = false;
         try {
-            if (dto.getProcess().getStatus().equals("10")) {
+            ProcessDTO process = dto.getProcess();
+            if (process.getStatus().equals("10")) {
                 return true;
             }
             String final_office = ss.getCurrent_instance().getOfficeId();
@@ -82,17 +83,16 @@ public class ProcessService extends AbstractService implements Serializable {
             if (Func.isNullEmptyBlank(sequence)) {
                 return returnMessageError("NO SE PUDO GENERAR EL FOLIO DEL TRAMITE");
             }
-            dto.getProcess().put("sequence_process", sequence);
-            dto.getProcess().put("employee_start", final_employee);
-            dto.getProcess().put("administration_start", final_admin);
-            dto.getProcess().put("status", "10");
-            dto.getProcess().put("last_employee_update", final_employee);
+            process.put("sequence_process", sequence);
+            process.put("employee_start", final_employee);
+            process.put("administration_start", final_admin);
+            process.put("status", "10");
+            process.put("last_employee_update", final_employee);
             //[2] SE REGISTRA EL INICIO DEL TRAMITE
             res = dao.startProcess(connection, dto.getProcess());
             if (!res) {
                 return returnMessageError("REGISTRO EN BITACORA CORRUPTO - TRAMITE");
             }
-            ProcessDTO process = dto.getProcess();
             ProcessWaterIntakeUserDTO pwki = dto.getProcess_water_intake_user();
             pwki.put("process_id", process.getId());
             pwki.put("sequence", sequence);
@@ -421,17 +421,18 @@ public class ProcessService extends AbstractService implements Serializable {
         return exist;
     }
 
-    public boolean exists(JDBConnection c, ProcessDTO process, String status) {
+    public boolean search(JDBConnection c, ProcessDTO process, String current_status_method) {
         boolean exist = false;
         try {
-            String old_status = status;
             exist = dao.exist(c, process);
             if (!exist) {
                 return false;
             }
-            if (old_status.equals(process.getStatus())) {
-
+            boolean valid_status = Func.isNotNull(process.getStatus());
+            if (!valid_status) {
+                return returnMessageError("EL TRAMITE NO TIENE UN STATUS VALIDO");
             }
+
         } catch (SQLException ex) {
             return returnMessageError(ex.getErrorCode(), ex.getMessage());
         }

@@ -4,7 +4,7 @@
  */
 package jsoftware.com.jblue.model.service;
 
-import jsoftware.com.jblue.model.models.AbstractService;
+import jsoftware.com.jblue.model.abst.AbstractService;
 
 /**
  *

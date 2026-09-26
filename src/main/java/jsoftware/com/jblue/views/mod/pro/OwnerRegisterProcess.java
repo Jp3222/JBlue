@@ -41,8 +41,8 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
 
     private static final long serialVersionUID = 1L;
 
-    private final UserRegisterView step1;
-    private final AddressRegisterView step2;
+    private final UserRegisterView<ProcessWrapperDTO> step1;
+    private final AddressRegisterView<ProcessWrapperDTO> step2;
     private final UserDocumentValidationView step3;
     private final WaterIntakeRegisterView step4;
     private final PaymentConfirmView step5;
@@ -50,8 +50,8 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
 
     public OwnerRegisterProcess(ProcessWrapperDTO dto) {
         super(dto);
-        step1 = new UserRegisterView(dto);
-        step2 = new AddressRegisterView(dto);
+        step1 = UserRegisterView.getInstance(dto);
+        step2 = AddressRegisterView.getInstance(dto);
         step3 = new UserDocumentValidationView(dto);
         step4 = new WaterIntakeRegisterView(dto);
         step5 = new PaymentConfirmView(dto);

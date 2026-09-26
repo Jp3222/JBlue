@@ -33,80 +33,12 @@ public class OwnerChangerProcessView extends AbstractProcessView<UserDTO> {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        north_panel = new javax.swing.JPanel();
-        np_cp_center = new javax.swing.JPanel();
-        last_panel_button = new javax.swing.JButton();
-        next_panel_button = new javax.swing.JButton();
-        np_cp_west = new javax.swing.JPanel();
-        search_object = new javax.swing.JButton();
-        np_cp_east = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        root_panel = new javax.swing.JPanel();
-
         setMinimumSize(new java.awt.Dimension(900, 700));
         setName("CAMBIO DE TITULAR"); // NOI18N
         setLayout(new java.awt.BorderLayout());
-
-        north_panel.setName("north_panel"); // NOI18N
-        north_panel.setPreferredSize(new java.awt.Dimension(900, 30));
-        north_panel.setLayout(new java.awt.BorderLayout(10, 10));
-
-        np_cp_center.setName("np_cp_center"); // NOI18N
-        np_cp_center.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
-
-        last_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/pro/Bundle"); // NOI18N
-        last_panel_button.setText(bundle.getString("OwnerChangerProcessView.last_panel_button.text")); // NOI18N
-        last_panel_button.setActionCommand(bundle.getString("OwnerChangerProcessView.last_panel_button.actionCommand")); // NOI18N
-        last_panel_button.setName("last_panel_button"); // NOI18N
-        np_cp_center.add(last_panel_button);
-
-        next_panel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        next_panel_button.setText(bundle.getString("OwnerChangerProcessView.next_panel_button.text")); // NOI18N
-        next_panel_button.setActionCommand(bundle.getString("OwnerChangerProcessView.next_panel_button.actionCommand")); // NOI18N
-        next_panel_button.setName("next_panel_button"); // NOI18N
-        np_cp_center.add(next_panel_button);
-
-        north_panel.add(np_cp_center, java.awt.BorderLayout.CENTER);
-
-        np_cp_west.setName("np_cp_west"); // NOI18N
-        np_cp_west.setPreferredSize(new java.awt.Dimension(100, 30));
-        np_cp_west.setLayout(new java.awt.BorderLayout());
-
-        search_object.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        search_object.setActionCommand(bundle.getString("OwnerChangerProcessView.search_object.actionCommand")); // NOI18N
-        search_object.setName("search_object"); // NOI18N
-        np_cp_west.add(search_object, java.awt.BorderLayout.CENTER);
-
-        north_panel.add(np_cp_west, java.awt.BorderLayout.WEST);
-
-        np_cp_east.setName("np_cp_east"); // NOI18N
-        np_cp_east.setPreferredSize(new java.awt.Dimension(100, 30));
-        np_cp_east.setLayout(new java.awt.BorderLayout());
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/configuraciones.png"))); // NOI18N
-        jButton3.setName("jButton3"); // NOI18N
-        np_cp_east.add(jButton3, java.awt.BorderLayout.CENTER);
-
-        north_panel.add(np_cp_east, java.awt.BorderLayout.EAST);
-
-        add(north_panel, java.awt.BorderLayout.NORTH);
-
-        root_panel.setName("root_panel"); // NOI18N
-        root_panel.setLayout(new java.awt.CardLayout());
-        add(root_panel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton last_panel_button;
-    private javax.swing.JButton next_panel_button;
-    private javax.swing.JPanel north_panel;
-    private javax.swing.JPanel np_cp_center;
-    private javax.swing.JPanel np_cp_east;
-    private javax.swing.JPanel np_cp_west;
-    private javax.swing.JPanel root_panel;
-    private javax.swing.JButton search_object;
     // End of variables declaration//GEN-END:variables
 
     @Override

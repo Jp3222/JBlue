@@ -10,16 +10,20 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
+import jsoftware.com.jblue.controllers.viewc.UserController;
+import jsoftware.com.jblue.model.abst.AbstractValidation;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserTypeDTO;
+import jsoftware.com.jblue.model.dto.wrp.ModuleWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
+import jsoftware.com.jblue.model.dto.wrp.UserRegisterWrapperDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
-import jsoftware.com.jblue.model.abst.AbstractValidation;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
+import jsoftware.com.jblue.views.framework.FormModel;
 import jsoftware.com.jblue.views.framework.ShowDataModel;
 import jsoftware.com.jblue.views.framework.WizardModel;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -28,15 +32,23 @@ import jsoftware.com.jutil.db.JDBConnection;
  *
  * @author juanp
  */
-public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<UserDTO>, ShowDataModel {
+public final class UserRegisterView<T extends ModuleWrapperDTO> extends AbstractModuleView<T> implements DBObjectValues<UserDTO>, ShowDataModel {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Creates new form UserDataView
-     */
-    public UserRegisterView(ProcessWrapperDTO dto) {
-        super(dto);
+    public static UserRegisterView<ProcessWrapperDTO> getInstance(ProcessWrapperDTO dto_wrapper) {
+        return new UserRegisterView<>(1, dto_wrapper);
+    }
+
+    public static UserRegisterView<UserRegisterWrapperDTO> getInstance(UserRegisterWrapperDTO dto_wrapper) {
+        return new UserRegisterView<>(2, dto_wrapper);
+    }
+
+    private int instance;
+
+    private UserRegisterView(int instance, T dto_wrapper) {
+        super(dto_wrapper);
+        this.instance = instance;
         initComponents();
         build();
     }
@@ -51,9 +63,20 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
 
     @Override
     public void components() {
-        OwnerRegisterProcessController owner_controller = (OwnerRegisterProcessController) getDtoWrapper().getController(WizardModel.MAIN_CONTROLLER);
-        if (Func.isNotNull(owner_controller)) {
-            search_user_button.addActionListener(owner_controller);
+        switch (instance) {
+            case 1:
+                OwnerRegisterProcessController owner_controller = (OwnerRegisterProcessController) getDtoWrapper().getController(WizardModel.MAIN_CONTROLLER);
+                if (Func.isNotNull(owner_controller)) {
+                    search_user_button.addActionListener(owner_controller);
+                }
+                break;
+            case 2:
+                UserController user_controller = (UserController) getDtoWrapper().getController(FormModel.MAIN_CONTROLLER);
+                if (Func.isNotNull(user_controller)) {
+                    search_user_button.addActionListener(user_controller);
+                }
+
+                break;
         }
     }
 
@@ -108,8 +131,10 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
 
     @Override
     public void finalState() {
-        //ESTE CAMPO SERA VISIBLE SI SE TRATA DE REGISTRAR OTRO TIPO DE USUARIO QUE NO SEA CONSUMIDOR
-        p_user_type.setVisible(!getDtoWrapper().getProcess().getProcessType().equals("1"));
+        if (getDtoWrapper() instanceof ProcessWrapperDTO dto) {
+            //ESTE CAMPO SERA VISIBLE SI SE TRATA DE REGISTRAR OTRO TIPO DE USUARIO QUE NO SEA CONSUMIDOR
+            p_user_type.setVisible(!dto.getProcess().getProcessType().equals("1"));
+        }
     }
 
     /**
@@ -455,13 +480,13 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
         if (!res) {
             return;
         }
-        //SI LO SON
-        ProcessWrapperDTO wp = getDtoWrapper();
-        //SE MARCAN COMO VALIDOS
-        wp.setUser_valid(res);
-        //SE GUARDA EL USUARIO
-        UserDTO values = getValues(false);
-        wp.getUser().setMap(values.getMap());
+        if (getDtoWrapper() instanceof ProcessWrapperDTO dto) {
+            //SE MARCAN COMO VALIDOS
+            dto.setUser_valid(res);
+            //SE GUARDA EL USUARIO
+            UserDTO values = getValues(false);
+            dto.getUser().setMap(values.getMap());
+        }
 
     }
 
@@ -528,8 +553,23 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
 
     @Override
     public void showData() {
-        ProcessWrapperDTO dto = getDtoWrapper();
-        if (dto.isUser_exists()) {
+        if (getDtoWrapper() instanceof ProcessWrapperDTO dto) {
+            if (dto.isUser_exists()) {
+                UserDTO user = dto.getUser();
+                rfc_field.setText(user.getRfc());
+                first_name_field.setText(user.getFirstName());
+                last_name1_field.setText(user.getLastName1());
+                last_name2_field.setText(user.getLastName2());
+                gender_field.setSelectedIndex(Integer.parseInt(user.getGender()));
+                birdate_field.setDate(Formats.getLocalDate(user.getBirthdate()));
+                phone_number1_field.setText(user.getPhoneNumber1());
+                phone_number2_field.setText(user.getPhoneNumber2());
+                email_field.setText(user.getEmail());
+            } else {
+                unlock();
+            }
+        }
+        if (getDtoWrapper() instanceof UserRegisterWrapperDTO dto) {
             UserDTO user = dto.getUser();
             rfc_field.setText(user.getRfc());
             first_name_field.setText(user.getFirstName());
@@ -544,4 +584,5 @@ public final class UserRegisterView extends AbstractModuleView<ProcessWrapperDTO
             unlock();
         }
     }
+
 }

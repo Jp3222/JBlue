@@ -7,11 +7,13 @@ package jsoftware.com.jblue.views.mod.com;
 import java.util.HashMap;
 import java.util.Map;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
+import jsoftware.com.jblue.model.abst.AbstractValidation;
 import jsoftware.com.jblue.model.dao.StreetDAO;
 import jsoftware.com.jblue.model.dto.AddressDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
+import jsoftware.com.jblue.model.dto.wrp.ModuleWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
-import jsoftware.com.jblue.model.abst.AbstractValidation;
+import jsoftware.com.jblue.model.dto.wrp.UserRegisterWrapperDTO;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
@@ -20,14 +22,21 @@ import jsoftware.com.jblue.views.framework.DBObjectValues;
  *
  * @author juanp
  */
-public final class AddressRegisterView extends AbstractModuleView<ProcessWrapperDTO> implements DBObjectValues<AddressDTO> {
+public final class AddressRegisterView<T extends ModuleWrapperDTO> extends AbstractModuleView<T> implements DBObjectValues<AddressDTO> {
 
+    public static AddressRegisterView<ProcessWrapperDTO> getInstance(ProcessWrapperDTO dto) {
+        return new AddressRegisterView<>(dto);
+    }
+
+    public static AddressRegisterView<UserRegisterWrapperDTO> getInstance(UserRegisterWrapperDTO dto) {
+        return new AddressRegisterView<>(dto);
+    }
     private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form StreetRegisterView
      */
-    public AddressRegisterView(ProcessWrapperDTO dto) {
+    public AddressRegisterView(T dto) {
         super(dto);
         initComponents();
         build();
@@ -258,10 +267,11 @@ public final class AddressRegisterView extends AbstractModuleView<ProcessWrapper
         if (!res) {
             return;
         }
-        ProcessWrapperDTO dto = getDtoWrapper();
-        dto.setAddress_valid(res);
-        AddressDTO address = getValues(false);
-        dto.setAddress(address);
+        if (getDtoWrapper() instanceof ProcessWrapperDTO dto) {
+            dto.setAddress_valid(res);
+            AddressDTO address = getValues(false);
+            dto.setAddress(address);
+        }
     }
 
     @Override
@@ -292,14 +302,12 @@ public final class AddressRegisterView extends AbstractModuleView<ProcessWrapper
         String outside_number = outside_number_field.getText();
         String is_owner = is_owner_field.isSelected() ? "1" : "2";
         String observation = observation_field.getText();
-
         Func.putIfNotNull(map, "street1_id", street1_id);
         Func.putIfNotNull(map, "street2_id", street2_id);
         Func.putIfNotNull(map, "inside_number", inside_number);
         Func.putIfNotNull(map, "outside_number", outside_number);
         Func.putIfNotNull(map, "is_owner", is_owner);
         Func.putIfNotNull(map, "observation", observation);
-
         return new AddressDTO();
     }
 

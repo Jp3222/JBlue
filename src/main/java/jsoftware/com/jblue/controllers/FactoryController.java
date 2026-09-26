@@ -19,14 +19,12 @@ package jsoftware.com.jblue.controllers;
 import jsoftware.com.jblue.controllers.viewc.EmployeeController;
 import jsoftware.com.jblue.controllers.viewc.ShopCartController;
 import jsoftware.com.jblue.controllers.viewc.StreetsController;
-import jsoftware.com.jblue.controllers.viewc.UserController;
 import jsoftware.com.jblue.controllers.viewc.WaterIntakesController;
 import jsoftware.com.jblue.controllers.viewc.WaterIntakesTypesController;
 import jsoftware.com.jblue.controllers.winc.LoginController;
 import jsoftware.com.jblue.controllers.winc.WindowController;
 import jsoftware.com.jblue.views.EmployeesView;
 import jsoftware.com.jblue.views.ShopCartProcess;
-import jsoftware.com.jblue.views.UserView;
 import jsoftware.com.jblue.views.WaterIntakesTypesView;
 import jsoftware.com.jblue.views.WaterIntakesView;
 
@@ -52,9 +50,9 @@ public class FactoryController {
         return new StreetsController();
     }
 
-    public static Controller getUserController(UserView view) {
-        return new UserController(view);
-    }
+//    public static Controller getUserController(UserView view) {
+//        return new UserController(view);
+//    }
 
     public static Controller getWaterIntakeTypesController(WaterIntakesTypesView view) {
         return new WaterIntakesTypesController(view);

@@ -17,17 +17,17 @@
 package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.controllers.DBControllerModel;
 import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.wrp.UserRegisterWrapperDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
+import jsoftware.com.jblue.model.service.AddressService;
 import jsoftware.com.jblue.model.service.UserService;
+import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppFiles;
-import jsoftware.com.jblue.views.UserView;
-import jsoftware.com.jblue.views.components.ComponentFactory;
-import jsoftware.com.jblue.views.components.UserViewComponent;
+import jsoftware.com.jblue.views.mod.pro.UserRegisterProcess;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.util.FuncLogs;
 
@@ -39,17 +39,14 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
 
     private static final long serialVersionUID = 1L;
 
-    private final UserView view;
+    private UserRegisterProcess view;
 
-    /**
-     * Movimiento, id, nombre, a paterno, a materno
-     */
-    private String DESCRIPTION_FORMAT = "SE %s EL USUARIO: %s - %s %s %s";
     private final UserService user_service;
+    private final AddressService address_service;
 
-    public UserController(UserView view) {
-        this.view = view;
-        user_service = new UserService(false, view.getProcessTypeName());
+    public UserController(boolean flag_dev, String mod_name) {
+        user_service = new UserService(flag_dev, mod_name);
+        address_service = new AddressService(flag_dev, mod_name);
     }
 
     @Override
@@ -76,22 +73,21 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
     @Override
     public void save() {
         boolean res = false;
-        res = view.isValuesOK();
-        if (!res) {
-            return;
-        }
-
-        UserDTO user = view.getValues(false);
-
-        res = user != null;
-        if (!res) {
-            returnMessage(view, "HA OCURRIDO UN ERROR INTERNO");
-            return;
-        }
         try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
-            int pro = user_service.save(connection, user);
-            res = pro > 0;
-            returnMessage(view, null);
+            SystemSession ss = SystemSession.getInstancia();
+            ss.systemValid(connection);
+
+            UserRegisterWrapperDTO dto = view.getDtoWrapper();
+
+            res = user_service.save(connection, ss, dto.getUser());
+            if (!res || user_service.isError()) {
+                returnMessage(view, user_service.getUserMessage());
+            }
+            res = address_service.insert(connection, dto.getAddress());
+            if (!res || address_service.isError()) {
+                returnMessage(view, address_service.getUserMessage());
+            }
+            returnMessage(view, "OPERACION EXITOSA");
         } catch (Exception e) {
             log(e, "save");
         }
@@ -121,16 +117,16 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
     }
 
     private void searchObject() {
-        view.getObjectSearch();
-        UserViewComponent.showVisor(view.getObjectSearch());
+//        view.getObjectSearch();
+//        UserViewComponent.showVisor(view.getObjectSearch());
     }
 
     private void saveFile() {
-        File file = ComponentFactory.getFileChooser(view, "Aceptar");
-        File out = new File(AppFiles.DIR_USER, view.getObjectSearch().toString());
-        if (!out.exists()) {
-            out.mkdir();
-        }
+//        File file = ComponentFactory.getFileChooser(view, "Aceptar");
+//        File out = new File(AppFiles.DIR_USER, view.getObjectSearch().toString());
+//        if (!out.exists()) {
+//            out.mkdir();
+//        }
         //Files.copy(file.toPath(), new BufferedOutputStream(new FileOutputStream(out)));
     }
 
@@ -143,4 +139,9 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
                 e.getMessage()
         );
     }
+
+    public void setView(UserRegisterProcess view) {
+        this.view = view;
+    }
+
 }

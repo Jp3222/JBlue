@@ -23,7 +23,6 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import jsoftware.com.jblue.controllers.FactoryController;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
 import jsoftware.com.jblue.controllers.compc.TableController;
 import jsoftware.com.jblue.model.dao.StreetDAO;
@@ -48,6 +47,7 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  *
  * @author juan pablo campos casasanero
  */
+@Deprecated
 public final class UserView extends AbstractProcessView<UserDTO> implements DBObjectValues<UserDTO>, TableSearchViewModel {
 
     private static final long serialVersionUID = 1L;
@@ -68,7 +68,7 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
         super(builder);
         this.initComponents();
         initComponents();
-        controller = FactoryController.getUserController(this);
+        controller = null;
         table_controller = new TableController<>(this, new UserDao(true, getProcessTypeName()));
         model = TableModelFactory.getUserTableModel();
         objects_table.setModel(model);

@@ -62,13 +62,23 @@ public abstract class Controller implements ActionListener, KeyListener, MouseLi
     public void mouseEntered(MouseEvent me) {
     }
 
+    /**
+     * LANZA UN MENSAJE NO ASOCIADO A NINGUNA VISTA.
+     *
+     * <br>
+     * SI title ES NULL ESTE SERA: COMANDO NO EXISTENTE
+     * <br>
+     *
+     * @param messages - MENSAJE LANZADO
+     * @param title - TITULO
+     * @param messageType - TIPO DE MENSAJE
+     */
     protected void defaultCase(String messages, String title, int messageType) {
         if (messageType == -1) {
             messageType = JOptionPane.WARNING_MESSAGE;
         }
-
         if (title == null) {
-            title = "Comando no existente";
+            title = "COMANDO NO EXISTENTE";
         }
         JOptionPane.showMessageDialog(null, messages, title, messageType);
     }

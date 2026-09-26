@@ -7,6 +7,7 @@ package jsoftware.com.jblue.model.service;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Optional;
+import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.BlockedUserDAO;
 import jsoftware.com.jblue.model.dao.BlockedValuesDAO;
@@ -18,7 +19,7 @@ import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
 import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jblue.model.factories.DTOsDefaultFactory;
-import jsoftware.com.jblue.model.abst.AbstractService;
+import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -45,12 +46,13 @@ public class UserService extends AbstractService implements Serializable {
         history_dao = HistoryDAO.UserHistoryDAO.getInstance();
     }
 
-    public int save(JDBConnection connection, UserDTO dto) {
+    public boolean save(JDBConnection connection, SystemSession ss, UserDTO dto) {
         boolean res = false;
         int user_id = -1;
         try {
             Optional<BlockedValuesDTO> opt = value_bloq_dao.exists(connection, dto);
-            if (!opt.isEmpty()) {
+            res = opt.isEmpty();
+            if (res) {
                 BlockedValuesDTO g = opt.get();
                 String msg = "EL SIGUIENTE VALOR: %s FUE BLOQUEADO EN LA FECHA %s CON FOLIO: %s POR EL SIGUIENTE MOTIVO: ";
                 returnMessageError(Integer.parseInt(g.getId()), msg.formatted(
@@ -58,7 +60,7 @@ public class UserService extends AbstractService implements Serializable {
                         g.getDateRegister(),
                         g.getObservationLock()
                 ));
-                return user_id;
+                return !res;
             }
             //SE REGISTRA EL USUARIO
             user_id = user_dao.insert(connection, dto);
@@ -84,7 +86,7 @@ public class UserService extends AbstractService implements Serializable {
                     ex.getMessage()
             );
         }
-        return user_id;
+        return res;
     }
 
     /**

@@ -83,14 +83,14 @@ public class LoginController extends WindowController {
             boolean valid_hour = AppConfig.isHourValidate(c);
             view.setSesionActive(true);
             if (valid_hour && (!AppConfig.isWorkTime(c))) {
-                returnMessage(view, "NO ES TIMPO DE TRABAJAR");
+                returnMessage(view, "NO ES TIEMPO DE TRABAJAR", false);
                 if (valid_hour) {
                     return;
                 }
             }
             InstanceAuthDTO instance = (InstanceAuthDTO) LaunchApp.getInstance().getResources("software_key");
             if (Func.isNull(instance)) {
-                returnMessage(view, "[0]LA SESION HA CADUCADO, POR FAVOR REINICIE EL PROGRAMA");
+                returnMessage(view, "[0]LA SESION HA CADUCADO, POR FAVOR REINICIE EL PROGRAMA", false);
                 return;
             }
             SystemSession.getInstancia().setCurrent_instance(instance);
@@ -100,7 +100,7 @@ public class LoginController extends WindowController {
             if (!res || service.isError()) {
                 // JOptionPane.showMessageDialog(view, service.getUserMessage() + ":" +
                 // service.getUserMessage());
-                returnMessage(view, "[" + service.getErrorCode() + "] " + service.getUserMessage());
+                returnMessage(view, "[" + service.getErrorCode() + "] " + service.getUserMessage(), false);
                 view.setSesionActive(false);
                 return;
             }

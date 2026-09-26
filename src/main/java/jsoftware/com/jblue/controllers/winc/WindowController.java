@@ -20,6 +20,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.Controller;
+import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractAppWindows;
 
 /**
@@ -58,17 +59,39 @@ public abstract class WindowController extends Controller implements WindowListe
     public void windowDeactivated(WindowEvent we) {
     }
 
+    public void returnMessage(AbstractAppWindows view, boolean ok) {
+        returnMessage(view, null, ok);
+    }
+
     /**
-     * Este metodo solo lanza un mensaje
+     * LANZA UN MENSAJE DADO POR EL PROGRAMADOR O UNO POR DEFECTO SEGUN LA
+     * BANDERA "OK", ASOCIADO A UNA VENTANA DE TIPO AbstractAppWindows
      *
-     * @param view
-     * @param msg
+     * <br>
+     *
+     * SI EL msg ES NULL SE EVALUA ok
+     * <br>
+     * SI ok ES TRUE EL MENSAJE SERA: "OPERACION EXITOSA" Y EL ICONO DE TIPO
+     * JOptionPane.INFORMATION_MESSAGE
+     * <br>
+     * SI NO: "OPERACION ERRONEA" Y EL ICONO DE TIPO JOptionPane.ERROR_MESSAGE
+     *
+     * @param view - VISTA A LA QUE SE ASOCIA EL MENSAJE
+     * @param msg - MENSAJE DADO POR EL PROGRAMADOR
+     * @param ok - BANDERA QUE INDICA SI LA OPERACION ES EXITOSA O NO
      */
-    public void returnMessage(AbstractAppWindows view, String msg) {
+    public void returnMessage(AbstractAppWindows view, String msg, boolean ok) {
+        int type = JOptionPane.INFORMATION_MESSAGE;
+        if (!ok) {
+            type = JOptionPane.ERROR_MESSAGE;
+        }
+        if (Func.isNull(msg)) {
+            msg = ok ? "OPERACION EXITOSA" : "OPERACION ERRONEA";
+        }
         JOptionPane.showMessageDialog(view,
                 msg,
-                "Estado de la operacion",
-                JOptionPane.INFORMATION_MESSAGE);
-
+                "ESTADO DE LA OPERACION",
+                type
+        );
     }
 }

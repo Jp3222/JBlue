@@ -15,10 +15,8 @@ import jsoftware.com.jblue.model.dto.wrp.ModuleWrapperDTO;
  * @author Juan Pablo Campos Casasanero
  * @param <T> El envoltorio de datos del proceso (DTO)
  */
-public interface WizardModel<T extends ModuleWrapperDTO> extends Serializable {
+public interface WizardModel<T extends ModuleWrapperDTO> extends Serializable, CModel {
 
-    public static final String WIZARD_CONTROLLER = "MAIN";
-    public static final String MAIN_CONTROLLER = "CONTROLLER";
     // --- Comandos de Acción ---
     public static final String NEXT_STEP = "next_step";
     public static final String PREVIOUS_STEP = "previous_step";

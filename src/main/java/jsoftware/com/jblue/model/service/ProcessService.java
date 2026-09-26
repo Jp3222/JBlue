@@ -3,6 +3,7 @@ package jsoftware.com.jblue.model.service;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
+import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.ProcessDAO;
 import jsoftware.com.jblue.model.dao.ProcessWaterIntakeUserDAO;
@@ -17,7 +18,6 @@ import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.exp.DataAccesObjectException;
 import jsoftware.com.jblue.model.exp.ProcessException;
-import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jpaymentlib.model.dto.PaymentDTO;
@@ -122,14 +122,14 @@ public class ProcessService extends AbstractService implements Serializable {
             if (dto.getProcess().getProcessType().equals("1")) {
                 user.put("user_type", "1");// SE ASIGNA ROL DE TITULAR
             }
-            int user_id = user_service.save(connection, user);
-            if (user_service.isError()) {
+            res = user_service.save(connection, ss, user);
+            if (!res || user_service.isError()) {
                 returnMessageError(user_service.getErrorCode(), user_service.getUserMessage());
                 return false;
             }
             //[4]REGISTRAMOS EL DOMICILIO
             AddressDTO address = dto.getAddress();
-            address.put("user_id", String.valueOf(user_id));
+            address.put("user_id", String.valueOf(user.getId()));
             address.put("employee_id", final_employee);
             address.put("office_id", final_office);
             address.put("status", "1");

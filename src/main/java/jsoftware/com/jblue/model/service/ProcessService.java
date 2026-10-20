@@ -20,7 +20,8 @@ import jsoftware.com.jblue.model.exp.DataAccesObjectException;
 import jsoftware.com.jblue.model.exp.ProcessException;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.util.Func;
-import jsoftware.com.jpaymentlib.model.dto.PaymentDTO;
+import jsoftware.com.jpaymentlib.model.dto.PaymentInputBuilder;
+import jsoftware.com.jpaymentlib.model.dto.PaymentInputDTO;
 import jsoftware.com.jpaymentlib.model.dto.wrp.PaymentWrapper;
 import jsoftware.com.jpaymentlib.model.exp.PaymentException;
 import jsoftware.com.jpaymentlib.model.service.PaymentService;
@@ -269,22 +270,18 @@ public class ProcessService extends AbstractService implements Serializable {
             if (!res) {
                 throw new ProcessException(1, "NO SE PUDO ACTUALIZAR EL STATUS DEL TRAMITE");
             }
-            PaymentDTO payment = new PaymentDTO();
-            payment.put("payment_type_id", "1");//PAGO DE TRAMITES
-            //SI EL PAGO ES GENERADO
-            // SI EL PAGO FUE VALIDADO, FUE EN EFECTIVO
-            payment.put("payment_method_id", dto.isPayment_valid() ? "1" : "6");
-            payment.put("observation", dto.isPayment_valid() ? "PAGO VALIDADO PRESENCIALMENTE" : "PAGO CON LINEA GENERADA");
-            payment.put("status", dto.isPayment_valid() ? "7" : "8");
-            payment.put("office_id", final_office);
-            payment.put("last_employee_update", final_employee);
-
-            PaymentWrapper wrp = payment_service.paymentProcess(connection, payment, null);
+            PaymentInputDTO input = new PaymentInputBuilder()
+                    .setOffice_id(Integer.parseInt(final_office))
+                    .setEmployee_id(Integer.parseInt(final_employee))
+                    .setCommittee_id(Integer.parseInt(ss.getCurrent_instance().getCommitteeId()))
+                    .setUser_id(Integer.parseInt(dto.getUser().getId()))
+                    .builder();
+            PaymentWrapper wrp = payment_service.calculate(connection, input);
             if (Func.isNull(wrp)) {
-                throw new ProcessException(1, "PAGO NO GENERADO");
+                throw new ProcessException(2, "COTIZACION NO GENERADA");
             }
 
-            res = payment_service.save(connection, wrp);
+            res = payment_service.save(connection, ss, wrp);
             if (!res) {
                 throw new ProcessException(2, "PAGO NO GENERADO");
             }
@@ -329,8 +326,8 @@ public class ProcessService extends AbstractService implements Serializable {
     public boolean finalized(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) {
         boolean res = false;
         try {
-            String status = dto.getPayment_wrp().getPayment().getStatus();
-            if (!status.equals("1")) {
+            int status = dto.getPayment_wrp().getPayment().getStatus();
+            if (status != 1) {
                 return res;
             }
             res = dao.endProcess(connection, dto.getProcess());

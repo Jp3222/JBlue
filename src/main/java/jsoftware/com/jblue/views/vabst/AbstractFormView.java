@@ -9,7 +9,6 @@ import jsoftware.com.jblue.controllers.compc.FormController;
 import jsoftware.com.jblue.model.dto.wrp.ModuleWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.FormModel;
-import static jsoftware.com.jblue.views.framework.WizardModel.WIZARD_CONTROLLER;
 
 /**
  *
@@ -28,7 +27,7 @@ public abstract class AbstractFormView<T extends ModuleWrapperDTO> extends Abstr
         initComponents();
         setName(dto.getModule_name());
         //CONTROLADOR DEL ASISTENTE
-        FormController wctronller = (FormController) getDtoWrapper().getController(WIZARD_CONTROLLER);
+        FormController wctronller = (FormController) getDtoWrapper().getController(MAIN_CONTROLLER);
         wctronller.setView(this);
         card_layout = (CardLayout) root_panel.getLayout();
     }
@@ -91,6 +90,7 @@ public abstract class AbstractFormView<T extends ModuleWrapperDTO> extends Abstr
         south_panel.add(jButton2);
 
         jButton3.setText(bundle.getString("AbstractFormView.jButton3.text")); // NOI18N
+        jButton3.setActionCommand(bundle.getString("AbstractFormView.jButton3.actionCommand")); // NOI18N
         jButton3.setName("jButton3"); // NOI18N
         south_panel.add(jButton3);
 
@@ -100,8 +100,8 @@ public abstract class AbstractFormView<T extends ModuleWrapperDTO> extends Abstr
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    protected javax.swing.JButton jButton2;
+    protected javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel north_panel;
     protected javax.swing.JPanel root_panel;

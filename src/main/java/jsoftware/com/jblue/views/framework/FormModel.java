@@ -8,6 +8,6 @@ package jsoftware.com.jblue.views.framework;
  *
  * @author juanp
  */
-public interface FormModel<T> extends DBObjectValues<T>, CModel {
+public interface FormModel<T> extends DBObjectValues<T>, CModel, ShowDataModel {
 
 }

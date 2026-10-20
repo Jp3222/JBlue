@@ -238,6 +238,12 @@
                 <Property name="actionCommand" type="java.lang.String" value="Registro de consumidor"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="user_register_process_item">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Alta de usuario existente"/>
+                <Property name="actionCommand" type="java.lang.String" value="ALTA DE USUARIO EXISTENTE"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="owner_change_process_item">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cambio de titular"/>

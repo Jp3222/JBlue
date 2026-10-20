@@ -27,6 +27,7 @@ import jsoftware.com.jblue.views.framework.AbstractModuleWindow;
 import jsoftware.com.jblue.views.mod.StreetProcess;
 import jsoftware.com.jblue.views.mod.pro.EmployeeRegisterProcess;
 import jsoftware.com.jblue.views.mod.pro.OwnerRegisterProcess;
+import jsoftware.com.jblue.views.mod.pro.UserRegisterProcess;
 
 /**
  * Esta clase esta dedicada a la vista del menu principal de la aplicacion
@@ -42,6 +43,7 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
     private final EmployeeRegisterProcess employee_register_process;
     private final OwnerRegisterProcess owner_register_process;
     private final StreetProcess street_process;
+    private final UserRegisterProcess user_regiser_process;
     private LoginWindows login;
 
     public WMainMenu(WMainMenuWrapperDTO dto_wrapper) {
@@ -53,6 +55,7 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
         employee_register_process = factory.getRegisterProcess();
         owner_register_process = factory.getOwnerRegisterProcess();
         street_process = factory.getStreetProcess();
+        user_regiser_process = factory.getUserRegisterProcess();
         build();
     }
 
@@ -70,6 +73,7 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
         addModule(employee_register_process);
         addModule(owner_register_process);
         addModule(street_process);
+        addModule(user_regiser_process);
     }
 
     void addModule(JPanel component) {
@@ -98,6 +102,7 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
         consumer_register_process_item.addActionListener(main_controller);
         status_type_item.addActionListener(main_controller);
         employee_register.addActionListener(main_controller);
+        user_register_process_item.addActionListener(main_controller);
         //
         parameters_view_item.addActionListener(main_controller);
         //
@@ -191,6 +196,7 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
         jMenuItem2 = new javax.swing.JMenuItem();
         owner_register_process_item = new javax.swing.JMenuItem();
         consumer_register_process_item = new javax.swing.JMenuItem();
+        user_register_process_item = new javax.swing.JMenuItem();
         owner_change_process_item = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -466,6 +472,10 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
         consumer_register_process_item.setActionCommand("Registro de consumidor");
         jMenu4.add(consumer_register_process_item);
 
+        user_register_process_item.setText("Alta de usuario existente");
+        user_register_process_item.setActionCommand("ALTA DE USUARIO EXISTENTE");
+        jMenu4.add(user_register_process_item);
+
         owner_change_process_item.setText("Cambio de titular");
         jMenu4.add(owner_change_process_item);
 
@@ -573,6 +583,7 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
     private javax.swing.JButton street_button;
     private javax.swing.JMenuItem street_view_item;
     private javax.swing.JMenuItem user_consumer_item;
+    private javax.swing.JMenuItem user_register_process_item;
     private javax.swing.JMenuItem users_view_item;
     private javax.swing.JPanel views_panel;
     private javax.swing.JButton water_intake_type_button;

@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
-import jsoftware.com.jblue.controllers.viewc.UserController;
+import jsoftware.com.jblue.controllers.viewc.UserRegisterController;
 import jsoftware.com.jblue.model.abst.AbstractValidation;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserTypeDTO;
@@ -64,19 +64,18 @@ public final class UserRegisterView<T extends ModuleWrapperDTO> extends Abstract
     @Override
     public void components() {
         switch (instance) {
-            case 1:
+            case 1 -> {
                 OwnerRegisterProcessController owner_controller = (OwnerRegisterProcessController) getDtoWrapper().getController(WizardModel.MAIN_CONTROLLER);
                 if (Func.isNotNull(owner_controller)) {
                     search_user_button.addActionListener(owner_controller);
                 }
-                break;
-            case 2:
-                UserController user_controller = (UserController) getDtoWrapper().getController(FormModel.MAIN_CONTROLLER);
+            }
+            case 2 -> {
+                UserRegisterController user_controller = (UserRegisterController) getDtoWrapper().getController(FormModel.MAIN_CONTROLLER);
                 if (Func.isNotNull(user_controller)) {
                     search_user_button.addActionListener(user_controller);
                 }
-
-                break;
+            }
         }
     }
 

@@ -30,7 +30,7 @@ public final class UserRegisterWrapperDTO extends ProcessWrapperDTO {
         // El constructor padre ya ejecuta this.clear() e inicializa process = new ProcessDTO();
         super(module_id, module_name, 3, "REGISTRO DEL CONTRIBUYENTE POR MODULO DE REGISTRO DE USUARIOS");
         // Asignación homogénea usando la estructura de Map del DTO
-        this.process.put("process_type", "1");
+        this.process.put("process_type", "17");
     }
 
     @Override

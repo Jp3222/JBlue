@@ -4,9 +4,15 @@
  */
 package jsoftware.com.jblue.views.mod.pro;
 
+import java.awt.CardLayout;
 import javax.swing.JTabbedPane;
+import jsoftware.com.jblue.controllers.viewc.UserRegisterController;
 import jsoftware.com.jblue.model.dto.wrp.UserRegisterWrapperDTO;
+import jsoftware.com.jblue.util.Func;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.framework.CModel;
 import jsoftware.com.jblue.views.framework.FormModel;
+import jsoftware.com.jblue.views.framework.ShowDataModel;
 import jsoftware.com.jblue.views.mod.com.AddressRegisterView;
 import jsoftware.com.jblue.views.mod.com.UserRegisterView;
 import jsoftware.com.jblue.views.vabst.AbstractFormView;
@@ -15,29 +21,58 @@ import jsoftware.com.jblue.views.vabst.AbstractFormView;
  *
  * @author juanp
  */
-public final class UserRegisterProcess extends AbstractFormView<UserRegisterWrapperDTO> implements FormModel<UserRegisterWrapperDTO>{
+public final class UserRegisterProcess extends AbstractFormView<UserRegisterWrapperDTO> implements FormModel<UserRegisterWrapperDTO> {
 
     private static final long serialVersionUID = 1L;
 
     private final UserRegisterView<UserRegisterWrapperDTO> user_view;
     private final AddressRegisterView<UserRegisterWrapperDTO> address_view;
+    private final JTabbedPane tab = new JTabbedPane(2);
 
     /**
      * Creates new form RegusterUserProcess
      */
     public UserRegisterProcess(UserRegisterWrapperDTO dto) {
         super(dto);
-        initComponents();
         user_view = UserRegisterView.getInstance(dto);
         address_view = AddressRegisterView.getInstance(dto);
+        card_layout = (CardLayout) root_panel.getLayout();
+        build();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        initialState();
+        finalState();
     }
 
     @Override
     public void components() {
-        JTabbedPane tab = new JTabbedPane(2);
-        tab.add(user_view.getName(), user_view);
-        tab.add(address_view.getName(), address_view);
-        root_panel.add(tab);
+        tab.setName("TAB_VIEWS");
+        tab.setTabPlacement(JTabbedPane.TOP);
+        tab.add(user_view, user_view.getName());
+        tab.add(address_view, address_view.getName());
+        root_panel.add(tab, tab.getName());
+
+    }
+
+    @Override
+    public void events() {
+        UserRegisterController c = (UserRegisterController) getDtoWrapper().getController(CModel.MAIN_CONTROLLER);
+        if (Func.isNotNull(c)) {
+            c.setView(this);
+        }
+    }
+
+    @Override
+    public void initialState() {
+        card_layout.show(root_panel, tab.getName());
+    }
+
+    @Override
+    public void finalState() {
     }
 
     /**
@@ -49,9 +84,28 @@ public final class UserRegisterProcess extends AbstractFormView<UserRegisterWrap
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setName("Form"); // NOI18N
-        setLayout(new java.awt.BorderLayout());
+        setName("ALTA DE USUARIO EXISTENTE"); // NOI18N
+        setLayout(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    @Override
+    public void showData() {
+        for (AbstractModuleView<UserRegisterWrapperDTO> i : views) {
+            if (i instanceof ShowDataModel s) {
+                s.showData();
+            }
+        }
+    }
+
+    public void beforeSaveData() {
+        jButton2.setEnabled(false);
+    }
+
+    public void afterSaveData(boolean mov) {
+        if (mov) {
+            initialState();
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

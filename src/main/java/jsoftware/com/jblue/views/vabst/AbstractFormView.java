@@ -5,6 +5,7 @@
 package jsoftware.com.jblue.views.vabst;
 
 import java.awt.CardLayout;
+import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.controllers.compc.FormController;
 import jsoftware.com.jblue.model.dto.wrp.ModuleWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
@@ -17,23 +18,34 @@ import jsoftware.com.jblue.views.framework.FormModel;
 public abstract class AbstractFormView<T extends ModuleWrapperDTO> extends AbstractModuleView<T> implements FormModel<T> {
 
     private static final long serialVersionUID = 1L;
+    protected FormController fcontroller;
 
     /**
      * Creates new form AbstractForm
      */
-    public AbstractFormView(T dto) {
-        super(dto);
+    public AbstractFormView(T dto, Controller controller, FormController fcontroller) {
+        super(dto, controller);
         //COMPONENTES INICIALES
         initComponents();
-        setName(dto.getModule_name());
         //CONTROLADOR DEL ASISTENTE
-        FormController wctronller = (FormController) getDtoWrapper().getController(MAIN_CONTROLLER);
-        wctronller.setView(this);
+        this.fcontroller = fcontroller;
         card_layout = (CardLayout) root_panel.getLayout();
     }
 
+    public AbstractFormView(T dto, Controller controller) {
+        this(dto, controller, null);
+    }
+
+    public AbstractFormView(T dto, FormController fcontroller) {
+        this(dto, null, fcontroller);
+    }
+
+    public AbstractFormView(T dto) {
+        this(null, null, null);
+    }
+
     public AbstractFormView() {
-        super();
+        this(null, null, null);
     }
 
     /**
@@ -120,14 +132,12 @@ public abstract class AbstractFormView<T extends ModuleWrapperDTO> extends Abstr
         }
     }
 
-    @Override
-    public boolean isValuesOK() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public FormController getFcontroller() {
+        return fcontroller;
     }
 
-    @Override
-    public T getValues(boolean update) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void setFcontroller(FormController fcontroller) {
+        this.fcontroller = fcontroller;
     }
 
 }

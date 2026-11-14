@@ -38,7 +38,6 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
         register_view = new EmployeeRegistrationView(dto);
         data_view = new EmployeeUserDataView(dto);
         //
-        views = new ArrayList<>(2);
         views.add(register_view);
         views.add(data_view);
         card_layout = (CardLayout) root_panel.getLayout();
@@ -61,7 +60,6 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
         register_view = new EmployeeRegistrationView(dto, controller);
         data_view = new EmployeeUserDataView(dto, controller);
         //
-        views = new ArrayList<>(2);
         views.add(register_view);
         views.add(data_view);
         card_layout = (CardLayout) root_panel.getLayout();

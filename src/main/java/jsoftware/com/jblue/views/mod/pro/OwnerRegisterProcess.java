@@ -59,7 +59,6 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
         step4 = new WaterIntakeRegisterView(dto);
         step5 = new PaymentConfirmView(dto);
         step6 = new SummaryView(dto);
-        views = new ArrayList<>(5);
         views.addAll(Arrays.asList(step1, step2, step3, step4, step5, step6));
         card_layout = (CardLayout) root_panel.getLayout();
         build();
@@ -79,7 +78,6 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
         step4 = new WaterIntakeRegisterView(dto_wrapper);
         step5 = new PaymentConfirmView(dto_wrapper);
         step6 = new SummaryView(dto_wrapper);
-        views = new ArrayList<>(5);
         views.addAll(Arrays.asList(step1, step2, step3, step4, step5, step6));
         card_layout = (CardLayout) root_panel.getLayout();
         build();

@@ -4,22 +4,60 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
+import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.Controller;
+import jsoftware.com.jblue.model.abst.AbstractValidation;
+import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.dto.wrp.SpecificationWrapperDTO;
+import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.ShowDataModel;
+import jsoftware.com.jpaymentlib.model.dto.PaymentConceptDTO;
 
 /**
  *
  * @author juanp
  */
-public class PaymentConceptView extends AbstractModuleView<SpecificationWrapperDTO> implements DBObjectValues<SpecificationWrapperDTO>, ShowDataModel {
+public final class PaymentConceptView extends AbstractModuleView<SpecificationWrapperDTO> implements DBObjectValues<PaymentConceptDTO>, ShowDataModel {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form PaymentConceptView
+     *
+     * @param dto
+     * @param controller
      */
-    public PaymentConceptView() {
+    public PaymentConceptView(SpecificationWrapperDTO dto, Controller controller) {
+        super(dto, controller);
         initComponents();
+        build();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        initComponents();
+        finalState();
+    }
+
+    @Override
+    public void components() {
+    }
+
+    @Override
+    public void events() {
+    }
+
+    @Override
+    public void initialState() {
+    }
+
+    @Override
+    public void finalState() {
     }
 
     /**
@@ -48,20 +86,20 @@ public class PaymentConceptView extends AbstractModuleView<SpecificationWrapperD
         jButton1 = new javax.swing.JButton();
         p_document_based = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        document_based = new javax.swing.JTextField();
+        based_on_document_field = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
 
-        setName("Form"); // NOI18N
+        setName("Conceptos de Pago"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.CardLayout());
 
         register_panel.setName("register_panel"); // NOI18N
         register_panel.setLayout(new java.awt.BorderLayout());
 
+        jLabel8.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/com/Bundle"); // NOI18N
         jLabel8.setText(bundle.getString("PaymentConceptView.jLabel8.text")); // NOI18N
-        jLabel8.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jLabel8.setName("jLabel8"); // NOI18N
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 50));
         register_panel.add(jLabel8, java.awt.BorderLayout.NORTH);
@@ -135,11 +173,11 @@ public class PaymentConceptView extends AbstractModuleView<SpecificationWrapperD
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 25));
         p_document_based.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        document_based.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        document_based.setToolTipText(bundle.getString("PaymentConceptView.document_based.toolTipText")); // NOI18N
-        document_based.setName("document_based"); // NOI18N
-        document_based.setPreferredSize(new java.awt.Dimension(100, 30));
-        p_document_based.add(document_based, java.awt.BorderLayout.CENTER);
+        based_on_document_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        based_on_document_field.setToolTipText(bundle.getString("PaymentConceptView.based_on_document_field.toolTipText")); // NOI18N
+        based_on_document_field.setName("based_on_document_field"); // NOI18N
+        based_on_document_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        p_document_based.add(based_on_document_field, java.awt.BorderLayout.CENTER);
 
         jLabel7.setName("jLabel7"); // NOI18N
         jLabel7.setPreferredSize(new java.awt.Dimension(80, 30));
@@ -154,8 +192,8 @@ public class PaymentConceptView extends AbstractModuleView<SpecificationWrapperD
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField based_on_document_field;
     private javax.swing.JTextField description_field;
-    private javax.swing.JTextField document_based;
     private javax.swing.JComboBox<String> document_id_field;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
@@ -177,21 +215,46 @@ public class PaymentConceptView extends AbstractModuleView<SpecificationWrapperD
 
     @Override
     public void getData() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean res = isValuesOK();
+        //SI LOS DATOS NO SON CORRECTOS SE CORTA EL METODO
+        if (!res) {
+            return;
+        }
+        SpecificationWrapperDTO dto = getDtoWrapper();
+        dto.setPayment_concept(getValues(false));
+        dto.setPayment_concept_valid(res);
     }
 
     @Override
     public boolean isValuesOK() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean res;
+        String input = Func.input(name_field.getText());
+        AbstractValidation v = new AbstractValidation();
+        v.addRuler(
+                "doc-not-null",
+                input,
+                t -> Func.isNotNull(t),
+                "EL CAMPO CONCEPTO NO PUEDE ESTAR VACIO"
+        );
+        res = v.isValid();
+        if (!res) {
+            JOptionPane.showMessageDialog(this, v.getErrorMessage());
+        }
+        return res;
     }
 
     @Override
-    public SpecificationWrapperDTO getValues(boolean update) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public PaymentConceptDTO getValues(boolean update) {
+        PaymentConceptDTO dto = new PaymentConceptDTO();
+        dto.setName(Func.input(name_field.getText()));
+        dto.setDescription(Func.input(description_field.getText()));
+        dto.setDocument_id(-1);
+        dto.setBased_on_document(Func.input(name_field.getText()));
+        return dto;
     }
 
     @Override
     public void showData() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
 }

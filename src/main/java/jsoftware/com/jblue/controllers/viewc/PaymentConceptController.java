@@ -13,9 +13,9 @@ import jsoftware.com.jblue.views.mod.pro.PaymentConceptProcess;
  */
 public class PaymentConceptController extends FormController {
 
-    public PaymentConceptController(PaymentConceptProcess aThis) {
+    public PaymentConceptController() {
     }
-    
+
     private static final long serialVersionUID = 1L;
-    
+
 }

@@ -38,7 +38,7 @@ import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.db.JDBConnectionBuilder;
 import jsoftware.com.jutil.platf.So;
 import jsoftware.com.jutil.sys.MainSystem;
-import jsoftware.com.jutil.util.FuncLogs;
+import jsoftware.com.jutil.util.JFuncLogs;
 
 /**
  *
@@ -237,10 +237,10 @@ public class JBlueMainSystem implements MainSystem {
     }
 
     public void log(String message) {
-        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", message);
+        JFuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", message);
     }
 
     public void log(Exception e, String method_name, String message) {
-        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "MAIN", method_name, message);
+        JFuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "MAIN", method_name, message);
     }
 }

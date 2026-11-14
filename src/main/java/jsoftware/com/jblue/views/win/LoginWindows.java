@@ -23,7 +23,7 @@ import jsoftware.com.jblue.views.framework.AbstractModuleWindow;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.swingw.wrappers.TextFieldWrapper;
 import jsoftware.com.jutil.sys.LaunchApp;
-import jsoftware.com.jutil.util.FuncLogs;
+import jsoftware.com.jutil.util.JFuncLogs;
 
 /**
  *
@@ -348,7 +348,7 @@ public final class LoginWindows extends AbstractModuleWindow<LoginWrapperDTO> {
     }
 
     public void log(Exception e, String method_name) {
-        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "INICIO DE SESSION", method_name, e.getMessage());
+        JFuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "INICIO DE SESSION", method_name, e.getMessage());
     }
 
     @Override

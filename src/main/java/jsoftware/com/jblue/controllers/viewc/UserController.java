@@ -29,7 +29,7 @@ import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.mod.pro.UserRegisterProcess;
 import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.util.FuncLogs;
+import jsoftware.com.jutil.util.JFuncLogs;
 
 /**
  *
@@ -131,7 +131,7 @@ public class UserController extends AbstractDBViewController<UserDTO> implements
     }
 
     public void log(Exception e, String method_name) {
-        FuncLogs.logError(
+        JFuncLogs.logError(
                 AppFiles.DIR_PROG_LOG_TODAY,
                 getClass(), e,
                 getClass().getName(),

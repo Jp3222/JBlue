@@ -8,7 +8,7 @@ import java.io.IOException;
 import jsoftware.com.jblue.sys.JBlueMainSystem;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jutil.sys.LaunchApp;
-import jsoftware.com.jutil.util.FuncLogs;
+import jsoftware.com.jutil.util.JFuncLogs;
 
 /**
  * Clase principal del proyecto JBlue.
@@ -40,12 +40,12 @@ public class JBlue {
          * para probar distintas configuraciones
          */
         try {
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", "INICIO DEL SISTEMA DESDE JBLUE");
+            JFuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", "INICIO DEL SISTEMA DESDE JBLUE");
             JBlueMainSystem jBlueMainSystem = new JBlueMainSystem();
             LaunchApp.getInstance(jBlueMainSystem).doWhileRun();
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", "FIN DEL SISTEMA DESDE JBLUE");
+            JFuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", "FIN DEL SISTEMA DESDE JBLUE");
         } catch (InterruptedException e) {
-            FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, JBlue.class, e, "MAIN", "main", e.getMessage());
+            JFuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, JBlue.class, e, "MAIN", "main", e.getMessage());
         }
 
     }

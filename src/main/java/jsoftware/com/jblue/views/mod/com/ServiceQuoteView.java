@@ -4,30 +4,51 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
-import java.util.List;
 import jsoftware.com.jblue.controllers.Controller;
-import jsoftware.com.jblue.controllers.compc.WizardController;
 import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.ShowDataModel;
-import jsoftware.com.jblue.views.vabst.AbstractWizardView;
 
 /**
  *
  * @author juanp
  */
-public class ServiceQuoteView extends AbstractWizardView<ShopCartWrapperDTO> implements ShowDataModel {
+public final class ServiceQuoteView extends AbstractModuleView<ShopCartWrapperDTO> implements ShowDataModel {
 
     /**
      * Creates new form ServiceQuoteView
      *
      * @param dto
      * @param controller
-     * @param wcontroller
      */
-    public ServiceQuoteView(ShopCartWrapperDTO dto, Controller controller, WizardController wcontroller) {
-        super(dto, controller, wcontroller);
+    public ServiceQuoteView(ShopCartWrapperDTO dto, Controller controller) {
+        super(dto, controller);
         initComponents();
+        build();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        initComponents();
+        finalState();
+    }
+
+    @Override
+    public void components() {
+    }
+
+    @Override
+    public void events() {
+    }
+
+    @Override
+    public void initialState() {
+    }
+
+    @Override
+    public void finalState() {
     }
 
     /**
@@ -139,16 +160,10 @@ public class ServiceQuoteView extends AbstractWizardView<ShopCartWrapperDTO> imp
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void executeFinal() {
-    }
-
-    @Override
-    public List<AbstractModuleView<ShopCartWrapperDTO>> getViews() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
     public void showData() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void getData() {
     }
 }

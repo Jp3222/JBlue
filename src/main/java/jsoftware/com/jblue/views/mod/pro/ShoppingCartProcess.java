@@ -4,7 +4,6 @@
  */
 package jsoftware.com.jblue.views.mod.pro;
 
-import java.awt.CardLayout;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -25,11 +24,8 @@ public final class ShoppingCartProcess extends AbstractWizardView<ShopCartWrappe
 
     private static final long serialVersionUID = 1L;
 
-    private ShopCartView step1;
-    private ServiceQuoteView step2;
-    private CardLayout layout;
-    private ShopCartController main_controller;
-    private WizardController wizard_controller;
+    private final ShopCartView step1;
+    private final ServiceQuoteView step2;
 
     /**
      * Creates new form ShoppingCartProcess
@@ -41,10 +37,9 @@ public final class ShoppingCartProcess extends AbstractWizardView<ShopCartWrappe
         setDto_wrapper(dto);
         setController(controller);
         setWcontroller(wcontroller);
-        step1 = new ShopCartView(dto, controller, wcontroller);
-        step2 = new ServiceQuoteView(dto, controller, wcontroller);
+        step1 = new ShopCartView(dto, controller);
+        step2 = new ServiceQuoteView(dto, controller);
         views.addAll(Arrays.asList(step1, step2));
-        layout = (CardLayout) root_panel.getLayout();
         build();
     }
 

@@ -42,7 +42,7 @@ import jsoftware.com.jblue.views.vabst.AbstractWizardView;
  * @author juan pablo campos casasanero
  * @version 1.0
  */
-public final class ShopCartView extends AbstractWizardView<ShopCartWrapperDTO> implements ListSearchViewModel<WaterIntakeUserDTO> {
+public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> implements ListSearchViewModel<WaterIntakeUserDTO> {
 
     public static String DEFAULT_LAST_MONTH_PAID = "XX";
     public static String DEFAULT_LAST_YEAR_PAID = "XXXX";
@@ -66,6 +66,7 @@ public final class ShopCartView extends AbstractWizardView<ShopCartWrapperDTO> i
 
     /**
      * Creates new form VCaja
+     *
      * @param builder
      */
     @Deprecated
@@ -79,9 +80,8 @@ public final class ShopCartView extends AbstractWizardView<ShopCartWrapperDTO> i
         build();
     }
 
-
-    public ShopCartView(ShopCartWrapperDTO dto_wrapper, Controller controller, WizardController wcontroller) {
-        super(dto_wrapper, controller, wcontroller);
+    public ShopCartView(ShopCartWrapperDTO dto_wrapper, Controller controller) {
+        super(dto_wrapper, controller);
         dto_wrapper = new ShopCartWrapperDTO("5", "SHOP CART");
         dto_wrapper.putController(CModel.WIZARD_CONTROLLER, controller);
         //Controlador de eventos
@@ -113,7 +113,6 @@ public final class ShopCartView extends AbstractWizardView<ShopCartWrapperDTO> i
 
     @Override
     public void events() {
-        super.events();
         ShopCartController con = (ShopCartController) getDtoWrapper().getController(CModel.MAIN_CONTROLLER);
         if (Func.isNotNull(con)) {
             search_field_list.addKeyListener(con);
@@ -123,7 +122,6 @@ public final class ShopCartView extends AbstractWizardView<ShopCartWrapperDTO> i
 
     @Override
     public void initialState() {
-        super.initialState();
         jSpinner1.setValue(LocalDate.now().getYear());
         all_months_button.setEnabled(false);
         for (JCheckBox i : list_months_paid) {
@@ -143,7 +141,6 @@ public final class ShopCartView extends AbstractWizardView<ShopCartWrapperDTO> i
 
     @Override
     public void finalState() {
-        super.finalState();
     }
 
     /**
@@ -1014,16 +1011,6 @@ public final class ShopCartView extends AbstractWizardView<ShopCartWrapperDTO> i
     @Override
     public void setObjectSearch(WaterIntakeUserDTO object) {
         object_search = object;
-    }
-
-    @Override
-    public void executeFinal() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public List<AbstractModuleView<ShopCartWrapperDTO>> getViews() {
-        return List.of();
     }
 
 }

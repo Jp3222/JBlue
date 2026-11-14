@@ -42,9 +42,9 @@ public class FactoryController {
         return new LoginController(flag_dev, process_name);
     }
 
-    public static Controller getShopCartController(ShopCartProcess view) {
-        return new ShopCartController(view);
-    }
+//    public static Controller getShopCartController(ShopCartProcess view) {
+//        return new ShopCartController(view);
+//    }
 
     public static Controller getStreetsController() {
         return new StreetsController();

@@ -9,6 +9,7 @@ import jsoftware.com.jblue.controllers.compc.WizardController;
 import jsoftware.com.jblue.controllers.viewc.AdministrationHistoryController;
 import jsoftware.com.jblue.controllers.viewc.EmployeeRegisterController;
 import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
+import jsoftware.com.jblue.controllers.viewc.ShopCartController;
 import jsoftware.com.jblue.controllers.viewc.StreetsController;
 import jsoftware.com.jblue.controllers.viewc.UserRegisterController;
 import jsoftware.com.jblue.controllers.winc.LoginController;
@@ -95,10 +96,10 @@ public class ModuleFactory implements Serializable {
         dto.setCurrent_employee(employee);
         //Controlador del asistente
         WizardController controller = new WizardController();
-        dto.putController("MAIN", controller);
+        dto.putController(CModel.WIZARD_CONTROLLER, controller);
         //Controlador de eventos
-        LoginController rc = new LoginController(false, dto.getModule_name());
-        dto.putController("CONTROLLER", rc);
+        ShopCartController rc = new ShopCartController(null);
+        dto.putController(CModel.MAIN_CONTROLLER, rc);
         //Nueva vista
         ShopCartProcess mod = new ShopCartProcess(dto);
         return mod;

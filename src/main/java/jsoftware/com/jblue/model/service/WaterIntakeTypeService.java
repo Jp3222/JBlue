@@ -16,7 +16,7 @@ import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.util.FuncLogs;
+import jsoftware.com.jutil.util.JFuncLogs;
 
 /**
  *
@@ -76,7 +76,7 @@ public class WaterIntakeTypeService extends AbstractService {
     }
 
     public void log(Exception e, String method_name) {
-        FuncLogs.logError(
+        JFuncLogs.logError(
                 AppFiles.DIR_PROG_LOG_TODAY,
                 getClass(), e,
                 getClass().getName(),

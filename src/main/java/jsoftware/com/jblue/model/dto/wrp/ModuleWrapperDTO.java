@@ -23,8 +23,8 @@ public abstract class ModuleWrapperDTO extends JDBMapObject {
 
     private static final long serialVersionUID = 1L;
 
-    private final String module_id;
-    private final String module_name;
+    private String module_id;
+    private String module_name;
     private final Map<String, Controller> controller_map;
     private final TransactionHistoryDTO transaction; // Corregido typo: transacion -> transaction
 
@@ -63,8 +63,16 @@ public abstract class ModuleWrapperDTO extends JDBMapObject {
         return module_id;
     }
 
+    public void setModule_id(String module_id) {
+        this.module_id = module_id;
+    }
+
     public String getModule_name() {
         return module_name;
+    }
+
+    public void setModule_name(String module_name) {
+        this.module_name = module_name;
     }
 
     public EmployeeUserDTO getCurrent_employee() {
@@ -102,6 +110,10 @@ public abstract class ModuleWrapperDTO extends JDBMapObject {
 
     public Controller getController(String name) {
         return controller_map.get(name);
+    }
+
+    public Map<String, Controller> getController_map() {
+        return controller_map;
     }
 
     // El borrado limpia los estados dinámicos del módulo concreto

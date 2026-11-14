@@ -4,11 +4,16 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
+import jsoftware.com.jblue.model.dto.wrp.SpecificationWrapperDTO;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
+import jsoftware.com.jblue.views.framework.ShowDataModel;
+
 /**
  *
  * @author juanp
  */
-public class PaymentConceptView extends javax.swing.JPanel {
+public class PaymentConceptView extends AbstractModuleView<SpecificationWrapperDTO> implements DBObjectValues<SpecificationWrapperDTO>, ShowDataModel {
 
     /**
      * Creates new form PaymentConceptView
@@ -123,8 +128,8 @@ public class PaymentConceptView extends javax.swing.JPanel {
         p_document_based.setName("p_document_based"); // NOI18N
         p_document_based.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setText(bundle.getString("PaymentConceptView.jLabel2.text")); // NOI18N
         jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel2.setText(bundle.getString("PaymentConceptView.jLabel2.text")); // NOI18N
         jLabel2.setMaximumSize(new java.awt.Dimension(60, 20));
         jLabel2.setName("jLabel2"); // NOI18N
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 25));
@@ -169,4 +174,24 @@ public class PaymentConceptView extends javax.swing.JPanel {
     private javax.swing.JPanel payment_concept_data_panel;
     private javax.swing.JPanel register_panel;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void getData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isValuesOK() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public SpecificationWrapperDTO getValues(boolean update) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void showData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

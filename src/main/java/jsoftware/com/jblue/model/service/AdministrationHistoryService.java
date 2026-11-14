@@ -6,6 +6,7 @@ package jsoftware.com.jblue.model.service;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.AdministrationHistoryDAO;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
@@ -13,7 +14,6 @@ import jsoftware.com.jblue.model.dto.AdministrationHistoryDTO;
 import jsoftware.com.jblue.model.dto.wrp.AdministrationWrapperDTO;
 import jsoftware.com.jblue.model.exp.imp.CorruptInsertionException;
 import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
-import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -33,6 +33,10 @@ public class AdministrationHistoryService extends AbstractService {
         super(dev_flag, process_name);
         dao = new AdministrationHistoryDAO(dev_flag, user_message);
         hys = HistoryDAO.getInstance();
+    }
+
+    public AdministrationHistoryService() {
+        super(false, "NULL");
     }
 
     public void insert(JDBConnection connection, AdministrationWrapperDTO dto) {

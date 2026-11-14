@@ -5,7 +5,9 @@
 package jsoftware.com.jblue.views.mod.com;
 
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
+import jsoftware.com.jblue.controllers.compc.WizardController;
 import jsoftware.com.jblue.controllers.viewc.EmployeeRegisterController;
 import jsoftware.com.jblue.model.dao.EmployeeTypeDAO;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
@@ -41,6 +43,18 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
         build();
     }
 
+    /**
+     * Creates new form UserDataView
+     */
+    public EmployeeUserDataView(EmployeeRegisterWrapperDTO builder, Controller controller) {
+        super(builder, controller);
+        initComponents();
+        EmployeeTypeDAO dao = new EmployeeTypeDAO(false, getDtoWrapper().getModule_name());
+        ComboBoxController<EmployeeTypesDTO> con = new ComboBoxController<>(employee_type_field, dao);
+        comboBoxInit(con, employee_type_field.getItemCount() <= 0);
+        build();
+    }
+
     @Override
     public void build() {
         components();
@@ -52,7 +66,7 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
     @Override
     public void events() {
         // Registrar esta vista contenedora principal en el controlador de negocio de Empleados
-        EmployeeRegisterController employeeController = (EmployeeRegisterController) getDtoWrapper().getController("CONTROLLER");
+        EmployeeRegisterController employeeController = (EmployeeRegisterController) controller;
         if (employeeController != null) {
             generate_data.addActionListener(employeeController);
         }

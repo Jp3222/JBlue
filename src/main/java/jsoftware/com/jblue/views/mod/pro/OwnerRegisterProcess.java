@@ -21,10 +21,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.compc.WizardController;
 import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
+import jsoftware.com.jblue.model.dto.wrp.OwnerRegisterProcessWrapper;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.ShowDataModel;
+import jsoftware.com.jblue.views.framework.WizardModel;
 import jsoftware.com.jblue.views.mod.com.AddressRegisterView;
 import jsoftware.com.jblue.views.mod.com.PaymentConfirmView;
 import jsoftware.com.jblue.views.mod.com.SummaryView;
@@ -62,6 +65,26 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
         build();
     }
 
+    public OwnerRegisterProcess() {
+        super();
+        dto_wrapper = new OwnerRegisterProcessWrapper("10", "ALTA DE TITULAR");
+        WizardController controller = new WizardController();
+        dto_wrapper.putController(WizardModel.WIZARD_CONTROLLER, controller);
+        //Controlador de eventos
+        OwnerRegisterProcessController rc = new OwnerRegisterProcessController(false, dto_wrapper.getModule_name());
+        dto_wrapper.putController(WizardModel.MAIN_CONTROLLER, rc);
+        step1 = UserRegisterView.getInstance(dto_wrapper);
+        step2 = AddressRegisterView.getInstance(dto_wrapper);
+        step3 = new UserDocumentValidationView(dto_wrapper);
+        step4 = new WaterIntakeRegisterView(dto_wrapper);
+        step5 = new PaymentConfirmView(dto_wrapper);
+        step6 = new SummaryView(dto_wrapper);
+        views = new ArrayList<>(5);
+        views.addAll(Arrays.asList(step1, step2, step3, step4, step5, step6));
+        card_layout = (CardLayout) root_panel.getLayout();
+        build();
+    }
+
     @Override
     public void build() {
         components();
@@ -72,6 +95,7 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
 
     @Override
     public void events() {
+        super.events();
         // Registrar esta vista contenedora principal en el controlador de negocio de Empleados
         OwnerRegisterProcessController employeeController = (OwnerRegisterProcessController) getDtoWrapper().getController(MAIN_CONTROLLER);
         if (employeeController != null) {
@@ -114,6 +138,7 @@ public final class OwnerRegisterProcess extends AbstractWizardView<ProcessWrappe
 
     @Override
     public void finalState() {
+        super.finalState();
     }
 
     /**

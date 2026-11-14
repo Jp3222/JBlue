@@ -4,7 +4,6 @@
  */
 package utils;
 
-import java.time.LocalDateTime;
 import jsoftware.com.jblue.utils.FuncUC;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +16,7 @@ public class FuncTest {
 
     @Test
     public void unicode() {
-        String generateFormattedId = FuncUC.generateFormattedId("AP", 1, 12, LocalDateTime.now());
+        String generateFormattedId = FuncUC.generateFormattedId(3, 1, "10000");
         System.out.println(generateFormattedId);
         System.out.println(generateFormattedId.length());
         

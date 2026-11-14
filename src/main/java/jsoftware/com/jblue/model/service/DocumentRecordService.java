@@ -14,7 +14,7 @@ import jsoftware.com.jblue.model.exp.imp.KeyNotGenerateException;
 import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.util.FuncLogs;
+import jsoftware.com.jutil.util.JFuncLogs;
 
 /**
  *
@@ -54,7 +54,7 @@ public class DocumentRecordService extends AbstractService {
         } catch (SQLException | CorruptInsertionException | KeyNotGenerateException | ServiceException ex) {
             rollback(connection);
             returnMessageError("ERROR AL REGISTRAR EL USUARIO");
-            FuncLogs.logError(
+            JFuncLogs.logError(
                     AppFiles.DIR_PROG_LOG_TODAY,
                     getClass(), ex,
                     getProcess_name(), "save",

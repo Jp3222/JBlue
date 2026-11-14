@@ -18,6 +18,7 @@ import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.exp.DataAccesObjectException;
 import jsoftware.com.jblue.model.exp.ProcessException;
+import jsoftware.com.jblue.model.exp.SystemException;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jpaymentlib.model.dto.PaymentInputBuilder;
@@ -47,7 +48,7 @@ public class ProcessService extends AbstractService implements Serializable {
     private final DocumentRecordService document_record_service;
     private final WaterIntakeUserService water_intake_service;
     private final PaymentService payment_service;
-
+    private final SystemSessionService ss_service;
     private final HistoryDAO history_dao;
 
     public ProcessService(boolean flag_dev, String process_name) {
@@ -62,6 +63,7 @@ public class ProcessService extends AbstractService implements Serializable {
         document_record_service = new DocumentRecordService(flag_dev, process_name);
         water_intake_service = new WaterIntakeUserService(flag_dev, process_name);
         payment_service = new PaymentService(flag_dev, user_message);
+        ss_service = new SystemSessionService(flag_dev, process_name);
         history_dao = HistoryDAO.getInstance();
     }
 
@@ -264,18 +266,51 @@ public class ProcessService extends AbstractService implements Serializable {
      */
     public boolean payment(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) {
         try {
-            String final_office = ss.getCurrent_instance().getOfficeId();
-            String final_employee = ss.getCurrentEmployee().getId();
+            //VALIDACIONES EN LAS VARIABLES DE LA SESSION DEL SISTEMA
+            ss_service.valid(connection, ss);
+            //
+            int final_office = Integer.parseInt(ss.getCurrent_instance().getOfficeId());
+            int final_employee = Integer.parseInt(ss.getCurrentEmployee().getId());
+            int final_commitee = Integer.parseInt(ss.getCurrent_instance().getCommitteeId());
+            int final_status = -1;
+
+            //SE VALIDA SI EL PAGO SE HIZO PRESENCIAL
+            if (dto.isPayment_valid()) {
+                final_status = 1;//PAGO REALIZADO
+            } else {
+                final_status = 8;//QUEDA PENDIENTE
+            }
+            ProcessDTO process = dto.getProcess();
+
+            if (Func.isNull(process)) {
+                return returnMessageError("TRAMITE NULL");
+            }
+
+            if (Func.isNullEmptyBlank(process.getProcessType())) {
+                return returnMessageError("TRAMITE NO DEFINIDO");
+            }
+
+            int process_type = Integer.parseInt(process.getProcessType());
+
+            int process_id = Integer.parseInt(process.getId());
             boolean res = dao.payProcess(connection, dto.getProcess());
             if (!res) {
                 throw new ProcessException(1, "NO SE PUDO ACTUALIZAR EL STATUS DEL TRAMITE");
             }
-            PaymentInputDTO input = new PaymentInputBuilder()
-                    .setOffice_id(Integer.parseInt(final_office))
-                    .setEmployee_id(Integer.parseInt(final_employee))
-                    .setCommittee_id(Integer.parseInt(ss.getCurrent_instance().getCommitteeId()))
-                    .setUser_id(Integer.parseInt(dto.getUser().getId()))
-                    .builder();
+
+            PaymentInputDTO input;
+            if (Func.isNull(process.getId())) {
+                input = new PaymentInputBuilder()
+                        .setProcess_type_id(process_type)
+                        .setCommittee_id(final_commitee)
+                        .setOffice_id(final_office)
+                        .setStatus_id(final_status)
+                        .buildCalculateQuote();
+            } else {
+                input = new PaymentInputBuilder()
+                        .setProcess_id(process_id)
+                        .buildCalculateQuote();
+            }
             PaymentWrapper wrp = payment_service.calculate(connection, input);
             if (Func.isNull(wrp)) {
                 throw new ProcessException(2, "COTIZACION NO GENERADA");
@@ -286,6 +321,10 @@ public class ProcessService extends AbstractService implements Serializable {
                 throw new ProcessException(2, "PAGO NO GENERADO");
             }
         } catch (SQLException | PaymentException | ProcessException ex) {
+            System.getLogger(ProcessService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (SystemException ex) {
+            System.getLogger(ProcessService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (DataAccesObjectException ex) {
             System.getLogger(ProcessService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
 //        payment.saveProcess(connection, dto);

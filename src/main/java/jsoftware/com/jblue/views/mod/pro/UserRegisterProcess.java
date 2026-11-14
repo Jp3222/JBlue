@@ -107,7 +107,6 @@ public final class UserRegisterProcess extends AbstractFormView<UserRegisterWrap
         }
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

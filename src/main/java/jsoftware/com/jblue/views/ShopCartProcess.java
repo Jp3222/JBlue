@@ -16,6 +16,7 @@
  */
 package jsoftware.com.jblue.views;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,19 +24,25 @@ import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JList;
 import javax.swing.JTextField;
-import jsoftware.com.jblue.model.trash._PaymentListDTO;
+import javax.swing.SpinnerNumberModel;
+import jsoftware.com.jblue.controllers.compc.WizardController;
+import jsoftware.com.jblue.controllers.viewc.ShopCartController;
 import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
+import jsoftware.com.jblue.model.trash._PaymentListDTO;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.framework.CModel;
 import jsoftware.com.jblue.views.framework.ListSearchViewModel;
+import jsoftware.com.jblue.views.vabst.AbstractWizardView;
 
 /**
  *
  * @author juan pablo campos casasanero
  * @version 1.0
  */
-public final class ShopCartProcess extends AbstractModuleView<ShopCartWrapperDTO> implements ListSearchViewModel<WaterIntakeUserDTO> {
+@Deprecated
+public final class ShopCartProcess extends AbstractWizardView<ShopCartWrapperDTO> implements ListSearchViewModel<WaterIntakeUserDTO> {
 
     public static String DEFAULT_LAST_MONTH_PAID = "XX";
     public static String DEFAULT_LAST_YEAR_PAID = "XXXX";
@@ -51,6 +58,7 @@ public final class ShopCartProcess extends AbstractModuleView<ShopCartWrapperDTO
      * Modelo por defecto de la lista
      */
     private DefaultListModel<WaterIntakeUserDTO> list_model;
+    private SpinnerNumberModel fiscal_year_model;
     /**
      * Lista de comboboxes
      */
@@ -69,9 +77,73 @@ public final class ShopCartProcess extends AbstractModuleView<ShopCartWrapperDTO
         build();
     }
 
+    public ShopCartProcess() {
+        super();
+        dto_wrapper = new ShopCartWrapperDTO("5", "SHOP CART");
+        WizardController controller = new WizardController();
+        dto_wrapper.putController(CModel.WIZARD_CONTROLLER, controller);
+        //Controlador de eventos
+        ShopCartController rc = new ShopCartController(null);
+        dto_wrapper.putController(CModel.MAIN_CONTROLLER, rc);
+        //Nueva vista
+        initComponents();
+        list_model = new DefaultListModel<>();
+        wki_user_list.setModel(list_model);
+        list_months_paid = new ArrayList<>(12);
+        list_months_paid.addAll(Arrays.asList(ene, feb, mar, abr, may, jun, jul, sep, oct, nov, dic));
+        build();
+    }
+
     @Override
     public void build() {
+        components();
+        events();
+        initialState();
+        finalState();
+    }
 
+    @Override
+    public void components() {
+        LocalDate date = LocalDate.now();
+        fiscal_year_model = new SpinnerNumberModel(date.getYear(), date.getYear() - 5, date.getYear() + 5, 1);
+        jSpinner1.setModel(fiscal_year_model);
+    }
+
+    @Override
+    public void events() {
+        super.events();
+        ShopCartController con = (ShopCartController) getDtoWrapper().getController(CModel.MAIN_CONTROLLER);
+        if (Func.isNotNull(con)) {
+            //con.setView(this);
+            System.out.println("listener");
+            search_field_list.addKeyListener(con);
+            wki_user_list.addMouseListener(con);
+        }
+    }
+
+    @Override
+    public void initialState() {
+        super.initialState();
+        jSpinner1.setValue(LocalDate.now().getYear());
+        all_months_button.setEnabled(false);
+        for (JCheckBox i : list_months_paid) {
+            i.setEnabled(false);
+        }
+        user_name_field.setText(null);
+        user_type_field.setText(null);
+        water_intake_type.setText(null);
+        cost_field.setText(null);
+        user_name_field.setText(null);
+        total_field.setText("0.00");
+        cambio_field.setText("0.00");
+        months_paid_field.setText(DEFAULT_MONTHS_PAID);
+        last_month_paid_field.setText(DEFAULT_LAST_MONTH_PAID);
+        last_year_paid_field.setText(DEFAULT_LAST_YEAR_PAID);
+    }
+
+    @Override
+    public void finalState() {
+        super.finalState();
     }
 
     /**
@@ -93,9 +165,11 @@ public final class ShopCartProcess extends AbstractModuleView<ShopCartWrapperDTO
         register_panel = new javax.swing.JPanel();
         search_register_panel = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        search_field_list = new javax.swing.JTextField();
         count_elements_label = new javax.swing.JLabel();
+        search_field_list = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         wki_user_list = new javax.swing.JList<>();
         user_info_panel = new javax.swing.JPanel();
@@ -116,7 +190,7 @@ public final class ShopCartProcess extends AbstractModuleView<ShopCartWrapperDTO
         jPanel5 = new javax.swing.JPanel();
         all_months_button = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
-        current_year = new javax.swing.JLabel();
+        jSpinner1 = new javax.swing.JSpinner();
         jPanel14 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         months_paid_field = new javax.swing.JTextField();
@@ -225,19 +299,27 @@ public final class ShopCartProcess extends AbstractModuleView<ShopCartWrapperDTO
         jPanel6.setPreferredSize(new java.awt.Dimension(500, 30));
         jPanel6.setLayout(new java.awt.BorderLayout());
 
+        jPanel11.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel11.setLayout(new javax.swing.BoxLayout(jPanel11, javax.swing.BoxLayout.LINE_AXIS));
+
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel1.setText("Buscador");
-        jLabel1.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel6.add(jLabel1, java.awt.BorderLayout.LINE_START);
-
-        search_field_list.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        jPanel6.add(search_field_list, java.awt.BorderLayout.CENTER);
+        jLabel1.setPreferredSize(new java.awt.Dimension(80, 20));
+        jPanel11.add(jLabel1);
 
         count_elements_label.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         count_elements_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         count_elements_label.setText("0");
         count_elements_label.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel6.add(count_elements_label, java.awt.BorderLayout.EAST);
+        jPanel11.add(count_elements_label);
+
+        jPanel6.add(jPanel11, java.awt.BorderLayout.WEST);
+
+        search_field_list.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jPanel6.add(search_field_list, java.awt.BorderLayout.CENTER);
+
+        jButton1.setText("Buscar");
+        jPanel6.add(jButton1, java.awt.BorderLayout.LINE_END);
 
         search_register_panel.add(jPanel6, java.awt.BorderLayout.NORTH);
 
@@ -335,11 +417,7 @@ public final class ShopCartProcess extends AbstractModuleView<ShopCartWrapperDTO
         jLabel6.setText("Mese a pagar");
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 19));
         jPanel5.add(jLabel6, java.awt.BorderLayout.CENTER);
-
-        current_year.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        current_year.setText("XXXX");
-        current_year.setPreferredSize(new java.awt.Dimension(100, 23));
-        jPanel5.add(current_year, java.awt.BorderLayout.LINE_START);
+        jPanel5.add(jSpinner1, java.awt.BorderLayout.LINE_START);
 
         payment_info_panel.add(jPanel5);
 
@@ -748,11 +826,11 @@ public final class ShopCartProcess extends AbstractModuleView<ShopCartWrapperDTO
     private javax.swing.JTextField cost_field;
     private javax.swing.JLabel count;
     private javax.swing.JLabel count_elements_label;
-    private javax.swing.JLabel current_year;
     private javax.swing.JCheckBox dic;
     private javax.swing.JCheckBox ene;
     private javax.swing.JCheckBox feb;
     private javax.swing.JButton info_button;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -768,6 +846,7 @@ public final class ShopCartProcess extends AbstractModuleView<ShopCartWrapperDTO
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
@@ -788,6 +867,7 @@ public final class ShopCartProcess extends AbstractModuleView<ShopCartWrapperDTO
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JCheckBox jul;
     private javax.swing.JCheckBox jun;
     private javax.swing.JTextField last_month_paid_field;
@@ -934,6 +1014,16 @@ public final class ShopCartProcess extends AbstractModuleView<ShopCartWrapperDTO
     @Override
     public void setObjectSearch(WaterIntakeUserDTO object) {
         object_search = object;
+    }
+
+    @Override
+    public void executeFinal() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<AbstractModuleView<ShopCartWrapperDTO>> getViews() {
+        return List.of();
     }
 
 }

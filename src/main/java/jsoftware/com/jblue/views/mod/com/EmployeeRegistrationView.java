@@ -12,7 +12,9 @@ import java.time.LocalDate;
 import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
+import jsoftware.com.jblue.controllers.compc.WizardController;
 import jsoftware.com.jblue.model.dao.StreetDAO;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
@@ -39,6 +41,18 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
      */
     public EmployeeRegistrationView(EmployeeRegisterWrapperDTO builder) {
         super(builder);
+        initComponents();
+        build();
+    }
+
+    /**
+     * Creates new form EmployeeView
+     *
+     * @param builder
+     * @param controller
+     */
+    public EmployeeRegistrationView(EmployeeRegisterWrapperDTO builder, Controller controller) {
+        super(builder, controller);
         initComponents();
         build();
     }

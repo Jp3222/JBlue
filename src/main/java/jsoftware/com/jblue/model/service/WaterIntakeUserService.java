@@ -5,12 +5,15 @@
 package jsoftware.com.jblue.model.service;
 
 import java.sql.SQLException;
+import java.util.List;
+import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jblue.model.constants.Const;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.WaterIntakeUserDAO;
 import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
+import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
 import jsoftware.com.jblue.model.exp.DataAccesObjectException;
-import jsoftware.com.jblue.model.abst.AbstractService;
+import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**
@@ -162,5 +165,9 @@ public class WaterIntakeUserService extends AbstractService {
         }
         res = true;
         return res;
+    }
+
+    public List<WaterIntakeUserDTO> search(JDBConnection connection, SystemSession ss, ShopCartWrapperDTO dto) {
+        return wki_user.search(connection, dto.getWki_user().getUserName());
     }
 }

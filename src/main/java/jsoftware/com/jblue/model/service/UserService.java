@@ -23,7 +23,7 @@ import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.util.FuncLogs;
+import jsoftware.com.jutil.util.JFuncLogs;
 
 /**
  *
@@ -79,7 +79,7 @@ public class UserService extends AbstractService implements Serializable {
         } catch (SQLException | CorruptInsertionException | KeyNotGenerateException ex) {
             rollback(connection);
             returnMessageError("ERROR AL REGISTRAR EL USUARIO");
-            FuncLogs.logError(
+            JFuncLogs.logError(
                     AppFiles.DIR_PROG_LOG_TODAY,
                     getClass(), ex,
                     getProcess_name(), "save",

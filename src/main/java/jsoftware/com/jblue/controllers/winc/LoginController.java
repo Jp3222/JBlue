@@ -34,7 +34,7 @@ import jsoftware.com.jblue.views.win.LoginWindows;
 import jsoftware.com.jblue.views.win.WMainMenu;
 import jsoftware.com.jutil.db.JDBConnection;
 import jsoftware.com.jutil.sys.LaunchApp;
-import jsoftware.com.jutil.util.FuncLogs;
+import jsoftware.com.jutil.util.JFuncLogs;
 
 /**
  *
@@ -117,7 +117,7 @@ public class LoginController extends WindowController {
             view.dispose();
 
             // Nuevo menu estandarizado a las aplicaciones
-            menu = ModuleFactory.getInstance().getWMainMenu();
+            menu = new WMainMenu();
             menu.setLogin(view);
 
             menu.setVisible(true);
@@ -168,11 +168,11 @@ public class LoginController extends WindowController {
     }
 
     public void log(Exception e, String method_name) {
-        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "MAIN", method_name, e.getMessage());
+        JFuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "MAIN", method_name, e.getMessage());
     }
 
     public void log(String message) {
-        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", message);
+        JFuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", message);
     }
 
     public void setMenu(WMainMenu menu) {

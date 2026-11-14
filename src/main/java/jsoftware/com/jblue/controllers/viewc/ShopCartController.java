@@ -17,16 +17,19 @@
 package jsoftware.com.jblue.controllers.viewc;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.events.SearchUserTyped;
 import jsoftware.com.jblue.model.factories.CacheFactory;
-import jsoftware.com.jblue.model.service.PaymentService2;
+import jsoftware.com.jblue.model.service.ShopCarService;
 import jsoftware.com.jblue.util.cache.MemoListCache;
-import jsoftware.com.jblue.views.ShopCartProcess;
 import jsoftware.com.jblue.views.components.ObjectSearchComponent;
-import jsoftware.com.jblue.views.components.UserViewComponent;
+import jsoftware.com.jblue.views.mod.pro.ShoppingCartProcess;
 
 /**
  *
@@ -37,15 +40,25 @@ public class ShopCartController extends Controller {
     private static final long serialVersionUID = 1L;
 
     private final MemoListCache<UserDTO> memo_cache;
-    private final ShopCartProcess view;
+    private ShoppingCartProcess view;
     private final StringBuilder mov_book;
-    private final PaymentService2 service;
+    private final ShopCarService service;
+    private final SearchUserTyped event;
+    private final Timer throttleTimer;
 
-    public ShopCartController(ShopCartProcess view) {
+    public ShopCartController(ShoppingCartProcess view) {
         this.view = view;
         this.memo_cache = CacheFactory.USERS;
         this.mov_book = new StringBuilder(3000);
-        this.service = new PaymentService2(false, view.getDtoWrapper().getModule_name());
+        this.service = new ShopCarService(false, ShopCartController.class.getName());
+        this.event = new SearchUserTyped(service);
+        this.event.setView(view);
+        this.throttleTimer = new Timer(600, event);
+        this.throttleTimer.setRepeats(false);
+    }
+
+    public ShopCartController() {
+        this(null);
     }
 
     @Override
@@ -65,8 +78,6 @@ public class ShopCartController extends Controller {
                 otherPayments();
             case "lock" ->
                 lock();
-            case "info" ->
-                info();
             case "all_months" ->
                 allMonths((JCheckBox) e.getSource());
             case "month" ->
@@ -82,14 +93,6 @@ public class ShopCartController extends Controller {
     }
 
     void lock() {
-    }
-
-    void info() {
-        if (view.getObjectSearch() == null) {
-            JOptionPane.showMessageDialog(view, "Usuario no encontrado");
-            return;
-        }
-        UserViewComponent.showVisor((UserDTO) view.getObjectSearch().get("user"));
     }
 
     private void surcharges() {
@@ -165,4 +168,31 @@ public class ShopCartController extends Controller {
         }
         //view.setObjectSearch(o);
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+//        view.getDtoWrapper()
+//                .getWki_user()
+//                .getMap()
+//                .put("user_name", view.getTextSearchList());
+//        throttleTimer.restart();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+//        if (e.getClickCount() == 2) {
+//            JList<WaterIntakeUserDTO> list = view.getList();
+//            if (list.getSelectedIndex() <= 0) {
+//                return;
+//            }
+//            WaterIntakeUserDTO get = view.getListModel().get(list.getSelectedIndex());
+//            ShopCartWrapperDTO dtoWrapper = view.getDtoWrapper();
+//        }
+    }
+
+    public void setView(ShoppingCartProcess view) {
+        this.view = view;
+        event.setView(view);
+    }
+
 }

@@ -8,6 +8,8 @@ import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.Controller;
+import jsoftware.com.jblue.controllers.compc.WizardController;
 import jsoftware.com.jblue.controllers.viewc.EmployeeRegisterController;
 import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
@@ -28,11 +30,36 @@ public final class EmployeeRegisterProcess extends AbstractWizardView<EmployeeRe
 
     /**
      * Creates new form EmployeeRegisterProcess
+     *
+     * @param dto
      */
     public EmployeeRegisterProcess(EmployeeRegisterWrapperDTO dto) {
         super(dto);
         register_view = new EmployeeRegistrationView(dto);
         data_view = new EmployeeUserDataView(dto);
+        //
+        views = new ArrayList<>(2);
+        views.add(register_view);
+        views.add(data_view);
+        card_layout = (CardLayout) root_panel.getLayout();
+        //
+        build();
+    }
+
+    /**
+     * Creates new form EmployeeRegisterProcess
+     *
+     * @param dto
+     */
+    public EmployeeRegisterProcess() {
+        EmployeeRegisterWrapperDTO dto = new EmployeeRegisterWrapperDTO("14", "REGISTRO DE EMPLEADOS");
+        controller = new EmployeeRegisterController();
+        wcontroller = new WizardController();
+        setDto_wrapper(dto);
+        setController(controller);
+        setWcontroller(wcontroller);
+        register_view = new EmployeeRegistrationView(dto, controller);
+        data_view = new EmployeeUserDataView(dto, controller);
         //
         views = new ArrayList<>(2);
         views.add(register_view);

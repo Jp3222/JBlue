@@ -50,10 +50,10 @@ public final class AdministrationHistoryView extends AbstractModuleView<Administ
 
     @Override
     public void events() {
-        save_button.addActionListener(getMainController());
-        update_button.addActionListener(getMainController());
-        delete_button.addActionListener(getMainController());
-        cancel_button.addActionListener(getMainController());
+        save_button.addActionListener(controller);
+        update_button.addActionListener(controller);
+        delete_button.addActionListener(controller);
+        cancel_button.addActionListener(controller);
 
     }
 

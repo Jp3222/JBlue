@@ -14,7 +14,7 @@ import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.mod.pro.EmployeeRegisterProcess;
 import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.util.FuncLogs;
+import jsoftware.com.jutil.util.JFuncLogs;
 
 /**
  *
@@ -29,6 +29,10 @@ public class EmployeeRegisterController extends AbstractDBViewController<Employe
 
     public EmployeeRegisterController(boolean flag_dev, String module_name) {
         this.service = new EmployeeRegisterService(flag_dev, module_name);
+    }
+
+    public EmployeeRegisterController() {
+        this.service = new EmployeeRegisterService(false, "EmployeeRegisterController");
     }
 
     @Override
@@ -61,7 +65,7 @@ public class EmployeeRegisterController extends AbstractDBViewController<Employe
     }
 
     public void log(Exception e, String method_name) {
-        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, view.getDtoWrapper().getModule_name(), method_name, e.getMessage());
+        JFuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, view.getDtoWrapper().getModule_name(), method_name, e.getMessage());
     }
 
     @Override

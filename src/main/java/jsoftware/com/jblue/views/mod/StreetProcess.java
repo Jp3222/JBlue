@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.viewc.StreetsController;
+import jsoftware.com.jblue.model.abst.AbstractValidation;
 import jsoftware.com.jblue.model.dto.StreetDTO;
 import jsoftware.com.jblue.model.dto.wrp.StreetWrapperDTO;
-import jsoftware.com.jblue.model.abst.AbstractValidation;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
@@ -45,10 +45,10 @@ public final class StreetProcess extends AbstractModuleView<StreetWrapperDTO> im
         StreetsController street_controller = (StreetsController) getDtoWrapper().getController("MAIN");
         if (street_controller != null) {
             street_controller.setView(this);
-            save_button.addActionListener(getMainController());
-            update_button.addActionListener(getMainController());
-            delete_button.addActionListener(getMainController());
-            cancel_button.addActionListener(getMainController());
+            save_button.addActionListener(controller);
+            update_button.addActionListener(controller);
+            delete_button.addActionListener(controller);
+            cancel_button.addActionListener(controller);
         }
     }
 
@@ -92,6 +92,12 @@ public final class StreetProcess extends AbstractModuleView<StreetWrapperDTO> im
         jPanel10 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         street_name_field = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
         options_panel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         save_button = new javax.swing.JButton();
@@ -187,6 +193,33 @@ public final class StreetProcess extends AbstractModuleView<StreetWrapperDTO> im
         jPanel10.add(street_name_field, java.awt.BorderLayout.CENTER);
 
         panel_campos.add(jPanel10);
+
+        jPanel1.setName("jPanel1"); // NOI18N
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setText(bundle.getString("StreetProcess.jLabel2.text")); // NOI18N
+        jLabel2.setName("jLabel2"); // NOI18N
+        jPanel1.add(jLabel2, java.awt.BorderLayout.LINE_START);
+
+        panel_campos.add(jPanel1);
+
+        jPanel2.setName("jPanel2"); // NOI18N
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setText(bundle.getString("StreetProcess.jLabel3.text")); // NOI18N
+        jLabel3.setName("jLabel3"); // NOI18N
+        jPanel2.add(jLabel3, java.awt.BorderLayout.LINE_START);
+
+        panel_campos.add(jPanel2);
+
+        jPanel4.setName("jPanel4"); // NOI18N
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        jLabel5.setText(bundle.getString("StreetProcess.jLabel5.text")); // NOI18N
+        jLabel5.setName("jLabel5"); // NOI18N
+        jPanel4.add(jLabel5, java.awt.BorderLayout.LINE_START);
+
+        panel_campos.add(jPanel4);
 
         register_panel.add(panel_campos, java.awt.BorderLayout.CENTER);
 
@@ -363,14 +396,20 @@ public final class StreetProcess extends AbstractModuleView<StreetWrapperDTO> im
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel32;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JToggleButton jToggleButton2;

@@ -6,34 +6,53 @@ package jsoftware.com.jblue.views.vabst;
 
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.controllers.DBControllerModel;
 import jsoftware.com.jblue.controllers.compc.WizardController;
 import jsoftware.com.jblue.model.dto.wrp.ModuleWrapperDTO;
 import jsoftware.com.jblue.sys.app.AppFiles;
+import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.WizardModel;
-import jsoftware.com.jutil.util.FuncLogs;
+import jsoftware.com.jutil.util.JFuncLogs;
 
 /**
  *
  * @author JUAN PABLO CAMPOS CASASANERO
+ * @param <T>
  */
 public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends AbstractModuleView<T> implements WizardModel<T> {
 
     private static final long serialVersionUID = 1L;
+    protected WizardController wcontroller;
 
-    public AbstractWizardView(T dto_wrapper) {
-        super(dto_wrapper);
+    public AbstractWizardView(T dto_wrapper, Controller controller, WizardController wcontroller) {
+        super(dto_wrapper, controller);
         //COMPONENTES INICIALES
         initComponents();
-        setName(dto_wrapper.getModule_name());
-        //CONTROLADOR DEL ASISTENTE
-        WizardController wctronller = (WizardController) getDtoWrapper().getController(WIZARD_CONTROLLER);
-        wctronller.setView(this);
         card_layout = (CardLayout) root_panel.getLayout();
-        //MOVIMIENTOS DE SIGUIENTE Y ATRAS
-        next_panel_button.addActionListener(wctronller);
-        last_panel_button.addActionListener(wctronller);
+        if (Func.isNotNull(wcontroller)) {
+            this.wcontroller = wcontroller;
+            //MOVIMIENTOS DE SIGUIENTE Y ATRAS
+            next_panel_button.addActionListener(wcontroller);
+            last_panel_button.addActionListener(wcontroller);
+        }
+    }
+
+    public AbstractWizardView(T dto_wrapper, Controller controller) {
+        this(dto_wrapper, controller, null);
+    }
+
+    public AbstractWizardView(T dto_wrapper, WizardController wcontroller) {
+        this(dto_wrapper, null, wcontroller);
+    }
+
+    public AbstractWizardView(T dto_wrapper) {
+        this(dto_wrapper, null, null);
+    }
+
+    public AbstractWizardView() {
+        this(null, null, null);
     }
 
     @Override
@@ -41,9 +60,30 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
         next_panel_button.setEnabled(true);
         last_panel_button.setEnabled(false);
         current_index = 0;
-        card_layout.show(root_panel, views.get(0).getName());
+        if (views != null && !views.isEmpty()) {
+            card_layout.show(root_panel, views.get(current_index).getName());
+        }
         next_panel_button.setText("Siguiente");
         next_panel_button.setActionCommand(WizardModel.NEXT_STEP);
+    }
+
+    @Override
+    public void events() {
+        //CONTROLADOR DEL ASISTENTE
+        if (wcontroller != null) {
+            wcontroller.setView(this);
+            card_layout = (CardLayout) root_panel.getLayout();
+            //MOVIMIENTOS DE SIGUIENTE Y ATRAS
+            next_panel_button.addActionListener(wcontroller);
+            last_panel_button.addActionListener(wcontroller);
+        }
+    }
+
+    @Override
+    public void finalState() {
+        if (dto_wrapper != null) {
+            setName(dto_wrapper.getModule_name());
+        }
     }
 
     /**
@@ -208,7 +248,7 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
     }
 
     private void log(Exception e, String method_name) {
-        FuncLogs.logError(
+        JFuncLogs.logError(
                 AppFiles.DIR_PROG_LOG_TODAY,
                 getClass(),
                 e,
@@ -233,5 +273,13 @@ public abstract class AbstractWizardView<T extends ModuleWrapperDTO> extends Abs
     protected javax.swing.JPanel root_panel;
     protected javax.swing.JButton search_object;
     // End of variables declaration//GEN-END:variables
+
+    public WizardController getWcontroller() {
+        return wcontroller;
+    }
+
+    public void setWcontroller(WizardController wcontroller) {
+        this.wcontroller = wcontroller;
+    }
 
 }

@@ -14,7 +14,7 @@ import jsoftware.com.jblue.views.framework.FormModel;
  *
  * @author juanp
  */
-public abstract class AbstractFormView<T extends ModuleWrapperDTO> extends AbstractModuleView<T> implements FormModel<T>{
+public abstract class AbstractFormView<T extends ModuleWrapperDTO> extends AbstractModuleView<T> implements FormModel<T> {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,6 +30,10 @@ public abstract class AbstractFormView<T extends ModuleWrapperDTO> extends Abstr
         FormController wctronller = (FormController) getDtoWrapper().getController(MAIN_CONTROLLER);
         wctronller.setView(this);
         card_layout = (CardLayout) root_panel.getLayout();
+    }
+
+    public AbstractFormView() {
+        super();
     }
 
     /**
@@ -111,6 +115,9 @@ public abstract class AbstractFormView<T extends ModuleWrapperDTO> extends Abstr
 
     @Override
     public void getData() {
+        for (AbstractModuleView<T> i : views) {
+            i.getData();
+        }
     }
 
     @Override
@@ -122,4 +129,5 @@ public abstract class AbstractFormView<T extends ModuleWrapperDTO> extends Abstr
     public T getValues(boolean update) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
 }

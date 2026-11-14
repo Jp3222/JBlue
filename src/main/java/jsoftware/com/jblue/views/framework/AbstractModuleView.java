@@ -4,16 +4,19 @@
  */
 package jsoftware.com.jblue.views.framework;
 
+import jsoftware.com.jblue.model.view.ProcessModel;
 import java.awt.CardLayout;
+import java.util.ArrayList;
 import java.util.List;
 import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.model.dto.wrp.ModuleWrapperDTO;
+import jsoftware.com.jblue.util.Func;
 
 /**
  *
  * @author juanp
  */
-public abstract class AbstractModuleView<T extends ModuleWrapperDTO> extends SimpleView {
+public abstract class AbstractModuleView<T extends ModuleWrapperDTO> extends SimpleView implements ProcessModel {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,22 +25,35 @@ public abstract class AbstractModuleView<T extends ModuleWrapperDTO> extends Sim
     /**
      * DTO envoltorio con todos los objetos necesarios para manejar el proceso
      */
-    
-    private final T dto_wrapper;
+    protected T dto_wrapper;
     /**
      * Controlador principal de la vista
      */
-    public final Controller controller;
+    protected Controller controller;
 
     protected List<AbstractModuleView<T>> views;
     protected int current_index;
 
     public AbstractModuleView(T dto_wrapper) {
         super();
-        this.dto_wrapper = dto_wrapper;
-        this.controller = dto_wrapper.getController("MAIN");
-        setName(dto_wrapper.getModule_name());
-        views = null;
+        if (Func.isNotNull(dto_wrapper)) {
+            this.dto_wrapper = dto_wrapper;
+            if (dto_wrapper.getController_map().containsKey(CModel.MAIN_CONTROLLER)) {
+                this.controller = dto_wrapper.getController(CModel.MAIN_CONTROLLER);
+            }
+            this.setName(dto_wrapper.getModule_name());
+        }
+        this.views = new ArrayList<>(10);
+        this.current_index = 0;
+    }
+
+    public AbstractModuleView(T dto_wrapper, Controller controller) {
+        this(dto_wrapper);
+        this.controller = controller;
+    }
+
+    public AbstractModuleView() {
+        super();
     }
 
     @Override
@@ -67,16 +83,44 @@ public abstract class AbstractModuleView<T extends ModuleWrapperDTO> extends Sim
 
     public abstract void getData();
 
+    public void setDto_wrapper(T dto_wrapper) {
+        this.dto_wrapper = dto_wrapper;
+    }
+
     public T getDtoWrapper() {
         return dto_wrapper;
     }
 
-    public Controller getMainController() {
+    public Controller getController() {
         return controller;
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 
     public CardLayout getCardLayout() {
         return card_layout;
+    }
+
+    @Override
+    public int getProcessId() {
+        return dto_wrapper.getModule_id() == null ? -1 : Integer.parseInt(dto_wrapper.getModule_id());
+    }
+
+    @Override
+    public void setProcessId(int id) {
+        dto_wrapper.setModule_id(String.valueOf(id));
+    }
+
+    @Override
+    public String getProcessName() {
+        return dto_wrapper.getModule_name();
+    }
+
+    @Override
+    public void setProcessName(String process_name) {
+        dto_wrapper.setModule_name(process_name);
     }
 
 }

@@ -14,7 +14,7 @@ import jsoftware.com.jblue.model.dto.wrp.ModuleWrapperDTO;
  *
  * @author juanp
  */
-public abstract class AbstractModuleWindow <T extends ModuleWrapperDTO> extends AbstractAppWindows {
+public abstract class AbstractModuleWindow<T extends ModuleWrapperDTO> extends AbstractAppWindows {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,11 +23,11 @@ public abstract class AbstractModuleWindow <T extends ModuleWrapperDTO> extends 
     /**
      * DTO envoltorio con todos los objetos necesarios para manejar el proceso
      */
-    private final T dto_wrapper;
+    protected T dto_wrapper;
     /**
      * Controlador principal de la vista
      */
-    protected final Controller controller;
+    protected Controller controller;
 
     protected List<AbstractModuleView<T>> views;
     protected int current_index;
@@ -38,6 +38,11 @@ public abstract class AbstractModuleWindow <T extends ModuleWrapperDTO> extends 
         this.controller = dto_wrapper.getController("MAIN");
         setName(dto_wrapper.getModule_name());
         this.updateTitle(getDtoWrapper().getModule_name());
+        views = new ArrayList<>(30);
+    }
+
+    public AbstractModuleWindow() {
+        super();
         views = new ArrayList<>(30);
     }
 

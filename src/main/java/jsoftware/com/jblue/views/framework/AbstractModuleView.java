@@ -31,7 +31,7 @@ public abstract class AbstractModuleView<T extends ModuleWrapperDTO> extends Sim
      */
     protected Controller controller;
 
-    protected List<AbstractModuleView<T>> views;
+    protected final List<AbstractModuleView<T>> views;
     protected int current_index;
 
     public AbstractModuleView(T dto_wrapper) {
@@ -54,6 +54,7 @@ public abstract class AbstractModuleView<T extends ModuleWrapperDTO> extends Sim
 
     public AbstractModuleView() {
         super();
+        this.views = new ArrayList<>(10);
     }
 
     @Override

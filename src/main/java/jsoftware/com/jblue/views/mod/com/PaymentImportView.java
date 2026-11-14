@@ -4,22 +4,69 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import javax.swing.JOptionPane;
+import jsoftware.com.jblue.controllers.Controller;
+import jsoftware.com.jblue.model.abst.AbstractValidation;
 import jsoftware.com.jblue.model.dto.wrp.SpecificationWrapperDTO;
+import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.ShowDataModel;
+import jsoftware.com.jpaymentlib.model.dto.PaymentImportDTO;
 
 /**
  *
  * @author juanp
  */
-public class PaymentImportView extends AbstractModuleView<SpecificationWrapperDTO> implements DBObjectValues<SpecificationWrapperDTO>, ShowDataModel {
+public final class PaymentImportView extends AbstractModuleView<SpecificationWrapperDTO> implements DBObjectValues<PaymentImportDTO>, ShowDataModel {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form PaymentImportView
+     *
+     * @param dto
+     * @param controller
      */
-    public PaymentImportView() {
+    public PaymentImportView(SpecificationWrapperDTO dto, Controller controller) {
+        super(dto, controller);
         initComponents();
+        build();
+    }
+
+    @Override
+    public void build() {
+        components();
+        events();
+        initialState();
+        finalState();
+    }
+
+    @Override
+    public void components() {
+    }
+
+    @Override
+    public void events() {
+    }
+
+    @Override
+    public void initialState() {
+        amount_field.setText("0.00");
+        surcharge_field.setText("0.00");
+        discount_field.setText("0.00");
+        subsidy_field.setText("0.00");
+        is_variable_field.setSelected(false);
+        if (unit_type_field.getItemCount() > 0) {
+            unit_type_field.setSelectedIndex(0);
+        }
+        unit_field.setText("1");
+    }
+
+    @Override
+    public void finalState() {
     }
 
     /**
@@ -34,54 +81,54 @@ public class PaymentImportView extends AbstractModuleView<SpecificationWrapperDT
         register_panel = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         user_data_panel = new javax.swing.JPanel();
-        p_rfc = new javax.swing.JPanel();
+        p_concept = new javax.swing.JPanel();
         jLabel40 = new javax.swing.JLabel();
         search_user_button = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
-        p_curp = new javax.swing.JPanel();
+        p_currency = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
-        curp_field = new javax.swing.JTextField();
+        currency_field = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
-        pc_nombre = new javax.swing.JPanel();
+        p_amount = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        first_name_field = new javax.swing.JTextField();
+        amount_field = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        pc_ap = new javax.swing.JPanel();
+        p_surcharge = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        last_name1_field = new javax.swing.JTextField();
+        surcharge_field = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        pc_am = new javax.swing.JPanel();
+        p_discount = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        last_name2_field = new javax.swing.JTextField();
+        discount_field = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        p_gender = new javax.swing.JPanel();
+        p_subsidy = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
-        last_name2_field1 = new javax.swing.JTextField();
-        p_born_date = new javax.swing.JPanel();
+        subsidy_field = new javax.swing.JTextField();
+        p_variable = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jPanel2 = new javax.swing.JPanel();
+        is_variable_field = new javax.swing.JCheckBox();
+        p_type_unit = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel32 = new javax.swing.JLabel();
-        gender_field = new javax.swing.JComboBox<>();
-        jPanel3 = new javax.swing.JPanel();
+        unit_type_field = new javax.swing.JComboBox<>();
+        p_unit = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
-        phone_number1_field = new javax.swing.JTextField();
+        unit_field = new javax.swing.JTextField();
         jLabel34 = new javax.swing.JLabel();
 
-        setName("Form"); // NOI18N
+        setName("Importes de Pago"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.CardLayout());
 
         register_panel.setName("register_panel"); // NOI18N
         register_panel.setLayout(new java.awt.BorderLayout());
 
+        jLabel8.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/com/Bundle"); // NOI18N
         jLabel8.setText(bundle.getString("PaymentImportView.jLabel8.text")); // NOI18N
-        jLabel8.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
         jLabel8.setName("jLabel8"); // NOI18N
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 50));
         register_panel.add(jLabel8, java.awt.BorderLayout.NORTH);
@@ -90,182 +137,183 @@ public class PaymentImportView extends AbstractModuleView<SpecificationWrapperDT
         user_data_panel.setPreferredSize(new java.awt.Dimension(500, 600));
         user_data_panel.setLayout(new java.awt.GridLayout(14, 1, 0, 10));
 
-        p_rfc.setName("p_rfc"); // NOI18N
-        p_rfc.setLayout(new java.awt.BorderLayout());
+        p_concept.setName("p_concept"); // NOI18N
+        p_concept.setLayout(new java.awt.BorderLayout());
 
         jLabel40.setText(bundle.getString("PaymentImportView.jLabel40.text")); // NOI18N
         jLabel40.setName("jLabel40"); // NOI18N
         jLabel40.setPreferredSize(new java.awt.Dimension(150, 25));
-        p_rfc.add(jLabel40, java.awt.BorderLayout.WEST);
+        p_concept.add(jLabel40, java.awt.BorderLayout.WEST);
 
         search_user_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
         search_user_button.setText(bundle.getString("PaymentImportView.search_user_button.text")); // NOI18N
         search_user_button.setActionCommand(bundle.getString("PaymentImportView.search_user_button.actionCommand")); // NOI18N
         search_user_button.setName("search_user_button"); // NOI18N
         search_user_button.setPreferredSize(new java.awt.Dimension(80, 30));
-        p_rfc.add(search_user_button, java.awt.BorderLayout.LINE_END);
+        p_concept.add(search_user_button, java.awt.BorderLayout.LINE_END);
 
         jComboBox1.setName("jComboBox1"); // NOI18N
-        p_rfc.add(jComboBox1, java.awt.BorderLayout.CENTER);
+        p_concept.add(jComboBox1, java.awt.BorderLayout.CENTER);
 
-        user_data_panel.add(p_rfc);
+        user_data_panel.add(p_concept);
 
-        p_curp.setName("p_curp"); // NOI18N
-        p_curp.setLayout(new java.awt.BorderLayout());
+        p_currency.setName("p_currency"); // NOI18N
+        p_currency.setLayout(new java.awt.BorderLayout());
 
         jLabel22.setText(bundle.getString("PaymentImportView.jLabel22.text")); // NOI18N
         jLabel22.setName("jLabel22"); // NOI18N
         jLabel22.setPreferredSize(new java.awt.Dimension(150, 25));
-        p_curp.add(jLabel22, java.awt.BorderLayout.WEST);
+        p_currency.add(jLabel22, java.awt.BorderLayout.WEST);
 
-        curp_field.setText(bundle.getString("PaymentImportView.curp_field.text")); // NOI18N
-        curp_field.setName("curp_field"); // NOI18N
-        p_curp.add(curp_field, java.awt.BorderLayout.CENTER);
+        currency_field.setEditable(false);
+        currency_field.setText(bundle.getString("PaymentImportView.currency_field.text")); // NOI18N
+        currency_field.setName("currency_field"); // NOI18N
+        p_currency.add(currency_field, java.awt.BorderLayout.CENTER);
 
         jLabel23.setName("jLabel23"); // NOI18N
         jLabel23.setPreferredSize(new java.awt.Dimension(80, 30));
-        p_curp.add(jLabel23, java.awt.BorderLayout.LINE_END);
+        p_currency.add(jLabel23, java.awt.BorderLayout.LINE_END);
 
-        user_data_panel.add(p_curp);
+        user_data_panel.add(p_currency);
 
-        pc_nombre.setName("pc_nombre"); // NOI18N
-        pc_nombre.setLayout(new java.awt.BorderLayout());
+        p_amount.setName("p_amount"); // NOI18N
+        p_amount.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setText(bundle.getString("PaymentImportView.jLabel2.text")); // NOI18N
         jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel2.setMaximumSize(new java.awt.Dimension(60, 20));
         jLabel2.setName("jLabel2"); // NOI18N
         jLabel2.setPreferredSize(new java.awt.Dimension(150, 25));
-        pc_nombre.add(jLabel2, java.awt.BorderLayout.WEST);
+        p_amount.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        first_name_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        first_name_field.setName("first_name_field"); // NOI18N
-        first_name_field.setPreferredSize(new java.awt.Dimension(100, 30));
-        first_name_field.setToolTipText(bundle.getString("PaymentImportView.first_name_field.toolTipText")); // NOI18N
-        pc_nombre.add(first_name_field, java.awt.BorderLayout.CENTER);
+        amount_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        amount_field.setToolTipText(bundle.getString("PaymentImportView.amount_field.toolTipText")); // NOI18N
+        amount_field.setName("amount_field"); // NOI18N
+        amount_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        p_amount.add(amount_field, java.awt.BorderLayout.CENTER);
 
         jLabel7.setName("jLabel7"); // NOI18N
         jLabel7.setPreferredSize(new java.awt.Dimension(80, 30));
-        pc_nombre.add(jLabel7, java.awt.BorderLayout.LINE_END);
+        p_amount.add(jLabel7, java.awt.BorderLayout.LINE_END);
 
-        user_data_panel.add(pc_nombre);
+        user_data_panel.add(p_amount);
 
-        pc_ap.setName("pc_ap"); // NOI18N
-        pc_ap.setPreferredSize(new java.awt.Dimension(250, 30));
-        pc_ap.setLayout(new java.awt.BorderLayout());
+        p_surcharge.setName("p_surcharge"); // NOI18N
+        p_surcharge.setPreferredSize(new java.awt.Dimension(250, 30));
+        p_surcharge.setLayout(new java.awt.BorderLayout());
 
         jLabel3.setText(bundle.getString("PaymentImportView.jLabel3.text")); // NOI18N
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
         jLabel3.setPreferredSize(new java.awt.Dimension(150, 25));
-        pc_ap.add(jLabel3, java.awt.BorderLayout.WEST);
+        p_surcharge.add(jLabel3, java.awt.BorderLayout.WEST);
 
-        last_name1_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        last_name1_field.setName("last_name1_field"); // NOI18N
-        last_name1_field.setPreferredSize(new java.awt.Dimension(100, 30));
-        last_name1_field.setToolTipText(bundle.getString("PaymentImportView.last_name1_field.toolTipText")); // NOI18N
-        pc_ap.add(last_name1_field, java.awt.BorderLayout.CENTER);
+        surcharge_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        surcharge_field.setToolTipText(bundle.getString("PaymentImportView.surcharge_field.toolTipText")); // NOI18N
+        surcharge_field.setName("surcharge_field"); // NOI18N
+        surcharge_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        p_surcharge.add(surcharge_field, java.awt.BorderLayout.CENTER);
 
         jLabel9.setName("jLabel9"); // NOI18N
         jLabel9.setPreferredSize(new java.awt.Dimension(80, 30));
-        pc_ap.add(jLabel9, java.awt.BorderLayout.LINE_END);
+        p_surcharge.add(jLabel9, java.awt.BorderLayout.LINE_END);
 
-        user_data_panel.add(pc_ap);
+        user_data_panel.add(p_surcharge);
 
-        pc_am.setName("pc_am"); // NOI18N
-        pc_am.setPreferredSize(new java.awt.Dimension(250, 30));
-        pc_am.setLayout(new java.awt.BorderLayout());
+        p_discount.setName("p_discount"); // NOI18N
+        p_discount.setPreferredSize(new java.awt.Dimension(250, 30));
+        p_discount.setLayout(new java.awt.BorderLayout());
 
         jLabel4.setText(bundle.getString("PaymentImportView.jLabel4.text")); // NOI18N
         jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
         jLabel4.setPreferredSize(new java.awt.Dimension(150, 25));
-        pc_am.add(jLabel4, java.awt.BorderLayout.WEST);
+        p_discount.add(jLabel4, java.awt.BorderLayout.WEST);
 
-        last_name2_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        last_name2_field.setName("last_name2_field"); // NOI18N
-        last_name2_field.setPreferredSize(new java.awt.Dimension(100, 30));
-        last_name2_field.setToolTipText(bundle.getString("PaymentImportView.last_name2_field.toolTipText")); // NOI18N
-        pc_am.add(last_name2_field, java.awt.BorderLayout.CENTER);
+        discount_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        discount_field.setToolTipText(bundle.getString("PaymentImportView.discount_field.toolTipText")); // NOI18N
+        discount_field.setName("discount_field"); // NOI18N
+        discount_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        p_discount.add(discount_field, java.awt.BorderLayout.CENTER);
 
         jLabel10.setName("jLabel10"); // NOI18N
         jLabel10.setPreferredSize(new java.awt.Dimension(80, 30));
-        pc_am.add(jLabel10, java.awt.BorderLayout.LINE_END);
+        p_discount.add(jLabel10, java.awt.BorderLayout.LINE_END);
 
-        user_data_panel.add(pc_am);
+        user_data_panel.add(p_discount);
 
-        p_gender.setName("p_gender"); // NOI18N
-        p_gender.setLayout(new java.awt.BorderLayout());
+        p_subsidy.setName("p_subsidy"); // NOI18N
+        p_subsidy.setLayout(new java.awt.BorderLayout());
 
         jLabel25.setText(bundle.getString("PaymentImportView.jLabel25.text")); // NOI18N
         jLabel25.setName("jLabel25"); // NOI18N
         jLabel25.setPreferredSize(new java.awt.Dimension(150, 25));
-        p_gender.add(jLabel25, java.awt.BorderLayout.LINE_START);
+        p_subsidy.add(jLabel25, java.awt.BorderLayout.LINE_START);
 
         jLabel26.setName("jLabel26"); // NOI18N
         jLabel26.setPreferredSize(new java.awt.Dimension(80, 30));
-        p_gender.add(jLabel26, java.awt.BorderLayout.LINE_END);
+        p_subsidy.add(jLabel26, java.awt.BorderLayout.LINE_END);
 
-        last_name2_field1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        last_name2_field1.setToolTipText(bundle.getString("PaymentImportView.last_name2_field1.toolTipText")); // NOI18N
-        last_name2_field1.setName("last_name2_field1"); // NOI18N
-        last_name2_field1.setPreferredSize(new java.awt.Dimension(100, 30));
-        p_gender.add(last_name2_field1, java.awt.BorderLayout.CENTER);
+        subsidy_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        subsidy_field.setToolTipText(bundle.getString("PaymentImportView.subsidy_field.toolTipText")); // NOI18N
+        subsidy_field.setName("subsidy_field"); // NOI18N
+        subsidy_field.setPreferredSize(new java.awt.Dimension(100, 30));
+        p_subsidy.add(subsidy_field, java.awt.BorderLayout.CENTER);
 
-        user_data_panel.add(p_gender);
+        user_data_panel.add(p_subsidy);
 
-        p_born_date.setName("p_born_date"); // NOI18N
-        p_born_date.setLayout(new java.awt.BorderLayout());
+        p_variable.setName("p_variable"); // NOI18N
+        p_variable.setLayout(new java.awt.BorderLayout());
 
         jLabel27.setText(bundle.getString("PaymentImportView.jLabel27.text")); // NOI18N
         jLabel27.setName("jLabel27"); // NOI18N
         jLabel27.setPreferredSize(new java.awt.Dimension(150, 25));
-        p_born_date.add(jLabel27, java.awt.BorderLayout.WEST);
+        p_variable.add(jLabel27, java.awt.BorderLayout.WEST);
 
         jLabel38.setName("jLabel38"); // NOI18N
         jLabel38.setPreferredSize(new java.awt.Dimension(80, 30));
-        p_born_date.add(jLabel38, java.awt.BorderLayout.LINE_END);
+        p_variable.add(jLabel38, java.awt.BorderLayout.LINE_END);
 
-        jCheckBox1.setText(bundle.getString("PaymentImportView.jCheckBox1.text")); // NOI18N
-        jCheckBox1.setName("jCheckBox1"); // NOI18N
-        p_born_date.add(jCheckBox1, java.awt.BorderLayout.CENTER);
+        is_variable_field.setText(bundle.getString("PaymentImportView.is_variable_field.text")); // NOI18N
+        is_variable_field.setName("is_variable_field"); // NOI18N
+        p_variable.add(is_variable_field, java.awt.BorderLayout.CENTER);
 
-        user_data_panel.add(p_born_date);
+        user_data_panel.add(p_variable);
 
-        jPanel2.setName("jPanel2"); // NOI18N
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        p_type_unit.setName("p_type_unit"); // NOI18N
+        p_type_unit.setLayout(new java.awt.BorderLayout());
 
         jLabel11.setText(bundle.getString("PaymentImportView.jLabel11.text")); // NOI18N
         jLabel11.setName("jLabel11"); // NOI18N
         jLabel11.setPreferredSize(new java.awt.Dimension(150, 25));
-        jPanel2.add(jLabel11, java.awt.BorderLayout.WEST);
+        p_type_unit.add(jLabel11, java.awt.BorderLayout.WEST);
 
         jLabel32.setName("jLabel32"); // NOI18N
         jLabel32.setPreferredSize(new java.awt.Dimension(80, 30));
-        jPanel2.add(jLabel32, java.awt.BorderLayout.LINE_END);
+        p_type_unit.add(jLabel32, java.awt.BorderLayout.LINE_END);
 
-        gender_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No. Definido", "Masculino.", "Femenino." }));
-        gender_field.setName("gender_field"); // NOI18N
-        jPanel2.add(gender_field, java.awt.BorderLayout.CENTER);
+        unit_type_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No. Definido", "Masculino.", "Femenino." }));
+        unit_type_field.setName("unit_type_field"); // NOI18N
+        p_type_unit.add(unit_type_field, java.awt.BorderLayout.CENTER);
 
-        user_data_panel.add(jPanel2);
+        user_data_panel.add(p_type_unit);
 
-        jPanel3.setName("jPanel3"); // NOI18N
-        jPanel3.setLayout(new java.awt.BorderLayout());
+        p_unit.setName("p_unit"); // NOI18N
+        p_unit.setLayout(new java.awt.BorderLayout());
 
         jLabel14.setText(bundle.getString("PaymentImportView.jLabel14.text")); // NOI18N
         jLabel14.setName("jLabel14"); // NOI18N
         jLabel14.setPreferredSize(new java.awt.Dimension(150, 25));
-        jPanel3.add(jLabel14, java.awt.BorderLayout.WEST);
+        p_unit.add(jLabel14, java.awt.BorderLayout.WEST);
 
-        phone_number1_field.setName("phone_number1_field"); // NOI18N
-        jPanel3.add(phone_number1_field, java.awt.BorderLayout.CENTER);
+        unit_field.setName("unit_field"); // NOI18N
+        p_unit.add(unit_field, java.awt.BorderLayout.CENTER);
 
         jLabel34.setName("jLabel34"); // NOI18N
         jLabel34.setPreferredSize(new java.awt.Dimension(80, 30));
-        jPanel3.add(jLabel34, java.awt.BorderLayout.LINE_END);
+        p_unit.add(jLabel34, java.awt.BorderLayout.LINE_END);
 
-        user_data_panel.add(jPanel3);
+        user_data_panel.add(p_unit);
 
         register_panel.add(user_data_panel, java.awt.BorderLayout.CENTER);
 
@@ -274,10 +322,10 @@ public class PaymentImportView extends AbstractModuleView<SpecificationWrapperDT
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField curp_field;
-    private javax.swing.JTextField first_name_field;
-    private javax.swing.JComboBox<String> gender_field;
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JTextField amount_field;
+    private javax.swing.JTextField currency_field;
+    private javax.swing.JTextField discount_field;
+    private javax.swing.JCheckBox is_variable_field;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -297,37 +345,103 @@ public class PaymentImportView extends AbstractModuleView<SpecificationWrapperDT
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField last_name1_field;
-    private javax.swing.JTextField last_name2_field;
-    private javax.swing.JTextField last_name2_field1;
-    private javax.swing.JPanel p_born_date;
-    private javax.swing.JPanel p_curp;
-    private javax.swing.JPanel p_gender;
-    private javax.swing.JPanel p_rfc;
-    private javax.swing.JPanel pc_am;
-    private javax.swing.JPanel pc_ap;
-    private javax.swing.JPanel pc_nombre;
-    private javax.swing.JTextField phone_number1_field;
+    private javax.swing.JPanel p_amount;
+    private javax.swing.JPanel p_concept;
+    private javax.swing.JPanel p_currency;
+    private javax.swing.JPanel p_discount;
+    private javax.swing.JPanel p_subsidy;
+    private javax.swing.JPanel p_surcharge;
+    private javax.swing.JPanel p_type_unit;
+    private javax.swing.JPanel p_unit;
+    private javax.swing.JPanel p_variable;
     private javax.swing.JPanel register_panel;
     private javax.swing.JButton search_user_button;
+    private javax.swing.JTextField subsidy_field;
+    private javax.swing.JTextField surcharge_field;
+    private javax.swing.JTextField unit_field;
+    private javax.swing.JComboBox<String> unit_type_field;
     private javax.swing.JPanel user_data_panel;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void getData() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean res = isValuesOK();
+        if (!res) {
+            return;
+        }
+        SpecificationWrapperDTO dto = getDtoWrapper();
+        dto.setPayment_import(getValues(true));
+        dto.setPayment_import_valid(res);
     }
 
     @Override
     public boolean isValuesOK() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean res;
+        String input = Func.input(currency_field.getText());
+        AbstractValidation v = new AbstractValidation();
+        v.addRuler(
+                "doc-not-null",
+                input,
+                t -> Func.isNotNull(t),
+                "EL CAMPO CONCEPTO NO PUEDE ESTAR VACIO"
+        );
+
+        input = Func.input(amount_field.getText());
+        v.addRuler(
+                "doc-not-null",
+                input,
+                t -> Func.isNotNull(t) && !Func.isDecimalNumber(t) && Func.isZero(t),
+                "EL CAMPO MONTO NO PUEDE ESTAR VACIO"
+        );
+        input = Func.input(surcharge_field.getText());
+        v.addRuler(
+                "doc-not-null",
+                input,
+                t -> Func.isNotNull(t) && !Func.isDecimalNumber(t),
+                "EL CAMPO RECARGO NO PUEDE ESTAR VACIO"
+        );
+        input = Func.input(subsidy_field.getText());
+        v.addRuler(
+                "doc-not-null",
+                input,
+                t -> Func.isNotNull(t) && !Func.isDecimalNumber(t),
+                "EL CAMPO SUBSIDIO NO PUEDE ESTAR VACIO"
+        );
+        input = Func.input(discount_field.getText());
+        v.addRuler(
+                "doc-not-null",
+                input,
+                t -> Func.isNotNull(t) && !Func.isDecimalNumber(t),
+                "EL CAMPO DESCUENTO NO PUEDE ESTAR VACIO"
+        );
+        res = v.isValid();
+        if (!res) {
+            JOptionPane.showMessageDialog(this, v.getErrorMessage());
+        }
+        return res;
     }
 
     @Override
-    public SpecificationWrapperDTO getValues(boolean update) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public PaymentImportDTO getValues(boolean update) {
+        PaymentImportDTO dto = new PaymentImportDTO();
+        dto.setCurrency("MXM");
+        String aux = Func.input(amount_field.getText());
+        dto.setAmount(new BigDecimal(aux));
+
+        aux = Func.input(surcharge_field.getText());
+        dto.setSurcharge(new BigDecimal(aux));
+
+        aux = Func.input(subsidy_field.getText());
+        dto.setSubsidy(new BigDecimal(aux));
+
+        aux = Func.input(discount_field.getText());
+        dto.setDiscount(new BigDecimal(aux));
+
+        dto.setIs_variable(is_variable_field.isSelected());
+
+        dto.setUnit_id(1);
+        dto.setUnits(1);
+        return dto;
     }
 
     @Override

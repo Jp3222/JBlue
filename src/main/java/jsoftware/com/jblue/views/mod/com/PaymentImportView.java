@@ -4,11 +4,16 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
+import jsoftware.com.jblue.model.dto.wrp.SpecificationWrapperDTO;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
+import jsoftware.com.jblue.views.framework.ShowDataModel;
+
 /**
  *
  * @author juanp
  */
-public class PaymentImportView extends javax.swing.JPanel {
+public class PaymentImportView extends AbstractModuleView<SpecificationWrapperDTO> implements DBObjectValues<SpecificationWrapperDTO>, ShowDataModel {
 
     /**
      * Creates new form PaymentImportView
@@ -309,4 +314,24 @@ public class PaymentImportView extends javax.swing.JPanel {
     private javax.swing.JButton search_user_button;
     private javax.swing.JPanel user_data_panel;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void getData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isValuesOK() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public SpecificationWrapperDTO getValues(boolean update) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void showData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

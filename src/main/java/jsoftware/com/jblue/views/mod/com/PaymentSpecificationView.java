@@ -4,11 +4,16 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
+import jsoftware.com.jblue.model.dto.wrp.SpecificationWrapperDTO;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
+import jsoftware.com.jblue.views.framework.ShowDataModel;
+
 /**
  *
  * @author juanp
  */
-public class PaymentSpecificationView extends javax.swing.JPanel {
+public class PaymentSpecificationView extends AbstractModuleView<SpecificationWrapperDTO> implements DBObjectValues<SpecificationWrapperDTO>, ShowDataModel {
 
     /**
      * Creates new form PaymentSpecificationView
@@ -26,11 +31,106 @@ public class PaymentSpecificationView extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel9 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        pc_nombre = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        pc_nombre1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
+
         setName("Form"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
+
+        jLabel9.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("jsoftware/com/jblue/views/mod/com/Bundle"); // NOI18N
+        jLabel9.setText(bundle.getString("PaymentSpecificationView.jLabel9.text")); // NOI18N
+        jLabel9.setName("jLabel9"); // NOI18N
+        jLabel9.setPreferredSize(new java.awt.Dimension(150, 50));
+        add(jLabel9, java.awt.BorderLayout.NORTH);
+
+        jPanel1.setName("jPanel1"); // NOI18N
+        jPanel1.setLayout(new java.awt.GridLayout(14, 0));
+
+        pc_nombre.setName("pc_nombre"); // NOI18N
+        pc_nombre.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel2.setText(bundle.getString("PaymentSpecificationView.jLabel2.text")); // NOI18N
+        jLabel2.setMaximumSize(new java.awt.Dimension(60, 20));
+        jLabel2.setName("jLabel2"); // NOI18N
+        jLabel2.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_nombre.add(jLabel2, java.awt.BorderLayout.WEST);
+
+        jLabel7.setName("jLabel7"); // NOI18N
+        jLabel7.setPreferredSize(new java.awt.Dimension(80, 30));
+        pc_nombre.add(jLabel7, java.awt.BorderLayout.LINE_END);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setName("jComboBox1"); // NOI18N
+        pc_nombre.add(jComboBox1, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(pc_nombre);
+
+        pc_nombre1.setName("pc_nombre1"); // NOI18N
+        pc_nombre1.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel3.setText(bundle.getString("PaymentSpecificationView.jLabel3.text")); // NOI18N
+        jLabel3.setMaximumSize(new java.awt.Dimension(60, 20));
+        jLabel3.setName("jLabel3"); // NOI18N
+        jLabel3.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_nombre1.add(jLabel3, java.awt.BorderLayout.WEST);
+
+        jLabel8.setName("jLabel8"); // NOI18N
+        jLabel8.setPreferredSize(new java.awt.Dimension(80, 30));
+        pc_nombre1.add(jLabel8, java.awt.BorderLayout.LINE_END);
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setName("jComboBox2"); // NOI18N
+        pc_nombre1.add(jComboBox2, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(pc_nombre1);
+
+        add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel pc_nombre;
+    private javax.swing.JPanel pc_nombre1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void getData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isValuesOK() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public SpecificationWrapperDTO getValues(boolean update) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void showData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

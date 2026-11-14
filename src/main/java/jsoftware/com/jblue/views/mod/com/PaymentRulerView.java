@@ -4,11 +4,16 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
+import jsoftware.com.jblue.model.dto.wrp.SpecificationWrapperDTO;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
+import jsoftware.com.jblue.views.framework.ShowDataModel;
+
 /**
  *
  * @author juanp
  */
-public class PaymentRulerView extends javax.swing.JPanel {
+public class PaymentRulerView extends AbstractModuleView<SpecificationWrapperDTO> implements DBObjectValues<SpecificationWrapperDTO>, ShowDataModel {
 
     /**
      * Creates new form PaymentRulerView
@@ -29,14 +34,11 @@ public class PaymentRulerView extends javax.swing.JPanel {
         register_panel = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         user_data_panel = new javax.swing.JPanel();
-        p_rfc = new javax.swing.JPanel();
-        jLabel40 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        search_user_button = new javax.swing.JButton();
-        p_curp = new javax.swing.JPanel();
+        p_name_ruler = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         curp_field = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
+        p_description_ruler = new javax.swing.JPanel();
         pc_nombre = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         first_name_field = new javax.swing.JTextField();
@@ -51,28 +53,34 @@ public class PaymentRulerView extends javax.swing.JPanel {
         jLabel10 = new javax.swing.JLabel();
         p_gender = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
-        gender_field = new javax.swing.JComboBox<>();
         jLabel26 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
         p_born_date = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
-        jLabel38 = new javax.swing.JLabel();
-        birdate_field = new com.github.lgooddatepicker.components.DatePicker();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        email_field = new javax.swing.JTextField();
-        jLabel32 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel14 = new javax.swing.JLabel();
-        phone_number1_field = new javax.swing.JTextField();
-        jLabel34 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel19 = new javax.swing.JLabel();
-        phone_number2_field = new javax.swing.JTextField();
-        jLabel35 = new javax.swing.JLabel();
-        p_user_type = new javax.swing.JPanel();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel36 = new javax.swing.JLabel();
-        user_type_field = new javax.swing.JComboBox<>();
+        jCheckBox9 = new javax.swing.JCheckBox();
+        jPanel1 = new javax.swing.JPanel();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jCheckBox3 = new javax.swing.JCheckBox();
+        jPanel5 = new javax.swing.JPanel();
+        jCheckBox4 = new javax.swing.JCheckBox();
+        jCheckBox5 = new javax.swing.JCheckBox();
+        jCheckBox6 = new javax.swing.JCheckBox();
+        jCheckBox7 = new javax.swing.JCheckBox();
+        jPanel6 = new javax.swing.JPanel();
+        jCheckBox8 = new javax.swing.JCheckBox();
+        pc_nombre1 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        first_name_field1 = new javax.swing.JTextField();
+        jPanel7 = new javax.swing.JPanel();
+        pc_nombre2 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        first_name_field2 = new javax.swing.JTextField();
+        pc_nombre3 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        first_name_field3 = new javax.swing.JTextField();
+        pc_nombre4 = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        first_name_field4 = new javax.swing.JTextField();
 
         setName("Form"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
@@ -93,43 +101,25 @@ public class PaymentRulerView extends javax.swing.JPanel {
         user_data_panel.setPreferredSize(new java.awt.Dimension(500, 600));
         user_data_panel.setLayout(new java.awt.GridLayout(14, 1, 0, 10));
 
-        p_rfc.setName("p_rfc"); // NOI18N
-        p_rfc.setLayout(new java.awt.BorderLayout());
-
-        jLabel40.setText(bundle.getString("PaymentRulerView.jLabel40.text")); // NOI18N
-        jLabel40.setName("jLabel40"); // NOI18N
-        jLabel40.setPreferredSize(new java.awt.Dimension(150, 25));
-        p_rfc.add(jLabel40, java.awt.BorderLayout.WEST);
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.setName("jComboBox1"); // NOI18N
-        p_rfc.add(jComboBox1, java.awt.BorderLayout.CENTER);
-
-        search_user_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/recargar.png"))); // NOI18N
-        search_user_button.setText(bundle.getString("PaymentRulerView.search_user_button.text")); // NOI18N
-        search_user_button.setActionCommand(bundle.getString("PaymentRulerView.search_user_button.actionCommand")); // NOI18N
-        search_user_button.setName("search_user_button"); // NOI18N
-        search_user_button.setPreferredSize(new java.awt.Dimension(80, 30));
-        p_rfc.add(search_user_button, java.awt.BorderLayout.LINE_END);
-
-        user_data_panel.add(p_rfc);
-
-        p_curp.setName("p_curp"); // NOI18N
-        p_curp.setLayout(new java.awt.BorderLayout());
+        p_name_ruler.setName("p_name_ruler"); // NOI18N
+        p_name_ruler.setLayout(new java.awt.BorderLayout());
 
         jLabel22.setText(bundle.getString("PaymentRulerView.jLabel22.text")); // NOI18N
         jLabel22.setName("jLabel22"); // NOI18N
         jLabel22.setPreferredSize(new java.awt.Dimension(150, 25));
-        p_curp.add(jLabel22, java.awt.BorderLayout.WEST);
+        p_name_ruler.add(jLabel22, java.awt.BorderLayout.WEST);
 
         curp_field.setName("curp_field"); // NOI18N
-        p_curp.add(curp_field, java.awt.BorderLayout.CENTER);
+        p_name_ruler.add(curp_field, java.awt.BorderLayout.CENTER);
 
         jLabel23.setName("jLabel23"); // NOI18N
         jLabel23.setPreferredSize(new java.awt.Dimension(80, 30));
-        p_curp.add(jLabel23, java.awt.BorderLayout.LINE_END);
+        p_name_ruler.add(jLabel23, java.awt.BorderLayout.LINE_END);
 
-        user_data_panel.add(p_curp);
+        user_data_panel.add(p_name_ruler);
+
+        p_description_ruler.setName("p_description_ruler"); // NOI18N
+        p_description_ruler.setLayout(new java.awt.GridLayout(1, 3));
 
         pc_nombre.setName("pc_nombre"); // NOI18N
         pc_nombre.setLayout(new java.awt.BorderLayout());
@@ -138,7 +128,7 @@ public class PaymentRulerView extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel2.setMaximumSize(new java.awt.Dimension(60, 20));
         jLabel2.setName("jLabel2"); // NOI18N
-        jLabel2.setPreferredSize(new java.awt.Dimension(150, 25));
+        jLabel2.setPreferredSize(new java.awt.Dimension(100, 25));
         pc_nombre.add(jLabel2, java.awt.BorderLayout.WEST);
 
         first_name_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
@@ -151,7 +141,7 @@ public class PaymentRulerView extends javax.swing.JPanel {
         jLabel7.setPreferredSize(new java.awt.Dimension(80, 30));
         pc_nombre.add(jLabel7, java.awt.BorderLayout.LINE_END);
 
-        user_data_panel.add(pc_nombre);
+        p_description_ruler.add(pc_nombre);
 
         pc_ap.setName("pc_ap"); // NOI18N
         pc_ap.setPreferredSize(new java.awt.Dimension(250, 30));
@@ -160,7 +150,7 @@ public class PaymentRulerView extends javax.swing.JPanel {
         jLabel3.setText(bundle.getString("PaymentRulerView.jLabel3.text")); // NOI18N
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
-        jLabel3.setPreferredSize(new java.awt.Dimension(150, 25));
+        jLabel3.setPreferredSize(new java.awt.Dimension(100, 25));
         pc_ap.add(jLabel3, java.awt.BorderLayout.WEST);
 
         last_name1_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
@@ -173,7 +163,7 @@ public class PaymentRulerView extends javax.swing.JPanel {
         jLabel9.setPreferredSize(new java.awt.Dimension(80, 30));
         pc_ap.add(jLabel9, java.awt.BorderLayout.LINE_END);
 
-        user_data_panel.add(pc_ap);
+        p_description_ruler.add(pc_ap);
 
         pc_am.setName("pc_am"); // NOI18N
         pc_am.setPreferredSize(new java.awt.Dimension(250, 30));
@@ -182,7 +172,7 @@ public class PaymentRulerView extends javax.swing.JPanel {
         jLabel4.setText(bundle.getString("PaymentRulerView.jLabel4.text")); // NOI18N
         jLabel4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
-        jLabel4.setPreferredSize(new java.awt.Dimension(150, 25));
+        jLabel4.setPreferredSize(new java.awt.Dimension(100, 25));
         pc_am.add(jLabel4, java.awt.BorderLayout.WEST);
 
         last_name2_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
@@ -195,7 +185,9 @@ public class PaymentRulerView extends javax.swing.JPanel {
         jLabel10.setPreferredSize(new java.awt.Dimension(80, 30));
         pc_am.add(jLabel10, java.awt.BorderLayout.LINE_END);
 
-        user_data_panel.add(pc_am);
+        p_description_ruler.add(pc_am);
+
+        user_data_panel.add(p_description_ruler);
 
         p_gender.setName("p_gender"); // NOI18N
         p_gender.setLayout(new java.awt.BorderLayout());
@@ -205,13 +197,13 @@ public class PaymentRulerView extends javax.swing.JPanel {
         jLabel25.setPreferredSize(new java.awt.Dimension(150, 25));
         p_gender.add(jLabel25, java.awt.BorderLayout.LINE_START);
 
-        gender_field.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No. Definido", "Masculino.", "Femenino." }));
-        gender_field.setName("gender_field"); // NOI18N
-        p_gender.add(gender_field, java.awt.BorderLayout.CENTER);
-
         jLabel26.setName("jLabel26"); // NOI18N
         jLabel26.setPreferredSize(new java.awt.Dimension(80, 30));
         p_gender.add(jLabel26, java.awt.BorderLayout.LINE_END);
+
+        jCheckBox1.setText(bundle.getString("PaymentRulerView.jCheckBox1.text")); // NOI18N
+        jCheckBox1.setName("jCheckBox1"); // NOI18N
+        p_gender.add(jCheckBox1, java.awt.BorderLayout.CENTER);
 
         user_data_panel.add(p_gender);
 
@@ -223,136 +215,226 @@ public class PaymentRulerView extends javax.swing.JPanel {
         jLabel27.setPreferredSize(new java.awt.Dimension(150, 25));
         p_born_date.add(jLabel27, java.awt.BorderLayout.WEST);
 
-        jLabel38.setName("jLabel38"); // NOI18N
-        jLabel38.setPreferredSize(new java.awt.Dimension(80, 30));
-        p_born_date.add(jLabel38, java.awt.BorderLayout.LINE_END);
-
-        birdate_field.setName("birdate_field"); // NOI18N
-        p_born_date.add(birdate_field, java.awt.BorderLayout.CENTER);
+        jCheckBox9.setText(bundle.getString("PaymentRulerView.jCheckBox9.text")); // NOI18N
+        jCheckBox9.setName("jCheckBox9"); // NOI18N
+        p_born_date.add(jCheckBox9, java.awt.BorderLayout.CENTER);
 
         user_data_panel.add(p_born_date);
 
-        jPanel2.setName("jPanel2"); // NOI18N
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        jPanel1.setName("jPanel1"); // NOI18N
+        jPanel1.setLayout(new java.awt.GridLayout(1, 4));
 
-        jLabel11.setText(bundle.getString("PaymentRulerView.jLabel11.text")); // NOI18N
-        jLabel11.setName("jLabel11"); // NOI18N
-        jLabel11.setPreferredSize(new java.awt.Dimension(150, 25));
-        jPanel2.add(jLabel11, java.awt.BorderLayout.WEST);
+        jCheckBox2.setText(bundle.getString("PaymentRulerView.jCheckBox2.text")); // NOI18N
+        jCheckBox2.setName("jCheckBox2"); // NOI18N
+        jPanel1.add(jCheckBox2);
 
-        email_field.setName("email_field"); // NOI18N
-        jPanel2.add(email_field, java.awt.BorderLayout.CENTER);
+        jCheckBox3.setText(bundle.getString("PaymentRulerView.jCheckBox3.text")); // NOI18N
+        jCheckBox3.setName("jCheckBox3"); // NOI18N
+        jPanel1.add(jCheckBox3);
 
-        jLabel32.setName("jLabel32"); // NOI18N
-        jLabel32.setPreferredSize(new java.awt.Dimension(80, 30));
-        jPanel2.add(jLabel32, java.awt.BorderLayout.LINE_END);
+        user_data_panel.add(jPanel1);
 
-        user_data_panel.add(jPanel2);
+        jPanel5.setName("jPanel5"); // NOI18N
+        jPanel5.setLayout(new java.awt.GridLayout(1, 4));
 
-        jPanel3.setName("jPanel3"); // NOI18N
-        jPanel3.setLayout(new java.awt.BorderLayout());
+        jCheckBox4.setText(bundle.getString("PaymentRulerView.jCheckBox4.text")); // NOI18N
+        jCheckBox4.setName("jCheckBox4"); // NOI18N
+        jPanel5.add(jCheckBox4);
 
-        jLabel14.setText(bundle.getString("PaymentRulerView.jLabel14.text")); // NOI18N
-        jLabel14.setName("jLabel14"); // NOI18N
-        jLabel14.setPreferredSize(new java.awt.Dimension(150, 25));
-        jPanel3.add(jLabel14, java.awt.BorderLayout.WEST);
+        jCheckBox5.setText(bundle.getString("PaymentRulerView.jCheckBox5.text")); // NOI18N
+        jCheckBox5.setName("jCheckBox5"); // NOI18N
+        jPanel5.add(jCheckBox5);
 
-        phone_number1_field.setName("phone_number1_field"); // NOI18N
-        jPanel3.add(phone_number1_field, java.awt.BorderLayout.CENTER);
+        jCheckBox6.setText(bundle.getString("PaymentRulerView.jCheckBox6.text")); // NOI18N
+        jCheckBox6.setName("jCheckBox6"); // NOI18N
+        jCheckBox6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox6ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jCheckBox6);
 
-        jLabel34.setName("jLabel34"); // NOI18N
-        jLabel34.setPreferredSize(new java.awt.Dimension(80, 30));
-        jPanel3.add(jLabel34, java.awt.BorderLayout.LINE_END);
+        jCheckBox7.setText(bundle.getString("PaymentRulerView.jCheckBox7.text")); // NOI18N
+        jCheckBox7.setName("jCheckBox7"); // NOI18N
+        jPanel5.add(jCheckBox7);
 
-        user_data_panel.add(jPanel3);
+        user_data_panel.add(jPanel5);
 
-        jPanel4.setName("jPanel4"); // NOI18N
-        jPanel4.setLayout(new java.awt.BorderLayout());
+        jPanel6.setName("jPanel6"); // NOI18N
+        jPanel6.setLayout(new java.awt.GridLayout(1, 4));
 
-        jLabel19.setText(bundle.getString("PaymentRulerView.jLabel19.text")); // NOI18N
-        jLabel19.setName("jLabel19"); // NOI18N
-        jLabel19.setPreferredSize(new java.awt.Dimension(150, 25));
-        jPanel4.add(jLabel19, java.awt.BorderLayout.WEST);
+        jCheckBox8.setText(bundle.getString("PaymentRulerView.jCheckBox8.text")); // NOI18N
+        jCheckBox8.setName("jCheckBox8"); // NOI18N
+        jCheckBox8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox8ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jCheckBox8);
 
-        phone_number2_field.setName("phone_number2_field"); // NOI18N
-        jPanel4.add(phone_number2_field, java.awt.BorderLayout.CENTER);
+        pc_nombre1.setName("pc_nombre1"); // NOI18N
+        pc_nombre1.setLayout(new java.awt.BorderLayout());
 
-        jLabel35.setName("jLabel35"); // NOI18N
-        jLabel35.setPreferredSize(new java.awt.Dimension(80, 30));
-        jPanel4.add(jLabel35, java.awt.BorderLayout.LINE_END);
+        jLabel5.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel5.setText(bundle.getString("PaymentRulerView.jLabel5.text")); // NOI18N
+        jLabel5.setMaximumSize(new java.awt.Dimension(60, 20));
+        jLabel5.setName("jLabel5"); // NOI18N
+        jLabel5.setPreferredSize(new java.awt.Dimension(100, 25));
+        pc_nombre1.add(jLabel5, java.awt.BorderLayout.WEST);
 
-        user_data_panel.add(jPanel4);
+        first_name_field1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        first_name_field1.setToolTipText(bundle.getString("PaymentRulerView.first_name_field1.toolTipText")); // NOI18N
+        first_name_field1.setName("first_name_field1"); // NOI18N
+        first_name_field1.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_nombre1.add(first_name_field1, java.awt.BorderLayout.CENTER);
 
-        p_user_type.setName("p_user_type"); // NOI18N
-        p_user_type.setLayout(new java.awt.BorderLayout());
+        jPanel6.add(pc_nombre1);
 
-        jLabel20.setText(bundle.getString("PaymentRulerView.jLabel20.text")); // NOI18N
-        jLabel20.setName("jLabel20"); // NOI18N
-        jLabel20.setPreferredSize(new java.awt.Dimension(150, 25));
-        p_user_type.add(jLabel20, java.awt.BorderLayout.WEST);
+        user_data_panel.add(jPanel6);
 
-        jLabel36.setName("jLabel36"); // NOI18N
-        jLabel36.setPreferredSize(new java.awt.Dimension(80, 30));
-        p_user_type.add(jLabel36, java.awt.BorderLayout.LINE_END);
+        jPanel7.setName("jPanel7"); // NOI18N
+        jPanel7.setLayout(new java.awt.GridLayout(1, 4));
 
-        user_type_field.setName("user_type_field"); // NOI18N
-        p_user_type.add(user_type_field, java.awt.BorderLayout.CENTER);
+        pc_nombre2.setName("pc_nombre2"); // NOI18N
+        pc_nombre2.setLayout(new java.awt.BorderLayout());
 
-        user_data_panel.add(p_user_type);
+        jLabel6.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel6.setText(bundle.getString("PaymentRulerView.jLabel6.text")); // NOI18N
+        jLabel6.setMaximumSize(new java.awt.Dimension(60, 20));
+        jLabel6.setName("jLabel6"); // NOI18N
+        jLabel6.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_nombre2.add(jLabel6, java.awt.BorderLayout.WEST);
+
+        first_name_field2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        first_name_field2.setToolTipText(bundle.getString("PaymentRulerView.first_name_field2.toolTipText")); // NOI18N
+        first_name_field2.setName("first_name_field2"); // NOI18N
+        first_name_field2.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_nombre2.add(first_name_field2, java.awt.BorderLayout.CENTER);
+
+        jPanel7.add(pc_nombre2);
+
+        pc_nombre3.setName("pc_nombre3"); // NOI18N
+        pc_nombre3.setLayout(new java.awt.BorderLayout());
+
+        jLabel13.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel13.setText(bundle.getString("PaymentRulerView.jLabel13.text")); // NOI18N
+        jLabel13.setMaximumSize(new java.awt.Dimension(60, 20));
+        jLabel13.setName("jLabel13"); // NOI18N
+        jLabel13.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_nombre3.add(jLabel13, java.awt.BorderLayout.WEST);
+
+        first_name_field3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        first_name_field3.setToolTipText(bundle.getString("PaymentRulerView.first_name_field3.toolTipText")); // NOI18N
+        first_name_field3.setName("first_name_field3"); // NOI18N
+        first_name_field3.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_nombre3.add(first_name_field3, java.awt.BorderLayout.CENTER);
+
+        jPanel7.add(pc_nombre3);
+
+        pc_nombre4.setName("pc_nombre4"); // NOI18N
+        pc_nombre4.setLayout(new java.awt.BorderLayout());
+
+        jLabel16.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        jLabel16.setText(bundle.getString("PaymentRulerView.jLabel16.text")); // NOI18N
+        jLabel16.setMaximumSize(new java.awt.Dimension(60, 20));
+        jLabel16.setName("jLabel16"); // NOI18N
+        jLabel16.setPreferredSize(new java.awt.Dimension(150, 25));
+        pc_nombre4.add(jLabel16, java.awt.BorderLayout.WEST);
+
+        first_name_field4.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        first_name_field4.setToolTipText(bundle.getString("PaymentRulerView.first_name_field4.toolTipText")); // NOI18N
+        first_name_field4.setName("first_name_field4"); // NOI18N
+        first_name_field4.setPreferredSize(new java.awt.Dimension(100, 30));
+        pc_nombre4.add(first_name_field4, java.awt.BorderLayout.CENTER);
+
+        jPanel7.add(pc_nombre4);
+
+        user_data_panel.add(jPanel7);
 
         register_panel.add(user_data_panel, java.awt.BorderLayout.CENTER);
 
         add(register_panel, "register");
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jCheckBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBox6ActionPerformed
+
+    private void jCheckBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBox8ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.github.lgooddatepicker.components.DatePicker birdate_field;
     private javax.swing.JTextField curp_field;
-    private javax.swing.JTextField email_field;
     private javax.swing.JTextField first_name_field;
-    private javax.swing.JComboBox<String> gender_field;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JTextField first_name_field1;
+    private javax.swing.JTextField first_name_field2;
+    private javax.swing.JTextField first_name_field3;
+    private javax.swing.JTextField first_name_field4;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JCheckBox jCheckBox3;
+    private javax.swing.JCheckBox jCheckBox4;
+    private javax.swing.JCheckBox jCheckBox5;
+    private javax.swing.JCheckBox jCheckBox6;
+    private javax.swing.JCheckBox jCheckBox7;
+    private javax.swing.JCheckBox jCheckBox8;
+    private javax.swing.JCheckBox jCheckBox9;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel35;
-    private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JTextField last_name1_field;
     private javax.swing.JTextField last_name2_field;
     private javax.swing.JPanel p_born_date;
-    private javax.swing.JPanel p_curp;
+    private javax.swing.JPanel p_description_ruler;
     private javax.swing.JPanel p_gender;
-    private javax.swing.JPanel p_rfc;
-    private javax.swing.JPanel p_user_type;
+    private javax.swing.JPanel p_name_ruler;
     private javax.swing.JPanel pc_am;
     private javax.swing.JPanel pc_ap;
     private javax.swing.JPanel pc_nombre;
-    private javax.swing.JTextField phone_number1_field;
-    private javax.swing.JTextField phone_number2_field;
+    private javax.swing.JPanel pc_nombre1;
+    private javax.swing.JPanel pc_nombre2;
+    private javax.swing.JPanel pc_nombre3;
+    private javax.swing.JPanel pc_nombre4;
     private javax.swing.JPanel register_panel;
-    private javax.swing.JButton search_user_button;
     private javax.swing.JPanel user_data_panel;
-    private javax.swing.JComboBox<String> user_type_field;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void getData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isValuesOK() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public SpecificationWrapperDTO getValues(boolean update) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void showData() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

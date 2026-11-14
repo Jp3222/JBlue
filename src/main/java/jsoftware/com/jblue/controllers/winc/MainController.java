@@ -20,15 +20,19 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.util.Optional;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import jsoftware.com.jblue.model.exp.SystemException;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
-import jsoftware.com.jblue.model.service.LoginService;
+import jsoftware.com.jblue.model.service.MenuService;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppFiles;
 import jsoftware.com.jblue.views.win.LoginWindows;
 import jsoftware.com.jblue.views.win.WMainMenu;
 import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.util.FuncLogs;
+import jsoftware.com.jutil.util.JFuncLogs;
 
 /**
  *
@@ -40,10 +44,10 @@ public class MainController extends WindowController {
 
     private WMainMenu view;
     private LoginWindows login;
-    private final LoginService service;
+    private final MenuService service;
 
     public MainController() {
-        this.service = new LoginService(false, "MAIN");
+        this.service = new MenuService(false, "MAIN");
     }
 
     @Override
@@ -100,17 +104,32 @@ public class MainController extends WindowController {
             if (logout) {
                 login.setVisible(true);
             }
-        } catch (SQLException ex) {
+        } catch (SQLException | SystemException ex) {
             log(ex, "windowClosed");
         }
     }
 
+    public void buildMenu() {
+        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
+            SystemSession ss = SystemSession.getInstancia();
+            JPanel ly = view.getLy();
+            Optional<JMenuBar> menu = service.builMenu(connection, ss, ly, this);
+            if (menu.isEmpty() || service.isError()) {
+                returnMessage(view, service.getUserMessage(), false);
+                System.exit(0);
+            }
+            view.setJMenuBar(menu.get());
+        } catch (SQLException ex) {
+            log(ex, "buildMenu");
+        }
+    }
+
     public void log(Exception e, String method_name) {
-        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "MAIN", method_name, e.getMessage());
+        JFuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, getClass(), e, "MAIN", method_name, e.getMessage());
     }
 
     public void log(String message) {
-        FuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", message);
+        JFuncLogs.logError(AppFiles.DIR_PROG_LOG_TODAY, "MAIN", message);
     }
 
     public void setView(WMainMenu view) {

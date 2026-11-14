@@ -22,12 +22,7 @@ import javax.swing.JPanel;
 import jsoftware.com.jblue.controllers.winc.MainController;
 import jsoftware.com.jblue.model.dto.wrp.WMainMenuWrapperDTO;
 import jsoftware.com.jblue.model.factories.ModuleFactory;
-import jsoftware.com.jblue.views.ShopCartProcess;
 import jsoftware.com.jblue.views.framework.AbstractModuleWindow;
-import jsoftware.com.jblue.views.mod.StreetProcess;
-import jsoftware.com.jblue.views.mod.pro.EmployeeRegisterProcess;
-import jsoftware.com.jblue.views.mod.pro.OwnerRegisterProcess;
-import jsoftware.com.jblue.views.mod.pro.UserRegisterProcess;
 
 /**
  * Esta clase esta dedicada a la vista del menu principal de la aplicacion
@@ -39,11 +34,6 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
     private static final long serialVersionUID = 1L;
     private final ModuleFactory factory;
 
-    private final ShopCartProcess shop_cart_process;
-    private final EmployeeRegisterProcess employee_register_process;
-    private final OwnerRegisterProcess owner_register_process;
-    private final StreetProcess street_process;
-    private final UserRegisterProcess user_regiser_process;
     private LoginWindows login;
 
     public WMainMenu(WMainMenuWrapperDTO dto_wrapper) {
@@ -51,11 +41,16 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
         initComponents();
         card_layout = (CardLayout) views_panel.getLayout();
         factory = ModuleFactory.getInstance();
-        shop_cart_process = factory.getShopCartProcess();
-        employee_register_process = factory.getRegisterProcess();
-        owner_register_process = factory.getOwnerRegisterProcess();
-        street_process = factory.getStreetProcess();
-        user_regiser_process = factory.getUserRegisterProcess();
+        build();
+    }
+
+    public WMainMenu() {
+        super();
+        initComponents();
+        dto_wrapper = new WMainMenuWrapperDTO("2", "MENU PRINCIPAL");
+        controller = new MainController();
+        card_layout = (CardLayout) views_panel.getLayout();
+        factory = ModuleFactory.getInstance();
         build();
     }
 
@@ -69,20 +64,20 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
 
     @Override
     public void components() {
-        addModule(shop_cart_process);
-        addModule(employee_register_process);
-        addModule(owner_register_process);
-        addModule(street_process);
-        addModule(user_regiser_process);
+        MainController main_controller = (MainController) controller;
+        if (main_controller != null) {
+            main_controller.setView(this);
+            main_controller.buildMenu();
+        }
     }
 
-    void addModule(JPanel component) {
+    private void addModule(JPanel component) {
         views_panel.add(component, component.getName());
     }
 
     @Override
     public void events() {
-        MainController main_controller = (MainController) getMainController();
+        MainController main_controller = (MainController) controller;
         //main_controller.setLogin(login);
         addWindowListener(main_controller);
         exit_button.addActionListener(main_controller);
@@ -108,14 +103,12 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
         //
         about_item_view.addActionListener(main_controller);
         profile_item_view.addActionListener(main_controller);
-        //
-
         main_controller.setView(this);
     }
 
     @Override
     public void initialState() {
-
+        card_layout.show(views_panel, "CAJA DE COBRO");
     }
 
     @Override
@@ -192,6 +185,11 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
         jMenuItem15 = new javax.swing.JMenuItem();
         jMenuItem22 = new javax.swing.JMenuItem();
         jMenuItem23 = new javax.swing.JMenuItem();
+        jMenu14 = new javax.swing.JMenu();
+        payment_concept_item = new javax.swing.JMenuItem();
+        payment_ruler_item = new javax.swing.JMenuItem();
+        payment_spf_1_item = new javax.swing.JMenuItem();
+        payment_spf_2_item = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         owner_register_process_item = new javax.swing.JMenuItem();
@@ -459,6 +457,22 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu14.setText("Pagos");
+
+        payment_concept_item.setText("Conceptos de Pago");
+        jMenu14.add(payment_concept_item);
+
+        payment_ruler_item.setText("Reglas de Pago");
+        jMenu14.add(payment_ruler_item);
+
+        payment_spf_1_item.setText("Especificaciones de Pago NVL 1");
+        jMenu14.add(payment_spf_1_item);
+
+        payment_spf_2_item.setText("Especificaciones de Pago NVL 2");
+        jMenu14.add(payment_spf_2_item);
+
+        jMenuBar1.add(jMenu14);
+
         jMenu4.setText("Tramites");
 
         jMenuItem2.setText("Tramites");
@@ -528,6 +542,7 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
     private javax.swing.JMenu jMenu11;
     private javax.swing.JMenu jMenu12;
     private javax.swing.JMenu jMenu13;
+    private javax.swing.JMenu jMenu14;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
@@ -576,6 +591,10 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
     private javax.swing.JMenuItem owner_change_process_item;
     private javax.swing.JMenuItem owner_register_process_item;
     private javax.swing.JMenuItem parameters_view_item;
+    private javax.swing.JMenuItem payment_concept_item;
+    private javax.swing.JMenuItem payment_ruler_item;
+    private javax.swing.JMenuItem payment_spf_1_item;
+    private javax.swing.JMenuItem payment_spf_2_item;
     private javax.swing.JButton payment_type_button;
     private javax.swing.JMenuItem profile_item_view;
     private javax.swing.JMenuItem service_payments_view_item;
@@ -611,4 +630,7 @@ public final class WMainMenu extends AbstractModuleWindow<WMainMenuWrapperDTO> {
         main_controller.setLogin(login);
     }
 
+    public JPanel getLy() {
+        return views_panel;
+    }
 }

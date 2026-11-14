@@ -216,6 +216,33 @@
             </Menu>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenu14">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Pagos"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="payment_concept_item">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Conceptos de Pago"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="payment_ruler_item">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Reglas de Pago"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="payment_spf_1_item">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Especificaciones de Pago NVL 1"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="payment_spf_2_item">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Especificaciones de Pago NVL 2"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu4">
           <Properties>
             <Property name="text" type="java.lang.String" value="Tramites"/>

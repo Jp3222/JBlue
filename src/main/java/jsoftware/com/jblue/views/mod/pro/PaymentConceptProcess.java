@@ -5,35 +5,41 @@
 package jsoftware.com.jblue.views.mod.pro;
 
 import javax.swing.JTabbedPane;
+import jsoftware.com.jblue.controllers.compc.FormController;
 import jsoftware.com.jblue.controllers.viewc.PaymentConceptController;
 import jsoftware.com.jblue.model.dto.wrp.SpecificationWrapperDTO;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.FormModel;
 import jsoftware.com.jblue.views.mod.com.PaymentConceptView;
 import jsoftware.com.jblue.views.mod.com.PaymentImportView;
 import jsoftware.com.jblue.views.vabst.AbstractFormView;
+import jsoftware.com.jpaymentlib.model.dto.PaymentConceptDTO;
 
 /**
  *
  * @author juanp
  */
-public final class PaymentConceptProcess extends AbstractFormView<SpecificationWrapperDTO> implements FormModel<SpecificationWrapperDTO> {
+public final class PaymentConceptProcess extends AbstractFormView<SpecificationWrapperDTO> {
 
     private static final long serialVersionUID = 1L;
 
-    private final PaymentConceptView concept_view;
-    private final PaymentImportView import_view;
+    private final PaymentConceptView view1;
+    private final PaymentImportView view2;
     private final JTabbedPane tab = new JTabbedPane(2);
 
     /**
      * Creates new form PaymentConceptProcess
      */
     public PaymentConceptProcess() {
-        super();
         this.dto_wrapper = new SpecificationWrapperDTO("8", "CONCEPTO DE PAGO", 4, "REGISTRO DE UN NUEVO CONCEPTO E IMPORTES POR EL MODULO CORRESPONDIENTE AL SISTEMA");
-        this.setName(dto_wrapper.getModule_name());
-        this.concept_view = new PaymentConceptView();
-        this.import_view = new PaymentImportView();
-        this.controller = new PaymentConceptController(this);
+        this.controller = new PaymentConceptController();
+        this.fcontroller = new FormController();
+        setDto_wrapper(dto_wrapper);
+        setController(controller);
+        setFcontroller(fcontroller);
+        view1 = new PaymentConceptView(dto_wrapper, controller);
+        view2 = new PaymentImportView(dto_wrapper, controller);
+        build();
     }
 
     @Override
@@ -46,27 +52,28 @@ public final class PaymentConceptProcess extends AbstractFormView<SpecificationW
 
     @Override
     public void events() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void components() {
         tab.setName("TAB_VIEWS");
         tab.setTabPlacement(JTabbedPane.TOP);
-        tab.add(concept_view, concept_view.getName());
-        tab.add(import_view, import_view.getName());
+        tab.add(view1, view1.getName());
+        tab.add(view2, view2.getName());
         root_panel.add(tab, tab.getName());
     }
 
     @Override
     public void initialState() {
-        concept_view.initialState();
-        import_view.initialState();
+        view1.initialState();
+        view2.initialState();
+        tab.setSelectedIndex(0);
+        card_layout.show(root_panel, tab.getName());
+
     }
 
     @Override
     public void finalState() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -85,11 +92,6 @@ public final class PaymentConceptProcess extends AbstractFormView<SpecificationW
 
     @Override
     public void getData() {
-    }
-
-    @Override
-    public boolean isValuesOK() {
-        return true;
     }
 
     @Override

@@ -7,10 +7,10 @@ package jsoftware.com.jblue.model.dto.wrp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import jsoftware.com.jblue.model.trash._PaymentDTO;
-import jsoftware.com.jblue.model.trash._PaymentListDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
+import jsoftware.com.jblue.model.trash._PaymentDTO;
+import jsoftware.com.jblue.model.trash._PaymentListDTO;
 
 /**
  *

@@ -19,95 +19,83 @@ package jsoftware.com.jblue.controllers.viewc;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import javax.swing.JCheckBox;
+import java.math.BigDecimal;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-import jsoftware.com.jblue.controllers.Controller;
+import jsoftware.com.jblue.controllers.AbstractDBViewController;
 import jsoftware.com.jblue.model.dto.UserDTO;
+import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
+import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
 import jsoftware.com.jblue.model.events.SearchUserTyped;
-import jsoftware.com.jblue.model.factories.CacheFactory;
+import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.service.ShopCarService;
-import jsoftware.com.jblue.util.cache.MemoListCache;
+import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.views.components.ObjectSearchComponent;
+import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import jsoftware.com.jblue.views.mod.com.ShopCartView;
 import jsoftware.com.jblue.views.mod.pro.ShoppingCartProcess;
+import jsoftware.com.jpaymentlib.model.dto.PaymentDTO;
+import jsoftware.com.jpaymentlib.model.dto.PaymentHeaderDTO;
+import jsoftware.com.jpaymentlib.model.dto.wrp.PaymentWrapper;
+import jsoftware.com.jutil.db.JDBConnection;
 
 /**
  *
  * @author juan pablo campos casasanero
  */
-public class ShopCartController extends Controller {
+public class ShopCartController extends AbstractDBViewController {
 
     private static final long serialVersionUID = 1L;
 
-    private final MemoListCache<UserDTO> memo_cache;
+    private ShopCarService service;
     private ShoppingCartProcess view;
-    private final StringBuilder mov_book;
-    private final ShopCarService service;
-    private final SearchUserTyped event;
-    private final Timer throttleTimer;
+    private SearchUserTyped event;
+    private Timer throttleTimer;
 
     public ShopCartController(ShoppingCartProcess view) {
         this.view = view;
-        this.memo_cache = CacheFactory.USERS;
-        this.mov_book = new StringBuilder(3000);
-        this.service = new ShopCarService(false, ShopCartController.class.getName());
-        this.event = new SearchUserTyped(service);
-        this.event.setView(view);
-        this.throttleTimer = new Timer(600, event);
-        this.throttleTimer.setRepeats(false);
     }
 
     public ShopCartController() {
-        this(null);
+        this.service = new ShopCarService(false, ShopCartController.class.getName());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
-            case "payments" ->
-                payments();
             case "cancel" ->
                 cancel();
-            case "clear" ->
-                clear();
-            case "surcharges" ->
-                surcharges();
-            case "late_payments" ->
-                latePayments();
-            case "other_payments" ->
-                otherPayments();
-            case "lock" ->
-                lock();
-            case "all_months" ->
-                allMonths((JCheckBox) e.getSource());
-            case "month" ->
-                total();
-            case "mov_book" -> {
-                mov_book();
-            }
             case "search_user_button" ->
                 searchUser();
-            default ->
-                defaultCase(e.getActionCommand(), null, -1);
+            case "load_payment_concept" ->
+                quote();
+            case "payment_register" ->
+                payment();
+            default -> {
+            }
         }
     }
 
-    void lock() {
-    }
-
-    private void surcharges() {
-
-    }
-
-    void payments() {
-        try {
+    public void quote() {
+        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection();) {
+            ShopCartWrapperDTO wrp = view.getDtoWrapper();
+            boolean res = service.calculation(connection, SystemSession.getInstancia(), wrp);
+            if (!res || service.isError()) {
+                JOptionPane.showMessageDialog(view, service.getUserMessage());
+                return;
+            }
+            view.showData();
         } catch (Exception e) {
-
-        } finally {
+            e.printStackTrace();
         }
     }
 
-    void cancel() {
+    /**
+     *
+     */
+    @Override
+    public void cancel() {
         int input = JOptionPane.showConfirmDialog(view,
                 "¿Desea cancelar la operacion?",
                 "Cancelar operacion",
@@ -119,23 +107,6 @@ public class ShopCartController extends Controller {
         }
     }
 
-    void clear() {
-
-    }
-
-    private void latePayments() {
-    }
-
-    private void otherPayments() {
-    }
-
-    private void allMonths(JCheckBox all) {
-
-    }
-
-    private void total() {
-    }
-
     public void rmessage(boolean op) {
         String status = op ? "Exitoso" : "Erroneo";
         JOptionPane.showMessageDialog(view,
@@ -143,21 +114,12 @@ public class ShopCartController extends Controller {
                 "Estado de la operacion",
                 JOptionPane.INFORMATION_MESSAGE);
         if (op) {
-            memo_cache.reLoadData();
             view.initialState();
         }
     }
 
     public void setPaymentsInfo(UserDTO user) {
 
-    }
-
-    private void mov_book() {
-        String book = mov_book.toString();
-        if (book == null || book.isBlank()) {
-            book = "Sin Movimientos";
-        }
-        JOptionPane.showMessageDialog(view, book, "Movimientos Recientes", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void searchUser() {
@@ -171,28 +133,141 @@ public class ShopCartController extends Controller {
 
     @Override
     public void keyTyped(KeyEvent e) {
-//        view.getDtoWrapper()
-//                .getWki_user()
-//                .getMap()
-//                .put("user_name", view.getTextSearchList());
-//        throttleTimer.restart();
+        AbstractModuleView<ShopCartWrapperDTO> module = view.getViews().get(0);
+        if (module instanceof ShopCartView j) {
+            j.getDtoWrapper()
+                    .getWki_user()
+                    .getMap()
+                    .put("user_name", j.getTextSearchList());
+            throttleTimer.restart();
+        }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-//        if (e.getClickCount() == 2) {
-//            JList<WaterIntakeUserDTO> list = view.getList();
-//            if (list.getSelectedIndex() <= 0) {
-//                return;
-//            }
-//            WaterIntakeUserDTO get = view.getListModel().get(list.getSelectedIndex());
-//            ShopCartWrapperDTO dtoWrapper = view.getDtoWrapper();
-//        }
+        if (e.getClickCount() == 2) {
+            event((ShopCartView) view.getViews().get(0));
+        }
+    }
+
+    private void event(ShopCartView view) {
+        JList<WaterIntakeUserDTO> list = view.getList();
+        if (list.getSelectedIndex() < 0 && list.getSelectedIndex() >= list.getModel().getSize()) {
+            return;
+        }
+        WaterIntakeUserDTO get = view.getListModel().get(list.getSelectedIndex());
+        ShopCartWrapperDTO wrp = view.getDtoWrapper();
+        wrp.getWki_user().setMap(get.getMap());
+        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection();) {
+            boolean res = service.getUser(connection, SystemSession.getInstancia(), wrp);
+            if (!res || service.isError()) {
+                JOptionPane.showMessageDialog(view, service.getUserMessage());
+                return;
+            }
+            view.showData();
+            view.getListModel().clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setView(ShoppingCartProcess view) {
         this.view = view;
-        event.setView(view);
     }
 
+    public void setEventObject(ShopCartView o) {
+        this.event = new SearchUserTyped(service);
+        this.event.setView(o);
+        this.throttleTimer = new Timer(300, event);
+        this.throttleTimer.setRepeats(false);
+    }
+
+    private void payment() {
+        int option = JOptionPane.showConfirmDialog(
+                view,
+                "¿CONFIRMAR EL PAGO?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION // Evita que exista el botón Cancelar ambiguo
+        );
+
+        // Si el usuario cierra la ventana (CLOSED_OPTION), abortamos sin abrir conexión
+        if (option == JOptionPane.CLOSED_OPTION) {
+            return;
+        }
+
+        BigDecimal amountReceived = BigDecimal.ZERO;
+
+        if (option == JOptionPane.YES_OPTION) {
+            String input = JOptionPane.showInputDialog(view, "DINERO INGRESADO");
+
+            // Si el usuario cancela el input o lo deja en blanco, abortamos
+            if (input == null || input.trim().isEmpty()) {
+                return;
+            }
+
+            try {
+                // Limpiamos espacios y reemplazamos comas por puntos por si acaso
+                String cleanAmount = input.trim().replace(",", ".");
+                amountReceived = new BigDecimal(cleanAmount);
+
+                if (amountReceived.compareTo(BigDecimal.ZERO) < 0) {
+                    JOptionPane.showMessageDialog(view, "El monto no puede ser negativo.", "Dato inválido", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(view, "Monto inválido: '" + input + "'. Ingresa solo números.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+        }
+
+        // Abrimos la conexión solo hasta que los datos de entrada ya son seguros
+        try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
+            ShopCartWrapperDTO wrp = view.getDtoWrapper();
+
+            PaymentWrapper pym_wrp = wrp.getPym_wrp();
+            pym_wrp.setPaid(option == JOptionPane.YES_OPTION);
+            pym_wrp.setPayment_line(option != JOptionPane.YES_OPTION);
+
+            PaymentHeaderDTO header = pym_wrp.getHeader();
+            header.setAmount_received(amountReceived);
+
+            PaymentDTO payment = pym_wrp.getPayment();
+            if (pym_wrp.isPaid()) {
+                payment.setPayment_method_id(1);
+                payment.setStatus(7);
+                header.setChange_returned(header.getAmount_received().subtract(header.getTotal_amount()));
+            } else {
+                payment.setPayment_method_id(6);
+                payment.setStatus(8);
+                header.setChange_returned(BigDecimal.ZERO);
+            }
+            boolean res = service.payment(connection, SystemSession.getInstancia(), wrp);
+            if (!res || service.isError()) {
+                JOptionPane.showMessageDialog(view, service.getUserMessage());
+                return;
+            }
+            view.showData();
+            if (res) {
+                returnMessage(view, true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void save() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void delete() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void update() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

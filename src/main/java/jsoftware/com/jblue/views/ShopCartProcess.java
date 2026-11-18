@@ -974,36 +974,7 @@ public final class ShopCartProcess extends AbstractWizardView<ShopCartWrapperDTO
 
     @Override
     public void setScreenListInfo() {
-        ShopCartWrapperDTO dto = getDtoWrapper();
-        List<_PaymentListDTO> paymentsMade = dto.getPayments_details_made();
 
-        // 1. Procesamos la lista de meses e interfaz
-        list_months_paid.forEach(month -> {
-            boolean isPaid = paymentsMade
-                    .stream()
-                    .anyMatch(payment -> payment.getItemName().equals(month.getName()));
-            if (isPaid) {
-                month.setSelected(true);
-                month.setEnabled(false);
-            }
-        });
-
-        // 2. Mapeo y asignación de datos del usuario
-        WaterIntakeUserDTO user = dto.getWki_user();
-        user_name_field.setText(user.getUserName());
-        user_type_field.setText(user.getUserTypeId());
-        water_intake_type.setText(user.getWaterIntakeTypeId());
-
-        // Formateo seguro con tu función Decode
-        String last_month_paid = Func.Decode(user.getLastMonthPaid(), user.getLastMonthPaid(), "-1", "XX").toString();
-        String current_fiscal_year = Func.Decode(user.getCurrentFiscalYear(), user.getCurrentFiscalYear(), "-1", "XX").toString();
-
-        last_month_paid_field.setText(last_month_paid);
-        last_year_paid_field.setText(current_fiscal_year);
-
-        // CORRECCIÓN: Contamos solo los elementos que quedaron seleccionados (pagados)
-        long totalPaid = getListMonth(ShopCartProcess.MONTHS_PAID).size();
-        months_paid_field.setText(String.valueOf(totalPaid));
     }
 
     @Override

@@ -14,8 +14,7 @@ import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.model.service.ShopCarService;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.util.FuncSwing;
-import jsoftware.com.jblue.views.ShopCartProcess;
-import jsoftware.com.jblue.views.mod.pro.ShoppingCartProcess;
+import jsoftware.com.jblue.views.mod.com.ShopCartView;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**
@@ -25,7 +24,7 @@ import jsoftware.com.jutil.db.JDBConnection;
 public class SearchUserTyped implements ActionListener, Serializable {
 
     private static final long serialVersionUID = 1L;
-    private ShoppingCartProcess view;
+    private ShopCartView view;
     private ShopCarService service;
 
     public SearchUserTyped(ShopCarService service) {
@@ -34,23 +33,17 @@ public class SearchUserTyped implements ActionListener, Serializable {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.getActionCommand());
-        System.out.println("inicio");
         // Esto se ejecuta tras los 600ms de forma segura y sin congelar la pantalla
         try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection()) {
             SystemSession ss = SystemSession.getInstancia();
             List<WaterIntakeUserDTO> search = service.search(connection, ss, view.getDtoWrapper());
-            for (WaterIntakeUserDTO i : search) {
-                System.out.println(i.getUserName());
-            }
-            //FuncSwing.updateData(view.getListModel(), search);
+            FuncSwing.updateData(view.getListModel(), search);
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
         }
-        System.out.println("fin");
     }
 
-    public void setView(ShoppingCartProcess view) {
+    public void setView(ShopCartView view) {
         this.view = view;
         
     }

@@ -6,11 +6,9 @@ package jsoftware.com.jblue.model.dto.wrp;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import jsoftware.com.jblue.model.dto.WaterIntakeTypeDTO;
 import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
-import jsoftware.com.jblue.model.trash._PaymentDTO;
-import jsoftware.com.jblue.model.trash._PaymentListDTO;
+import jsoftware.com.jblue.model.dto.vw.WaterIntakeUserPaymentDTO;
+import jsoftware.com.jpaymentlib.model.dto.wrp.PaymentWrapper;
 
 /**
  *
@@ -19,115 +17,93 @@ import jsoftware.com.jblue.model.trash._PaymentListDTO;
 public class ShopCartWrapperDTO extends ModuleWrapperDTO {
 
     private static final long serialVersionUID = 1L;
-    //DATOS PARA REALIZAR UN PAGO 
-    private final _PaymentDTO payment_header;
-    private final List<_PaymentListDTO> payment_details;
 
-    //DATOS DE PAGOS ANTERIORES
-    private final List<_PaymentDTO> payments_header_made;
-    private final List<_PaymentListDTO> payments_details_made;
-
-    //INFORMACION DEL PADRON
-    private final WaterIntakeUserDTO wki_user;
-    private final WaterIntakeTypeDTO wki_type;
+    private WaterIntakeUserDTO wki_user;
+    private WaterIntakeUserPaymentDTO wki_usr_pym;
+    private PaymentWrapper pym_wrp;
+    private List<Integer> months;
+    private boolean month_list_valid;
+    private boolean payment_valid;
 
     public ShopCartWrapperDTO(String module_id, String module_name) {
         super(module_id, module_name);
-        payment_header = new _PaymentDTO();
-        payment_details = new ArrayList<>();
-        payments_header_made = new ArrayList<>();
-        payments_details_made = new ArrayList<>();
         wki_user = new WaterIntakeUserDTO();
-        wki_type = new WaterIntakeTypeDTO();
-    }
-
-    public _PaymentDTO getPayment_header() {
-        return payment_header;
-    }
-
-    public List<_PaymentListDTO> getPayment_details() {
-        return payment_details;
-    }
-
-    public List<_PaymentDTO> getPayments_header_made() {
-        return payments_header_made;
-    }
-
-    public List<_PaymentListDTO> getPayments_details_made() {
-        return payments_details_made;
+        wki_usr_pym = new WaterIntakeUserPaymentDTO();
+        pym_wrp = new PaymentWrapper();
+        month_list_valid = false;
+        payment_valid = false;
+        months=new ArrayList<>(12);
     }
 
     public WaterIntakeUserDTO getWki_user() {
         return wki_user;
     }
 
-    public WaterIntakeTypeDTO getWki_type() {
-        return wki_type;
+    public void setWki_user(WaterIntakeUserDTO wki_user) {
+        this.wki_user = wki_user;
+    }
+
+    public WaterIntakeUserPaymentDTO getWki_usr_pym() {
+        return wki_usr_pym;
+    }
+
+    public void setWki_usr_pym(WaterIntakeUserPaymentDTO wki_usr_pym) {
+        this.wki_usr_pym = wki_usr_pym;
+    }
+
+    public PaymentWrapper getPym_wrp() {
+        return pym_wrp;
+    }
+
+    public void setPym_wrp(PaymentWrapper pym_wrp) {
+        this.pym_wrp = pym_wrp;
+    }
+
+    public boolean isMonth_list_valid() {
+        return month_list_valid;
+    }
+
+    public void setMonth_list_valid(boolean month_list_valid) {
+        this.month_list_valid = month_list_valid;
+    }
+
+    public boolean isPayment_valid() {
+        return payment_valid;
+    }
+
+    public void setPayment_valid(boolean payment_valid) {
+        this.payment_valid = payment_valid;
+    }
+
+    public List<Integer> getMonths() {
+        return months;
+    }
+
+    public void setMonths(List<Integer> months) {
+        this.months = months;
     }
 
     @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.payment_header);
-        hash = 29 * hash + Objects.hashCode(this.payment_details);
-        hash = 29 * hash + Objects.hashCode(this.payments_header_made);
-        hash = 29 * hash + Objects.hashCode(this.payments_details_made);
-        hash = 29 * hash + Objects.hashCode(this.wki_user);
-        hash = 29 * hash + Objects.hashCode(this.wki_type);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ShopCartWrapperDTO other = (ShopCartWrapperDTO) obj;
-        if (!Objects.equals(this.payment_header, other.payment_header)) {
-            return false;
-        }
-        if (!Objects.equals(this.payment_details, other.payment_details)) {
-            return false;
-        }
-        if (!Objects.equals(this.payments_header_made, other.payments_header_made)) {
-            return false;
-        }
-        if (!Objects.equals(this.payments_details_made, other.payments_details_made)) {
-            return false;
-        }
-        if (!Objects.equals(this.wki_user, other.wki_user)) {
-            return false;
-        }
-        return Objects.equals(this.wki_type, other.wki_type);
+    public void clear() {
+        wki_user = new WaterIntakeUserDTO();
+        wki_usr_pym = new WaterIntakeUserPaymentDTO();
+        pym_wrp = new PaymentWrapper();
+        month_list_valid = false;
+        payment_valid = false;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("ShopCartWrapperDTO{");
-        sb.append("payment_header=").append(payment_header);
-        sb.append(", payment_details=").append(payment_details);
-        sb.append(", payments_header_made=").append(payments_header_made);
-        sb.append(", payments_details_made=").append(payments_details_made);
-        sb.append(", wki_user=").append(wki_user);
-        sb.append(", wki_type=").append(wki_type);
+        sb.append("wki_user=").append(wki_user);
+        sb.append("wki_usr_pym=").append(wki_usr_pym);
+        sb.append(", pym_wrp=").append(pym_wrp);
+        sb.append(", month_list_valid=").append(month_list_valid);
+        sb.append(", payment_valid=").append(payment_valid);
+        sb.append(", months=").append(months);
         sb.append('}');
         return sb.toString();
     }
 
-    @Override
-    public void clear() {
-        payment_details.clear();
-        payment_header.getMap().clear();
-        payments_details_made.clear();
-        payments_header_made.clear();
-        wki_type.getMap().clear();
-        wki_user.getMap().clear();
-    }
 }

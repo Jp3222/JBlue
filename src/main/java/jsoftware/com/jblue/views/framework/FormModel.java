@@ -5,8 +5,8 @@
 package jsoftware.com.jblue.views.framework;
 
 /**
- *
- * @author juanp
+ *  
+ * @author JUAN PABLO CAMPOS CASASANERO
  */
 public interface FormModel<T> extends CModel, ShowDataModel {
 

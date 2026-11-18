@@ -81,6 +81,9 @@ public interface WizardModel<T extends ModuleWrapperDTO> extends Serializable, C
      * Decrementa el puntero del asistente (i--).
      */
     void previousIndex();
-
-    public void setStartMode();
+    
+    /**
+     * Metodo para regresar la vista a su estado actual
+     */
+    void setStartMode();
 }

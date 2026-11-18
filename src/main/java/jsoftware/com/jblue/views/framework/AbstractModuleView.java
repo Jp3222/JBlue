@@ -15,6 +15,7 @@ import jsoftware.com.jblue.util.Func;
 /**
  *
  * @author juanp
+ * @param <T>
  */
 public abstract class AbstractModuleView<T extends ModuleWrapperDTO> extends SimpleView implements ProcessModel {
 

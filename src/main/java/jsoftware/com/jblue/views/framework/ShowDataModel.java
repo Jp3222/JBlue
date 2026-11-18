@@ -5,8 +5,9 @@
 package jsoftware.com.jblue.views.framework;
 
 /**
+ * Clase para definir vistas que pueden mostrar datos en pantalla
  *
- * @author juanp
+ * @author Juan Pablo Campos Casasanero
  */
 public interface ShowDataModel {
 

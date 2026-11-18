@@ -14,6 +14,7 @@ import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
 import jsoftware.com.jblue.model.exp.DataAccesObjectException;
 import jsoftware.com.jblue.sys.SystemSession;
+import jsoftware.com.jblue.utils.platf.FuncLogs;
 import jsoftware.com.jutil.db.JDBConnection;
 
 /**
@@ -169,5 +170,23 @@ public class WaterIntakeUserService extends AbstractService {
 
     public List<WaterIntakeUserDTO> search(JDBConnection connection, SystemSession ss, ShopCartWrapperDTO dto) {
         return wki_user.search(connection, dto.getWki_user().getUserName());
+    }
+
+    public boolean updateLastPayment(JDBConnection connection, SystemSession ss, WaterIntakeUserDTO dto) {
+        boolean res = false;
+        try {
+            res = this.wki_user.updateLastPayment(connection, dto);
+            if (!res) {
+                return returnMessageError("ULTIMO PAGO NO ACTUALIZADO");
+            }
+//            res = hys.insert(connection, Const.INDEX_WKI_USER, "SE ACTUALIZO EL ULT PAGO: %s - %s".formatted(dto.getId(), dto.getUserName()));
+//            if (!res) {
+//                returnMessageError("REGISTRO EN BITACORA CORRUPTO");
+//            }
+        } catch (SQLException ex) {
+            FuncLogs.log(getClass(), ex, process_name, "", ex.getMessage());
+            return returnMessageError(ex.getMessage());
+        }
+        return res;
     }
 }

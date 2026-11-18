@@ -17,32 +17,36 @@
 package jsoftware.com.jblue.views.mod.com;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 import javax.swing.SpinnerNumberModel;
 import jsoftware.com.jblue.controllers.Controller;
-import jsoftware.com.jblue.controllers.compc.WizardController;
 import jsoftware.com.jblue.controllers.viewc.ShopCartController;
 import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
+import jsoftware.com.jblue.model.dto.vw.WaterIntakeUserPaymentDTO;
 import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
 import jsoftware.com.jblue.model.trash._PaymentListDTO;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.CModel;
+import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.ListSearchViewModel;
-import jsoftware.com.jblue.views.vabst.AbstractWizardView;
+import jsoftware.com.jblue.views.framework.ShowDataModel;
 
 /**
  *
  * @author juan pablo campos casasanero
  * @version 1.0
  */
-public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> implements ListSearchViewModel<WaterIntakeUserDTO> {
+public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> implements ListSearchViewModel<WaterIntakeUserDTO>, ShowDataModel, DBObjectValues<WaterIntakeUserPaymentDTO> {
 
     public static String DEFAULT_LAST_MONTH_PAID = "XX";
     public static String DEFAULT_LAST_YEAR_PAID = "XXXX";
@@ -82,11 +86,6 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
 
     public ShopCartView(ShopCartWrapperDTO dto_wrapper, Controller controller) {
         super(dto_wrapper, controller);
-        dto_wrapper = new ShopCartWrapperDTO("5", "SHOP CART");
-        dto_wrapper.putController(CModel.WIZARD_CONTROLLER, controller);
-        //Controlador de eventos
-        ShopCartController rc = new ShopCartController(null);
-        dto_wrapper.putController(CModel.MAIN_CONTROLLER, rc);
         //Nueva vista
         initComponents();
         list_model = new DefaultListModel<>();
@@ -113,7 +112,7 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
 
     @Override
     public void events() {
-        ShopCartController con = (ShopCartController) getDtoWrapper().getController(CModel.MAIN_CONTROLLER);
+        ShopCartController con = (ShopCartController) controller;
         if (Func.isNotNull(con)) {
             search_field_list.addKeyListener(con);
             wki_user_list.addMouseListener(con);
@@ -137,6 +136,8 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
         months_paid_field.setText(DEFAULT_MONTHS_PAID);
         last_month_paid_field.setText(DEFAULT_LAST_MONTH_PAID);
         last_year_paid_field.setText(DEFAULT_LAST_YEAR_PAID);
+        DefaultListModel<WaterIntakeUserDTO> model = (DefaultListModel<WaterIntakeUserDTO>) wki_user_list.getModel();
+        model.removeAllElements();
     }
 
     @Override
@@ -152,12 +153,6 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        tools_bar_panel = new javax.swing.JPanel();
-        lock_button = new javax.swing.JToggleButton();
-        jPanel15 = new javax.swing.JPanel();
-        register_payment_button = new javax.swing.JButton();
-        search_payment_buttons = new javax.swing.JButton();
-        search_user_button = new javax.swing.JButton();
         root_panel = new javax.swing.JPanel();
         register_panel = new javax.swing.JPanel();
         search_register_panel = new javax.swing.JPanel();
@@ -173,7 +168,6 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
         jPanel12 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         user_name_field = new javax.swing.JTextField();
-        info_button = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         user_type_field = new javax.swing.JTextField();
@@ -219,15 +213,6 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
         jPanel22 = new javax.swing.JPanel();
         Jlabel1 = new javax.swing.JLabel();
         cambio_field = new javax.swing.JLabel();
-        option_panel = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
-        pay_button = new javax.swing.JButton();
-        cancel_button = new javax.swing.JButton();
-        clear_button = new javax.swing.JButton();
-        jPanel8 = new javax.swing.JPanel();
-        recargos_button = new javax.swing.JButton();
-        other_pay_button = new javax.swing.JButton();
-        pay_last_button = new javax.swing.JButton();
         search_panel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
@@ -251,36 +236,6 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
         setName("Inicio"); // NOI18N
         setPreferredSize(new java.awt.Dimension(900, 700));
         setLayout(new java.awt.BorderLayout());
-
-        tools_bar_panel.setPreferredSize(new java.awt.Dimension(900, 30));
-        tools_bar_panel.setLayout(new java.awt.BorderLayout(10, 10));
-
-        lock_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/lock.png"))); // NOI18N
-        lock_button.setActionCommand("lock");
-        lock_button.setPreferredSize(new java.awt.Dimension(100, 30));
-        lock_button.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/desbloquear.png"))); // NOI18N
-        tools_bar_panel.add(lock_button, java.awt.BorderLayout.WEST);
-
-        jPanel15.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
-
-        register_payment_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        register_payment_button.setText("Cobros");
-        register_payment_button.setActionCommand("register_view");
-        jPanel15.add(register_payment_button);
-
-        search_payment_buttons.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        search_payment_buttons.setText("Pagos del dia");
-        search_payment_buttons.setActionCommand("search_view");
-        jPanel15.add(search_payment_buttons);
-
-        tools_bar_panel.add(jPanel15, java.awt.BorderLayout.CENTER);
-
-        search_user_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x24/search.png"))); // NOI18N
-        search_user_button.setActionCommand("search_user_button");
-        search_user_button.setPreferredSize(new java.awt.Dimension(100, 30));
-        tools_bar_panel.add(search_user_button, java.awt.BorderLayout.EAST);
-
-        add(tools_bar_panel, java.awt.BorderLayout.NORTH);
 
         root_panel.setPreferredSize(new java.awt.Dimension(900, 520));
         root_panel.setLayout(new java.awt.CardLayout(10, 10));
@@ -341,12 +296,6 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
         user_name_field.setEditable(false);
         user_name_field.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
         jPanel12.add(user_name_field, java.awt.BorderLayout.CENTER);
-
-        info_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        info_button.setText("Info de usuario");
-        info_button.setActionCommand("info");
-        info_button.setPreferredSize(new java.awt.Dimension(150, 29));
-        jPanel12.add(info_button, java.awt.BorderLayout.EAST);
 
         user_info_panel.add(jPanel12);
 
@@ -654,58 +603,6 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
 
         register_panel.add(money_panel);
 
-        option_panel.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
-        option_panel.setMinimumSize(new java.awt.Dimension(450, 60));
-        option_panel.setOpaque(false);
-        option_panel.setPreferredSize(new java.awt.Dimension(900, 80));
-        option_panel.setLayout(new java.awt.GridLayout(2, 3, 10, 10));
-
-        jPanel7.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
-
-        pay_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        pay_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/img5.png"))); // NOI18N
-        pay_button.setText("Cobrar");
-        pay_button.setActionCommand("payments");
-        jPanel7.add(pay_button);
-
-        cancel_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        cancel_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/cerca.png"))); // NOI18N
-        cancel_button.setText("Cancelar");
-        cancel_button.setActionCommand("cancel");
-        jPanel7.add(cancel_button);
-
-        clear_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        clear_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jblue/media/img/x32/limpiar.png"))); // NOI18N
-        clear_button.setText("Limpiar");
-        clear_button.setActionCommand("clear");
-        jPanel7.add(clear_button);
-
-        option_panel.add(jPanel7);
-
-        jPanel8.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
-
-        recargos_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        recargos_button.setText("Recargos");
-        recargos_button.setToolTipText("Modulo para cobrar o realizar recargos");
-        recargos_button.setActionCommand("surcharges");
-        jPanel8.add(recargos_button);
-
-        other_pay_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        other_pay_button.setText("Otros Pagos");
-        other_pay_button.setToolTipText("Modulo para pagar cobrar otros conceptos de pago");
-        other_pay_button.setActionCommand("other_payments");
-        jPanel8.add(other_pay_button);
-
-        pay_last_button.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
-        pay_last_button.setText("Pagos atrasados");
-        pay_last_button.setToolTipText("Modulo para cobrar años anteriores");
-        pay_last_button.setActionCommand("late_payments");
-        jPanel8.add(pay_last_button);
-
-        option_panel.add(jPanel8);
-
-        register_panel.add(option_panel);
-
         root_panel.add(register_panel, "register");
 
         search_panel.setName("consult"); // NOI18N
@@ -818,15 +715,12 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
     private javax.swing.JCheckBox all_months_button;
     private javax.swing.JButton back_button;
     private javax.swing.JLabel cambio_field;
-    private javax.swing.JButton cancel_button;
-    private javax.swing.JButton clear_button;
     private javax.swing.JTextField cost_field;
     private javax.swing.JLabel count;
     private javax.swing.JLabel count_elements_label;
     private javax.swing.JCheckBox dic;
     private javax.swing.JCheckBox ene;
     private javax.swing.JCheckBox feb;
-    private javax.swing.JButton info_button;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -847,7 +741,6 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
-    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
@@ -859,8 +752,6 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -869,7 +760,6 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
     private javax.swing.JCheckBox jun;
     private javax.swing.JTextField last_month_paid_field;
     private javax.swing.JTextField last_year_paid_field;
-    private javax.swing.JToggleButton lock_button;
     private javax.swing.JCheckBox mar;
     private javax.swing.JCheckBox may;
     private javax.swing.JPanel money_panel;
@@ -880,26 +770,17 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
     private javax.swing.JCheckBox nov;
     private javax.swing.JTable objects_table;
     private javax.swing.JCheckBox oct;
-    private javax.swing.JPanel option_panel;
-    private javax.swing.JButton other_pay_button;
-    private javax.swing.JButton pay_button;
-    private javax.swing.JButton pay_last_button;
     private javax.swing.JPanel payment_info_panel;
     private javax.swing.JLabel range;
-    private javax.swing.JButton recargos_button;
     private javax.swing.JPanel register_panel;
-    private javax.swing.JButton register_payment_button;
     private javax.swing.JButton reload_button;
     private javax.swing.JPanel root_panel;
     private javax.swing.JTextField search_field_list;
     private javax.swing.JTextField search_field_table;
     private javax.swing.JPanel search_panel;
-    private javax.swing.JButton search_payment_buttons;
     private javax.swing.JPanel search_register_panel;
-    private javax.swing.JButton search_user_button;
     private javax.swing.JCheckBox sep;
     private javax.swing.JPanel status_bar_panel;
-    private javax.swing.JPanel tools_bar_panel;
     private javax.swing.JLabel total_field;
     private javax.swing.JLabel total_register_field;
     private javax.swing.JPanel user_info_panel;
@@ -914,7 +795,13 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
 
     @Override
     public void getData() {
-
+        boolean res = isValuesOK();
+        if (!res) {
+            return;
+        }
+        dto_wrapper.setMonth_list_valid(res);
+        dto_wrapper.setWki_usr_pym(getValues(true));
+        System.out.println(dto_wrapper.getWki_usr_pym().toString());
     }
 
     public List<JCheckBox> getListMonth(int option) {
@@ -971,36 +858,7 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
 
     @Override
     public void setScreenListInfo() {
-        ShopCartWrapperDTO dto = getDtoWrapper();
-        List<_PaymentListDTO> paymentsMade = dto.getPayments_details_made();
 
-        // 1. Procesamos la lista de meses e interfaz
-        list_months_paid.forEach(month -> {
-            boolean isPaid = paymentsMade
-                    .stream()
-                    .anyMatch(payment -> payment.getItemName().equals(month.getName()));
-            if (isPaid) {
-                month.setSelected(true);
-                month.setEnabled(false);
-            }
-        });
-
-        // 2. Mapeo y asignación de datos del usuario
-        WaterIntakeUserDTO user = dto.getWki_user();
-        user_name_field.setText(user.getUserName());
-        user_type_field.setText(user.getUserTypeId());
-        water_intake_type.setText(user.getWaterIntakeTypeId());
-
-        // Formateo seguro con tu función Decode
-        String last_month_paid = Func.Decode(user.getLastMonthPaid(), user.getLastMonthPaid(), "-1", "XX").toString();
-        String current_fiscal_year = Func.Decode(user.getCurrentFiscalYear(), user.getCurrentFiscalYear(), "-1", "XX").toString();
-
-        last_month_paid_field.setText(last_month_paid);
-        last_year_paid_field.setText(current_fiscal_year);
-
-        // CORRECCIÓN: Contamos solo los elementos que quedaron seleccionados (pagados)
-        long totalPaid = getListMonth(ShopCartView.MONTHS_PAID).size();
-        months_paid_field.setText(String.valueOf(totalPaid));
     }
 
     @Override
@@ -1011,6 +869,194 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
     @Override
     public void setObjectSearch(WaterIntakeUserDTO object) {
         object_search = object;
+    }
+
+    @Override
+    public void showData() {
+        ShopCartWrapperDTO wrp = getDtoWrapper();
+        if (wrp == null) {
+            return;
+        }
+        WaterIntakeUserPaymentDTO dto = wrp.getWki_usr_pym();
+        if (dto == null) {
+            return;
+        }
+        user_name_field.setText(dto.getNombre_usuario());
+        user_type_field.setText(dto.getTipo_usuario());
+        water_intake_type.setText(dto.getTipo_toma());
+        cost_field.setText(dto.getCuota().toString());
+
+        last_month_paid_field.setText(dto.getUlt_mes_pago() == -1 ? DEFAULT_LAST_MONTH_PAID : String.valueOf(dto.getUlt_mes_pago()));
+        last_year_paid_field.setText(dto.getUlt_año_pago() == -1 ? DEFAULT_LAST_YEAR_PAID : String.valueOf(dto.getUlt_año_pago()));
+        months_paid_field.setText(String.valueOf(dto.getMeses_pagados()));
+
+        // Estados previos de selección según DTO
+        ene.setSelected(dto.isEne());
+        feb.setSelected(dto.isFeb());
+        mar.setSelected(dto.isMar());
+        abr.setSelected(dto.isAbr());
+        may.setSelected(dto.isMay());
+        jun.setSelected(dto.isJun());
+        jul.setSelected(dto.isJul());
+        ago.setSelected(dto.isAgo());
+        sep.setSelected(dto.isSep());
+        oct.setSelected(dto.isOct());
+        nov.setSelected(dto.isNov());
+        dic.setSelected(dto.isDic());
+
+        // OBTENEMOS LA FECHA DE REGISTRO DE LA TOMA
+        LocalDateTime registrationDate = dto.getDate_register();
+        int regYear = (registrationDate != null) ? registrationDate.getYear() : 0;
+        int regMonth = (registrationDate != null) ? registrationDate.getMonthValue() : 1;
+
+        // OBTENEMOS EL AÑO FISCAL SELECCIONADO EN EL SPINNER (ej. 2026)
+        int selectedFiscalYear = (int) jSpinner1.getValue();
+
+        // RECORREMOS CADA CHECKBOX DE MES (índice 0 = Ene [1], 1 = Feb [2], ..., 11 = Dic [12])
+        for (int i = 0; i < list_months_paid.size(); i++) {
+            JCheckBox checkBox = list_months_paid.get(i);
+            int monthNumber = i + 1; // 1 para Ene, 2 para Feb, etc.
+
+            boolean isEnabled = true;
+
+            // REGLA 1: Si el año fiscal seleccionado es ANTERIOR al año de registro, se bloquea todo el año
+            if (selectedFiscalYear < regYear) {
+                isEnabled = false;
+            } // REGLA 2: Si es el AÑO DE REGISTRO, solo se habilitan los meses EQUIVALENTES o POSTERIORES al mes de alta
+            else if (selectedFiscalYear == regYear) {
+                if (monthNumber < regMonth) {
+                    isEnabled = false; // Meses anteriores al alta no aplican
+                }
+            }
+            // REGLA 3: Si ya está pagado previamente (según tu DTO), usualmente se bloquea para evitar doble pago
+            // (Puedes ajustar esta condición si permites re-pagar o corregir)
+            if (checkBox.isSelected()) {
+                // Si prefieres que lo ya pagado no se pueda desmarcar o modificar directamente aquí:
+                // isEnabled = false; 
+            }
+
+            checkBox.setEnabled(isEnabled);
+        }
+    }
+
+    @Override
+    public boolean isValuesOK() {
+        boolean res;
+        List<JCheckBox> listMonth = getListMonth(SELECTED_MONTHS);
+        res = listMonth.isEmpty();
+        if (!res) {
+            JOptionPane.showMessageDialog(this, "SELECCIONE UN MES");
+        }
+        res = validateLinearMonthSelection(listMonth);
+        return res;
+    }
+
+    /**
+     * Verifica que una lista de estados de meses (true = seleccionado, false =
+     * no seleccionado) mantenga una secuencia estrictamente lineal, sin huecos
+     * (meses intermedios desmarcados).
+     *
+     * @param selectedMonths Lista ordenada de 12 elementos (Enero a Diciembre)
+     * indicando si están seleccionados.
+     * @return true si la selección es lineal/continua, false si hay "huecos" o
+     * si se intenta pagar un mes futuro saltándose pendientes.
+     */
+    public boolean validateLinearMonthSelection(List<JCheckBox> selectedMonths) {
+        if (selectedMonths == null || selectedMonths.isEmpty()) {
+            return true;
+        }
+
+        boolean foundFirstSelected = false;
+        boolean foundGapAfterStart = false;
+
+        for (JCheckBox i : selectedMonths) {
+            //SE EVALUAN SOLO LOS MESES HABILITADOS
+            if (i.isEnabled()) {
+                boolean isSelected = i.isSelected();
+                if (isSelected) {
+                    // Si ya habíamos encontrado un hueco después de haber empezado a seleccionar, la selección es inválida
+                    if (foundGapAfterStart) {
+                        return false;
+                    }
+                    foundFirstSelected = true;
+                } else {
+                    // Si ya encontramos al menos un mes seleccionado, y ahora encontramos uno falso, 
+                    // marcamos que ha aparecido un "hueco"
+                    if (foundFirstSelected) {
+                        foundGapAfterStart = true;
+                    }
+                }
+
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public WaterIntakeUserPaymentDTO getValues(boolean update) {
+        ShopCartWrapperDTO wrp = getDtoWrapper();
+        WaterIntakeUserPaymentDTO dto = wrp.getWki_usr_pym();
+        dto.setEne(ene.isSelected());
+        dto.setFeb(feb.isSelected());
+        dto.setMar(mar.isSelected());
+        dto.setAbr(abr.isSelected());
+        dto.setMay(may.isSelected());
+        dto.setJun(jun.isSelected());
+        dto.setJul(jul.isSelected());
+        dto.setAgo(ago.isSelected());
+        dto.setSep(sep.isSelected());
+        dto.setOct(oct.isSelected());
+        dto.setNov(nov.isSelected());
+        dto.setDic(dic.isSelected());
+        for (JCheckBox i : list_months_paid) {
+            if (i.isEnabled() && i.isSelected()) {
+                wrp.getMonths().add(get(i.getText()));
+            }
+        }
+        return dto;
+    }
+
+    public int get(String var) {
+        switch (var.toUpperCase()) {
+            case "ENE" -> {
+                return 1;
+            }
+            case "FEB" -> {
+                return 2;
+            }
+            case "MAR" -> {
+                return 3;
+            }
+            case "ABR" -> {
+                return 4;
+            }
+            case "MAY" -> {
+                return 5;
+            }
+            case "JUN" -> {
+                return 6;
+            }
+            case "JUL" -> {
+                return 7;
+            }
+            case "AGO" -> {
+                return 8;
+            }
+            case "SEP" -> {
+                return 9;
+            }
+            case "OCT" -> {
+                return 10;
+            }
+            case "NOV" -> {
+                return 11;
+            }
+            case "DIC" -> {
+                return 12;
+            }
+            default -> throw new AssertionError();
+        }
     }
 
 }

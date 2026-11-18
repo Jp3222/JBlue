@@ -8,9 +8,11 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.compc.WizardController;
+import jsoftware.com.jblue.controllers.viewc.OwnerRegisterProcessController;
 import jsoftware.com.jblue.controllers.viewc.ShopCartController;
 import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
+import static jsoftware.com.jblue.views.framework.CModel.MAIN_CONTROLLER;
 import jsoftware.com.jblue.views.framework.ShowDataModel;
 import jsoftware.com.jblue.views.mod.com.ServiceQuoteView;
 import jsoftware.com.jblue.views.mod.com.ShopCartView;
@@ -31,14 +33,14 @@ public final class ShoppingCartProcess extends AbstractWizardView<ShopCartWrappe
      * Creates new form ShoppingCartProcess
      */
     public ShoppingCartProcess() {
-        ShopCartWrapperDTO dto = new ShopCartWrapperDTO("5", "CAJA DE COBRO");
+        dto_wrapper = new ShopCartWrapperDTO("5", "CAJA DE COBRO");
         controller = new ShopCartController();
         wcontroller = new WizardController();
-        setDto_wrapper(dto);
+        setDto_wrapper(dto_wrapper);
         setController(controller);
         setWcontroller(wcontroller);
-        step1 = new ShopCartView(dto, controller);
-        step2 = new ServiceQuoteView(dto, controller);
+        step1 = new ShopCartView(dto_wrapper, controller);
+        step2 = new ServiceQuoteView(dto_wrapper, controller);
         views.addAll(Arrays.asList(step1, step2));
         build();
     }
@@ -55,10 +57,11 @@ public final class ShoppingCartProcess extends AbstractWizardView<ShopCartWrappe
     public void events() {
         super.events();
         // Registrar esta vista contenedora principal en el controlador de negocio de Empleados
-        ShopCartController employeeController = (ShopCartController) controller;
-        if (employeeController != null) {
-            employeeController.setView(this);
-            next_panel_button.addActionListener(employeeController);
+        ShopCartController controller_main = (ShopCartController) controller;
+        if (controller_main != null) {
+            controller_main.setView(this);
+            controller_main.setEventObject(step1);
+            next_panel_button.addActionListener(controller_main);
         }
         //CANCELAR TRAMITE
         cancel_process.addActionListener((e) -> {
@@ -113,7 +116,43 @@ public final class ShoppingCartProcess extends AbstractWizardView<ShopCartWrappe
     }// </editor-fold>//GEN-END:initComponents
 
     @Override
+    public boolean nextStep() {
+        // Sincroniza los componentes visuales del paso actual hacia los Strings del mapa del DTO
+        getData();
+        ShopCartWrapperDTO dto = getDtoWrapper();
+        // Evaluar las banderas de validación del DTO según el paso del asistente
+        boolean valid = switch (current_index) {
+            case 0 ->
+                dto.isMonth_list_valid();
+            case 1 ->
+                dto.isPayment_valid();
+            default ->
+                dto.isPayment_valid();
+        };
+        if (!valid) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Por favor, complete correctamente los campos obligatorios de esta sección.",
+                    "Validación de Datos", JOptionPane.WARNING_MESSAGE);
+        }
+        return valid;
+    }
+
+    @Override
     public void executeFinal() {
+        // 1. Forzar la recolección masiva de la data de todos los sub-paneles
+        for (AbstractModuleView<ShopCartWrapperDTO> v : views) {
+            v.getData();
+        }
+        // 2. Recuperar el controlador del caso de uso encargado de la persistencia
+        OwnerRegisterProcessController employeeController = (OwnerRegisterProcessController) getDtoWrapper().getController(MAIN_CONTROLLER);
+        if (employeeController != null) {
+            // El controlador leerá el WrapperDTO enriquecido, aplicará los casts numéricos en el DAO y guardará en MySQL
+            JOptionPane.showMessageDialog(this, "Guardando registro del nuevo empleado en el sistema...", "Procesando", JOptionPane.INFORMATION_MESSAGE);
+            // Suponiendo que tu controlador implementa el método de persistencia:
+            // employeeController.insert(); 
+        }
+
     }
 
     @Override
@@ -123,8 +162,23 @@ public final class ShoppingCartProcess extends AbstractWizardView<ShopCartWrappe
 
     @Override
     public void showData() {
+        for (AbstractModuleView<ShopCartWrapperDTO> i : views) {
+            if (i instanceof ShowDataModel s) {
+                s.showData();
+            }
+        }
     }
 
+    public void beforeSaveData() {
+        next_panel_button.setEnabled(false);
+    }
+
+    public void afterSaveData(boolean mov) {
+        next_panel_button.setEnabled(true);
+        if (mov) {
+            initialState();
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

@@ -4,16 +4,27 @@
  */
 package jsoftware.com.jblue.views.mod.com;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+import javax.swing.table.DefaultTableModel;
 import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
+import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.ShowDataModel;
+import jsoftware.com.jpaymentlib.model.dto.PaymentDetailDTO;
+import jsoftware.com.jpaymentlib.model.dto.PaymentHeaderDTO;
+import jsoftware.com.jpaymentlib.model.dto.wrp.PaymentWrapper;
 
 /**
  *
  * @author juanp
  */
 public final class ServiceQuoteView extends AbstractModuleView<ShopCartWrapperDTO> implements ShowDataModel {
+
+    private static final long serialVersionUID = 1L;
+    private final NumberFormat currencyFormatter;
+    private final DefaultTableModel model = new DefaultTableModel(new String[]{"No", "Concepto", "Descripcion", "Precio", "Recargos", "Descuentos", "Total"}, 0);
 
     /**
      * Creates new form ServiceQuoteView
@@ -23,6 +34,7 @@ public final class ServiceQuoteView extends AbstractModuleView<ShopCartWrapperDT
      */
     public ServiceQuoteView(ShopCartWrapperDTO dto, Controller controller) {
         super(dto, controller);
+        this.currencyFormatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
         initComponents();
         build();
     }
@@ -31,12 +43,17 @@ public final class ServiceQuoteView extends AbstractModuleView<ShopCartWrapperDT
     public void build() {
         components();
         events();
-        initComponents();
+        initialState();
         finalState();
     }
 
     @Override
     public void components() {
+        if (Func.isNotNull(controller)) {
+            concept_generate_button.addActionListener(controller);
+            payment_register_button.addActionListener(controller);
+        }
+        jtable.setModel(model);
     }
 
     @Override
@@ -66,10 +83,10 @@ public final class ServiceQuoteView extends AbstractModuleView<ShopCartWrapperDT
         jPanel4 = new javax.swing.JPanel();
         concept_generate_button = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtable = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        total_field = new javax.swing.JLabel();
         payment_register_button = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(900, 700));
@@ -98,26 +115,26 @@ public final class ServiceQuoteView extends AbstractModuleView<ShopCartWrapperDT
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(500, 500));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "No.", "Concepto de pago", "Precio", "Tipo", "Pagar"
+                "No.", "Concepto de pago", "Precio", "Recargos", "Descuentos", "Total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        jTable1.setEnabled(false);
-        jTable1.getTableHeader().setResizingAllowed(false);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
+        jtable.setEnabled(false);
+        jtable.getTableHeader().setResizingAllowed(false);
+        jtable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jtable);
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -128,9 +145,9 @@ public final class ServiceQuoteView extends AbstractModuleView<ShopCartWrapperDT
         jLabel3.setText(bundle.getString("PaymentConfirmView.jLabel3.text")); // NOI18N
         jPanel1.add(jLabel3, java.awt.BorderLayout.LINE_START);
 
-        jLabel5.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
-        jLabel5.setText(bundle.getString("PaymentConfirmView.jLabel5.text")); // NOI18N
-        jPanel1.add(jLabel5, java.awt.BorderLayout.CENTER);
+        total_field.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
+        total_field.setText(bundle.getString("PaymentConfirmView.jLabel5.text")); // NOI18N
+        jPanel1.add(total_field, java.awt.BorderLayout.CENTER);
 
         payment_register_button.setText(bundle.getString("PaymentConfirmView.payment_register_button.text")); // NOI18N
         payment_register_button.setActionCommand(bundle.getString("PaymentConfirmView.payment_register_button.actionCommand")); // NOI18N
@@ -149,21 +166,38 @@ public final class ServiceQuoteView extends AbstractModuleView<ShopCartWrapperDT
     private javax.swing.JButton concept_generate_button;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jtable;
     private javax.swing.JButton payment_register_button;
     private javax.swing.JPanel register_panel;
+    private javax.swing.JLabel total_field;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void showData() {
+        ShopCartWrapperDTO wrp = getDtoWrapper();
+        PaymentWrapper pym_wrp = wrp.getPym_wrp();
+        model.getDataVector().clear();
+        for (PaymentDetailDTO k : pym_wrp.getDetail()) {
+            Object[] values = {
+                k.getNo(),
+                k.getDescription(),
+                k.getSubtotal(),
+                k.getSurcharge(),
+                k.getDiscount(),
+                k.getTotal_amount()
+            };
+            model.addRow(values);
+        }
+        PaymentHeaderDTO header = pym_wrp.getHeader();
+        total_field.setText(currencyFormatter.format(header.getTotal_amount()));
     }
 
     @Override
     public void getData() {
+
     }
 }

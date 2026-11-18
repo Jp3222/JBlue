@@ -31,6 +31,7 @@ public final class UserRegisterProcess extends AbstractFormView<UserRegisterWrap
 
     /**
      * Creates new form RegusterUserProcess
+     * @param dto
      */
     public UserRegisterProcess(UserRegisterWrapperDTO dto) {
         super(dto);

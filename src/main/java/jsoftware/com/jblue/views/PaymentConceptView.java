@@ -525,7 +525,7 @@ public final class PaymentConceptView extends DBView<_PaymentConceptDTO> impleme
     }
 
     @Override
-    public void setObjectSearch(JDBMapObject o) {
+    public void setObjectSearch(Object o) {
         this.object_search = (_PaymentConceptDTO) o;
     }
 

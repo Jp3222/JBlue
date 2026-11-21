@@ -129,6 +129,8 @@ public final class ShoppingCartProcess extends AbstractWizardView<ShopCartWrappe
             default ->
                 dto.isPayment_valid();
         };
+        System.out.println(valid);
+        System.out.println(!valid);
         if (!valid) {
             JOptionPane.showMessageDialog(
                     this,

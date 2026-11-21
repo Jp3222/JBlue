@@ -22,7 +22,6 @@ import jsoftware.com.jblue.model.dao.TableComponentDAO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
 import jsoftware.com.jblue.views.framework.TableSearchViewModel;
 import jsoftware.com.jutil.db.JDBConnection;
-import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
@@ -30,15 +29,15 @@ import jsoftware.com.jutil.swingw.modelos.JTableModel;
  * @author juan pablo campos casasanero
  * @param <T>
  */
-public class TableController<T extends JDBMapObject> extends AbstractComponentController<T> implements ComponentIterable {
+public class TableController<T> extends AbstractComponentController<T> implements ComponentIterable {
 
     private static final long serialVersionUID = 1L;
 
-    private final TableSearchViewModel view;
+    private final TableSearchViewModel<T> view;
     private final JTableModel model;
     private final TableComponentDAO<T> dao;
 
-    public TableController(TableSearchViewModel view, TableComponentDAO<T> dao) {
+    public TableController(TableSearchViewModel<T> view, TableComponentDAO<T> dao) {
         super(view.getTable());
         this.model = new JTableModel(new String[]{}, 0);
         this.view = view;

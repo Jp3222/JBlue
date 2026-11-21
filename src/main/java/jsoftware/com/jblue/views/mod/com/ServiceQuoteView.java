@@ -66,6 +66,8 @@ public final class ServiceQuoteView extends AbstractModuleView<ShopCartWrapperDT
 
     @Override
     public void finalState() {
+        total_field.setText("$0.00");
+        model.getDataVector().clear();
     }
 
     /**
@@ -184,8 +186,9 @@ public final class ServiceQuoteView extends AbstractModuleView<ShopCartWrapperDT
         for (PaymentDetailDTO k : pym_wrp.getDetail()) {
             Object[] values = {
                 k.getNo(),
+                k.getConcept(),
                 k.getDescription(),
-                k.getSubtotal(),
+                k.getUnit_price(),
                 k.getSurcharge(),
                 k.getDiscount(),
                 k.getTotal_amount()

@@ -35,6 +35,7 @@ public class UserRegisterService extends AbstractService {
     private ProcessDAO process_dao;
     private ProcessWaterIntakeUserDAO pro_dao;
     private SequenceDAO sequence_dao;
+
     public UserRegisterService(boolean dev_flag, String process_name) {
         super(dev_flag, process_name);
     }
@@ -43,20 +44,15 @@ public class UserRegisterService extends AbstractService {
         boolean res = false;
         try {
             ProcessDTO process = dto.getProcess();
-            
+
             String final_office = ss.getCurrent_instance().getOfficeId();
-            String final_employee = ss.getCurrentEmployee().getId();
+            int final_employee = ss.getCurrentEmployee().getId();
             String final_admin = ss.getCurrentAdministration().getId();
             //[1] OBTENEMOS EL FOLIO DEL TRAMITE
             String sequence = sequence_dao.getNextValString(connection, "TRAMITES");
             if (Func.isNullEmptyBlank(sequence)) {
                 return returnMessageError("NO SE PUDO GENERAR EL FOLIO DEL TRAMITE");
             }
-            process.put("sequence_process", sequence);
-            process.put("employee_start", final_employee);
-            process.put("administration_start", final_admin);
-            process.put("status", "10");
-            process.put("last_employee_update", final_employee);
             //[2] SE REGISTRA EL INICIO DEL TRAMITE
             res = process_dao.startProcess(connection, dto.getProcess());
             if (!res) {
@@ -65,7 +61,7 @@ public class UserRegisterService extends AbstractService {
             ProcessWaterIntakeUserDTO pwki = dto.getProcess_water_intake_user();
             pwki.put("process_id", process.getId());
             pwki.put("sequence", sequence);
-            pwki.put("process_type", process.getProcessType());
+            pwki.put("process_type", process.getProcess_type());
             pwki.put("status", process.getStatus());
             pwki.put("last_employee_update", final_employee);
             res = pro_dao.insert(connection, pwki);
@@ -88,7 +84,7 @@ public class UserRegisterService extends AbstractService {
             String final_status = "1";
             user.put("status", final_status);
             //SI ES UN ALTA DE TITULAR
-            if (dto.getProcess().getProcessType().equals("1")) {
+            if (dto.getProcess().getProcess_type() == 1) {
                 user.put("user_type", "1");// SE ASIGNA ROL DE TITULAR
             }
             res = user_service.save(connection, ss, user);

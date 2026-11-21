@@ -132,7 +132,7 @@ public final class UserRegisterView<T extends ModuleWrapperDTO> extends Abstract
     public void finalState() {
         if (getDtoWrapper() instanceof ProcessWrapperDTO dto) {
             //ESTE CAMPO SERA VISIBLE SI SE TRATA DE REGISTRAR OTRO TIPO DE USUARIO QUE NO SEA CONSUMIDOR
-            p_user_type.setVisible(!dto.getProcess().getProcessType().equals("1"));
+            p_user_type.setVisible(dto.getProcess().getProcess_type() != 1);
         }
     }
 

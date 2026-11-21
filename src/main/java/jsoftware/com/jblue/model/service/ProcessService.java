@@ -3,6 +3,7 @@ package jsoftware.com.jblue.model.service;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import jsoftware.com.jblue.model.abst.AbstractService;
 import jsoftware.com.jblue.model.dao.HistoryDAO;
 import jsoftware.com.jblue.model.dao.ProcessDAO;
@@ -14,7 +15,6 @@ import jsoftware.com.jblue.model.dto.ProcessDTO;
 import jsoftware.com.jblue.model.dto.ProcessWaterIntakeUserDTO;
 import jsoftware.com.jblue.model.dto.UserDTO;
 import jsoftware.com.jblue.model.dto.UserDocumentationDTO;
-import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.exp.DataAccesObjectException;
 import jsoftware.com.jblue.model.exp.ProcessException;
@@ -75,22 +75,17 @@ public class ProcessService extends AbstractService implements Serializable {
         boolean res = false;
         try {
             ProcessDTO process = dto.getProcess();
-            if (process.getStatus().equals("10")) {
+            if (process.getStatus() == 10) {
                 return true;
             }
             String final_office = ss.getCurrent_instance().getOfficeId();
-            String final_employee = ss.getCurrentEmployee().getId();
+            int final_employee = ss.getCurrentEmployee().getId();
             String final_admin = ss.getCurrentAdministration().getId();
             //[1] OBTENEMOS EL FOLIO DEL TRAMITE
             String sequence = sequence_dao.getNextValString(connection, "TRAMITES");
             if (Func.isNullEmptyBlank(sequence)) {
                 return returnMessageError("NO SE PUDO GENERAR EL FOLIO DEL TRAMITE");
             }
-            process.put("sequence_process", sequence);
-            process.put("employee_start", final_employee);
-            process.put("administration_start", final_admin);
-            process.put("status", "10");
-            process.put("last_employee_update", final_employee);
             //[2] SE REGISTRA EL INICIO DEL TRAMITE
             res = dao.startProcess(connection, dto.getProcess());
             if (!res) {
@@ -99,7 +94,7 @@ public class ProcessService extends AbstractService implements Serializable {
             ProcessWaterIntakeUserDTO pwki = dto.getProcess_water_intake_user();
             pwki.put("process_id", process.getId());
             pwki.put("sequence", sequence);
-            pwki.put("process_type", process.getProcessType());
+            pwki.put("process_type", process.getProcess_type());
             pwki.put("status", process.getStatus());
             pwki.put("last_employee_update", final_employee);
             res = pro_dao.insert(connection, pwki);
@@ -122,7 +117,7 @@ public class ProcessService extends AbstractService implements Serializable {
             String final_status = "1";
             user.put("status", final_status);
             //SI ES UN ALTA DE TITULAR
-            if (dto.getProcess().getProcessType().equals("1")) {
+            if (dto.getProcess().getProcess_type() == 1) {
                 user.put("user_type", "1");// SE ASIGNA ROL DE TITULAR
             }
             res = user_service.save(connection, ss, user);
@@ -162,16 +157,12 @@ public class ProcessService extends AbstractService implements Serializable {
     public boolean valid(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) {
         boolean res = false;
         try {
-            if (dto.getProcess().getStatus().equals("11")) {
+            if (dto.getProcess().getStatus() == 11) {
                 return true;
             }
             String final_office = ss.getCurrent_instance().getOfficeId();
-            String final_employee = ss.getCurrentEmployee().getId();
+            int final_employee = ss.getCurrentEmployee().getId();
             String final_admin = ss.getCurrentAdministration().getId();
-            dto.getProcess().put("employee_valid", final_employee);
-            dto.getProcess().put("last_employee_update", final_employee);
-            dto.getProcess().put("administration_end", null);
-            dto.getProcess().put("status", "11");
             res = dao.validProcess(connection, dto.getProcess());
             if (!res) {
                 returnMessageError("REGISTRO EN BITACORA CORRUPTO - TRAMITE");
@@ -198,7 +189,7 @@ public class ProcessService extends AbstractService implements Serializable {
                 returnMessageError(document_record_service.getErrorCode(), document_record_service.getUserMessage());
                 return false;
             }
-        } catch (SQLException | ProcessException ex) {
+        } catch (SQLException ex) {
             returnMessageError(ex.getMessage());
             log(ex, "valid");
             res = false;
@@ -213,15 +204,11 @@ public class ProcessService extends AbstractService implements Serializable {
     public boolean invalid(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) {
         boolean res = false;
         try {
-            if (dto.getProcess().getStatus().equals("11")) {
+            if (dto.getProcess().getStatus() == 11) {
                 return true;
             }
-            String final_employee = ss.getCurrentEmployee().getId();
+            int final_employee = ss.getCurrentEmployee().getId();
             String final_admin = ss.getCurrentAdministration().getId();
-            dto.getProcess().put("employee_valid", final_employee);
-            dto.getProcess().put("last_employee_update", final_employee);
-            dto.getProcess().put("administration_end", final_admin);
-            dto.getProcess().put("status", "11");
             res = dao.cancelProcess(connection, dto.getProcess());
             if (!res) {
                 returnMessageError("REGISTRO EN BITACORA CORRUPTO - TRAMITE");
@@ -253,8 +240,6 @@ public class ProcessService extends AbstractService implements Serializable {
             rollback(connection);
             log(ex, "valid");
             res = false;
-        } catch (ProcessException ex) {
-            System.getLogger(ProcessService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return res;
     }
@@ -270,7 +255,7 @@ public class ProcessService extends AbstractService implements Serializable {
             ss_service.valid(connection, ss);
             //
             int final_office = Integer.parseInt(ss.getCurrent_instance().getOfficeId());
-            int final_employee = Integer.parseInt(ss.getCurrentEmployee().getId());
+            int final_employee = ss.getCurrentEmployee().getId();
             int final_commitee = Integer.parseInt(ss.getCurrent_instance().getCommitteeId());
             int final_status = -1;
 
@@ -286,14 +271,14 @@ public class ProcessService extends AbstractService implements Serializable {
                 return returnMessageError("TRAMITE NULL");
             }
 
-            if (Func.isNullEmptyBlank(process.getProcessType())) {
+            if (process.getProcess_type() == -1) {
                 return returnMessageError("TRAMITE NO DEFINIDO");
             }
 
-            int process_type = Integer.parseInt(process.getProcessType());
+            int process_type = process.getProcess_type();
 
-            int process_id = Integer.parseInt(process.getId());
-            boolean res = dao.payProcess(connection, dto.getProcess());
+            int process_id = process.getId();
+            boolean res = dao.paymentProcess(connection, dto.getProcess());
             if (!res) {
                 throw new ProcessException(1, "NO SE PUDO ACTUALIZAR EL STATUS DEL TRAMITE");
             }
@@ -369,17 +354,12 @@ public class ProcessService extends AbstractService implements Serializable {
             if (status != 1) {
                 return res;
             }
-            res = dao.endProcess(connection, dto.getProcess());
+            res = dao.finalizeProcess(connection, dto.getProcess());
             if (!res) {
                 returnMessageError("EL TRAMITE NO PUDO SER FINALIZADO, POR FALTA DE PAGO");
             }
         } catch (SQLException ex) {
             returnMessageError(ex.getMessage());
-            rollback(connection);
-            log(ex, "valid");
-            res = false;
-        } catch (ProcessException ex) {
-            returnMessageError(ex.getErrorCode(), ex.getMessage());
             rollback(connection);
             log(ex, "valid");
             res = false;
@@ -391,45 +371,38 @@ public class ProcessService extends AbstractService implements Serializable {
         boolean res = false;
         try {
             String final_office = ss.getCurrent_instance().getOfficeId();
-            String final_employee = ss.getCurrentEmployee().getId();
+            int final_employee = ss.getCurrentEmployee().getId();
             String final_admin = ss.getCurrentAdministration().getId();
             ProcessDTO process = dto.getProcess();
-            process.put("employee_mov", final_employee);
-            process.put("last_employee_update", final_employee);
             res = dao.movProcess(connection, dto.getProcess());
             if (!res) {
                 return returnMessageError("EL TRAMITE NO PUDO SER FINALIZADO");
             }
-            WaterIntakeUserDTO wki_user = dto.getWki_user();
-            wki_user.put("process_id", process.getId());
-            wki_user.put("employee", final_employee);
-            wki_user.put("user_id", dto.getUser().getId());
-            wki_user.put("address_id", dto.getAddress().getId());
-            wki_user.put("water_intake_id", dto.getWater_intake().getId());
-            wki_user.put("water_intake_type_id", dto.getWater_intake_type().getId());
-            wki_user.put("user_type_id", dto.getUser().getUserType());
-            wki_user.put("is_consumer", process.getProcessType().equals("1") ? "0" : "1");
-            wki_user.put("office_id", final_office);
-            wki_user.put("user_name", dto.getUser().toString());
-            wki_user.put("description", dto.getTransaction().getObservation());
-            wki_user.put("observation", dto.getProcess().getObservation());
-            wki_user.put("current_fiscal_year", "-1");
-            wki_user.put("last_month_paid", "-1");
-            wki_user.put("last_amount_paid", "0.00");
-            wki_user.put("last_process_id", process.getProcessType());
-            wki_user.put("last_employee_update", final_employee);
-            wki_user.put("status", "1");
-            res = water_intake_service.saveProcess(connection, dto.getWki_user());
+//            WaterIntakeUserDTO wki_user = dto.getWki_user();
+//            wki_user.setProcess_id(Integer.parseInt(process.getSequenceProcess()));
+//            wki_user.setEmployee_id(Integer.parseInt(final_employee));
+//            wki_user.setUser_id(Integer.parseInt(dto.getUser().getId()));
+//            wki_user.setAddress_id(Integer.parseInt(dto.getAddress().getId()));
+//            wki_user.setWater_intake_id(dto.getWater_intake().getId());
+//            wki_user.setWater_intake_type_id(dto.getWater_intake_type().getId());
+//            wki_user.setUser_type_id(dto.getUser().getUserType());
+//            wki_user.setProcess_id(process.getProcessType().equals("1") ? "0" : "1");
+//            wki_user.setOffice_id(final_office);
+//            wki_user.setUser_name(dto.getUser().toString());
+//            wki_user.setDescription(dto.getTransaction().getObservation());
+//            wki_user.setObservation(dto.getProcess().getObservation());
+//            wki_user.setFiscal_year(-1);
+//            wki_user.setLast_month_paid(-1);
+//            wki_user.setLast_amount_paid(BigDecimal.ZERO);
+//            wki_user.setLast_process_id(Integer.parseInt(process.getSequenceProcess()));
+//            wki_user.setLast_employee_update(final_employee);
+//            wki_user.setStatus(1);
+            res = water_intake_service.saveProcess(connection, dto.getWki_user(), null);
             if (!res) {
                 return returnMessageError("EL TRAMITE NO PUDO SER FINALIZADO");
             }
         } catch (SQLException ex) {
             returnMessageError(ex.getMessage());
-            rollback(connection);
-            log(ex, "valid");
-            res = false;
-        } catch (ProcessException ex) {
-            returnMessageError(ex.getErrorCode(), ex.getMessage());
             rollback(connection);
             log(ex, "valid");
             res = false;
@@ -457,21 +430,21 @@ public class ProcessService extends AbstractService implements Serializable {
         return exist;
     }
 
-    public boolean search(JDBConnection c, ProcessDTO process, String current_status_method) {
-        boolean exist = false;
+    public Optional<ProcessDTO> search(JDBConnection connection, int id) {
+        Optional<ProcessDTO> res = Optional.empty();
         try {
-            exist = dao.exist(c, process);
-            if (!exist) {
-                return false;
+            res = dao.getProcess(connection, id);
+            if (res.isEmpty()) {
+                return res;
             }
-            boolean valid_status = Func.isNotNull(process.getStatus());
-            if (!valid_status) {
-                return returnMessageError("EL TRAMITE NO TIENE UN STATUS VALIDO");
+            if (res.get().getStatus() == -1) {
+                returnMessageError("EL TRAMITE NO TIENE UN STATUS VALIDO");
+                return res;
             }
-
         } catch (SQLException ex) {
-            return returnMessageError(ex.getErrorCode(), ex.getMessage());
+            returnMessageError(ex.getMessage());
+            log(ex, "valid");
         }
-        return exist;
+        return res;
     }
 }

@@ -11,8 +11,9 @@ import jsoftware.com.jutil.db.JDBMapObject;
 /**
  *
  * @author juanp
+ * @param <T>
  */
-public abstract class AbstractProcessView<T extends JDBMapObject> extends SimpleView implements ProcessViewModel {
+public abstract class AbstractProcessView<T> extends SimpleView implements ProcessViewModel {
 
     private static final long serialVersionUID = 1L;
     private final String process_id;

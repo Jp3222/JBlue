@@ -517,7 +517,7 @@ public final class StreetsView extends DBView implements DBObjectValues<StreetDT
      * @param o
      */
     @Override
-    public void setObjectSearch(JDBMapObject o) {
+    public void setObjectSearch(Object o) {
         object_search = (StreetDTO) o;
     }
 
@@ -541,4 +541,5 @@ public final class StreetsView extends DBView implements DBObjectValues<StreetDT
         update_button.setEnabled(true);
         delete_button.setEnabled(true);
     }
+
 }

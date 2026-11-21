@@ -20,13 +20,13 @@ public class OwnerRegisterProcessWrapper extends ProcessWrapperDTO {
         // El constructor padre ya ejecuta this.clear() e inicializa process = new ProcessDTO();
         super(module_id, module_name, 3, "REGISTRO DEL CONTRIBUYENTE POR MODULO DEL SISTEMA");
         // Asignación homogénea usando la estructura de Map del DTO
-        this.process.put("process_type", "1");
+        this.process.setProcess_type(1);
     }
 
     @Override
     public void clear() {
         super.clear(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        this.process.put("process_type", "1");
+        this.process.setProcess_type(1);
     }
 
 }

@@ -20,13 +20,12 @@ import java.io.Serializable;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  *
  * @author juan pablo campos casasanero
  */
-public interface TableSearchViewModel<T extends JDBMapObject> extends Serializable {
+public interface TableSearchViewModel<T> extends Serializable {
 
     static int REGISTER_VIEW = 1;
 

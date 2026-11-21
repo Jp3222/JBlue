@@ -87,8 +87,8 @@ public abstract class ModuleWrapperDTO extends JDBMapObject {
         this.current_employee = current_employee;
         if (current_employee != null) {
             // Sincronización segura y tardía una vez que el objeto existe
-            transaction.setEmployee_id(Integer.parseInt(current_employee.getId()));
-            transaction.setOffice_id(Integer.parseInt(current_employee.getOfficeId()));
+            transaction.setEmployee_id(current_employee.getId());
+            transaction.setOffice_id(current_employee.getOffice_id());
         }
     }
 
@@ -145,7 +145,7 @@ public abstract class ModuleWrapperDTO extends JDBMapObject {
         sb.append("\n module_id=").append(module_id).append(", ");
         sb.append("\n module_name=").append(module_name).append(",");
         sb.append("\n transaction=").append(transaction.toString()).append(",");
-        sb.append("\n current_employee=").append(Func.nullSafeToString(current_employee.getMap().toString())).append(",");
+        sb.append("\n current_employee=").append(current_employee).append(",");
         sb.append("\n current_administration=");
         if (current_administration == null) {
             sb.append("null").append(",");

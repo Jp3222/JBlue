@@ -28,6 +28,8 @@ import jsoftware.com.jblue.views.EmployeesView;
  */
 public class EmployeeController extends AbstractDBViewController<EmployeeDTO> {
 
+    private static final long serialVersionUID = 1L;
+
     private final EmployeesView view;
 
     public EmployeeController(EmployeesView view) {

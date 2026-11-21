@@ -7,7 +7,6 @@ package jsoftware.com.jblue.views.mod.com;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
-import jsoftware.com.jblue.controllers.compc.WizardController;
 import jsoftware.com.jblue.controllers.viewc.EmployeeRegisterController;
 import jsoftware.com.jblue.model.dao.EmployeeTypeDAO;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
@@ -15,7 +14,6 @@ import jsoftware.com.jblue.model.dto.EmployeeTypesDTO;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.model.dto.wrp.EmployeeRegisterWrapperDTO;
 import jsoftware.com.jblue.model.abst.AbstractValidation;
-import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.util.FuncGenerate;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
@@ -363,12 +361,13 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
     @Override
     public EmployeeUserDTO getValues(boolean update) {
         EmployeeUserDTO dto = new EmployeeUserDTO();
-        Func.putIfNotNull(dto.getMap(), "user", user_field.getText());
-        Func.putIfNotNull(dto.getMap(), "password", password_field.getText());
-        Func.putIfNotNull(dto.getMap(), "description", Formats.getTextFormat(description_field.getText()));
-        Func.put(dto.getMap(), "email", email_field.getText());
-        Func.put(dto.getMap(), "phone_number", number_phone_field.getText());
-        Func.putIfNotNull(dto.getMap(), "employee_type", employee_type_field.getItemAt(employee_type_field.getSelectedIndex()).getId());
+        dto.setUser(user_field.getText());
+        dto.setPassword(password_field.getText());
+        dto.setDescription(description_field.getText());
+        dto.setEmail(email_field.getText());
+        dto.setPhone_number(number_phone_field.getText());
+        int type = Integer.parseInt(employee_type_field.getItemAt(employee_type_field.getSelectedIndex()).getId());
+        dto.setEmployee_type(type);
         return dto;
     }
 
@@ -381,18 +380,18 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
             return;
         }
         EmployeeUserDTO values = getValues(false);
-        dto.getEmployee_user().setMap(values.getMap());
+        dto.setEmployee_user(values);
     }
 
     @Override
     public void showData() {
         EmployeeRegisterWrapperDTO dto = getDtoWrapper();
         EmployeeDTO employee = dto.getEmployee();
-        String user_name = employee.getFirstName()
+        String user_name = employee.getFirst_name()
                 .concat("_")
-                .concat(employee.getLastName1())
+                .concat(employee.getLast_name1())
                 .concat("_")
-                .concat(employee.getLastName2());
+                .concat(employee.getLast_name2());
         description_field.setText(user_name);
 
         String password = password_field.getText();
@@ -403,13 +402,13 @@ public final class EmployeeUserDataView extends AbstractModuleView<EmployeeRegis
 
         String email = email_field.getText();
         if (Func.isNullEmptyBlank(email)) {
-            email = employee.getPersonalEmail();
+            email = employee.getPersonal_email();
         }
         email_field.setText(email);
 
         String number_phone = number_phone_field.getText();
         if (Func.isNullEmptyBlank(number_phone)) {
-            number_phone = employee.getPersonalNumber();
+            number_phone = employee.getPersonal_number();
         }
         number_phone_field.setText(number_phone);
 

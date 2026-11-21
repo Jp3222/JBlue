@@ -29,7 +29,6 @@ import jsoftware.com.jblue.controllers.compc.WizardController;
 import jsoftware.com.jblue.controllers.viewc.ShopCartController;
 import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
 import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
-import jsoftware.com.jblue.model.trash._PaymentListDTO;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
 import jsoftware.com.jblue.views.framework.CModel;

@@ -58,14 +58,14 @@ public class EmployeeRegisterService extends AbstractService {
             // [2] Iniciar bloque atómico
             connection.setAutoCommit(false);
 
-            String final_employee = ss.getCurrentEmployee().getOfficeId();
+            int final_employee = ss.getCurrentEmployee().getOffice_id();
             String final_office = ss.getCurrent_instance().getOfficeId();
             String final_committee = ss.getCurrent_instance().getCommitteeId();
 
             // [3] Registro de Empleado
             EmployeeDTO emp = dto.getEmployee();
-            emp.put("committee_id", final_committee);
-            emp.put("last_employee_update", final_employee);
+            emp.setCommittee_id(Integer.parseInt(final_committee));
+            emp.setLast_employee_update(final_employee);
 
             res = employee.insert(connection, ss, emp);
             if (!res || employee.isError()) {
@@ -75,10 +75,10 @@ public class EmployeeRegisterService extends AbstractService {
 
             // [4] Registro de Usuario asociado al Empleado
             EmployeeUserDTO usr = dto.getEmployee_user();
-            usr.put("employee_id", emp.getId());
-            usr.put("office_id", final_office);
-            usr.put("description", emp.toString());
-            usr.put("last_employee_update", final_employee);
+            usr.setId(emp.getId());
+            usr.setOffice_id(Integer.parseInt(final_committee));
+            usr.setDescription(emp.toString());
+            usr.setLast_employee_update(final_employee);
 
             res = user.insert(connection, ss, usr);
             if (!res || user.isError()) {

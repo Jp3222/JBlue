@@ -96,9 +96,9 @@ public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
         StringBuilder sb = new StringBuilder();
         sb.append(super.toString()); // Reutiliza la metadata del padre (IDs, Nombres de módulo)
         sb.append("\n EmployeeRegisterWrapperDTO { ");
-        sb.append("\n  employee = ").append(employee.getMap().toString()).append(", ");
+        sb.append("\n  employee = ").append(employee).append(", ");
         sb.append("\n  employee_valid = ").append(employee_valid).append(", ");
-        sb.append("\n  employee_user = ").append(employee_user.getMap().toString()).append(", ");
+        sb.append("\n  employee_user = ").append(employee_user).append(", ");
         sb.append("\n  employee_user_valid = ").append(employee_user_valid);
         sb.append("\n }");
         sb.append("\n}");
@@ -108,12 +108,8 @@ public class EmployeeRegisterWrapperDTO extends ModuleWrapperDTO {
     @Override
     public void clear() {
         // Corrección Defensiva: Solo limpia los mapas si los objetos ya fueron instanciados en el flujo
-        if (employee != null && employee.getMap() != null) {
-            employee.getMap().clear();
-        }
-        if (employee_user != null && employee_user.getMap() != null) {
-            employee_user.getMap().clear();
-        }
+        employee = new EmployeeDTO();
+        employee_user = new EmployeeUserDTO();
 
         // Reseteo de banderas lógicas del Wizard
         this.employee_valid = false;

@@ -19,14 +19,13 @@ package jsoftware.com.jblue.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
-import jsoftware.com.jutil.db.JDBMapObject;
 
 /**
  *
  * @author juan pablo campos casasanero
  * @param <T>
  */
-public abstract class AbstractComponentController<T extends JDBMapObject> extends Controller {
+public abstract class AbstractComponentController<T> extends Controller {
 
     private static final long serialVersionUID = 1L;
 

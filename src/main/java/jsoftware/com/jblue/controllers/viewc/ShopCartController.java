@@ -137,8 +137,7 @@ public class ShopCartController extends AbstractDBViewController {
         if (module instanceof ShopCartView j) {
             j.getDtoWrapper()
                     .getWki_user()
-                    .getMap()
-                    .put("user_name", j.getTextSearchList());
+                    .setUser_name(j.getTextSearchList());
             throttleTimer.restart();
         }
     }
@@ -157,7 +156,7 @@ public class ShopCartController extends AbstractDBViewController {
         }
         WaterIntakeUserDTO get = view.getListModel().get(list.getSelectedIndex());
         ShopCartWrapperDTO wrp = view.getDtoWrapper();
-        wrp.getWki_user().setMap(get.getMap());
+        wrp.setWki_user(get);
         try (JDBConnection connection = ConnectionFactory.getIntance().getMainConnection();) {
             boolean res = service.getUser(connection, SystemSession.getInstancia(), wrp);
             if (!res || service.isError()) {
@@ -166,6 +165,7 @@ public class ShopCartController extends AbstractDBViewController {
             }
             view.showData();
             view.getListModel().clear();
+            view.getTextComponentList().setText(null);
         } catch (Exception e) {
             e.printStackTrace();
         }

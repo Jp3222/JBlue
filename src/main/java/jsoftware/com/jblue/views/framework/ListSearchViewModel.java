@@ -27,7 +27,7 @@ import jsoftware.com.jutil.db.JDBMapObject;
  * @author juan pablo campos casasanero
  * @param <T>
  */
-public interface ListSearchViewModel<T extends JDBMapObject> extends Serializable {
+public interface ListSearchViewModel<T> extends Serializable {
 
     JList<T> getList();
 

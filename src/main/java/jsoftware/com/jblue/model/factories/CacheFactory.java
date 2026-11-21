@@ -170,7 +170,7 @@ public final class CacheFactory {
     /**
      * Caché de empleados.
      */
-    public static final MemoListCache<EmployeeDTO> EMPLOYEES = new MemoListCache<>(Const.EMP_EMPLOYEE_TABLE, EmployeeDTO.class);
+    //public static final MemoListCache<EmployeeDTO> EMPLOYEES = new MemoListCache<>(Const.EMP_EMPLOYEE_TABLE, EmployeeDTO.class);
     /**
      * Caché de usuarios.
      */
@@ -188,7 +188,7 @@ public final class CacheFactory {
         //EMPLOYEE_TYPES, // Se mantiene el comentario original.
         WATER_INTAKES_TYPES,
         STREETS,
-        EMPLOYEES,
+        //EMPLOYEES,
         USERS,
         WATER_INTAKES,};
 

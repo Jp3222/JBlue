@@ -5,7 +5,7 @@
 package jsoftware.com.jblue.model.service;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +54,7 @@ public class ShopCarService extends AbstractService {
         boolean res = false;
         try {
             ss_service.valid(connection, ss);
-            int final_employee = Integer.parseInt(ss.getCurrentEmployee().getId());
+            int final_employee = ss.getCurrentEmployee().getId();
             int final_office = Integer.parseInt(ss.getCurrent_instance().getOfficeId());
             int final_committee = Integer.parseInt(ss.getCurrent_instance().getCommitteeId());
             int final_administration = Integer.parseInt(ss.getCurrentAdministration().getId());
@@ -163,18 +163,18 @@ public class ShopCarService extends AbstractService {
             // 5. Actualización del último pago en la entidad de la toma
             WaterIntakeUserDTO wki_user = dto.getWki_user();
             if (wki_user != null) {
-                wki_user.put("id", wki_user_pym.getId_toma());
-                wki_user.put("user_id", wki_user_pym.getId_usuario());
+                wki_user.setId(wki_user_pym.getId_toma());
+                wki_user.setUser_id(wki_user_pym.getId_usuario());
 
                 // Corrección del string format con comodines %s
                 String observation = "PAGO REALIZADO CON EL FOLIO: %s Y NO DE OPERACION: %s"
                         .formatted(dto.getPym_wrp().getPayment().getId(), dto.getPym_wrp().getOperation().getId());
-                wki_user.put("description", observation);
+                wki_user.setDescription(observation);
 
-                wki_user.put("fiscal_year", months_dto.getFiscal_year());
-                wki_user.put("last_month_paid", String.valueOf(month));
-                wki_user.put("last_amount_paid", dto.getPym_wrp().getHeader().getTotal_amount());
-                wki_user.put("last_employee_update", ss.getCurrentEmployee().getId());
+                wki_user.setFiscal_year(months_dto.getFiscal_year());
+                wki_user.setLast_month_paid(month);
+                wki_user.setLast_amount_paid(dto.getPym_wrp().getHeader().getTotal_amount());
+                wki_user.setLast_employee_update(ss.getCurrentEmployee().getId());
 
                 res = wki_service.updateLastPayment(connection, ss, wki_user);
                 if (!res) {
@@ -184,7 +184,7 @@ public class ShopCarService extends AbstractService {
             }
 
             commit(connection);
-            return returnMessageError(SERVICE_EXECUTE_OK, "OPERACION EXITOSA");
+            return returnMessageOk("OPERACION EXITOSA");
         } catch (SystemException | SQLException ex) {
             rollback(connection);
             FuncLogs.log(getClass(), ex, process_name, "payment", ex.getMessage());
@@ -195,14 +195,21 @@ public class ShopCarService extends AbstractService {
     }
 
     public List<WaterIntakeUserDTO> search(JDBConnection connection, SystemSession ss, ShopCartWrapperDTO dto) {
-        List<WaterIntakeUserDTO> res = wki_service.search(connection, ss, dto);
+        List<WaterIntakeUserDTO> res = new ArrayList<>(100);
+        try {
+            res.addAll(wki_service.search(connection, ss, dto));
+        } catch (SQLException ex) {
+            FuncLogs.log(getClass(), ex, process_name, "payment", ex.getMessage());
+            returnMessageError(ex.getMessage());
+        }
         return res;
     }
 
     public boolean getUser(JDBConnection connection, SystemSession ss, ShopCartWrapperDTO wrp) {
+        boolean res = false;
         try {
             ss_service.valid(connection, ss);
-            int id_toma = Integer.parseInt(wrp.getWki_user().getId() == null ? "-1" : wrp.getWki_user().getId());
+            int id_toma = wrp.getWki_user().getId();
             if (id_toma == -1) {
                 return returnMessageError("ID DE LA TOMA NO VALIDA");
             }
@@ -212,10 +219,11 @@ public class ShopCarService extends AbstractService {
             }
             WaterIntakeUserPaymentDTO wki_pym = o.get();
             wrp.setWki_usr_pym(wki_pym);
-            return true;
-        } catch (SQLException | SystemException e) {
-            e.printStackTrace(System.out);
+            res = returnMessageOk("OPERACION EXITOSA");
+        } catch (SQLException | SystemException ex) {
+            FuncLogs.log(getClass(), ex, process_name, "payment", ex.getMessage());
+            res = returnMessageError(ex.getMessage());
         }
-        return false;
+        return res;
     }
 }

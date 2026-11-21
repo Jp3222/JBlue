@@ -14,7 +14,6 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.controllers.compc.ComboBoxController;
-import jsoftware.com.jblue.controllers.compc.WizardController;
 import jsoftware.com.jblue.model.dao.StreetDAO;
 import jsoftware.com.jblue.model.dto.EmployeeDTO;
 import jsoftware.com.jblue.model.dto.StreetDTO;
@@ -417,7 +416,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
     private javax.swing.JTextField phone_number_field;
     private javax.swing.JTextField rfc_field;
     private javax.swing.JPanel rfc_field_panel;
-    private javax.swing.JComboBox<String> street1_field;
+    private javax.swing.JComboBox<StreetDTO> street1_field;
     private javax.swing.JComboBox<String> street2_field;
     // End of variables declaration//GEN-END:variables
 
@@ -455,20 +454,21 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
     @Override
     public EmployeeDTO getValues(boolean update) {
         EmployeeDTO dto = new EmployeeDTO();
-        Func.putIfNotNull(dto.getMap(), "rfc", Formats.getTextFormat(rfc_field.getText()));
-        Func.putIfNotNull(dto.getMap(), "curp", Formats.getTextFormat(curp_field.getText()));
-        Func.putIfNotNull(dto.getMap(), "first_name", Formats.getTextFormat(first_name_field.getText()));
-        Func.putIfNotNull(dto.getMap(), "last_name1", Formats.getTextFormat(last_name1_field.getText()));
-        Func.putIfNotNull(dto.getMap(), "last_name2", Formats.getTextFormat(last_name2_field.getText()));
-        Func.putIfNotNull(dto.getMap(), "gender", gender_field.getSelectedIndex());
-        Func.putIfNotNull(dto.getMap(), "birthdate", datePicker.getText());
-        Func.put(dto.getMap(), "personal_email", email_field.getText());
-        Func.put(dto.getMap(), "personal_number", phone_number_field.getText());
-        Func.putIfNotNull(dto.getMap(), "street1", street1_field.getSelectedIndex());
+        dto.setRfc(Formats.getTextFormat(rfc_field.getText()));
+        dto.setCurp(Formats.getTextFormat(curp_field.getText()));
+        dto.setFirst_name(Formats.getTextFormat(first_name_field.getText()));
+        dto.setLast_name1(Formats.getTextFormat(last_name1_field.getText()));
+        dto.setLast_name2(Formats.getTextFormat(last_name2_field.getText()));
+        dto.setGender(gender_field.getSelectedIndex());
+        dto.setBirthdate(datePicker.getDate());
+        dto.setLast_name1(Formats.getTextFormat(email_field.getText()));
+        dto.setLast_name2(Formats.getTextFormat(phone_number_field.getText()));
+        String id = street1_field.getItemAt(street1_field.getSelectedIndex()).getId();
+        dto.setStreet1(Integer.parseInt(id));
         String s2 = street2_field.getSelectedIndex() <= 0 ? null : String.valueOf(street2_field.getSelectedIndex());
-        Func.put(dto.getMap(), "street2", s2);
-        Func.put(dto.getMap(), "inside_number", Formats.getTextFormat(inside_number_field.getText()));
-        Func.put(dto.getMap(), "outside_number", Formats.getTextFormat(outside_number_field.getText()));
+        dto.setStreet1(Integer.parseInt(s2));
+        dto.setLast_name1(Formats.getTextFormat(inside_number_field.getText()));
+        dto.setLast_name2(Formats.getTextFormat(outside_number_field.getText()));
         return dto;
     }
 
@@ -483,7 +483,7 @@ public final class EmployeeRegistrationView extends AbstractModuleView<EmployeeR
         }
         // Si es válido, se extrae el DTO y se vincula al Wrapper unificado
         EmployeeDTO employeeData = getValues(false);
-        dto.getEmployee().setMap(employeeData.getMap());
+        dto.setEmployee(employeeData);
         // Nota: Asegúrate de guardar este employeeData en tu Wrapper si tu arquitectura lo requiere, 
         // por ejemplo: getDtoWrapper().setEmployeeData(employeeData);
     }

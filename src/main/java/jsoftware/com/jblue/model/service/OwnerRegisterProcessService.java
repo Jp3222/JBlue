@@ -13,6 +13,7 @@ import jsoftware.com.jblue.model.dto.wrp.ProcessWrapperDTO;
 import jsoftware.com.jblue.model.exp.ServiceException;
 import jsoftware.com.jblue.model.exp.SystemException;
 import jsoftware.com.jblue.model.abst.AbstractService;
+import jsoftware.com.jblue.model.dto.ProcessDTO;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;
 import jsoftware.com.jutil.db.JDBConnection;
@@ -178,11 +179,12 @@ public class OwnerRegisterProcessService extends AbstractService {
 
     public boolean exist(JDBConnection connection, SystemSession ss, ProcessWrapperDTO dto) {
         boolean res = false;
-        res = dto.getId() != null;
+        res = dto.getProcess()!= null;
         if (!res) {
             return false;
         }
-        process_service.search(connection, dto.getProcess(), dto.getProcess().getStatus());
+        ProcessDTO process = new ProcessDTO();
+        process_service.search(connection, process.getId());
         return res;
     }
 

@@ -27,7 +27,7 @@ public class LoginRulers {
 
 
     public static boolean isDateEnd(EmployeeDTO o) {
-        return o.getDateEnd() != null && LocalDateTime.now().isAfter(LocalDateTime.parse(o.getDateEnd()));
+        return o.getDate_end()!= null && LocalDateTime.now().isAfter(o.getDate_end());
     }
 
     public static boolean isEmployeeNull(EmployeeDTO o) {

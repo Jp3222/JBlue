@@ -37,7 +37,7 @@ public class StreetService extends AbstractService {
         boolean res = false;
         try {
             connection.setAutoCommit(false);
-            String final_employee = ss.getCurrentEmployee().getId();
+            int final_employee = ss.getCurrentEmployee().getId();
             String final_colony = ss.getCurrent_instance().getColonyId();
 
             //REGISTRO DEL OBJETO

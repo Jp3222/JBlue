@@ -44,13 +44,13 @@ public abstract class ProcessValidators extends AbstractValidation {
         if (mov_time == BEFORE) {
             addRuler("process_id",
                     process_wrapper_dto.getProcess(),
-                    t -> Func.isNotNull(t.getProcessType()),
+                    t -> t.getProcess_type() != -1,
                     "EL TIPO DE TRAMITE NO HA SIDO DEFINIDO"
             );
         } else {
             addRuler("process_id",
                     process_wrapper_dto.getProcess(),
-                    t -> Func.isNotNull(t.getSequenceProcess()),
+                    t -> t.getProcess_type() != -1,
                     "EL TIPO DE TRAMITE NO HA SIDO DEFINIDO"
             );
         }

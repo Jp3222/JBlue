@@ -451,7 +451,7 @@ public class SurchargePaymentsView extends SimpleView implements ListSearchViewM
     }
 
     @Override
-    public void setObjectSearch(JDBMapObject object) {
+    public void setObjectSearch(Object object) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

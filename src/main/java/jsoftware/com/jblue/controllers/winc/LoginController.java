@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import javax.swing.JCheckBox;
 import jsoftware.com.jblue.model.dto.InstanceAuthDTO;
 import jsoftware.com.jblue.model.factories.ConnectionFactory;
-import jsoftware.com.jblue.model.factories.ModuleFactory;
 import jsoftware.com.jblue.model.service.LoginService;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.sys.app.AppConfig;

@@ -1104,7 +1104,7 @@ public final class UserView extends AbstractProcessView<UserDTO> implements DBOb
     }
 
     @Override
-    public void setObjectSearch(JDBMapObject o) {
+    public void setObjectSearch(Object o) {
         object_search = (UserDTO) o;
     }
 

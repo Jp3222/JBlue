@@ -28,7 +28,7 @@ public class DTOFactory {
         map.put(WaterIntakeDTO.class.getName(), () -> new WaterIntakeDTO());
         map.put(WaterIntakeTypeDTO.class.getName(), () -> new WaterIntakeDTO());
         map.put(StreetDTO.class.getName(), () -> new StreetDTO());
-        map.put(EmployeeDTO.class.getName(), () -> new EmployeeDTO());
+        //map.put(EmployeeDTO.class.getName(), () -> new EmployeeDTO());
         map.put(_PaymentDTO.class.getName(), () -> new _PaymentDTO());
     }
 

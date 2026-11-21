@@ -834,7 +834,7 @@ public final class EmployeesView extends DBView {
     }
 
     @Override
-    public void setObjectSearch(JDBMapObject o) {
+    public void setObjectSearch(Object o) {
         this.object_search = (EmployeeDTO) o;
     }
 

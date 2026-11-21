@@ -15,7 +15,7 @@ import jsoftware.com.jblue.model.validators.OwnerRegisterProcessValidator;
 public class ProcessValidatosFactory {
 
     public static ProcessValidators ProcessValidatosFactory(ProcessWrapperDTO dto) {
-        if (dto.getProcess().getProcessType().equals("1")) {
+        if (dto.getProcess().getProcess_type() == 1) {
             return new OwnerRegisterProcessValidator(dto);
         }
         return null;

@@ -4,13 +4,15 @@
  */
 package jsoftware.com.jblue.views.mod;
 
+import java.time.format.DateTimeFormatter;
 import jsoftware.com.jblue.model.dto.EmployeeUserDTO;
 import jsoftware.com.jblue.sys.SystemSession;
 import jsoftware.com.jblue.views.framework.AbstractProcessView;
 import jsoftware.com.jblue.views.framework.ProcessViewBuilder;
 
 /**
- * Modulo para la visualizacion de informacion de un empleado asignado o por defecto un empleado actual
+ * Modulo para la visualizacion de informacion de un empleado asignado o por
+ * defecto un empleado actual
  *
  * @author JUAN PABLO CAMPOS CASASANERO
  */
@@ -230,12 +232,12 @@ public final class EmployeeInformationProcess extends AbstractProcessView<Employ
     public void getDataView() {
         description_field.setText(object_search.getDescription());
         email_field.setText(object_search.getEmail());
-        phone_number_field.setText(object_search.getPhoneNumber());
-        employee_type.setText(object_search.getEmployeeType());
-        status_field.setText(object_search.getStatus());
-        date_register.setText(object_search.getDateRegister());
-        date_update.setText(object_search.getDateUpdate());
-        date_end.setText(object_search.getDateEnd());
+        phone_number_field.setText(object_search.getPhone_number());
+        employee_type.setText(String.valueOf(object_search.getEmployee_type()));
+        status_field.setText(String.valueOf(object_search.getStatus()));
+        date_register.setText(object_search.getDate_register().format(DateTimeFormatter.ISO_DATE));
+        date_update.setText(object_search.getDate_update().format(DateTimeFormatter.ISO_DATE));
+        date_end.setText(object_search.getDate_end().format(DateTimeFormatter.ISO_DATE));
     }
 
 

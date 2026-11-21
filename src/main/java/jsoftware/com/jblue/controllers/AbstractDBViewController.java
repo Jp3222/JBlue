@@ -18,14 +18,13 @@ package jsoftware.com.jblue.controllers;
 
 import javax.swing.JOptionPane;
 import jsoftware.com.jblue.views.framework.SimpleView;
-import jsoftware.com.jutil.db.model.JDBObject;
 
 /**
  *
  * @author juan pablo campos casasanero
  * @param <T>
  */
-public abstract class AbstractDBViewController<T extends JDBObject> extends AbstractViewController implements DBControllerModel {
+public abstract class AbstractDBViewController<T> extends AbstractViewController implements DBControllerModel {
 
     private static final long serialVersionUID = 1L;
 

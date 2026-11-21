@@ -26,17 +26,14 @@ import javax.swing.JCheckBox;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
 import javax.swing.SpinnerNumberModel;
 import jsoftware.com.jblue.controllers.Controller;
 import jsoftware.com.jblue.controllers.viewc.ShopCartController;
 import jsoftware.com.jblue.model.dto.WaterIntakeUserDTO;
 import jsoftware.com.jblue.model.dto.vw.WaterIntakeUserPaymentDTO;
 import jsoftware.com.jblue.model.dto.wrp.ShopCartWrapperDTO;
-import jsoftware.com.jblue.model.trash._PaymentListDTO;
 import jsoftware.com.jblue.util.Func;
 import jsoftware.com.jblue.views.framework.AbstractModuleView;
-import jsoftware.com.jblue.views.framework.CModel;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.ListSearchViewModel;
 import jsoftware.com.jblue.views.framework.ShowDataModel;
@@ -47,11 +44,11 @@ import jsoftware.com.jblue.views.framework.ShowDataModel;
  * @version 1.0
  */
 public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> implements ListSearchViewModel<WaterIntakeUserDTO>, ShowDataModel, DBObjectValues<WaterIntakeUserPaymentDTO> {
-
+    
     public static String DEFAULT_LAST_MONTH_PAID = "XX";
     public static String DEFAULT_LAST_YEAR_PAID = "XXXX";
     public static String DEFAULT_MONTHS_PAID = "0";
-
+    
     private static final long serialVersionUID = 1L;
 
     /**
@@ -83,7 +80,7 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
         list_months_paid.addAll(Arrays.asList(ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic));
         build();
     }
-
+    
     public ShopCartView(ShopCartWrapperDTO dto_wrapper, Controller controller) {
         super(dto_wrapper, controller);
         //Nueva vista
@@ -94,7 +91,7 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
         list_months_paid.addAll(Arrays.asList(ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic));
         build();
     }
-
+    
     @Override
     public void build() {
         components();
@@ -102,14 +99,14 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
         initialState();
         finalState();
     }
-
+    
     @Override
     public void components() {
         LocalDate date = LocalDate.now();
         fiscal_year_model = new SpinnerNumberModel(date.getYear(), date.getYear() - 5, date.getYear() + 5, 1);
         jSpinner1.setModel(fiscal_year_model);
     }
-
+    
     @Override
     public void events() {
         ShopCartController con = (ShopCartController) controller;
@@ -118,7 +115,7 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
             wki_user_list.addMouseListener(con);
         }
     }
-
+    
     @Override
     public void initialState() {
         jSpinner1.setValue(LocalDate.now().getYear());
@@ -136,10 +133,11 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
         months_paid_field.setText(DEFAULT_MONTHS_PAID);
         last_month_paid_field.setText(DEFAULT_LAST_MONTH_PAID);
         last_year_paid_field.setText(DEFAULT_LAST_YEAR_PAID);
+        search_field_list.setText(null);
         DefaultListModel<WaterIntakeUserDTO> model = (DefaultListModel<WaterIntakeUserDTO>) wki_user_list.getModel();
         model.removeAllElements();
     }
-
+    
     @Override
     public void finalState() {
     }
@@ -792,7 +790,7 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
     public static final int MONTHS_PAID = 0;
     public static final int MONTHS_NOT_PAID = 1;
     public static final int SELECTED_MONTHS = 2;
-
+    
     @Override
     public void getData() {
         boolean res = isValuesOK();
@@ -803,13 +801,13 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
         dto_wrapper.setWki_usr_pym(getValues(true));
         System.out.println(dto_wrapper.getWki_usr_pym().toString());
     }
-
+    
     public List<JCheckBox> getListMonth(int option) {
         return switch (option) {
             case ShopCartView.MONTHS_PAID ->
                 list_months_paid
                 .stream()
-                .filter((t) -> t.isSelected() && !t.isEnabled())
+                .filter((t) -> t.isEnabled() && t.isSelected())
                 .toList();
             case ShopCartView.MONTHS_NOT_PAID ->
                 list_months_paid
@@ -825,52 +823,52 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
                 list_months_paid;
         };
     }
-
+    
     @Override
     public JList<WaterIntakeUserDTO> getList() {
         return wki_user_list;
     }
-
+    
     @Override
     public JTextField getTextComponentList() {
         return search_field_list;
     }
-
+    
     @Override
     public String getTextSearchList() {
         return search_field_list.getText().trim().replace(" ", "_").toUpperCase();
     }
-
+    
     @Override
     public DefaultListModel<WaterIntakeUserDTO> getListModel() {
         return list_model;
     }
-
+    
     @Override
     public void setCountElements(int count) {
         count_elements_label.setText(String.valueOf(count));
     }
-
+    
     @Override
     public int getCountElements() {
         return Integer.parseInt(count_elements_label.getText());
     }
-
+    
     @Override
     public void setScreenListInfo() {
-
+        
     }
-
+    
     @Override
     public WaterIntakeUserDTO getObjectSearch() {
         return object_search;
     }
-
+    
     @Override
     public void setObjectSearch(WaterIntakeUserDTO object) {
         object_search = object;
     }
-
+    
     @Override
     public void showData() {
         ShopCartWrapperDTO wrp = getDtoWrapper();
@@ -885,11 +883,23 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
         user_type_field.setText(dto.getTipo_usuario());
         water_intake_type.setText(dto.getTipo_toma());
         cost_field.setText(dto.getCuota().toString());
-
+        
         last_month_paid_field.setText(dto.getUlt_mes_pago() == -1 ? DEFAULT_LAST_MONTH_PAID : String.valueOf(dto.getUlt_mes_pago()));
         last_year_paid_field.setText(dto.getUlt_año_pago() == -1 ? DEFAULT_LAST_YEAR_PAID : String.valueOf(dto.getUlt_año_pago()));
         months_paid_field.setText(String.valueOf(dto.getMeses_pagados()));
-
+        //SI LA PLANILLA DE PAGO YA ESTA PAGADA, SE PASA AL SIGUIENTE AÑO
+        if (dto.getStatus_pagos() == 7 || dto.getMeses_pagados() == 12 || dto.getUlt_año_pago() == 12) {
+            fiscal_year_model.setMinimum(dto.getUlt_año_pago() + 1);
+            fiscal_year_model.setValue(dto.getUlt_año_pago() + 1);
+            //
+            last_month_paid_field.setText(DEFAULT_LAST_MONTH_PAID);
+            last_year_paid_field.setText(String.valueOf(dto.getUlt_año_pago()));
+            months_paid_field.setText("0");
+            for (JCheckBox i : list_months_paid) {
+                i.setEnabled(true);
+            }
+            return;
+        }
         // Estados previos de selección según DTO
         ene.setSelected(dto.isEne());
         feb.setSelected(dto.isFeb());
@@ -932,19 +942,18 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
             // (Puedes ajustar esta condición si permites re-pagar o corregir)
             if (checkBox.isSelected()) {
                 // Si prefieres que lo ya pagado no se pueda desmarcar o modificar directamente aquí:
-                // isEnabled = false; 
+                isEnabled = false;
             }
-
             checkBox.setEnabled(isEnabled);
         }
     }
-
+    
     @Override
     public boolean isValuesOK() {
         boolean res;
         List<JCheckBox> listMonth = getListMonth(SELECTED_MONTHS);
         res = listMonth.isEmpty();
-        if (!res) {
+        if (res) {
             JOptionPane.showMessageDialog(this, "SELECCIONE UN MES");
         }
         res = validateLinearMonthSelection(listMonth);
@@ -965,10 +974,10 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
         if (selectedMonths == null || selectedMonths.isEmpty()) {
             return true;
         }
-
+        
         boolean foundFirstSelected = false;
         boolean foundGapAfterStart = false;
-
+        
         for (JCheckBox i : selectedMonths) {
             //SE EVALUAN SOLO LOS MESES HABILITADOS
             if (i.isEnabled()) {
@@ -986,17 +995,18 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
                         foundGapAfterStart = true;
                     }
                 }
-
+                
             }
         }
-
+        
         return true;
     }
-
+    
     @Override
     public WaterIntakeUserPaymentDTO getValues(boolean update) {
         ShopCartWrapperDTO wrp = getDtoWrapper();
         WaterIntakeUserPaymentDTO dto = wrp.getWki_usr_pym();
+        dto.setUlt_año_pago(Integer.parseInt(jSpinner1.getValue().toString()));
         dto.setEne(ene.isSelected());
         dto.setFeb(feb.isSelected());
         dto.setMar(mar.isSelected());
@@ -1016,7 +1026,7 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
         }
         return dto;
     }
-
+    
     public int get(String var) {
         switch (var.toUpperCase()) {
             case "ENE" -> {
@@ -1055,8 +1065,9 @@ public final class ShopCartView extends AbstractModuleView<ShopCartWrapperDTO> i
             case "DIC" -> {
                 return 12;
             }
-            default -> throw new AssertionError();
+            default ->
+                throw new AssertionError();
         }
     }
-
+    
 }

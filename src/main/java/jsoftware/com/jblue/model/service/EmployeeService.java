@@ -48,7 +48,7 @@ public class EmployeeService extends AbstractService {
                 returnMessageError(1, "LOS DATOS DEL EMPLEADO NO SE HAN REGISTRADO CORRECTAMENTE");
             }
             //HISTORIAL
-            ProgramHistoryDTO hys = ss.getProgramHistoryDTO(8, Integer.parseInt(dto.getId()));
+            ProgramHistoryDTO hys = ss.getProgramHistoryDTO(8, dto.getId());
             hys.setDescription("SE REGISTRO EL USUARIO: " + dto.getId() + " - " + dto.toString());
             res = history.insert(connection, ss, hys);
             if (!res) {

@@ -32,7 +32,6 @@ import jsoftware.com.jblue.util.Filters;
 import jsoftware.com.jblue.util.Formats;
 import jsoftware.com.jblue.views.framework.DBObjectValues;
 import jsoftware.com.jblue.views.framework.DBView;
-import jsoftware.com.jutil.db.JDBMapObject;
 import jsoftware.com.jutil.swingw.modelos.JTableModel;
 
 /**
@@ -107,7 +106,7 @@ public final class WaterIntakesTypesView extends DBView<WaterIntakeTypeDTO> impl
     }
 
     @Override
-    public void setObjectSearch(JDBMapObject o) {
+    public void setObjectSearch(Object o) {
         object_search = (WaterIntakeTypeDTO) o;
     }
 

@@ -64,16 +64,15 @@ public class EmployeeUserService extends AbstractService {
             String securePassword = BCryptCrypto.encryp(rawPassword);
 
             // 4. Asignación de credenciales seguras al DTO para el transporte hacia el DAO
-            dto.put("user", secureUser);
-            dto.put("password", securePassword);
+            dto.setUser(secureUser);
+            dto.setPassword(securePassword);
 
             // 5. REGISTRO DE EMPLEADO EN MYSQL
-            pk = dao.insert(connection, dto);
-            res = pk > 0;
+            res = dao.insert(connection, dto);
             if (!res) {
                 throw new ServiceException(1, "LOS DATOS DEL USUARIO NO SE HAN REGISTRADO CORRECTAMENTE");
             }
-            ProgramHistoryDTO hys = ss.getProgramHistoryDTO(51, pk);
+            ProgramHistoryDTO hys = ss.getProgramHistoryDTO(51, dto.getId());
             hys.setDescription("REGISTRO DEL USUARIO: " + dto.getId() + " - " + dto.getDescription());
             res = history.insert(connection, ss, hys);
             if (!res) {
